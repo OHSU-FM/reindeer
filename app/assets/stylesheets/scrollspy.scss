@@ -1,0 +1,59 @@
+@media (min-width: 1024px){
+    #scroll-spy-nav{display:block;}
+}
+@media (max-width: 1023px){
+    #scroll-spy-nav{display:none;}
+}
+.scroll-spy-offset{padding-top:70px;}
+#scroll-spy-nav{
+    font-size: 10pt;
+    /* scroll-spy-nav position before getting affixed to top of page */
+    /* How to display when visible */
+    & li > ul > li, li > ul > li > ul > li {display: none;}
+    & li.active > ul > li{display:block;}
+    
+    /* Hide sub li when parent not active */
+    /* Bold font in parent li when selected */
+    & > ul > li.active > a{padding-left:16px;}
+
+    & > ul > li{
+        padding-left:18px;
+        & > ul > li > a{
+            padding-left:36px;
+        }
+        & > ul > li.active > a{
+            padding-left:34px;   
+            border-left: 2px solid #967dac;
+        }
+        & > ul > li > ul > li{
+            padding-left:52px;   
+        }
+    }
+    li{
+        color: #999;            // Unselected color
+        margin-bottom:5px;      // Space between lines
+        &.active{
+            & > a{              // Selected node style
+                padding-left:16px;  
+                border-left: 2px solid #563d7c;
+                color: #563d7c;
+            }
+        }
+        /* Default anchor style*/
+        a{
+            padding-top:5px;
+            padding-bottom:5px;
+            padding-left: 18px;
+            color: #999;
+            text-decoration: none;
+            border-bottom: 0px;
+        }
+    }
+    /* Position of scroll-spy-nav when affixed to top of page*/
+    &.affix{
+        position:fixed;
+        top: 67px;
+    }
+    /* Remove default bootstrap line spacing between nav elements */
+    .nav{margin-bottom:0px;}
+}

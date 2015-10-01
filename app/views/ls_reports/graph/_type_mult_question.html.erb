@@ -1,0 +1,69 @@
+<div>
+    <table class="wide table table-striped" style="width:100%;">
+        <thead>
+            <tr>
+                <th></th>
+                <th colspan="3">Your Aggregate</th>
+                <th colspan="3">Population Aggregate</th>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <th>Count</th>
+                <th>Percent</th>
+                <th></th>
+                <th>Count</th>
+                <th>Percent</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+                count_total = 0
+                count_total_u = 0
+                percent_total = 0
+                percent_total_u = 0
+            %>
+
+            <% pquestion_u = @lime_survey_unfiltered.find_question :qid, pquestion.qid %>
+            <% pquestion_u.stats.categorical_stats.each do |stat_u| %> 
+                <% stat = pquestion.stats.categorical_stats.find{|st|st.code == stat_u.code} %>
+                <% next if stat_u.is_err && stat_u.frequency == 0 %>
+                
+                <% 
+                    count_total += stat.frequency
+                    count_total_u += stat_u.frequency
+                    percent_total += stat.percent
+                    percent_total_u += stat_u.percent
+                %>
+
+            <tr>
+                <% ans = stat_u.answer# .compact.join(' - ') %>
+                <td><%= (ans.empty? ? '<span class="link" data-toggle="tooltip" title="There were no options checked for this question">Nothing marked</span>' : ans).html_safe  %></td>
+                <td><%= stat.frequency %></td>
+                <td><%= stat.percent.round(1) %>%</td>
+                <td>
+                    <%= tag :div, 'data-chart-data'=>stat.to_json, :class=>'ls-chart' %>
+                </td>
+                <td><%= stat_u.frequency %></td>
+                <td><%= stat_u.percent.round(1) %>%</td>
+                <td>
+                    <%= tag :div, 'data-chart-data'=>stat_u.to_json, :class=>'ls-chart' %>
+                </td>
+            </tr>
+            <% end %>
+            <tr class="totals-row">
+                <td>Totals:</td>
+                <td><%= count_total     %></td>
+                <td><%= percent_total.round(2)   %>%<super>*</super></td>
+                <td></td>
+                <td><%= count_total_u   %></td>
+                <td><%= percent_total_u.round(2) %>%<super>*</super></td>
+                <td></td>
+            </tr>
+
+        </tbody>
+    </table>
+    <small>* Questions of this type can have totals over 100%</small>
+</div>
+
+

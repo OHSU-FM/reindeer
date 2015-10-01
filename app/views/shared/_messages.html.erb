@@ -1,0 +1,6 @@
+<% flash.each do |type, message| %>
+    <% next if type.to_s == 'timedout'%>
+    <div class="auto-growl hidden" data-alert-type="<%= flash_class(type) %>">
+        <%= message %>
+    </div>
+<% end %>

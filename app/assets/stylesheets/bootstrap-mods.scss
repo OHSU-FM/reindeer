@@ -1,0 +1,13 @@
+@import 'bootstrap';
+
+.modal-content .modal-header{min-height:45px;}
+
+.badge{
+    &.badge-default{@extend .label-default;}
+    &.badge-primary{@extend .label-primary;}
+    &.badge-success{@extend .label-success;}
+    &.badge-info{@extend .label-info;}
+    &.badge-warning{@extend .label-warning;}
+    &.badge-danger{@extend .label-danger;}
+}
+

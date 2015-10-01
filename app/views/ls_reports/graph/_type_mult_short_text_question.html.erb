@@ -1,0 +1,22 @@
+   <div class="well">
+    <% if pquestion.response_set.data[0].data.count == 1 #!@pk.to_s.empty? %>
+
+        <table class="table table-striped table-condensed">
+            <% pquestion.response_set.data.each do |rs| %>
+               <% if !rs.data.first.to_s.empty? %>
+                   <tr>
+                       <td><span class="desc_<%= rs.qtype %>" ><%= strip_tags(rs.question.question) %></span></td>
+                       <% rs.data.each do |dt| %>
+                           <td><%= dt %></td>
+                       <% end %>
+                   </tr>
+               <% else %>
+                   <% #break %>
+               <% end %>
+           <% end %>
+        </table>
+
+    <% end %>
+    <% #raise hell %>
+    </div>      
+

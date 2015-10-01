@@ -1,0 +1,621 @@
+//= require base
+
+#top{padding-top:10px;}
+
+.stats-container{
+    td{vertical-align:top;}
+    label{display:inline-block;margin-bottom:0px;}
+}
+
+
+html, body {
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  padding:0px;
+}
+
+body{padding: 35px 0 0 0;}
+
+body, .slide table.cell-normal td {
+  font-family: "Lucida Sans", "Verdana", "Arial", "Helvetica", sans-serif;
+  font-size: 11.5pt;
+  background-color: #fff;
+  color: #000;
+  vertical-align: top;
+  text-align: left;
+}
+
+img {
+  border: 0;
+}
+
+.stats-container-top{
+    a {
+      color: #2f5f92;
+      text-decoration: none;
+      border-bottom: solid 1px #999;
+    }
+    
+    a.empty {
+      border: 0;
+    }
+}
+em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input, textarea, select {
+  font-family: "Lucida Sans", "Verdana", "Arial", "Helvetica", sans-serif;
+}
+
+input, textarea {
+	font-size: 11.5pt;
+  padding: 0;
+}
+
+.small input.radio, .smallest input.radio,
+.small input.checkbox, .smallest input.checkbox {
+  height: auto;
+  width: auto;
+}
+
+select {
+  font-size: 11pt;
+  font-weight: normal;
+}
+
+input.error, textarea.error {
+  border: solid 2px #bbbb88;
+  background-color: #ffffcc;
+}
+
+input.radio, input.checkbox {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+div.error {
+  color: #ff0044;
+  font-size: 8.5pt;
+}
+
+.hint {
+  color: #777;
+}
+.link-home{
+    border:0px;
+    text-decoration:none;
+}
+.header {
+  margin: 0;
+  padding: 0 0 0 16px;
+  position: absolute;
+  top: 0;
+  right: 16px;
+  width: 100%;
+  font-size: 30pt;
+  text-align: center;
+  font-weight: normal;
+  background-color: #2f5f92;
+  color: #f1f1f1;
+  border-bottom: solid 2px #1f2f82;
+  height: 2.4em;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.header h1 {
+  padding: 0;
+  margin: 0 10pt 0 10pt;
+  font-size: 20pt;
+  font-weight: normal;
+  color: #f1f1f1;
+  padding: 0.4em 0.5em 0.2em 0.5em;
+}
+
+.header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 14pt;
+  font-weight: normal;
+}
+
+.slide {
+  margin: 0;
+  padding: 6.25em 20pt 65px 20pt;
+}
+
+.slide-container {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.stats-container-top {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.stats-container-top{
+    h1, h2, h3, h4, h5, h6{
+        font-weight: normal;
+        color: #777;    
+    }
+    h3{font-size:13pt;}
+}
+
+
+.stats-container-top h1 {
+  margin-left: 5%;
+  font-size: 16pt;
+}
+
+.stats-container-top h2 {
+  padding-right: 5%;
+  font-size: 8pt;
+  padding-top: 10pt;
+  float: right;
+}
+
+.stats-container {
+  font-size: 0.7em;
+  padding: 1em 0 1em 0;
+  margin: 0 10% 0 10%;
+  width: 800px;
+}
+
+.stats-container table {
+}
+
+.stats-container label, .stats-container input, .stats-container select {
+  font-size: 1em;
+}
+
+.stats-container .step {
+  padding: 0.5em 0 0.5em 0;
+}
+
+.stats-container .stat {
+  border: solid 1px #777;
+  padding: 0.1em 0.35em;
+  font-weight: bold;
+  line-height: 1.75em;
+}
+
+.stats-container-top .break {
+  border-top: solid 1px #ccc;
+  margin: 0 25% 0 10%;
+}
+
+.slide .bottom {
+  padding: 35pt 0;
+  margin: 0;
+  background-color: #fff;
+}
+
+.slide .clear {
+  clear: both;
+}
+
+.slide .right {
+  float: right;
+}
+
+.slide .half {
+  width: 45%;
+}
+
+.slide .full {
+  width: 75%;
+}
+
+.slide .full-wide {
+  width: 90%;
+}
+
+.slide .step {
+  background-color: #ffffff;
+}
+
+.slide h3 {
+  padding: 15pt 0;
+  font-size: 16pt;
+  font-weight: normal;
+  line-height: 20pt;
+}
+
+.slide p {
+  padding: 10pt 10pt 8pt 20pt;
+  margin: 0;
+}
+
+.slide ul, .slide ol {
+  margin: 15pt 20pt 20pt 50pt;
+  padding: 0;
+}
+
+.slide .center, div.slide table tr td.center {
+  text-align: center;
+}
+
+.slide .break {
+  padding-top: 20pt;
+}
+
+.slide li ul, .slide li p {
+  padding: 0 0 10pt 0;
+  margin: 0;
+}
+
+.slide ul li {
+  padding: 0;
+  vertical-align: top;
+  margin: 1.3em 30pt 0 0;
+  padding: 0 0 0 15pt;
+}
+
+.slide ol li {
+  padding: 0;
+  vertical-align: top;
+  list-style-type: decimal;
+  margin: 1.3em 30pt 0 20pt;
+}
+
+.slide ul.small li {
+  font-size: 11.5pt;
+  margin: 0.7em 30pt 0 10pt;
+}
+
+.slide ol.small li {
+  font-size: 11.5pt;
+  margin: 0.7em 30pt 0 20pt;
+}
+
+.slide p.small, .slide span.small {
+  font-size: 9pt;
+}
+
+.slide td.small {
+  font-size: 9pt;
+}
+
+.slide span.tiny, .slide div.tiny {
+  font-size: 8pt;
+}
+
+.slide table {
+  border-collapse: collapse;
+  margin: 0 0.5em 1em 0.5em;
+  font-size: 11pt;
+}
+
+.slide table.scale td {
+  font-size: 11pt;
+  border-top: none;
+  border-width: 2px;
+  table-layout: fixed;
+}
+
+.slide table.borderless td,
+.slide table tr.borderless td,
+.slide table td.borderless {
+  border: 0 !important;
+}
+
+.slide .margin, .slide table.margin {
+  margin: 1em 1em 0.75em 1em;
+}
+
+.slide .margin-right {
+  margin-right: 1em;
+}
+
+.slide .margin-top {
+  margin-top: 1em;
+}
+
+.slide .margin-x {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.slide .padded {
+  padding: 10pt;
+}
+
+.slide .pad-lite {
+  padding: 5pt;
+}
+
+.slide .pad-min {
+  padding: 3pt;
+}
+
+.slide table.fixed {
+  table-layout: fixed;
+}
+
+.slide div.border {
+  border: solid 1px #888;
+}
+
+.slide table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slide table.cell-left tr td {
+  text-align: left;
+}
+
+.slide .align-right {
+  text-align: right;
+}
+
+.slide td, .slide th {
+  text-align: center;
+  border: solid 1px #ccc;
+  padding: 5pt 4pt 5pt 4pt;
+}
+
+.pad {
+  padding: 0 4pt 0 4pt;
+}
+
+.pad-top {
+  padding-top: 6pt;
+}
+
+.slide table.cell-pad td {
+  padding: 8pt;
+}
+
+.slide td.empty, .slide th.empty {
+  border: 0;
+}
+
+.slide th.padded, .slide td.padded {
+  padding: 1em;
+}
+
+.slide tr.totals {
+  border-top: solid 2px #888;
+}
+
+.slide tr.totals td {
+  font-weight: bold;
+}
+
+span.black, td.black, th.black, tr.black td, tr.black th {
+  color: #000 !important;
+}
+
+span.red, td.red, th.red, tr.red td, tr.red th {
+  color: #b02;
+}
+
+span.blue, td.blue, th.blue, tr.blue td, tr.blue th {
+  color: #30a;
+}
+
+span.green, td.green, th.green, tr.green td, tr.green th {
+  color: #0b7;
+}
+
+.slide small, .slide .small label, .slide label.small {
+  font-size: 9pt;
+}
+
+.slide small, .slide .smallest label, .slide label.smallest {
+  font-size: 8pt;
+}
+
+.slide .small th, .slide .small td {
+  font-size: 10pt;
+}
+
+.slide .smallest label {
+  font-size: 8pt;
+}
+
+.slide .smallest th, .slide .smallest td {
+  font-size: 8pt;
+}
+
+.slide .small input {
+  font-size: 9pt;
+}
+
+.slide .smallest input {
+  font-size: 8pt;
+}
+
+.slide .small small, .slide .small small label,
+.slide .small label small, .slide .small small input {
+  font-size: 8pt;
+}
+
+.navigation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 16px;
+  height: 55px;
+  border-top: solid 2px #c8c8c8;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.navigation .prev, .navigation .next {
+  margin: 0;
+  background-color: #fff;
+}
+
+.navigation .next {
+  width: 148px;
+}
+
+.navigation .prev, .navigation .left {
+  float: left;
+  padding: 10pt 0 10pt 20pt;
+}
+
+.navigation {
+  text-align: center;
+}
+
+.navigation .status {
+  color: #555;
+  font-size: 11pt;
+  font-weight: bold;
+  padding:10pt 0 0 0;
+}
+
+.navigation .next, .navigation .right {
+  float: right;
+  padding: 10pt 20pt 10pt 0;
+  text-align: right;
+}
+
+.navigation .logout, .navigation .logout a {
+  font-size: 7pt;
+  color: #555;
+}
+
+label {
+  padding-right: 10pt;
+  font-size: 11pt;
+}
+
+.slide td.left, .slide th.left {
+  text-align: left;
+}
+
+.slide .top {
+  vertical-align: top;
+}
+
+.slide .middle {
+  vertical-align: middle;
+}
+
+.normal {
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.left {
+  float: left;
+}
+
+td.left, th.left, p.left {
+  float: none;
+}
+
+.wide {
+  width: 100%;
+}
+
+.pad-right {
+  padding-right: 3%;
+}
+
+td.no-pad, tr.no-pad td, table.no-pad tr td {
+  padding: 0;
+}
+
+.scroll-y {
+  overflow-y: scroll;
+  overflow-x: none;
+}
+
+.slide .align-left, .slide table td.align-left {
+  text-align: left;
+}
+
+.slide .align-right, .slide table td.align-right {
+  text-align: right;
+}
+
+.pass {
+  color: rgb(32, 172, 32) !important;
+}
+
+.fail {
+  color: rgb(192, 32, 32) !important;
+}
+
+@media (min-width: 1150px){
+    #scroll-spy-nav{display:block;}
+}
+@media (max-width: 1149px){
+    #scroll-spy-nav{display:none;}
+}
+#scroll-spy-nav{
+    font-size: 10pt;
+    /* scroll-spy-nav position before getting affixed to top of page */
+    /* How to display when visible */
+    & li > ul > li {display: none;}
+    & li.active li{display:block;}
+    
+    /* Hide sub li when parent not active */
+    /* Bold font in parent li when selected */
+    & > ul > li.active > a{font-weight:700;padding-left:16px;}
+
+    & > ul > li{
+        padding-left:18px;
+        & > ul > li > a{
+            padding-left:36px;    
+        }
+        & > ul > li.active > a{
+            padding-left:34px;   
+            border-left: 2px solid #967dac;
+        }
+    }
+    li{
+        color: #999;            // Unselected color
+        margin-bottom:5px;      // Space between lines
+        &.active{
+            & > a{              // Selected node style
+                padding-left:16px;  
+                border-left: 2px solid #563d7c;
+                color: #563d7c;
+            }
+        }
+        /* Default anchor style*/
+        a{
+            padding-left: 18px;
+            color: #999;
+            text-decoration: none;
+            border-bottom: 0px;
+        }
+    }
+    /* Position of scroll-spy-nav when affixed to top of page*/
+    &.affix{
+        position:fixed;
+        top: 67px;
+    }
+    /* Remove default bootstrap line spacing between nav elements */
+    .nav{margin-bottom:0px;}
+}

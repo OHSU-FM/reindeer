@@ -1,0 +1,13 @@
+<!-- View Chart pane -->
+  <div>
+    <% chart_id = "chart-visualization-#{chart.id}" %>
+    <div id="<%= chart_id%>" class="chart-visualization-container">
+      <div class="chart-visualization"></div>
+      <noscript>
+        This page requires JavaScript, please enable it in order to use this part of the website.
+      </noscript>
+      <%= content_tag :div, nil, :class=>'chart-data', :data=>{:chart=>chart} %>
+    </div>
+  </div>
+
+

@@ -1,0 +1,28 @@
+<% question_widget = f.object.widget %>
+<% @role_aggregate = question_widget.fm.role_aggregate %>
+<% question_u = question_widget.stats_u.question%>
+<% question = question_widget.stats.question%>
+
+<div class="chart-container-outer spin-toggle">
+    <%= image_tag 'spinner-mini.gif', :class=>'spin-toggle-image'%>
+    <div class="chart-visualization-container-outer row hide-chart-ui spin-toggle-content" style="position:relative;">
+        <% if question_widget.view_type.to_s == 'filter' %>
+            <div class="chart-visualization">
+                <!-- Temporarily disabled
+                <div class="input-group">
+                    <span class="input-group-addon" style="display:inline;">Report</span>
+                    <%= content_tag :input, nil, :type=>:text, 
+                        :disabled=>:disabled, :class=>'form-control truncate disabled', :style=>'width:95%;display:inline;',
+                        :value=>question.lime_survey.title%>
+                </div>
+                -->
+                <%= render(:partial=>'ls_reports/filter/show_question', :formats=>[:html],
+                    :locals=>{:question=>question, :question_u=>question_u}) %>
+            </div>
+        <% else %>
+        <div class="chart-visualization" id='role-chart-widget_<%= f.object.widget.id %>'></div>
+
+        <% end %>
+    </div>
+</div>
+

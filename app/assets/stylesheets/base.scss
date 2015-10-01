@@ -1,0 +1,116 @@
+    html, body {
+      height: 100%;
+      max-height: 100%;
+      width: 100%;
+      margin: 0;
+      border: 0;
+      padding:0px;
+    }
+    h1, h2, h3, h4, h5{
+        color: #777;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        line-height: 1.1em;
+    }
+    
+
+    body{padding: 50px 0 0 0;}
+    
+    .unselectable{
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    
+    html.jsEnabled{
+        /* Special styles only for when js is enabled */
+        .hide_if_jsEnabled{display:none;}
+        .show_if_jsEnabled{display:default;}
+    }
+
+    .sticky {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 100;
+        border-top: 0;
+    }
+    
+    @media screen {
+        /* remove text decoration from links */
+        /* a:link {text-decoration:none;} */
+    }
+
+    @media print{
+        a:link {text-decoration:underline;}
+    }
+
+    /* Custom coloring for admin links */
+    a.admin-link{
+        color: #FF0000 !important;
+        &:hover{
+            color: #FFF !important;
+        }
+    }
+   
+    /* Primarily used for logout button in header*/ 
+    .label-important{background-color: #b94a48;}
+
+    /* Spacing for flash notices*/
+    .alert{margin-top:20px;}
+
+    /* Sub headers inside of html header nodes */
+    .de-emphasize{
+        font-size: 0.8em;
+        font-style:italic;
+    }
+
+    /* inline block hack for buttons in a row */
+    .btn-group{
+        form.button_to,button.btn, a.btn{display:inline-block;}
+    }
+    body.widget{
+        header{display:none;}
+    }
+   
+    /* Toggle visibility of spinner image, and show content when removed */
+    .spin-toggle-image{
+        display:none;    
+    }
+    .spin-toggle-content{
+        visibility:visible;
+    }
+
+    .spin-toggle{
+        .spin-toggle-image{
+            margin-left:auto;
+            margin-right:auto;
+            visibility:visible;
+            display:block;
+        }
+        .spin-toggle-content{
+            visibility:hidden;
+        }
+    }
+
+    body{
+        .hide-unless-modal{
+            display:none;    
+        }
+        .modal{
+            .hide-unless-modal{
+                display:block;
+            }
+        }
+    }
+
+    .ellipsis{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        o-text-overflow: ellipsis;
+    }

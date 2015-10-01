@@ -1,0 +1,104 @@
+<% cache([@role_aggregates, @user]) do %>
+<div class="col-md-8 fade-in two">
+  <h1>Reports</h1>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Survey Title</th>
+        <th>
+        <span data-toggle="tooltip" 
+                data-container="body" 
+                title="Are there any filters on the data that you can view?">
+            Access
+        </span>
+
+        </th>
+        <th>
+          <span data-toggle="tooltip" 
+                data-container="body" 
+                title="The last time that the dataset was updated">
+                Updated</span>
+        </th>
+    </tr>
+  </thead>
+  <tbody>
+  <% # Sort groups alphabetically and display %>
+  <% ra_groups =  hf_role_aggregate_groups(@role_aggregates) %>
+  <% rag_keys = ra_groups.keys.sort %>
+
+  <% rag_keys.each do |group_name|%>
+        <% role_aggregates = ra_groups[group_name]%>
+        <% if group_name %>
+        <tr>
+            <td colspan="5" style="text-align:left;">
+                <h2><%= group_name %></h2>
+            </td>
+        </tr>
+        <% end %>
+        <% role_aggregates.each do |ra_title, role| %>
+
+        <tr>
+            <td><%= link_to ra_title, polymorphic_path([role.default_view, :ls_report] ,:sid=>role.lime_survey_sid), 
+                :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+            <% full_acc = can?(:unfiltered_read, role) %>
+            <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
+                    data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
+                ></i></td>
+            <td><%= role.lime_survey.last_updated.to_s.to_date %></td>
+        </tr>
+        <% end %>
+    <% end %>
+  </tbody>
+  </table>
+</div>
+<div class="col-md-4 fade-in one">
+    <% if @role_aggregates.count == 0 %>
+        <div class="alert bs-callout bs-callout-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+
+            <h4 id="oh-snap!-there-are-no-reports!">
+                <i class="fa fa-exclamation-triangle"></i>
+                Oh snap! There are no reports!
+                <a class="anchorjs-link" href="oh-snap!-there-are-no-reports!">
+                <span class="anchorjs-icon"></span></a>
+            </h4>
+            <p>
+                This can happen for several reasons:
+            </p>
+            <ul style="list-style-type:circle;">
+                <li>
+                    It is possible that we have not yet finished configuring your account.
+                </li>
+                <li>
+                    It could be that something unexpected happened or that your reports are temporarily out of service while we are making changes to the system.
+                </li>
+                <li>
+                    It is possible that we have a bug in our system. Depending on the type of bug, we may already be working on the issue.
+                </li>
+            </ul>
+            <br/>
+            <p>
+                Please send us an <%= mail_to Settings.admin.email, 'email' %> if the problem continues.
+            </p>
+                
+        </div>
+    <% end %>
+    <div class="bs-callout bs-callout-primary">
+        <h4>Overview:</h4>
+        <dl class="dl-horizontal">
+            
+            <dt># categories</dt>
+            <dd><%= ra_groups.count %></dd>
+
+            <dt># reports</dt>
+            <dd><%= @role_aggregates.count %></dd>
+            
+            <dt>last updated</dt>
+            <dd><%= @role_aggregates.map{|ra|ra.lime_survey.last_updated.to_s.to_date}.compact.max %></dd> 
+        </dl>
+
+
+    </div>
+</div>
+<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-dataset', :message=>'Loading Dataset'}%>
+<% end %>

@@ -1,0 +1,12 @@
+<div class="col-md-12">
+    <div class="col-md-12">
+        <%= f.label :widget_id, 'Choose a chart:' %>
+        <%= f.select :widget_id, f.object.widget_id_enum, :class=>"input-group select2" %>
+    </div>
+    <div class="col-md-12" style="margin:15px 0px;">
+        <%= link_to new_chart_path do %>
+            Create new chart
+            <span class="fa fa-external-link"></span>
+        <% end %>
+    </div>
+</div>

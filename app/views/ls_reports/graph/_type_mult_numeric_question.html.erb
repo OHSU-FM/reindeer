@@ -1,0 +1,9 @@
+
+<% answers = pquestion.lime_answers %>
+<% pquestion.stats.sub_stats.each do |stat| %>
+    <ul id="qid<%= stat.question.qid %>" class="sub-question list-unstyled">
+    </ul>
+<% end %>
+<%= render :partial=>'ls_reports/graph/graph_controls',:locals=>{:question=>pquestion} %>
+<%= render :partial=>'ls_reports/graph/graph', :locals=>{:qid=>pquestion.qid} %>
+

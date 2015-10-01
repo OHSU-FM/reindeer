@@ -1,0 +1,15 @@
+<div id="qid<%= pquestion.qid %>" class="parent-question panel panel-default">
+    <div class="panel-body chart-visualization chart-visualization-<%= pquestion.qid %>">
+        <% answers = pquestion.lime_answers %>
+        <% pquestion.stats.sub_stats.each do |stats| %>
+            <ul id="qid<%= stats.question.qid %>" class="sub-question list-unstyled">
+                <li><h4><%= strip_tags(stats.question.question) %></h4></li>
+                <%= render :partial=>'ls_reports/graph/graph_controls',:locals=>{:question=>stats.question, :answers=>answers, :stats=>stats} %>
+                <%= render :partial=>'ls_reports/graph/graph', :locals=>{:qid=>stats.question.qid.to_s} %>
+                <%= render :partial=>'ls_reports/graph/answers_table', :locals=>{:question=>stats.question, :answers=>answers, :stats=>stats}%>
+            </ul>
+            <hr/>
+        <% end %>
+    </div>
+</div>
+

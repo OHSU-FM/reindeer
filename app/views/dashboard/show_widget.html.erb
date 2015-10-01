@@ -1,0 +1,5 @@
+<%= form_for @dash, :remote=>true, "data-type" => "json", :html=>{:class=>'dashboard-container-outer', :id=>'widget_fields'} do |f| %>
+    <%= f.fields_for :dashboard_widgets, :id=>'widget-fields' do |widget| %>
+        <%= render :partial=>'dashboard/widgets/form', :locals=>{:f=>widget, :dash=>@dash}%>
+    <% end %>
+<% end %>

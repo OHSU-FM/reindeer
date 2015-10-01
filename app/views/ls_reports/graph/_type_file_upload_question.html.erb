@@ -1,0 +1,8 @@
+
+<ul>
+    <% #if lime_file_links(pquestion).flatten.count == 1 %>
+        <% lime_file_links(pquestion).flatten.each do |link| %>
+             <li><%= link %></li>
+        <% end %>
+    <% #end %>
+</ul>

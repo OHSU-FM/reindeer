@@ -1,0 +1,71 @@
+/* Place all the styles related to the reports controller here.
+/* They will automatically be included in application.css.
+/* You can use Sass (SCSS) here: http://sass-lang.com/
+/*= require style
+*/
+@import 'base';
+
+.dropdown-menu > li{
+    & > span{
+        display: block;
+        padding: 20px 20px 3px;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+    &:first-child span{
+        padding: 3px 20px;
+    }
+    & > a{
+        line-height: 1.2;
+    }
+
+}
+
+#ls_reports_nav .breadcrumb{
+    line-height: 1.1em;
+    font-size:24px;
+    background-color:transparent;
+    .dropdown{
+        font-size: 22px;
+        color: #777;
+        a{
+            margin-left: 1em;
+            font-size: 14px;
+        }
+
+    }
+}
+
+
+body#ls_reports{
+    .bs-callout{
+        button{top:-10px;right:-10px;}
+    }
+}
+
+body{
+    #page-content{
+
+        .main{
+        
+        } 
+        .sidebar{
+            #report-overview{
+                font-size: 9pt;
+            }
+            #scroll-spy-nav{
+                max-width: 262px;
+                li a{
+                    @extend .ellipsis;
+                }
+            }
+        }
+    }
+}
+
+
+table{line-height:normal;}
+
+a.toggle-img:hover{text-decoration:underline;}

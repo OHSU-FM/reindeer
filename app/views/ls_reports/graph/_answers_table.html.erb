@@ -1,0 +1,24 @@
+<div class="role-question-table" id="role-question-vis_<%= question.qid %>">     
+    <table class="answer table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>Answer</th>
+                <th>Code</th>
+                <th># Responses</th>
+                <th># <%= @role_aggregate.get_pk_label.pluralize %></th>
+                <th>Responses (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% stats.categorical_stats.each do |cat_stat| %>           
+            <tr> 
+               <td><%= cat_stat.answer.to_s.html_safe %>  </td>
+               <td class="centered-data"><%= cat_stat.code %>  </td>
+               <th class="centered-data"><%= cat_stat.frequency %>  </th>
+               <td class="centered-data"><%= cat_stat.pk_frequency %>  </td>
+               <th class="centered-data"><%= cat_stat.percent.round(2) %>  </th>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>

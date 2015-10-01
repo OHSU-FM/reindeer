@@ -1,0 +1,27 @@
+development:
+  adapter: postgresql
+  database: edna_console_development
+  host: localhost
+  username: sa
+  password: 'password'
+  schema_search_path: 'public,target,transform,source' #source,transform,target,public #can be comma seperated
+  reconnect: false
+
+production:
+  adapter: postgresql
+  database: edna_console
+  host: localhost
+  username: sa
+  password: 'password'
+  schema_search_path: 'public,target,transform,source' #source,transform,target,public #can be comma seperated
+  reconnect: false
+
+testing:
+  adapter: postgresql
+  database: edna_console_test
+  host: localhost
+  username: sa
+  password: 'password'
+  schema_search_path: "transform,target,source,public" #can be comma seperated
+  reconnect: false
+

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color:transparent;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : Settings.site.name %></title>
+    <%= favicon_link_tag 'favicon.ico' %>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Edna" %>">   
+    <%= stylesheet_link_tag "application", controller_name %>
+    <%= javascript_include_tag "application", controller_name %>
+    <%= yield(:head) if content_for?(:head) %>
+    <%= csrf_meta_tags %>
+</head>
+
+<body id="<%= controller_name %>" class="<%= yield(:body_classes)%> widget" style="background-color:transparent;">
+
+    <!-- Page Content -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <%= yield %>
+            </div>
+        </div>
+        <!-- /.row -->
+    </div>
+</body>
+
+</html>
+

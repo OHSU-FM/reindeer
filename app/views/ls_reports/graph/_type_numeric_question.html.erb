@@ -1,0 +1,8 @@
+
+<% if pquestion.hidden? %>
+    <p>hidden question</p>
+<% else %>
+<% end %>
+ <%= render :partial=>'ls_reports/graph/graph_controls',:locals=>{:question=>pquestion} %>
+ <%= render :partial=>'ls_reports/graph/graph', :locals=>{:qid=>pquestion.qid} %>
+

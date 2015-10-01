@@ -1,0 +1,256 @@
+// Place all the styles related to the dashboard controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+//= require charts
+//= require gridster/jquery.gridster.css
+
+body.theme-oregon-coast{
+    #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
+    // Background image
+    background: #222 image-url('dashboard/themes/oregon_coast.jpg') no-repeat center center fixed;
+    // Widget area transparency
+    div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .inner-widget-container{
+        color:#222;    
+    }
+}
+body.theme-starry-night{
+    #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
+    // Background image
+    background: #222 image-url('dashboard/themes/starry_night.jpg') no-repeat center center fixed;
+    // Widget area transparency
+    div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .inner-widget-container{
+        color:#222;    
+    }
+}
+body.theme-bokeh{
+    background: #FF7F50 image-url('dashboard/themes/bokeh.jpg') no-repeat center center fixed;
+    #dashboard-controls{background-color: rgba(220, 220, 220, 0.8);}
+    div.gridster li.gs-w{background-color: rgba(220, 170, 170, 0.7);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-sunset{
+    background: #332D4F image-url('dashboard/themes/sunset.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-mt-hood{
+    background: #332D4F image-url('dashboard/themes/oregon_mt_hood.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-glass{
+    background: #1E4353 image-url('dashboard/themes/blue_green_glass_eye.jpg') no-repeat center center fixed;
+    #dashboard-controls{background-color: rgba(140, 210, 140, 0.8);}
+    div.gridster li.gs-w{background-color: rgba(140, 210, 140, 0.7);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-blue-sky{
+    background: #1E4353 image-url('dashboard/themes/blue_sky.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-blue-swirl{
+    background: #1E4353 image-url('dashboard/themes/blue_swirl.jpg') no-repeat center center fixed;
+    // Widget area transparency
+    div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.8);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-grid{
+    background: #1E4353 image-url('dashboard/themes/grid.jpg') no-repeat center center fixed;
+    #dashboard-controls{background-color: rgba(240, 240, 240, 0.8);}
+    div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.8);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-fog{
+    background: #1E4353 image-url('dashboard/themes/fog.jpg') no-repeat center center fixed;
+    #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
+    div li.gs-w {background-color: rgba(130, 120, 190, 0.3);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+body.theme-black{
+    background: #000;    
+}
+.radio-select{
+    a:hover,li:hover{background-color:#dfdfdf;}
+    li{ white-space:nowrap;
+        input{display:none;}
+        i{visibility:hidden;}
+        &.selected i{visibility:visible;}}
+    label{font-weight:normal;
+        margin:0px;
+        width:100%;
+        &.selected:before{
+            content: "\f00c";}
+    }
+}
+
+.dashboard-container-outer{margin-top:20px;}
+.dashboard-container{
+    background-size:900px !important;
+    min-height:500px;
+    ul.dropdown-menu > li > a{
+        /* Offset links in widget-controls*/
+        margin-left:15px;
+        &:hover{background-color: #dfdfdf;}
+    }
+}
+.inner-widget-container .widget-controls{
+    .navbar-collapse.collapse {
+        display: block!important;
+    }
+    
+    .navbar-nav>li, .navbar-nav {
+        float: left !important;
+    }
+     
+    .navbar-nav.navbar-right:last-child {
+        margin-right: -15px !important;
+    }
+    
+    .navbar-right {
+        float: right!important;
+    }    
+}
+
+.widget-resize-hook{
+    -ms-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+#dashboard-controls{
+    margin-top:-5px;
+    background-color: rgba(220, 220, 220, 0.9);
+    button:hover{color:maroon;}
+}
+
+/* pointer icon on hover */
+.widget-content:hover{
+    cursor: pointer;
+    cursor: hand;
+}
+#dashboard-navbar-collapse > ul:nth-child(1) > li{
+    cursor: pointer;
+    cursor: hand;
+}
+
+div.gridster{
+    margin-top:20px;
+    li.gs-w{
+        border-radius: 4px;
+        border: 1px solid transparent;
+        background-color: rgba(220, 220, 220, 0.6);
+        &:hover{border:1px solid #ccc;}
+        &.gs-w-no-resize{
+            .gs-resize-handle{
+                display: none;
+            }
+        }
+    }  
+    ul{list-style-type: none;}
+    .navbar{
+        .container-fluid{padding-left:7px;}
+        min-height:35px;
+        max-height:35px;
+        a{padding:5px;}
+    }
+    .navbar-nav.navbar-right:last-child, .navbar-right {
+        margin-right: -7px;    
+    }
+}
+
+body#dashboard{
+    .chart-visualization-container-outer{
+
+        /* Keep widget inside of content area */
+        margin:0 1em;
+        /* Keep widget contents from interfering with widget control buttons*/
+        width:150px;
+        height:150px;
+        .chart-visualization{height:100%;}
+        .role-chart-vis{
+            height: 50px;
+        }
+    }
+
+    #modal_blank{
+        // Offset bottom of chart so that it wont cover close button in modal
+        .highcharts-container{margin-bottom: 240px;}
+    }
+}
+
+
+/* CSS toggles for default visible widget element */
+.view-widget-show{
+    .widget-show{visibility:visible;}
+    .widget-config{visibility:hidden;}
+    .widget-index{visibility:hidden;}
+}
+.view-widget-config{
+    .widget-config{visibility:visible;}
+    .widget-show{visibility:hidden;}
+    .widget-index{visibility:hidden;}
+}
+.view-widget-index{
+    .widget-index{visibility:visible;}
+    .widget-config{visibility:hidden;}
+    .widget-show{visibility:hidden;}
+}
+
+.inner-widget-container .widget-title-container{
+    span, input{ display:none; }
+    display: inline-block;
+}
+
+.widget-title-container {
+    p{
+        margin-left: 6px;
+        margin-top: 6px;
+    }
+    width:80%;
+}
+
+
+#modal_blank{
+    .widget-title-container {
+        input{width:95%;}
+        p{display:none;}
+    }
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

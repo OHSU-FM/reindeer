@@ -1,0 +1,3 @@
+<% pquestion_u = @lime_survey_unfiltered.find_question :qid, pquestion.qid %>
+<%= render :partial=>'ls_reports/filter/type_mult_question', :locals=>{:pquestion=>pquestion, :pquestion_u=>pquestion_u} %>
+

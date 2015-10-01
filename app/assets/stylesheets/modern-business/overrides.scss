@@ -1,0 +1,48 @@
+/* Allow spans in the nav header */
+.navbar .nav > li > span{padding:10px 15px 10px;}
+
+/* Left hand side site links */
+#site-links{
+    a.dropdown-toggle{
+        padding:1em;    
+    }
+    > a{
+        display:inline;
+        background-color:transparent;
+        padding:0px;
+        .caret{
+            vertical-align:middle;
+        }
+    }
+
+    ul.dropdown-menu{
+        background-color: rgba(255,255,255,0.9);
+        /* Styling for individual dropdown links*/
+        a{
+            padding: 0px;
+            line-height:60px;
+            text-align:center;
+            font-size:2em;
+        }
+    }
+}
+
+/* get button icons to align and space from text */
+i[class*="icon"] {
+    margin-right:5px;
+    line-height: 1;
+}
+
+/* override background color of disabled elements that are waiting for a response */
+.data-wait, .data-wait[disabled]{
+    background-color: #fff;    
+}
+
+@media print {
+
+    /* Prevent Bootstrap from showing link URL when we print */
+    a[href]:after {
+        content: none;
+    }
+  
+}

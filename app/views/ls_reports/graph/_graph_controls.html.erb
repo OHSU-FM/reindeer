@@ -1,0 +1,17 @@
+<div class="role-chart-container" > 
+    <label for="dropdown<%= question.qid %>" >Graph Type:</label>
+    <select class="role-chart-options" id="dropdown<%= question.qid %>" >
+
+        <option  value="column">Column</option>
+        <option  value="bar">Bar</option>
+        <option  value="line">Line</option>
+        <option  value="spider">Spider</option>
+        <option  value="scatter">Scatter</option>
+        <option  value="spline">Spline</option>
+    </select>
+
+    <div class="pull-right">
+        <%= render :partial=>'ls_reports/shared/add_to_dashboard', :locals=>{:question=>question, :graph_type=>:column} %>
+    </div>
+</div>
+

@@ -1,0 +1,35 @@
+<!-- Data Table -->
+<%
+%>
+<div><class="btn btn-xs btn-primary"></div>
+<table style="width: 100%;" class="table table-condensed table-striped ls_report_filter_table report spreadsheet">
+    <thead>
+        <tr>
+            <% @response_sets.each do |rs| %>
+                <% pquestion = rs.question %>
+                <th>
+                    <span data-toggle="tooltip" data-container="body" title="<%= strip_tags(pquestion.question) %>">
+                        <%= strip_tags(pquestion.question)[0..30] %>
+                    </span>
+
+                    <small>(<%= pquestion.title%>):
+                        <span data-toggle="tooltip" data-container="body" data-tiptype="qdesc" data-qtype="<%= pquestion.qtype %>"><%= pquestion.qtype %></span>
+                    </small>
+                </th>
+            <% end %>
+        </tr>
+    </thead> 
+    <tbody>
+        <% @rs_data.each_with_index do |x, xi| %>
+             <tr>
+               <% x.each_with_index do |y, yi| %>
+                  <td> <%= y %> </td>
+               <% end %>
+             </tr>
+        <% end %>
+    </tbody>
+</table>
+<div style="height:450px;width:200px;"></div>
+<!-- Bumper for scroll-spy-->
+
+

@@ -1,0 +1,56 @@
+@import 'bootstrap-callouts';
+
+#edit_user #user_p4_program_id_field .controls .create{display:none;}
+    a.admin-link{
+        color: #A00000 !important;
+    }
+
+.nav > li > a, .nav > li{
+    display: inline-block;
+}
+ul.nav-stacked li{
+    float:left;
+    clear:both;
+}
+
+.label-important{
+      background-color: #d9534f;
+}
+.label-important[href]:hover, .label-important[href]:focus {
+        background-color: #c9302c;
+}
+
+body.rails_admin{
+    font-size: 14px;
+    .sidebar-nav{
+        font-size: 14px;
+    }
+    .sidebar-nav{
+        background-color: #f8f8f8;
+        .nav-stacked li{
+            min-width: 90px;
+            a {
+                padding: 0px 20px;
+            }
+        }
+
+    }
+    .dropdown-header{
+        font-weight:bold;
+        padding: 3px 7px;
+    }
+    /* label from nearby field overlaps the trash icon */
+    a.remove_nested_fields{
+        span.btn-danger{
+            position:relative;
+            z-index:10;
+        }
+    }
+
+    #new_permission_group{
+        #permission_group_permission_ls_groups_attributes_field{
+            display:none;
+        }
+    }
+
+}

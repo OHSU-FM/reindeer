@@ -1,0 +1,71 @@
+<div class="pull-right">
+    <%= render :partial=>'ls_reports/filter/form_controls', :locals=>{:question=>stats.question, :question_u=>stats_u.question}%>
+</div>
+
+<% cache(['categorical_stats', stats, stats_u]) do %>
+<div>
+    <table class="wide table table-striped widget-resize-hook">
+        <thead>
+            <tr>
+                <th colspan="2"><h5><%= title if defined? title %></h5></th>
+                <th colspan="3"><%= @fm.filters_equal ? 'All' : 'This' %> <%= @filtered_label %></th>
+                <th colspan="3">All <%= @unfiltered_label %></th>
+            </tr>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+                <th>Response Count</th>
+                <th>Percent</th>
+                <th></th>
+                <th>Response Count</th>
+                <th>Percent</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+                count_total = 0
+                count_total_u = 0
+                percent_total = 0
+                percent_total_u = 0
+            %>
+
+            <% stats_u.categorical_stats.each do |cat_u| %> 
+                <% 
+                    cat = stats.find_category_pair cat_u
+                    next if cat_u.is_err && cat.frequency == 0 && cat_u.frequency == 0
+                    count_total += cat.frequency
+                    count_total_u += cat_u.frequency
+                    percent_total += cat.percent
+                    percent_total_u += cat_u.percent
+                %>
+
+            <tr>
+                <td><%= cat_u.code %></td>
+                <td><%= cat_u.answer.to_s.html_safe %></td>
+                <td><%= cat.frequency %></td>
+                <td><%= cat.percent.round(2) %>%</td>
+                <td>
+                    <%= tag :div, 'data-chart-data'=>cat.to_json, :class=>'ls-chart' %>
+                </td>
+                <td><%= cat_u.frequency %></td>
+                <td><%= cat_u.percent.round(2) %>%</td>
+                <td>
+                    <%= tag :div, 'data-chart-data'=>cat_u.to_json, :class=>'ls-chart' %>
+                </td>
+            </tr>
+        <% end %>
+            <tr class="totals-row">
+                <td>Totals:</td>
+                <td></td>
+                <td><%= count_total     %></td>
+                <td><%= percent_total.round(2)   %>%</td>
+                <td></td>
+                <td><%= count_total_u   %></td>
+                <td><%= percent_total_u.round(2) %>%</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<% end %>

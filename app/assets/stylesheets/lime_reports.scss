@@ -1,0 +1,27 @@
+/* Place all the styles related to the reports controller here.
+/* They will automatically be included in application.css.
+/* You can use Sass (SCSS) here: http://sass-lang.com/
+/*= require style
+*/
+
+table{line-height:normal;}
+
+table.report{
+    a{color:#333333;}
+}
+#header{padding-top:10px;}
+body#lime_groups{
+    /* minor padding for most of content (on sides) */
+    #form{padding: 0px 5px;}
+
+    table.report{
+        font-size: 9pt;
+        padding:4px;
+        /* Prevent bunching in the header */
+        th{
+            padding: 10px;
+        }
+    }
+    .parent-question{color:black;}
+    .sub-question{color:blue;}
+}

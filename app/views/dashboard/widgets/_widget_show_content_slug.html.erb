@@ -1,0 +1,10 @@
+<div class="widget-show">
+    <%= f.object.widget.content %>
+</div>
+
+<div class="widget-edit">
+    <%= f.fields_for :widget do |widget| %>
+        <%= f.text_area :content %>
+    <% end %>
+</div>
+

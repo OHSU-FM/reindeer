@@ -1,0 +1,40 @@
+<li class="gs-w gs-w-no-resize" style="padding:0 20px;"
+        data-col="1" data-row="1" 
+        data-sizey="2" data-min-sizey="2" data-max-sizey="2" 
+        data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
+    <div class="widget-resize-hook widget-content">
+        <div class="chart-visualization bs-callout bs-callout-danger" role="alert">
+            
+
+            <h4 id="oh-snap!-there-are-no-reports!">
+                <i class="fa fa-exclamation-triangle"></i>
+                Oh snap!
+                A permission issue is preventing you from seeing this widget.
+
+                <a class="anchorjs-link" href="oh-snap!-there-are-no-reports!">
+                <span class="anchorjs-icon"></span></a>
+            </h4>
+            <p>
+                This can happen for several reasons:
+            </p>
+            <ul style="list-style-type:circle;">
+                <li>
+                    It is possible that we have not yet finished configuring your account.
+                </li>
+                <li>
+                    It could be that something unexpected happened or that your reports are temporarily out of service while we are making changes to the system.
+                </li>
+                <li>
+                    It is possible that we have a bug in our system. Depending on the type of bug, we may already be working on the issue.
+                </li>
+            </ul>
+            <br/>
+            <p>
+                Please send us an <%= mail_to Settings.admin.email, 'email' %> if the problem continues.
+            </p>
+                
+        </div>
+
+    </div>
+</li>
+

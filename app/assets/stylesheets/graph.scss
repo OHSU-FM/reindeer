@@ -1,0 +1,114 @@
+/* Place all the styles related to the reports controller here.
+/* They will automatically be included in application.css.
+/* You can use Sass (SCSS) here: http://sass-lang.com/
+/*= require style
+*/
+
+table{line-height:normal;}
+
+table.report{
+    a{color:#333333;}
+}
+#header{padding-top:10px;}
+body#role_aggregates{
+    .lime_response li{margin:10px;}
+    .sub-question > li{margin:10px 0px;}
+    /* minor padding for most of content (on sides) */
+    #form{padding: 0px 5px;}
+
+    table{
+        font-size: 10pt;
+        padding:4px;
+        /* Prevent bunching in the header */
+        th{
+            padding: 10px;
+        }
+        th:first-child, td:first-child{text-align:right;}
+
+    }
+    .parent-question{color:black;}
+    .sub-question{color:black}
+    .answer tr { line-height: 2px; }
+    .centered-data {
+          text-align: center;
+    }
+    .question { color: #0000FF; 
+                font: 18px arial, 
+                sans-serif; font-weight: bold; 
+    }
+    .nav { font-weight: normal; }
+
+    @media (min-width: 1150px){
+        #scroll-spy-nav{display:block;}
+    }
+    @media (max-width: 1149px){
+        #scroll-spy-nav{display:none;}
+    }
+
+    .scroll-spy-offset{padding-top:70px;}
+    #scroll-spy-nav{
+        font-size: 10pt;
+        /* scroll-spy-nav position before getting affixed to top of page */
+        /* How to display when visible */
+        & li.active li{display:block;}
+        
+        /* Hide sub li when parent not active */
+        /* Bold font in parent li when selected */
+        & > ul > li.active > a{font-weight:700;}
+    
+        & > ul > li{
+            /* level 1*/
+            & > a{
+                padding-left:18px;
+            }
+            &.active > a{
+                padding-left:16px;
+                border-left: 2px solid #563d7c;
+            }
+
+            & > ul > li{
+                & > a{
+                    padding-left:36px;
+                }
+                &.active > a{
+                    padding-left:34px;
+                    border-left: 2px solid #967dac;
+                }
+
+                & > ul > li{
+                    & > a{
+                        padding-left:54px;
+                    }
+                    &.active > a{
+                        padding-left:52px;
+                        border-left: 2px solid #c6bdbc; 
+                    }
+                }
+            }
+        }
+        li{
+            a{
+                color: #999;
+                text-decoration: none;
+                border-bottom: 0px;
+            }
+            color: #999;            // Unselected color
+            margin-bottom:5px;      // Space between lines
+            &.active{
+                & > a{              // Selected node style
+                    border-left: 2px solid #563d7c;
+                    color: #563d7c;
+                }
+            }
+        }
+        /* Position of scroll-spy-nav when affixed to top of page*/
+        &.affix{
+            position:fixed;
+            top: 67px;
+        }
+        /* Remove default bootstrap line spacing between nav elements */
+        .nav{margin-bottom:0px;}
+    }
+
+}
+

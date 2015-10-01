@@ -1,0 +1,27 @@
+    <div id="scroll-spy-nav" class="hidden-print affix-top" role="complementary" data-spy="affix" data-offset-top="0">
+        <ul class="nav">
+            <% role_aggregate.lime_survey.lime_groups.each do |lgroup| %>
+            <li>
+                <a href="#lime_group_<%= lgroup.gid %>"> <%= strip_tags(lgroup.group_name).html_safe %></a>
+                <ul class="nav">
+                    <% lgroup.parent_questions.each do |question| %>
+                    <li>
+                        <a href="#lime_question_<%= question.qid %>"> <%= strip_tags(question.question).html_safe %></a>
+                        <% if question.has_sq? %>
+                        <ul class="nav">
+                            <% question.sub_questions.each do |squestion| %>
+                            <li>
+                                <a href="#lime_question_<%= squestion.qid %>"> <%= strip_tags(squestion.question).html_safe %></a>
+                            </li>
+                            <% end%>
+                        </ul>
+                        <% end %>
+                    </li>
+                    <% end %>
+                </ul>
+            </li>
+            <% end %>
+        </ul>
+    </div>
+
+

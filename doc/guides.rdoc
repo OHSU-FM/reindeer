@@ -1,0 +1,117 @@
+*Date:* 2014-08-19
+
+*Author:* Bill Hatt
+
+Easily edit online at: http://github-preview.herokuapp.com/
+
+= Directions for adding new data sets to Edna Console
+
+== Part I. Exporting data and generating a test dataset
+
+====1.) Generate dataset CSV file
+* Database export of the data that we want to add to the PCOR site. For example:
+    COPY(SELECT * FROM v_export_data) TO STDOUT WITH CSV HEADER;
+
+* Copy the resultant csv file to ./db/data
+
+* This file is used by the `Makefile`. The first step is to generate the dataset that you would like to add to Edna.
+    
+* If this is a dataset that has already been created for previous years you should make sure that the new dataset has the same columns as the old datasets
+
+* It is not necessary to use the exact same column order as long as you import the data with the csv_to_sql.rb tool. The standard CSV import tool that comes with PSQL assumes that the columns are in order. But this has been fixed.
+        
+  * For example if you want to add 2009 grad survey and we already have 2008 grad survey dataset (in ./data) then you would create an sql statement that would output the same columned CSV file in ./data.
+
+====2.) Generate dataset metadata CSV file
+* This file is used by the `Makefile`
+    
+* The dataset metadata file outlines the codebook for the dataset
+    
+* If this is just a new year of data and the questions are EXACTLY the same just copy an old metadata file and change the table name to a name for the new dataset.
+
+====3.) Modify Makefile and add new paths
+    -   The 'Makefile' contains the build instructions for adding the new dataset to the website
+    
+    -   It contains path information for each CSV data/metadata file
+    
+    -   Add the new paths of your data/metadata files to the 'data' section of the Makefile
+
+    -   It also specifies the DB that will be used to store new information when `make` is run
+      you can change this database to dump the contents somewhere else
+
+====4.) Generate new migration for dataset
+    -   Create a migration file for the new dataset (located in db/migrations/100-198--***)
+    
+    -   If this is just a new year of data with EXACTLY the same columns as collected in previous years
+      just copy the create and comments section for your tables previous year into a text file, change 
+      the names to a new year and copy the result back to your new migration file.
+
+    --  If it is not a new year you will need to create a new table definition and meta data for that table.
+        See other migrations in db/migrations for details and examples. 
+
+==Part II - Changes to the PCOR website
+In order for the new data to be accessible there are a few small changes that need to be made to the site.
+
+====Affected Files:
+    # Various constants need to be updated to include the new dataset
+    ./app/controllers
+        ./reports_controller.rb
+        ./stats_controller.rb
+    
+    # Add a PDF of the new instrument here
+    ./public
+        ./instruments/
+
+    # Various constants need to be updated to include the new dataset
+    ./app/helpers
+        ./reports_helper.rb
+        ./stats_helper.rb
+
+    # Create a new table here (in xxxx file), and modify other files to know about new dataset
+    ./db/data-migrations
+        ./xxxx_create_yx_responses.sql
+        ./7999_load_seed_data.sh
+        ./9900_validate_resident_responses.rb
+        ./9901_validate_graduate_responses.rb
+        ./9999_gen_statistics.sql
+
+    # Review to make sure nothing needs to change
+    ./app/views
+        ./reports
+            ./show.html.erb      
+
+====1.) Add table name to rails_pcor/app/controller/report_controller.rb:
+* Inside of the report controller index function there is a dictionary object that lists the various tables that can be selected. Add an appropriate key/val pair for your new dataset. 
+* Also inside of this file is a variable @max_year, this needs to be incremented if it is a new year of data
+
+====2.) Add Survey to the Instruments directory:
+* It is expected/required that the instrument also be available for the collected data
+    
+* Add link to this new instrument in ./rails_pcor/app/controller/report_controller.erb
+
+* There is a bug/feature in:
+    ./app/views/report/show.html.erb
+    ./app/controllers/report_controller.rb
+
+* The function 'get_type_for_year' will block/hide the 'year over year' data from showing up if there isn't a file to download.
+
+==== 3.) Changes to stats helper:
+    -   Stats pages depend on get_stats helper
+    -   Need to add stuff to this helper.
+
+==Part III -    Rebuild the database:
+
+Run the following command in the rails root directory to rebuild the database.
+  $ make all
+
+* This will wipe and rebuild *only* the dataset portion of the website. All other things like the dashboards, users and charts tables should be left untouched.
+
+Restart Apache
+
+== FAQ:
+* Random crash on running statistics -  Newer versions of postgreSQL have removed automatic typecasting and script may need some tweaking.
+  * Issue was fixed by creating new transform.nullify(integer) function
+
+
+
+

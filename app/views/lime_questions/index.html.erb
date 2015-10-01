@@ -1,0 +1,20 @@
+<h1>LimmeQuestions#lime_questions_show</h1>
+
+		<h1>Listing questions</h1>
+
+		<table>
+		  <tr>
+		    <th>sid</th>
+		    <th>qid</th>
+		    <th>question<th>
+		  </tr>
+
+		  <% @lime_question.each do |limequestion| %>
+		    <tr>
+		      <td><%= limequestion.sid%></td>
+		      <td><%= limequestion.qid %></td>
+		      <td><%= limequestion.question %></td>
+		    </tr>
+		  <% end %>
+		</table>
+

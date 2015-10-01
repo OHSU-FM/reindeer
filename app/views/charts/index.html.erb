@@ -1,0 +1,47 @@
+
+<header>
+    <h2>
+        <i class="fa fa-bar-chart-o"></i>
+        Charts 
+    </h2>
+</header>
+
+<table class="table"><tbody class="zebra-striped">
+
+<thead>
+    <tr>
+        <th>Delete</th>
+        <th>Edit</th>
+        <th>View</th>
+        <th>Name</th>
+        <th>Created</th>
+    </tr>
+</thead>
+<tbody>
+<% @charts.each do |chart| %>
+    <tr>
+        <td>
+        <%= button_to chart_path(chart), :method=>:delete, :class=>'btn btn-danger', :data=>{:confirm=>'Are you sure?'} do %>
+            <i class="fa fa-trash-o"></i>
+        <% end %>
+        </td>
+        <td>
+        <%= link_to edit_chart_path(chart), :class=>'btn btn-primary' do %>
+            <i class="fa fa-pencil"></i>
+        <% end %>
+        </td>
+        <td>
+        <%= link_to chart_path(chart), :class=>'btn btn-primary' do %>
+            <i class="fa fa-eye"></i>
+        <% end %>
+        </td>
+        <td>
+        <%= link_to (chart.title.strip.empty? ? "Untitled" : chart.title), chart_path(chart)%>
+        </td>
+        <td><%= chart.created_at.to_date %>
+        </td>
+    </tr>
+<% end %>
+</tbody></table>
+<hr/>
+<%= link_to 'New Chart', new_chart_path, :class=>'btn btn-default' %>

@@ -1,0 +1,149 @@
+    #login-inner {
+      padding: 20pt;
+    }
+    #login-banner {
+        text-align: left;
+        width: 80%;
+        padding: 20pt 0 0 30pt;
+        img{
+            width: 100%;
+            max-width: 700px;
+        }
+    }
+    #login-banner img.left {
+      padding: 0 20px 0 0;
+    }
+    #login-banner h1 {
+      font-size: 14pt;
+      margin: 0.4em 0 0.2em 0;
+      padding: 0;
+    }
+    #login-banner h2 {
+      font-size: 12pt;
+      padding: 0;
+      margin: 0;
+    }
+    h1 {
+      padding: 12px 0 0 0;
+      font-size: 18pt;
+    }
+    /*
+    a:link, a:hover, a:active {
+      color: #273a4e;
+    }*/
+    body#data, body#reports{
+        #page_content {
+          font-family: 'Trebuchet MS', 'Verdana', 'Arial', 'Helvetica';
+          font-size: 9pt;
+        }
+    }
+    select {
+      border: solid 1px #ccc;
+      font-family: 'Verdana', 'Arial', 'Helvetica';
+      font-size: 1.1em;
+    }
+    img {
+      padding: 0 5pt 5pt 5pt;
+    }
+    table {
+      clear: both;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+    small {
+      font-size: 0.8em;
+    }
+    thead {
+      font-weight: bold;
+      font-size: 8pt;
+    }
+    thead td {
+      padding: 0.5em 0.75em 0.5em 0.75em;
+      border-top: solid 1px #ccc;
+      border-bottom: solid 1px #ccc;
+    }
+    td {
+      /*text-align: center;*/
+      padding: 0.5em;
+    }
+    td.left {
+      text-align: left;
+    }
+    td.right {
+      text-align: right;
+    }
+    .vertical-space {
+      padding-left: 4em;
+    }
+    td.number {
+      font-weight: bold;
+      color: #888;
+    }
+    td.nodata {
+      text-align: center;
+      padding: 2em 0;
+    }
+    tr.color {
+      background-color: #ecfff3;
+    }
+    
+    body#data, body#reports{
+        form a {
+            border-bottom: solid 1px #ccc;
+        } 
+    }
+    .arrow {
+      padding-top: 1.35em;
+    }
+    a, .arrow {
+      cursor: pointer;
+    }
+    .detail {
+      padding: 1em 3em 1em 3em;
+    }
+    .right {
+      float: right;
+    }
+    .left {
+      float: left;
+    }
+    .pad-right {
+      padding-right: 15pt;
+    }
+    .percent-bar {
+      margin: 0.25em 0;
+      padding: 0;
+      font-size: 0.85em;
+      color: #fff;
+      float: left;
+      overflow: hidden;
+    }
+    .light {
+      color: #777;
+    }
+    .small {
+      font-size: 0.9em;
+    }
+
+    .arrow .toggle-img{
+      height: 25px;
+      width: 25px;     
+    }
+    .arrow-open{
+      background-image: image-url('arrow-open.png');
+      background-repeat: no-repeat; 
+    }
+    .arrow-closed{
+      background-image: image-url('arrow-closed.png');
+      background-repeat: no-repeat; 
+    }
+
+   .report thead{
+    background-color: #FFF;   
+    }
+
+    span.link{
+        text-decoration:underline;
+        &:hover{cursor: pointer; cursor: hand;}
+    }
+

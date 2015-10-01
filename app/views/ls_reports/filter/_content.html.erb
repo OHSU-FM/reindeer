@@ -1,0 +1,64 @@
+
+<h3>Response Details:</h3>
+<!-- Data Table -->
+<table style="width: 100%;" class="table table-condensed table-striped ls_report_filter_table report">
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+      <th colspan="6">This <%= @role_aggregate.get_pk_label %></th>
+      <th colspan="6">All <%= @role_aggregate.get_pk_label.pluralize %></th>
+    </tr>
+    <tr class="attribute">
+        <th colspan="3">
+        </th>
+        <th>Unique <%= @role_aggregate.get_pk_label.pluralize %></th>
+        <th>Response Count</th>
+        <th>Percentage Responding</th>
+        <th>Mean</th>
+        <th>95% Confidence Interval</th>
+        <th class="vertical-space">Unique <%= @role_aggregate.get_pk_label.pluralize %></th>
+        <th>Response Count</th>
+        <th>Percentage Responding</th>
+        <th>Mean</th>
+        <th>95% Confidence Interval</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% gcounter = 0 %>
+  <% qcounter = 0 %>
+  <% @virtual_groups.each do |group| %>
+    <% if qcounter != 0 %>
+        <tr>
+            <td colspan="14">
+                <div style="height:50px;width:200px;"></div>
+            </td>
+        </tr>
+    <% end %>
+    <tr id="gid<%= group.gid%>">
+        <td colspan="11">
+            <h4><%= group.group_name %></h4>
+        </td>
+        <td colspan="2"></td>
+    </tr>
+    <% if gcounter <= 100000 %>
+        <%= render :partial=>'ls_reports/filter/lime_group_rows', :locals=>{:group=>group, :qcounter=>qcounter}%>
+    <% else %>
+        <tr id="blank-gid<%= group.gid %>" class="blank-gid partial-container"> 
+            <td colspan="14">
+                <div style="margin: 0 auto;text-align:center;">
+                    <% Rails.logger.info [@agg, @sid, @pk].inspect %>
+                    <%= link_to image_tag('spinner-mini.gif'),
+                        part_of_ls_report_path(:view_type=>:filter, :sid=>@sid, :gid=>group.gid, :agg=>@agg, :pk=>@pk),
+                        :data=>{:order=>gcounter}, :class=>'partial-url' %> 
+                </div>
+            </td>
+        </tr>
+    <% end %>
+    <% gcounter += 1 %>
+    <% qcounter += group.parent_questions.count %>
+  <% end %>
+  </tbody>
+</table>
+
+<div style="height:450px;width:200px;"></div>
+<!-- Bumper for scroll-spy-->

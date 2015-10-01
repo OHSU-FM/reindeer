@@ -1,0 +1,32 @@
+#assignments-overview{
+    li{
+        span{
+            font-size: 0.6em;
+            color: #555;
+        }
+        h5{
+            border-bottom: 1px solid #ddd;
+        }
+    }
+}
+
+dl.dl-horizontal{
+    dt{margin-bottom:32px;}
+}
+
+iframe.ua-iframe-link{
+    width: 100%;
+    min-height: 500px;
+    max-height: 800px;
+    border: none;
+}
+a.ua-iframe-link{
+    margin-left: 2em;
+}
+
+#users .panel-group.panel-ua-group .panel{
+    .panel-heading{
+        background-color: #fff;
+    }
+    border: none;
+}

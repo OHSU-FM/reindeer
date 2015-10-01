@@ -1,0 +1,12 @@
+    <td><%= stats.pk_count %></td>
+    <td><%= stats.response_count %></td>
+    <td class="vertical-space">
+        <a href="#" type="button" role="button" data-chart-data="<%= stats.to_json%>"><%= stats.response_rate.round(2) %>%</a>
+    </td>
+    <% if dstats && stats.response_count > 1 %>
+    <td><%= dstats.mean.round(2) %></td>
+    <td><%= dstats.confidence_interval.map{|val|val.round(2)} %></td>
+    <% else %>
+    <td colspan="2"></td>
+    <% end%>
+

@@ -1,0 +1,8 @@
+/* Fix broken style on a dropdown link for navbar */
+#nav-links > ul > li > div.open > a.btn-danger, #nav-links > ul > li > div > a.btn-danger {
+    @extend .btn-danger
+}
+
+
+
+

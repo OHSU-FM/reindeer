@@ -1,0 +1,103 @@
+<h1>LimeGroups#lime_groups_show</h1>
+<p>Find me in app/views/lime_groups/lime_groups_show.html.erb</p>
+<p>Week 1 Evaluation</p>
+<h1>Survey questions for <%= @lime_group.group_name %></h1>
+ 
+<table class="table table-striped">
+ <thead>
+  <tr>
+    <th>gid</th>
+    <th>sid</th>
+    <th>group name<th>
+  </tr>
+ 
+  <tr>
+     <th><%= @lime_group.gid %></th>
+     <th><%= @lime_group.sid %></th>
+     <th><%= @lime_group.group_name %></th>
+  </tr>
+
+  <tr>
+    <th>qid</th>
+    <th>parent_qid</th>
+    <th>title</th>
+    <th>question</th>
+    <th>question_order</th>
+  </tr>
+</thead>
+<tbody>
+<% @lime_group.t_questions.each do |question|%>
+
+    <tr>
+	<td>
+       ===================== 
+	</td>
+    </tr>
+     <tr class="<%= (question.parent_qid.to_i == 0) ? 'parent-question' : 'sub-question' %>">
+     <td colspan="10">
+	<b>QUESTION</b>
+	<table><tbody>
+		<tr>
+        	<td><%= question.qid %></td>
+        	<td><%= question.parent_qid %></td>
+        	<td><%= question.title %></td>
+        	<td><%= question.question %></td>
+        	<td><%= question.question_order %></td>
+		</tr>
+
+		<tr>
+		  <td colspan="10">
+	              Answers	
+        		<table><tbody>
+        		  <%= question.answers.each do |ans| %>
+        		     <tr>
+        		         <td>ans:<%= ans.answer %></td>
+        		         <td>code:<%= ans.code %></td>
+        		         <td>count: <%= ans.count_in_dataset(question) %></td>
+        		         <td>col_name: <%= ans.my_column_name(question) %></td>
+                                 <td>total: <%= ans.total_in_dataset %></td>
+                                 <td>perc: <%= ans.perc_in_dataset(question) %></td>
+ 
+        		     </tr>
+        		  <% end %>
+       		   </tbody></table>
+		    Text Answers<br/>
+			<% question.text_answers.each do |text_ans| %>
+				<% next if text_ans.to_s == "" %>
+                                comments-->  				
+				<%= text_ans %>
+				<br/>
+			<% end %>	
+		  </td>
+		</tr>
+	</tbody></table>
+     </td>
+     </tr>
+    
+  <% end %>
+
+    <tr>
+	<td>
+       ===================== <%= @lime_group.role_aggregates[0].user.email %> 
+	</td>
+    </tr>
+    <tr>
+        <td>
+                        <table><tbody>
+                          <%= @lime_group.role_aggregates.each do |role| %>
+                             <tr>
+                                 <td>pk_fieldname : <%= role.pk_fieldname %></td>
+                                 <td>user_id        : <%= role.user_id %></td>
+                                 <td>lime_survey_id : <%= role.lime_survey_sid %></td>
+                                 <td>agg_fieldname  : <%= role.agg_fieldname %></td>
+                             </tr>
+                          <% end %>
+                         </tbody></table>
+
+        </td>
+    </tr>
+
+
+
+</tbody>
+</table>

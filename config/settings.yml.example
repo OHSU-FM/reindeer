@@ -1,0 +1,40 @@
+defaults: &defaults
+    secret_token: nil
+    lime_url: nil
+    admin:
+        email: name@example.com
+        name: Some Admin
+    site:
+        name: Some Site
+        name_html: Test
+        logo: none
+        titles: 
+           user_assignment: Assignment
+    devise:
+        secret_key: 'somesuperlongsecretkeyhere'
+        timeout_in: 60
+    ldap:
+        host: localhost
+        port: 3389
+        attribute: cn
+        base: ou=people,dc=test,dc=com
+        admin_user: cn=admin,dc=test,dc=com
+        admin_password: admin_password
+        ssl: simple_tls
+    exception_notification:
+        disabled: true
+        exception_recipients: ['name@example.com']
+        sender_address: '"Exception Notification" <noreply@example.com>'
+
+production:
+    <<: *defaults
+
+test:
+    <<: *defaults
+
+development:
+    <<: *defaults
+
+profile:
+    <<: *defaults
+

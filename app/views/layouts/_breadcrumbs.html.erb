@@ -1,0 +1,9 @@
+    <h1 class="page-header"><%= content_for?(:page_title) ? yield(:page_title) : controller_name.titleize %>
+        <small><%= content_for?(:page_subtitle) ? yield(:page_subtitle) : '' %></small>
+    </h1>
+    <ol class="breadcrumb" style="display:none;">
+        <li><%= link_to "Home", root_path %>
+        </li>
+        <li class="active"><%= defined?(@page_name) ? @page_name : controller_name %></li>
+    </ol>
+

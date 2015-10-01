@@ -1,0 +1,52 @@
+<div class="pull-right">
+    <%= render :partial=>'ls_reports/filter/form_controls', :locals=>{:question=>question, :question_u=>question_u}%>
+</div>
+<% cache(['mult_numeric', question.stats.categorical_stats, question_u.stats.categorical_stats]) do %>
+    <%= content_tag :div, :class=>'ls-chart', :data=>{'chart-data'=>{:qtype=>question.qtype}} do %>
+        <table class="wide table table-striped widget-resize-hook auto-data-table" style="width:100%;">
+            <thead>
+                <tr>
+                    <th colspan="1"></th>
+                    <th colspan="4">This <%= @role_aggregate.get_pk_label %></th>
+                    <th colspan="4">All <%= @role_aggregate.get_pk_label.pluralize %></th>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <th>Response Count</th>
+                    <th>Mean</th>
+                    <th>Std Dev.</th>
+                    <th>
+                        <sup data-toggle="tooltip" title="Calculated using sample standard deviation.">*</sup>
+                        95% Confidence Interval
+                    </th>
+                    <th>Response Count</th>
+                    <th>Mean</th>
+                    <th>Std Dev.</th>
+                    <th>
+                        <sup data-toggle="tooltip" title="Calculated using sample standard deviation.">*</sup>
+                        95% Confidence Interval
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% question_u.stats.sub_stats.each do |stat_u| %> 
+                    <% stat = question.stats.sub_stats.find{|st|st.qid == stat_u.qid} %>
+                    <% ds_u, ds = stat_u.descriptive_stats, stat.descriptive_stats %>
+                    <% next unless ds && ds_u %>
+                    <tr>
+                        <td><%= stat.question.question %></td>
+                        <td><%= stat.response_count %></td>
+                        <td><%= ds.mean.nil? ? 'Empty' : ds.mean.round(2) %></td>
+                        <td><%= ds.standard_deviation.nil? ? 'Empty' : ds.standard_deviation.round(2) %></td>
+                        <td><%= ds.confidence_interval.nil? ? 'Empty' : ds.confidence_interval.map{|v|v.round(2)} %></td>
+                        <td><%= stat_u.response_count %></td>
+                        <td><%= ds_u.mean.nil? ? 'Empty' : ds_u.mean.round(2) %></td>
+                        <td><%= ds_u.standard_deviation.nil? ? 'Empty' : ds_u.standard_deviation.round(2) %></td>
+                        <td><%= ds_u.confidence_interval.nil? ? 'Empty' : ds_u.confidence_interval.map{|v|v.round(2)} %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <% end %>
+<% end %>

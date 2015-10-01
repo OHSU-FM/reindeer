@@ -1,0 +1,99 @@
+@import 'bootstrap'; 
+@import 'pivottable/pivot';
+
+/* Make sure pivot labels dont stick together */
+.label{margin:3px;}
+.question-info{
+    margin-bottom: 15px;
+    .question-details{
+        background-color: #ddd;
+        padding: 10px;
+        min-height: 3em;
+    }
+}
+.highlight{
+    background-color:#ACDCBA;
+}
+header{
+    [class^="icon-"]{margin-right:1em;line-height:normal;}    
+}
+
+.widget-with-header{
+    margin-bottom: 20px;
+    h5{background-color:#ddd;margin:0px 0px 10px 0px;}
+}
+
+/* fix Google chart modal dialog box*/
+/* Removed because it broke other parts of the site
+.modal-dialog, .google-visualization-charteditor-dialog{
+    width:auto;
+    *, *:before, *:after{
+        box-sizing:content-box;
+    }
+}*/
+
+/* Google visualization css is messing up our bootstrap modal dialog box
+    - Here is a shim to repair the display of it 
+*/
+body#charts > .modal{
+    .modal-dialog{
+        margin:30px auto;
+        position:relative;
+        background:transparent;
+        border:none;
+        box-shadow:none;
+    }
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input { height: auto;}
+.col-lg-12{position:static;overflow:visible;}
+
+
+.add_fields{display:inline-block;}
+.add_fields_disabled{display:none;}
+.disable_add_fields{
+    .add_fields{display:none;}
+    .add_fields_disabled{display:inline-block;}
+}
+
+.hide-on-dirty{display:inline-block;}
+.show-on-dirty{display:none;}
+.dirty{
+    .hide-on-dirty{display:none;}
+    .show-on-dirty{display:inline-block;}
+}
+
+/* Additional styling for the Pivot Table Select Boxes */
+.pvtRenderer, .pvtAggregator{
+    @extend .form-control;
+    width: 150px;
+    margin: 5px auto 10px auto;
+}
+.hide-chart-ui{
+    .pvtAxisContainer, .pvtVals, select.pvtRenderer{display:none;}
+}
+
+// Mark filtered fields axis fields as being filtered
+li[class$="pvtFilteredAttribute"]{
+    span, span.pvtAttr{background-color:pink;}
+}
+
+.chart-visualization > table:first-child{
+    transform-origin:left top 0px;
+}

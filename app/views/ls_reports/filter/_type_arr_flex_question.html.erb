@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            <% question.stats.sub_stats.first.categorical_stats.each do |cs| %>
+            <th>
+                <%= cs.answer.to_s.html_safe %> <small style="color:#aaa;">(<%= cs.code %>)</small>
+            </th>
+            <% end %>
+        </tr>
+    </thead>
+    <tbody>
+        <% question.stats.sub_stats.each do |stats| %> 
+            <% stats_u = question_u.stats.sub_stats.find{|st|st.qid == stats.qid} %>
+            <tr>
+                <td rowspan="2"> <%= stats.question.question.html_safe %> </td>
+                <td>Filtered</td>
+                <% stats.categorical_stats.each do |cat| %> 
+                    <td><%= cat.percent.round(2) %>%</td>
+                <% end %>
+            </tr>
+            <tr>
+                <td>UnFiltered</td>
+                <% stats_u.categorical_stats.each do |cat| %> 
+                    <td><%= cat.percent.round(2) %>%</td>
+                <% end %>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+

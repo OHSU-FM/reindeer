@@ -1,0 +1,9 @@
+<br/>
+<ul class="nav nav-pills nav-stacked">
+    <%= nav_link_to 'General', settings_path %>
+    <%= nav_link_to 'Sync Triggers', settings_sync_triggers_path %>
+    <%= nav_link_to 'Permission Groups', permissions_groups_settings_path %>
+    <%= nav_link_to 'Users', users_settings_path %>
+    <%= nav_link_to Settings.site.titles.user_assignment, assignments_settings_path %>
+    <%= nav_link_to 'Survey Settings', surveys_settings_path %>
+</ul>

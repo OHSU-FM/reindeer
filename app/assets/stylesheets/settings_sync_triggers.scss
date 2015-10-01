@@ -1,0 +1,14 @@
+#sync-triggers-list{
+    .btn{
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+}
+form#new_lime_ext_sync_trigger{
+    select{
+        max-width: 150px;
+    }
+    dl > dd > table > thead > tr > th{
+        padding: 0 8px 0 8px;
+    }
+}

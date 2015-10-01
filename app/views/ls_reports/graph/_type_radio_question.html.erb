@@ -1,0 +1,3 @@
+<% pquestion_u = @lime_survey_unfiltered.find_question :qid, pquestion.qid %>
+<%= render :partial=>'ls_reports/graph/categorical_stats', :locals=>{:stats_u=>pquestion_u.stats, :stats=>pquestion.stats}%>
+

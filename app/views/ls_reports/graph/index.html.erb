@@ -1,0 +1,27 @@
+<div class="col-md-8">
+
+  <h1>Datasets</h1>
+  <table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Survey Title</th>
+      <th>Records</th>
+      <th>Response Rate</th>
+      <th>Access</th>
+      <th>Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @role_aggregates.sort.each do |role| %>
+    <tr>
+        <td><%= link_to role.lime_survey.lime_surveys_languagesettings.first.surveyls_title, role_aggregate_path(role), :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+        <td><small><%= role.valid_response_count %></small> / <%= role.dataset.count %></td>
+        <td><%= role.response_rate %></td>
+        <td><%= can?(:unfiltered_read, role) ? 'No Filter' : 'Filtered' %></td>
+        <td><%= role.last_updated.last %></td>
+    </tr>
+    <% end %>
+  </tbody>
+  </table>
+</div>
+<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-dataset', :message=>'Loading Dataset'}%>
