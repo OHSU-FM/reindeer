@@ -1,5 +1,9 @@
 # Project Reindeer 
 
+## Status
+
+[![Code Climate](https://codeclimate.com/github/OHSU-FM/reindeer/badges/gpa.svg)](https://codeclimate.com/github/OHSU-FM/reindeer)
+
 ## About
 
 *Pre-Alpha Release*
