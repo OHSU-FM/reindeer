@@ -34,22 +34,17 @@ TODO
  ```
 
 3. Clone this repository 
+```bash
+git clone https://github.com/OHSU-FM/reindeer.git
+```
 
-4. This guide is not complete
+4. Install LimeSurvey
+
+5. Initialize reindeer
+
+6. This guide is not yet complete.
+
  
 
-
-#### Option  II
-
-1. Download source code
-TODO: Link
-
-2. Install Vagrant
- - [https://www.vagrantup.com/downloads.html](https://www.vagrantup.com/downloads.html)
-
-3. Install Virtualbox
- - [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
-
-4. Download source code and run Vagrant script (does not exist)
 
 
