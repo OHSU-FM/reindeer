@@ -135,4 +135,5 @@ group :development do
     # Interactive debugging from the web
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]
     gem 'redcarpet'
+    gem "twitter-bootstrap-rails"
 end
