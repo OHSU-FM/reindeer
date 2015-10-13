@@ -1,0 +1,2 @@
+module Assignments::SurveyAssignmentsHelper
+end

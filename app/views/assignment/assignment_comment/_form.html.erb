@@ -1,0 +1,12 @@
+<%= simple_form_for @assignment_comment, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :user_assignment_id %>
+  <%= error_span(@assignment_comment[:user_assignment_id]) %>
+  <%= f.input :user_id %>
+  <%= error_span(@assignment_comment[:user_id]) %>
+  <%= f.input :slug %>
+  <%= error_span(@assignment_comment[:slug]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                assignment_assignment_comments_path, :class => 'btn btn-default' %>
+<% end %>

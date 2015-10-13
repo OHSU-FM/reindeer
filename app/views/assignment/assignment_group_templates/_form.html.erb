@@ -1,0 +1,12 @@
+<%= simple_form_for @assignment_group_template, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :title %>
+  <%= error_span(@assignment_group_template[:title]) %>
+  <%= f.input :sids %>
+  <%= error_span(@assignment_group_template[:sids]) %>
+  <%= f.input :desc_md %>
+  <%= error_span(@assignment_group_template[:desc_md]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                assignment_assignment_group_templates_path, :class => 'btn btn-default' %>
+<% end %>
