@@ -1,2 +1,2 @@
-class AssignmentGroupTemplate < ActiveRecord::Base
+class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
 end

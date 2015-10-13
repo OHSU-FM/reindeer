@@ -51,10 +51,19 @@ Rails.application.routes.draw do
 
     resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
         member do 
-            get Settings.site.titles.user_assignment.pluralize.downcase, 
+            get Settings.assignments_route_name, 
               :to=>'users#show_assignments', :as=>:assignments_for
         end
+    end 
+
+    namespace :assignment do
+      resources :assignment_groups, path: :groups
+      resources :assignment_group_templates, path: :group_templates
+      resources :assignment_comments, path: :comments
+      resources :survey_assignments, path: :surveys
+      resources :user_assignments, path: :list, params: :username
     end
+
 
     get 'ls_files/:sid/:row_id/:qid/:name', :to=>'ls_files#show', :constraints=>{:name=>/[^\/]+/}, :as=>:lime_file
 

@@ -1,4 +1,4 @@
-class UserAssignment < ActiveRecord::Base
+class Assignment::UserAssignment < ActiveRecord::Base
   attr_accessible :user_id, :survey_assignment_id, :lime_token_tid
   belongs_to :user
   belongs_to :survey_assignment
