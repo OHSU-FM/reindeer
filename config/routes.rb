@@ -56,7 +56,7 @@ Rails.application.routes.draw do
         end
     end 
 
-    namespace :assignment do
+    namespace :assignment, path: Settings.assignments_route_name do 
       resources :assignment_groups, path: :groups
       resources :assignment_group_templates, path: :group_templates
       resources :assignment_comments, path: :comments

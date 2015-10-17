@@ -1,4 +1,4 @@
-<%- model_class = AssignmentGroupTemplate -%>
+<%- model_class =Assignment::AssignmentGroupTemplate -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
@@ -16,9 +16,9 @@
   <tbody>
     <% @assignment_group_templates.each do |assignment_group_template| %>
       <tr>
-        <td><%= link_to assignment_group_template.id, assignment_assignment_group_template_path(assignment_group_template) %></td>
+        <td><%= link_to assignment_group_template.title, assignment_assignment_group_template_path(assignment_group_template) %></td>
         <td><%= assignment_group_template.title %></td>
-        <td><%= assignment_group_template.sids %></td>
+        <td><%= assignment_group_template.sids.count %></td>
         <td><%= assignment_group_template.desc_md %></td>
         <td><%=l assignment_group_template.created_at %></td>
         <td>

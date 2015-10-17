@@ -23,6 +23,7 @@
 //= require intro.js
 //= require modern-business/modern-business.js
 //= require cocoon
+//= require smart_listing
 //= require highcharts/highcharts.js
 //= require highcharts/highcharts-more.js
 //= require highcharts/highcharts-3d.js
@@ -44,3 +45,4 @@
 //= require dataTables/extensions/TableTools/js/dataTables.tableTools.js
 //= require sessions.js
 //= require animations.js
+//= require form-utils.js

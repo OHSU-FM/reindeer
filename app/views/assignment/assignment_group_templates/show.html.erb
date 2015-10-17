@@ -1,4 +1,4 @@
-<%- model_class = AssignmentGroupTemplate -%>
+<%- model_class = Assignment::AssignmentGroupTemplate -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
@@ -7,10 +7,15 @@
   <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
   <dd><%= @assignment_group_template.title %></dd>
   <dt><strong><%= model_class.human_attribute_name(:sids) %>:</strong></dt>
-  <dd><%= @assignment_group_template.sids %></dd>
+  <dd><% @assignment_group_template.lime_surveys.each do |ls| %>
+        sid: <%= ls.sid %> <%= ls.title %><br/>
+      <% end %>
+  </dd>
   <dt><strong><%= model_class.human_attribute_name(:desc_md) %>:</strong></dt>
   <dd><%= @assignment_group_template.desc_md %></dd>
 </dl>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+              new_assignment_assignment_group_path(id: @assignment_group_template.id), :class => 'btn btn-default' %>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               assignment_assignment_group_templates_path, :class => 'btn btn-default'  %>

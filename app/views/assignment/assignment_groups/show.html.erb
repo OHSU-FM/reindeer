@@ -12,9 +12,15 @@
   <dd><%= @assignment_group.status %></dd>
   <dt><strong><%= model_class.human_attribute_name(:desc_md) %>:</strong></dt>
   <dd><%= @assignment_group.desc_md %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:survey_assignment_id) %>:</strong></dt>
-  <dd><%= @assignment_group.survey_assignment_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:lime_surveys) %>:</strong></dt>
+  <dd><%= @assignment_group.lime_surveys %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:user_ids) %>:</strong></dt>
+  <dd><%= @assignment_group.user_ids %></dd>
 </dl>
+
+<%= link_to t('.new', :default => 'Add Survey'),
+        new_assignment_survey_assignment_path(assignment_group_id: @assignment_group.id), 
+        :class => 'btn btn-primary', data: {toggle: :modal} %>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               assignment_assignment_groups_path, :class => 'btn btn-default'  %>

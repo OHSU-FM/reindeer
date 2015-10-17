@@ -1,5 +1,6 @@
 class Assignment::UserAssignmentsController < ApplicationController
   def index
+    @user_assignments = Assignment::UserAssignment.where(user_id: current_user.id)
   end
 
   def show

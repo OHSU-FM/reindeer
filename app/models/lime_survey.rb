@@ -32,6 +32,10 @@ class LimeSurvey < ActiveRecord::Base
         end
     end
 
+    def self.active
+      where(active: 'Y')
+    end
+
     ##
     # Description of token attributes
     def token_attrs

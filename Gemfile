@@ -88,6 +88,8 @@ gem 'high_voltage'
 # Statistics
 gem 'descriptive-statistics'
 
+gem 'smart_listing'
+
 ##############################
 # Analysis
 ##############################

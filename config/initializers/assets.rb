@@ -1,4 +1,5 @@
 Rails.application.config.assets.precompile += %w( print.css
+    form-utils.js
     sync_triggers.js
     high_voltage_pages.css
     errors.css errors.js

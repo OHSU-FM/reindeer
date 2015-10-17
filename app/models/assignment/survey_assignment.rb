@@ -1,9 +1,13 @@
-class Assignment::SurveyAssignment < ActiveRecord::Base
+##
+# the link between a survey
+module Assignment
+class SurveyAssignment < ActiveRecord::Base
     attr_accessible :lime_survey_sid, :title, :gather_user_tokens, :user_assignments_attributes, :as_inline
     attr_accessor :gather_user_tokens
 
     belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:survey_assignments
-
+    
+    belongs_to :assignment_group
     has_many :user_assignments, :inverse_of=>:survey_assignment, :dependent=>:delete_all
     
     validates_presence_of :lime_survey_sid
@@ -80,4 +84,4 @@ class Assignment::SurveyAssignment < ActiveRecord::Base
     end
 
 end
-
+end
