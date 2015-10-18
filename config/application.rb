@@ -28,9 +28,10 @@ module EdnaConsole
     # config.autoload_paths += %W(#{config.root}/extras)
 
     # Search the models directory recursively
-    #config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"] 
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"] 
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/**/*.rb"] 
-    config.autoload_paths += Dir["#{Rails.root.to_s}/app/lib/**/*.rb"] 
+    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/**/*.rb"] 
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/services/**/*.rb"] 
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -59,7 +60,7 @@ module EdnaConsole
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
-    config.active_record.schema_format = :sql
+    # config.active_record.schema_format = :sql
 
     # Enforce whitelist mode for mass assignment.
     # This will create an empty whitelist of attributes available for mass-assignment for all models
@@ -71,7 +72,7 @@ module EdnaConsole
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.4'
+    config.assets.version = '1.5'
     
     # Setup automatic code generator configuration
     # E.g. $ rails g model WhipperSnapper

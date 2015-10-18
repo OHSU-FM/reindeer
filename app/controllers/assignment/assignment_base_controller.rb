@@ -10,6 +10,7 @@ module Assignment
         'full_width'
       end
     end
+
   end
 end
 

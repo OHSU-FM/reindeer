@@ -1,6 +1,7 @@
-class Assignment::UserAssignmentsController < ApplicationController
+class Assignment::UserAssignmentsController < Assignment::AssignmentBaseController
   def index
-    @user_assignments = Assignment::UserAssignment.where(user_id: current_user.id)
+    @assignments = Assignment::ListAssignmentsService.new(current_user, params[:username])
+    respond_with @assignments
   end
 
   def show
