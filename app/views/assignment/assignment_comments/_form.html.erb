@@ -1,0 +1,22 @@
+<%= form_for @assignment_comment, 
+    :html => { :class => "form-group" } do |f| %>
+    <% fid = f.options[:html][:id] %>
+  <blockquote class="bs-callout-<%= bq_type %>">
+    <%= f.hidden_field :user_assignment_id %>
+    <%= f.text_area :slug,
+        class: 'form-control',
+        rows: 4 %>
+    <div class="pull-right">
+      <button type="button" class="btn btn-link"
+              data-remove='#<%=fid%>'
+            data-show="#comment-new-btn">
+            <i class="glyphicon glyphicon-ok"></i>
+      </button>
+      <button type="button" class="btn btn-link" 
+          data-remove='#<%= fid %>'
+          data-show="#comment-new-btn">
+          <i class="fa fa-ban"></i>
+      </button>
+    </div>
+  </blockquote>
+<% end %>

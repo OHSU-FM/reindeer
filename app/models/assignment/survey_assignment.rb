@@ -19,7 +19,6 @@ class SurveyAssignment < ActiveRecord::Base
     after_validation :do_gather_user_tokens
 
     rails_admin do
-        navigation_label "User Content"
         field :title do
             required false
         end

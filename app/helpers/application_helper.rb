@@ -65,5 +65,5 @@ module ApplicationHelper
         javascript_include_tag javascript
       end
     end
-
+    
 end

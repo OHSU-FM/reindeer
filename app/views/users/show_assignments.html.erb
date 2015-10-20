@@ -1,7 +1,68 @@
 <h2> <%= Settings.site.titles.user_assignment.pluralize %></h2>
-
+<div class='row'>
+    <a href='#' class='btn btn-link'>project 1</a>
+    <a href='#' class='btn btn-primary'>project 2</a>
+    <a href='#' class='btn btn-link'>project 3</a>
+    <a href='#' class='btn btn-link'>project 4</a>
+    <a href='#' class='btn btn-link'>project 5</a>
+    <a href='#' class='btn btn-link'>project 6</a>
+</div>
+<hr/>
 <div class="row">
-    <div class="col-lg-9 col-md-12 main fade-in two">
+    <div class="col-md-6 main fade-in two">
+        <h2>Project 2</h2>
+        Preparation for meetings on November 16th.
+        <p>
+        We are going to have a lot of things to prepare for in the next month, so 
+        we need to break these tasks down into smaller and more manageable chunks.
+        Some things to think about:
+        </p>
+        <ol>
+            <li>
+                How much time will it take
+            </li>
+            <li>
+                How much time do you have
+            </li>
+            <li>
+                What do you want to accomplish
+            </li>
+        </ol>
+    </div>
+    <div class="col-md-6 main fade-in three">
+        <h2>Tasks</h2>
+        <table class='table table-hover table-striped table-condensed'>
+            <tbody>
+                <tr>
+                    <td><a href='#'>Area of focus exercise</a></td>
+                    <td><span class='label label-primary'>Complete</span></td>
+                    <td>
+                        <%= link_to assignment_assignment_comments_path, data: {toggle: :modal} do %>
+                            <i class='fa fa-2x fa-comments-o'>1</i>
+                        <% end %>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href='#'>Create list of ideas</a></td>
+                    <td><span class='label label-success'>Started</span></td>
+                    <td><i class='fa fa-2x fa-comments-o'>3</i></td>
+                </tr>
+                <tr>
+                    <td><a href='#'>Discuss ideas with mentor</a></td>
+                    <td><span class='label label-default'>Not started</span></td>
+                    <td><i class='fa fa-comments-o'>4</i></td>
+                </tr>
+                <tr>
+                    <td><a href='#'>Plan goals to accomplish ideas</a></td>
+                    <td><span class='label label-default'>Not started</span></td>
+                    <td><i class='fa fa-comments-o'>9</i></td>
+                </tr>
+            </tbody> 
+        </table>
+    </div>
+</div>        
+<div class="row">
+    <div class="col-md-6 main fade-in two">
     <% if @active_assignments.empty? %>
         <h4>No active assignments</h4>
     <% else %>

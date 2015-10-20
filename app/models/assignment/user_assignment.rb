@@ -7,7 +7,6 @@ class Assignment::UserAssignment < ActiveRecord::Base
   validates_presence_of :user
  
   rails_admin do
-    navigation_label "User Content"
     list do
       field :id
       field :lime_survey
