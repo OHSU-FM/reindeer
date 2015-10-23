@@ -10,6 +10,11 @@ module Assignment
     validates :user, presence: true
     #validates :survey_assignments, presence: true
     validates :assignment_group_template, presence: true
+    STATES = {
+      1 => :active,
+      2 => :inactive,
+      3 => :complete
+    }
 
     rails_admin do
       field :user
@@ -19,6 +24,10 @@ module Assignment
       field :desc_md
       field :user_ids
       field :survey_assignments
+    end
+    
+    def status_enum
+      STATES.invert
     end
 
     def user_ids
@@ -36,5 +45,10 @@ module Assignment
     def users
       User.where(["id in (?)", user_ids])
     end
+
+    def user_ids_enum
+      @user_ids_enum ||= users_enum.map{|u|[u.title, u.id]}
+    end
+
   end
 end

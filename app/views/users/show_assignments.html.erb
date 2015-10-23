@@ -8,26 +8,88 @@
     <a href='#' class='btn btn-link'>project 6</a>
 </div>
 <hr/>
-<div class="row">
+<form>
+<div id='assignment_group_2' class="row">
     <div class="col-md-6 main fade-in two">
-        <h2>Project 2</h2>
-        Preparation for meetings on November 16th.
-        <p>
-        We are going to have a lot of things to prepare for in the next month, so 
-        we need to break these tasks down into smaller and more manageable chunks.
-        Some things to think about:
-        </p>
-        <ol>
-            <li>
-                How much time will it take
-            </li>
-            <li>
-                How much time do you have
-            </li>
-            <li>
-                What do you want to accomplish
-            </li>
-        </ol>
+      <form>
+        <h2>Project 2
+        <button type='button'
+            class='btn btn-default'
+            data-show="#assignment_group_2_title"
+            data-hide="#assignment_group_2 h2">
+            <i class='glyphicon glyphicon-pencil'></i>
+        </button>
+        </h2>
+        <div id='assignment_group_2_title' style='display:none;'>
+            <div class="col-sm-12 col-lg-6">
+              <div class="input-group input-group-lg">
+                <input 
+                    type='text' 
+                    class="form-control title" 
+                    value="Project 2"></input>
+                <span class="input-group-btn">
+                  <button type='button'
+                      class='btn btn-default'
+                      data-hide="#assignment_group_2_title"
+                      data-show="#assignment_group_2 h2">
+                      <i class='glyphicon glyphicon-ok'></i>
+                  </button>
+                </span>
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </div>
+      </form>
+      <form id='assignment_group_2_slug' class='form-group'>
+         <div class="md-show">
+             <button type="button" class="btn btn-link pull-right" 
+                 data-hide="#assignment_group_2_slug .md-show" 
+                 data-show="#assignment_group_2_slug .md-edit">
+             <i class="glyphicon glyphicon-edit"></i>
+           </button>
+         </div>
+
+        <div class='md-show'>
+            Preparation for meetings on November 16th.
+            <p>
+            We are going to have a lot of things to prepare for in the next month, so 
+            we need to break these tasks down into smaller and more manageable chunks.
+            Some things to think about:
+            </p>
+            <ol>
+                <li>
+                    How much time will it take
+                </li>
+                <li>
+                    How much time do you have
+                </li>
+                <li>
+                    What do you want to accomplish
+                </li>
+            </ol>
+        </div>
+        <div class="md-edit" style='display:none;'>
+            <div class="pull-right">
+              <button type="button" class="btn btn-link" 
+                    data-show="#assignment_group_2_slug .md-show" 
+                    data-hide="#assignment_group_2_slug .md-edit">
+                <i class="glyphicon glyphicon-ok"></i>
+              </button>
+              <button type="button" 
+                      class="btn btn-link" 
+                      data-show="#assignment_group_2_slug .md-show" 
+                      data-hide="#assignment_group_2_slug .md-edit">
+                  <i class="fa fa-ban"></i>
+              </button>
+
+            </div>
+            <textarea class='form-control' rows="8"></textarea>
+        </div>
+      </form>
+
+        <% @assignment_comments = [] %>    
+        <%= render template: 'assignment/assignment_comments/index', locals: {title: :comments} %>
+
+
     </div>
     <div class="col-md-6 main fade-in three">
         <h2>Tasks</h2>
@@ -60,51 +122,5 @@
             </tbody> 
         </table>
     </div>
-</div>        
-<div class="row">
-    <div class="col-md-6 main fade-in two">
-    <% if @active_assignments.empty? %>
-        <h4>No active assignments</h4>
-    <% else %>
-        <% @active_assignments.groups.each do |group, parts| %>
-          <% accordion_id = "accordion-ua-#{ parts.map{|v|v.assig.id}.join('-') }" %>
-          <h3 class="text-info"><%= group %></h3>
-          <div class="panel-group panel-ua-group" id="<%= accordion_id %>" role="tablist" aria-multiselectable="true">
-          <% parts.each do |part| %>
-          <div class="panel panel-default ua-accordion">
-            <div class="panel-heading" role="tab" id="heading_ua_<%= part.assig.id%>">
-                <%= hf_ua_button(part, accordion_id) %>
-                <%= hf_ua_link(part, accordion_id, name: part.name) %>
-                <%= content_tag :span, part.status, class: "label label-#{part.status_class} pull-right" %>
-            </div>
-            <div id="collapse_ua_<%= part.assig.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_ua_<%= part.assig.id %>">
-              <div class="panel-body">
-              </div>
-            </div>
-          </div>
-          <% end %>
-        </div>
-        <% end %>
-    <% end %>
-    </div>
-    <div class="col-lg-3 sidebar fade-in one hidden-md hidden-sm hidden-xs">
-        <div class="bs-callout bs-callout-primary" id="assignments-overview">
-            <% if @completed_assignments.empty? %>
-                <h3>No Completed <%= Settings.site.titles.user_assignment.pluralize %></h3>
-            <% else %>
-                <h3>Completed <%= Settings.site.titles.user_assignment.pluralize %></h3>
-                <ul class="list-unstyled">
-                    <% @completed_assignments.groups.each do |group, parts| %>
-                        <li><%= content_tag :h4, group %></li>
-                        <% parts.each do |part| %>
-                            <li>
-                                <%= part.name %>
-                            </li>
-                        <% end %>
-                    <% end %>
-                </ul>
-            <% end %>
-        </div>
-    </div>
 </div>
-
+</form>

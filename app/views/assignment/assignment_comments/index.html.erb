@@ -1,7 +1,9 @@
 <%- model_class = Assignment::AssignmentComment -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+    <% title ||= model_class.model_name.human.pluralize.titleize %>
+  <h1><%=t '.title', default: title  %></h1>
 </div>
+
 
 <blockquote>
   <p>
@@ -15,7 +17,6 @@
 
 <div id="comment_33">
     <blockquote class="bs-callout-primary">
-
         <div class="md-show">
             <div class="md-show-content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
@@ -30,12 +31,15 @@
                         data-show="#comment_33 form">
                     <i class="glyphicon glyphicon-edit"></i>
                   </button>
-                  <button type="button" 
-                        class="btn btn-link"
-                        data-hide='#comment_33'>&times;</button>
+                  <button type="button" class="btn btn-link"
+                          data-confirmed="Deleting comment. Are you sure?"
+                          data-hide="#comment_33">
+                      &times;</button>
                 </div>
             </footer>
         </div>
+
+        <i class='icon-spinner icon-spin icon-large'></i>
         <form class="md-form form-group" style="display:none;">
             <textarea class="form-control" rows="4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. </textarea>
             <div class="pull-right">
@@ -43,6 +47,8 @@
                         class="btn btn-link" 
                         data-show="#comment_33 .md-show"
                         data-hide="#comment_33 form"
+                        data-action='submit'
+                        data-insert=':replace'
                         data-target='#comment_33'>
                 <i class="glyphicon glyphicon-ok"></i>
               </button>

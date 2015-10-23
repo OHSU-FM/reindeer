@@ -7,6 +7,16 @@ class Assignment::UserAssignment < ActiveRecord::Base
   validates_presence_of :user
  
   rails_admin do
+    edit do
+      field :user do
+          inline_add false
+      end
+      field :survey_assignment
+      field :token do
+          read_only true
+      end
+    end
+
     list do
       field :id
       field :lime_survey
@@ -58,6 +68,8 @@ class Assignment::UserAssignment < ActiveRecord::Base
     @token_data ||= HashWithIndifferentAccess.new(
       lime_tokens.add_filter(:tid, lime_token_tid).dataset.first || {}
     )
+  rescue
+    {}
   end
   
   ##

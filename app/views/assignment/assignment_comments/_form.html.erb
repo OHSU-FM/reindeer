@@ -1,6 +1,7 @@
 <%= form_for @assignment_comment, 
     :html => { :class => "form-group" } do |f| %>
     <% fid = f.options[:html][:id] %>
+  
   <blockquote class="bs-callout-<%= bq_type %>">
     <%= f.hidden_field :user_assignment_id %>
     <%= f.text_area :slug,

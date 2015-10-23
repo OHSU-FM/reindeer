@@ -20,8 +20,9 @@ ActiveRecord::Schema.define(version: 20151017235330) do
     t.integer  "user_assignment_id"
     t.integer  "user_id"
     t.text     "slug"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.boolean  "group_comment",      default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "assignment_comments", ["user_assignment_id"], name: "index_assignment_comments_on_user_assignment_id", using: :btree
