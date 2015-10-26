@@ -4,6 +4,9 @@
 en:
   hello: "Hello world"
   activerecord:
+      models:
+          assignment/assignment_comment: comment
+          assignment/user_assignment: task
       errors:
           models:
               survey_assignment:

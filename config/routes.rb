@@ -50,16 +50,19 @@ Rails.application.routes.draw do
     end
 
     resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
-        member do 
-            get Settings.assignments_route_name, 
-              :to=>'users#show_assignments', :as=>:assignments_for
-        end
+      member do 
+        get Settings.assignments_route_name, 
+          :to=>'users/assignment_group#show', :as=>:assignments_for
+      end
     end 
 
-    namespace :assignment, path: Settings.assignments_route_name do 
+    namespace :assignment, path: Settings.assignments_route_name do
+      root to: 'assignment_groups#index'
       resources :assignment_groups, path: :groups
       resources :assignment_group_templates, path: :group_templates
       resources :assignment_comments, path: :comments
+      resources :assignment_comments, path: :group_comments, 
+        group_comments: true
       resources :survey_assignments, path: :surveys
       resources :user_assignments, path: :list, params: :username
     end

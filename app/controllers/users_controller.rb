@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    layout 'full_width_margins'
+    layout 'full_width'
     include UserAssignmentsHelper
 
     def show
@@ -33,6 +33,7 @@ class UsersController < ApplicationController
         @user = User.includes(:user_assignments).find_by(:username=>params[:username].to_s)
         authorize! :read, @user
         assignments = @user.user_assignments.order 'updated_at DESC'
+        @assignment_group = Assignment::AssignmentGroup.new
         @active_assignments = VirtualAssignmentGroup.new(@user.active_assignments)
         @completed_assignments = VirtualAssignmentGroup.new(@user.completed_assignments)
     end

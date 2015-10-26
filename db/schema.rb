@@ -20,22 +20,24 @@ ActiveRecord::Schema.define(version: 20151017235330) do
     t.integer  "user_assignment_id"
     t.integer  "user_id"
     t.text     "slug"
-    t.boolean  "group_comment",      default: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "assignment_group_id"
   end
 
+  add_index "assignment_comments", ["assignment_group_id"], name: "index_assignment_comments_on_assignment_group_id", using: :btree
   add_index "assignment_comments", ["user_assignment_id"], name: "index_assignment_comments_on_user_assignment_id", using: :btree
   add_index "assignment_comments", ["user_id"], name: "index_assignment_comments_on_user_id", using: :btree
 
   create_table "assignment_group_templates", force: :cascade do |t|
     t.integer  "permission_group_id"
     t.string   "title"
+    t.text     "permission_group_ids"
     t.text     "sids"
     t.text     "desc_md"
-    t.boolean  "active",              default: true
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.boolean  "active",               default: true
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
   add_index "assignment_group_templates", ["permission_group_id"], name: "index_assignment_group_templates_on_permission_group_id", using: :btree
@@ -350,6 +352,7 @@ ActiveRecord::Schema.define(version: 20151017235330) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
 
+  add_foreign_key "assignment_comments", "assignment_groups"
   add_foreign_key "assignment_comments", "user_assignments"
   add_foreign_key "assignment_comments", "users"
   add_foreign_key "assignment_groups", "assignment_group_templates"

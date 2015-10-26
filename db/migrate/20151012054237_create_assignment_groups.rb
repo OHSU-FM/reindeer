@@ -9,5 +9,8 @@ class CreateAssignmentGroups < ActiveRecord::Migration
       t.text :user_ids
       t.timestamps null: false
     end
+    add_reference :assignment_comments, :assignment_group, 
+      index: true, foreign_key: true
+
   end
 end

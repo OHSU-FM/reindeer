@@ -4,7 +4,6 @@ class CreateAssignmentComments < ActiveRecord::Migration
       t.references :user_assignment, index: true, foreign_key: true
       t.references :user, index: true, foreign_key: true
       t.text :slug
-      t.boolean :group_comment, default: false
       t.timestamps null: false
     end
   end

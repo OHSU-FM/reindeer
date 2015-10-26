@@ -1,33 +1,106 @@
-<%- model_class =Assignment::AssignmentGroup -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+<h2> <%= Settings.site.titles.user_assignment.pluralize %></h2>
+<div class='row'>
+    <a href='#' class='btn btn-link'>project 1</a>
+    <a href='#' class='btn btn-primary'>project 2</a>
+    <a href='#' class='btn btn-link'>project 3</a>
+    <a href='#' class='btn btn-link'>project 4</a>
+    <a href='#' class='btn btn-link'>project 5</a>
+    <a href='#' class='btn btn-link'>project 6</a>
+</div>
+<hr/>
+
+<div id='assignment_group_2' class="row">
+    <div class="col-md-8 main fade-in two" style="border-right:1px solid #ddd;">
+      <div>
+        <form>
+          <h2>Project 2
+            <button type='button'
+                class='btn btn-default'
+                data-show="#assignment_group_2_title"
+                data-hide="#assignment_group_2 h2">
+                <i class='glyphicon glyphicon-pencil'></i>
+            </button>
+          </h2>
+          <div id='assignment_group_2_title' style='display:none;'>
+              <div class="input-group input-group-lg">
+                <input 
+                    type='text' 
+                    class="form-control title" 
+                    value="Project 2"></input>
+                <span class="input-group-btn">
+                  <button type='button'
+                      class='btn btn-default'
+                      data-hide="#assignment_group_2_title"
+                      data-show="#assignment_group_2 h2">
+                      <i class='glyphicon glyphicon-ok'></i>
+                  </button>
+                </span>
+              </div><!-- /input-group -->
+              <h2>hkl 7</h2>
+          </div>
+        </form>    
+      </div>
+      <form id='assignment_group_2_slug' class='form-group'>
+         <div class="md-show">
+             <button type="button" class="btn btn-link pull-right" 
+                 data-hide="#assignment_group_2_slug .md-show" 
+                 data-show="#assignment_group_2_slug .md-edit">
+             <i class="glyphicon glyphicon-edit"></i>
+           </button>
+         </div>
+
+        <div class='md-show'>
+            Preparation for meetings on November 16th.
+            <p>
+            We are going to have a lot of things to prepare for in the next month, so 
+            we need to break these tasks down into smaller and more manageable chunks.
+            Some things to think about:
+            </p>
+            <ol>
+                <li>
+                    How much time will it take
+                </li>
+                <li>
+                    How much time do you have
+                </li>
+                <li>
+                    What do you want to accomplish
+                </li>
+            </ol>
+        </div>
+        <div class="md-edit" style='display:none;'>
+            <div class="pull-right">
+              <button type="button" class="btn btn-link" 
+                    data-show="#assignment_group_2_slug .md-show" 
+                    data-hide="#assignment_group_2_slug .md-edit">
+                <i class="glyphicon glyphicon-ok"></i>
+              </button>
+              <button type="button" 
+                      class="btn btn-link" 
+                      data-show="#assignment_group_2_slug .md-show" 
+                      data-hide="#assignment_group_2_slug .md-edit">
+                  <i class="fa fa-ban"></i>
+              </button>
+
+            </div>
+            <textarea class='form-control' rows="8"></textarea>
+        </div>
+      </form>
+
+    <% if can? :edit, @assignment_group %>
+        <% @users = [] %>    
+        <%= render partial: 'assignment/assignment_groups/form_users' %>
+    <% end %>  
+
+      <div id="assignment-group-comments">
+        <% @assignment_comments = [] %>    
+        <%= render template: 'assignment/assignment_comments/index', locals: {title: :comments} %>
+      </div>
+
+    </div>
+    <div class="col-md-4 main fade-in three">
+        <% @survey_assignments = [] %>    
+        <%= render template: 'assignment/user_assignments/index' %>
+    </div>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
-  <dd><%= @assignment_group.user_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
-  <dd><%= @assignment_group.title %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
-  <dd><%= @assignment_group.status %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:desc_md) %>:</strong></dt>
-  <dd><%= @assignment_group.desc_md %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:lime_surveys) %>:</strong></dt>
-  <dd><%= @assignment_group.lime_surveys %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:user_ids) %>:</strong></dt>
-  <dd><%= @assignment_group.user_ids %></dd>
-</dl>
-
-<%= link_to t('.new', :default => 'Add Survey'),
-        new_assignment_survey_assignment_path(assignment_group_id: @assignment_group.id), 
-        :class => 'btn btn-primary', data: {toggle: :modal} %>
-
-<%= link_to t('.back', :default => t("helpers.links.back")),
-              assignment_assignment_groups_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_assignment_assignment_group_path(@assignment_group), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              assignment_assignment_group_path(@assignment_group),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>

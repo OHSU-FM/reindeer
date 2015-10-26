@@ -1,15 +1,19 @@
 class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseController
-  respond_to :html, :json
+  respond_to :html
   authorize_resource 
    
   def index
     @assignment_groups = Assignment::AssignmentGroup.all
-    respond_with @assignment_groups
+    if @assignment_groups.count > 0
+      redirect_to assignment_assignment_group_path(@assignment_groups.first)
+    end
   end
 
   def show
-    @assignment_group = Assignment::AssignmentGroup.find(params[:id])
+    @assignment_group = Assignment::AssignmentGroup.new
     respond_with @assignment_group
+    #@assignment_group = Assignment::AssignmentGroup.find(params[:id])
+    #respond_with @assignment_group
   end
 
   def new
