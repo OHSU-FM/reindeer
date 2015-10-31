@@ -1,7 +1,8 @@
 class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseController
   respond_to :html
   authorize_resource 
-   
+  before_filter :load_resource, only: [:show, :edit, :update, :destroy]
+
   def index
     @assignment_groups = Assignment::AssignmentGroup.all
     if @assignment_groups.count > 0
@@ -10,10 +11,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   def show
-    @assignment_group = Assignment::AssignmentGroup.new
     respond_with @assignment_group
-    #@assignment_group = Assignment::AssignmentGroup.find(params[:id])
-    #respond_with @assignment_group
   end
 
   def new
@@ -23,37 +21,35 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def create
     @assignment_group = Assignment::AssignmentGroup.create create_params
-    respond_with @assignment_group
   end
 
   def edit
-    @assignment_group = Assignment::AssignmentGroup.find(params[:id])
     respond_with @assignment_group
   end
 
   def update
-    @assignment_group = Assignment::AssignmentGroup.find(params[:id])
     @assignment_group.update(update_params)
     respond_with @assignment_group
   end
 
   def destroy
-    @assignment_group = Assignment::AssignmentGroup.find(params[:id])
     @assignment_group.destroy
   end
 
   protected
-  
+ 
+  def load_resource
+    @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
+  end
+
   def create_params
     update_params
   end
 
   def update_params
-    result = params.require(:assignment_assignment_group).permit!()
-    if cannot?(:sign_for, User) || result[:user_id].nil?
-      result[:user_id] = current_user.id
-    end
-    result
+    params.require(:assignment_assignment_group).
+      permit(:title, :desc_md, :user_ids).
+      merge(user_id: current_user.id)
   end
 
 end

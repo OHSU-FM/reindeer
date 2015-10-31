@@ -1,4 +1,5 @@
-<%= simple_form_for @assignment_group, :html => { :class => 'form-horizontal' } do |f| %>
+<%= simple_form_for [@assignment_group], 
+        :html => { :class => 'form-horizontal' } do |f| %>
   
   <%= f.input :assignment_group_template_id, 
         collection: @assignment_group.assignment_group_template_enum %>

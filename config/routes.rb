@@ -55,18 +55,20 @@ Rails.application.routes.draw do
           :to=>'users/assignment_group#show', :as=>:assignments_for
       end
     end 
-
-    namespace :assignment, path: Settings.assignments_route_name do
+    
+    namespace :assignment, path: Settings.assignments_route_name  do
       root to: 'assignment_groups#index'
-      resources :assignment_groups, path: :groups
-      resources :assignment_group_templates, path: :group_templates
+      resources :assignment_group_templates, as: :templates, path: :templates 
+      resources :assignment_groups, param: :assignment_group_id, 
+        path: :groups
+      resources :user_assignments, path: :tasks
+      resources :survey_assignments, path: :forms, param: :survey_assignment_id
+      resources :assignment_group_comments, path: :group_comments, 
+        param: :assignment_group_id, only: [:show, :new]
+      resources :survey_assignment_comments, path: :form_comments, 
+        param: :survey_assignment_id, only: [:show]
       resources :assignment_comments, path: :comments
-      resources :assignment_comments, path: :group_comments, 
-        group_comments: true
-      resources :survey_assignments, path: :surveys
-      resources :user_assignments, path: :list, params: :username
     end
-
 
     get 'ls_files/:sid/:row_id/:qid/:name', :to=>'ls_files#show', :constraints=>{:name=>/[^\/]+/}, :as=>:lime_file
 

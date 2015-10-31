@@ -1,0 +1,11 @@
+<h2 class="label label-success">Participating Users</h2>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <% @assignment_group.users.each do |user|  %>
+        <span class="label label-default">
+            <%= link_to user.username, '#' %>
+        </span>&nbsp;
+    <% end %>
+  </div>
+</div>
+

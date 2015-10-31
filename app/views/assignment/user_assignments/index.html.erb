@@ -1,6 +1,6 @@
 <%- model_class = Assignment::UserAssignment -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h2><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h2>
 </div>
 <table class='table table-hover table-striped table-condensed'>
     <tbody>
@@ -8,7 +8,8 @@
             <td><a href='#'>Area of focus exercise</a></td>
             <td><span class='label label-primary'>Complete</span></td>
             <td>
-                <%= link_to assignment_assignment_comments_path, data: {toggle: :modal} do %>
+                <%= link_to assignment_assignment_comments_path(user_assignment_id: 1), 
+                        data: {toggle: :modal} do %>
                     <i class='fa fa-2x fa-comments-o'>1</i>
                 <% end %>
             </td>
@@ -30,9 +31,4 @@
         </tr>
     </tbody>
 </table>
-<%= link_to new_assignment_user_assignment_path, 
-    class: 'btn btn-primary',
-    data: {toggle: :modal} do %>
-    New
-<% end %>
 

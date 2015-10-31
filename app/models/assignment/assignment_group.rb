@@ -2,22 +2,28 @@ module Assignment
   class AssignmentGroup < ActiveRecord::Base
     serialize :user_ids, Array
 
-    belongs_to :user
+    belongs_to :owner, class_name: 'User', foreign_key: :user_id
     belongs_to :assignment_group_template
     has_one :permission_group, through: :assignment_group_template
     has_many :survey_assignments
+    has_many :comments, class_name: 'Assignment::AssignmentComment', 
+      inverse_of: :assignment_group   
     delegate :lime_surveys, to: :assignment_group_template
-    validates :user, presence: true
-    #validates :survey_assignments, presence: true
+    validates :owner, presence: true
     validates :assignment_group_template, presence: true
     STATES = {
       1 => :active,
       2 => :inactive,
       3 => :complete
     }
+    
+    attr_accessible :user_id, :title, :desc_md, :user_ids
 
     rails_admin do
-      field :user
+      field :id do
+        read_only true
+      end
+      field :owner, :belongs_to_association
       field :assignment_group_template
       field :status
       field :title

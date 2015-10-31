@@ -5,10 +5,12 @@ class Assignment::UserAssignmentsController < Assignment::AssignmentBaseControll
   end
 
   def show
+    binding.pry
   end
 
   def new
     @user_assignment = Assignment::UserAssignment.new
+    @assignment_group = Assignment::AssignmentGroup.find params[:assignment_group_id]
   end
 
   def create

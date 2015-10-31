@@ -5,22 +5,21 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:as_inline) %></th>
-      <th><%= model_class.human_attribute_name(:title) %></th>
-      <th><%= model_class.human_attribute_name(:lime_survey_sid) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Users</th>
+      <th>Comments</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @survey_assignments.each do |survey_assignment| %>
       <tr>
-        <td><%= link_to survey_assignment.id, assignment_survey_assignment_path(survey_assignment) %></td>
-        <td><%= survey_assignment.as_inline %></td>
-        <td><%= survey_assignment.title %></td>
-        <td><%= survey_assignment.lime_survey_sid %></td>
-        <td><%=l survey_assignment.created_at %></td>
+        <td><%= link_to survey_assignment.title, edit_assignment_survey_assignment_path(survey_assignment) %></td>
+        <td><%= survey_assignment.status %></td>
+        <td>
+          <% link_to 'Comments', assignment_survey_assignment_comments(survey_assignment_id: survey_assignment.id) %>
+        </td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_assignment_survey_assignment_path(survey_assignment), :class => 'btn btn-default btn-xs' %>
@@ -36,5 +35,6 @@
 </table>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
-            new_assignment_survey_assignment_path,
+            new_assignment_survey_assignment_path(assignment_group_id: 1),
+            data: {toggle: :modal},
             :class => 'btn btn-primary' %>

@@ -2,7 +2,7 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   has_many :assignment_groups
   belongs_to :permission_group, inverse_of: :assignment_group_templates, class_name: 'PermissionGroup'
   serialize :sids, Array
-  attr_accessible :permission_group_id
+  attr_accessible :permission_group_id, :title, :sids
 
   validates :lime_surveys, presence: true
   validates :permission_group, presence: true

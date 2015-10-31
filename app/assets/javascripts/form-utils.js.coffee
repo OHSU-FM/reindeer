@@ -19,6 +19,20 @@ window.Modal.template = '''
 </div>
     '''
 
+window.FormUtils = {}
+window.FormUtils.error_templates = {
+    default: '''
+<div class='bs-callout bs-callout-danger'>
+    {{error-message}}
+</div>
+'''
+}
+
+error_wrap = (msg, mtype) ->
+    mtype ||= 'default'
+    result = window.FormUtils.error_templates[mtype].replace('{{error-message}}', msg)
+    return result
+
 resource_insert = ($target, html, insert) ->
     insert = insert || ':replace'
     if insert == ':before'
@@ -34,7 +48,7 @@ resource_load = ($node) ->
     data = $node.data()
     $target = $(data.target)
     method = data.method || 'GET' 
-    url = data.url
+    url = $node.attr('href') || data.url 
     insert = data.insert
     $.ajax
         url: url
@@ -44,7 +58,7 @@ resource_load = ($node) ->
         dataType: 'html'
         contentType: 'application/html; charset=utf-8'
         error: (data, g1, g2) ->
-            resource_insert($target, 'Error<br/>' + g2, insert)
+            resource_insert($target, error_wrap('Error: ' + g2), insert)
         success: (response) ->
             resource_insert($target, $('<div/>').html(response), insert)
 
@@ -56,9 +70,20 @@ $(document).ready ->
         $(data.show).show() if data.show?
         $(data.hide).hide() if data.hide?
         $(data.remove).remove() if data.remove?
+
+        if data.copyVal
+            $target = $(data.target)
+            message = $(data.copyVal).val()
+            resource_insert($target, message)
+
         if data.action == 'resource-load'
+            event.preventDefault()
+            event.stopImmediatePropagation()
             resource_load($node)
         return
+    
+    $('form button[type=submit][data-toggle~=replace]').click (event) ->
+        console.log 'hello GGGGGGGG'
 
     $('a[data-toggle~=replace]').click (event) ->
         event.preventDefault()

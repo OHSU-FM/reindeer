@@ -1,4 +1,4 @@
-<h2> <%= Settings.site.titles.user_assignment.pluralize %></h2>
+<h1> <%= Settings.site.titles.user_assignment.pluralize %></h1>
 <div class='row'>
     <a href='#' class='btn btn-link'>project 1</a>
     <a href='#' class='btn btn-primary'>project 2</a>
@@ -6,101 +6,48 @@
     <a href='#' class='btn btn-link'>project 4</a>
     <a href='#' class='btn btn-link'>project 5</a>
     <a href='#' class='btn btn-link'>project 6</a>
+    <% if can? :create, Assignment::AssignmentGroup %>
+        <%= link_to new_assignment_assignment_group_path, 
+            class: 'btn btn-success',
+            data: {toggle: :modal} do %>
+            New Project
+        <% end %>
+    <% end %>
 </div>
 <hr/>
 
 <div id='assignment_group_2' class="row">
-    <div class="col-md-8 main fade-in two" style="border-right:1px solid #ddd;">
-      <div>
-        <form>
-          <h2>Project 2
-            <button type='button'
-                class='btn btn-default'
-                data-show="#assignment_group_2_title"
-                data-hide="#assignment_group_2 h2">
-                <i class='glyphicon glyphicon-pencil'></i>
-            </button>
-          </h2>
-          <div id='assignment_group_2_title' style='display:none;'>
-              <div class="input-group input-group-lg">
-                <input 
-                    type='text' 
-                    class="form-control title" 
-                    value="Project 2"></input>
-                <span class="input-group-btn">
-                  <button type='button'
-                      class='btn btn-default'
-                      data-hide="#assignment_group_2_title"
-                      data-show="#assignment_group_2 h2">
-                      <i class='glyphicon glyphicon-ok'></i>
-                  </button>
-                </span>
-              </div><!-- /input-group -->
-              <h2>hkl 7</h2>
-          </div>
-        </form>    
-      </div>
-      <form id='assignment_group_2_slug' class='form-group'>
-         <div class="md-show">
-             <button type="button" class="btn btn-link pull-right" 
-                 data-hide="#assignment_group_2_slug .md-show" 
-                 data-show="#assignment_group_2_slug .md-edit">
-             <i class="glyphicon glyphicon-edit"></i>
-           </button>
-         </div>
+  <div class="col-md-8 main fade-in two" style="border-right:1px solid #ddd;">
 
-        <div class='md-show'>
-            Preparation for meetings on November 16th.
-            <p>
-            We are going to have a lot of things to prepare for in the next month, so 
-            we need to break these tasks down into smaller and more manageable chunks.
-            Some things to think about:
-            </p>
-            <ol>
-                <li>
-                    How much time will it take
-                </li>
-                <li>
-                    How much time do you have
-                </li>
-                <li>
-                    What do you want to accomplish
-                </li>
-            </ol>
-        </div>
-        <div class="md-edit" style='display:none;'>
-            <div class="pull-right">
-              <button type="button" class="btn btn-link" 
-                    data-show="#assignment_group_2_slug .md-show" 
-                    data-hide="#assignment_group_2_slug .md-edit">
-                <i class="glyphicon glyphicon-ok"></i>
-              </button>
-              <button type="button" 
-                      class="btn btn-link" 
-                      data-show="#assignment_group_2_slug .md-show" 
-                      data-hide="#assignment_group_2_slug .md-edit">
-                  <i class="fa fa-ban"></i>
-              </button>
-
-            </div>
-            <textarea class='form-control' rows="8"></textarea>
-        </div>
-      </form>
+    <%= render partial: 'form_title' %>
+    <%= render partial: 'form_desc_md' %>
 
     <% if can? :edit, @assignment_group %>
-        <% @users = [] %>    
-        <%= render partial: 'assignment/assignment_groups/form_users' %>
+      <%= render partial: 'assignment/assignment_groups/form_users' %>
     <% end %>  
 
-      <div id="assignment-group-comments">
-        <% @assignment_comments = [] %>    
-        <%= render template: 'assignment/assignment_comments/index', locals: {title: :comments} %>
-      </div>
 
+    <div id="assignment-group-comments">
+      <% @assignment_comments = [] %>
+      <%= render template: 'assignment/assignment_group_comments/index', 
+          locals: {
+          title: :comments, 
+          comments: [],
+          id_prefix: 'group-comment'} %>
     </div>
+  
+  </div>
+
+
     <div class="col-md-4 main fade-in three">
+    <% if can? :edit, @assignment_group %>
+      <% @survey_assignments = [] %>    
+      <%= render template: 'assignment/survey_assignments/index' %>
+    <% end %>
         <% @survey_assignments = [] %>    
         <%= render template: 'assignment/user_assignments/index' %>
     </div>
+
+
 </div>
 
