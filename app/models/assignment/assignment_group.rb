@@ -41,7 +41,7 @@ module Assignment
     end
 
     def users_enum
-      @users_enum ||= (assignment_group_template.possible_users - users).map{|u|
+      @users_enum ||= assignment_group_template.possible_users.map{|u|
         [u.title, u.id]
       }
     end

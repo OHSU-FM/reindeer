@@ -30,6 +30,7 @@
 //= require scrollspy.js
 //= require typeahead.bundle.js
 //= require select2.js
+//= require simplemde.min.js
 //= require charts.js
 //= require reports.js
 //= require stats.js

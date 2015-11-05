@@ -1,7 +1,11 @@
-<h2>Participating Users</h2>
-<%= form_for @assignment_group, remote: true do |f| %>
-    <%= f.select :user_ids, 
-        options_for_select(f.object.users_enum, selected: f.object.user_ids), {},
-        multiple: :multiple, class: 'form-control select2'
-    %>
-<% end %>
+<h4>Participants</h4>
+<div class="row">
+<div class="col-md-7">
+    <%= form_for @assignment_group, remote: true do |f| %>
+        <%= f.select :user_ids, 
+            options_for_select(f.object.users_enum, selected: f.object.user_ids), {},
+            multiple: :multiple, class: 'form-control select2 assignment-group-user-ids'
+        %>
+    <% end %>    
+</div>
+</div>
