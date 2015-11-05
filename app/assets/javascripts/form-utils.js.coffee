@@ -1,6 +1,7 @@
 
-window.Modal = {}
-window.Modal.template = '''
+
+window.FormUtils = {}
+window.FormUtils.modal_template = '''
 <div id="modal_blank" class="modal fade" tabindex="-1" role="dialog" data-keyboard="true" style="display:none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -19,7 +20,6 @@ window.Modal.template = '''
 </div>
     '''
 
-window.FormUtils = {}
 window.FormUtils.error_templates = {
     default: '''
 <div class='bs-callout bs-callout-danger'>
@@ -28,11 +28,13 @@ window.FormUtils.error_templates = {
 '''
 }
 
+# Wrap error message within template
 error_wrap = (msg, mtype) ->
     mtype ||= 'default'
     result = window.FormUtils.error_templates[mtype].replace('{{error-message}}', msg)
     return result
 
+# Insert / replace html near target
 resource_insert = ($target, html, insert) ->
     insert = insert || ':replace'
     if insert == ':before'
@@ -44,8 +46,9 @@ resource_insert = ($target, html, insert) ->
     else
       return
 
-resource_load = ($node) ->
-    data = $node.data()
+# Load resource
+resource_load = ($node, data) ->
+    data = data || $node.data()
     $target = $(data.target)
     method = data.method || 'GET' 
     url = $node.attr('href') || data.url 
@@ -59,11 +62,24 @@ resource_load = ($node) ->
         contentType: 'application/html; charset=utf-8'
         error: (data, g1, g2) ->
             resource_insert($target, error_wrap('Error: ' + g2), insert)
+            $(data.onResourceErrorShow).show() if data.onResourceErrorShow?
+            $(data.onResourceErrorHide).hide() if data.onResourceErrorHide?
+            $(data.onResourceErrorRemove).remove() if data.onResourceErrorRemove?
         success: (response) ->
             resource_insert($target, $('<div/>').html(response), insert)
+            $(data.onResourceSuccessShow).show() if data.onResourceSuccessShow?
+            $(data.onResourceSuccessHide).hide() if data.onResourceSuccessHide?
+            $(data.onResourceSuccessRemove).remove() if data.onResourceSuccessRemove?
+        complete: ->
+            alert(data)
+            $(data.onResourceCompleteShow).show() if data.onResourceCompleteShow?
+            $(data.onResourceCompleteHide).hide() if data.onResourceCompleteHide?
+            $(data.onResourceCompleteRemove).remove() if data.onResourceCompleteRemove?
+            
 
 $(document).ready ->
-    $('body').append($.parseHTML(Modal.template))
+    $('body').append($.parseHTML(FormUtils.modal_template))
+
     $(document).on 'click', 'button,a', (event) ->
         $node = $(this)
         data = $node.data()
@@ -102,8 +118,7 @@ $(document).ready ->
                 $target.html('Error<br/>' +g2)
             success: (data) ->
                 new_html = $('<div/>').html(data)
-                $target.html(new_html)
-    
+                $target.html(new_html) 
 
     $('a[data-toggle~=modal]').click (event) ->
         event.preventDefault()

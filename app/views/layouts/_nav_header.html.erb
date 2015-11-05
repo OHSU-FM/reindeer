@@ -30,7 +30,7 @@
                     <% acount = current_user.active_assignments.count %>
                     <% badge_str = acount==0 ? '' : "<span class='badge badge-danger'>#{acount}</span>" %>
                     <%= nav_link_to("#{Settings.site.titles.user_assignment} #{badge_str}".html_safe, 
-                                    main_app.assignments_for_user_path(current_user), 
+                                    main_app.assignment_assignment_groups_path, 
                                     :class=>'assignments-link')%>
                 <% end %>
                 <%= nav_link_to('Charts', main_app.charts_path, :class=>'charts-link') if can? :access, Chart %>

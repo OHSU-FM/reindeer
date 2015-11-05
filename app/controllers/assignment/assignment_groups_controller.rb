@@ -24,11 +24,20 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   def edit
+    if params[:add_user]
+      render partial: 'form_add_user'
+      return
+    end
     respond_with @assignment_group
   end
 
   def update
-    @assignment_group.update(update_params)
+    if pop_user_params
+      @assignment_group.user_ids.delete(pop_user_params)
+    else
+      @assignment_group.update_attributes(update_params)
+    end
+    @assignment_group.save!
     respond_with @assignment_group
   end
 
@@ -50,6 +59,11 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
     params.require(:assignment_assignment_group).
       permit(:title, :desc_md, :user_ids).
       merge(user_id: current_user.id)
+  end
+
+  def pop_user_params
+    params.require(:assignment_assignment_group).
+      permit(:pop_user_id)[:pop_user_id]
   end
 
 end

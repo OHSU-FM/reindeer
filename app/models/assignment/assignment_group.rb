@@ -36,20 +36,22 @@ module Assignment
       STATES.invert
     end
 
-    def user_ids
-      self[:user_ids].map{|v| v.to_i unless v.empty?}.compact
-    end
-
     def assignment_group_template_enum
       AssignmentGroupTemplate.active
     end
 
     def users_enum
-      @users_enum ||= User.all
+      @users_enum ||= (assignment_group_template.possible_users - users).map{|u|
+        [u.title, u.id]
+      }
     end
     
+    def _user_ids
+      @user_ids_int ||= user_ids.select{ |v| v.present? }
+    end
+
     def users
-      User.where(["id in (?)", user_ids])
+      User.where(["id in (?)", _user_ids])
     end
 
     def user_ids_enum

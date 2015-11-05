@@ -103,7 +103,7 @@ class User < ActiveRecord::Base
     end
 
     def title
-        self[:email]
+      self[:full_name] || self[:email]
     end
     
     def is_ldap?

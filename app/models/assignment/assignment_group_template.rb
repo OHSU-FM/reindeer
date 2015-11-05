@@ -29,13 +29,18 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   def self.active
     where(active: true)
   end 
+  
+
+  def possible_users
+    @possible_users ||= permission_group.present? ? permission_group.users : []
+  end
 
   def lime_surveys_enum
     @lime_surveys_enum ||= LimeSurvey.active
   end
 
   def permission_group_enum
-    @users_enum ||= PermissionGroup.all
+    @permission_group_enum ||= PermissionGroup.all
   end
 
   def lime_surveys

@@ -19,7 +19,6 @@
 //= require bootstrap
 //= require bootstrap-notify.js
 //= require notify.js
-// require turbolinks
 //= require intro.js
 //= require modern-business/modern-business.js
 //= require cocoon
@@ -40,6 +39,7 @@
 //= require ls_reports_filter.js
 //= require ls_reports_graph.js
 //= require ls_reports_spreadsheet.js
+//= require_tree ./assignments
 //= require sync_triggers.js
 //= require dataTables/dataTables.js
 //= require dataTables/extensions/TableTools/js/dataTables.tableTools.js

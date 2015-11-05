@@ -1,11 +1,7 @@
-<h2 class="label label-success">Participating Users</h2>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <% @assignment_group.users.each do |user|  %>
-        <span class="label label-default">
-            <%= link_to user.username, '#' %>
-        </span>&nbsp;
-    <% end %>
-  </div>
-</div>
-
+<h2>Participating Users</h2>
+<%= form_for @assignment_group, remote: true do |f| %>
+    <%= f.select :user_ids, 
+        options_for_select(f.object.users_enum, selected: f.object.user_ids), {},
+        multiple: :multiple, class: 'form-control select2'
+    %>
+<% end %>
