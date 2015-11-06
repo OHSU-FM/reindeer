@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ##############################
 # Main
 ##############################
-
+gem 'bundler', '>= 1.8.4'
 # Rails version
 gem 'rails', '~> 4.2'
 gem 'rdoc' # documentation
@@ -138,4 +138,9 @@ group :development do
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]
     gem 'redcarpet'
     gem "twitter-bootstrap-rails"
+end
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-select2'
+  gem 'rails-assets-simplemde'
 end
