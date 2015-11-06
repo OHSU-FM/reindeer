@@ -43,7 +43,7 @@ module ApplicationHelper
     ##
     # Full name of controller with dashes separating modules
     def controller_full_name
-        controller.class.name.sub('Controller','').gsub('::','_').underscore
+        controller.class.name.sub('Controller','').gsub('::','/').underscore
     end
 
     def navbar_css_class

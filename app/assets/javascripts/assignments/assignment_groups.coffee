@@ -5,7 +5,7 @@ $(document).ready ->
     $('.assignment-group-user-ids').change (e)->
         $(this).parent('form').trigger('submit.rails');
 
-    simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
+    window.simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
 
 
 
