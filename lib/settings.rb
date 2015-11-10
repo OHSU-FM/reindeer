@@ -4,8 +4,16 @@ class Settings < Settingslogic
 
     def self.assignments_route_name
       self.try{ |s|
+        name = site.titles.assignment_group.pluralize.downcase
+        name.gsub(' ','_')
+      } || 'goals'
+    end
+    
+    def self.user_assignments_route_name
+      self.try{ |s|
         name = site.titles.user_assignment.pluralize.downcase
         name.gsub(' ','_')
-      } || :tasks
+      } || 'action_plans'
     end
+
 end
