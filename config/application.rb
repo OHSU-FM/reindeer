@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module EdnaConsole
   class Application < Rails::Application
     require "#{Rails.root.to_s}/lib/settings"
-
+    config.secret_key_base = Settings.secret_token
     # Raise transaction errors
     config.active_record.raise_in_transactional_callbacks = true
 

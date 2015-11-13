@@ -3,17 +3,15 @@ class Settings < Settingslogic
     namespace Rails.env
 
     def self.assignments_route_name
-      self.try{ |s|
-        name = site.titles.assignment_group.pluralize.downcase
-        name.gsub(' ','_')
-      } || 'goals'
+      name = site.titles.assignment_group.pluralize.downcase.gsub(' ','_')
+    rescue
+      'goals'
     end
     
     def self.user_assignments_route_name
-      self.try{ |s|
-        name = site.titles.user_assignment.pluralize.downcase
-        name.gsub(' ','_')
-      } || 'action_plans'
+      site.titles.user_assignment.pluralize.downcase.gsub(' ','_')
+    rescue
+      'action_plans'
     end
 
 end
