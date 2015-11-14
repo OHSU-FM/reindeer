@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    layout 'full_width'
+    layout 'full_width_margins'
     include UserAssignmentsHelper
 
     def show
