@@ -38,8 +38,7 @@ class RoleAggregate < ActiveRecord::Base
                 #inline_edit false
                 #inline_add false
                 enum do
-                    binding.pry
-                    LimeSurvey.all.select{|ls|ls.lime_data.table_exists?}.sort_by{|ls|ls.title}.collect{|ls|[ls.title, ls.sid]}
+                    LimeSurvey.with_data_table
                 end
             end
             field :ready_for_use? do
@@ -66,7 +65,7 @@ class RoleAggregate < ActiveRecord::Base
     end
 
     def ready_for_use?
-        agg_question.present? && pk_question.present? && table_exists? 
+        agg_question.present? && pk_question.present? && data_table_exists? 
     end
 
     def delete_dash_widgets
