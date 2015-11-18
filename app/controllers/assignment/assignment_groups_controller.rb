@@ -1,4 +1,5 @@
 class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseController
+  layout 'full_width'
   respond_to :html
   authorize_resource 
   before_filter :load_resource, only: [:show, :edit, :update, :destroy]
