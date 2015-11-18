@@ -10,7 +10,7 @@
   <%= error_span(@assignment_group[:status]) %>
   <%= f.input :desc_md %>
   <%= error_span(@assignment_group[:desc_md]) %>
-  <%= f.input :user_ids, collection: @assignment_group.users_enum,
+  <%= f.input :user_ids, collection: @assignment_group.user_ids_enum,
       value_method: :id, title_method: :title, 
       input_html: {multiple: true} %>
   <%= error_span(@assignment_group[:user_ids]) %>

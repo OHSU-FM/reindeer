@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get 'users', to: 'settings#show_users', as: :users
       get 'surveys', to: 'settings#show_lime_surveys', as: :surveys
       get 'permissions_groups', to: 'settings#show_permissions_groups', as: :permissions_groups
-      get Settings.site.titles.user_assignment.pluralize.downcase, to: 'settings#show_assignments', as: :assignments
+      get Settings.assignments_route_name, to: 'settings#show_assignments', as: :assignments
     end
 
     resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]

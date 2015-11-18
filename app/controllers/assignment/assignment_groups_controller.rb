@@ -12,6 +12,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   def show
+    @assignment_groups = Assignment::AssignmentGroup.all
     respond_with @assignment_group
   end
 

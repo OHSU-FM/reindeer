@@ -1,11 +1,8 @@
-<h1> <%= Settings.site.titles.assignment_group.titleize.pluralize %></h1>
-<div class='row'>
-    <a href='#' class='btn btn-link'>project 1</a>
-    <a href='#' class='btn btn-primary'>project 2</a>
-    <a href='#' class='btn btn-link'>project 3</a>
-    <a href='#' class='btn btn-link'>project 4</a>
-    <a href='#' class='btn btn-link'>project 5</a>
-    <a href='#' class='btn btn-link'>project 6</a>
+<h1> <%= Settings.assignments_route_name.titleize.pluralize %></h1>
+<div class='container-fluid'> 
+    <% @assignment_groups.each do |group| %>
+        <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
+    <% end %>
     <% if can? :create, Assignment::AssignmentGroup %>
         <%= link_to new_assignment_assignment_group_path, 
             class: 'btn btn-success',
@@ -16,7 +13,7 @@
 </div>
 <hr/>
 
-<div id='assignment_group_2' class="row">
+<div id='assignment_group_2' class="container-fluid">
   <div class="col-md-8 main fade-in two" style="border-right:1px solid #ddd;">
 
     <%= render partial: 'form_title' %>

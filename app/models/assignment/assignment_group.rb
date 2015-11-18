@@ -11,17 +11,23 @@ module Assignment
     delegate :lime_surveys, to: :assignment_group_template
     validates :owner, presence: true
     validates :assignment_group_template, presence: true
+    
+    before_validation :set_defaults, on: :create
+
     STATES = {
       1 => :active,
       2 => :inactive,
       3 => :complete
     }
     
-    attr_accessible :user_id, :title, :desc_md, :user_ids
+    attr_accessible :assignment_group_template_id, :user_id, :title, :desc_md, :user_ids
 
     rails_admin do
-      field :id do
-        read_only true
+      list do
+        field :id do
+          read_only true
+        end
+        include_all_fields
       end
       field :owner, :belongs_to_association
       field :assignment_group_template
@@ -39,23 +45,24 @@ module Assignment
     def assignment_group_template_enum
       AssignmentGroupTemplate.active
     end
-
-    def users_enum
-      @users_enum ||= assignment_group_template.possible_users.map{|u|
-        [u.title, u.id]
-      }
-    end
     
-    def _user_ids
-      @user_ids_int ||= user_ids.select{ |v| v.present? }
-    end
-
-    def users
-      User.where(["id in (?)", _user_ids])
+    def possible_users
+      assignment_group_template ? assignment_group_template.possible_users : []
     end
 
     def user_ids_enum
-      @user_ids_enum ||= users_enum.map{|u|[u.title, u.id]}
+      @user_ids_enum ||= possible_users.map{|u|[u.title, u.id]}
+    end
+    
+    protected
+
+    def set_defaults
+      agt = assignment_group_template
+      return unless agt.present?
+      self.title = agt.title unless title.present?
+      self.desc_md = agt.desc_md unless desc_md.present?
+      self.user_ids = agt.possible_users.map{|u|u.id} unless user_ids.present?
+      self.status = STATES.invert[:active] unless status.present?
     end
 
   end

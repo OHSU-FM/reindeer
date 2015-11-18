@@ -1,36 +1,39 @@
 class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   has_many :assignment_groups
   belongs_to :permission_group, inverse_of: :assignment_group_templates, class_name: 'PermissionGroup'
-  serialize :sids, Array
-  attr_accessible :permission_group_id, :title, :sids
-
   validates :lime_surveys, presence: true
   validates :permission_group, presence: true
   validates :title, presence: true
+  scope :active, -> { where(active: true) }
+
+  serialize :sids, Array
+  attr_accessible :permission_group_id, :title, :sids, :desc_md
 
   STATES = {
     inactive: 0,
     active: 1,
     stopped: 2
   }
-
+  
   rails_admin do
     edit do
       field :permission_group, :belongs_to_association do
         inline_edit false
         inline_add false
       end
-
       field :title
-      field :sids
+      field :desc_md do
+        label 'Description'
+      end
+
+      field :sids do
+        label 'Lime Surveys'
+      end
     end
-  end
-
-  def self.active
-    where(active: true)
   end 
-  
-
+ 
+  ##
+  # Select users that are available to add from permission_group
   def possible_users
     @possible_users ||= permission_group.present? ? permission_group.users : []
   end
@@ -50,7 +53,7 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   def sids
     self[:sids].map{|v| v.to_i unless v.empty?}.compact
   end
-
+  
   def sids_enum
     LimeSurvey.active.map{|ls|[ls.title, ls.sid]}
   end
