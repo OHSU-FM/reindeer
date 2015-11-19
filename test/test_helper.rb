@@ -28,3 +28,7 @@ class ActionController::TestCase
   include ControllerMacros
 end
 
+# Minitest::Spec
+class Minitest::Spec
+  include FactoryGirl::Syntax::Methods
+end
