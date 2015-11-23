@@ -56,8 +56,7 @@ LDAP authentication is supported
  git clone https://github.com/OHSU-FM/reindeer.git
  ```
 
-4. **Download and install LimeSurvey**
-[Get LimeSurvey here](https://www.limesurvey.org/en/#download)
+4. **Download and install [LimeSurvey](https://www.limesurvey.org/en/#download)**
 
 5. **Configure reindeer yml files**
 
