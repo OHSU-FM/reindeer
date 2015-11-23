@@ -59,12 +59,14 @@ LDAP authentication is supported
 4. **Download and install LimeSurvey**
 [Get LimeSurvey here](https://www.limesurvey.org/en/#download)
 
-5. **Configure reindeer**
+5. **Configure reindeer yml files**
+
 There are several yml.example files in the config directory. These files need to be copied and have the .example extension removed. Look inside of each file and make the appropriate changes for your needs.
 
-One **important** note: Project Reindeer is a companion application to LimeSurvey and because of this it requires a shared database with limeSurvey to function. Be sure to copy the database information that was entered into LimeSurvey and use it when you are modifying the ./config/database.yml file in reindeer.
+6. **Configure reindeer database.yml**
+**Important** note: Project Reindeer is a companion application to LimeSurvey and because of this it requires a shared database with limeSurvey to function. Be sure to copy the database information that was entered into LimeSurvey and use it when you are modifying the ./config/database.yml file in reindeer.
 
-6. Start rails
+7. Start rails
 ```bash
 # From the base directory
 rake db:setup
