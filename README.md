@@ -64,20 +64,31 @@ sudo apt-get install ruby
 4. **Download and install [LimeSurvey](https://www.limesurvey.org/en/#download)**
 
 5. **Configure reindeer yml files**
-
 There are several yml.example files in the config directory. These files need to be copied and have the .example extension removed. Look inside of each file and make the appropriate changes for your needs.
 
 6. **Configure reindeer database.yml**
-**Important** note: Project Reindeer is a companion application to LimeSurvey and because of this it requires a shared database with limeSurvey to function. Be sure to copy the database information that was entered into LimeSurvey and use it when you are modifying the ./config/database.yml file in reindeer.
+Project Reindeer is a companion application to LimeSurvey and because of this it requires a shared database with limeSurvey to function. Be sure to copy the database information that was entered into LimeSurvey and use it when you are modifying the ./config/database.yml file in reindeer.
 
-7. Start rails
+7. **Setup database**
 ```bash
 # From the base directory
+
+# Initialize database
 rake db:setup
+```
+8. **Create Admin User**
+```bash
+# From project root directory
+rails c
+user = User.new
+user.password = 'somepassword'
+user.password_confirmation = 'somepassword'
+user.username = 'admin'
+user.email = 'user@example.com'
+user.save!
+```
+9. **Start rails**
+```bash
 rails s
 ```
-
- 
-
-
 
