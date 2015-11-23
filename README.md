@@ -39,11 +39,16 @@ LDAP authentication is supported
 
 ## Quick Start Guide
 
+Database note: Current development uses PostgreSQL, but other database types will probably also work as long as it is also supported by LimeSurvey. 
+
 ### Create a development environment
 
 #### Option I: Ubuntu
 
 1. **Install ruby 1.9.3 or higher**
+```bash
+sudo apt-get install ruby
+```
 2. **Install dependencies**
  ```bash
  sudp apt-get update
