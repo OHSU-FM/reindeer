@@ -1,0 +1,20 @@
+<%= simple_form_for [@assignment_group], 
+        :html => { :class => 'form-horizontal' } do |f| %>
+  
+  <%= f.input :assignment_group_template_id, 
+        collection: @assignment_group.assignment_group_template_enum %>
+  <%= error_span(@assignment_group[:assignment_group_template_id]) %>
+  <%= f.input :title %>
+  <%= error_span(@assignment_group[:title]) %>
+  <%= f.input :status %>
+  <%= error_span(@assignment_group[:status]) %>
+  <%= f.input :desc_md %>
+  <%= error_span(@assignment_group[:desc_md]) %>
+  <%= f.input :user_ids, collection: @assignment_group.user_ids_enum,
+      value_method: :id, title_method: :title, 
+      input_html: {multiple: true} %>
+  <%= error_span(@assignment_group[:user_ids]) %>
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                assignment_assignment_groups_path, :class => 'btn btn-default' %>
+<% end %>

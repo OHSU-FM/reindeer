@@ -1,10 +1,5 @@
-    <ul class="nav nav-pills nav-stacked">
-        <li class="active">
-            <%= link_to 'Account', current_user %>
-        </li>
-        <% if can? :manage, :all %>
-        <li class="active">
-        <%= link_to 'Database Triggers', current_user, action: :db_trigger%>
-        </li>
-        <% end %>
-    </ul>
+<ul class="nav nav-pills nav-stacked">
+    <li class="active">
+        <%= link_to 'Account', current_user %>
+    </li>
+</ul>

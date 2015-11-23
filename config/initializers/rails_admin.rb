@@ -36,6 +36,9 @@ RailsAdmin.config do |config|
 
   end
 
+  # Temporary workaround for bug in rails_admin, forms won't submit
+  #https://github.com/sferik/rails_admin/issues/2443
+  config.browser_validations = false
   config.total_columns_width = 1200
   ################  Global configuration  ################
 

@@ -39,7 +39,8 @@ class PermissionLsGroup < ActiveRecord::Base
 
     rails_admin do
         navigation_label 'Permissions' 
-        
+        label 'Lime Survey'
+        visible false
         list do
             field :id do
                 pretty_value do
@@ -75,7 +76,13 @@ class PermissionLsGroup < ActiveRecord::Base
                     plg = bindings[:object]
                     Proc.new { |scope|
                         if plg.present?
-                            scope = scope.where('sid = ? OR sid not in (?)', plg.lime_survey.sid, plg.permission_group.lime_surveys.map{|ls|ls.sid})
+                            scope = scope.
+                              where('sid = ? OR sid not in (?)',
+                                    plg.lime_survey.sid, 
+                                    plg.permission_group.lime_surveys.map{|ls|
+                                      ls.sid})
+                        else
+                          scope.with_role_aggregate
                         end
                     }
                 end 

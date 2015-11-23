@@ -20,6 +20,10 @@ class RoleAggregate < ActiveRecord::Base
     before_destroy :delete_dash_widgets
     
     DEFAULT_VIEWS = ['graph', 'filter', 'spreadsheet']
+    
+    def data_table_exists?
+      lime_data.table_exists?
+    end
 
     rails_admin do
         navigation_label 'Lime Survey'
@@ -34,7 +38,7 @@ class RoleAggregate < ActiveRecord::Base
                 #inline_edit false
                 #inline_add false
                 enum do
-                    LimeSurvey.all.sort_by{|ls|ls.title}.collect{|ls|[ls.title, ls.sid]}
+                    LimeSurvey.with_data_table
                 end
             end
             field :ready_for_use? do
@@ -61,16 +65,17 @@ class RoleAggregate < ActiveRecord::Base
     end
 
     def ready_for_use?
-        agg_question.present? && pk_question.present? && lime_survey.lime_data.table_exists? 
+        agg_question.present? && pk_question.present? && data_table_exists? 
     end
 
     def delete_dash_widgets
         question_widgets.each{|qw| qw.dash_widget.destroy}
     end
+    
 
     def validates_table_existance
         # Checks for existence of lime_survey table before saving
-        unless ActiveRecord::Base.connection.table_exists? LimeExt::LimeData.table_name(lime_survey_sid)
+        unless data_table_exists?
             errors.add :lime_survey, 'results table does not exist'
         end
     end

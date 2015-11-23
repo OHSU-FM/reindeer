@@ -1,4 +1,4 @@
-<div class="navbar navbar-default <%= navbar_css_class %> navbar-fixed-top" role="navigation">
+<div id="nav-bar" class="navbar navbar-default <%= navbar_css_class %> navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -26,11 +26,11 @@
                     <%= nav_link_to('Reports', main_app.ls_reports_path, 
                             :class=>'ls_reports-link')%>
                 <% end %>
-                <% if can? :list, UserAssignment %>
+                <% if can? :list, Assignment::UserAssignment %>
                     <% acount = current_user.active_assignments.count %>
                     <% badge_str = acount==0 ? '' : "<span class='badge badge-danger'>#{acount}</span>" %>
-                    <%= nav_link_to("#{Settings.site.titles.user_assignment} #{badge_str}".html_safe, 
-                                    main_app.assignments_for_user_path(current_user), 
+                    <%= nav_link_to("#{Settings.assignments_route_name.pluralize.titleize} #{badge_str}".html_safe, 
+                                    main_app.assignment_assignment_groups_path, 
                                     :class=>'assignments-link')%>
                 <% end %>
                 <%= nav_link_to('Charts', main_app.charts_path, :class=>'charts-link') if can? :access, Chart %>

@@ -1,13 +1,26 @@
+##
+# the link between a survey
+module Assignment
 class SurveyAssignment < ActiveRecord::Base
-    attr_accessible :lime_survey_sid, :title, :gather_user_tokens, :user_assignments_attributes, :as_inline
+    attr_accessible :lime_survey_sid, :assignment_group_id,
+      :title, :gather_user_tokens, :user_assignments_attributes, :as_inline
     attr_accessor :gather_user_tokens
 
     belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:survey_assignments
-
+    
+    belongs_to :assignment_group
     has_many :user_assignments, :inverse_of=>:survey_assignment, :dependent=>:delete_all
     
-    validates_presence_of :lime_survey_sid
-    validates_presence_of :title, :if=> Proc.new {|f| f.lime_survey_sid.present?}
+    validates :assignment_group, 
+      presence: true
+    
+    validates :lime_survey, 
+      presence: true, 
+      if: Proc.new { |f| f.assignment_group.present? } 
+    
+    validates :title, 
+      presence: true,
+      if: Proc.new {|f| f.lime_survey_sid.present?}
 
     accepts_nested_attributes_for :user_assignments, :allow_destroy=>true, :reject_if=>:all_blank
 
@@ -15,11 +28,21 @@ class SurveyAssignment < ActiveRecord::Base
     after_validation :do_gather_user_tokens
 
     rails_admin do
-        navigation_label "User Content"
         field :title do
             required false
         end
-        field :lime_survey
+        field :assignment_group
+        field :lime_survey do
+          associated_collection_cache_all false  
+          associated_collection_scope do
+            sas = bindings[:object]
+            Proc.new { |scope|
+              if sas.assignment_group.present?
+                sas.assignment_group.lime_surveys
+              end
+            }
+          end
+        end
         field :gather_user_tokens, :boolean
         field :as_inline, :boolean do
           help 'Show inline form for assignment'
@@ -34,6 +57,10 @@ class SurveyAssignment < ActiveRecord::Base
         end
     end
     
+    def lime_survey_enum
+      assignment_group.present? ? assignment_group.lime_surveys : []
+    end
+
     ##
     # Set the default title if one is not set during update
     def do_default_title
@@ -80,4 +107,4 @@ class SurveyAssignment < ActiveRecord::Base
     end
 
 end
-
+end

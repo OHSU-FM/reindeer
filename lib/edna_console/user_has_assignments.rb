@@ -3,7 +3,7 @@ module EdnaConsole::UserHasAssignments
     attr_reader :active_assignments, :completed_assignments
 
     included do
-        has_many :user_assignments    
+        has_many :user_assignments, class_name: 'Assignment::UserAssignment' 
     end
     
 

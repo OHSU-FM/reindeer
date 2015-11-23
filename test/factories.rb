@@ -1,16 +1,4 @@
 FactoryGirl.define do
-
-  factory :user do
-    email 'test@example.com'
-    username 'test_user'
-    full_name 'A test user'
-    password "password"
-    password_confirmation "password"
-    admin false
-    is_ldap false
-    can_dashboard true
-    can_lime true
-  end
   
   factory :no_permissions_user, class: User do
     email 'no_permissions_user@example.com'

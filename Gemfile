@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ##############################
 # Main
 ##############################
-
+gem 'bundler', '>= 1.8.4'
 # Rails version
 gem 'rails', '~> 4.2'
 gem 'rdoc' # documentation
@@ -88,6 +88,8 @@ gem 'high_voltage'
 # Statistics
 gem 'descriptive-statistics'
 
+gem 'smart_listing'
+
 ##############################
 # Analysis
 ##############################
@@ -102,7 +104,7 @@ group :test do
     gem "minitest-rails-capybara"
     gem 'rails-perftest'
     gem "factory_girl_rails", "~> 4.0"
-
+    gem "faker"
 end
 
 group :test, :development do
@@ -135,4 +137,10 @@ group :development do
     # Interactive debugging from the web
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]
     gem 'redcarpet'
+    gem "twitter-bootstrap-rails"
+end
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-select2'
+  gem 'rails-assets-simplemde'
 end

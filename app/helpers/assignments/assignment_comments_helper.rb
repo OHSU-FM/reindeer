@@ -1,0 +1,2 @@
+module Assignments::AssignmentCommentsHelper
+end

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       get 'users', to: 'settings#show_users', as: :users
       get 'surveys', to: 'settings#show_lime_surveys', as: :surveys
       get 'permissions_groups', to: 'settings#show_permissions_groups', as: :permissions_groups
-      get Settings.site.titles.user_assignment.pluralize.downcase, to: 'settings#show_assignments', as: :assignments
+      get Settings.assignments_route_name, to: 'settings#show_assignments', as: :assignments
     end
 
     resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]
@@ -50,10 +50,24 @@ Rails.application.routes.draw do
     end
 
     resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
-        member do 
-            get Settings.site.titles.user_assignment.pluralize.downcase, 
-              :to=>'users#show_assignments', :as=>:assignments_for
-        end
+      member do 
+        get Settings.assignments_route_name, 
+          :to=>'users/assignment_group#show', :as=>:assignments_for
+      end
+    end 
+    
+    namespace :assignment, path: Settings.assignments_route_name  do
+      root to: 'assignment_groups#index'
+      resources :assignment_group_templates, as: :templates, path: :templates 
+      resources :assignment_groups, param: :assignment_group_id, 
+        path: :groups
+      resources :user_assignments, path: :tasks
+      resources :survey_assignments, path: :forms, param: :survey_assignment_id
+      resources :assignment_group_comments, path: :group_comments, 
+        param: :assignment_group_id, only: [:show, :new]
+      resources :survey_assignment_comments, path: :form_comments, 
+        param: :survey_assignment_id, only: [:show]
+      resources :assignment_comments, path: :comments
     end
 
     get 'ls_files/:sid/:row_id/:qid/:name', :to=>'ls_files#show', :constraints=>{:name=>/[^\/]+/}, :as=>:lime_file

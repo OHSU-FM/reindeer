@@ -3,6 +3,14 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 //= require charts
 //= require gridster/jquery.gridster.css
+$contrast-color: red;
+
+#nav-bar{
+    border-bottom: 0px;
+}
+#nav-links > ul > li.active{
+    border-bottom: 3px solid $contrast-color;
+}
 
 body.theme-oregon-coast{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}

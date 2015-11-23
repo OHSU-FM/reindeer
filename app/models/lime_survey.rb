@@ -16,6 +16,13 @@ class LimeSurvey < ActiveRecord::Base
     has_one :role_aggregate, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
     delegate :add_filter, :dataset, :to=>:lime_data 
     has_many :survey_assignments, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
+    scope :active, -> { where(active: 'Y') }
+    scope :with_role_aggregate, -> { joins(:role_aggregate) }
+    # TODO: Double check to see if with_data_table is the same as "active"
+    scope :with_data_table, -> {
+      match = ActiveRecord::Base.connection.tables.join(' ').match(/#{table_name.singularize}_(\d+)/)
+      match ? where(['sid in (?)', match.captures]) : none
+    }
 
     rails_admin do
         navigation_label "Lime Survey"

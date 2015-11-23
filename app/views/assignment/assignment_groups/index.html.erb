@@ -1,0 +1,8 @@
+<% if @assignment_groups.empty? %>
+<h4>
+<span class="label label-warning">Zero <%= Settings.assignments_route_name.pluralize %></span>
+</h4>
+<p>
+Sorry, there isn't anything to view.
+</p>
+<% end %>

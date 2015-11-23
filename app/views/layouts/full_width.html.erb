@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <%= render :partial=>'layouts/head' %>
-<body id="<%= controller_name %>" class="<%= yield(:body_classes)%>"  data-spy="scroll" data-target="#scroll-spy-nav">
+<body id="<%= controller_name %>"  
+      class="layout-full-width <%= yield(:body_classes)%>" 
+      data-spy="scroll" data-target="#scroll-spy-nav">
 
     <%= render 'layouts/nav_header' %>
 

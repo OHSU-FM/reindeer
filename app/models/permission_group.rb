@@ -3,12 +3,16 @@ class PermissionGroup < ActiveRecord::Base
     has_many :permission_ls_groups, :inverse_of=>:permission_group, :dependent=>:destroy
     has_many :lime_surveys, :through=>:permission_ls_groups
     has_many :role_aggregates, :through=>:lime_surveys
-    accepts_nested_attributes_for :permission_ls_groups, :allow_destroy=>true, :reject_if=>:all_blank
+    has_many :assignment_group_templates, ->{ active },
+      class_name: 'Assignment::AssignmentGroupTemplate'
+    
+
+    accepts_nested_attributes_for :permission_ls_groups, :allow_destroy=>true, 
+      :reject_if=>:all_blank
     validates_associated :permission_ls_groups
     attr_accessible :permission_ls_groups_attributes, :allow_destroy=>true
     attr_accessible :title, :user_ids
-    validates_presence_of :title
-    validates_uniqueness_of :title
+    validates :title, presence: true, uniqueness: true
 
     rails_admin do
         navigation_label 'Permissions' 

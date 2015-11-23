@@ -1,0 +1,14 @@
+<%= simple_form_for @user_assignment, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :user_id %>
+  <%= error_span(@user_assignment[:user_id]) %>
+  <%= f.input :survey_assignment_id %>
+  <%= error_span(@user_assignment[:survey_assignment_id]) %>
+  <%= f.input :lime_token_tid %>
+  <%= error_span(@user_assignment[:lime_token_tid]) %>
+  <%= f.input :started_at %>
+  <%= error_span(@user_assignment[:started_at]) %>
+
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                assignment_forms_path(), :class => 'btn btn-default' %>
+<% end %>

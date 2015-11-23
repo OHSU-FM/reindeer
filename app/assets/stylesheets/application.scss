@@ -7,10 +7,13 @@
  *
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
- *
+ * require select2
+ * require simplemde/simplemde.min.scss
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'select2';
+@import 'simplemde/simplemde.min.scss';
 /*@import 'modern-business/bootstrap';
 @import 'modern-business/modern-business';*/
 @import 'bootstrap-growl';
@@ -22,7 +25,8 @@
 /*@import 'modern-business/overrides';*/
 @import 'base';
 @import 'scrollspy';
-@import 'select2';
+/*@import 'select2';
+@import 'simplemde';*/
 @import 'typeahead';
 @import 'mini_profiler';
 @import 'ls_reports';
@@ -30,3 +34,4 @@
 @import 'dataTables';
 @import 'nav_header';
 @import 'dataTables/extensions/TableTools/css/dataTables.tableTools';
+@import 'layouts';

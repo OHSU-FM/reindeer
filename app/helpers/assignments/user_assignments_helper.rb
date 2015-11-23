@@ -1,0 +1,2 @@
+module Assignments::UserAssignmentsHelper
+end
