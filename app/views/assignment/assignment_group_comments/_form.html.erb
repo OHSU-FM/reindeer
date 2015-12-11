@@ -1,8 +1,9 @@
 <%= form_for comment, 
+    url: create_assignment_assignment_group_comment_path(assignment_group_id: @assignment_group.id),
     :html => { :class => "form-group" } do |f| %>
     <% fid = f.options[:html][:id] %>
 
-<blockquote class="bs-callout-<%= bq_type %>">
+  <blockquote class="bs-callout-<%= bq_type %>">
     <h4>
         <span class="label label-<%= bq_type %>">
             <% if comment.new_record? %>  
@@ -18,15 +19,18 @@
         class: 'form-control',
         rows: 4 %>
     <div class="pull-right">
-      <button type="button" class="btn btn-link"
-              data-remove='#<%= fid %>'
-            data-show="#new-group-comment-btn">
+        <%= button_tag type: :submit, 
+            data: {
+                remove: "##{fid}",
+                show: "#new-group-comment-btn"
+            },
+            class: 'btn btn-link' do %>
             <i class="glyphicon glyphicon-ok"></i>
-      </button>
-      <button type="button" class="btn btn-link" 
+        <% end %>
+      <button type="button" class="btn btn-link danger" 
           data-remove='#<%= fid %>'
           data-show="#new-group-comment-btn">
-          <i class="fa fa-ban"></i>
+          <i class="fa fa-ban text-danger"></i>
       </button>
     </div>
   </blockquote>

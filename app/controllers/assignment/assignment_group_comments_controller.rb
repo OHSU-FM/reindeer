@@ -24,6 +24,10 @@ module Assignment
     end
 
     def create
+      @assignment_group = AssignmentGroup.find(group_params)
+      authorize! :read, @assignment_group
+      binding.pry
+      @comment = @assignment_group.comments.build(user_id: current_user.id)
     end
 
     def destroy
@@ -33,6 +37,10 @@ module Assignment
 
     def group_params
       params.require(:assignment_group_id)
+    end
+
+    def comment_params
+
     end
 
   end
