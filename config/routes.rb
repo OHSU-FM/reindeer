@@ -50,7 +50,10 @@ Rails.application.routes.draw do
     end
 
     resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
-      member do 
+      collection do
+        resource :forgot_password, only: [:new, :create]
+      end
+      member do
         get Settings.assignments_route_name, 
           :to=>'users/assignment_group#show', :as=>:assignments_for
       end

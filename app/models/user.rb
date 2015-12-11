@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
     has_many :user_externals, :dependent=>:delete_all, :inverse_of=>:user
     has_many :assignment_group_templates, through: :permission_group
     has_one :dashboard, :dependent=>:delete
+    scope :find_login, lambda {|login| where(['username = ? OR email = ? ', login, login]) }
 
     include EdnaConsole::UserHasAssignments
     
