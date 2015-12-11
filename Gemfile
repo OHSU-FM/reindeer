@@ -104,7 +104,7 @@ group :test do
     gem "minitest-rails-capybara"
     gem 'rails-perftest'
     gem "factory_girl_rails", "~> 4.0"
-
+    gem "faker"
 end
 
 group :test, :development do
