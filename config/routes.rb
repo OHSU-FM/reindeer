@@ -51,7 +51,8 @@ Rails.application.routes.draw do
 
     resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
       collection do
-        resource :forgot_password, only: [:new, :create]
+        resource :forgot_password, only: [:new, :create], path: :forgot_password,
+          controller: 'user/forgot_password'
       end
       member do
         get Settings.assignments_route_name, 

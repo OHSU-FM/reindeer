@@ -1,0 +1,14 @@
+<h1>Reset Password</h1>
+
+<%= form_tag(forgot_password_path, :method => :post) do %>
+    <div class="form-group">
+    <%= label_tag :login, 'Enter your email or user name.' %>
+    </div>
+    <div class="form-group">
+    <%= text_field_tag :login, params[:login] %>
+    </div>
+    <div class="form-group">
+    <%= link_to 'Cancel', new_user_session_path, class: 'btn btn-md btn-default' %>
+    <%= submit_tag 'Submit', class: 'btn btn-md btn-primary'%> 
+    </div>
+<% end %>
