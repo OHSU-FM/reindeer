@@ -38,7 +38,7 @@ class RoleAggregate < ActiveRecord::Base
                 #inline_edit false
                 #inline_add false
                 enum do
-                    LimeSurvey.with_data_table
+                  LimeSurvey.with_data_table.map{|ls|[ls.title, ls.sid]}
                 end
             end
             field :ready_for_use? do

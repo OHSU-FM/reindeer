@@ -20,8 +20,8 @@ class LimeSurvey < ActiveRecord::Base
     scope :with_role_aggregate, -> { joins(:role_aggregate) }
     # TODO: Double check to see if with_data_table is the same as "active"
     scope :with_data_table, -> {
-      match = ActiveRecord::Base.connection.tables.join(' ').match(/#{table_name.singularize}_(\d+)/)
-      match ? where(['sid in (?)', match.captures]) : none
+      match = ActiveRecord::Base.connection.tables.join(' ').scan(/#{table_name.singularize}_(\d+)/)
+      match.present? ? where(['sid in (?)', match.flatten]) : none
     }
 
     rails_admin do
