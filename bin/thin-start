@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+RAILS_RELATIVE_URL_ROOT=/test/app thin start --prefix=/test/app -D
