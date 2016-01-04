@@ -29,7 +29,11 @@ module Assignment
         end
         include_all_fields
       end
-      field :owner, :belongs_to_association
+      field :owner, :belongs_to_association do
+        default_value do
+          bindings[:view]._current_user
+        end
+      end
       field :assignment_group_template
       field :status
       field :title

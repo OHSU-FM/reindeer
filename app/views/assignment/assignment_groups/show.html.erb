@@ -5,8 +5,7 @@
     <% end %>
     <% if can? :create, Assignment::AssignmentGroup %>
         <%= link_to new_assignment_assignment_group_path, 
-            class: 'btn btn-success',
-            data: {toggle: :modal} do %>
+            class: 'btn btn-success' do %>
             New Project
         <% end %>
     <% end %>

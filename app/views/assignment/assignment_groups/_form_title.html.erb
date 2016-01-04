@@ -1,22 +1,24 @@
 <%= form_for @assignment_group, remote: true do |f| %>
     <% fid = '#' + f.options[:html][:id] %>
+    
     <h2>
-        <span><%= @assignment_group.title %></span>
+      <span><%= @assignment_group.title %></span>
       <button type='button'
-          class='btn btn-default'
+          class='btn btn-link <%= :hidden unless can?(:edit, @assignment_group) %>'
           data-show="<%= fid %>_title"
           data-hide="<%= fid %> h2">
-          <i class='glyphicon glyphicon-pencil'></i>
+          <i class='glyphicon glyphicon-edit'></i>
       </button>
     </h2>
+    <!-- Edit -->
+
     <div id='<%= f.options[:html][:id] %>_title' 
       class='bs-callout bs-callout-primary' 
       style='display:none;'>
-      <h4>
+      <h3>
           <span class="label label-primary">Editing</span>
-          <%= Settings.assignments_route_name.singularize.titleize %> 
-          title
-      </h4>
+          Title
+      </h3>
       <div class="input-group input-group-lg">
         <%= f.text_field :title, class: 'form-control title'%>
         <span class="input-group-btn">
@@ -27,15 +29,15 @@
                 copy_val: "#{fid}_title input[type=text]",
                 target: "#{fid} h2 span"
               },
-              class: 'btn btn-default' do %>
+              class: 'btn btn-link' do %>
               <i class='glyphicon glyphicon-ok'></i> 
-          <% end %>
+          <% end %> <!-- Submit -->
           <button type="button" 
               data-show="<%= "#{fid} h2" %>"
               data-hide="<%= "#{fid}_title" %>"
               class="btn btn-link" style="color:red;">
               <i class="fa fa-ban" style='color:red;'></i>
-          </button>
+          </button> <!-- Cancel -->
         </span>
       </div><!-- /input-group -->
     </div>
