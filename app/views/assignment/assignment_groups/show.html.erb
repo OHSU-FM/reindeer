@@ -34,7 +34,6 @@
   
   </div>
 
-
   <div class="col-md-4 main fade-in three">
   <% if can? :edit, @assignment_group %>
     <% @survey_assignments = [] %>    
@@ -43,7 +42,6 @@
       <% @survey_assignments = [] %>    
       <%= render template: 'assignment/user_assignments/index' %>
   </div>
-
 
 </div>
 

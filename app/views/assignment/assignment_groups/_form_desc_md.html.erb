@@ -1,12 +1,15 @@
-<%= form_for @assignment_group, remote: true do |f| %>
+<%= form_for @assignment_group, remote: true, namespace: :desc_md do |f| %>
   <% fid = '#' + f.options[:html][:id] %>
 
   <div class="md-show">
+    <% if can?(:edit, @assignment_group) %>
     <button type="button" class="btn btn-link pull-right" 
         data-hide="<%= fid %> .md-show" 
         data-show="<%= fid %> .md-edit">
       <i class="glyphicon glyphicon-edit"></i>
     </button>
+    <% end %>
+
     <div class="md-content">
     </div>
   </div>
@@ -36,7 +39,7 @@
         </div>
       </h3>
 
-      <%= f.text_area :desc_md, id: 'MyID', rows: 8 %>
+      <%= f.text_area :desc_md, rows: 8 %>
       <!-- Text Content -->
   </div>
 <% end %>
