@@ -1,7 +1,7 @@
 
 
-window.FormUtils = {}
-window.FormUtils.modal_template = '''
+@FormUtils = {}
+@FormUtils.modal_template = '''
 <div id="modal_blank" class="modal fade" tabindex="-1" role="dialog" data-keyboard="true" style="display:none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -20,13 +20,21 @@ window.FormUtils.modal_template = '''
 </div>
     '''
 
-window.FormUtils.error_templates = {
+@FormUtils.error_templates = {
     default: '''
 <div class='bs-callout bs-callout-danger'>
     {{error-message}}
 </div>
 '''
 }
+
+class @FormUtils.DataEvents
+    initialize: nodes
+        @$nodes = nodes
+        @event_handlers()
+
+    event_handlers:
+        
 
 # Wrap error message within template
 error_wrap = (msg, mtype) ->
@@ -78,8 +86,10 @@ resource_load = ($node, data) ->
             
 
 $(document).ready ->
+    # Add template modal to body
     $('body').append($.parseHTML(FormUtils.modal_template))
 
+    # Automatic data actions
     $(document).on 'click', 'button,a', (event) ->
         $node = $(this)
         data = $node.data()
@@ -97,10 +107,12 @@ $(document).ready ->
             event.stopImmediatePropagation()
             resource_load($node)
         return
-    
+
+    # replace_on_submit 
     $('form button[type=submit][data-toggle~=replace]').click (event) ->
         console.log 'hello GGGGGGGG'
-
+    
+    # link_to_update_content
     $('a[data-toggle~=replace]').click (event) ->
         event.preventDefault()
         event.stopImmediatePropagation()
@@ -119,7 +131,8 @@ $(document).ready ->
             success: (data) ->
                 new_html = $('<div/>').html(data)
                 $target.html(new_html) 
-
+    
+    # link_to_modal_dialog
     $('a[data-toggle~=modal]').click (event) ->
         event.preventDefault()
         event.stopImmediatePropagation()

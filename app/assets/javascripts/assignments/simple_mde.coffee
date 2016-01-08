@@ -46,6 +46,6 @@ class @Assignments.SimpleMDE
         # Update viewer on save
         @$form.on 'ajax:success', (event) ->
             klass.refresh_viewer()
-
+        
         return
 

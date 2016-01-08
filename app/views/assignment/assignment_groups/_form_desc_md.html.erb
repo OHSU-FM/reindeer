@@ -1,4 +1,6 @@
-<%= form_for @assignment_group, remote: true, namespace: :desc_md do |f| %>
+<%= form_for @assignment_group, remote: true, 
+        data: {class: 'Assignments.MarkdownForm'},
+        namespace: :desc_md do |f| %>
   <% fid = '#' + f.options[:html][:id] %>
 
   <div class="md-show">
