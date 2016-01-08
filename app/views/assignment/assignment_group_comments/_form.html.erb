@@ -1,9 +1,10 @@
 <%= form_for comment, 
-    url: create_assignment_assignment_group_comment_path(assignment_group_id: @assignment_group.id),
-    :html => { :class => "form-group" } do |f| %>
+    url: url_for(assignment_group_id: @assignment_group.id, action: :create),
+    data: {class: 'Assignments.MarkdownForm'},
+    html: { :class => "form-group" } do |f| %>
     <% fid = f.options[:html][:id] %>
 
-  <blockquote class="bs-callout-<%= bq_type %>">
+  <blockquote class=" bs-callout bs-callout-<%= bq_type %>">
     <h4>
         <span class="label label-<%= bq_type %>">
             <% if comment.new_record? %>  
@@ -18,7 +19,7 @@
     <%= f.text_area :slug,
         class: 'form-control',
         rows: 4 %>
-    <div class="pull-right">
+    <div class="pull-right" style="margin-top:-15px;">
         <%= button_tag type: :submit, 
             data: {
                 remove: "##{fid}",

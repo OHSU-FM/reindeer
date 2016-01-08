@@ -25,7 +25,7 @@
 
     <div id="assignment-group-comments">
       <% @assignment_comments = [] %>
-      <%= render template: 'assignment/assignment_group_comments/index', 
+      <%= render partial: 'form_comments', 
           locals: {
           title: 'Comments', 
           comments: [],
@@ -38,9 +38,11 @@
   <% if can? :edit, @assignment_group %>
     <% @survey_assignments = [] %>    
     <%= render template: 'assignment/survey_assignments/index' %>
+    <h5>* add forms for the class here</h5>
   <% end %>
       <% @survey_assignments = [] %>    
       <%= render template: 'assignment/user_assignments/index' %>
+      <h5>* fill out any assigned forms here</h5>
   </div>
 
 </div>

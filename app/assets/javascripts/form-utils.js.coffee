@@ -29,12 +29,24 @@
 }
 
 class @FormUtils.DataEvents
-    initialize: nodes
+    initialize: (nodes) ->
         @$nodes = nodes
         @event_handlers()
 
     event_handlers:
-        
+        console.log 'test'
+
+@FormUtils.classifier = (doc) ->
+    # Automagic behavior for html objects 
+    $(doc).find('[data-class]').each ->
+        new_class = window
+        try
+            $($(this).data('class').split('.')).each ->
+                new_class = new_class[this]
+        catch e
+            console.log('FormUtils.classifier: Class not found => ' + $(this).data('class'))
+            throw e
+        new new_class($(this))
 
 # Wrap error message within template
 error_wrap = (msg, mtype) ->
@@ -44,15 +56,19 @@ error_wrap = (msg, mtype) ->
 
 # Insert / replace html near target
 resource_insert = ($target, html, insert) ->
+    # Method to call on target
+    switches = {
+        ':before': 'before',
+        ':replace': 'html',
+        ':after': 'after'
+    }
+    # Set default method 
     insert = insert || ':replace'
-    if insert == ':before'
-      $target.before(html)
-    else if insert == ':replace'
-      $target.html(html)
-    else if insert == ':after'
-      $target.after(html)
-    else
-      return
+    # Call Method
+    $target[switches[insert]](html) 
+    # Initialize automagic classifiers
+    FormUtils.classifier(html)
+    return
 
 # Load resource
 resource_load = ($node, data) ->
@@ -88,6 +104,8 @@ resource_load = ($node, data) ->
 $(document).ready ->
     # Add template modal to body
     $('body').append($.parseHTML(FormUtils.modal_template))
+
+    FormUtils.classifier(document)
 
     # Automatic data actions
     $(document).on 'click', 'button,a', (event) ->

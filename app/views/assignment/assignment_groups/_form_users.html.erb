@@ -5,7 +5,8 @@
         <%= f.select :user_ids,
             options_for_select(f.object.user_ids_enum, selected: f.object.user_ids), {},
             disabled: cannot?(:edit, @assignment_group),
-            multiple: :multiple, class: 'form-control select2 assignment-group-user-ids'
+            multiple: :multiple, class: 'form-control',
+            data: {class: 'Assignments.Select2'}
         %>
     <% end %>    
 </div>
