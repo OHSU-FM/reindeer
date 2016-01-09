@@ -65,5 +65,9 @@ module ApplicationHelper
         javascript_include_tag javascript
       end
     end
-    
+
+    def current_user_theme
+      dash = current_user.dashboard || Dashboard.new
+      dash.theme
+    end
 end

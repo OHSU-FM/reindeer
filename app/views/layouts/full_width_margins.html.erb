@@ -1,25 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <%= render :partial=>'layouts/head' %>
-<body id="<%= controller_full_name %>" class="<%= yield(:body_classes)%>" data-spy="scroll" data-target="#scroll-spy-nav"> 
+<body id="<%= controller_full_name %>" class="<%= current_user_theme %>" data-spy="scroll" data-target="#scroll-spy-nav"> 
     <%= render 'layouts/nav_header' %>
 
     <!-- Page Content -->
-
-    <div class="container">
-
-        <div class="row">
-
-            <div id="page-content" class="col-lg-12">
-                <%= render 'shared/messages' %>
-                <%= yield %>
-            </div>
-
-        </div>
-        <!-- /.row -->
-
+    <div id="page-content" class="container col-lg-10 col-lg-offset-1">
+        <%= render 'shared/messages' %>
+        <%= yield %>
     </div>
-    <!-- /.container -->
 
     <div class="container">
 
