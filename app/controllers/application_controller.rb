@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
     protect_from_forgery
     before_filter :authenticate_user!
+    before_filter :dynamic_destroy, only: :update
     helper_method :auto_path
     
     rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
@@ -82,5 +83,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    ##
+    # Process updates as destroy if _destroy is specified
+    def dynamic_destroy
+      if params[:_destroy] == '1'
+        destroy
+        return
+      end
+    end
 
 end

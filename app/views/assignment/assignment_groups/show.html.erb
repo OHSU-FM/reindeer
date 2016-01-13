@@ -22,14 +22,8 @@
       <%= render partial: 'assignment/assignment_groups/form_users' %>
     <% end %>  
 
-
     <div id="assignment-group-comments">
-      <% @assignment_comments = [] %>
-      <%= render partial: 'form_comments', 
-          locals: {
-          title: 'Comments', 
-          comments: [],
-          id_prefix: 'group-comment'} %>
+        <%= render partial: 'form_comments' %>
     </div>
   
   </div>

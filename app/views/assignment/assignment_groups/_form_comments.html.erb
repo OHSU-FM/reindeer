@@ -1,82 +1,26 @@
-<%- model_class = Assignment::AssignmentComment -%>
-<div class="page-header">
-    <% title ||= model_class.model_name.human.pluralize.titleize %>
-  <h1><%=t '.title', default: title  %></h1>
-</div>
+<h3>Comments</h3>
 
-<% prefix ||= 'group-comment' %>
+<% @assignment_group.comments.each do |comment| %>
+     <blockquote class="bs-callout bs-callout-primary">
+     <%= form_for comment, remote: true,
+             data: {class: 'Assignments.MarkdownForm'} do |f| %>
+         <%= render partial: 'form_comment', locals: {comment: comment, f: f } %>
+     <% end %> 
+     <footer>
+       <%= comment.user.title %>
+       <i><%= localize(comment.created_at.localtime, format: '%Y-%m-%d %I:%M %P') %></i>
+     </footer>
 
-<blockquote>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-    Integer posuere erat a ante.
-    </p>
-  <footer>
-    Bill Hatt <i>Sun. Oct. 19th 2015</i>
-  </footer>
-</blockquote>
+     </blockquote>
+ <% end %>
 
-<div id="group_comment_33">
-    <blockquote class="bs-callout bs-callout-primary">
+ <% new_btn_id = "new-group-comment-btn" %>
+ <%= link_to 'New comment', new_assignment_assignment_group_comment_path(assignment_group_id: @assignment_group.id), 
+       id: new_btn_id, 
+       class: "btn btn-primary",
+       data: {
+           hide:"##{new_btn_id}",
+           action:'resource-load',
+           target:"##{new_btn_id}",
+           insert:":before"} %>
 
-        <i class='icon-spinner icon-spin icon-large'></i>
-        <form class="md-form form-group" data-class="Assignments.MarkdownForm">
-
-            <div class="md-show">
-                <div class="md-content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Integer posuere erat a ante.
-                </div>
-                <p/> 
-                <footer>
-                    Bill Hatt <i>Sun. Oct. 19th 2015</i>
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-link" 
-                            data-hide="#group_comment_33 .md-show" 
-                            data-show="#group_comment_33 .md-edit">
-                        <i class="glyphicon glyphicon-edit"></i>
-                      </button>
-                      <button type="button" class="btn btn-link"
-                              data-confirmed="Deleting comment. Are you sure?"
-                              data-hide="#group_comment_33">
-                          &times;</button>
-                    </div>
-                </footer>
-            </div>
-            <div class="md-edit" style="display:none;">
-                <h4>
-                    <span class="label label-primary">Editing</span>
-                    Comment
-                </h4>
-
-                <textarea class="form-control" rows="4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. </textarea>
-                <div class="pull-right">
-                    <button type="button" 
-                            class="btn btn-link" 
-                            data-show="#group_comment_33 .md-show"
-                            data-hide="#group_comment_33 .md-edit"
-                            data-action='submit'
-                            data-insert=':replace'
-                            data-target='#group_comment_33'>
-                    <i class="glyphicon glyphicon-ok"></i>
-                  </button>
-                  <button type="button" 
-                          class="btn btn-link" 
-                          data-show="#group_comment_33 .md-show" 
-                          data-hide="#group_comment_33 .md-edit">
-                      <i class="fa fa-ban"></i>
-                  </button>
-                </div> 
-            </div>
-        </form>
-    </blockquote>
-</div>
-  <% new_btn_id = "new-#{prefix}-btn" %>
-  <%= link_to 'New', new_assignment_assignment_group_comment_path(assignment_group_id: @assignment_group.id), 
-        id: new_btn_id, 
-        class: "btn btn-primary",
-        data: {
-            hide:"##{new_btn_id}",
-            action:'resource-load',
-            target:"##{new_btn_id}",
-            insert:":before"} %>
