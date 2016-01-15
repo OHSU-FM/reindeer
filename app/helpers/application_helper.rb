@@ -66,4 +66,8 @@ module ApplicationHelper
       end
     end
 
+    def current_user_theme
+      dash = current_user.dashboard || Dashboard.new
+      dash.theme
+    end
 end

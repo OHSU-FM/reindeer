@@ -345,7 +345,6 @@ class @Dashboard.Gui
         # The theme for the page has changed
         @node.on 'change', 'input[type="radio"].toggle-theme', (evt, element) ->
             window.Dashboard.swap_theme( this.value )
-            window.CrossTabs.trigger('dashboard:theme-changed', this.value)
             # Update Form
             klass.update_and_submit()
             return;
