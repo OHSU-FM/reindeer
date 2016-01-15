@@ -15,12 +15,10 @@ Array::min=->
 @chart_args = (graph) ->
 
     data = graph.data()
-    console.log ('data: ' + JSON.stringify(data))
 
     full_data = graph.full_data()
 
     max_item = data.max()
-    console.log ('max_item --> : ' + max_item)
     if (max_item < 10 )
             max_item = 10
             max_tick = null 
@@ -250,7 +248,6 @@ class LsGraphCategories extends LsGraphBase
     chart_args: ->
 
         ca = chart_args(@)
-        console.log ('@chart_type: ' + @chart_type)
         if @chart_type == 'pie'
             ca.chart.type = 'pie'
             ca.chart.options3d.alpha = 45
@@ -268,7 +265,6 @@ class LsGraphCategories extends LsGraphBase
             ca.series[1].color = 'lime'
             ca.series[1].name  = @filtered_series_name
             if @chart_type == 'spider'
-                console.log ('*** here ***')
                 ca.chart.type = 'line'
                 ca.chart.polar = true
                 ca.yAxis.pointPlacement = 'on'
@@ -318,11 +314,10 @@ class LsGraphDescriptivesMultNumeric extends LsGraphBase
             if !rounded_float
                 rounded_float = 0
 
-            console.log ('rounded_float: ' + rounded_float)
             if rounded_float < 50
                 result.push rounded_float
             else if rounded_float < 70.00
-                    result.push {y: rounded_float, color:'red'} 
+                    result.push {y: rounded_float, color:'#FFA500'} 
                  else
                     result.push rounded_float
         return result
@@ -342,7 +337,7 @@ class LsGraphDescriptivesMultNumeric extends LsGraphBase
             if rounded_float < 50
                 result.push rounded_float
             else if rounded_float < 70.00
-                    result.push {y: rounded_float, borderColor:'Red'} 
+                    result.push {y: rounded_float, borderColor:'#FFA500'} 
                 else
                     result.push rounded_float
 
@@ -364,7 +359,7 @@ class LsGraphDescriptivesNumeric extends LsGraphBase
         result = []
         rounded_float = Number(qstat.descriptive_stats.mean.toFixed(2))
         if rounded_float < 70.00   
-            result.push {y: rounded_float, color:'red'}
+            result.push {y: rounded_float, color:'#FFA500'}
         else
             result.push rounded_float 
         return result
@@ -427,7 +422,7 @@ window.LsReport.Graph.load = (target, graph_type, qstat, full_qstat, series_name
             chart = new LsGraphCategories(target, graph_type, qstat, full_qstat, series_name, unfiltered_series_name, filters_equal, title)
 
         else
-            console.log 'Unimplemented graph type: ' + qstat.qtype
+            #console.log 'Unimplemented graph type: ' + qstat.qtype
         
     if chart?
         chart.draw()
@@ -438,7 +433,6 @@ $(document).ready ->
     
     window.charts = []
 
-    console.log (gon.qstats)
     
     return unless gon?
     return unless gon.qstats?
@@ -446,7 +440,6 @@ $(document).ready ->
     series_name = if gon.series_name? then gon.series_name else ''
     unfiltered_series_name = if gon.unfiltered_series_name? then gon.unfiltered_series_name else ''
     filters_equal = if gon.filters_equal? then gon.filters_equal else false
-    console.log (gon.series_name)
 
     $(gon.qstats).each (idx, qstat) ->
         full_qstat = gon.full_qstats[idx]
