@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-    # Link wrapped in li for use in the nav bar 
+    # Link wrapped in li for use in the nav bar
     def nav_link_to text, link, opts={}
         content_tag :li, link_to(text, link, opts), class: (nav_link_active?(link) ? 'active' : '')
     end
@@ -43,13 +43,13 @@ module ApplicationHelper
     ##
     # Full name of controller with dashes separating modules
     def controller_full_name
-        controller.class.name.sub('Controller','').gsub('::','/').underscore
+        controller.class.name.sub('Controller','').gsub('::','').underscore
     end
 
     def navbar_css_class
         Rails.env.production? ? 'navbar-default' : 'navbar-inverse'
     end
-    
+
     # very useful methods, improves caching efficiency and allows division of controller specific CSS/JS
     def custom_stylesheet_link_tag
       stylesheet = "custom/style.css" #e.g. home_controller =>assets/stylesheets/home.css
@@ -65,5 +65,5 @@ module ApplicationHelper
         javascript_include_tag javascript
       end
     end
-    
+
 end
