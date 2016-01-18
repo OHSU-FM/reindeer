@@ -41,7 +41,7 @@ module Assignment
     end
 
     def comment_params
-      params.require(:assignment_assignment_comment).permit(:slug)
+      params.require(:assignment_assignment_comment).permit(:slug_md)
     end
 
   end

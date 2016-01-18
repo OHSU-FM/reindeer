@@ -45,7 +45,7 @@ class Assignment::AssignmentCommentsController < Assignment::AssignmentBaseContr
   end
 
   def update_params
-    result = params.require(:assignment_assignment_comment).permit(:slug)
+    result = params.require(:assignment_assignment_comment).permit(:slug_md)
     if cannot?(:sign_for, User) || result[:user_id].nil?
       result[:user_id] = current_user.id
     end

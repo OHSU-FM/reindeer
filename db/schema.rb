@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017235330) do
+ActiveRecord::Schema.define(version: 20160118044014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20151017235330) do
   create_table "assignment_comments", force: :cascade do |t|
     t.integer  "user_assignment_id"
     t.integer  "user_id"
-    t.text     "slug"
+    t.text     "slug_md"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "assignment_group_id"
@@ -279,10 +279,9 @@ ActiveRecord::Schema.define(version: 20151017235330) do
   end
 
   create_table "survey_assignments", force: :cascade do |t|
-    t.boolean  "show_groups",          default: false
+    t.boolean  "as_inline",           default: false
     t.string   "title"
-    t.integer  "lime_survey_sid",                      null: false
-    t.text     "shared_response_qids"
+    t.integer  "lime_survey_sid",                     null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assignment_group_id"
@@ -299,8 +298,6 @@ ActiveRecord::Schema.define(version: 20151017235330) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "user_assignments", ["user_id", "survey_assignment_id"], name: "uniq_sid_by_user", unique: true, using: :btree
 
   create_table "user_externals", force: :cascade do |t|
     t.integer "user_id"
@@ -362,4 +359,6 @@ ActiveRecord::Schema.define(version: 20151017235330) do
   add_foreign_key "assignment_groups", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "survey_assignments", "assignment_groups"
+  add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
+  add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
 end
