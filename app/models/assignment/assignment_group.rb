@@ -1,5 +1,8 @@
 module Assignment
   class AssignmentGroup < ActiveRecord::Base
+    include Assignment::MarkdownFilter
+    markdown_columns :desc_md
+
     serialize :user_ids, Array
 
     belongs_to :owner, class_name: 'User', foreign_key: :user_id
