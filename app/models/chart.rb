@@ -2,8 +2,8 @@ class Chart < ActiveRecord::Base
 
     MAX_GROUPS = 2
     MAX_CHART_SERIES = 3
-    
-    attr_accessible :title, :chart_type, :aggregator_type, 
+
+    attr_accessible :title, :chart_type, :aggregator_type,
         :is_public, :width, :height, :dataset,
         :chart_series_attributes, :user_id, :cols, :rows, :years_filter
     attr_accessor :show_controls
@@ -77,27 +77,27 @@ class Chart < ActiveRecord::Base
 
     def chart_type_enum
         return [
-            "Table", 
-            "Table Barchart", 
-            "Heatmap", 
-            "Row Heatmap", 
-            "Col Heatmap", 
-            "Line Chart", 
-            "Bar Chart", 
-            "Stacked Bar Chart", 
+            "Table",
+            "Table Barchart",
+            "Heatmap",
+            "Row Heatmap",
+            "Col Heatmap",
+            "Line Chart",
+            "Bar Chart",
+            "Stacked Bar Chart",
             "Area Chart"
         ]
     end
 
     def aggregator_type_enum
-        return %w'count countUnique listUnique intSum sum average sumOverSum ub80 lb80 sumAsFractionOfTotal sumAsFractionOfRow sumAsFractionOfCol 
+        return %w'count countUnique listUnique intSum sum average sumOverSum ub80 lb80 sumAsFractionOfTotal sumAsFractionOfRow sumAsFractionOfCol
             countAsFractionOfTotal countAsFractionOfRow countAsFractionOfCol undefined'
     end
 
     def chart_type_name
         self[:chart_type].nil? ? nil : self.chart_type_enum.invert[self[:chart_type]]
     end
-    
+
     # Access the dataset from the datamaker
     def dataset
         @dataset ||= data_maker.dataset
@@ -114,7 +114,7 @@ class Chart < ActiveRecord::Base
             map{|q|q.attribute_name}.
             uniq.select{|val| val.size > 0 && !self.rows.include?(val)}
     end
-    
+
     # Any listed question that is not in cols
     def rows_enum
         data_maker.questions.
@@ -134,7 +134,7 @@ class Chart < ActiveRecord::Base
     # customize serialized output for this model
     # Will automatically show up on to_json, to_xml etc...
     def serializable_hash(options={})
-        options = { 
+        options = {
           :methods=>[:attr_names, :dataset, :questions, :max_series_count],
           :chart_series=>{
               :methods=>[:attribute_name, :short_name]
@@ -142,7 +142,7 @@ class Chart < ActiveRecord::Base
         }.update(options)
         super(options)
     end
-    
+
     def max_series_count
         MAX_CHART_SERIES
     end

@@ -17,15 +17,15 @@
                             <li class="divider"></li>
                             <% role_aggregates.each do |title, ra|%>
                             <li>
-                                <%= link_to title, 
-                                        polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid), 
+                                <%= link_to title,
+                                        polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid),
                                         :class=>"modal-click", 'data-target'=>'#modal-report' %>
                             </li>
                             <% end %>
                         <% end %>
                     </ul>
                 </li>
-            </ul> 
+            </ul>
         </li>
         <li class="pull-right">
             <div id="header" class="hidden-print">
@@ -39,7 +39,7 @@
                         </li>
                         <% if can?(:access, :lime_server) && can?(:read_data, @lime_survey) %>
                         <li>
-                            <a id="export-dataset" href="<%= Settings.lime_url%>/index.php/admin/export/sa/exportresults/surveyid/<%=@sid%>" 
+                            <a id="export-dataset" href="<%= Settings.lime_url%>/index.php/admin/export/sa/exportresults/surveyid/<%=@sid%>"
                                 class="btn btn-xs btn-default" target="_blank">Export</a>
                         </li>
                         <% end %>
@@ -52,7 +52,7 @@
                     <br/>
                     <select id="pk_selector" class="select_a_link form-control input-sm">
                         <% @pk_enum.each do |key, val|%>
-                            <option value="<%= polymorphic_path([@view_type, :ls_report],:pk=>val, :agg=>@agg)%>" 
+                            <option value="<%= polymorphic_path([@view_type, :ls_report],:pk=>val, :agg=>@agg)%>"
                                 <%= @pk==val ? 'selected="selected"' : '' %>><%= key%></option>
                         <% end %>
                     </select>
@@ -65,7 +65,7 @@
                     <br/>
                     <select id="agg_selector" class="select_a_link form-control input-sm">
                         <% @agg_enum.each do |key, val|%>
-                            <option value="<%= polymorphic_path([@view_type, :ls_report], :agg=>val, :pk=>(@pk.nil? ? (val == '' ? '' : '_') : '_'))%>" 
+                            <option value="<%= polymorphic_path([@view_type, :ls_report], :agg=>val, :pk=>(@pk.nil? ? (val == '' ? '' : '_') : '_'))%>"
                                 <%= @agg==val ? 'selected="selected"' : '' %>><%= key%></option>
                         <% end %>
                     </select>

@@ -13,23 +13,23 @@ module UserAssignmentsHelper
       link_to('', record.url, opts)
     end
   end
-  
+
   def hf_ua_button_accordion record, parent_id, opts={}
     opts = {
         data: {toggle: :collapse, parent: "##{parent_id}", url: record.url, as_inline: record.as_inline?},
         aria: {expanded: false, controls: "collapse_ua_#{record.assig.id}"}
     }.merge(opts)
-    link_to('', "#collapse_ua_#{record.assig.id}", opts) 
+    link_to('', "#collapse_ua_#{record.assig.id}", opts)
   end
- 
+
   def hf_ua_link_accordion record, parent_id, opts={}
     opts = {
         name: record.name,
         data: {toggle: :collapse, parent: "##{parent_id}", url: record.url, as_inline: record.as_inline?},
         aria: {expanded: false, controls: "collapse_ua_#{record.assig.id}"}
     }.merge(opts)
-    name = opts.delete(:name).to_s 
-    link_to(name, "#collapse_ua_#{record.assig.id}", opts) 
+    name = opts.delete(:name).to_s
+    link_to(name, "#collapse_ua_#{record.assig.id}", opts)
   end
 
   def hf_ua_link record, parent_id, opts={}
@@ -37,11 +37,11 @@ module UserAssignmentsHelper
     if record.assig.completed?
       content_tag(:i, '', class:'fa fa-check success')
     elsif record.as_inline?
-      hf_ua_link_accordion(record, parent_id, opts) 
+      hf_ua_link_accordion(record, parent_id, opts)
     else
-      opts[:class] += ' fa fa-external-link' 
+      opts[:class] += ' fa fa-external-link'
       opts[:target] = '_blank'
-      link_to(record.name, record.url, opts) 
+      link_to(record.name, record.url, opts)
     end
   end
 
@@ -55,12 +55,12 @@ module UserAssignmentsHelper
       'edit' => 'primary',
       'new form' => 'default',
       'complete' => 'success'
-    }  
+    }
 
     def initialize group, assig, title
       @group = group
       @assig = assig
-      @parser = LimeExt::LimeSurveyParser.new assig.response_data, 
+      @parser = LimeExt::LimeSurveyParser.new assig.response_data,
         assig.token_data, assig.lime_survey.token_attrs
       @name = parser.parse(title)
     end
@@ -99,7 +99,7 @@ module UserAssignmentsHelper
       end
       @groups
     end
-    
+
     private
       def method_missing(method, *args, &block)
         @assignments.send(method, *args, &block)

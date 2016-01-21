@@ -18,19 +18,19 @@
         <div id="nav-links" class="collapse navbar-collapse">
             <ul class="nav navbar-nav pull-right">
                 <% if can? :crud, Dashboard %>
-                    <%= nav_link_to('Home', main_app.root_path, 
+                    <%= nav_link_to('Home', main_app.root_path,
                             :class=>'dashboard-link') %>
                 <% end %>
-                
+
                 <% if can? :list, LimeSurvey %>
-                    <%= nav_link_to('Reports', main_app.ls_reports_path, 
+                    <%= nav_link_to('Reports', main_app.ls_reports_path,
                             :class=>'ls_reports-link')%>
                 <% end %>
                 <% if can? :list, Assignment::UserAssignment %>
                     <% acount = current_user.active_assignments.count %>
                     <% badge_str = acount==0 ? '' : "<span class='badge badge-danger'>#{acount}</span>" %>
-                    <%= nav_link_to("#{Settings.assignments_route_name.pluralize.titleize} #{badge_str}".html_safe, 
-                                    main_app.assignment_assignment_groups_path, 
+                    <%= nav_link_to("#{Settings.assignments_route_name.pluralize.titleize} #{badge_str}".html_safe,
+                                    main_app.assignment_assignment_groups_path,
                                     :class=>'assignments-link')%>
                 <% end %>
                 <%= nav_link_to('Charts', main_app.charts_path, :class=>'charts-link') if can? :access, Chart %>
@@ -43,8 +43,8 @@
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <%= nav_link_to('<i class="fa fa-external-link-square"></i> Lime'.html_safe, 
-                                "#{Settings.lime_url}/admin", 
+                            <%= nav_link_to('<i class="fa fa-external-link-square"></i> Lime'.html_safe,
+                                "#{Settings.lime_url}/admin",
                                 :target=>'_blank') if can? :read, :lime_survey_website %>
                             <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank') if can? :access, :rails_admin %>
                             <%= nav_link_to('<i class="fa fa-cog"></i> Settings'.html_safe, settings_path) if can? :manage, :all %>
@@ -65,7 +65,7 @@
                     </div>
                 </li>
                 <% end %>
-            </ul>    
+            </ul>
         </div>
     </div>
 </div>

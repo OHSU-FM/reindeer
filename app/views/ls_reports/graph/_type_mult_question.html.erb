@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            <% 
+            <%
                 count_total = 0
                 count_total_u = 0
                 percent_total = 0
@@ -25,11 +25,11 @@
             %>
 
             <% pquestion_u = @lime_survey_unfiltered.find_question :qid, pquestion.qid %>
-            <% pquestion_u.stats.categorical_stats.each do |stat_u| %> 
+            <% pquestion_u.stats.categorical_stats.each do |stat_u| %>
                 <% stat = pquestion.stats.categorical_stats.find{|st|st.code == stat_u.code} %>
                 <% next if stat_u.is_err && stat_u.frequency == 0 %>
-                
-                <% 
+
+                <%
                     count_total += stat.frequency
                     count_total_u += stat_u.frequency
                     percent_total += stat.percent

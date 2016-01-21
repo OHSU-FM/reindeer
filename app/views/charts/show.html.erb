@@ -6,17 +6,17 @@
         // Add google visualization lib
         google.load("visualization", "1", {packages:["corechart", "charteditor"]});
 
-        jQuery(document).ready(function($){ 
+        jQuery(document).ready(function($){
             // Add google visualization lib
             google.load("visualization", "1", {packages:["corechart", "charteditor"]});
 
-            jQuery(document).ready(function($){ 
+            jQuery(document).ready(function($){
                 window.charts = [];
                 $('#chart-container-outer').each(function(){
                     charts.push( new Chart(this) );
                 })
-            }); 
-        }); 
+            });
+        });
     </script>
 
 <% end %>
@@ -32,7 +32,7 @@
         </h2>
     </header>
 
-    <div class="chart-visualization-container-outer row hide-chart-ui"> 
+    <div class="chart-visualization-container-outer row hide-chart-ui">
         <%= render :partial=>'charts/chart_visualization', :locals=>{:chart=>@chart}%>
     </div>
 </div>

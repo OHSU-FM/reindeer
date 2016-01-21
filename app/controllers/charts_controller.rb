@@ -11,7 +11,7 @@ class ChartsController < ApplicationController
             redirect_to :action=>:new
         end
     end
-    
+
     def new
         # Allow pre-building of a chart
         @chart = Chart.new(params[:chart])
@@ -23,10 +23,10 @@ class ChartsController < ApplicationController
             format.json{ render json: {:chart=>@chart} }
         end
     end
-    
+
     def show
         @chart = Chart.find(params[:id].to_i)
-        # Show changes in attributes without making any saves 
+        # Show changes in attributes without making any saves
         @chart.assign_attributes(params[:chart])
         @chart.valid?
         respond_to do |format|
@@ -37,11 +37,11 @@ class ChartsController < ApplicationController
 
     def edit
         @chart = Chart.find(params[:id].to_i)
-        # Show changes in attributes without making any saves 
+        # Show changes in attributes without making any saves
         @chart.assign_attributes(params[:chart])
         @chart.valid?
         add_default_col_rows
-        # Show changes in attributes without making any saves 
+        # Show changes in attributes without making any saves
         respond_to do |format|
             format.html{ render :layout=>show_layout?} # show
             format.json{ render :json=>{:chart=>@chart}}
@@ -79,24 +79,24 @@ class ChartsController < ApplicationController
                 flash[:notice] = 'Chart Updated'
                 format.html{ redirect_to edit_chart_path(@chart) }
                 format.json{ render :json=>@chart,
-                    :status=>:ok, 
-                    :include=>:chart_series 
+                    :status=>:ok,
+                    :include=>:chart_series
                 }
             else
                 flash.now[:error] = 'Unable to update chart'
                 raise err
                 format.html{ render :action => :edit, :layout=>show_layout?}
-                format.json{ render :json =>@chart, 
-                    :status => :unprocessable_entity 
+                format.json{ render :json =>@chart,
+                    :status => :unprocessable_entity
                 }
             end
         end
     end
-    
+
     def destroy
         @chart = Chart.find(params[:id])
         @chart.destroy
-        simple_redirect :to=>charts_path, 
+        simple_redirect :to=>charts_path,
             :json=>[@chart, :status=>:ok]
     end
 
@@ -107,7 +107,7 @@ class ChartsController < ApplicationController
                 return false
             when 'widget'
                 return 'widget'
-            else 
+            else
                 return true
         end
     end
@@ -117,11 +117,11 @@ class ChartsController < ApplicationController
     def add_default_col_rows
         series = @chart.chart_series.select{|cs| cs.ready_for_data? }
         return if series.empty?
-        if @chart.cols.empty? 
+        if @chart.cols.empty?
             @chart.cols.push series.first.attribute_name
         elsif @chart.rows.empty?
             @chart.rows.push series.first.attribute_name
         end
     end
-     
+
 end

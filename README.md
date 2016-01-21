@@ -1,4 +1,4 @@
-# Project Reindeer 
+# Project Reindeer
 
 [![Code Climate](https://codeclimate.com/github/OHSU-FM/reindeer/badges/gpa.svg)](https://codeclimate.com/github/OHSU-FM/reindeer)
 
@@ -16,7 +16,7 @@ This project is ready to share, but requires a little work to get everything sta
 
 **Data exploration**
 
- - *Spreadsheets*: View collected data in a row and column format 
+ - *Spreadsheets*: View collected data in a row and column format
  - *Reports*: Statistics and charts related to collected data
  - *Chart builde*r: Create custom charts and graphs out of collected data
 
@@ -39,7 +39,7 @@ LDAP authentication is supported
 
 ## Quick Start Guide
 
-Database note: Current development uses PostgreSQL, but other database types will probably also work as long as it is also supported by LimeSurvey. 
+Database note: Current development uses PostgreSQL, but other database types will probably also work as long as it is also supported by LimeSurvey.
 
 ### Create a development environment
 

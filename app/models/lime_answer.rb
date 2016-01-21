@@ -1,8 +1,8 @@
 class LimeAnswer < ActiveRecord::Base
 
-   attr_accessor :mystring  
-   
-    
+   attr_accessor :mystring
+
+
    self.inheritance_column = nil
    self.primary_key = :qid, :code
    belongs_to :lime_question, primary_key: "qid", :foreign_key=>:qid, :inverse_of=>:lime_answers
@@ -11,7 +11,7 @@ class LimeAnswer < ActiveRecord::Base
     rails_admin do
         navigation_label "Lime Survey"
     end
-    
+
    def my_column_name(question)
 	@my_column_name ||= "#{lime_question.sid}X#{lime_question.gid}X#{lime_question.qid}"
     result = @my_column_name
@@ -26,7 +26,7 @@ class LimeAnswer < ActiveRecord::Base
 	q_name = my_column_name(question)
        	r_data = lime_group.dataset.find{|tt|tt[q_name]}
     	return r_data
-   end 
+   end
 
 
 end

@@ -6,7 +6,7 @@
     <div class="col-lg-7 fade-in two" style="padding-left:20px;">
         <h1>Sync Triggers</h1>
 
-        <button role="button" id="sync-trigger-new" class="btn btn-success" 
+        <button role="button" id="sync-trigger-new" class="btn btn-success"
             data-link="<%= new_settings_sync_trigger_path %>">
             <i class="fa fa-plus-circle"></i>
         </button>
@@ -23,20 +23,20 @@
             <% @triggers.each do |trigger| %>
                 <tr>
                     <td>
-                        <%= content_tag :button, 
-                            data: { toggle: '#modal_show', 
+                        <%= content_tag :button,
+                            data: { toggle: '#modal_show',
                                     link: settings_sync_trigger_path(id: trigger.tgrelid)},
                                     class: 'btn btn-default modal-view-trigger-desc' do %>
                             <i class="fa fa-eye"></i>
                         <% end %>
                         <%= trigger.tgname %>
                     </td>
-                    <td><%= link_to trigger.lime_survey_src.title, 
-                                rails_admin.show_path(model_name: 'lime_survey', 
+                    <td><%= link_to trigger.lime_survey_src.title,
+                                rails_admin.show_path(model_name: 'lime_survey',
                                                       id: trigger.sid_src), target: 'blank' %>
                     </td>
-                    <td><%= link_to trigger.lime_survey_dest.title, 
-                                rails_admin.show_path(model_name: 'lime_survey', 
+                    <td><%= link_to trigger.lime_survey_dest.title,
+                                rails_admin.show_path(model_name: 'lime_survey',
                                                       id: trigger.sid_dest), target: '_blank' %>
                     </td>
                     <td>
@@ -56,7 +56,7 @@
 
     <div class="col-lg-3 col-lg-offset-1 bs-callout bs-callout-info fade-in two">
         <h3>Information</h3>
-        <p><b>Sync Triggers</b> are used to synchronize information between two different lime surveys. 
+        <p><b>Sync Triggers</b> are used to synchronize information between two different lime surveys.
         An example of this is a situation where you have questions on one survey that you would
         like to have as token input on another survey.
         </p>

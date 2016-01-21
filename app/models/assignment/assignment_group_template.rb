@@ -14,7 +14,7 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
     active: 1,
     stopped: 2
   }
-  
+
   rails_admin do
     edit do
       field :permission_group, :belongs_to_association do
@@ -30,8 +30,8 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
         label 'Lime Surveys'
       end
     end
-  end 
- 
+  end
+
   ##
   # Select users that are available to add from permission_group
   def possible_users
@@ -53,7 +53,7 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   def sids
     self[:sids].map{|v| v.to_i unless v.empty?}.compact
   end
-  
+
   def sids_enum
     LimeSurvey.active.map{|ls|[ls.title, ls.sid]}
   end

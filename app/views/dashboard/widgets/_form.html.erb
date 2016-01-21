@@ -13,7 +13,7 @@
                     </p>
                 </div>
                 <%= link_to_remove_association f, :dynamic=>true, :class=>'close pull-right' do %>
-                   <span aria-hidden="true">&times;</span><span class="sr-only">Delete</span> 
+                   <span aria-hidden="true">&times;</span><span class="sr-only">Delete</span>
                 <% end %>
                 <% if f.object.editable_widget? %>
                 <div class="container-fluid">
@@ -35,7 +35,7 @@
                                             <%= widget_title %>
                                             <%= f.radio_button :widget_type, widget_type, :class=>"toggle-widget-type"%>
                                         <% end %>
-                                    </li> 
+                                    </li>
                                 <% end %>
                                 <li class="divider"></li>
                                 <li class="dropdown-header">
@@ -54,7 +54,7 @@
                     </ul>
                 </div>
                 <% end %>
-            </nav> 
+            </nav>
             <%= f.hidden_field :position, :value=>f.object.position, :class=>'position' %>
             <%= f.hidden_field :sizex, :value=>f.object.sizex, :class=>'sizex' %>
             <%= f.hidden_field :sizey, :value=>f.object.sizey, :class=>'sizey' %>
@@ -87,14 +87,14 @@
                           <div class="modal-body">
                               <div class="row">
                                 <div class="col-md-4">
-                                    <%= f.select :widget_type, 
+                                    <%= f.select :widget_type,
                                         options_for_select(f.object.widget_type_enum, f.object.widget_type),
                                         {:prompt=>"Choose what to show..."}, {:class=>'form-control'}
                                     %>
                                 </div>
                                 <div class="col-md-4 col-md-offset-2">
                                     <% unless f.object.widget_type.to_s == '' %>
-                                        <%= f.select :widget_id, 
+                                        <%= f.select :widget_id,
                                             options_for_select(f.object.widget_id_enum, f.object.widget_id),
                                             {:prompt=>"Choose what to show..."}, {:class=>'form-control'}
                                         %>
@@ -108,18 +108,18 @@
                         </div>
                       </div>
                     </div>
-                    
+
                 </div>
             </div>
             <% end %>
             <% if f.object.invalid? %>
-                <div class="widget-alert"> 
-                    <div class="alert alert-danger"> 
+                <div class="widget-alert">
+                    <div class="alert alert-danger">
                     <% if can?(:debug, :dashboard) %>
                         <%= f.object.errors.inspect %>
                     <% end %>
-                    </div> 
-                    <div class="alert alert-danger"> 
+                    </div>
+                    <div class="alert alert-danger">
                        <h3>Ooops!</h3>
                        <p>
                             It seems as though an error has occurred. If the problem persists please notify our web admin

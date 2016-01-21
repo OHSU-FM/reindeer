@@ -1,10 +1,10 @@
 <h1> <%= Settings.assignments_route_name.titleize.pluralize %></h1>
-<div class='container-fluid'> 
+<div class='container-fluid'>
     <% @assignment_groups.each do |group| %>
         <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
     <% end %>
     <% if can? :create, Assignment::AssignmentGroup %>
-        <%= link_to new_assignment_assignment_group_path, 
+        <%= link_to new_assignment_assignment_group_path,
             class: 'btn btn-success',
             data: {toggle: :modal} do %>
             New Project
@@ -21,27 +21,27 @@
 
     <% if can? :edit, @assignment_group %>
       <%= render partial: 'assignment/assignment_groups/form_users' %>
-    <% end %>  
+    <% end %>
 
 
     <div id="assignment-group-comments">
       <% @assignment_comments = [] %>
-      <%= render template: 'assignment/assignment_group_comments/index', 
+      <%= render template: 'assignment/assignment_group_comments/index',
           locals: {
-          title: :comments, 
+          title: :comments,
           comments: [],
           id_prefix: 'group-comment'} %>
     </div>
-  
+
   </div>
 
 
     <div class="col-md-4 main fade-in three">
     <% if can? :edit, @assignment_group %>
-      <% @survey_assignments = [] %>    
+      <% @survey_assignments = [] %>
       <%= render template: 'assignment/survey_assignments/index' %>
     <% end %>
-        <% @survey_assignments = [] %>    
+        <% @survey_assignments = [] %>
         <%= render template: 'assignment/user_assignments/index' %>
     </div>
 

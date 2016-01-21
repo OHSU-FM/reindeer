@@ -1,7 +1,7 @@
 
-<%= form_for @trigger, 
+<%= form_for @trigger,
     url: {
-        controller: 'settings/sync_triggers', 
+        controller: 'settings/sync_triggers',
         action: @action
     },
     data: {builder_path: new_settings_sync_trigger_path},
@@ -30,20 +30,20 @@
                 <tbody>
                 <tr><td>
                 <% ms = f.object.map_src %>
-                <%= f.select :map_src, 
-                    options_for_select(f.object.map_src_enum, ms), prompt: 'Select Column...' %> 
+                <%= f.select :map_src,
+                    options_for_select(f.object.map_src_enum, ms), prompt: 'Select Column...' %>
                 </td>
                 <td>
                 <% md = f.object.map_dest %>
-                <%= f.select :map_dest, 
-                    options_for_select(f.object.map_dest_enum, md), prompt: 'Select Column...', 
+                <%= f.select :map_dest,
+                    options_for_select(f.object.map_dest_enum, md), prompt: 'Select Column...',
                     disabled: !ms.present?, style: (ms.present? ? '' : "background-color:#FFF2F2;") %>
                 </td></tr>
                 </tbody></table>
-            
+
         </dd>
         <dt><%= f.label :copy_cols, data:{toggle: :tooltip}, title: 'Database columns to copy' %></dt>
-        <dd> 
+        <dd>
             <% counter = 1%>
             <table class="table" style="max-width: 350px;">
                 <thead><tr><th>#</th><th>Source</th><th>Dest</th></tr></thead>
@@ -52,11 +52,11 @@
                 <tr>
                 <td>
                     <small><%= counter%></small></td><td>
-                <%= select_tag 'lime_ext_sync_trigger[cols_keys][]', 
+                <%= select_tag 'lime_ext_sync_trigger[cols_keys][]',
                     options_for_select(f.object.cols_src_enum(k), k), prompt: 'Select Column...' %>
                 </td>
                 <td>
-                <%= select_tag 'lime_ext_sync_trigger[cols_vals][]', 
+                <%= select_tag 'lime_ext_sync_trigger[cols_vals][]',
                     options_for_select(f.object.cols_dest_enum(v), v), prompt: 'Select Column...', disabled: !k.present? %>
                 </td>
                 <td
@@ -69,7 +69,7 @@
                 <tr>
                     <td>
                         <small><%= counter%></small></td><td>
-                <%= select_tag 'lime_ext_sync_trigger[cols_keys][]', 
+                <%= select_tag 'lime_ext_sync_trigger[cols_keys][]',
                     options_for_select(f.object.cols_src_enum), prompt: 'Select Column...' %>
                 </td>
                 <td></td>

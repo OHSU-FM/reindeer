@@ -2,10 +2,10 @@
 <div class="row">
 <div class="col-md-7">
     <%= form_for @assignment_group, remote: true do |f| %>
-        <%= f.select :user_ids, 
+        <%= f.select :user_ids,
             options_for_select(f.object.user_ids_enum, selected: f.object.user_ids), {},
             multiple: :multiple, class: 'form-control select2 assignment-group-user-ids'
         %>
-    <% end %>    
+    <% end %>
 </div>
 </div>

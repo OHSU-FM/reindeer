@@ -3,7 +3,7 @@ class Ability
 
   def initialize(user)
     user ||= User.new                   # guest user (not logged in)
- 
+
     alias_action :create, :read, :update, :destroy, :to => :crud
     alias_action :create, :update, :destroy, :to=> :alter
 
@@ -61,7 +61,7 @@ class Ability
   def other_users_permissions user
         can :update, User, :id=>user.id
         can :read, User, :id=>user.id
-        
+
         # Allow access to Dashboard functionality
         if user.can_dashboard?
             can :list, Dashboard    # Own dash listed in index
@@ -69,7 +69,7 @@ class Ability
             can :crud, QuestionWidget , :user_id=>user.id
             can :crud, Dashboard, :user_id=>user.id
         end
-        
+
         # Allow access to Chart functionality
         if user.can_chart?
             can :list, Chart
@@ -78,7 +78,7 @@ class Ability
             can :crud, Chart, :user_id=>user.id
             can :crud, QuestionWidget, :user_id=>user.id
         end
-         
+
         can :read, LimeSurvey do |lime_survey|
             # We check permissions by checking if permission_group says everything is ready
             # If we are missing user_externals etc... you will still receive a true on can? :read
@@ -90,7 +90,7 @@ class Ability
                 false
             end
         end
-        
+
         can :read_unfiltered, LimeSurvey do |lime_survey|
             if user.permission_group_id.present?
                 has_ls = user.role_aggregates.map{|ra|ra.lime_survey_sid}.include? lime_survey.sid
@@ -104,7 +104,7 @@ class Ability
                 false
             end
         end
-        
+
         # If a user is allowed to view a given survey and they can 'view_spreadsheet' then allow them to view it
         can :read_raw_data, LimeSurvey do |lime_survey|
             if user.permission_group_id.present?
@@ -119,7 +119,7 @@ class Ability
                 false
             end
         end
-        
+
         if user.lime_user
             can :access, :lime_server
         end

@@ -1,6 +1,6 @@
 class Assignment::AssignmentCommentsController < Assignment::AssignmentBaseController
   respond_to :html, :json
-  authorize_resource 
+  authorize_resource
 
   def index
     @assignment_comments = Assignment::AssignmentComment.all
@@ -39,7 +39,7 @@ class Assignment::AssignmentCommentsController < Assignment::AssignmentBaseContr
   end
 
   protected
-  
+
   def create_params
     update_params
   end

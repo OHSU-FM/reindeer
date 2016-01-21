@@ -1,5 +1,5 @@
 <%  # Do nothing, prevent layout from displaying messages
-    content_for :messages do %> 
+    content_for :messages do %>
     <!-- -->
     <% end %>
 <div class="container">
@@ -21,7 +21,7 @@
         <div class="col-md-4 col-md-offset-4">
             <div>
                 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-                
+
                   <div class="form-group">
                     <%= f.label :login %>
                     <%= f.text_field :login, :class=>'form-control', :placeholder=>"Enter username/email" %>
@@ -35,10 +35,10 @@
                         <%= f.check_box :remember_me %>Remember me
                     <% end %>
                   </div>
-                       
+
                   <%= f.submit "Sign in", :class=>"btn btn-default" %>
-                
-                <% end %>    
+
+                <% end %>
             </div>
         </div>
     </div>

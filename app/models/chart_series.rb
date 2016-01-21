@@ -1,5 +1,5 @@
 class ChartSeries < ActiveRecord::Base
-    
+
     attr_accessible :group_filter,
         :entities_filter,
         :category_filter,
@@ -12,13 +12,13 @@ class ChartSeries < ActiveRecord::Base
     belongs_to :chart, :inverse_of=>:chart_series
 
     rails_admin do
-        navigation_label 'User Content' 
+        navigation_label 'User Content'
         field :group_filter
         field :category_filter
         field :question_filter
         field :entities_filter
-        field :question_options_filter 
-    end  
+        field :question_options_filter
+    end
 
     def meta_attribute_questions
         return [] unless ready_for_data?
@@ -47,7 +47,7 @@ class ChartSeries < ActiveRecord::Base
             self.entities_filter = nil
         end
     end
-    
+
     # clear other values if we are changed
     def question_filter= val
         self[:question_filter] = val
@@ -64,7 +64,7 @@ class ChartSeries < ActiveRecord::Base
             self.entities_filter = nil
         end
     end
-    
+
     def entities_filter
         # if empty show all
         val = Array(self[:entities_filter]).reject{|j|j==''}
@@ -156,7 +156,7 @@ class ChartSeries < ActiveRecord::Base
             series.meta_attribute_questions.each do |question|
                 result.push question.attribute_name
             end
-        end 
+        end
     end
 
 end

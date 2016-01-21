@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
     protect_from_forgery
     before_filter :authenticate_user!
     helper_method :auto_path
-    
+
     rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
         flash[:alert] = 'Unable to reach authentication server'
         respond_to do |format|
@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
             format.js { render json: {message: 'Internal Server Error'}, status: 500}
         end
     end
-    
+
     rescue_from ActiveRecord::RecordNotFound, ActionController::BadRequest,
                 ActionController::RoutingError,
                 ActionController::UnknownController,
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     # https://github.com/ryanb/cancan/#3-handle-unauthorized-access
     rescue_from CanCan::AccessDenied do |exception|
         unless params[:controller] == 'dashboard' && params[:action] == 'index'
-            flash[:alert] = exception.message 
+            flash[:alert] = exception.message
         end
         respond_to do |format|
             format.html { render 'errors/not_authorized', :status=>403, :layout=>'full_width_margins' }
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
         opts[:to] ||= :back
         opts[:json] ||= flash
         opts[:status] ||= :ok
-      
+
         begin
             respond_to do |format|
                 format.html {redirect_to opts[:to] }
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
             end
         rescue => e
             redirect_to auto_path
-        end 
+        end
     end
 
     def auto_path
