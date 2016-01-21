@@ -1,7 +1,7 @@
-<%= simple_form_for [@assignment_group], 
+<%= simple_form_for [@assignment_group],
         :html => { :class => 'form-horizontal' } do |f| %>
-  
-  <%= f.input :assignment_group_template_id, 
+
+  <%= f.input :assignment_group_template_id,
         collection: @assignment_group.assignment_group_template_enum %>
   <%= error_span(@assignment_group[:assignment_group_template_id]) %>
   <%= f.input :title %>
@@ -11,7 +11,7 @@
   <%= f.input :desc_md %>
   <%= error_span(@assignment_group[:desc_md]) %>
   <%= f.input :user_ids, collection: @assignment_group.user_ids_enum,
-      value_method: :id, title_method: :title, 
+      value_method: :id, title_method: :title,
       input_html: {multiple: true} %>
   <%= error_span(@assignment_group[:user_ids]) %>
   <%= f.button :submit, :class => 'btn-primary' %>

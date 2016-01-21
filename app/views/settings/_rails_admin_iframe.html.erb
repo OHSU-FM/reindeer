@@ -3,8 +3,8 @@
         <%= render :partial=>'settings/sidenav'%>
     </div>
     <div class="col-lg-10 fade-in two">
-        <%= content_tag :iframe, nil, id: :settings_iframe, 
-                src: iframe_src, 
+        <%= content_tag :iframe, nil, id: :settings_iframe,
+                src: iframe_src,
                 style:"display:none;"%>
         <div class="spinner-wait"></div>
         <script type="text/javascript">
@@ -13,11 +13,11 @@
                     $("iframe").contents().
                         find("div.col-sm-9").
                         removeClass('col-sm-offset-3 col-md-offset-2');
-                         
-                    var $head = $("iframe").contents().find("head"); 
-                    $head.append($("<link/>", { 
-                        rel: "stylesheet", 
-                        href: "<%= asset_path('rails_admin_iframe.css') %>", 
+
+                    var $head = $("iframe").contents().find("head");
+                    $head.append($("<link/>", {
+                        rel: "stylesheet",
+                        href: "<%= asset_path('rails_admin_iframe.css') %>",
                         type: "text/css" }));
                     $("iframe").css({
                             position: 'absolute',

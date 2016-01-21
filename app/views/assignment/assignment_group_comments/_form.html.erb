@@ -1,15 +1,15 @@
-<%= form_for comment, 
+<%= form_for comment,
     :html => { :class => "form-group" } do |f| %>
     <% fid = f.options[:html][:id] %>
 
 <blockquote class="bs-callout-<%= bq_type %>">
     <h4>
         <span class="label label-<%= bq_type %>">
-            <% if comment.new_record? %>  
+            <% if comment.new_record? %>
                 New
             <% else %>
                 Editing
-            <% end %>    
+            <% end %>
         </span>
         &nbsp;Comment
     </h4>
@@ -23,7 +23,7 @@
             data-show="#new-group-comment-btn">
             <i class="glyphicon glyphicon-ok"></i>
       </button>
-      <button type="button" class="btn btn-link" 
+      <button type="button" class="btn btn-link"
           data-remove='#<%= fid %>'
           data-show="#new-group-comment-btn">
           <i class="fa fa-ban"></i>

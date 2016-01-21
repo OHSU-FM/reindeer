@@ -1,5 +1,5 @@
 class Dashboard < ActiveRecord::Base
-    
+
     class WidgetExpired < Exception; end
 
     has_paper_trail
@@ -33,7 +33,7 @@ class Dashboard < ActiveRecord::Base
         'theme-black']
 
     DEFAULT_THEME = THEMES[0]
-    
+
     def title
         "Dashboard: #{id} User:#{user.username}"
     end
@@ -48,7 +48,7 @@ class Dashboard < ActiveRecord::Base
 
     def validate_widget_positions
         @widget_positions = []
-        detector = EdnaConsole::DashboardLib::CollisionDetector.new :max_cols=>5 
+        detector = EdnaConsole::DashboardLib::CollisionDetector.new :max_cols=>5
         dashboard_widgets.sort_by{|widget|widget.position}.each_with_index do |widget, index|
             begin
                 indecies = detector.register_rectangle widget.position, widget.sizex, widget.sizey, index

@@ -9,12 +9,12 @@
           <i class='glyphicon glyphicon-pencil'></i>
       </button>
     </h2>
-    <div id='<%= f.options[:html][:id] %>_title' 
-      class='bs-callout bs-callout-primary' 
+    <div id='<%= f.options[:html][:id] %>_title'
+      class='bs-callout bs-callout-primary'
       style='display:none;'>
       <h4>
           <span class="label label-primary">Editing</span>
-          <%= Settings.assignments_route_name.singularize.titleize %> 
+          <%= Settings.assignments_route_name.singularize.titleize %>
           title
       </h4>
       <div class="input-group input-group-lg">
@@ -28,9 +28,9 @@
                 target: "#{fid} h2 span"
               },
               class: 'btn btn-default' do %>
-              <i class='glyphicon glyphicon-ok'></i> 
+              <i class='glyphicon glyphicon-ok'></i>
           <% end %>
-          <button type="button" 
+          <button type="button"
               data-show="<%= "#{fid} h2" %>"
               data-hide="<%= "#{fid}_title" %>"
               class="btn btn-link" style="color:red;">
@@ -39,5 +39,5 @@
         </span>
       </div><!-- /input-group -->
     </div>
-<% end %>    
+<% end %>
 

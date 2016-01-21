@@ -1,7 +1,7 @@
 class DashboardWidgetsController < ApplicationController
     layout 'full_width'
 
-    def show_widget        
+    def show_widget
         authorize! :read, @dash
         respond_to do |format|
             format.html{ render :layout=>false} # show
@@ -11,7 +11,7 @@ class DashboardWidgetsController < ApplicationController
     end
 
     def new
-        @dash = Dashboard.new 
+        @dash = Dashboard.new
     end
 
     def create
@@ -41,12 +41,12 @@ class DashboardWidgetsController < ApplicationController
             if @dash.update_attributes(params[:dashboard])
                 format.html{ render :action=>:index}
                 format.json{ render :json=>{:dash=>@dash},
-                    :status=>:ok 
+                    :status=>:ok
                 }
             else
                 format.html{ render :action => :edit }
-                format.json{ render :json =>{:dash=>@dash}, 
-                    :status => :unprocessable_entity 
+                format.json{ render :json =>{:dash=>@dash},
+                    :status => :unprocessable_entity
                 }
             end
         end

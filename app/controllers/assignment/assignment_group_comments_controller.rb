@@ -1,7 +1,7 @@
 module Assignment
   class AssignmentGroupCommentsController < Assignment::AssignmentBaseController
     respond_to :html
-    
+
     def index
       group = AssignmentGroup.includes(:comments).
         find(params[:assignment_group_id])

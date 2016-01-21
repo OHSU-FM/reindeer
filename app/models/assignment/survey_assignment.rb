@@ -7,18 +7,18 @@ class SurveyAssignment < ActiveRecord::Base
     attr_accessor :gather_user_tokens
 
     belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:survey_assignments
-    
+
     belongs_to :assignment_group
     has_many :user_assignments, :inverse_of=>:survey_assignment, :dependent=>:delete_all
-    
-    validates :assignment_group, 
+
+    validates :assignment_group,
       presence: true
-    
-    validates :lime_survey, 
-      presence: true, 
-      if: Proc.new { |f| f.assignment_group.present? } 
-    
-    validates :title, 
+
+    validates :lime_survey,
+      presence: true,
+      if: Proc.new { |f| f.assignment_group.present? }
+
+    validates :title,
       presence: true,
       if: Proc.new {|f| f.lime_survey_sid.present?}
 
@@ -33,7 +33,7 @@ class SurveyAssignment < ActiveRecord::Base
         end
         field :assignment_group
         field :lime_survey do
-          associated_collection_cache_all false  
+          associated_collection_cache_all false
           associated_collection_scope do
             sas = bindings[:object]
             Proc.new { |scope|
@@ -56,7 +56,7 @@ class SurveyAssignment < ActiveRecord::Base
           end
         end
     end
-    
+
     def lime_survey_enum
       assignment_group.present? ? assignment_group.lime_surveys : []
     end
@@ -72,12 +72,12 @@ class SurveyAssignment < ActiveRecord::Base
     ##
     # Add user_assignments to all users that have a token for this survey
     def do_gather_user_tokens
-        
+
       # Only do this if gather_user_tokens is truthy
       return unless gather_user_tokens == '1'
 
       ActiveRecord::Base.transaction do
-        
+
         # Remove all old assignments
         user_assignments.delete_all
 
@@ -85,14 +85,14 @@ class SurveyAssignment < ActiveRecord::Base
           errors.add(:lime_survey_sid, 'No lime survey selected')
           return
         end
-        
-        #  
+
+        #
         tid_emails = lime_survey.lime_tokens.pluck :tid, :email
         unless tid_emails
           errors.add(:gather_user_tokens, 'No tokens to add')
           return
         end
-        
+
         emails = tid_emails.map{|tid, email| email}
         users = User.where(['email in (?)', emails])
         tid_emails.each do |tid, email|

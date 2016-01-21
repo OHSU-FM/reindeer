@@ -4,15 +4,15 @@
             <%= f.input :title %>
             <%= error_span(@assignment_group_template[:title]) %>
         </li>
-  
+
         <li>
             <%= f.collection_select :sids, @assignment_group_template.lime_surveys_enum,
                   :sid, :title, {}, {multiple: true}%>
             <%= error_span(@assignment_group_template[:sids]) %>
         </li>
-  
-        <li> 
-            <%= f.collection_select :permission_group_id, 
+
+        <li>
+            <%= f.collection_select :permission_group_id,
                   @assignment_group_template.permission_groups_enum,
                   :id, :title %>
             <%= error_span(@assignment_group_template[:permission_group_id]) %>
@@ -22,17 +22,17 @@
             <%= f.text_area :desc_md, class: 'markdown-textbox' %>
             <%= error_span(@assignment_group_template[:desc_md]) %>
         </li>
-        
+
         <li>
             <%= f.input :active, as: :boolean, class: 'markdown-textbox' %>
             <%= error_span(@assignment_group_template[:active]) %>
         </li>
-        
+
         <li>
             <%= f.button :submit, :class => 'btn-primary' %>
             <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                    assignment_assignment_group_templates_path, 
+                    assignment_assignment_group_templates_path,
                     :class => 'btn btn-default' %>
         </li>
-    </ul>        
+    </ul>
 <% end %>

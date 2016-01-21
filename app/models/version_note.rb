@@ -1,7 +1,7 @@
 class VersionNote < ActiveRecord::Base
     has_many :versions
     has_many :possible_versions, ->{
-            where "version_note_id IS NULL OR version_note_id = '#{self.id}'" 
+            where "version_note_id IS NULL OR version_note_id = '#{self.id}'"
         },
         :class_name=>"Version"
     validates_presence_of :note
@@ -31,7 +31,7 @@ class VersionNote < ActiveRecord::Base
             field :note
         end
         field :note
-        navigation_label 'Dataset Changes' 
+        navigation_label 'Dataset Changes'
         label_plural "Notes"
     end
 

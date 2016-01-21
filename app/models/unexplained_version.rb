@@ -3,7 +3,7 @@ class UnexplainedVersion < ActiveRecord::Base
     default_scope {where :version_note_id => nil}
     self.primary_key =  :id
 
-    rails_admin do 
+    rails_admin do
         navigation_label 'Dataset Changes'
     end
 

@@ -1,7 +1,7 @@
 class PermissionLsGroupFilter < ActiveRecord::Base
     belongs_to :permission_ls_group, :inverse_of=>:permission_ls_group_filters
     belongs_to :lime_question, :primary_key=>:qid, :foreign_key=>:lime_question_qid, :inverse_of=>:permission_ls_group_filters
-    
+
     validates_presence_of :permission_ls_group
     validates_presence_of :ident_type, :if=>Proc.new {|obj|obj.restricted_val.to_s.empty?}
     validates_presence_of :restricted_val, :if=>Proc.new {|obj| obj.ident_type.to_s.empty?}
@@ -31,7 +31,7 @@ class PermissionLsGroupFilter < ActiveRecord::Base
                 }
             end
         end
-        
+
     end
 
     def ident_type_enum

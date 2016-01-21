@@ -4,7 +4,7 @@ module LsReports::SpreadsheetHelper
         lime_survey.lime_questions.select do |lq|
             if (filters.empty? || filters.include?(lq.qid)) && lq.response_set.data.present?
                 if lq.response_set.data.first.respond_to? :data
-                    result += lq.response_set.data    
+                    result += lq.response_set.data
                 else
                     result.push lq.response_set
                 end

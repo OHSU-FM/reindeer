@@ -1,7 +1,7 @@
 class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseController
   layout 'full_width_margins'
   respond_to :html
-  authorize_resource 
+  authorize_resource
   before_filter :load_resource, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -40,7 +40,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   protected
- 
+
   def load_resource
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
   end

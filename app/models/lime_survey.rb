@@ -1,7 +1,7 @@
 require 'php_serialize'
 
 class LimeSurvey < ActiveRecord::Base
-    
+
     CONFIG_GROUP_CODE   = 'ReindeerConfig'
     QRESPONSE_STATUS_CODE = 'responseStatus'
 
@@ -14,7 +14,7 @@ class LimeSurvey < ActiveRecord::Base
     #has_many :lime_questions, :through=>:lime_groups
     has_many :lime_surveys_languagesettings, :foreign_key=>:surveyls_survey_id
     has_one :role_aggregate, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
-    delegate :add_filter, :dataset, :to=>:lime_data 
+    delegate :add_filter, :dataset, :to=>:lime_data
     has_many :survey_assignments, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
     scope :active, -> { where(active: 'Y') }
     scope :with_role_aggregate, -> { joins(:role_aggregate) }
@@ -43,7 +43,7 @@ class LimeSurvey < ActiveRecord::Base
     # Description of token attributes
     def token_attrs
       return @token_attrs if defined? @token_attrs
-      attr_data = attributedescriptions.to_s 
+      attr_data = attributedescriptions.to_s
       if (attributedescriptions.to_s =~ /^a:\d+:\{/).nil?
         @token_attrs = HashWithIndifferentAccess.new(
           YAML.load(attr_data)
@@ -51,7 +51,7 @@ class LimeSurvey < ActiveRecord::Base
       else
         @token_attrs = HashWithIndifferentAccess.new(
           PHP.unserialize(attr_data)
-        ) 
+        )
       end
       @token_attrs = {} unless @token_attrs.is_a? Hash
       @token_attrs
@@ -60,7 +60,7 @@ class LimeSurvey < ActiveRecord::Base
     def parent_questions
         @parent_questions ||= lime_groups.map{|group|group.parent_questions}.flatten
     end
-    
+
     def lime_questions
         @lime_questions ||= lime_groups.map{|lg|lg.lime_questions}.flatten
     end
@@ -68,7 +68,7 @@ class LimeSurvey < ActiveRecord::Base
     def completed_surveys_count
         @completed_surveys_count ||= dataset.count{|row|!row['submitdate'].nil?}
     end
-    
+
     def started_surveys_count
         return @started_surveys_count if defined? @started_surveys_count
         if lime_data.column_names.include?('startdate')
@@ -83,7 +83,7 @@ class LimeSurvey < ActiveRecord::Base
         @response_percent ||= (completed_surveys_count.to_f / response_count) * 100
     end
 
-    def response_count 
+    def response_count
         dataset.count
     end
 
@@ -101,7 +101,7 @@ class LimeSurvey < ActiveRecord::Base
     # Column Names Enumerator
     # TODO: This is broken, it does not return appropriate column_name when
     #       column has a suffix
-    def column_names 
+    def column_names
         return [] unless sid
         return @column_names if defined? @column_names
         @column_names = []
@@ -141,9 +141,9 @@ class LimeSurvey < ActiveRecord::Base
     def wipe_response_sets
         lime_questions.each{|lq|lq.wipe_response_set}
         return nil
-    end    
+    end
 
-    def group_and_title_name 
+    def group_and_title_name
         # Generate a title to go with each of them
         title1, title2 = title.split(':', 2)
         g_title, ra_title = title2.nil? ? ['', title1] : [title1, title2]
@@ -155,14 +155,14 @@ class LimeSurvey < ActiveRecord::Base
     def lime_stats(opts={})
         @lime_stats ||= ::LimeExt::LimeStat::LimeStat.new(self)
     end
-    
+
     ##
     # Instantiate a lime_data object if one does not already exist
     def lime_data
         raise 'sid not set' if not(sid)
         @lime_data ||= ::LimeExt::LimeData.new(self)
     end
-    
+
     ##
     # Instantiate a lime_data object if one does not already exist
     def lime_tokens

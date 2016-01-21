@@ -31,11 +31,11 @@ class LimeQuestion < ActiveRecord::Base
         ';'=>'arr_mult_text',     # - Array (Flexible Labels) multiple texts
         '|'=>'file_upload'        # - File Upload Question
     }
-    
+
     default_scope { order('question_order ASC') }
     self.inheritance_column = nil
     self.primary_key = :qid
-    
+
 
     #belongs_to :parent_question
     belongs_to :lime_group, :primary_key=> "gid", :foreign_key=> "gid", :inverse_of=>:lime_questions
@@ -51,7 +51,7 @@ class LimeQuestion < ActiveRecord::Base
             pretty_value do
                 obj = bindings[:object]
                 if obj.parent_qid.to_i > 0
-                    value = obj.parent_question.name.html_safe 
+                    value = obj.parent_question.name.html_safe
                     view = bindings[:view]
                     url =  view.show_path( model_name: 'lime_question', id: obj.parent_qid)
                     view.tag(:a, { :href => url}) << value
@@ -60,14 +60,14 @@ class LimeQuestion < ActiveRecord::Base
                 end
             end
         end
-        include_all_fields 
+        include_all_fields
     end
-     
+
     def lime_survey
         lime_group.lime_survey
     end
 
-    def dataset 
+    def dataset
         lime_survey.lime_data.dataset
     end
 
@@ -80,7 +80,7 @@ class LimeQuestion < ActiveRecord::Base
     end
 
     #################################################################
-    ## Get attributes possibly from cache                           #               
+    ## Get attributes possibly from cache                           #
     #def lime_question_attributes                                   #
     #    return [] if qid.to_s.empty?                               #
     #    return @lime_question_attributes if defined? @lime_question_attributes
@@ -99,7 +99,7 @@ class LimeQuestion < ActiveRecord::Base
     #    end
     #    return result
     #end
-    
+
     def qattrs
         return @qattrs if defined? @qattrs
         @qattrs = HashWithIndifferentAccess.new
@@ -112,11 +112,11 @@ class LimeQuestion < ActiveRecord::Base
     ##
     # Should this question be visible?
     def hidden?
-        qattrs[:hidden] == '1' 
+        qattrs[:hidden] == '1'
     end
 
     def num_value_int_only?
-       qattrs[:num_value_int_only] == '1' 
+       qattrs[:num_value_int_only] == '1'
     end
 
     ##
@@ -148,21 +148,21 @@ class LimeQuestion < ActiveRecord::Base
             @my_column_name = "#{lime_group.sid}X#{gid}X#{qid}"
         end
         return @my_column_name
-    end 
+    end
 
        ##
     # Find all of our sub questions
     def sub_questions
         @sub_questions ||= lime_group.lime_questions.select{|question|question.parent_qid == qid}
     end
-    
+
     ##
     # Find our parent question
     def parent_question
         return nil unless is_sq?
         @parent_question ||= lime_group.lime_questions.find{|question|question.qid==parent_qid}
     end
- 
+
     ###
     # Text to show as identifier in rails_admin
     def name
@@ -176,11 +176,11 @@ class LimeQuestion < ActiveRecord::Base
         if is_sq?
             @stats = parent_question.stats.sub_stats.find{|sub_stat|sub_stat.question.qid == qid}
         else
-            @stats ||= lime_survey.lime_stats.generate_stats_for_question self 
+            @stats ||= lime_survey.lime_stats.generate_stats_for_question self
         end
         return @stats
     end
-    
+
     ##
     # Get the response_set for this question
     def response_set
@@ -190,7 +190,7 @@ class LimeQuestion < ActiveRecord::Base
         @wipe_response_set = false
         @response_set =  LimeExt::ResponseLoaders.responses_for self
         return @response_set
-    end 
+    end
 
     def wipe_response_set
         @wipe_response_set = true
