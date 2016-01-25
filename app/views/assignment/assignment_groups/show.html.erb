@@ -4,7 +4,8 @@
         <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
     <% end %>
     <% if can? :create, Assignment::AssignmentGroup %>
-        <%= link_to new_assignment_assignment_group_path, 
+        <%= link_to new_assignment_assignment_group_path(layout: false),
+            data: {toggle: :modal},
             class: 'btn btn-success' do %>
             New Project
         <% end %>
