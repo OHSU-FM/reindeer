@@ -334,6 +334,3 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier
   webrick
-
-BUNDLED WITH
-   1.10.6
