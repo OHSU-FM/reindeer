@@ -15,6 +15,7 @@ ActiveRecord::Migration.maintain_test_schema!
 
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
+  fixtures :all
 
   # Add more helper methods to be used by all tests here...
   extend MiniTest::Spec::DSL
@@ -23,6 +24,7 @@ end
 
 class ActionController::TestCase
 
+  fixtures :all
   include Devise::TestHelpers
   include FactoryGirl::Syntax::Methods
   include ControllerMacros
