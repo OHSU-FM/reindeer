@@ -48,14 +48,22 @@ module LsReportsHelper
 
     ##
     # Helper function
-    def hf_role_aggregate_groups(role_aggregates)
+    def hf_role_aggregate_groups(role_aggregates, year=nil)
         result = {}
         # A list of role_aggregates
         role_aggregates.each do |ra|
             g_title, ra_title = ra.lime_survey.group_and_title_name
             # Throw each ra into a group
-            result[g_title] = [] unless result.include? g_title
-            result[g_title].push([ra_title, ra])
+            if year
+               if g_title.include? year
+                  result[g_title] = [] unless result.include? g_title
+                  result[g_title].push([ra_title, ra])
+                end
+            else
+              result[g_title] = [] unless result.include? g_title
+              result[g_title].push([ra_title, ra])
+ 
+            end
         end
         # Sort each group by the 'last_updated' value in lime_survey
         result.each do |g, ras|

@@ -23,7 +23,8 @@
   </thead>
   <tbody>
   <% # Sort groups alphabetically and display %>
-  <% ra_groups =  hf_role_aggregate_groups(@role_aggregates) %>
+  <% year = params[:year] %>
+  <% ra_groups =  hf_role_aggregate_groups(@role_aggregates, year) %>
   <% rag_keys = ra_groups.keys.sort %>
 
   <% rag_keys.each do |group_name|%>

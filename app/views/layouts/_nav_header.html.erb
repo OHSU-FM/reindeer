@@ -23,8 +23,21 @@
                 <% end %>
                 
                 <% if can? :list, LimeSurvey %>
-                    <%= nav_link_to('Reports', main_app.ls_reports_path, 
-                            :class=>'ls_reports-link')%>
+                    <% menu = Settings.site[:report] %>
+                    <% if menu %>
+                        <% menu = menu.split(", ") %>
+                        <% menu.each do |m| %>
+                            <% if current_user.permission_group.title.include? m %>
+                                   <%= nav_link_to(m, main_app.ls_reports_path(:year =>  "#{m}"), 
+                                                   :class=>'ls_reports-link')%>
+                            <% else %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
+                <% end %>
+                <% if can? :list, LimeSurvey %>
+                    <%= nav_link_to('Reports', main_app.ls_reports_path,
+                                            :class=>'ls_reports-link') %>
                 <% end %>
                 <% if can? :list, Assignment::UserAssignment %>
                     <% acount = current_user.active_assignments.count %>
