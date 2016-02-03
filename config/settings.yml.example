@@ -8,7 +8,15 @@ defaults: &defaults
         name: Some Site
         name_html: Test
         logo: none
-        titles: 
+        menu_groups:
+        # adds nav links to narrow results displayed in ls_reports
+        # for instance, if you have lime_surveys titled 2016:whatever, adding
+        # 2016 to the menu_groups setting will create a link that points only to
+        # those surveys
+        menu_groups_permissions:
+        # restricts display of menu group nav links by permission_group.title
+        # admin+ users will always see the extra links (if they exist)
+        titles:
            user_assignment: Assignment
     devise:
         secret_key: 'somesuperlongsecretkeyhere'

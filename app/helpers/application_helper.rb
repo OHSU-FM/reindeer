@@ -6,7 +6,7 @@ module ApplicationHelper
     end
 
     def nav_link_active? link
-        request.path == link
+        request.fullpath == link
     end
 
     # Flash message css classes for use with bootstrap
