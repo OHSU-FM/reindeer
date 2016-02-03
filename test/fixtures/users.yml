@@ -4,4 +4,26 @@ admin:
   email: 'admin@test.com'
   encrypted_password: 'password'
   roles:
-    - :admin
+    - :superadmin
+
+coach:
+  id: 2
+  username: 'coach'
+  email: 'coach@test.com'
+  encrypted_password: 'password'
+  roles:
+    - :can_dashboard
+    - :can_lime
+  permission_group:
+    - coach_permission_group
+
+student:
+  id: 3
+  username: 'student'
+  email: 'student@test.com'
+  encrypted_password: 'password'
+  roles:
+    - :can_dashboard
+    - :participant
+  permission_group:
+    - student_permission_group

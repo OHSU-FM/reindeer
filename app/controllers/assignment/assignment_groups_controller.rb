@@ -1,6 +1,6 @@
 class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseController
   layout 'full_width'
-  authorize_resource 
+  authorize_resource
   before_filter :load_resource, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -21,6 +21,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def create
     @assignment_group = Assignment::AssignmentGroup.create create_params
+    redirect_to assignment_assignment_group_path(@assignment_group)
   end
 
   def edit
@@ -33,10 +34,11 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def destroy
     @assignment_group.destroy
+    redirect_to assignment_assignment_groups_path
   end
 
   protected
- 
+
   def load_resource
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
   end
@@ -47,7 +49,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def update_params
     params.require(:assignment_assignment_group).
-      permit(:title, :desc_md, user_ids: [])
+      permit(:assignment_group_template_id, :title, :desc_md, user_ids: [])
   end
 
 end

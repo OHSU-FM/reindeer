@@ -1,0 +1,10 @@
+one:
+  id: 1
+  permission_group_id: 1
+  title: "a test assignment group template"
+  permission_group_ids: nil
+  sids: [""]
+  desc_md: "test"
+  active: true
+  created_at: <%= 1.day.ago.to_s(:db) %>
+  updated_at: <%= 1.day.ago.to_s(:db) %>
