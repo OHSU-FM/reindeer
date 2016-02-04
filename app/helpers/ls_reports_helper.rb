@@ -27,7 +27,7 @@ module LsReportsHelper
         "ls_reports/show/sid=#{survey.sid}/updated_at=#{updated_at}/query=#{query}"
     end
 
- def lime_file_links question
+  def lime_file_links question
      raise 'Not a file question' unless question.qtype == 'file_upload'
      links = []
      ldata = question.response_set.data || []
@@ -44,25 +44,32 @@ module LsReportsHelper
          links.push f_links
      end
      return links
- end
+  end
 
     ##
     # Helper function
-    def hf_role_aggregate_groups(role_aggregates)
-        result = {}
-        # A list of role_aggregates
-        role_aggregates.each do |ra|
-            g_title, ra_title = ra.lime_survey.group_and_title_name
-            # Throw each ra into a group
-            result[g_title] = [] unless result.include? g_title
-            result[g_title].push([ra_title, ra])
+  def hf_role_aggregate_groups(role_aggregates, group=nil)
+    result = {} # A list of role_aggregates
+
+    role_aggregates.each do |ra|
+      g_title, ra_title = ra.lime_survey.group_and_title_name
+      # Throw each ra into a group
+      if group
+        if g_title.include? group
+          result[g_title] = [] unless result.include? g_title
+          result[g_title].push([ra_title, ra])
         end
-        # Sort each group by the 'last_updated' value in lime_survey
-        result.each do |g, ras|
-            ras.sort_by!{|title, ras|ras.lime_survey.last_updated.to_s}
-        end
-        return result
+      else
+        result[g_title] = [] unless result.include? g_title
+        result[g_title].push([ra_title, ra])
+      end
     end
+    # Sort each group by the 'last_updated' value in lime_survey
+    result.each do |g, ras|
+      ras.sort_by!{|title, ras|ras.lime_survey.last_updated.to_s}
+    end
+    return result
+  end
 
     ##
     #

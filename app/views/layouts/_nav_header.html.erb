@@ -23,8 +23,17 @@
                 <% end %>
 
                 <% if can? :list, LimeSurvey %>
+                    <% menu = Settings.site['menu_groups'] %>
+                    <% if menu %>
+                        <% menu.split(", ").each do |m| %>
+                            <% if current_user.menu_has_groupings? %>
+                                   <%= nav_link_to(m, main_app.ls_reports_path(:group =>  "#{m}"),
+                                                   :class=>'ls_reports-link') %>
+                            <% end %>
+                        <% end %>
+                    <% end %>
                     <%= nav_link_to('Reports', main_app.ls_reports_path,
-                            :class=>'ls_reports-link')%>
+                                            :class=>'ls_reports-link') %>
                 <% end %>
                 <% if can? :list, Assignment::UserAssignment %>
                     <% acount = current_user.active_assignments.count %>
