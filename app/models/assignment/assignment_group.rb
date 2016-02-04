@@ -9,12 +9,12 @@ module Assignment
     belongs_to :assignment_group_template
     has_one :permission_group, through: :assignment_group_template
     has_many :survey_assignments
-    has_many :comments, class_name: 'Assignment::AssignmentComment', 
-      inverse_of: :assignment_group   
+    has_many :comments, class_name: 'Assignment::AssignmentComment',
+      inverse_of: :assignment_group
     delegate :lime_surveys, to: :assignment_group_template
     validates :owner, presence: true
     validates :assignment_group_template, presence: true
-    
+
     before_validation :set_defaults, on: :create
 
     STATES = {
@@ -22,8 +22,6 @@ module Assignment
       2 => :inactive,
       3 => :complete
     }
-    
-    attr_accessible :assignment_group_template_id, :user_id, :title, :desc_md, :user_ids
 
     rails_admin do
       list do
@@ -44,7 +42,7 @@ module Assignment
       field :user_ids
       field :survey_assignments
     end
-    
+
     def status_enum
       STATES.invert
     end
@@ -52,7 +50,7 @@ module Assignment
     def assignment_group_template_enum
       AssignmentGroupTemplate.active
     end
-    
+
     def possible_users
       assignment_group_template ? assignment_group_template.possible_users : []
     end
@@ -60,7 +58,7 @@ module Assignment
     def user_ids_enum
       @user_ids_enum ||= possible_users.map{|u|[u.title, u.id]}
     end
-    
+
     protected
 
     def set_defaults
