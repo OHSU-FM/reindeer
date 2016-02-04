@@ -1,5 +1,5 @@
 class LsReports::SpreadsheetController < LsReports::BaseController
-    layout 'full_width'
+    layout 'full_width_margins'
     include LsReports::SpreadsheetHelper
     
     ##
