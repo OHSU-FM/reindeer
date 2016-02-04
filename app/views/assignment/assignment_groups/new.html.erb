@@ -4,13 +4,13 @@
         <div class="bs-callout bs-callout-primary">New</div> Project
     </h1>
 </div>
-<%= simple_form_for [@assignment_group], 
+<%= simple_form_for [@assignment_group],
     :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :assignment_group_template_id, label: 'Template',
-      collection: @assignment_group.assignment_group_template_enum %>
-  <%= error_span(@assignment_group[:assignment_group_template_id]) %>
-  <% if can? :edit, @assignment_group %>
-    <%= render partial: 'assignment/assignment_groups/form_users' %>
-  <% end %>  
+    <%= f.error_notification %>
+    <%= f.input :assignment_group_template_id, label: 'Template',
+        collection: @assignment_group.assignment_group_template_enum %>
+    <% if can? :edit, @assignment_group %>
+        <%= render partial: 'assignment/assignment_groups/form_users' %>
+    <% end %>
 <% end %>
 
