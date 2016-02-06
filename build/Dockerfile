@@ -2,12 +2,12 @@
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/passenger-docker/blob/master/Changelog.md for
 # a list of version numbers.
-FROM phusion/passenger-full:<VERSION>
+#FROM phusion/passenger-full:0.9.18
 # Or, instead of the 'full' variant, use one of these:
 #FROM phusion/passenger-ruby19:<VERSION>
 #FROM phusion/passenger-ruby20:<VERSION>
 #FROM phusion/passenger-ruby21:<VERSION>
-#FROM phusion/passenger-ruby22:<VERSION>
+FROM phusion/passenger-ruby22:0.9.18
 #FROM phusion/passenger-jruby90:<VERSION>
 #FROM phusion/passenger-nodejs:<VERSION>
 #FROM phusion/passenger-customizable:<VERSION>
@@ -33,6 +33,9 @@ CMD ["/sbin/my_init"]
 #RUN /pd_build/python.sh
 #   Node.js and Meteor support.
 #RUN /pd_build/nodejs.sh
+
+# Enable nginx
+RUN rm -f /etc/service/nginx/down
 
 # ...put your own build instructions here...
 RUN mkdir /home/app/reindeer
