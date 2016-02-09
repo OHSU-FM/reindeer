@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
             :case_sensitive => false
         },
         :presence => true
-
+    validates :encrypted_password, presence: true
     validates :email,
         :uniqueness => {
             :case_sensitive => false

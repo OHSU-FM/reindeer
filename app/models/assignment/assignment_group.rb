@@ -1,5 +1,8 @@
 module Assignment
   class AssignmentGroup < ActiveRecord::Base
+    include Assignment::MarkdownFilter
+    markdown_columns :desc_md
+
     serialize :user_ids, Array
 
     belongs_to :owner, class_name: 'User', foreign_key: :user_id
@@ -29,7 +32,11 @@ module Assignment
         end
         include_all_fields
       end
-      field :owner, :belongs_to_association
+      field :owner, :belongs_to_association do
+        default_value do
+          bindings[:view]._current_user
+        end
+      end
       field :assignment_group_template
       field :status
       field :title

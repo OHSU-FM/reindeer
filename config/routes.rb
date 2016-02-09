@@ -64,7 +64,7 @@ Rails.application.routes.draw do
       resources :user_assignments, path: :tasks
       resources :survey_assignments, path: :forms, param: :survey_assignment_id
       resources :assignment_group_comments, path: :group_comments, 
-        param: :assignment_group_id, only: [:show, :new]
+        param: :assignment_group_id
       resources :survey_assignment_comments, path: :form_comments, 
         param: :survey_assignment_id, only: [:show]
       resources :assignment_comments, path: :comments

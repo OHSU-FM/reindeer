@@ -69,8 +69,8 @@
     </blockquote>
 </div>
   <% new_btn_id = "new-#{prefix}-btn" %>
-  <%= link_to 'New', new_assignment_assignment_group_comment_path(assignment_group_id: 1),
-        id: new_btn_id,
+  <%= link_to 'New', new_assignment_assignment_group_comment_path(assignment_group_id: @assignment_group.id), 
+        id: new_btn_id, 
         class: "btn btn-primary",
         data: {
             hide:"##{new_btn_id}",

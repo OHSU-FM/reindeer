@@ -8,8 +8,8 @@
   <dd><%= @assignment_comment.user_assignment_id %></dd>
   <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
   <dd><%= @assignment_comment.user_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:slug) %>:</strong></dt>
-  <dd><%= @assignment_comment.slug %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:slug_md) %>:</strong></dt>
+  <dd><%= @assignment_comment.slug_md %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

@@ -1,8 +1,10 @@
-<%= form_for comment,
-    :html => { :class => "form-group" } do |f| %>
+<%= form_for comment, 
+    url: url_for(assignment_group_id: @assignment_group.id, action: :create),
+    data: {class: 'Assignments.MarkdownForm'},
+    html: { :class => "form-group" } do |f| %>
     <% fid = f.options[:html][:id] %>
 
-<blockquote class="bs-callout-<%= bq_type %>">
+  <blockquote class=" bs-callout bs-callout-<%= bq_type %>">
     <h4>
         <span class="label label-<%= bq_type %>">
             <% if comment.new_record? %>
@@ -14,19 +16,22 @@
         &nbsp;Comment
     </h4>
     <%= f.hidden_field :user_assignment_id %>
-    <%= f.text_area :slug,
+    <%= f.text_area :slug_md,
         class: 'form-control',
         rows: 4 %>
-    <div class="pull-right">
-      <button type="button" class="btn btn-link"
-              data-remove='#<%= fid %>'
-            data-show="#new-group-comment-btn">
+    <div class="pull-right" style="margin-top:-15px;">
+        <%= button_tag type: :submit, 
+            data: {
+                remove: "##{fid}",
+                show: "#new-group-comment-btn"
+            },
+            class: 'btn btn-link' do %>
             <i class="glyphicon glyphicon-ok"></i>
-      </button>
-      <button type="button" class="btn btn-link"
+        <% end %>
+      <button type="button" class="btn btn-link danger" 
           data-remove='#<%= fid %>'
           data-show="#new-group-comment-btn">
-          <i class="fa fa-ban"></i>
+          <i class="fa fa-ban text-danger"></i>
       </button>
     </div>
   </blockquote>

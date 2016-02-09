@@ -13,12 +13,11 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def show
     @assignment_groups = Assignment::AssignmentGroup.all
-    respond_with @assignment_group
   end
 
   def new
     @assignment_group = Assignment::AssignmentGroup.new
-    respond_with @assignment_group
+    simple_respond
   end
 
   def create
@@ -26,13 +25,11 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   def edit
-    respond_with @assignment_group
   end
 
   def update
     @assignment_group.update_attributes(update_params)
     @assignment_group.save!
-    respond_with @assignment_group
   end
 
   def destroy

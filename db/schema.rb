@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017235330) do
+ActiveRecord::Schema.define(version: 20160118044014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20151017235330) do
   create_table "assignment_comments", force: :cascade do |t|
     t.integer  "user_assignment_id"
     t.integer  "user_id"
-    t.text     "slug"
+    t.text     "slug_md"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "assignment_group_id"
