@@ -270,4 +270,17 @@ class User < ActiveRecord::Base
     def to_param
         username.parameterize
     end
+
+    def menu_has_groupings?
+      permissions = Settings.site['menu_groups_permissions'] || nil
+      if Settings.site['menu_groups']
+        if permissions
+          self.admin_or_higher? or permissions.include?(self.permission_group.title)
+        else
+          true
+        end
+      else
+        false
+      end
+    end
 end
