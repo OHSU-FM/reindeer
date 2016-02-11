@@ -7,15 +7,19 @@ class LsReportsController < ApplicationController
     # show all roles
     def index
         authorize! :list, LimeSurvey
-        # List role_aggregates in order of date
-        @role_aggregates = current_user.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_s.to_date}
+
+        # List role_aggregates in order of last updated date
+        surveys = current_user.lime_surveys.sort_by{|lime_survey|
+          lime_survey.last_updated.to_s.to_date
+        }
+          
         # Group surveys by group title
-        @survey_groups = PermissionGroups::RoleAggregateGroup.classify(@role_aggregates)
-        # Filter groups if filter present
-        if params[:filter].present?
-          @survey_groups.select!{|group|group.title == params[:filter]}
-          @role_aggregates = @survey_groups.map{|group|group.role_aggregates}.flatten
-        end
+        @survey_groups = LimeExt::LimeSurveyGroup.classify(surveys, 
+          filter: params[:filter])
+        
+        # collect role aggregates
+        @role_aggregates = @survey_groups.role_aggregates
+
         # Sort groups alphabetically
         @survey_groups.sort_by{|group| group.title }
     end

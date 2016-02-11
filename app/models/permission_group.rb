@@ -39,7 +39,7 @@ class PermissionGroup < ActiveRecord::Base
     ##
     # Names of every survey group available
     def survey_group_titles
-      @survey_group_titles ||= survey_groups.map{|group|group.title}
+      @survey_group_titles ||= survey_groups.map{|group| group.title }
     end
 
     ##
@@ -49,13 +49,13 @@ class PermissionGroup < ActiveRecord::Base
     end
 
     ##
-    # Group role aggregates by title
+    # Group surveys by title
     def survey_groups
-      @survey_groups ||= PermissionGroups::RoleAggregateGroup.classify(role_aggregates)  
+      @survey_groups ||= LimeExt::LimeSurveyGroup.classify(lime_surveys)
     end
 
     ##
-    # Only pinned role_aggregates, grouped by title
+    # Only pinned surveys, grouped by title
     def pinned_survey_groups
       @pinned_survey_groups ||= survey_groups.select{|group|
         pinned_survey_group_titles.include?(group.title)
