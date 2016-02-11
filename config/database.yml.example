@@ -1,27 +1,27 @@
 development:
   adapter: postgresql
-  database: edna_console_development
+  database: reindeer_development
   host: localhost
   username: sa
   password: 'password'
-  schema_search_path: 'public,target,transform,source' #source,transform,target,public #can be comma seperated
+  schema_search_path: 'public,target,transform,source' #source,transform,target,public #can be comma separated
   reconnect: false
 
 production:
   adapter: postgresql
-  database: edna_console
+  database: reindeer
   host: localhost
   username: sa
   password: 'password'
-  schema_search_path: 'public,target,transform,source' #source,transform,target,public #can be comma seperated
+  schema_search_path: 'public,target,transform,source' #source,transform,target,public #can be comma separated
   reconnect: false
 
 testing:
   adapter: postgresql
-  database: edna_console_test
+  database: reindeer_test
   host: localhost
   username: sa
   password: 'password'
-  schema_search_path: "transform,target,source,public" #can be comma seperated
+  schema_search_path: "transform,target,source,public" #can be comma separated
   reconnect: false
 

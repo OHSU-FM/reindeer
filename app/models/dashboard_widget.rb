@@ -8,9 +8,9 @@ class DashboardWidget < ActiveRecord::Base
 
     # Always require a dashboard
     validates_presence_of :dashboard
-    # Only require existence of widget if one was added 
+    # Only require existence of widget if one was added
     validates_presence_of :widget, :if=> Proc.new { |o| !(o.widget_type.nil? || o.widget_id.nil?) }
-    # 
+    #
     before_save :set_status
     after_save :set_status
     before_destroy :optionally_delete_widget
@@ -28,7 +28,7 @@ class DashboardWidget < ActiveRecord::Base
         field :dashboard do
             read_only true
         end
-        field :widget_id, :enum do 
+        field :widget_id, :enum do
             label 'Widget Id'
         end
         field :widget_type, :enum
@@ -47,9 +47,9 @@ class DashboardWidget < ActiveRecord::Base
     def widget_type_enum
         {'Chart'=>'Chart'}
     end
-    
+
     def widget_id_enum
-        return [] unless widget_type_enum.keys.include? widget_type 
+        return [] unless widget_type_enum.keys.include? widget_type
         widget_type.constantize.where(:user_id=>dashboard.user_id).map do |record|
             title = record.title.strip.empty? ? "Untitled" : record.title
             [title, record.id]
@@ -57,7 +57,7 @@ class DashboardWidget < ActiveRecord::Base
     end
 
     # set default position to 1
-    def position 
+    def position
         self[:position] || 1
     end
 
@@ -80,7 +80,7 @@ class DashboardWidget < ActiveRecord::Base
     end
 
     def content
-        
+
     end
 
     def editable_widget?

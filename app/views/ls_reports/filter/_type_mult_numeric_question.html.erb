@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% question_u.stats.sub_stats.each do |stat_u| %> 
+                <% question_u.stats.sub_stats.each do |stat_u| %>
                     <% stat = question.stats.sub_stats.find{|st|st.qid == stat_u.qid} %>
                     <% ds_u, ds = stat_u.descriptive_stats, stat.descriptive_stats %>
                     <% next unless ds && ds_u %>

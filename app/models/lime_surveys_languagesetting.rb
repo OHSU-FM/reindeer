@@ -8,4 +8,4 @@ class LimeSurveysLanguagesetting < ActiveRecord::Base
     end
 
 
-end 
+end

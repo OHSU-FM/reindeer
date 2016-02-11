@@ -1,12 +1,12 @@
     <% group.parent_questions.each do |pquestion|%>
-        <% 
+        <%
             # Stats aliases
             stats = pquestion.stats
-            dstats = pquestion.stats.descriptive_stats   
-            
+            dstats = pquestion.stats.descriptive_stats
+
             # unfiltered variables and aliases
-            pquestion_u = @lime_survey_unfiltered.find_question :qid, pquestion.qid 
-            stats_u = pquestion_u.stats 
+            pquestion_u = @lime_survey_unfiltered.find_question :qid, pquestion.qid
+            stats_u = pquestion_u.stats
             dstats_u = pquestion_u.stats.descriptive_stats
         %>
         <% if pquestion.qtype == 'boiler' %>
@@ -17,23 +17,23 @@
                     </div>
                 </td>
             </tr>
-            <% 
+            <%
                 # extra tr for stripped rows in table
             %>
             <tr></tr>
             <% next %>
         <% end %>
-            
+
         <% qcounter += 1 %>
-        
+
         <% if pquestion.hidden? %>
             <tr id="qid<%= pquestion.qid %>">
                 <td><%= pquestion.question %></td>
                 <td colspan="9"><em>Hidden</em></td>
             </tr>
             <% next %>
-        <% end %> 
-        <% gets_arrow = hf_pquestion_gets_dropdown?(pquestion) %>    
+        <% end %>
+        <% gets_arrow = hf_pquestion_gets_dropdown?(pquestion) %>
         <tr id="qid<%= pquestion.qid %>" class="<% unless gets_arrow %>no-arrow<% end %>">
             <td <% if gets_arrow %>class="arrow"<% end %>>
                 <div class="arrow-closed toggle-img unselectable" id="arrow_<%= pquestion.qid%>"></div>
@@ -46,8 +46,8 @@
                     <span class="qdesc" data-toggle="tooltip" data-tiptype="qdesc" data-qtype="<%= pquestion.qtype %>"><%= pquestion.qtype %></span>
                 </small>
             </td>
-            <%= render :partial=>"ls_reports/filter/td_cells", :locals=>{:stats=>stats, :dstats=>dstats}%> 
-            <%= render :partial=>"ls_reports/filter/td_cells", :locals=>{:stats=>stats_u, :dstats=>dstats_u}%> 
+            <%= render :partial=>"ls_reports/filter/td_cells", :locals=>{:stats=>stats, :dstats=>dstats}%>
+            <%= render :partial=>"ls_reports/filter/td_cells", :locals=>{:stats=>stats_u, :dstats=>dstats_u}%>
         </tr>
         <tr>
             <td colspan="14">

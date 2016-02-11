@@ -1,7 +1,7 @@
 
 <div class="chart-container-outer spin-toggle">
     <%= image_tag 'spinner-mini.gif', :class=>'spin-toggle-image'%>
-    <div class="chart-visualization-container-outer row hide-chart-ui spin-toggle-content"> 
+    <div class="chart-visualization-container-outer row hide-chart-ui spin-toggle-content">
         <%= render :partial=>'charts/chart_visualization', :locals=>{:chart=>f.object.widget}%>
     </div>
 </div>

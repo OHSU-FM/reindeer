@@ -11,7 +11,7 @@ class LsReports::BaseController < ApplicationController
             flash[:error] = 'Nothing left to show after filtering'
             redirect_to ls_reports_path
         end
-        
+
         export_to_gon
         render :show
     end
@@ -24,13 +24,13 @@ class LsReports::BaseController < ApplicationController
         load_data
         @gid = params[:gid]
         @group = @virtual_groups.find{|group|group.gid.to_s==@gid.to_s}
-        @qcounter = 0 
+        @qcounter = 0
         @virtual_groups.each do |lg|
             break if lg.gid == @gid
             @qcounter +=  lg.parent_questions.count
         end
         @question_stats = Rails.cache.fetch(cache_key_for_group(@group), :expires_in=>24.hours) do
-            @group.parent_questions.map{|pq|pq.stats} 
+            @group.parent_questions.map{|pq|pq.stats}
         end
 
         respond_to do |format|
@@ -73,12 +73,12 @@ class LsReports::BaseController < ApplicationController
 
     def export_to_gon
         gon.filters_equal = @fm.filters_equal
-        
+
         # Data exports for javascript
-        gon.qstats = @lime_survey.lime_stats.load_data 
+        gon.qstats = @lime_survey.lime_stats.load_data
         gon.full_qstats = @lime_survey_unfiltered.lime_stats.load_data
-        
-        # 
+
+        #
         gon.series_name = @fm.series_name
         gon.unfiltered_series_name = @fm.unfiltered_series_name
     end

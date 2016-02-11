@@ -1,6 +1,6 @@
 <% question.stats.sub_stats.each do |stats| %>
     <h4><%= stats.question.question.html_safe %> </h4>
-    <% title =  strip_tags(stats.response_set.title) %> 
+    <% title =  strip_tags(stats.response_set.title) %>
     <% stats_u = question_u.stats.sub_stats.find{|sub_stat|sub_stat.qid == stats.qid && sub_stat.response_set.scale_id == stats.response_set.scale_id}%>
     <%= render :partial=>'ls_reports/filter/categorical_stats', :locals=>{:stats_u=>stats_u, :stats=>stats, :title=>title}%>
 <% end %>

@@ -1,5 +1,5 @@
 module LsReportsHelper
-  
+
   def hf_sidebar_link_label question, full_desc
     (full_desc ? strip_tags(question.question) : question.title.titleize).html_safe
   end
@@ -18,7 +18,7 @@ module LsReportsHelper
         gid = group.gid
         "ls_reports/show_part/updated_at=#{updated_at}/query=#{query}/gid=#{gid}/view_type=#{opts[:view_type]}/for=#{opts[:for]}"
     end
- 
+
     ##
     # Generate a unique cache key for this survey(and user's filters)
     def cache_key_for_survey survey
@@ -65,7 +65,7 @@ module LsReportsHelper
     end
 
     ##
-    # 
+    #
     def hf_lime_url pquestion
         sid = pquestion.sid
         gid = pquestion.gid
@@ -76,7 +76,7 @@ module LsReportsHelper
             return ''
         end
     end
-   
+
     ##
     # TODO: Move to ls_files_helper.rb
     class FileAccessRequest
@@ -89,21 +89,21 @@ module LsReportsHelper
         end
 
         def question
-            @question ||= fm.lime_survey.find_question :col_id=>col_id 
+            @question ||= fm.lime_survey.find_question :col_id=>col_id
         end
 
         def can_access?
             fm.lime_survey
         end
-        
+
     end
 
     ##
     # Move to lib/lime_ext?
     class FilterManager
-        attr_reader :hide_pk, :hide_agg, :lime_survey, :lime_survey_unfiltered, :pk, :agg, :pk_enum, :agg_enum, :params, :user, 
+        attr_reader :hide_pk, :hide_agg, :lime_survey, :lime_survey_unfiltered, :pk, :agg, :pk_enum, :agg_enum, :params, :user,
             :filters_equal, :series_name, :unfiltered_series_name
-        
+
         def initialize user, sid, opts={}
             @user = user
             @ability = Ability.new user
@@ -118,7 +118,7 @@ module LsReportsHelper
             Rails.logger.info lime_survey.lime_data.query
             Rails.logger.info lime_survey_unfiltered.lime_data.query
         end
-        
+
         def its_important_to_check_ids
             raise "Identical Survey Object ids" if lime_survey.object_id == lime_survey_unfiltered.object_id
             raise "Identical Data Object ids" if lime_survey.lime_data.object_id == lime_survey_unfiltered.lime_data.object_id
@@ -130,26 +130,26 @@ module LsReportsHelper
         def not_found
             @not_found = true
         end
-        
+
         ##
         # Check to see if anything was found
         def not_found?
             @not_found = false unless defined? @not_found
             return @not_found
-        end 
-       
+        end
+
         ###
         # Aliases
 
         def role_aggregate
             @role_aggregate ||= lime_survey.role_aggregate
         end
-        
+
         def lime_survey
             # Load resource and pre-load associations
             @lime_survey ||= get_lime_survey @sid
         end
-        
+
         def lime_survey_unfiltered
             # Load resource and pre-load associations
             @lime_survey_unfiltered ||= get_lime_survey @sid
@@ -172,7 +172,7 @@ module LsReportsHelper
             raise ActiveRecord::RecordNotFound unless result
 
             # !!!!!!!!!!! Important !!!!!!!!!!!!
-            # Must marshal/de-marshal in order to prevent return of identical objects 
+            # Must marshal/de-marshal in order to prevent return of identical objects
             result = Marshal.load(Marshal.dump(result))
             return result
         end
@@ -181,7 +181,7 @@ module LsReportsHelper
         # Generate array of virtual groups
         def virtual_groups
             return @virtual_groups if defined? @virtual_groups
-            
+
             @virtual_groups = []
             # Process every group
             lime_survey.lime_groups.each do |group|
@@ -189,8 +189,8 @@ module LsReportsHelper
                 @virtual_groups += VirtualGroup.spread group
             end
             return @virtual_groups
-        end 
-        
+        end
+
         ##
         # Agg enumerator for links
         def agg_enum
@@ -198,28 +198,28 @@ module LsReportsHelper
             # NO BYREF - Dup array first
             @agg_enum ||= role_aggregate.agg_enum.dup.unshift(['All', ''])
         end
-       
+
         ##
         # PK enumerator for links
         # NO BYREF - Dup array first
         def pk_enum
             @pk_enum ||= role_aggregate.pk_enum.dup.unshift( ['All', '_' ])
         end
-        
+
         def filters_equal
             lime_survey.lime_data.filters == lime_survey_unfiltered.lime_data.filters
         end
 
         #############################
         #private
-        
+
         ##
         # Add user lime permissions to lime_survey
         def add_permission_group_filters
             unless @ability.can? :read, lime_survey
-                raise LsReportsHelper::AccessDenied 
+                raise LsReportsHelper::AccessDenied
             end
-            
+
             unless @ability.can? :read_unfiltered, lime_survey
                 # Filters for comparison
                 plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
@@ -239,37 +239,37 @@ module LsReportsHelper
             end
             @hide_agg = true if role_aggregate.agg_fieldname.to_s.empty?
         end
-        
+
         ##
         # Add a filter to one or both datasets/surveys
         def add_x_filters fieldname, filter_val, filter_all
             # Add filter to filtered dataset
             lime_survey.add_filter fieldname, filter_val
-            
+
             # Filter both if the ULP says to
             if filter_all
                 lime_survey_unfiltered.add_filter fieldname, filter_val
             end
         end
-        
+
         ##
         # Add filters from params
         def add_all_param_filters
             agg_enum # Load and cache agg_enum
-            
+
             unless @hide_agg
-                @agg = add_param_filter lime_survey, :agg, role_aggregate.agg_fieldname  
+                @agg = add_param_filter lime_survey, :agg, role_aggregate.agg_fieldname
                 # Make sure unfiltered dataset has agg filtered
                 add_param_filter lime_survey_unfiltered, :agg, role_aggregate.agg_fieldname
             end
-            
+
             pk_enum # Load and cache pk_enum
-            
+
             unless @hide_pk
                 @pk = add_param_filter lime_survey, :pk, role_aggregate.pk_fieldname
             end
         end
-       
+
 
         ##
         # Add a filter to a survey
@@ -277,7 +277,7 @@ module LsReportsHelper
             return nil if not_found?                                # We're going to throw an error, bail
             return nil if fieldname.to_s.empty?                     # No filter to use
             return nil if @params[filter_name].to_s.empty?     # No filter val specified
-            filter_val = @params[filter_name]            
+            filter_val = @params[filter_name]
             return nil if filter_val == '_'                         # Blank filter val specified
             cur_survey.add_filter(fieldname, filter_val)   # Add filter
             return filter_val
@@ -298,10 +298,10 @@ module LsReportsHelper
                 title = get_title ra.agg_enum, filter[:val]
                 result.push([ra.get_agg_label, title]) if title
                 next if title # Found match for this filter, do next filter
-                
+
                 title = get_title ra.pk_enum, filter[:val]
                 result.push([ra.get_pk_label, title]) if title
-                
+
             end
             return result.uniq
         end
@@ -327,92 +327,92 @@ module LsReportsHelper
     end
 
     ##
-    # Virtual Groups: Split lime groups into groups with 
+    # Virtual Groups: Split lime groups into groups with
     # at most 10 parent questions each.
     class VirtualGroup
         attr_reader :group
         @questions = []
-       
-        ## 
+
+        ##
         # Spread this group into multiple virtual groups if needed
         def self.spread group
             result = []
             idx = 0
-            loop do 
+            loop do
                 virt_group = self.new group, idx
-                result.push virt_group 
+                result.push virt_group
                 idx += 1
                 break unless virt_group.questions_after_ubound?
             end
             return result
         end
-        
+
         ##
         # Create a new virtual group, offset allows it to possibly be a part of another virtual group
         def initialize group, offset
             @group = group
             @offset = offset
         end
-        
+
         ##
         # Debugger output
-        def inspect 
+        def inspect
             vars = "group_name=#{group_name} "
             vars += "@parent_questions=[#{parent_questions.map{|pq|pq.qid}.join(', ')}] "
             attrs = [:@offset, :@lbound, :@ubound]
             vars += attrs.map{|v| "#{v}=#{instance_variable_get(v).inspect}"}.join(", ")
               "<#{self.class}: #{vars}>"
         end
-        
+
         ##
         # Aliased method call to group name of lime group
         def group_name
             "#{@group.group_name} #{roman_name if multipart?}"
         end
-        
-        ## 
+
+        ##
         # Parent Questions of Lime Group
         def parent_questions
             valid_questions[lbound...ubound]
         end
-     
+
         ##
         # Subset of valid parent questions available in this group
         def valid_questions
             @valid_questions ||= @group.parent_questions.select{|pq|!pq.hidden?}
         end
-        
+
         ##
-        # gid for this group, includes roman_name if multipart? true 
+        # gid for this group, includes roman_name if multipart? true
         def gid
             @gid ||= multipart? ? "#{@group.gid}_#{roman_name}": @group.gid
         end
-        
+
         ##
         # Roman numeral name for group number
         def roman_name
             @roman_name ||= (@offset + 1).to_roman
         end
-        
+
         ##
         # Is this group part of multiple virtual groups?
         def multipart?
-            @multipart ||= valid_questions.size > MAX_Q 
+            @multipart ||= valid_questions.size > MAX_Q
         end
-        
+
         ##
         # Are there valid questions outside of our bounds?
         def questions_after_ubound?
             return false if parent_questions.empty?
             valid_questions.last.qid != parent_questions.last.qid
         end
-        
+
         ##
         # Upper bound of array index
         def ubound
             @ubound ||= lbound+MAX_Q
         end
-        
+
         ##
         # Lower bound of array index
         def lbound

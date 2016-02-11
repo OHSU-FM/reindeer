@@ -99,7 +99,7 @@ gem 'statistics2'
 # Environments
 ##############################
 
-group :test do 
+group :test do
     gem 'minitest-rails'
     gem "minitest-rails-capybara"
     gem 'rails-perftest'
@@ -128,11 +128,12 @@ end
 # To use debugger
 group :development do
     gem "rack-mini-profiler", require: false
-    gem 'flamegraph' 
+    gem 'flamegraph'
     gem 'webrick'
     gem 'thin'
     gem 'rails_layout'
     gem 'awesome_print'
+    gem 'byebug'
 
     # Interactive debugging from the web
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]

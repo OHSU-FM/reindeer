@@ -9,18 +9,18 @@
         </tr>
     </thead>
     <tbody>
-        <% question.stats.sub_stats.each do |stats| %> 
+        <% question.stats.sub_stats.each do |stats| %>
             <% stats_u = question_u.stats.sub_stats.find{|st|st.qid == stats.qid} %>
             <tr>
                 <td rowspan="2"> <%= stats.question.question.html_safe %> </td>
                 <td>Filtered</td>
-                <% stats.categorical_stats.each do |cat| %> 
+                <% stats.categorical_stats.each do |cat| %>
                     <td><%= cat.percent.round(2) %>%</td>
                 <% end %>
             </tr>
             <tr>
                 <td>UnFiltered</td>
-                <% stats_u.categorical_stats.each do |cat| %> 
+                <% stats_u.categorical_stats.each do |cat| %>
                     <td><%= cat.percent.round(2) %>%</td>
                 <% end %>
             </tr>

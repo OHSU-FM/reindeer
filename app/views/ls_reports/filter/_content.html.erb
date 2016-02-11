@@ -43,13 +43,13 @@
     <% if gcounter <= 100000 %>
         <%= render :partial=>'ls_reports/filter/lime_group_rows', :locals=>{:group=>group, :qcounter=>qcounter}%>
     <% else %>
-        <tr id="blank-gid<%= group.gid %>" class="blank-gid partial-container"> 
+        <tr id="blank-gid<%= group.gid %>" class="blank-gid partial-container">
             <td colspan="14">
                 <div style="margin: 0 auto;text-align:center;">
                     <% Rails.logger.info [@agg, @sid, @pk].inspect %>
                     <%= link_to image_tag('spinner-mini.gif'),
                         part_of_ls_report_path(:view_type=>:filter, :sid=>@sid, :gid=>group.gid, :agg=>@agg, :pk=>@pk),
-                        :data=>{:order=>gcounter}, :class=>'partial-url' %> 
+                        :data=>{:order=>gcounter}, :class=>'partial-url' %>
                 </div>
             </td>
         </tr>

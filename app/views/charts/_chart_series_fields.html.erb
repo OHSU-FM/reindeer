@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-3">
         <%= f.label :group_filter %>
-        <%= f.select :group_filter,  
+        <%= f.select :group_filter,
             options_for_select(f.object.group_filter_enum, f.object.group_filter),
             {:include_blank=>'Select Group', :disable_with=>'Updating...'},
             {:class=>'form-control'} %>
@@ -14,7 +14,7 @@
             Category
             <i class="icon-spinner icon-spin icon-large" style="display:none;"></i>
         <% end %>
-        <%= f.select :category_filter, 
+        <%= f.select :category_filter,
             options_for_select(f.object.category_filter_enum, f.object.category_filter),
             {
                 :include_blank=>'Select category',
@@ -35,10 +35,10 @@
                 :include_blank=>'Select Question',
                 :disable_with=>'Updating...'
             },
-            {   
+            {
                 :class=>'form-control',
                 :disabled=>f.object.question_filter_enum.empty?} %>
-            
+
             <%= f.hidden_field :question_options_filter, :value=>'', :multiple=>true%>
             <% f.object.question_options_filter.each do |val| %>
                 <% next if val.to_s.empty? %>

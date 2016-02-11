@@ -9,24 +9,24 @@ class User < ActiveRecord::Base
 
     # Setup accessible (or protected) attributes for your model
     attr_accessible :email, :is_ldap,
-        :password, :password_confirmation, 
-        :remember_me, :username, 
+        :password, :password_confirmation,
+        :remember_me, :username,
         :user_externals_attributes, :permission_group_id
-    
+
     attr_accessor :login
     serialize :roles, Array
     belongs_to :lime_user, :foreign_key=>:username, :primary_key=>:users_name
     belongs_to :permission_group, :inverse_of=>:users
     has_many :charts, :inverse_of=>:user, :dependent=>:destroy
-    has_many :dashboard_widgets, :through=>:dashboard, :dependent=>:delete_all
+    has_many :dashboard_widgets, :through=>:dashboard
     has_many :permission_ls_groups, :through=>:permission_group
     has_many :question_widgets, :dependent=>:delete_all
     has_many :user_externals, :dependent=>:delete_all, :inverse_of=>:user
     has_many :assignment_group_templates, through: :permission_group
-    has_one :dashboard, :dependent=>:delete
+    has_one :dashboard, :dependent=>:destroy
 
     include EdnaConsole::UserHasAssignments
-    
+
     accepts_nested_attributes_for :user_externals, :allow_destroy=>true
 
     validates :username,
@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
     # Assign roles to a user like this:
     # user = User.new
     # user.admin = true
-    # user.can_chart = true 
+    # user.can_chart = true
     ROLES = {
         :participant=>0,
 
@@ -83,9 +83,12 @@ class User < ActiveRecord::Base
         # ? _or_higher getter for ROLES
         define_method("#{role}_or_higher?") do
             self.roles.each do |role|
-                # Does this role actually exist? 
-                # Return false if not
-                return false unless ROLES.include?(role)
+                # Does this role actually exist?
+                # log error if not
+                unless ROLES.include?(role)
+                  Rails.logger.error("<#{self.class} id:#{self.id} bad_role:#{role}>")
+                  next
+                end
                 return true if ROLES[role] >= i
             end
             return false
@@ -105,13 +108,13 @@ class User < ActiveRecord::Base
     def title
       self[:full_name] || self[:email]
     end
-    
+
     def is_ldap?
         self.is_ldap
     end
-    
+
     ##
-    # Overwrite a method inserted by Devise 
+    # Overwrite a method inserted by Devise
     #   This allows us to authenticate with either username or email during login
     #   https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
     def self.find_for_database_authentication(warden_conditions)
@@ -122,25 +125,25 @@ class User < ActiveRecord::Base
             where(conditions).first
         end
     end
-    
+
     ##
     # Generic setter for devise authentication, allow users to use email or login
     def login=(login)
         @login = login
     end
-    ## 
+    ##
     # Generic getter for username or email
     def login
         @login || self.username || self.email
     end
-    
+
     ##
     # Rails Admin config
     rails_admin do
-        
-        navigation_label 'Permissions' 
+
+        navigation_label 'Permissions'
         weight -5
-         
+
         ##
         # Default group
         group :account do
@@ -171,22 +174,22 @@ class User < ActiveRecord::Base
                 field attr
             end
         end
-        
-        ## 
+
+        ##
         # should be read only
         group :forms do
             active false
             field :dashboard
             field :charts
         end
-        
+
         group :site_permissions do
             active false
             ROLES.each{|key, val|
                 field key, :boolean
             }
         end
-        
+
         group :survey_access do
             active false
             field :permission_group, :belongs_to_association do
@@ -194,14 +197,14 @@ class User < ActiveRecord::Base
               inline_add false
             end
 
-            field :user_externals, :has_many_association 
-            field :explain_survey_access do 
+            field :user_externals, :has_many_association
+            field :explain_survey_access do
               partial 'users/field_explain_survey_access'
             end
             field :permission_ls_groups do
               read_only true
             end
-            
+
         end
 
         edit do
@@ -215,7 +218,7 @@ class User < ActiveRecord::Base
                 end
             end
         end
-        
+
         list do
             include_fields :id, :username, :email, :permission_group, :is_ldap, :can_dashboard, :can_chart,
                 :admin, :superadmin
@@ -225,11 +228,11 @@ class User < ActiveRecord::Base
                 :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip,
                 :participant, :can_stats, :can_reports, :can_lime, :can_view_spreadsheet, :can_lime_all
         end
-        
+
         exclude_fields [:roles]
-        
+
     end
-    
+
     def role_aggregates
         return @role_aggregates if defined? @role_aggregates
         @role_aggregates = []
@@ -243,7 +246,7 @@ class User < ActiveRecord::Base
         end
         return @role_aggregates.select{|ra|ra.ready_for_use?}
     end
-   
+
     def explain_survey_access
         if self.admin_or_higher?
             details = ['Admin can see everything']

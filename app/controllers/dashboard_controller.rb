@@ -6,11 +6,11 @@ class DashboardController < ApplicationController
             redirect_to auto_path
             return
         end
-        
-        @dash = Dashboard.includes(:dashboard_widgets).where(:user_id=>current_user.id).first_or_initialize        
-        authorize! :read, @dash 
+
+        @dash = Dashboard.includes(:dashboard_widgets).where(:user_id=>current_user.id).first_or_initialize
+        authorize! :read, @dash
         do_gon
-        
+
         respond_to do |format|
             layout =  !(params[:layout] == 'false')
             format.html{ render :layout=>layout} # show
@@ -32,10 +32,10 @@ class DashboardController < ApplicationController
 
 
 
-    def create 
+    def create
         @dash = Dashboard.where(:user_id=>current_user.id).first_or_initialize
         @dash.assign_attributes(params[:dashboard])
-        authorize! :create, @dash 
+        authorize! :create, @dash
         respond_to do |format|
             if @dash.save
                 format.html{ redirect_to @dash }
@@ -52,18 +52,18 @@ class DashboardController < ApplicationController
     end
 
     def update
-        @dash = Dashboard.find(params[:id].to_i) 
-        authorize! :update, @dash 
+        @dash = Dashboard.find(params[:id].to_i)
+        authorize! :update, @dash
         respond_to do |format|
             if @dash.update_attributes(params[:dashboard])
                 format.html{ render :action=>:show}
                 format.json{ render :json=>{:dash=>@dash},
-                    :status=>:ok 
+                    :status=>:ok
                 }
             else
                 format.html{ render :action => :index }
-                format.json{ render :json =>{:dash=>@dash}, 
-                    :status => :unprocessable_entity 
+                format.json{ render :json =>{:dash=>@dash},
+                    :status => :unprocessable_entity
                 }
             end
         end

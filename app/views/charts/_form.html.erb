@@ -25,12 +25,12 @@
                     <% else %>
                         <%= link_to 'Cancel', chart_path(@chart), :class=>'btn btn-small btn-danger', :style=>'margin-left:2em;' %>
                         <% if can? :destroy, @chart %>
-                            <%= link_to chart_path(@chart), :method=>:delete, :class=>'btn btn-danger', 
+                            <%= link_to chart_path(@chart), :method=>:delete, :class=>'btn btn-danger',
                                 :data=>{:confirm=>'Are you sure you want to delete this chart?'} do %>
                                 <i class="fa fa-trash-o"></i>
                             <% end %>
                         <% end %>
-                    <% end %>                
+                    <% end %>
                 </div>
 
             </h2>
@@ -42,13 +42,13 @@
                 <%= f.hidden_field :aggregator_type, :value=>f.object.aggregator_type %>
                 <%= f.hidden_field :chart_type, :value=>f.object.chart_type %>
                 <%= content_tag :div, :data=>{:show_chart_path=>(f.object.new_record? ? new_chart_path : url_for(f.object))} %>
-                
+
                 <%= f.hidden_field :cols, :value=>'', :multiple=>true %>
                 <% f.object.cols.each do |val| %>
                     <% next if val.to_s.empty? %>
                     <%= f.hidden_field :cols, :value=>val, :multiple=>true %>
                 <% end%>
-                
+
                 <%= f.hidden_field :rows, :value=>'', :multiple=>true%>
                 <% f.object.rows.each do |val| %>
                     <% next if val.to_s.empty? %>
@@ -82,16 +82,16 @@
             <div class="row" style="<%= "display:none;" if @chart.dataset.nil? %>margin-bottom:7px;">
                 <hr/>
                 <div class="col-md-12">
-                    <div class="col-md-4">          
+                    <div class="col-md-4">
                         <%= f.label :chart_title %>
                         <%= f.text_field :title, :placeholder=>'Enter name of chart here', :class=>"form-control" %>
                     </div>
                 </div>
             </div>
-            <div class="chart-visualization-container-outer row"> 
+            <div class="chart-visualization-container-outer row">
                 <%= render :partial=>'charts/chart_visualization', :locals=>{:chart=>@chart}%>
             </div>
-        </div> 
+        </div>
 
         <div class="col-md-12">
             <hr/>
@@ -103,13 +103,13 @@
                 <% else %>
                     <%= link_to 'Cancel', chart_path(@chart), :class=>'btn btn-small btn-danger', :style=>'margin-left:2em;' %>
                     <% if can? :destroy, @chart %>
-                        <%= link_to chart_path(@chart), :method=>:delete, :class=>'btn btn-danger', 
+                        <%= link_to chart_path(@chart), :method=>:delete, :class=>'btn btn-danger',
                             :data=>{:confirm=>'Are you sure you want to delete this chart?'} do %>
                             <i class="fa fa-trash-o"></i>
                         <% end %>
                     <% end %>
-                <% end %>                
+                <% end %>
             </div>
-        </div> 
+        </div>
     <% end %>
 </div>

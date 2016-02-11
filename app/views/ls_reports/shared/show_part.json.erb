@@ -1,7 +1,7 @@
 <%= {
     :html=>controller.render_to_string(:partial=>"ls_reports/#{@view_type}/lime_group_rows",
             :layout=>false,
-            :formats=>[:html],    
+            :formats=>[:html],
             :locals=>{:group=>@group, :qcounter=>@qcounter}),
     :group=>@group,
     :question_stats=>@question_stats

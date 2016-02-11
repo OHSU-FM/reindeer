@@ -1,6 +1,6 @@
 <div>
-    <div class="role-question-table" id="role-question-vis_<%= question.qid %>">     
-        <p> 
+    <div class="role-question-table" id="role-question-vis_<%= question.qid %>">
+        <p>
             <%= question.qid %>
             <em class="question"><%= strip_tags(question.question) %></em>
         </p>
@@ -15,8 +15,8 @@
                 </tr>
             </thead>
             <tbody>
-            <% answers.each do |ans| %>           
-                <tr> 
+            <% answers.each do |ans| %>
+                <tr>
                    <td><%= ans.answer %>  </td>
                    <td class="centered-data"><%= ans.code %>  </td>
                    <th class="centered-data"><%= ans.count_in_dataset(question) %>  </th>
@@ -30,10 +30,10 @@
 </div>
 
 <% if @show_comments %>
-    <% question.text_answers.each do |text_ans| %>      
+    <% question.text_answers.each do |text_ans| %>
         <% next if text_ans.to_s == "" %>
         comment:
-        <p><%= text_ans.html_safe %></p> 
+        <p><%= text_ans.html_safe %></p>
     <% end %>
 <% end %>
 

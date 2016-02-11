@@ -1,4 +1,4 @@
-<div class="role-question-table" id="role-question-vis_<%= question.qid %>">     
+<div class="role-question-table" id="role-question-vis_<%= question.qid %>">
     <table class="answer table table-condensed table-striped">
         <thead>
             <tr>
@@ -10,8 +10,8 @@
             </tr>
         </thead>
         <tbody>
-        <% stats.categorical_stats.each do |cat_stat| %>           
-            <tr> 
+        <% stats.categorical_stats.each do |cat_stat| %>
+            <tr>
                <td><%= cat_stat.answer.to_s.html_safe %>  </td>
                <td class="centered-data"><%= cat_stat.code %>  </td>
                <th class="centered-data"><%= cat_stat.frequency %>  </th>

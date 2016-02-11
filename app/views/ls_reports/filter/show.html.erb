@@ -10,10 +10,10 @@
             <%= render :partial=>'ls_reports/filter/content', :locals=>{:lime_survey=>@lime_survey}%>
         </div>
         <div class="col-lg-3 sidebar fade-in two hidden-md hidden-sm hidden-xs">
-            <%= render :partial=>'ls_reports/shared/sidebar', 
+            <%= render :partial=>'ls_reports/shared/sidebar',
                 :locals=>{
-                    :lime_survey=>@lime_survey, 
-                    :virtual_groups=>@virtual_groups, 
+                    :lime_survey=>@lime_survey,
+                    :virtual_groups=>@virtual_groups,
                     :opts=>{:hide_arr_flex=>true, :full_desc=>true}}%>
         </div>
     </div>

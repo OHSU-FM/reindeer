@@ -11,7 +11,7 @@ class UsersController < ApplicationController
         # allow user to update password (unless ldap)
         @user = User.find_by(:username=>params[:username].to_s)
         authorize! :update, @user
-        
+
         respond_to do |format|
             if @user.update_attributes(user_update_params)
                 flash[:notice] = 'Password Updated'
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
                 flash.now[:error] = 'Unable to update password'
                 format.html{ render :action => :show}
                 format.json{ render :json =>{},
-                    :status => :unprocessable_entity 
+                    :status => :unprocessable_entity
                 }
             end
         end

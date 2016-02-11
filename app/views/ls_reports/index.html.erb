@@ -6,16 +6,16 @@
     <tr>
       <th>Survey Title</th>
         <th>
-        <span data-toggle="tooltip" 
-                data-container="body" 
+        <span data-toggle="tooltip"
+                data-container="body"
                 title="Are there any filters on the data that you can view?">
             Access
         </span>
 
         </th>
         <th>
-          <span data-toggle="tooltip" 
-                data-container="body" 
+          <span data-toggle="tooltip"
+                data-container="body"
                 title="The last time that the dataset was updated">
                 Updated</span>
         </th>
@@ -38,7 +38,7 @@
         <% role_aggregates.each do |ra_title, role| %>
 
         <tr>
-            <td><%= link_to ra_title, polymorphic_path([role.default_view, :ls_report] ,:sid=>role.lime_survey_sid), 
+            <td><%= link_to ra_title, polymorphic_path([role.default_view, :ls_report] ,:sid=>role.lime_survey_sid),
                 :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
             <% full_acc = can?(:unfiltered_read, role) %>
             <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
@@ -80,21 +80,21 @@
             <p>
                 Please send us an <%= mail_to Settings.admin.email, 'email' %> if the problem continues.
             </p>
-                
+
         </div>
     <% end %>
     <div class="bs-callout bs-callout-primary">
         <h4>Overview:</h4>
         <dl class="dl-horizontal">
-            
+
             <dt># categories</dt>
             <dd><%= ra_groups.count %></dd>
 
             <dt># reports</dt>
             <dd><%= @role_aggregates.count %></dd>
-            
+
             <dt>last updated</dt>
-            <dd><%= @role_aggregates.map{|ra|ra.lime_survey.last_updated.to_s.to_date}.compact.max %></dd> 
+            <dd><%= @role_aggregates.map{|ra|ra.lime_survey.last_updated.to_s.to_date}.compact.max %></dd>
         </dl>
 
 

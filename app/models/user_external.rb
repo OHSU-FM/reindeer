@@ -7,7 +7,7 @@ class UserExternal < ActiveRecord::Base
     attr_accessible :ident, :ident_type, :filter_all, :use_email
 
     rails_admin do
-        navigation_label 'Permissions' 
+        navigation_label 'Permissions'
         field :user
         field :use_email
         field :ident do
@@ -15,7 +15,7 @@ class UserExternal < ActiveRecord::Base
         end
         field :ident_type
     end
-    
+
     ##
     # RailsAdmin title
     def name
@@ -23,7 +23,7 @@ class UserExternal < ActiveRecord::Base
     end
 
     def filter_val
-        use_email ? user.email : ident 
+        use_email ? user.email : ident
     end
 
 end

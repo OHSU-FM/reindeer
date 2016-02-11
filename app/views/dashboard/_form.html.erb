@@ -11,7 +11,7 @@
 <%= content_for :body_classes do @dash.theme end %>
 
 <div class="dashboard-container-outer">
-    <%= form_for @dash, :remote=>true, "data-type" => "json", :html=>{:class=>'dashboard-container'} do |f| %>   
+    <%= form_for @dash, :remote=>true, "data-type" => "json", :html=>{:class=>'dashboard-container'} do |f| %>
         <div class="dashboard-container-inner">
             <nav class="dashboard-navbar navbar navbar-default fade-in one" role="navigation">
               <div class="container-fluid">
@@ -25,7 +25,7 @@
                   </button>
                   <a class="navbar-brand" href="#">Dashboard</a>
                 </div>
-                 
+
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="dashboard-navbar-collapse">
                   <ul class="nav navbar-nav">
@@ -45,7 +45,7 @@
                                       <%= theme.sub('theme-','').gsub('-', ' ') %>
                                       <%= f.radio_button :theme, theme, :class=>"toggle-theme"%>
                                   <% end %>
-                              </li> 
+                              </li>
                           <% end %>
                         </ul>
                     </li>
@@ -73,13 +73,13 @@
             <div class="gridster fade-in three"
                 data-step="2"
                 data-position="top"
-                data-intro="These are your dashboard items (widgets). 
+                data-intro="These are your dashboard items (widgets).
                     Individual items on the dashboard can be moved around, resized and arranged in any way that
                     you see fit">
                 <ul>
-                    
+
                     <%= render :partial=>'dashboard/widgets/form_empty', :locals=>{:dash=>@dash}%>
-                    
+
                     <% @w_counter = 0 %>
                     <%= f.fields_for :dashboard_widgets, :id=>'widget-fields' do |widget| %>
                         <% @w_counter += 1 %>

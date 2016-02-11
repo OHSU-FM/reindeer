@@ -9,20 +9,20 @@ class PermissionLsGroup < ActiveRecord::Base
     validates_presence_of :role_aggregate
     validates_uniqueness_of :lime_survey_sid, :scope=>:permission_group_id
     accepts_nested_attributes_for :permission_ls_group_filters, :allow_destroy=>true
-    attr_accessible :lime_survey_sid, :permission_group_id, :view_raw, :enabled, :view_all 
+    attr_accessible :lime_survey_sid, :permission_group_id, :view_raw, :enabled, :view_all
     attr_accessible :permission_ls_group_filters_attributes, :allow_destroy=>true
     validate :validate_enabled_allowed
-   
+
     def validate_enabled_allowed
         if enabled && !enabled_allowed?
             if !role_aggregate.present?
                 # Must explicitly allow view_all, or have filters
-                errors.add(:enabled, 'No role_aggregate defined') 
+                errors.add(:enabled, 'No role_aggregate defined')
             elsif !role_aggregate.ready_for_use?
-                errors.add(:enabled, 'Role aggregate configuration is not complete') 
+                errors.add(:enabled, 'Role aggregate configuration is not complete')
             else
                 # Must explicitly allow view_all, or have filters
-                errors.add(:enabled, 'requires "view all" or enabled filters') 
+                errors.add(:enabled, 'requires "view all" or enabled filters')
             end
         end
     end
@@ -38,7 +38,7 @@ class PermissionLsGroup < ActiveRecord::Base
     end
 
     rails_admin do
-        navigation_label 'Permissions' 
+        navigation_label 'Permissions'
         label 'Lime Survey'
         visible false
         list do
@@ -59,7 +59,7 @@ class PermissionLsGroup < ActiveRecord::Base
             field :created_at
             sort_by "permission_group_id, lime_survey_sid"
         end
-        
+
         edit do
             field :ready_for_use?, :boolean do
                 read_only true
@@ -69,7 +69,7 @@ class PermissionLsGroup < ActiveRecord::Base
                 inline_add false
                 inline_edit false
             end
-            
+
             field :lime_survey do
                 associated_collection_cache_all false
                 associated_collection_scope do
@@ -78,24 +78,24 @@ class PermissionLsGroup < ActiveRecord::Base
                         if plg.present?
                             scope = scope.
                               where('sid = ? OR sid not in (?)',
-                                    plg.lime_survey.sid, 
+                                    plg.lime_survey.sid,
                                     plg.permission_group.lime_surveys.map{|ls|
                                       ls.sid})
                         else
                           scope.with_role_aggregate
                         end
                     }
-                end 
+                end
             end
-            field :enabled 
+            field :enabled
             field :view_raw
-            field :view_all 
+            field :view_all
             field :permission_ls_group_filters do
                 label 'Survey permissions'
             end
         end
     end
-    
+
     def name
         _name = lime_survey.nil? ? 'Untitled' : lime_survey.title
         "#{_name}#{' (disabled)' if disabled?}"
@@ -103,7 +103,7 @@ class PermissionLsGroup < ActiveRecord::Base
 
     def disabled?
         !ready_for_use?
-    end 
+    end
 
 end
 

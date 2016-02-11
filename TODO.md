@@ -1,7 +1,7 @@
 # Reindeer Core
 
 ## Ideas:
-    
+
 admin:
     lime survey:
         create form
@@ -41,7 +41,7 @@ student:
 
     - Word Cloud
     - Performance review
-        
+
     - Admin Configuration
         -Editable yaml config from within application
         - Site configuration things

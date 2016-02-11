@@ -20,17 +20,17 @@
             </tr>
         </thead>
         <tbody>
-            <% 
+            <%
                 count_total = 0
                 count_total_u = 0
                 percent_total = 0
                 percent_total_u = 0
             %>
 
-            <% stats_u.categorical_stats.each do |cat_u| %> 
-                <% 
+            <% stats_u.categorical_stats.each do |cat_u| %>
+                <%
                     cat = stats.categorical_stats.find{|st|st.code == cat_u.code}
-                    next if cat.nil? 
+                    next if cat.nil?
                     next if cat_u.is_err && cat.frequency == 0 && cat_u.frequency == 0
                     count_total += cat.frequency
                     count_total_u += cat_u.frequency

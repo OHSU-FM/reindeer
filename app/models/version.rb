@@ -2,7 +2,7 @@ class Version < ActiveRecord::Base
     self.table_name = :versions
     belongs_to :version_note
 
-    rails_admin do 
+    rails_admin do
         navigation_label 'Dataset Changes'
     end
 

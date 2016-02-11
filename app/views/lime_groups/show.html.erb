@@ -2,7 +2,7 @@
 <p>Find me in app/views/lime_groups/lime_groups_show.html.erb</p>
 <p>Week 1 Evaluation</p>
 <h1>Survey questions for <%= @lime_group.group_name %></h1>
- 
+
 <table class="table table-striped">
  <thead>
   <tr>
@@ -10,7 +10,7 @@
     <th>sid</th>
     <th>group name<th>
   </tr>
- 
+
   <tr>
      <th><%= @lime_group.gid %></th>
      <th><%= @lime_group.sid %></th>
@@ -30,7 +30,7 @@
 
     <tr>
 	<td>
-       ===================== 
+       =====================
 	</td>
     </tr>
      <tr class="<%= (question.parent_qid.to_i == 0) ? 'parent-question' : 'sub-question' %>">
@@ -57,7 +57,7 @@
         		         <td>col_name: <%= ans.my_column_name(question) %></td>
                                  <td>total: <%= ans.total_in_dataset %></td>
                                  <td>perc: <%= ans.perc_in_dataset(question) %></td>
- 
+
         		     </tr>
         		  <% end %>
        		   </tbody></table>
@@ -73,12 +73,12 @@
 	</tbody></table>
      </td>
      </tr>
-    
+
   <% end %>
 
     <tr>
 	<td>
-       ===================== <%= @lime_group.role_aggregates[0].user.email %> 
+       ===================== <%= @lime_group.role_aggregates[0].user.email %>
 	</td>
     </tr>
     <tr>

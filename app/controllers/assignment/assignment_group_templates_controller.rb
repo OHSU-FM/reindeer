@@ -1,7 +1,7 @@
 class Assignment::AssignmentGroupTemplatesController < ApplicationController
   respond_to :html, :json
-  authorize_resource 
-  
+  authorize_resource
+
   def index
     @assignment_group_templates = Assignment::AssignmentGroupTemplate.all
     respond_with @assignment_group_templates
@@ -40,7 +40,7 @@ class Assignment::AssignmentGroupTemplatesController < ApplicationController
   end
 
   protected
-  
+
   def create_params
     params.require(:assignment_assignment_group_template).permit!
   end
@@ -48,7 +48,7 @@ class Assignment::AssignmentGroupTemplatesController < ApplicationController
   def update_params
     params.require(:assignment_assignment_group_template).permit!
   end
-  
+
   def index_location
     assignment_assignment_group_templates_path
   end
