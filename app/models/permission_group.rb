@@ -39,7 +39,7 @@ class PermissionGroup < ActiveRecord::Base
     ##
     # Names of every survey group available
     def survey_group_titles
-      @survey_group_titles ||= survey_groups.map{|group| group.title }
+      @survey_group_titles ||= survey_groups.titles
     end
 
     ##
@@ -57,9 +57,7 @@ class PermissionGroup < ActiveRecord::Base
     ##
     # Only pinned surveys, grouped by title
     def pinned_survey_groups
-      @pinned_survey_groups ||= survey_groups.select{|group|
-        pinned_survey_group_titles.include?(group.title)
-      }
+      @pinned_survey_groups ||= survey_groups.filter(pinned_survey_group_titles)
     end
 
     ##

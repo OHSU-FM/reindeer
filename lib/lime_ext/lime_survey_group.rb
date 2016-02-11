@@ -8,16 +8,17 @@ class LimeExt::LimeSurveyGroup
 
 
   def self.classify(lime_surveys, opts = {})
+    # dup our own copy of array to mutate
     lime_surveys = lime_surveys.to_a.dup
-    
     groups = GroupCollection.new
     while lime_surveys.present?
       groups.push(new(lime_surveys))  
     end
     
     # Filter groups if filter present
-    if opts[:filter].present?
-      groups.select!{|group|group.title == opts[:filter]}
+    filter = *opts[:filter]    
+    if filter.present?
+      groups.select!{|group| filter.include?(group.title) }
     end
     groups
   end
@@ -33,14 +34,37 @@ class LimeExt::LimeSurveyGroup
 
   protected
 
-
+  ##
+  # Is title a part of this group?
   def in_group?(lime_survey)
     g_title, ra_title = lime_survey.group_and_title_name
     @group_title ||= g_title
     group_title == g_title
   end
   
+  ##
+  # Simple array class for holding a collection of
+  # survey groups
   class GroupCollection < Array
+    
+    def initialize( items=nil, opts={} )
+      @filter = *opts[:filter]
+      items = *items
+      items.each{|item| push(item) if in_filter?(item) }
+    end
+    
+    def in_filter? item
+      @filter.empty? || @filter.include?(item.title)
+    end
+
+    def filter filter
+      self.class.new(self, filter: filter)
+    end
+
+    def titles
+      map{|group|group.title}
+    end
+
     def role_aggregates
       map{|group|group.role_aggregates}.flatten
     end
