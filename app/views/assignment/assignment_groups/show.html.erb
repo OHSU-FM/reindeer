@@ -1,25 +1,15 @@
-<h1> <%= Settings.assignments_route_name.titleize.pluralize %></h1>
-<<<<<<< HEAD
-<div class='container-fluid'>
-=======
-<div id="assignment-group-nav" class='container-fluid'> 
->>>>>>> 32b23a806d0453ad0ccb68dd45c15b6c3e46b443
-    <% @assignment_groups.each do |group| %>
-        <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
+<h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
+<div id="assignment-group-nav" class='container-fluid'>
+  <% @assignment_groups.each do |group| %>
+    <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
+  <% end %>
+  <% if can? :create, Assignment::AssignmentGroup %>
+    <%= link_to new_assignment_assignment_group_path(layout: false),
+      data: {toggle: :modal},
+      class: 'btn btn-success' do %>
+      New Project
     <% end %>
-    <% if can? :create, Assignment::AssignmentGroup %>
-<<<<<<< HEAD
-        <%= link_to new_assignment_assignment_group_path,
-            class: 'btn btn-success',
-            data: {toggle: :modal} do %>
-=======
-        <%= link_to new_assignment_assignment_group_path(layout: false),
-            data: {toggle: :modal},
-            class: 'btn btn-success' do %>
->>>>>>> 32b23a806d0453ad0ccb68dd45c15b6c3e46b443
-            New Project
-        <% end %>
-    <% end %>
+  <% end %>
 </div>
 <hr/>
 
@@ -34,43 +24,21 @@
     <% end %>
 
     <div id="assignment-group-comments">
-<<<<<<< HEAD
-      <% @assignment_comments = [] %>
-      <%= render template: 'assignment/assignment_group_comments/index',
-          locals: {
-          title: :comments,
-          comments: [],
-          id_prefix: 'group-comment'} %>
-=======
-        <%= render partial: 'form_comments' %>
->>>>>>> 32b23a806d0453ad0ccb68dd45c15b6c3e46b443
+      <%= render partial: 'form_comments' %>
     </div>
 
   </div>
 
-<<<<<<< HEAD
-
-    <div class="col-md-4 main fade-in three">
+  <div class="col-md-4 main fade-in three">
     <% if can? :edit, @assignment_group %>
       <% @survey_assignments = [] %>
       <%= render template: 'assignment/survey_assignments/index' %>
+      <h5>* add forms for the class here</h5>
     <% end %>
-        <% @survey_assignments = [] %>
-        <%= render template: 'assignment/user_assignments/index' %>
-    </div>
-
-=======
-  <div class="col-md-4 main fade-in three">
-  <% if can? :edit, @assignment_group %>
-    <% @survey_assignments = [] %>    
-    <%= render template: 'assignment/survey_assignments/index' %>
-    <h5>* add forms for the class here</h5>
-  <% end %>
-      <% @survey_assignments = [] %>    
-      <%= render template: 'assignment/user_assignments/index' %>
-      <h5>* fill out any assigned forms here</h5>
+    <% @survey_assignments = [] %>
+    <%= render template: 'assignment/user_assignments/index' %>
+    <h5>* fill out any assigned forms here</h5>
   </div>
->>>>>>> 32b23a806d0453ad0ccb68dd45c15b6c3e46b443
 
 </div>
 
