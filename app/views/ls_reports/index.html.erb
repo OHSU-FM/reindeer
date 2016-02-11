@@ -22,28 +22,27 @@
   </thead>
   <tbody>
   <% # Sort groups alphabetically and display %>
-  <% @survey_groups.each do |group|%>
-        <% role_aggregates = group.role_aggregates %>
-        <% if group.title %>
-        <tr>
-            <td colspan="5" style="text-align:left;">
-                <h2><%= group.title %></h2>
-            </td>
-        </tr>
-        <% end %>
-        <% role_aggregates.each do |ra| %>
-
-        <tr>
-            <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid),
-                :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
-            <% full_acc = can?(:unfiltered_read, ra) %>
-            <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
-                    data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
-                ></i></td>
-            <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
-        </tr>
-        <% end %>
+  <% @survey_groups.sort_by{ |g| g.title }.each do |group|%>
+    <% if group.title %>
+    <tr>
+        <td colspan="5" style="text-align:left;">
+            <h2><%= group.title %></h2>
+        </td>
+    </tr>
     <% end %>
+    <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date}.reverse! %>
+    <% role_aggregates.each do |ra| %>
+      <tr>
+        <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid),
+          :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+        <% full_acc = can?(:unfiltered_read, ra) %>
+        <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
+            data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
+            ></i></td>
+        <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
+      </tr>
+    <% end %>
+  <% end %>
   </tbody>
   </table>
 </div>
