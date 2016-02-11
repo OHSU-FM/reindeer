@@ -1,6 +1,5 @@
 require "test_helper"
 require "lime_ext/lime_survey_group"
-require "factories/lime_survey"
 
 class LimeExt::LimeSurveyGroupTest < ActiveSupport::TestCase
   let(:l_s) { lime_surveys(:test_lime_survey) }

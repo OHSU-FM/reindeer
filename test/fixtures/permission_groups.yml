@@ -1,6 +1,8 @@
 coach_permission_group:
   id: 1
   title: "Coach"
+  pinned_survey_group_titles:
+    - "test"
 
 student_permission_group:
   id: 2
