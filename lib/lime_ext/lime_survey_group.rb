@@ -1,6 +1,6 @@
 ##
 # Sort lime_surveys into groups based on their group name
-# RoleAggregateGroup.classify(lime_surveys) 
+# RoleAggregateGroup.classify(lime_surveys)
 class LimeExt::LimeSurveyGroup
   attr_reader :lime_surveys, :group_title
   alias_method :title, :group_title
@@ -12,11 +12,11 @@ class LimeExt::LimeSurveyGroup
     lime_surveys = lime_surveys.to_a.dup
     groups = GroupCollection.new
     while lime_surveys.present?
-      groups.push(new(lime_surveys))  
+      groups.push(new(lime_surveys))
     end
-    
+
     # Filter groups if filter present
-    filter = *opts[:filter]    
+    filter = *opts[:filter]
     if filter.present?
       groups.select!{|group| filter.include?(group.title) }
     end
@@ -25,11 +25,11 @@ class LimeExt::LimeSurveyGroup
 
   def initialize lime_surveys
     @lime_surveys = []
-    lime_surveys.delete_if{|ra|@lime_surveys.push(ra) if in_group?(ra)}
+    lime_surveys.delete_if{ |ls| @lime_surveys.push(ls) if in_group?(ls) }
   end
 
   def role_aggregates
-    @role_aggregates ||= surveys.map{|survey| survey.role_aggregate}
+    @role_aggregates ||= surveys.map{|survey| survey.role_aggregate }
   end
 
   protected
@@ -41,18 +41,18 @@ class LimeExt::LimeSurveyGroup
     @group_title ||= g_title
     group_title == g_title
   end
-  
+
   ##
   # Simple array class for holding a collection of
   # survey groups
   class GroupCollection < Array
-    
+
     def initialize( items=nil, opts={} )
       @filter = *opts[:filter]
       items = *items
       items.each{|item| push(item) if in_filter?(item) }
     end
-    
+
     def in_filter? item
       @filter.empty? || @filter.include?(item.title)
     end

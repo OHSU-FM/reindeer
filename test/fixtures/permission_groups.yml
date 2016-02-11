@@ -1,0 +1,7 @@
+coach_permission_group:
+  id: 1
+  title: "Coach"
+
+student_permission_group:
+  id: 2
+  title: "Student"

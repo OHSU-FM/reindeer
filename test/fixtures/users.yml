@@ -1,12 +1,29 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+admin:
+  id: 1
+  username: 'admin'
+  email: 'admin@test.com'
+  encrypted_password: 'password'
+  roles:
+    - :superadmin
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-test_admin: {id: 1, :username: test_admin, email: test@example.com}
+coach:
+  id: 2
+  username: 'coach'
+  email: 'coach@test.com'
+  encrypted_password: 'password'
+  roles:
+    - :can_dashboard
+    - :can_lime
+  permission_group:
+    - coach_permission_group
 
-# column: value
-#
-two: {}
-#  column: value
+student:
+  id: 3
+  username: 'student'
+  email: 'student@test.com'
+  encrypted_password: 'password'
+  roles:
+    - :can_dashboard
+    - :participant
+  permission_group:
+    - student_permission_group
