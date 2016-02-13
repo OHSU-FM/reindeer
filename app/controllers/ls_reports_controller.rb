@@ -24,14 +24,4 @@ class LsReportsController < ApplicationController
         @survey_groups.sort_by{|group| group.title }
     end
 
-    protected
-
-    def back_to_index
-        respond_to do |format|
-            format.html do
-                flash[:notice] = ''
-                redirect_to ls_reports_path
-            end
-        end
-    end
 end
