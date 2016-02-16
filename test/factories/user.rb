@@ -1,21 +1,25 @@
 FactoryGirl.define do
   factory :user do
-    username Faker::Name.first_name
-    email Faker::Internet.email
+    full_name Faker::Name.name
+    username { Faker::Internet.user_name("#{full_name}") }
+    email { Faker::Internet.email("#{username}") }
     pass = Faker::Internet.password
     password pass
-    password_confirmation pass 
-    full_name 'A test user'
-    
-    trait :default do
-      is_ldap false
+    password_confirmation pass
+
+    trait :admin do
+      id 1
+      email 'test@example.com'
+      superadmin true
+    end
+
+    trait :coach do
+      permission_group coach_permission_group
       can_dashboard true
       can_lime true
     end
 
-    trait :admin do
-      admin true
-      superadmin true
-    end
+    factory :admin, traits: [:admin]
+    factory :coach, traits: [:coach]
   end
 end

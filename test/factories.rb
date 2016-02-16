@@ -1,25 +1,11 @@
 FactoryGirl.define do
-  
-  factory :no_permissions_user, class: User do
-    email 'no_permissions_user@example.com'
-    username 'no_permissions_user'
-    full_name 'A test user with no permissions'
-    password "password"
-    password_confirmation "password"
-    is_ldap false
-  end
-  
-  factory :admin, class: User do
-    email 'admin@example.com'
-    username 'test_admin'
-    full_name 'A test admin user'
-    password "password"
-    password_confirmation "password"
-    admin true
-    superadmin true
-    is_ldap false
-  end
- 
+  sequence(:random_id) {|n|
+    @random_ids ||= (1..100000).to_a.shuffle
+    @random_ids[n]
+  }
+
+
+
   factory :dashboard do
     user
     theme 'oregon-coast'
@@ -27,6 +13,5 @@ FactoryGirl.define do
 
   factory :dashboard_widget do
     dashboard
-
   end
 end
