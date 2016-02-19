@@ -16,14 +16,17 @@ def create_min_response sid = 12345, opts={}
   ropts[:col1] ||= '34.000'
   ropts[:col2] ||= '2014-07-07'
   ropts[:col3] ||= 1
+  ropts[:col4] ||= 'TestQuestion'
   query = "
     INSERT INTO #{LimeExt.table_prefix}_survey_#{sid}
     (token, submitdate, lastpage, startlanguage,
       \"#{sid}X123X6036\",
       \"#{sid}X123X6037\",
-      \"#{sid}X123X6038\")
+      \"#{sid}X123X6038\",
+      \"#{sid}X123X6039\")
     VALUES('#{ropts[:token]}', '#{ropts[:submitdate]}', #{ropts[:lastpage]},
-        '#{ropts[:startlanguage]}', '#{ropts[:col1]}', '#{ropts[:col2]}', #{ropts[:col3]});
+        '#{ropts[:startlanguage]}', '#{ropts[:col1]}', '#{ropts[:col2]}',
+        #{ropts[:col3]}, '#{ropts[:col4]}');
 
     INSERT INTO #{LimeExt.table_prefix}_tokens_#{sid} (
       firstname, lastname, email, token, language, attribute_1, attribute_2
@@ -55,7 +58,8 @@ def create_min_survey sid = 12345
       startlanguage character varying(20) NOT NULL,
       \"#{sid}X123X6036\" numeric(30,10),
       \"#{sid}X123X6037\" timestamp without time zone,
-      \"#{sid}X123X6038\" character varying(1)
+      \"#{sid}X123X6038\" character varying(1),
+      \"#{sid}X123X6039\" character varying(255)
   );
 
 

@@ -8,10 +8,6 @@ class LimeExt::LimeSurveyGroupTest < ActiveSupport::TestCase
     create_min_response
   end
   let(:lime_survey) { LimeSurvey.find(12345) }
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:p_g) { FactoryGirl.create(:high_permission_group) }
-  let(:ra) { FactoryGirl.create(:role_aggregate, lime_survey: lime_survey) }
-  let(:p_ls_g) { FactoryGirl.create(:p_ls_g_one, lime_survey: lime_survey, permission_group: p_g) }
 
   test "initialize" do
     lsg = LimeExt::LimeSurveyGroup.classify([lime_survey])

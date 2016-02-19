@@ -14,12 +14,22 @@ FactoryGirl.define do
     end
 
     trait :coach do
-      permission_group coach_permission_group
+      transient do
+        coach_pg { PermissionGroup.find_by(title: 'Coach') || create(:coach_permission_group) }
+      end
+
       can_dashboard true
       can_lime true
+      permission_group { coach_pg }
+    end
+
+    trait :with_uex do
+      after(:build) do |usr|
+        usr.user_externals << build_list(:user_external, 1, user: usr)
+      end
     end
 
     factory :admin, traits: [:admin]
-    factory :coach, traits: [:coach]
+    factory :coach, traits: [:coach, :with_uex]
   end
 end
