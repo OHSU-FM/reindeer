@@ -51,7 +51,7 @@ sudo apt-get install ruby
 ```
 2. **Install dependencies**
  ```bash
- sudp apt-get update
+ sudo apt-get update
  sudo apt-get install git php5 build_essential php5-ldap php5-curl php5-pgsql apache2
  # Additionally add any other LimeSurvey specific dependencies you might have
  ```
