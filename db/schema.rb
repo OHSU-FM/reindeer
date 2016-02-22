@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118044014) do
+ActiveRecord::Schema.define(version: 20160210061256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -207,25 +207,11 @@ ActiveRecord::Schema.define(version: 20160118044014) do
   add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
   add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
 
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.string  "attribute_name"
-    t.decimal "value"
-    t.string  "value_description"
-    t.decimal "count"
-    t.decimal "subset_count"
-  end
-
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-
   create_table "permission_groups", force: :cascade do |t|
-    t.text     "title",      null: false
+    t.text     "title",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "pinned_survey_group_titles"
   end
 
   create_table "permission_ls_group_filters", force: :cascade do |t|

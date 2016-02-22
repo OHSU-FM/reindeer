@@ -1,9 +1,9 @@
 require "test_helper"
 
 class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
-  let(:admin) { users(:admin) }
-  let(:coach) { users(:coach) }
-  let(:student) { users(:student) }
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:coach) { FactoryGirl.create(:coach) }
+  let(:student) { FactoryGirl.create(:student) }
   let(:ag) { assignment_assignment_groups(:one) }
   let(:ag2) { assignment_assignment_groups(:two) }
   let(:agt) { assignment_assignment_group_templates(:one) }
@@ -14,7 +14,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
   test "not logged in should get redirect" do
     get :index
     assert_response :redirect
-    flash[:alert].must_equal "You need to sign in or sign up before continuing."
+    assert flash[:alert], "correct flash didn't trigger"
   end
 
   ##############################################################################
@@ -37,7 +37,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       }
     end
     assert_redirected_to assignment_assignment_group_path(3)
-    assert flash[:success], "flash didn't trigger"
+    assert flash[:success], "correct flash didn't trigger"
   end
 
   test "admin get index should be redirected to assignment group" do
@@ -55,7 +55,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       assignment_assignment_group: { title: "a different title" }
     assert_equal 'a different title', Assignment::AssignmentGroup.find(ag.id).title
     assert_redirected_to assignment_assignment_group_path(ag)
-    assert_equal "#{Settings.assignment_route_name.singularize.titleize} successfully updated!", flash[:success]
+    assert flash[:success], "correct flash didn't trigger"
   end
 
   test "admin can delete assignment_group" do
@@ -65,7 +65,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       delete :destroy, assignment_group_id: ag2
     end
     assert_redirected_to assignment_assignment_groups_path
-    assert flash[:success], "flash didn't trigger"
+    assert flash[:success], "correct flash didn't trigger"
   end
 
   ##############################################################################
@@ -88,7 +88,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       }
     end
     assert_redirected_to assignment_assignment_group_path(3)
-    assert flash[:success], "flash didn't trigger"
+    assert flash[:success], "correct flash didn't trigger"
   end
 
   test "coach get index should be redirected to assignment group" do
@@ -106,7 +106,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       assignment_assignment_group: { title: "a different title" }
     assert_equal 'a different title', Assignment::AssignmentGroup.find(ag.id).title
     assert_redirected_to assignment_assignment_group_path(ag)
-    assert_equal "#{Settings.assignment_route_name.singularize.titleize} successfully updated!", flash[:success]
+    assert flash[:success], "correct flash didn't trigger"
   end
 
   test "coach can delete assignment_group" do
@@ -116,7 +116,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       delete :destroy, assignment_group_id: ag2
     end
     assert_redirected_to assignment_assignment_groups_path
-    assert flash[:success], "flash didn't trigger"
+    assert flash[:success], "correct flash didn't trigger"
   end
 
   ##############################################################################
@@ -127,7 +127,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
 
     get :new
     assert_redirected_to assignment_assignment_group_path(ag)
-    assert flash[:warning], "flash didn't trigger"
+    assert flash[:warning], "correct flash didn't trigger"
   end
 
   # crud
@@ -140,7 +140,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       }
     end
     assert_redirected_to assignment_assignment_group_path(ag)
-    assert flash[:warning], "flash didn't trigger"
+    assert flash[:warning], "correct flash didn't trigger"
   end
 
   test "student get index should be redirected to first assignment group" do
@@ -156,7 +156,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
     put :update, assignment_group_id: ag,
       assignment_assignment_group: { title: "a different title" }
     assert_redirected_to assignment_assignment_group_path(ag)
-    assert flash[:warning], "flash didn't trigger"
+    assert flash[:warning], "correct flash didn't trigger"
   end
 
   test "student cannot delete assignment_group" do
@@ -166,6 +166,6 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
       delete :destroy, assignment_group_id: ag2
     end
     assert_redirected_to assignment_assignment_groups_path
-    assert flash[:warning], "flash didn't trigger"
+    assert flash[:warning], "correct flash didn't trigger"
   end
 end

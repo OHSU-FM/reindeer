@@ -23,6 +23,16 @@ FactoryGirl.define do
       permission_group { coach_pg }
     end
 
+    trait :student do
+      transient do
+        student_pg { PermissionGroup.find_by(title: 'Student') || create(:student_permission_group) }
+      end
+
+      can_dashboard true
+      participant true
+      permission_group { student_pg }
+    end
+
     trait :with_uex do
       after(:build) do |usr|
         usr.user_externals << build_list(:user_external, 1, user: usr)
@@ -31,5 +41,6 @@ FactoryGirl.define do
 
     factory :admin, traits: [:admin]
     factory :coach, traits: [:coach, :with_uex]
+    factory :student, traits: [:student]
   end
 end
