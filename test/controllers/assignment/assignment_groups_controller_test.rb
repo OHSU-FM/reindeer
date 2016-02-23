@@ -1,12 +1,19 @@
 require "test_helper"
+require "factories/lime_survey"
 
 class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
+  def setup
+    create_min_survey
+    create_min_response
+    spg = FactoryGirl.create(:student_permission_group)
+    FactoryGirl.create(:assignment_group_template, permission_group: spg)
+  end
   let(:admin) { FactoryGirl.create(:admin) }
   let(:coach) { FactoryGirl.create(:coach) }
   let(:student) { FactoryGirl.create(:student) }
-  let(:ag) { assignment_assignment_groups(:one) }
-  let(:ag2) { assignment_assignment_groups(:two) }
-  let(:agt) { assignment_assignment_group_templates(:one) }
+  let(:agt) { Assignment::AssignmentGroupTemplate.first }
+  let(:ag) { Assignment::AssignmentGroup.first }
+  let(:ag2) { Assignment::AssignmentGroup.second }
 
   ##############################################################################
   # general tests
@@ -15,6 +22,15 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
     get :index
     assert_response :redirect
     assert flash[:alert], "correct flash didn't trigger"
+  end
+
+  test "user should only see assignment groups they have access to" do
+    new_ag = FactoryGirl.create(:assignment_group,
+                       owner: admin,
+                       assignment_group_template: agt)
+    sign_in coach
+    get :index
+    refute_includes coach.assignment_groups, new_ag
   end
 
   ##############################################################################
@@ -36,7 +52,7 @@ class Assignment::AssignmentGroupsControllerTest < ActionController::TestCase
         assignment_group_template_id: agt
       }
     end
-    assert_redirected_to assignment_assignment_group_path(3)
+    assert_redirected_to assignment_assignment_group_path(Assignment::AssignmentGroup.last)
     assert flash[:success], "correct flash didn't trigger"
   end
 
