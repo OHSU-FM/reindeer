@@ -270,4 +270,19 @@ class User < ActiveRecord::Base
     def to_param
         username.parameterize
     end
+
+    def assignment_groups
+      return @assignment_groups if defined? @role_aggregates
+      @assignment_groups = []
+      if self.admin_or_higher?
+        @assignment_groups << Assignment::AssignmentGroup.all
+      else
+        # all AG user owns or participates in
+        @assignment_groups << Assignment::AssignmentGroup.where(user_id: self.id)
+        @assignment_groups << Assignment::AssignmentGroup.where { |ag|
+          ag.user_ids.include? self.id.to_s
+        }
+      end
+      return @assignment_groups.flatten()
+    end
 end

@@ -5,14 +5,14 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   before_filter :load_resource, only: [:show, :edit, :update, :destroy]
 
   def index
-    @assignment_groups = Assignment::AssignmentGroup.all
+    @assignment_groups = current_user.assignment_groups
     if @assignment_groups.count > 0
       redirect_to assignment_assignment_group_path(@assignment_groups.first)
     end
   end
 
   def show
-    @assignment_groups = Assignment::AssignmentGroup.all
+    @assignment_groups = current_user.assignment_groups
   end
 
   def new
