@@ -11,8 +11,10 @@ class PermissionGroup < ActiveRecord::Base
       :reject_if=>:all_blank
     validates_associated :permission_ls_groups
     attr_accessible :permission_ls_groups_attributes, :allow_destroy=>true
-    attr_accessible :title, :user_ids
+    attr_accessible :title, :user_ids, :pinned_survey_group_titles
     validates :title, presence: true, uniqueness: true
+
+    serialize :pinned_survey_group_titles, Array
 
     rails_admin do
         navigation_label 'Permissions'
@@ -27,7 +29,35 @@ class PermissionGroup < ActiveRecord::Base
             field :permission_ls_groups do
                 label 'Surveys'
             end
+            field :pinned_survey_group_titles do
+              label "Pinned Survey Groups"
+              help "Survey groups that are pinned to the users nav bar"
+            end
         end
+    end
+    
+    ##
+    # Names of every survey group available
+    def survey_group_titles
+      @survey_group_titles ||= survey_groups.titles
+    end
+
+    ##
+    # Enum for pinning survey groups
+    def pinned_survey_group_titles_enum
+      survey_group_titles
+    end
+
+    ##
+    # Group surveys by title
+    def survey_groups
+      @survey_groups ||= LimeExt::LimeSurveyGroup.classify(lime_surveys)
+    end
+
+    ##
+    # Only pinned surveys, grouped by title
+    def pinned_survey_groups
+      @pinned_survey_groups ||= survey_groups.filter(pinned_survey_group_titles)
     end
 
     ##
@@ -37,6 +67,8 @@ class PermissionGroup < ActiveRecord::Base
         return result
     end
 
+    ##
+    # TODO: Move to helper
     def explain_role_aggregates_for user
         details = []
         result = role_aggregates.select{|ra|

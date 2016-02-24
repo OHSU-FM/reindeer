@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017235330) do
+ActiveRecord::Schema.define(version: 20160210061256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -223,9 +223,10 @@ ActiveRecord::Schema.define(version: 20151017235330) do
   add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
 
   create_table "permission_groups", force: :cascade do |t|
-    t.text     "title",      null: false
+    t.text     "title",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "pinned_survey_group_titles"
   end
 
   create_table "permission_ls_group_filters", force: :cascade do |t|

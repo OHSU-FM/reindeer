@@ -17,6 +17,7 @@ module LimeExt
     end
 end
 
+require 'lime_ext/lime_survey_group'
 require 'lime_ext/errors'
 require 'lime_ext/response_loaders'
 require 'lime_ext/lime_stat'

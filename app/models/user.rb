@@ -270,4 +270,13 @@ class User < ActiveRecord::Base
     def to_param
         username.parameterize
     end
+   
+    def pinned_survey_groups
+      permission_group.present? ? permission_group.pinned_survey_groups : []
+    end
+
+    def survey_groups
+      permission_group.present? ? permission_group.survey_groups : []
+    end
+
 end
