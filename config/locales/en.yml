@@ -6,7 +6,7 @@ en:
   activerecord:
       models:
           assignment/assignment_comment: comment
-          assignment/user_assignment: task
+          assignment/user_assignment: competency
       errors:
           models:
               survey_assignment:

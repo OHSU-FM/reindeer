@@ -1,44 +1,35 @@
 <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
 <div id="assignment-group-nav" class='container-fluid'>
-  <% @assignment_groups.each do |group| %>
-    <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
-  <% end %>
-  <% if can? :create, Assignment::AssignmentGroup %>
-    <%= link_to new_assignment_assignment_group_path(layout: false),
-      data: {toggle: :modal},
-      class: 'btn btn-success' do %>
-      New Project
+  <% if @assignment_groups.count > 1 %>
+    <% @assignment_groups.each do |group| %>
+      <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
     <% end %>
+  <% end %>
+</div>
+<hr/>
+<div id="user-ids-nav" class='container-fluid'>
+  <% @assignment_group.user_ids.each do |uid| %>
+    <% !uid.empty? ? @u = User.find(uid.to_i) : next %>
+    <%= link_to @u.email, assignment_assignment_group_path(@assignment_group, user_id: @u.id),
+        class: "btn btn-#{uid == @params[:user_id] ? :primary : :link}"%>
   <% end %>
 </div>
 <hr/>
 
 <div id='assignment_group_<% @assignment_group.id %>' class="container-fluid">
-  <div class="col-md-8 main fade-in two" style="border-right:1px solid #ddd;">
+  <div class="col-md-6 main fade-in two" style="border-right:1px solid #ddd;">
 
     <%= render partial: 'form_title' %>
-    <%= render partial: 'form_desc_md' %>
 
-    <% if can? :edit, @assignment_group %>
-      <%= render partial: 'assignment/assignment_groups/form_users' %>
-    <% end %>
+    <%= render partial: 'form_desc_md' %>
 
     <div id="assignment-group-comments">
       <%= render partial: 'form_comments' %>
     </div>
-
   </div>
 
-  <div class="col-md-4 main fade-in three">
-    <% if can? :edit, @assignment_group %>
-      <% @survey_assignments = [] %>
-      <%= render template: 'assignment/survey_assignments/index' %>
-      <h5>* add forms for the class here</h5>
-    <% end %>
-    <% @survey_assignments = [] %>
+  <div class="col-md-6 main fade-in three">
     <%= render template: 'assignment/user_assignments/index' %>
-    <h5>* fill out any assigned forms here</h5>
   </div>
-
 </div>
 

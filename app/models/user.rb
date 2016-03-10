@@ -272,7 +272,7 @@ class User < ActiveRecord::Base
     end
 
     def assignment_groups
-      return @assignment_groups if defined? @role_aggregates
+      return @assignment_groups if defined? @assignment_groups
       @assignment_groups = []
       if self.admin_or_higher?
         @assignment_groups << Assignment::AssignmentGroup.all
@@ -284,5 +284,11 @@ class User < ActiveRecord::Base
         }
       end
       return @assignment_groups.flatten()
+    end
+
+    def active_assignment_groups
+      return @active_assignment_groups if defined? @active_assignment_groups
+      @active_assignment_groups = assignment_groups.reject { |ag| ag.user_ids.all?(&:empty?) }
+      return @active_assignment_groups
     end
 end

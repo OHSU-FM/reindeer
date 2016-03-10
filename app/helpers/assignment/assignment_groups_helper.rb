@@ -1,0 +1,2 @@
+module Assignment::AssignmentGroupsHelper
+end

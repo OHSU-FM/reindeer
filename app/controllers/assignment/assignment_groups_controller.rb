@@ -5,14 +5,22 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   before_filter :load_resource, only: [:show, :edit, :update, :destroy]
 
   def index
-    @assignment_groups = current_user.assignment_groups
+    @assignment_groups = current_user.active_assignment_groups
     if @assignment_groups.count > 0
       redirect_to assignment_assignment_group_path(@assignment_groups.first)
     end
   end
 
   def show
-    @assignment_groups = current_user.assignment_groups
+    @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
+    @assignment_groups = current_user.active_assignment_groups
+    @params = params
+    unless @params[:user_id]
+      @params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }
+    end
+    @user = User.find(@params[:user_id])
+    service = Assignment::UserAssignmentsIndexService.new(@assignment_group, @params)
+    @response = service.perform()
   end
 
   def new

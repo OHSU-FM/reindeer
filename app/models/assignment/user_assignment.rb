@@ -87,4 +87,12 @@ class Assignment::UserAssignment < ActiveRecord::Base
     'not started'
   end
 
+  def group_and_title
+    self.survey_assignment.lime_survey.group_and_title_name
+  end
+
+  def lime_groups
+    self.survey_assignment.lime_survey.lime_groups
+  end
+
 end

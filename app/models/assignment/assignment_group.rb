@@ -10,7 +10,7 @@ module Assignment
     has_one :permission_group, through: :assignment_group_template
     has_many :survey_assignments
     has_many :comments, class_name: 'Assignment::AssignmentComment',
-      inverse_of: :assignment_group
+      inverse_of: :assignment_group, dependent: :destroy
     delegate :lime_surveys, to: :assignment_group_template
     validates :owner, presence: true
     validates :assignment_group_template, presence: true
@@ -57,6 +57,15 @@ module Assignment
 
     def user_ids_enum
       @user_ids_enum ||= possible_users.map{|u|[u.title, u.id]}
+    end
+
+    # array of user_assignments in this assignment_group belonging to user
+    def user_assignments_for user_id
+      user_assignments = []
+      self.survey_assignments.each do |sa|
+        user_assignments << sa.user_assignments.where(user_id: user_id)
+      end
+      return user_assignments.flatten()
     end
 
     protected

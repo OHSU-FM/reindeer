@@ -37,8 +37,12 @@ class SurveyAssignment < ActiveRecord::Base
           associated_collection_scope do
             sas = bindings[:object]
             Proc.new { |scope|
-              if sas.assignment_group.present?
-                sas.assignment_group.lime_surveys
+              if sas
+                if sas.assignment_group.present?
+                  sas.assignment_group.lime_surveys
+                end
+              else
+                LimeSurvey.all
               end
             }
           end
