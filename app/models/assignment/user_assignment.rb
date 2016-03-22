@@ -9,11 +9,11 @@ class Assignment::UserAssignment < ActiveRecord::Base
   rails_admin do
     edit do
       field :user do
-          inline_add false
+        inline_add false
       end
       field :survey_assignment
       field :token do
-          read_only true
+        read_only true
       end
     end
 
@@ -21,10 +21,10 @@ class Assignment::UserAssignment < ActiveRecord::Base
       field :id
       field :lime_survey
       field :user do
-          inline_add false
+        inline_add false
       end
       field :token do
-          read_only true
+        read_only true
       end
 
       field :url do
@@ -43,8 +43,8 @@ class Assignment::UserAssignment < ActiveRecord::Base
   def lang; token_data[:language]; end                    # String: language of response
   def token; token_data[:token]; end                      # String: token of survey
   def sid; lime_survey.sid; end                           # Int: sid of survey
-  def completed; token_data[:completed] == 'Y'; end       # String: raw completed val
-  def completed?; completed; end# Binary: completed val
+  def completed; token_data[:completed] < Time.now; end   # String: raw completed val
+  def completed?; completed; end                          # Binary: completed val
   def new_url; "#{url}/newtest/Y"; end                    # String: URL of new survey
   def started?; response_data.present?; end               # Binary: Has survey response started?
   def uses_left?; token_data[:usesleft].to_i > 0; end
@@ -93,6 +93,24 @@ class Assignment::UserAssignment < ActiveRecord::Base
 
   def lime_groups
     self.survey_assignment.lime_survey.lime_groups
+  end
+
+  def get_meta_attribute attr
+    data_key = survey_assignment.survey_data_questions_key
+    response_data.each do |k, v|
+      if data_key[k] == attr.to_s
+        return v
+      end
+    end
+    ""
+  end
+
+  def survey_type
+    get_meta_attribute("SurveyType").pluralize.titleize
+  end
+
+  def status_question
+    get_meta_attribute "StatusQuestion"
   end
 
 end
