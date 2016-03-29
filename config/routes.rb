@@ -13,19 +13,19 @@ Rails.application.routes.draw do
 
     resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]
     get 'dashboard/:id/widgets/:widget_id', :to=>'dashboard#show_widget', :constraints=>{:id=>/\d+/, :widget_id=>/\d+/}, :as=>'show_widget'
-    
+
     resources :charts
- 
+
     resources :question_widgets, :only=>[:create]
     get 'question_widgets', :controller=>'question_widgets'
 
-    
+
     resources :data, :only=>[:index], :controller=>:reports, :as=>:reports
     get 'data/:id/:type', :to=>'reports#show', :via => [:get], :constraints=>{:id=>/[A-N]/}, :as=>'show_report'
 
     resources :reports, :only=>[:index], :controller=>:stats, :as=>:stats
     get 'reports/:id/:year', :to=>'stats#show', :via => [:get], :constraints=>{:year=> /\d\d\d\d/, :id=>/[0A-N]/}, :as=>'show_stat'
-   
+
     resources :ls_reports, :only=>[:index, :show], :param=>:sid do
         member do
             get 'filter(/:pk(/:agg))', :action=>:show, :as=>:filter, :controller=>'ls_reports/filter',
@@ -36,11 +36,11 @@ Rails.application.routes.draw do
                 :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:graph
         end
         member do
-            get 'spreadsheet(/:pk(/:agg))', :action=>:show, :as=>:spreadsheet, :controller=>'ls_reports/spreadsheet', 
+            get 'spreadsheet(/:pk(/:agg))', :action=>:show, :as=>:spreadsheet, :controller=>'ls_reports/spreadsheet',
                 :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:spreadsheet
         end
         member do
-            get 'instrument(/:pk(/:agg))', :action=>:show, :as=>:instrument, :controller=>'ls_reports/instrument', 
+            get 'instrument(/:pk(/:agg))', :action=>:show, :as=>:instrument, :controller=>'ls_reports/instrument',
                 :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}
         end
         member do
@@ -50,22 +50,22 @@ Rails.application.routes.draw do
     end
 
     resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
-      member do 
-        get Settings.assignments_route_name, 
+      member do
+        get Settings.assignments_route_name,
           :to=>'users/assignment_group#show', :as=>:assignments_for
       end
-    end 
-    
+    end
+
     namespace :assignment, path: Settings.assignments_route_name  do
       root to: 'assignment_groups#index'
-      resources :assignment_group_templates, as: :templates, path: :templates 
-      resources :assignment_groups, param: :assignment_group_id, 
+      resources :assignment_group_templates, as: :templates, path: :templates
+      resources :assignment_groups, param: :assignment_group_id,
         path: :groups
       resources :user_assignments, path: :tasks
       resources :survey_assignments, path: :forms, param: :survey_assignment_id
-      resources :assignment_group_comments, path: :group_comments, 
+      resources :assignment_group_comments, path: :group_comments,
         param: :assignment_group_id
-      resources :survey_assignment_comments, path: :form_comments, 
+      resources :survey_assignment_comments, path: :form_comments,
         param: :survey_assignment_id, only: [:show]
       resources :assignment_comments, path: :comments
     end
@@ -83,7 +83,7 @@ Rails.application.routes.draw do
     match '/404', to: 'errors#file_not_found', via: :all
     match '/422', to: 'errors#unprocessable', via: :all
     match '/500', to: 'errors#internal_server_error', via: :all
-    
+
     get 'pages/*id', to: 'high_voltage/pages#show', :as => :page, :format => false
 
     match "*any", via: :all, to: "errors#file_not_found"
