@@ -92,3 +92,16 @@ user.save!
 rails s
 ```
 
+#### Option II: Docker
+
+```bash
+git clone https://github.com/OHSU-FM/reindeer.git
+cd reindeer
+docker-compose build
+# Access site on localhost port 80
+docker-compose run --service-ports app
+
+# Enter container and poke around
+docker-compose run --service-ports app
+
+```
