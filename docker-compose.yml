@@ -1,0 +1,15 @@
+app:
+  build: .
+  command: build/start.sh
+  volumes:
+    - .:/home/app/reindeer
+  ports:
+    - "3000:3000"
+    - "80:80"
+  links:
+    - postgres
+
+postgres:
+  image: postgres:9.4
+  ports:
+    - "5432"
