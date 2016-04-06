@@ -1,0 +1,44 @@
+<% ua.ur_categories.each do |category, responses| %>
+<div class="panel panel-default">
+  <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
+    <div class="panel-heading" role="tab" id="heading<% category.delete(' ') %>">
+      <div class="row">
+        <div class="col-md-8">
+          <%= category.titleize %>
+        </div>
+        <div class="col-md-2">
+          <span class="label label-danger">TODO</span>
+        </div>
+        <div class="col-md-2">
+          <%= link_to assignment_assignment_comments_path(user_assignment_id: 1),
+                  data: {toggle: :modal} do %>
+              <i class='fa fa fa-comments-o'></i>
+          <% end %>
+        </div>
+     </div>
+    </div>
+  </a>
+</div>
+<div id="collapse<%= category.delete(' ')%>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(' ') %>">
+  <ul class="list-group">
+    <% responses.each do |ur| %>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-md-8">
+          <%= ur.title %>
+        </div>
+        <div class="col-md-2">
+          <span class="label label-danger"><%= ur.status %></span>
+        </div>
+        <div class="col-md-2">
+          <%= link_to assignment_assignment_comments_path(user_assignment_id: 1),
+                  data: {toggle: :modal} do %>
+              <i class='fa fa fa-comments-o'></i>
+          <% end %>
+        </div>
+      </div>
+    </li>
+    <% end %>
+  </ul>
+</div>
+<% end %>

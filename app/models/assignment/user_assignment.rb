@@ -3,6 +3,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
   belongs_to :user
   belongs_to :survey_assignment
   has_one :lime_survey, :through=>:survey_assignment
+  has_many :user_responses
   validates_presence_of :token
   validates_presence_of :user
 
@@ -88,11 +89,11 @@ class Assignment::UserAssignment < ActiveRecord::Base
   end
 
   def group_and_title
-    self.survey_assignment.lime_survey.group_and_title_name
+    survey_assignment.lime_survey.group_and_title_name
   end
 
   def lime_groups
-    self.survey_assignment.lime_survey.lime_groups
+    survey_assignment.lime_survey.lime_groups
   end
 
   def get_meta_attribute attr
@@ -106,11 +107,101 @@ class Assignment::UserAssignment < ActiveRecord::Base
   end
 
   def survey_type
-    get_meta_attribute("SurveyType").pluralize.titleize
+    @survey_type ||= get_meta_attribute("SurveyType")
   end
 
   def status_question
-    get_meta_attribute "StatusQuestion"
+    @status_question ||= get_meta_attribute "StatusQuestion"
+  end
+
+  # true if user_assignment has only one user_response
+  def is_shallow?
+    user_responses # have to call this first or it comes through nil
+    user_responses.count > 1 ? false : true
+  end
+
+  def ur_categories
+    hash = {}
+    user_responses.map{ |ur| ur.category }.uniq.each do |category|
+      hash[category] = Assignment::UserResponse.where(user_assignment: self, category: category)
+    end
+    return hash
+  end
+
+  # returns hash of lime answer code => status text for a user_assignment
+  def status_hash
+    return @status_hash if defined? @status_hash
+
+    lq = LimeQuestion.where(sid: sid, title: status_question).first
+    @status_hash = Hash[lq.lime_answers.map {|la| [la.code, la.answer] }]
+    return @status_hash
+  end
+
+  def user_responses
+    if completed?
+      if Assignment::UserResponse.where(user_assignment: self).empty?
+        build_user_responses
+      else
+        Assignment::UserResponse.where(user_assignment: self)
+      end
+    else
+      []
+    end
+  end
+
+  def build_user_responses
+    g_title, ra_title = group_and_title
+    resps = gathered_responses.dup
+    create_list= []
+    resps.each do |category, lol|
+      lol.each do |list|
+        create_list<< [g_title, ra_title, category, *list]
+      end
+    end
+    # have to iterate twice bc create fails otherwise for some reason
+    create_list.each do |f|
+      resp_type = f.shift()
+      ra_title = f.shift()
+      category = f.shift()
+      status = f.pop()
+      content = f.pop()
+      title = f.pop() || ra_title
+      Assignment::UserResponse.create(
+        resp_type: resp_type,
+        category: category,
+        title: title,
+        content: content,
+        status: status,
+        user_assignment_id: id
+      )
+    end
+  end
+
+  # generates row for each valid line of user_assignment.response_data
+  def gathered_responses
+    h = Hash.new
+    lime_groups.each do |lg|
+      if lg.contains_visible_questions?
+        group_name = lg.group_name.to_s
+        h[group_name] = []
+        lg.lime_questions.each do |lq|
+          row = []
+          response_key = "#{lg.sid}X#{lg.gid}X#{lq.qid}"
+          response_data.each do |key, value|
+            if key.include? response_key
+              if status_hash.keys.include? value
+                row << status_hash[value].to_s
+              else
+                row << value unless value.blank?
+              end
+            end
+          end
+          h[group_name] << row unless row.empty?
+        end
+        h[group_name] = h[group_name].transpose
+      end
+    end
+    h
   end
 
 end

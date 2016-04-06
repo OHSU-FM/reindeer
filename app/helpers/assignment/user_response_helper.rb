@@ -1,0 +1,2 @@
+module Assignment::UserResponseHelper
+end

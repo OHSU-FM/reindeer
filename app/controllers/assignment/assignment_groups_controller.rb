@@ -19,8 +19,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
       @params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }
     end
     @user = User.find(@params[:user_id])
-    service = Assignment::UserAssignmentsIndexService.new(@assignment_group, @params)
-    @response = service.perform()
+    @service = Assignment::UserAssignmentsIndexService.new @assignment_group, @params
   end
 
   def new
