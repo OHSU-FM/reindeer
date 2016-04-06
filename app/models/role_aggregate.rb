@@ -277,7 +277,7 @@ class RoleAggregate < ActiveRecord::Base
     ##
     # RailsAdmin label
     def name
-        lime_survey.nil? ? 'New' : lime_survey.title
+        lime_survey.nil? ? 'New' : lime_survey.group_and_title_name[1]
     end
 
     private

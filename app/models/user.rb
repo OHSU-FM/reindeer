@@ -271,6 +271,14 @@ class User < ActiveRecord::Base
         username.parameterize
     end
 
+    def pinned_survey_groups
+      permission_group.present? ? permission_group.pinned_survey_groups : []
+    end
+
+    def survey_groups
+      permission_group.present? ? permission_group.survey_groups : []
+    end
+
     def assignment_groups
       return @assignment_groups if defined? @assignment_groups
       @assignment_groups = []
@@ -291,4 +299,5 @@ class User < ActiveRecord::Base
       @active_assignment_groups = assignment_groups.reject { |ag| ag.user_ids.all?(&:empty?) }
       return @active_assignment_groups
     end
+
 end

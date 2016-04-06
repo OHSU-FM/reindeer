@@ -23,6 +23,9 @@
                 <% end %>
 
                 <% if can? :list, LimeSurvey %>
+                    <% current_user.pinned_survey_groups.each do |group| %>
+                        <%= nav_link_to(group.title, main_app.ls_reports_path(filter: group.title)) %>
+                    <% end %>
                     <%= nav_link_to('Reports', main_app.ls_reports_path,
                             :class=>'ls_reports-link')%>
                 <% end %>

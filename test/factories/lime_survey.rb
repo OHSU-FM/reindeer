@@ -1,4 +1,3 @@
-
 def create_min_response sid = 12345, opts={}
   topts = opts[:tokens] || {}
   topts[:firstname] ||= :fname
@@ -17,18 +16,21 @@ def create_min_response sid = 12345, opts={}
   ropts[:col1] ||= '34.000'
   ropts[:col2] ||= '2014-07-07'
   ropts[:col3] ||= 1
+  ropts[:col4] ||= 'TestQuestion'
   query = "
     INSERT INTO #{LimeExt.table_prefix}_survey_#{sid}
-    (token, submitdate, lastpage, startlanguage, 
-      \"#{sid}X123X6036\", 
+    (token, submitdate, lastpage, startlanguage,
+      \"#{sid}X123X6036\",
       \"#{sid}X123X6037\",
-      \"#{sid}X123X6038\")
-    VALUES('#{ropts[:token]}', '#{ropts[:submitdate]}', #{ropts[:lastpage]}, 
-        '#{ropts[:startlanguage]}', '#{ropts[:col1]}', '#{ropts[:col2]}', #{ropts[:col3]});
-    
+      \"#{sid}X123X6038\",
+      \"#{sid}X123X6039\")
+    VALUES('#{ropts[:token]}', '#{ropts[:submitdate]}', #{ropts[:lastpage]},
+        '#{ropts[:startlanguage]}', '#{ropts[:col1]}', '#{ropts[:col2]}',
+        #{ropts[:col3]}, '#{ropts[:col4]}');
+
     INSERT INTO #{LimeExt.table_prefix}_tokens_#{sid} (
       firstname, lastname, email, token, language, attribute_1, attribute_2
-    )VALUES('#{topts[:firstname]}', '#{topts[:lastname]}', '#{topts[:email]}', 
+    )VALUES('#{topts[:firstname]}', '#{topts[:lastname]}', '#{topts[:email]}',
       '#{topts[:token]}', '#{topts[:language]}', '#{topts[:attribute_1]}', '#{topts[:attribute_2]}');
   "
   ActiveRecord::Base.connection.execute(query)
@@ -45,9 +47,9 @@ def create_min_survey sid = 12345
       CACHE 1;
 
   --
-  -- Name: lime_survey_#{sid}; Type: TABLE; Schema: public; 
+  -- Name: lime_survey_#{sid}; Type: TABLE; Schema: public;
   --
-  
+
   CREATE TABLE #{LimeExt.table_prefix}_survey_#{sid} (
       id integer NOT NULL DEFAULT nextval('#{LimeExt.table_prefix}_survey_#{sid}_id_seq1'),
       token character varying(36),
@@ -56,7 +58,8 @@ def create_min_survey sid = 12345
       startlanguage character varying(20) NOT NULL,
       \"#{sid}X123X6036\" numeric(30,10),
       \"#{sid}X123X6037\" timestamp without time zone,
-      \"#{sid}X123X6038\" character varying(1)
+      \"#{sid}X123X6038\" character varying(1),
+      \"#{sid}X123X6039\" character varying(255)
   );
 
 
@@ -68,9 +71,9 @@ def create_min_survey sid = 12345
       CACHE 1;
 
   --
-  -- Name: lime_tokens_#{sid}; Type: TABLE; Schema: public; Owner: sa; Tablespace: 
+  -- Name: lime_tokens_#{sid}; Type: TABLE; Schema: public; Owner: sa; Tablespace:
   --
-  
+
   CREATE TABLE #{LimeExt.table_prefix}_tokens_#{sid} (
     tid integer NOT NULL DEFAULT nextval('#{LimeExt.table_prefix}_tokens_#{sid}_tid_seq'),
     participant_id character varying(50),
@@ -95,16 +98,16 @@ def create_min_survey sid = 12345
 
 
   --
-  -- Name: #{LimeExt.table_prefix}_tokens_#{sid}_pkey; Type: CONSTRAINT; Schema: public; Owner: sa; Tablespace: 
+  -- Name: #{LimeExt.table_prefix}_tokens_#{sid}_pkey; Type: CONSTRAINT; Schema: public; Owner: sa; Tablespace:
   --
-  
+
   ALTER TABLE ONLY #{LimeExt.table_prefix}_tokens_#{sid}
     ADD CONSTRAINT #{LimeExt.table_prefix}_tokens_#{sid}_pkey PRIMARY KEY (tid);
 
   --
-  -- Name: idx_token_token_#{sid}_18071; Type: INDEX; Schema: public; Owner: sa; Tablespace: 
+  -- Name: idx_token_token_#{sid}_18071; Type: INDEX; Schema: public; Owner: sa; Tablespace:
   --
-  
+
   CREATE INDEX idx_token_token_#{sid}_18071 ON #{LimeExt.table_prefix}_tokens_#{sid} USING btree (token);
 
   INSERT INTO #{LimeExt.table_prefix}_surveys
@@ -117,5 +120,4 @@ def create_min_survey sid = 12345
   "
   ActiveRecord::Base.connection.execute(query)
 end
-
 

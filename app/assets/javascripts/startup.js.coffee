@@ -5,7 +5,7 @@ jQuery(document).ready ->
     $ = jQuery;
 
     # Mark link in the nav-bar as active
-    jQuery("#nav-links li a."+controller_name+'-link').parent().addClass('active')
+    #jQuery("#nav-links li a."+controller_name+'-link').parent().addClass('active')
 
     # Show the modal "Page Loading" message if someone clicks on a modal-nav link
     $(document).on 'click', '.show-modal-nav-reports', ->
