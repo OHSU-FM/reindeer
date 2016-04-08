@@ -1,22 +1,8 @@
 <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
-<div id="assignment-group-nav" class='container-fluid'>
-  <% if @assignment_groups.count > 1 %>
-    <% @assignment_groups.each do |group| %>
-      <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
-    <% end %>
-  <% end %>
-</div>
-<hr/>
-<div id="user-ids-nav" class='container-fluid'>
-  <% @assignment_group.user_ids.each do |uid| %>
-    <% !uid.empty? ? @u = User.find(uid.to_i) : next %>
-    <%= link_to @u.email, assignment_assignment_group_path(@assignment_group, user_id: @u.id),
-        class: "btn btn-#{uid == @params[:user_id] ? :primary : :link}"%>
-  <% end %>
-</div>
-<hr/>
 
-<div id='assignment_group_<% @assignment_group.id %>' class="container-fluid">
+<%= render "assignment/shared/assignment_nav" %>
+
+<div id='assignment-group-<%= @assignment_group.id %>' class="container-fluid">
   <div class="col-md-6 main fade-in two" style="border-right:1px solid #ddd;">
 
     <%= render partial: 'form_title' %>

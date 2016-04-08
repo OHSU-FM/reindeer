@@ -14,12 +14,11 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   def show
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
     @assignment_groups = current_user.active_assignment_groups
-    @params = params
-    unless @params[:user_id]
-      @params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }
+    unless params[:user_id]
+      params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }
     end
-    @user = User.find(@params[:user_id])
-    @service = Assignment::UserAssignmentsIndexService.new @assignment_group, @params
+    @user = User.find(params[:user_id])
+    @service = Assignment::UserAssignmentsIndexService.new @assignment_group, params
   end
 
   def new
