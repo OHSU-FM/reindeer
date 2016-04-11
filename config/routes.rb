@@ -62,11 +62,12 @@ Rails.application.routes.draw do
       resources :assignment_groups, param: :assignment_group_id,
         path: :groups
       resources :user_assignments, path: :tasks
+      resources :user_responses, path: :responses, only: [:show]
       resources :survey_assignments, path: :forms, param: :survey_assignment_id
       resources :assignment_group_comments, path: :group_comments,
         param: :assignment_group_id
-      resources :survey_assignment_comments, path: :form_comments,
-        param: :survey_assignment_id, only: [:show]
+      resources :user_response_comments, path: :response_comments,
+        param: :user_response_id
       resources :assignment_comments, path: :comments
     end
 

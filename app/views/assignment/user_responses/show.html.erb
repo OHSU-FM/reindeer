@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row main fade-in two">
   <div class="col-md-6 main fade-in two">
     <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
   </div>
@@ -20,12 +20,10 @@
     <h2 style="text-align:center;"><%= @user_response.title %></h2>
     <hr />
 
-    <h3>Action Plan</h3>
+    <h3><%= @user_response.user_assignment.survey_type.titleize %></h3>
     <p><%= @user_response.content %></p>
   </div>
   <div class="col-md-6 main fade-in two">
-    <div id="user-response-comments">
-      <%= render 'comments' %>
-    </div>
+    <%= render 'comments' %>
   </div>
 </div>

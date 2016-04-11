@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row main fade-in two">
   <div id="assignment-group-nav" class='container-fluid'>
     <div class="btn-group">
       <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,19 +16,21 @@
         <li><a href="#">Goals</a></li>
       </ul>
     </div>
-    <% @user_response.user_assignment.ur_categories.each do |category, responses| %>
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= category.titleize %><span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <% responses.each do |ur| %>
-          <li>
-            <%= link_to ur.title, assignment_user_response_path(ur) %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <% if @user_response.user_assignment.ur_categories.keys.length > 1 %>
+      <% @user_response.user_assignment.ur_categories.each do |category, responses| %>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= category.titleize %><span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <% responses.each do |ur| %>
+            <li>
+              <%= link_to ur.title, assignment_user_response_path(ur) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
     <% end %>
   </div>
 </div>
