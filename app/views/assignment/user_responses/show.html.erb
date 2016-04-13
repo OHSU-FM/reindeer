@@ -1,6 +1,6 @@
 <div class="row main fade-in two">
   <div class="col-md-6 main fade-in two">
-    <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
+    <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
   </div>
   <div class="col-md-6 main fade-in two" style="height:69px; display:table;vertical-align:middle;">
     <div style="display:table-cell; vertical-align:middle;">
@@ -11,19 +11,19 @@
   </div>
 </div>
 
-<%= render partial: "assignment/shared/assignment_nav", locals: {display: "none" } %>
+<%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
 
 <%= render "response_nav" %>
 
-<div id="user-response-<%= @user_response.id %>" class="container-fluid">
-  <div class="col-md-6 main fade-in two" style="border-right:1px solid #eeeeee;">
+<div id="user-response-<%= @user_response.id %>" class="container-fluid response-display">
+  <div class="col-md-6 main fade-in two left-panel">
     <h2 style="text-align:center;"><%= @user_response.title %></h2>
     <hr />
 
     <h3><%= @user_response.user_assignment.survey_type.titleize %></h3>
     <p><%= @user_response.content %></p>
   </div>
-  <div class="col-md-6 main fade-in two">
+  <div class="col-md-6 main fade-in two right-panel">
     <%= render 'comments' %>
   </div>
 </div>

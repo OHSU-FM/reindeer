@@ -1,5 +1,7 @@
 Rails.application.config.assets.precompile += %w( print.css
     assignment/*
+    assignment_assignment_groups.css
+    assignment_user_responses.css
     form-utils.js
     sync_triggers.js
     high_voltage_pages.css
@@ -11,9 +13,9 @@ Rails.application.config.assets.precompile += %w( print.css
     ls_files.css ls_files.js
     ls_reports.css ls_reports.js
     ls_reports_filter.css ls_reports_filter.css
-    reports.css   reports.js 
+    reports.css   reports.js
     charts.css    charts.js
-    dashboard.css dashboard.js 
+    dashboard.css dashboard.js
     ls_reports_spreadsheet.css
     devise_sessions.css
     sessions.js

@@ -1,5 +1,5 @@
 class Assignment::UserResponsesController < ApplicationController
-  layout 'full_width_margins'
+  layout 'full_width_height_margins'
   respond_to :html
   authorize_resource
 
