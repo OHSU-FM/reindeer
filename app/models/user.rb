@@ -286,9 +286,9 @@ class User < ActiveRecord::Base
         @assignment_groups << Assignment::AssignmentGroup.all
       else
         # all AG user owns or participates in
-        @assignment_groups << Assignment::AssignmentGroup.where(user_id: self.id)
-        @assignment_groups << Assignment::AssignmentGroup.where { |ag|
-          ag.user_ids.include? self.id.to_s
+        @assignment_groups << Assignment::AssignmentGroup.where(user_id: id)
+        @assignment_groups << Assignment::AssignmentGroup.all.find_all { |ag|
+          ag.user_ids.include? id.to_s
         }
       end
       return @assignment_groups.flatten()

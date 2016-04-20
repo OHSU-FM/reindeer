@@ -1,12 +1,13 @@
+<%= stylesheet_link_tag 'comments' %>
 <div class="user-response-comments">
   <div class="row header">
     <h3>Comments</h3>
   </div>
   <hr />
   <div class="row content">
-    this is where comments show up
+    <%= render partial: 'comments/comments', locals: {commentable: @user_response} %>
   </div>
   <div class="row comments-box">
-    this is where you make a comment
+    <%= render partial: 'comments/form', locals: {commentable: @user_response} %>
   </div>
 </div>

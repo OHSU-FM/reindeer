@@ -1,0 +1,7 @@
+<% if can? :comment_on, commentable %>
+  <%= form_for [commentable, Comment.new] do |f| %>
+  <div class="form-group comment-submit">
+    <%= f.text_field :body, class: "form-control", placeholder: "Add a comment..." %>
+  </div>
+  <% end %>
+<% end %>

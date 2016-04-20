@@ -1,12 +1,32 @@
+#assignment-group-comments {
+  font-size: 1.1em;
+  width: 95%;
+}
+
+.assignment-container {
+  height: 100%;
+}
+
 .response-display {
   height: 98%;
 }
 
 .left-panel {
-  border-right: 1px solid #eeeeee;
+  width: 50%;
+  float: left;
   height: 100%;
+  padding-right: 10px;
+  border-right: 1px solid #eeeeee;
+}
+
+.left-panel-scroll {
+  overflow-y: auto;
 }
 
 .right-panel {
+  width: 50%;
+  float: left;
   height: 100%;
+  overflow-y: auto;
+  padding-left: 10px;
 }

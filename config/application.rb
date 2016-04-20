@@ -72,7 +72,7 @@ module EdnaConsole
     # E.g. $ rails g model WhipperSnapper
     config.generators do |g|
       g.test_framework :minitest, spec: true, fixture: false
-      g.integration_tool :mini_test
+      g.integration_tool :minitest
     end
 
   end

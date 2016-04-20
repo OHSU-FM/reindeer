@@ -9,8 +9,7 @@ module Assignment
     belongs_to :assignment_group_template
     has_one :permission_group, through: :assignment_group_template
     has_many :survey_assignments
-    has_many :comments, class_name: 'Assignment::AssignmentComment',
-      inverse_of: :assignment_group, dependent: :destroy
+    has_many :comments, as: :commentable, dependent: :destroy
     delegate :lime_surveys, to: :assignment_group_template
     validates :owner, presence: true
     validates :assignment_group_template, presence: true

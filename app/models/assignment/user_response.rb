@@ -1,7 +1,7 @@
 class Assignment::UserResponse < ActiveRecord::Base
   belongs_to :user
   belongs_to :user_assignment
-  has_many :assignment_comments
+  has_many :comments, as: :commentable
   delegate :user, to: :user_assignment
 
   def assignment_group

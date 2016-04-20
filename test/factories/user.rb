@@ -9,7 +9,7 @@ FactoryGirl.define do
 
     trait :admin do
       id 1
-      email 'test@example.com'
+      email 'admin@example.com'
       superadmin true
     end
 
@@ -39,8 +39,14 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_assignment_group do
+      after(:build) do |usr|
+        usr.assignment_groups << build_list(:assignment_group, 1, owner: usr)
+      end
+    end
+
     factory :admin, traits: [:admin]
-    factory :coach, traits: [:coach, :with_uex]
+    factory :coach, traits: [:coach, :with_uex, :with_assignment_group]
     factory :student, traits: [:student]
   end
 end

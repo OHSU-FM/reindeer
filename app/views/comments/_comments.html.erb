@@ -1,0 +1,10 @@
+<% commentable.comments.each do |comment| %>
+<div class="comment-row">
+  <%= comment.body %>
+  <b><%= comment.user.title %></b>
+  <i><%= time_ago_in_words(comment.created_at.localtime) %> ago</i>
+  <%= link_to [commentable, comment], method: :delete, data: { confirm: "Are you sure?"} do %>
+    <i class="glyphicon glyphicon-remove"></i>
+  <% end %>
+</div>
+<% end %>

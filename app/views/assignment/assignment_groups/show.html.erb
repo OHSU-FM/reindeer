@@ -2,8 +2,8 @@
 
 <%= render "assignment/shared/assignment_nav" %>
 
-<div id='assignment-group-<%= @assignment_group.id %>' class="container-fluid">
-  <div class="col-md-6 main fade-in two left-panel">
+<div id="assignment-group-<%= @assignment_group.id %>" class="container-fluid assignment-container">
+  <div class="fade-in two left-panel left-panel-scroll">
 
     <%= render partial: 'form_title' %>
 
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="col-md-6 main fade-in three">
+  <div class="fade-in three right-panel">
     <%= render template: 'assignment/user_assignments/index' %>
   </div>
 </div>
