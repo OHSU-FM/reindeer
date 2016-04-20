@@ -114,6 +114,7 @@ group :test, :development do
     elsif RUBY_VERSION =~ /^2./
         gem 'better_errors'
         gem 'pry-rails'
+        gem 'pry-stack_explorer'
         gem 'stackprof'
         gem 'ruby-prof'
     end
