@@ -1,19 +1,22 @@
 require 'test_helper'
 
 class UserFlowsTest < ActionDispatch::IntegrationTest
-  include Devise::TestHelpers
-
+  
+  let(:user){ FactoryGirl.create :admin }
   test 'login and browse' do
+
     https!
     get '/users/sign_in'
     assert_response :success
     
-    post_via_redirect '/users/sign_in', 
-      username: users(:test).user, 
-      password: users(:test).password
+    post_via_redirect '/users/sign_in',
+      user: {
+        login: user.email, 
+        password: user.password
+      } 
     
-    assert_equal '/', path
-    assert_equal 'Welcome', flash[:notice]
+    assert_equal '/dashboard', path
+    assert_equal 'Signed in successfully.', flash[:notice]
     
     get '/ls_reports'
     assert_response :success
