@@ -11,138 +11,126 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-  ActiveRecord::Schema.define(version: 20160405175231) do
-    # These are extensions that must be enabled in order to support this database
-    enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20160421155941) do
 
-    create_table "assignment_comments", force: :cascade do |t|
-      t.integer  "user_assignment_id"
-      t.integer  "user_id"
-      t.text     "slug_md"
-      t.datetime "created_at",          null: false
-      t.datetime "updated_at",          null: false
-      t.integer  "assignment_group_id"
-    end
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
-    add_index "assignment_comments", ["assignment_group_id"], name: "index_assignment_comments_on_assignment_group_id", using: :btree
-    add_index "assignment_comments", ["user_assignment_id"], name: "index_assignment_comments_on_user_assignment_id", using: :btree
-    add_index "assignment_comments", ["user_id"], name: "index_assignment_comments_on_user_id", using: :btree
+  create_table "assignment_group_templates", force: :cascade do |t|
+    t.integer  "permission_group_id"
+    t.string   "title"
+    t.text     "permission_group_ids"
+    t.text     "sids"
+    t.text     "desc_md"
+    t.boolean  "active",               default: true
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
 
-    create_table "assignment_group_templates", force: :cascade do |t|
-      t.integer  "permission_group_id"
-      t.string   "title"
-      t.text     "permission_group_ids"
-      t.text     "sids"
-      t.text     "desc_md"
-      t.boolean  "active",               default: true
-      t.datetime "created_at",                          null: false
-      t.datetime "updated_at",                          null: false
-    end
+  add_index "assignment_group_templates", ["permission_group_id"], name: "index_assignment_group_templates_on_permission_group_id", using: :btree
 
-    add_index "assignment_group_templates", ["permission_group_id"], name: "index_assignment_group_templates_on_permission_group_id", using: :btree
+  create_table "assignment_groups", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "assignment_group_template_id"
+    t.string   "title"
+    t.integer  "status"
+    t.text     "desc_md"
+    t.text     "user_ids"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
 
-    create_table "assignment_groups", force: :cascade do |t|
-      t.integer  "user_id"
-      t.integer  "assignment_group_template_id"
-      t.string   "title"
-      t.integer  "status"
-      t.text     "desc_md"
-      t.text     "user_ids"
-      t.datetime "created_at",                   null: false
-      t.datetime "updated_at",                   null: false
-    end
+  add_index "assignment_groups", ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
+  add_index "assignment_groups", ["user_id"], name: "index_assignment_groups_on_user_id", using: :btree
 
-    add_index "assignment_groups", ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
-    add_index "assignment_groups", ["user_id"], name: "index_assignment_groups_on_user_id", using: :btree
+  create_table "chart_series", force: :cascade do |t|
+    t.integer  "chart_id"
+    t.text     "group_filter"
+    t.text     "entity_filter"
+    t.text     "category_filter"
+    t.text     "question_filter"
+    t.text     "question_options_filter"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
-    create_table "chart_series", force: :cascade do |t|
-      t.integer  "chart_id"
-      t.text     "group_filter"
-      t.text     "entity_filter"
-      t.text     "category_filter"
-      t.text     "question_filter"
-      t.text     "question_options_filter"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
+  add_index "chart_series", ["chart_id"], name: "index_chart_series_on_chart_id", using: :btree
 
-    add_index "chart_series", ["chart_id"], name: "index_chart_series_on_chart_id", using: :btree
+  create_table "charts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.text     "title"
+    t.text     "output"
+    t.text     "chart_type"
+    t.text     "aggregator_type"
+    t.text     "cols"
+    t.text     "rows"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
-    create_table "charts", force: :cascade do |t|
-      t.integer  "user_id"
-      t.text     "title"
-      t.text     "output"
-      t.text     "chart_type"
-      t.text     "aggregator_type"
-      t.text     "cols"
-      t.text     "rows"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
+  add_index "charts", ["user_id"], name: "index_charts_on_user_id", using: :btree
 
-    add_index "charts", ["user_id"], name: "index_charts_on_user_id", using: :btree
+  create_table "comments", force: :cascade do |t|
+    t.string   "body"
+    t.integer  "user_id"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
-    create_table "comments", force: :cascade do |t|
-      t.string   "body"
-      t.integer  "user_id"
-      t.integer  "commentable_id"
-      t.string   "commentable_type"
-      t.datetime "created_at",       null: false
-      t.datetime "updated_at",       null: false
-    end
+  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
 
-    add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
+  create_table "content_slugs", force: :cascade do |t|
+    t.integer "user_id"
+    t.text    "content"
+    t.boolean "public"
+    t.integer "sizex"
+    t.integer "sizey"
+    t.boolean "resizeable", default: true
+  end
 
-    create_table "content_slugs", force: :cascade do |t|
-      t.integer "user_id"
-      t.text    "content"
-      t.boolean "public"
-      t.integer "sizex"
-      t.integer "sizey"
-      t.boolean "resizeable", default: true
-    end
+  create_table "critical_values", id: false, force: :cascade do |t|
+    t.integer "df",                   null: false
+    t.decimal "t",                    null: false
+    t.decimal "alpha", default: 0.05, null: false
+  end
 
-    create_table "critical_values", id: false, force: :cascade do |t|
-      t.integer "df",                   null: false
-      t.decimal "t",                    null: false
-      t.decimal "alpha", default: 0.05, null: false
-    end
+  create_table "dashboard_widgets", force: :cascade do |t|
+    t.integer "dashboard_id"
+    t.integer "position"
+    t.integer "sizex"
+    t.integer "sizey"
+    t.boolean "resizeable",               default: true
+    t.text    "widget_type"
+    t.integer "widget_id"
+    t.string  "widget_title", limit: 255
+  end
 
-    create_table "dashboard_widgets", force: :cascade do |t|
-      t.integer "dashboard_id"
-      t.integer "position"
-      t.integer "sizex"
-      t.integer "sizey"
-      t.boolean "resizeable",               default: true
-      t.text    "widget_type"
-      t.integer "widget_id"
-      t.string  "widget_title", limit: 255
-    end
+  create_table "dashboards", force: :cascade do |t|
+    t.integer "user_id"
+    t.text    "theme"
+  end
 
-    create_table "dashboards", force: :cascade do |t|
-      t.integer "user_id"
-      t.text    "theme"
-    end
+  add_index "dashboards", ["user_id"], name: "index_dashboards_on_user_id", using: :btree
 
-    add_index "dashboards", ["user_id"], name: "index_dashboards_on_user_id", using: :btree
+  create_table "data_migrations", force: :cascade do |t|
+    t.text "version", null: false
+  end
 
-    create_table "data_migrations", force: :cascade do |t|
-      t.text "version", null: false
-    end
+  create_table "meta_attribute_entities", force: :cascade do |t|
+    t.text    "entity_type",                                                       null: false
+    t.text    "meta_attribute_entity_group_group_name",                            null: false
+    t.integer "edition"
+    t.integer "version"
+    t.date    "start_date"
+    t.date    "stop_date"
+    t.boolean "visible",                                            default: true
+    t.integer "reference_year"
+    t.string  "entity_type_fk",                         limit: 255
+  end
 
-    create_table "meta_attribute_entities", force: :cascade do |t|
-      t.text    "entity_type",                                                       null: false
-      t.text    "meta_attribute_entity_group_group_name",                            null: false
-      t.integer "edition"
-      t.integer "version"
-      t.date    "start_date"
-      t.date    "stop_date"
-      t.boolean "visible",                                            default: true
-      t.integer "reference_year"
-      t.string  "entity_type_fk",                         limit: 255
-    end
-
-    add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
+  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
 
   create_table "meta_attribute_groups", force: :cascade do |t|
     t.text    "group_name",                  null: false
@@ -348,9 +336,6 @@
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
 
-  add_foreign_key "assignment_comments", "assignment_groups"
-  add_foreign_key "assignment_comments", "user_assignments"
-  add_foreign_key "assignment_comments", "users"
   add_foreign_key "assignment_groups", "assignment_group_templates"
   add_foreign_key "assignment_groups", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
