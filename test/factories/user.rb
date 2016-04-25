@@ -3,7 +3,7 @@ FactoryGirl.define do
     full_name { Faker::Name.name }
     username { Faker::Internet.user_name("#{full_name}") }
     email { Faker::Internet.email("#{username}") }
-    pass = Faker::Internet.password
+    pass = Faker::Internet.password}
     password pass
     password_confirmation pass
 

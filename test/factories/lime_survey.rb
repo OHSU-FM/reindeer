@@ -1,3 +1,11 @@
+FactoryGirl.define do
+  factory :lime_survey do
+
+  end
+
+end
+
+
 def create_min_response sid = 12345, opts={}
   topts = opts[:tokens] || {}
   topts[:firstname] ||= :fname
