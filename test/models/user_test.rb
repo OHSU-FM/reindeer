@@ -34,8 +34,8 @@ describe User do
   end
 
   it 'can list assignment_groups it owns' do
-    user = create(:coach)
-    create :assignment_group, owner: user
-    assert_equal user.assignment_groups.count, 1
+    user = create(:user)
+    create(:assignment_group, :with_template, owner: user)
+    assert_equal 1, user.assignment_groups.count
   end
 end
