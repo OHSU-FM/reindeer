@@ -3,12 +3,11 @@ FactoryGirl.define do
     full_name { Faker::Name.name }
     username { Faker::Internet.user_name("#{full_name}") }
     email { Faker::Internet.email("#{username}") }
-    pass = Faker::Internet.password}
+    pass = Faker::Internet.password
     password pass
     password_confirmation pass
 
     trait :admin do
-      id 1
       email 'admin@example.com'
       superadmin true
     end
@@ -35,13 +34,13 @@ FactoryGirl.define do
 
     trait :with_uex do
       after(:build) do |usr|
-        usr.user_externals << build_list(:user_external, 1, user: usr)
+        usr.user_externals << build(:user_external, user: usr)
       end
     end
 
     trait :with_assignment_group do
       after(:build) do |usr|
-        usr.assignment_groups << build_list(:assignment_group, 1, owner: usr)
+        usr.assignment_groups << FactoryGirl.build(:assignment_group, :with_template, owner: usr)
       end
     end
 
