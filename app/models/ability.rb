@@ -62,6 +62,8 @@ class Ability
     can [:list, :read], Assignment::AssignmentGroup do |ag|
       ag.owner == user || ag.user_ids.include?(user.id)
     end
+
+    can :create, Assignment::AssignmentGroup if user.can_create_assignment_group?
     # only owners can comment on assignment_groups (broadcast)
     can :comment_on, Assignment::AssignmentGroup do |ag|
       ag.owner == user

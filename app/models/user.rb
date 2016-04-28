@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
         :can_lime=>1,
         :can_lime_all=>1,
         :can_view_spreadsheet=>1,
-
+        :can_create_assignment_group=>1,
         # Role permissions
         :admin=>25,
         :superadmin=>50

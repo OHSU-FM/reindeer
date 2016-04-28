@@ -1,8 +1,32 @@
 FactoryGirl.define do
   factory :lime_survey do
+    sequence(:sid) { |n| n + 12345}                
+    owner_id 1                        
+    active 'N'                       
+    adminemail { Faker::Internet.email }              
+    anonymized 'Y'                         
+    format 'G'    
+    savetimings 'Y'                         
+    template 'default'                  
+    language 'en'                     
+    datestamp 'Y'                      
+    usecookie 'Y'                      
+    allowregister 'Y'                      
+    allowsave 'Y'
 
+    trait(:with_tables) do
+      active 'Y'
+      after(:create) do |survey|
+        create_min_survey(survey.sid)
+      end
+      
+      trait(:with_response) do
+        after(:create) do |survey|
+          create_min_response(survey.sid)
+        end
+      end
+    end
   end
-
 end
 
 
@@ -118,13 +142,6 @@ def create_min_survey sid = 12345
 
   CREATE INDEX idx_token_token_#{sid}_18071 ON #{LimeExt.table_prefix}_tokens_#{sid} USING btree (token);
 
-  INSERT INTO #{LimeExt.table_prefix}_surveys
-    (
-    sid,    owner_id, active, adminemail,         anonymized, format, savetimings,  template,   language, datestamp,  usecookie,  allowregister,  allowsave
-    )
-    values(
-    '#{sid}', 1,        'Y',  'test@example.com', 'Y',        'G',    'Y',          'default',  'en',     'Y',        'Y',        'Y',            'Y'
-    );
   "
   ActiveRecord::Base.connection.execute(query)
 end

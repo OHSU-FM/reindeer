@@ -38,4 +38,12 @@ describe User do
     create(:assignment_group, :with_template, owner: user)
     assert_equal 1, user.assignment_groups.count
   end
+
+  describe 'superadmin' do
+    it "is admin or higher" do
+      user = build(:superadmin)
+      assert_equal true, user.admin_or_higher?
+    end
+  end
+
 end

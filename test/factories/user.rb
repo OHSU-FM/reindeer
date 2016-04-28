@@ -7,9 +7,14 @@ FactoryGirl.define do
     password pass
     password_confirmation pass
 
+    trait :superadmin do
+      email 'superadmin@example.com'
+      superadmin true
+    end
+    
     trait :admin do
       email 'admin@example.com'
-      superadmin true
+      admin true
     end
 
     trait :coach do
@@ -18,6 +23,7 @@ FactoryGirl.define do
       end
 
       can_dashboard true
+      can_create_assignment_group true
       can_lime true
       permission_group { coach_pg }
     end
@@ -44,6 +50,7 @@ FactoryGirl.define do
       end
     end
 
+    factory :superadmin, traits: [:superadmin]
     factory :admin, traits: [:admin]
     factory :coach, traits: [:coach, :with_uex, :with_assignment_group]
     factory :student, traits: [:student]

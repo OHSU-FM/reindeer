@@ -5,9 +5,9 @@ FactoryGirl.define do
     association :owner, factory: :admin, strategy: :build
 
     trait :with_template do
-      association :assignment_group_template
+      association :assignment_group_template, :with_surveys
     end
-
+    
   end
 
 end
