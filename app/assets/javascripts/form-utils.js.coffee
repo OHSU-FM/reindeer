@@ -1,5 +1,4 @@
 
-
 @FormUtils = {}
 @FormUtils.modal_template = '''
 <div id="modal_blank" class="modal fade" tabindex="-1" role="dialog" data-keyboard="true" style="display:none;">
@@ -37,7 +36,7 @@ class @FormUtils.DataEvents
         console.log 'test'
 
 @FormUtils.classifier = (doc) ->
-    # Automagic behavior for html objects 
+    # Automagic behavior for html objects
     $(doc).find('[data-class]').each ->
         new_class = window
         try
@@ -62,10 +61,10 @@ resource_insert = ($target, html, insert) ->
         ':replace': 'html',
         ':after': 'after'
     }
-    # Set default method 
+    # Set default method
     insert = insert || ':replace'
     # Call Method
-    $target[switches[insert]](html) 
+    $target[switches[insert]](html)
     # Initialize automagic classifiers
     FormUtils.classifier(html)
     return
@@ -74,13 +73,13 @@ resource_insert = ($target, html, insert) ->
 resource_load = ($node, data) ->
     data = data || $node.data()
     $target = $(data.target)
-    method = data.method || 'GET' 
-    url = $node.attr('href') || data.url 
+    method = data.method || 'GET'
+    url = $node.attr('href') || data.url
     insert = data.insert
     $.ajax
         url: url
         type: method
-        data: 
+        data:
             layout: false
         dataType: 'html'
         contentType: 'application/html; charset=utf-8'
@@ -99,7 +98,7 @@ resource_load = ($node, data) ->
             $(data.onResourceCompleteShow).show() if data.onResourceCompleteShow?
             $(data.onResourceCompleteHide).hide() if data.onResourceCompleteHide?
             $(data.onResourceCompleteRemove).remove() if data.onResourceCompleteRemove?
-            
+
 
 $(document).ready ->
     # Add template modal to body
@@ -126,10 +125,10 @@ $(document).ready ->
             resource_load($node)
         return
 
-    # replace_on_submit 
+    # replace_on_submit
     $('form button[type=submit][data-toggle~=replace]').click (event) ->
         console.log 'hello GGGGGGGG'
-    
+
     # link_to_update_content
     $('a[data-toggle~=replace]').click (event) ->
         event.preventDefault()
@@ -140,7 +139,7 @@ $(document).ready ->
         $.ajax
             url: url
             type: 'GET'
-            data: 
+            data:
                 layout: false
             dataType: 'html'
             contentType: 'application/html; charset=utf-8'
@@ -148,8 +147,8 @@ $(document).ready ->
                 $target.html('Error<br/>' +g2)
             success: (data) ->
                 new_html = $('<div/>').html(data)
-                $target.html(new_html) 
-    
+                $target.html(new_html)
+
     # link_to_modal_dialog
     $('a[data-toggle~=modal]').click (event) ->
         event.preventDefault()
@@ -162,7 +161,7 @@ $(document).ready ->
         $.ajax
             url: url
             type: method
-            data: 
+            data:
                 layout: false
             dataType: 'html'
             contentType: 'application/html; charset=utf-8'
