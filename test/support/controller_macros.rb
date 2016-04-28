@@ -1,8 +1,12 @@
 module ControllerMacros
 
   def login(user_type, *args )
-    @request.env["devise.mapping"] = Devise.mappings[:user]
     user = FactoryGirl.create(user_type, *args)
+    login_user(user)
+  end
+
+  def login_user(user)
+    @request.env["devise.mapping"] = Devise.mappings[:user]
     sign_in user 
     user
   end
