@@ -49,7 +49,12 @@ FactoryGirl.define do
         usr.assignment_groups << FactoryGirl.build(:assignment_group, :with_template, owner: usr)
       end
     end
+   
+    trait :with_no_permissions do
+      roles { [] }
+    end
 
+    factory :no_permissions_user, traits: [:with_no_permissions]
     factory :superadmin, traits: [:superadmin]
     factory :admin, traits: [:admin]
     factory :coach, traits: [:coach, :with_uex, :with_assignment_group]

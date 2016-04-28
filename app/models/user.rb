@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
     # user.admin = true
     # user.can_chart = true
     ROLES = {
+        # can view assignments that they belong to
         :participant=>0,
 
         # Piecemeal permissions

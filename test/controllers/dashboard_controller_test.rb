@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class DashboardControllerTest < ActionController::TestCase
-
+describe DashboardController do
+  
   test 'index redirects to sign_in' do
     get :index
     # Assert that the redirection was to the named route login_url
@@ -16,10 +16,10 @@ class DashboardControllerTest < ActionController::TestCase
     assert_select 'body#dashboard'
   end
 
-  test 'user must have can_dashboard' do
-    login :no_permissions_user
+  test 'user must have permission' do
+    user = login :no_permissions_user
     get :index
-    assert_redirected_to user_path(:no_permissions_user)
+    assert_redirected_to user_path(user)
   end
 
   test 'user must be able to view widgets' do
