@@ -17,7 +17,7 @@
 
 <div id="user-response-<%= @user_response.id %>" class="container-fluid response-display">
   <div class="col-md-6 main fade-in two left-panel">
-    <h2 style="text-align:center;"><%= @user_response.title %></h2>
+    <h2 style="text-align:center;"><%= @user_response.title %> - <span class="label label-<%= status_label_color(@user_response) %>"><%= @user_response.status %></span></h2>
     <hr />
 
     <h3><%= @user_response.user_assignment.survey_type.titleize %></h3>
