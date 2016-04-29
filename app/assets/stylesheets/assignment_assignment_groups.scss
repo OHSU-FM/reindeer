@@ -33,14 +33,35 @@
 
 span.label.label-success, .btn.btn-success {
   background-color: #12A563;
+  &:active {
+    background-color: darken(#12A563, 10%);
+  }
+}
+
+.open > .btn.btn-success {
+  background-color: darken(#12A563, 10%) !important;
 }
 
 span.label.label-info, .btn.btn-info  {
   background-color: #4387F5;
+  &:active {
+    background-color: darken(#4387F5, 10%);
+  }
+}
+
+.open > .btn.btn-info {
+  background-color: darken(#4387F5, 10%) !important;
 }
 
 span.label.label-warning, .btn.btn-warning  {
   background-color: #F8C63C;
+  &:active {
+    background-color: darken(#F8C63C, 10%);
+  }
+}
+
+.open > .btn.btn-warning {
+  background-color: darken(#F8C63C, 10%) !important;
 }
 
 a.comment-delete {
