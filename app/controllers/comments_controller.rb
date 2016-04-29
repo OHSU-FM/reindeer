@@ -1,5 +1,9 @@
 class CommentsController < ApplicationController
 
+  def index
+    @comments = @commentable.comments
+  end
+
   def create
     @comment = @commentable.comments.new comment_params
     @comment.user_id = current_user.id

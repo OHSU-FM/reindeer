@@ -168,9 +168,8 @@ $(document).ready ->
             error: (data, g1, g2) ->
                 $('#modal_blank .modal-title').html('Error')
                 $('#modal_blank .modal-body').html(g2)
-
             success: (data) ->
                 new_html = $('<div/>').html(data)
                 title = new_html.find('.page-header').remove()
                 $('#modal_blank .modal-title').html(title.text())
-                $('#modal_blank .modal-body').html(new_html)
+                $('#modal_blank .modal-body').html(new_html.find('.modal-body-content'))

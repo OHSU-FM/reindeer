@@ -29,7 +29,9 @@
             <span class="label label-<%= status_label_color(ur) %>"><%= ur.status %></span>
           </div>
           <div class="col-md-2">
-            <i class='fa fa fa-comments-o'></i>
+            <%= link_to assignment_user_response_comments_path(ur), data: { toggle: :modal } do %>
+              <i class='fa fa fa-comments-o'></i>
+            <% end %>
           </div>
         </div>
       </li>
