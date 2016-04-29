@@ -73,6 +73,8 @@ class Ability
       ur.user == user || ur.assignment_group.owner == user
     end
 
+    can :crud, Comment, :user_id=>user.id
+
     can :update, User, :id=>user.id
     can :read, User, :id=>user.id
 
