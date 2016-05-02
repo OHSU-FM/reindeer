@@ -40,6 +40,16 @@ class User < ActiveRecord::Base
             :case_sensitive => false
         },
         :presence => true
+
+    validate :ldap_cannot_update_password
+
+    def ldap_cannot_update_password
+      if is_ldap? && encrypted_password_changed?
+        errors.add :password, 'cannot be updated for LDAP users'
+        return false
+      end
+    end
+
     ##
     # Assign roles to a user like this:
     # user = User.new
