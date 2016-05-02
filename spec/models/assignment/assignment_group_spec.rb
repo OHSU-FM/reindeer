@@ -1,10 +1,9 @@
 require "rails_helper"
 
 describe Assignment::AssignmentGroup do
-  subject { FactoryGirl.build(:assignment_group) }
 
   it "has a valid factory" do
-    subject.valid?.must_equal true
+    create :assignment_group, :with_template
   end
 
 end

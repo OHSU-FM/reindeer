@@ -18,10 +18,6 @@ describe LsReportsController do
   it "index should require authentication" do
     get :index
     assert_response :redirect
-
-    login :coach
-    get :index
-    assert_response :success
   end
 
   it "index should list surveys we are allowed to see" do

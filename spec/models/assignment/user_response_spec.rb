@@ -1,9 +1,14 @@
 require "rails_helper"
 
 describe Assignment::UserResponse do
-  let(:user_response) { Assignment::UserResponse.new }
 
-  it "must be valid" do
-    value(user_response).must_be :valid?
+  it "has a factory" do
+    create :user_response
+  end
+
+
+  it 'requires a user' do
+    pending('completion of model work')
+    fail
   end
 end

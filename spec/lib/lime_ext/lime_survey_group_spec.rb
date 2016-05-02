@@ -1,22 +1,16 @@
 require "rails_helper"
-require "lime_ext/lime_survey_group"
-require "factories/lime_survey"
 
-class LimeExt::LimeSurveyGroupTest < ActiveSupport::TestCase
-  def setup
-    create_min_survey
-    create_min_response
-  end
-  let(:lime_survey) { LimeSurvey.find(12345) }
+describe LimeExt::LimeSurveyGroup do
+  let(:lime_survey) { create :lime_survey }
 
-  test "initialize" do
+  it "initialize" do
     lsg = LimeExt::LimeSurveyGroup.classify([lime_survey])
 
     assert_equal lsg.first.lime_surveys, [ lime_survey ]
     assert_equal lsg.first.group_title, "test"
   end
 
-  test "should split lime_surveys up by group" do
+  it "should split lime_surveys up by group" do
     lime_survey2 = lime_survey.dup
     # lime_survey2 has no lime_surveys_languagesettings => no group_title
     lime_survey2.sid = 54321
@@ -28,7 +22,7 @@ class LimeExt::LimeSurveyGroupTest < ActiveSupport::TestCase
     assert_equal lsg.second.group_title, ""
   end
 
-  test "should filter by group if present" do
+  it "should filter by group if present" do
     lime_survey2 = lime_survey.dup
     # lime_survey2 has no lime_surveys_languagesettings => no group_title
     lime_survey2.sid = 54321
