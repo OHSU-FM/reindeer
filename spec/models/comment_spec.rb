@@ -1,9 +1,8 @@
 require "rails_helper"
 
 describe Comment do
-  let(:comment) { Comment.new }
 
-  it "must be valid" do
-    value(comment).must_be :valid?
+  it "must have a factory" do
+    create :comment, :with_defaults
   end
 end
