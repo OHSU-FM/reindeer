@@ -4,7 +4,7 @@ namespace :db do
   namespace :test do
     desc 'Load sample lime survey schema before migrations'
     task :before do
-      base_schema = './test/base_lime_schema.rb'
+      base_schema = './spec/base_lime_schema.rb'
       configuration = ActiveRecord::Base.configurations['test']
       ActiveRecord::Tasks::DatabaseTasks.load_schema_for configuration, :ruby, base_schema
     end

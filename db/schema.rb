@@ -284,11 +284,15 @@ ActiveRecord::Schema.define(version: 20160421155941) do
   end
 
   create_table "user_responses", force: :cascade do |t|
-    t.integer "type"
+    t.string  "resp_type"
     t.string  "title"
-    t.string  "status",  default: "0"
+    t.string  "status",             default: "0"
     t.text    "content"
+    t.integer "user_assignment_id"
+    t.string  "category"
   end
+
+  add_index "user_responses", ["user_assignment_id"], name: "index_user_responses_on_user_assignment_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "",    null: false
@@ -342,4 +346,5 @@ ActiveRecord::Schema.define(version: 20160421155941) do
   add_foreign_key "survey_assignments", "assignment_groups"
   add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
   add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
+  add_foreign_key "user_responses", "user_assignments"
 end

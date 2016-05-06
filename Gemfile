@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ##############################
 # Main
 ##############################
-gem 'bundler', '>= 1.8.4'
+gem 'bundler'
 # Rails version
 gem 'rails', '~> 4.2'
 gem 'rdoc' # documentation
@@ -100,10 +100,10 @@ gem 'statistics2'
 ##############################
 
 group :test do
-    gem 'minitest-rails'
-    gem "minitest-rails-capybara"
+    gem 'rspec-rails'
+    gem 'capybara'
     gem 'rails-perftest'
-    gem "factory_girl_rails", "~> 4.0"
+    gem "factory_girl_rails"
     gem "faker"
 end
 

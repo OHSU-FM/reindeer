@@ -7,7 +7,8 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
   serialize :sids, Array
-  attr_accessible :permission_group_id, :title, :sids, :desc_md
+  attr_accessible :permission_group_id, :title, :sids, :desc_md,
+    :lime_surveys
 
   STATES = {
     inactive: 0,
@@ -44,6 +45,11 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
 
   def permission_group_enum
     @permission_group_enum ||= PermissionGroup.all
+  end
+  
+  def lime_surveys=(vals)
+    sids = vals.map(&:sid)
+    @lime_surveys = vals
   end
 
   def lime_surveys

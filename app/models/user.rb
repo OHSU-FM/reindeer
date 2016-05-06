@@ -40,12 +40,23 @@ class User < ActiveRecord::Base
             :case_sensitive => false
         },
         :presence => true
+
+    validate :ldap_cannot_update_password
+
+    def ldap_cannot_update_password
+      if is_ldap? && encrypted_password_changed?
+        errors.add :password, 'cannot be updated for LDAP users'
+        return false
+      end
+    end
+
     ##
     # Assign roles to a user like this:
     # user = User.new
     # user.admin = true
     # user.can_chart = true
     ROLES = {
+        # can view assignments that they belong to
         :participant=>0,
 
         # Piecemeal permissions
@@ -56,7 +67,7 @@ class User < ActiveRecord::Base
         :can_lime=>1,
         :can_lime_all=>1,
         :can_view_spreadsheet=>1,
-
+        :can_create_assignment_group=>1,
         # Role permissions
         :admin=>25,
         :superadmin=>50

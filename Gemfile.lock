@@ -85,6 +85,7 @@ GEM
     devise_ldap_authenticatable (0.8.5)
       devise (>= 3.4.1)
       net-ldap (>= 0.6.0, <= 0.11)
+    diff-lcs (1.2.5)
     erubis (2.7.0)
     eventmachine (1.0.8)
     exception_notification (4.1.1)
@@ -96,7 +97,7 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
-    faker (1.5.0)
+    faker (1.6.3)
       i18n (~> 0.5)
     fast_stack (0.1.0)
       rake
@@ -138,20 +139,6 @@ GEM
     mime-types (2.6.2)
     mini_portile (0.6.2)
     minitest (5.8.1)
-    minitest-capybara (0.7.2)
-      capybara (~> 2.2)
-      minitest (~> 5.0)
-      rake
-    minitest-metadata (0.5.3)
-      minitest (>= 4.7, < 6.0)
-    minitest-rails (2.2.0)
-      minitest (~> 5.7)
-      railties (~> 4.1)
-    minitest-rails-capybara (2.1.1)
-      capybara (~> 2.0)
-      minitest-capybara (~> 0.7.0)
-      minitest-metadata (~> 0.5.0)
-      minitest-rails (~> 2.1)
     multi_json (1.11.2)
     nested_form (0.3.2)
     net-ldap (0.11)
@@ -234,6 +221,23 @@ GEM
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rspec-core (3.4.4)
+      rspec-support (~> 3.4.0)
+    rspec-expectations (3.4.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-mocks (3.4.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-rails (3.4.2)
+      actionpack (>= 3.0, < 4.3)
+      activesupport (>= 3.0, < 4.3)
+      railties (>= 3.0, < 4.3)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
+      rspec-support (~> 3.4.0)
+    rspec-support (3.4.1)
     ruby-prof (0.15.8)
     safe_yaml (1.0.4)
     sass (3.4.18)
@@ -292,9 +296,10 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass
-  bundler (>= 1.8.4)
+  bundler
   byebug
   cancancan
+  capybara
   cocoon
   coffee-rails
   composite_primary_keys
@@ -302,7 +307,7 @@ DEPENDENCIES
   devise
   devise_ldap_authenticatable
   exception_notification
-  factory_girl_rails (~> 4.0)
+  factory_girl_rails
   faker
   flamegraph
   gon
@@ -311,8 +316,6 @@ DEPENDENCIES
   jquery-ui-rails
   json
   lograge
-  minitest-rails
-  minitest-rails-capybara
   paper_trail
   pg
   php-serialize
@@ -328,6 +331,7 @@ DEPENDENCIES
   rails_layout
   rdoc
   redcarpet
+  rspec-rails
   ruby-prof
   sass
   sass-rails
@@ -340,3 +344,6 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier
   webrick
+
+BUNDLED WITH
+   1.10.6

@@ -28,7 +28,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def create
     @assignment_group = Assignment::AssignmentGroup.create create_params
-    flash[:success] = "#{Settings.assignment_route_name.singularize.titleize} successfully created!"
+    flash[:success] = "#{Settings.assignments_route_name.singularize.titleize} successfully created!"
     redirect_to assignment_assignment_group_path(@assignment_group)
   end
 
@@ -38,13 +38,13 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   def update
     @assignment_group.update_attributes(update_params)
     @assignment_group.save!
-    flash[:success] = "#{Settings.assignment_route_name.singularize.titleize} successfully updated!"
+    flash[:success] = "#{Settings.assignments_route_name.singularize.titleize} successfully updated!"
     redirect_to assignment_assignment_group_path(@assignment_group)
   end
 
   def destroy
     @assignment_group.destroy
-    flash[:success] = "#{Settings.assignment_route_name.singularize.titleize} successfully deleted!"
+    flash[:success] = "#{Settings.assignments_route_name.singularize.titleize} successfully deleted!"
     redirect_to assignment_assignment_groups_path
   end
 
