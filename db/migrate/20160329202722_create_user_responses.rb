@@ -6,7 +6,7 @@ class CreateUserResponses < ActiveRecord::Migration
       t.string :category
       t.string :status, default: 0
       t.text :content
-      t.references :user_responses
+      t.references :user_assignment
     end
   end
 end
