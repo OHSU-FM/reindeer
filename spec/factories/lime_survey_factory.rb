@@ -1,17 +1,17 @@
 FactoryGirl.define do
   factory :lime_survey do
-    sequence(:sid) { |n| n + 12345}                
-    owner_id 1                        
-    active 'N'                       
-    adminemail { Faker::Internet.email }              
-    anonymized 'Y'                         
-    format 'G'    
-    savetimings 'Y'                         
-    template 'default'                  
-    language 'en'                     
-    datestamp 'Y'                      
-    usecookie 'Y'                      
-    allowregister 'Y'                      
+    sequence(:sid) { |n| n + 12345}
+    owner_id 1
+    active 'N'
+    adminemail { Faker::Internet.email }
+    anonymized 'Y'
+    format 'G'
+    savetimings 'Y'
+    template 'default'
+    language 'en'
+    datestamp 'Y'
+    usecookie 'Y'
+    allowregister 'Y'
     allowsave 'Y'
 
     trait(:with_tables) do
@@ -24,6 +24,12 @@ FactoryGirl.define do
     trait(:with_response) do
       after(:create) do |survey|
         create_min_response(survey.sid)
+      end
+    end
+
+    trait(:with_languagesettings) do
+      after(:create) do |survey|
+        survey.lime_surveys_languagesettings << FactoryGirl.build(:lime_surveys_languagesetting)
       end
     end
 

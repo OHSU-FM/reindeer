@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe LimeExt::LimeSurveyGroup do
-  let(:lime_survey) { create :lime_survey }
+  let(:lime_survey) { create :lime_survey, :with_languagesettings }
 
   it "initialize" do
     lsg = LimeExt::LimeSurveyGroup.classify([lime_survey])
