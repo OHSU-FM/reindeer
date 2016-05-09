@@ -7,7 +7,10 @@ FactoryGirl.define do
     trait :with_template do
       association :assignment_group_template, :with_surveys
     end
-    
-  end
 
+    # also creates tables
+    trait :with_full_template do
+      association :assignment_group_template, :with_full_surveys
+    end
+  end
 end

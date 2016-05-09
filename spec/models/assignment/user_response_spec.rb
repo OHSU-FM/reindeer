@@ -3,12 +3,10 @@ require "rails_helper"
 describe Assignment::UserResponse do
 
   it "has a factory" do
-    create :user_response
+    expect(FactoryGirl.create(:user_response)).to be_valid
   end
 
-
-  it 'requires a user' do
-    pending('completion of model work')
-    fail
+  it 'requires a user_assignment' do
+    expect(build :user_response, user_assignment_id: nil).to be_invalid
   end
 end
