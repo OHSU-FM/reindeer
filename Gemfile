@@ -99,7 +99,7 @@ gem 'statistics2'
 # Environments
 ##############################
 
-group :test do
+group :test, :development do
     gem 'rspec-rails'
     gem 'capybara'
     gem 'rails-perftest'
@@ -140,6 +140,10 @@ group :development do
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]
     gem 'redcarpet'
     gem "twitter-bootstrap-rails"
+
+    # guard
+    gem 'guard'
+    gem 'guard-rspec'
 end
 
 source 'https://rails-assets.org' do

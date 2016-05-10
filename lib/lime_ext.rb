@@ -3,7 +3,11 @@ module LimeExt
     mattr_accessor :schema
 
     @@table_prefix = 'lime'
-    @@schema = 'public'
+    if Rails.env == "test"
+      @@schema = 'transform'
+    else
+      @@schema = 'public'
+    end
 
     class Application < Rails::Application
 
