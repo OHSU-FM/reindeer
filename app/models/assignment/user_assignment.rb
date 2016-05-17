@@ -44,7 +44,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
   def lang; token_data[:language]; end                    # String: language of response
   def token; token_data[:token]; end                      # String: token of survey
   def sid; lime_survey.sid; end                           # Int: sid of survey
-  def completed; token_data[:completed] < Time.now; end   # String: raw completed val
+  def completed; token_data[:completed] != "N"; end       # String: raw completed val
   def completed?; completed; end                          # Binary: completed val
   def new_url; "#{url}/newtest/Y"; end                    # String: URL of new survey
   def started?; response_data.present?; end               # Binary: Has survey response started?

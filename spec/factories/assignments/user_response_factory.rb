@@ -3,7 +3,6 @@ FactoryGirl.define do
     association :user_assignment
 
     after(:create) do |ur|
-      # binding.pry
       ua = ur.user_assignment
       ua.lime_token_tid = ua.survey_assignment.lime_survey.lime_tokens.pluck :tid
     end

@@ -1,13 +1,13 @@
 <div id="assignment-nav" style=<%= display ? "display:#{display}" : "" %>>
   <div class="row main fade-in two">
-    <div id="assignment-group-nav" class="col-md-6 left-panel">
-      <% if @assignment_groups.count > 1 %>
+    <% if @assignment_groups.count > 1 %>
+      <div id="assignment-group-nav" class="col-md-6 left-panel">
         <% @assignment_groups.each do |group| %>
           <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
         <% end %>
-      <% end %>
-    </div>
-    <div id="user-ids-nav" class="col-md-6">
+      </div>
+    <% end %>
+    <div id="user-ids-nav" class="col-md-<%= @assignment_groups.count > 1 ? 6 : 12 %>">
       <% @assignment_group.user_ids.each do |uid| %>
         <% !uid.empty? ? usr = User.find(uid.to_i) : next %>
         <%= link_to usr.username, assignment_assignment_group_path(@assignment_group, user_id: usr.id),

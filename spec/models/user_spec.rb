@@ -32,7 +32,7 @@ describe User do
 
   it 'can list assignment_groups it owns' do
     user = create(:user)
-    create(:assignment_group, :with_template, owner: user)
+    create(:assignment_group, owner: user)
     assert_equal 1, user.assignment_groups.count
   end
 

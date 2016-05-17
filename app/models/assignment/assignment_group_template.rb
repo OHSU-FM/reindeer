@@ -28,6 +28,7 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
       end
 
       field :sids do
+        sortable "datecreated"
         label 'Lime Surveys'
       end
     end
@@ -46,7 +47,7 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   def permission_group_enum
     @permission_group_enum ||= PermissionGroup.all
   end
-  
+
   def lime_surveys=(vals)
     sids = vals.map(&:sid)
     @lime_surveys = vals

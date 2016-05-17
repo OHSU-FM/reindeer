@@ -4,10 +4,10 @@
     <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
       <div class="panel-heading" role="tab" id="heading<% category.delete(' ') %>">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-6">
             <%= category.titleize %>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-4">
             <%= category_status_label(responses).html_safe %>
           </div>
           <div class="col-md-2">
@@ -22,10 +22,10 @@
       <% responses.each do |ur| %>
       <li class="list-group-item">
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-6">
             <%= link_to ur.title, assignment_user_response_path(ur) %>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-4">
             <span class="label label-<%= status_label_color(ur) %>"><%= ur.status %></span>
           </div>
           <div class="col-md-2">
