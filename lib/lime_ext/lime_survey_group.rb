@@ -38,6 +38,12 @@ class LimeExt::LimeSurveyGroup
   # Is title a part of this group?
   def in_group?(lime_survey)
     g_title, ra_title = lime_survey.group_and_title_name
+
+
+    #if g_title == nil
+    #    g_title = n_title
+    #end
+
     @group_title ||= g_title
     group_title == g_title
   end

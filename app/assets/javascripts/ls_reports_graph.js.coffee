@@ -448,3 +448,9 @@ $(document).ready ->
         window.charts.push chart 
     $('body').scrollspy('refresh');
 
+    $('[data-toggle="tooltip"]').popover({
+        container: 'body'
+    });
+
+    
+  

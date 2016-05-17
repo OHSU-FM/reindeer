@@ -56,6 +56,13 @@ module LsReportsHelper
             # Throw each ra into a group
             result[g_title] = [] unless result.include? g_title
             result[g_title].push([ra_title, ra])
+            #if g_title.nil?
+            #   g_title = n_title
+            #   ra_title = y_title
+            #   result[g_title].push([ra_title,ra])
+            #else
+            #    result[g_title].push([ra_title,ra])
+            #end
         end
         # Sort each group by the 'last_updated' value in lime_survey
         result.each do |g, ras|
