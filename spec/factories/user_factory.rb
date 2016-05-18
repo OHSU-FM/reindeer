@@ -15,7 +15,7 @@ FactoryGirl.define do
     trait :superadmin do
       superadmin true
     end
-    
+
     trait :admin do
       admin true
     end
@@ -26,7 +26,6 @@ FactoryGirl.define do
       end
 
       can_dashboard true
-      can_create_assignment_group true
       can_lime true
       permission_group { coach_pg }
     end
@@ -49,10 +48,10 @@ FactoryGirl.define do
 
     trait :with_assignment_group do
       after(:build) do |usr|
-        usr.assignment_groups << FactoryGirl.build(:assignment_group, :with_template, owner: usr)
+        usr.assignment_groups << FactoryGirl.build(:assignment_group, owner: usr)
       end
     end
-   
+
     trait :with_no_permissions do
       roles { [] }
     end

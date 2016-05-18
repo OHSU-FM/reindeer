@@ -12,7 +12,7 @@ FactoryGirl.define do
     end
 
     trait :with_full_surveys do
-      after :build do |agt|
+      after(:build) do |agt|
         agt.lime_surveys = create_list(:lime_survey_full, 2)
       end
     end
