@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  authorize_resource
 
   def index
     @comments = @commentable.comments

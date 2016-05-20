@@ -75,7 +75,16 @@ class Ability
       ur.user == user || ur.assignment_group.owner == user
     end
 
-    can :crud, Comment, :user_id=>user.id
+    can [:create, :read], Assignment::AssignmentGroup::Comment do |c|
+      c.commentable.owner == user
+    end
+    can :delete, Assignment::AssignmentGroup::Comment do |c|
+      c.user_id == user.id
+    end
+    can [:create, :read], Assignment::UserResponse::Comment do |c|
+      c.commentable.user == user || c.commentable.assignment_group.owner == user
+    end
+    can :destroy, Assignment::UserResponse::Comment, :user_id=>user.id
 
     can :update, User, :id=>user.id
     can :read, User, :id=>user.id

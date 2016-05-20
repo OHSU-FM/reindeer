@@ -16,5 +16,12 @@ FactoryGirl.define do
         ag.save!
       end
     end
+
+    trait :with_comments do
+      with_users
+      after(:create) do |ag|
+        create_list(:assignment_comment, 1, commentable: ag, user: ag.owner)
+      end
+    end
   end
 end

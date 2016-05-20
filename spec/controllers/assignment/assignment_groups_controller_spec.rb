@@ -1,4 +1,3 @@
-require "rails_helper"
 require "spec_helper"
 
 describe Assignment::AssignmentGroupsController do
@@ -7,8 +6,6 @@ describe Assignment::AssignmentGroupsController do
   let(:coach) { create(:coach) }
   let(:student) { create(:student) }
   let(:agt) { FactoryGirl.create(:assignment_group_template, :with_surveys) }
-  let(:admin_ag) { FactoryGirl.create(:assignment_group, owner: admin) }
-  let(:coach_ag) { FactoryGirl.create(:assignment_group, owner: coach) }
 
   ##############################################################################
   # Public user tests
@@ -17,8 +14,7 @@ describe Assignment::AssignmentGroupsController do
   describe "not logged in" do
     it "should get redirect" do
       get :index
-      assert_response :redirect
-      assert flash[:alert], "correct flash didn't trigger"
+      expect(response.status).to eq 302
     end
   end
 
