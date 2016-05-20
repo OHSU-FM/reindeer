@@ -75,16 +75,29 @@ class Ability
       ur.user == user || ur.assignment_group.owner == user
     end
 
-    can [:create, :read], Assignment::AssignmentGroup::Comment do |c|
-      c.commentable.owner == user
+    can :create, Comment do |c|
+      case c.commentable.class.to_s
+      when "Assignment::AssignmentGroup"
+        c.commentable.owner.id == user.id || c.commentable.user.id == user.id
+      when "Assignment::UserResponse"
+        c.commentable.user.id == user.id || c.commentable.assignment_group.owner.id == user.id
+      else
+        false
+      end
     end
-    can :delete, Assignment::AssignmentGroup::Comment do |c|
-      c.user_id == user.id
+    can [:list, :read], Comment do |c|
+      case c.commentable.class.to_s
+      when "Assignment::AssignmentGroup"
+        c.commentable.owner.id == user.id || c.user_ids.include?(user.id)
+      when "Assignment::UserResponse"
+        c.commentable.user.id == user.id || c.commentable.assignment_group.owner.id == user.id
+      else
+        false
+      end
     end
-    can [:create, :read], Assignment::UserResponse::Comment do |c|
-      c.commentable.user == user || c.commentable.assignment_group.owner == user
+    can :destroy, Comment do |c|
+      c.user.id == user.id
     end
-    can :destroy, Assignment::UserResponse::Comment, :user_id=>user.id
 
     can :update, User, :id=>user.id
     can :read, User, :id=>user.id

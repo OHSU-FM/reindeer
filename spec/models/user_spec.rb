@@ -1,44 +1,43 @@
-require 'rails_helper'
+require 'spec_helper'
 
 describe User do
 
   it 'has a factory' do
-    #User.destroy_all
-    create :user
-    assert_equal 1, User.count
+    user = create :user
+    expect(user).to be_valid
   end
 
   it 'requires an email' do
     user = build :user, email: nil
-    refute user.save
+    expect(user).not_to be_valid
   end
 
   it 'requires a username' do
     user = build :user, username: nil
-    refute user.save
+    expect(user).not_to be_valid
   end
 
   it 'requires a password' do
     user = build :user, password: nil
-    refute user.save
+    expect(user).not_to be_valid
   end
 
   it 'has roles' do
     user = build :user
-    refute user.admin?
+    expect(user.admin?).to be false
     user.roles = [:admin]
-    assert user.admin?
+    expect(user.admin?).to be true
   end
 
   it 'can list assignment_groups it owns' do
     user = create(:user)
     create(:assignment_group, owner: user)
-    assert_equal 1, user.assignment_groups.count
+    expect(user.assignment_groups.count).to eq 1
   end
 
   describe 'superadmin' do
     it "is admin or higher" do
-      assert_equal true, build(:superadmin).admin_or_higher?
+      expect(build(:superadmin).admin_or_higher?).to be true
     end
   end
 
