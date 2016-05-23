@@ -4,6 +4,7 @@ class Assignment::UserResponse < ActiveRecord::Base
   has_many :comments, as: :commentable
   delegate :user, to: :user_assignment
   validates :user_assignment, presence: true
+  validates :content, presence: true
 
   def assignment_group
     user_assignment.survey_assignment.assignment_group

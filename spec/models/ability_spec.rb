@@ -23,14 +23,14 @@ describe Ability do
     end
 
     describe "user_response" do
-      let(:sa) { create :survey_assignment, :with_user_assignments }
+      let(:ag) { create :assignment_group, :with_full_template, owner: user }
+      let(:sa) { create :survey_assignment, :with_user_assignments, assignment_group: ag }
       let(:participant) { sa.user_assignments.first.user }
       let(:ur) { create :user_response, user_assignment: sa.user_assignments.first }
 
-      it { binding.pry }
       describe "comments" do
         let(:comment) { create :comment, commentable: ur, user: user }
-        let(:other_comment) { create :comment, commentable: ur, user: student }
+        let(:other_comment) { create :comment, commentable: ur, user: participant }
 
         it { is_expected.to be_able_to(:read, comment) }
         it { is_expected.to be_able_to(:read, other_comment) }

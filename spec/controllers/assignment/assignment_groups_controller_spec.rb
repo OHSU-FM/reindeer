@@ -46,7 +46,7 @@ describe Assignment::AssignmentGroupsController do
       sign_in admin
 
       get :index
-      expect(subject).to redirect_to(assignment_assignment_group_path(ag))
+      expect(response).to redirect_to(assignment_assignment_group_path(ag))
     end
 
     it "can update assignment_group" do

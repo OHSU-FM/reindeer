@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :user_response, class: Assignment::UserResponse do
     association :user_assignment
+    content { Faker::Hacker.say_something_smart }
 
     after(:create) do |ur|
       ua = ur.user_assignment
