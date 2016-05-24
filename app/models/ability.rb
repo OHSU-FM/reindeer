@@ -60,7 +60,7 @@ class Ability
   # Non Admin users
   def other_users_permissions user
     can [:list, :read], Assignment::AssignmentGroup do |ag|
-      ag.owner == user || ag.user_ids.include?(user.id)
+      ag.owner == user || ag.user_ids.include?(user.id.to_s)
     end
 
     can :create, Assignment::AssignmentGroup if user.can_create_assignment_group?
@@ -78,7 +78,7 @@ class Ability
     can :create, Comment do |c|
       case c.commentable.class.to_s
       when "Assignment::AssignmentGroup"
-        c.commentable.owner.id == user.id || c.commentable.user.id == user.id
+        c.commentable.owner.id == user.id || c.commentable.user_ids.include?(user.id)
       when "Assignment::UserResponse"
         c.commentable.user.id == user.id || c.commentable.assignment_group.owner.id == user.id
       else
@@ -88,7 +88,7 @@ class Ability
     can [:list, :read], Comment do |c|
       case c.commentable.class.to_s
       when "Assignment::AssignmentGroup"
-        c.commentable.owner.id == user.id || c.user_ids.include?(user.id)
+        c.commentable.owner.id == user.id || c.commentable.user_ids.include?(user.id.to_s)
       when "Assignment::UserResponse"
         c.commentable.user.id == user.id || c.commentable.assignment_group.owner.id == user.id
       else

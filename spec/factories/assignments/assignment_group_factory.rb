@@ -12,7 +12,7 @@ FactoryGirl.define do
 
     trait :with_users do
       after(:create) do |ag|
-        ag.user_ids = create_list(:user, 3).map {|u| u.id.to_s }
+        ag.user_ids = create_list(:user, 3).map { |u| u.id.to_s }
         ag.save!
       end
     end
