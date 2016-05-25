@@ -4,6 +4,7 @@
     hide_arr_flex = opts[:hide_arr_flex]
 %>
 <% cache([@role_aggregate, virtual_groups, opts]) do %>
+    <%= image_tag "logo_redei.png", :size=>"250x200" %>
     <div class="bs-callout bs-callout-warning" id="report-overview">
         <h3>Dataset Overview:</h3>
         <table class="table table-condensed">
@@ -48,6 +49,7 @@
                         <%= @lime_survey_unfiltered.response_percent.round(2) %> %
                     </td>
                 </tr>
+
             </tbody>
         </table>
     </div>
@@ -79,5 +81,4 @@
                 <% end %>
             </ul>
         </div>
-
 <% end %>

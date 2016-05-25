@@ -1,4 +1,5 @@
 <div class="col-md-8 fade-in two">
+
   <h1>Reports</h1>
   <table class="table table-hover">
   <thead>
@@ -78,21 +79,6 @@
 
         </div>
     <% end %>
-    <div class="bs-callout bs-callout-primary">
-        <h4>Overview:</h4>
-        <dl class="dl-horizontal">
+    <%= image_tag "logo_redei.png", :size=>"300x200" %>
 
-            <dt># categories</dt>
-            <dd><%= @survey_groups.count %></dd>
-
-            <dt># reports</dt>
-            <dd><%= @role_aggregates.count %></dd>
-
-            <dt>last updated</dt>
-            <dd><%= @role_aggregates.map{|ra|ra.lime_survey.last_updated.to_s.to_date}.compact.max %></dd>
-        </dl>
-
-
-    </div>
-</div>
 <%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-dataset', :message=>'Loading Dataset'}%>

@@ -12,15 +12,12 @@
                         <%= strip_tags(pquestion.question)[0..30] %>
                     </span>
 
-                    <small>(<%= pquestion.title%>):
-                        <span data-toggle="tooltip" data-container="body" data-tiptype="qdesc" data-qtype="<%= pquestion.qtype %>"><%= pquestion.qtype %></span>
-                    </small>
                 </th>
             <% end %>
         </tr>
     </thead>
     <tbody>
-        <% @rs_data.each_with_index do |x, xi| %>
+        <% @rs_data.sort.each_with_index do |x, xi| %>
              <tr>
                <% x.each_with_index do |y, yi| %>
                   <td> <%= y %> </td>
