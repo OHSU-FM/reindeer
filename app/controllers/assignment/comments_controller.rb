@@ -13,9 +13,7 @@ class Assignment::CommentsController < CommentsController
 end
 
 class Assignment::AssignmentGroup::CommentsController < Assignment::CommentsController
-  # authorize_resource
 end
 
 class Assignment::UserResponse::CommentsController < Assignment::CommentsController
-  # authorize_resource
 end

@@ -1,5 +1,7 @@
 RSpec.configure do |config|
   require 'rails_helper'
+  require 'capybara/rspec'
+  require 'capybara/rails'
   require 'pry'
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

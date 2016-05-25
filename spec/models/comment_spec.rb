@@ -10,6 +10,11 @@ describe Comment do
     expect(build :comment, user_id: nil).to be_invalid
   end
 
+  it "must have body content" do
+    # no blank comments
+    expect(build :comment, body: nil).to be_invalid
+  end
+
   it 'is polymorphic in assignment_group and user_response' do
     expect(create :comment, :assignment_comment).to be_valid
     expect(create :comment, :user_response_comment).to be_valid
