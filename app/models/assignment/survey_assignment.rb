@@ -83,6 +83,18 @@ module Assignment
 
       ActiveRecord::Base.transaction do
 
+        if user_assignments
+          # gather old comments for transfer to new assignments
+          comment_hash = {}
+          user_assignments.each do |ua|
+            ua.user_responses.each do |ur|
+              next if ur.comments.empty?
+              ur.comments.each do |c|
+                comment_hash[[ur.title, ur.category, ur.status]] = c.id
+              end
+            end
+          end
+        end
         # Remove all old assignments
         user_assignments.delete_all
 
@@ -107,6 +119,17 @@ module Assignment
           ua.lime_token_tid = tid
           ua.user_id = user.id
           ua.save!
+        end
+
+        if comment_hash
+          # rebuild comment relationships
+          comment_hash.each do |k, v|
+            c = Comment.find(v)
+            new_id = Assignment::UserResponse.find_by(title: k[0],
+                                                      category: k[1],
+                                                      status: k[2]).id
+            c.commentable_id = new_id
+          end
         end
       end
     end

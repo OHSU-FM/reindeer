@@ -32,7 +32,5 @@ module Assignment
       uac = UACollection.new(@index)
       @survey_types = uac.survey_types_enum
     end
-
   end
-
 end

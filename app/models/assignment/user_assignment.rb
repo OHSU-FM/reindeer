@@ -3,7 +3,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
   belongs_to :user
   belongs_to :survey_assignment
   has_one :lime_survey, :through=>:survey_assignment
-  has_many :user_responses
+  has_many :user_responses, dependent: :destroy
   validates_presence_of :token
   validates_presence_of :user
 
@@ -23,6 +23,11 @@ class Assignment::UserAssignment < ActiveRecord::Base
       field :lime_survey
       field :user do
         inline_add false
+      end
+      field :assignment_group do
+        formatted_value do
+          value.title
+        end
       end
       field :token do
         read_only true

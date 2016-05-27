@@ -5,17 +5,21 @@
 <div id="assignment-group-<%= @assignment_group.id %>" class="container-fluid assignment-container">
   <div class="fade-in two left-panel left-panel-scroll">
 
-    <%= render partial: 'form_title' %>
+    <%= render partial: "form_title" %>
 
-    <%= render partial: 'form_desc_md' %>
+    <%= render partial: "form_desc_md" %>
 
     <div id="assignment-group-comments">
-      <%= render partial: 'form_comments' %>
+      <%= render partial: "form_comments" %>
     </div>
   </div>
 
   <div class="fade-in three right-panel">
-    <%= render template: 'assignment/user_assignments/index' %>
+    <% if @service.index.empty? %>
+      <p>Nothing here</p>
+    <% else %>
+      <%= render template: "assignment/user_assignments/index" %>
+    <% end %>
   </div>
 </div>
 
