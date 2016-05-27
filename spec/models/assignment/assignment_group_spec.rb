@@ -1,9 +1,9 @@
-require "rails_helper"
+require "spec_helper"
 
 describe Assignment::AssignmentGroup do
 
   it "has a valid factory" do
-    create :assignment_group
+    expect(create :assignment_group).to be_valid
   end
 
 end
