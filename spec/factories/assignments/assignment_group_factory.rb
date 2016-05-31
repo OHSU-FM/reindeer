@@ -11,8 +11,12 @@ FactoryGirl.define do
     end
 
     trait :with_users do
-      after(:create) do |ag|
-        ag.user_ids = create_list(:user, 3).map { |u| u.id.to_s }
+      transient do
+        users_count 3
+      end
+
+      after(:create) do |ag, evaluator|
+        ag.user_ids = create_list(:user, evaluator.users_count).map { |u| u.id.to_s }
         ag.save!
       end
     end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "SurveyAssignment" do
 
-  it "requires a lim_survey" do
+  it "requires a lime_survey" do
     expect(build :survey_assignment, lime_survey: nil).not_to be_valid
   end
 
