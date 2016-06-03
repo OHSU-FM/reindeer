@@ -5,7 +5,8 @@ describe Ability do
   subject(:ability) { Ability.new(user) }
 
   describe "assignment_group" do
-    let(:ag) { create :assignment_group, :with_users, owner: user }
+    let(:ag) { create :assignment_group, :with_full_template,
+               cohort: create(:cohort, :with_users, owner: user )}
 
     describe "coach" do
       let(:user) { create :coach }
@@ -31,8 +32,9 @@ describe Ability do
 
     describe "participant" do
       let(:coach) { create :coach }
-      let(:ag) { create :assignment_group, :with_users, owner: coach }
-      let(:user) { User.find(ag.user_ids.first) }
+      let(:ag) { create :assignment_group, :with_full_template,
+                 cohort: create(:cohort, :with_users, owner: coach )}
+      let(:user) { ag.users.first }
 
       describe "actions" do
         it { is_expected.to be_able_to(:list, ag) }
@@ -55,7 +57,8 @@ describe Ability do
 
     describe "coach" do
       let(:user) { create :coach }
-      let(:ag) { create :assignment_group, :with_full_template, owner: user }
+      let(:ag) { create :assignment_group, :with_full_template,
+                 cohort: create(:cohort, owner: user )}
       let(:sa) { create :survey_assignment, :with_user_assignment, assignment_group: ag }
       let(:ua) { sa.user_assignments.first }
 
@@ -68,9 +71,11 @@ describe Ability do
 
     describe "participant" do
       let(:coach) { create :coach }
-      let(:ag) { create :assignment_group, :with_users, :with_full_template, owner: coach }
+      let(:cohort) { create :cohort, :with_users, owner: coach}
+      let(:ag) { create :assignment_group, :with_full_template,
+                 cohort: cohort }
       let(:sa) { create :survey_assignment, assignment_group: ag }
-      let(:user) { User.find(ag.user_ids.first) }
+      let(:user) { ag.users.first }
       let(:ua) { create :user_assignment, survey_assignment: sa, user: user }
 
       describe "actions" do
@@ -85,7 +90,8 @@ describe Ability do
 
     describe "coach" do
       let(:user) { create :coach }
-      let(:ag) { create :assignment_group, :with_full_template, owner: user }
+      let(:ag) { create :assignment_group, :with_full_template,
+               cohort: create(:cohort, :with_users, owner: user )}
       let(:sa) { create :survey_assignment, :with_user_assignment, assignment_group: ag }
       let(:participant) { sa.user_assignments.first.user }
       let(:ur) { create :user_response, user_assignment: sa.user_assignments.first }
@@ -111,9 +117,10 @@ describe Ability do
 
     describe "participant" do
       let(:coach) { create :coach }
-      let(:ag) { create :assignment_group, :with_users, :with_full_template, owner: coach }
+      let(:ag) { create :assignment_group, :with_full_template,
+               cohort: create(:cohort, :with_users, owner: coach )}
       let(:sa) { create :survey_assignment, assignment_group: ag }
-      let(:user) { User.find(ag.user_ids.first) }
+      let(:user) { ag.users.first }
       let(:ua) { create :user_assignment, survey_assignment: sa, user: user }
       let(:ur) { create :user_response, user_assignment: ua }
 

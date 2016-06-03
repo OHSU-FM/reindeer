@@ -15,14 +15,17 @@ class User < ActiveRecord::Base
 
     attr_accessor :login
     serialize :roles, Array
+
     belongs_to :lime_user, :foreign_key=>:username, :primary_key=>:users_name
     belongs_to :permission_group, :inverse_of=>:users
+    belongs_to :cohort
+
     has_many :charts, :inverse_of=>:user, :dependent=>:destroy
     has_many :dashboard_widgets, :through=>:dashboard
     has_many :permission_ls_groups, :through=>:permission_group
     has_many :question_widgets, :dependent=>:delete_all
     has_many :user_externals, :dependent=>:delete_all, :inverse_of=>:user
-    has_many :assignment_group_templates, through: :permission_group
+
     has_one :dashboard, :dependent=>:destroy
 
     include EdnaConsole::UserHasAssignments
@@ -173,6 +176,7 @@ class User < ActiveRecord::Base
             field :password
             field :password_confirmation
             field :is_ldap
+            field :cohort
         end
 
         ##
@@ -290,24 +294,35 @@ class User < ActiveRecord::Base
       permission_group.present? ? permission_group.survey_groups : []
     end
 
+    def cohort
+      if !self.cohort_id.nil?
+        Cohort.find(cohort_id)
+      else
+        Cohort.where(owner: self).first
+      end
+    end
+
     def assignment_groups
       return @assignment_groups if defined? @assignment_groups
-      @assignment_groups = []
+      ags = []
       if self.admin_or_higher?
-        @assignment_groups << Assignment::AssignmentGroup.all
+        ags << Assignment::AssignmentGroup.all
       else
         # all AG user owns or participates in
-        @assignment_groups << Assignment::AssignmentGroup.where(user_id: id)
-        @assignment_groups << Assignment::AssignmentGroup.all.find_all { |ag|
+        owned = Cohort.find_by(owner: self)
+        ags << owned.assignment_groups if owned
+        ags << Assignment::AssignmentGroup.all.find_all { |ag|
           ag.user_ids.include? id.to_s
         }
       end
-      return @assignment_groups.flatten()
+      ags.flatten!
+      @assignment_groups ||= ags
+      return @assignment_groups
     end
 
     def active_assignment_groups
       return @active_assignment_groups if defined? @active_assignment_groups
-      @active_assignment_groups = assignment_groups.reject { |ag| ag.user_ids.all?(&:empty?) }
+      @active_assignment_groups = assignment_groups.reject { |ag| ag.users.empty? }
       return @active_assignment_groups
     end
 

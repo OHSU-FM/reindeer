@@ -27,7 +27,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   def create
-    @assignment_group = Assignment::AssignmentGroup.create create_params
+    @assignment_group = Assignment::AssignmentGroup.create(create_params)
     flash[:success] = "#{Settings.assignments_route_name.singularize.titleize} successfully created!"
     redirect_to assignment_assignment_group_path(@assignment_group)
   end
@@ -55,12 +55,12 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   end
 
   def create_params
-    update_params.merge(user_id: current_user.id)
+    update_params
   end
 
   def update_params
     params.require(:assignment_assignment_group).
-      permit(:assignment_group_template_id, :title, :desc_md, user_ids: [])
+      permit(:assignment_group_template_id, :title, :desc_md, :cohort_id)
   end
 
 end

@@ -33,7 +33,11 @@ describe Assignment::AssignmentGroupsController do
     it "can create assignment_group" do
       sign_in admin
       agt = create :assignment_group_template, :with_surveys
-      group_params = FactoryGirl.attributes_for(:assignment_group, assignment_group_template_id: agt)
+      c = create :cohort
+      group_params = FactoryGirl.attributes_for(:assignment_group,
+                                                assignment_group_template_id: agt.id,
+                                                cohort_id: c.id
+                                               )
 
       expect {
         post :create, assignment_assignment_group: group_params
@@ -79,7 +83,8 @@ describe Assignment::AssignmentGroupsController do
   ##############################################################################
   describe 'coach' do
     it "cannot view admin assignment groups" do
-      ag = create :assignment_group, user_id: admin.id, user_ids: [student.id.to_s]
+      cohort = create :cohort, owner: admin
+      ag = create :assignment_group, cohort: cohort
       sign_in coach
       get :index
       expect(coach.assignment_groups).not_to include(ag)
@@ -104,12 +109,12 @@ describe Assignment::AssignmentGroupsController do
     end
 
     it "get index should be redirected to assignment group" do
-      coach = create :coach
-      ag = create :assignment_group, user_id: coach.id, user_ids: [student.id.to_s]
+      cohort = create :cohort, owner: coach
+      ag = create :assignment_group, cohort: cohort
       sign_in coach
 
       get :index
-      expect(subject).to redirect_to(ag)
+      expect(response).to be_success
     end
 
     it "cannot update assignment_group" do
@@ -161,11 +166,12 @@ describe Assignment::AssignmentGroupsController do
     end
 
     it "get index should be redirected to first assignment group" do
+      cohort = create :cohort, users: [student]
       sign_in student
-      ag = create :assignment_group, user_ids:  [student.id.to_s]
+      ag = create :assignment_group, cohort: cohort
 
       get :index
-      expect(subject).to redirect_to(ag)
+      expect(response).to be_success
     end
 
     it "cannot update assignment_group" do

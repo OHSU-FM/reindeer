@@ -29,15 +29,17 @@ describe User do
     expect(user.admin?).to be true
   end
 
-  it 'can list assignment_groups it owns' do
-    user = create(:user)
-    create(:assignment_group, owner: user)
-    expect(user.assignment_groups.count).to eq 1
-  end
-
   describe 'superadmin' do
     it "is admin or higher" do
       expect(build(:superadmin).admin_or_higher?).to be true
+    end
+  end
+
+  describe "assignment framework interactions" do
+    it 'can list assignment_groups it owns' do
+      user = create(:user)
+      create(:assignment_group, cohort: create(:cohort, owner: user))
+      expect(user.assignment_groups.count).to eq 1
     end
   end
 

@@ -6,8 +6,7 @@ describe Assignment::AssignmentGroup do
     expect(create :assignment_group).to be_valid
   end
 
-  it "requires an owner" do
-    expect(build :assignment_group, owner: nil).not_to be_valid
+  it "has an owner" do
     expect((create :assignment_group).owner).to be_instance_of(User)
   end
 

@@ -3,10 +3,12 @@ require "spec_helper"
 describe "assignment_group#show" do
 
   it "shows a list of assignment_groups the user owns" do
-    user = create :coach
-    ag = create :assignment_group, :with_users, owner: user
-    ag2 = create :assignment_group, :with_users, owner: user
-    comment = create :comment, user: user, commentable: ag
+    user = build :user
+    c = create :cohort, :with_users, owner: user
+    user.cohort = c
+    user.save!
+    ag = create :assignment_group, cohort: c
+    ag2 = create :assignment_group, cohort: c
     sign_in user
 
     visit assignment_assignment_groups_path
@@ -15,18 +17,20 @@ describe "assignment_group#show" do
   end
 
   it "shows an index of owner comments" do
-    user = create :coach
-    ag = create :assignment_group, :with_users, owner: user
+    user = create :user
+    c = create :cohort, :with_users, owner: user
+    ag = create :assignment_group, cohort: c
     comment = create :comment, user: user, commentable: ag
     sign_in user
 
-    visit assignment_assignment_groups_path
+    visit assignment_assignment_groups_path ag
     expect(page).to have_content comment.body
   end
 
   it "shows a list of users in the assignment_group" do
     user = create :coach
-    ag = create :assignment_group, :with_users, owner: user
+    c = create :cohort, owner: user
+    ag = create :assignment_group, cohort: (create :cohort, :with_users)
     comment = create :comment, user: user, commentable: ag
     sign_in user
 

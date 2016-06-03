@@ -48,7 +48,8 @@ FactoryGirl.define do
 
     trait :with_assignment_group do
       after(:build) do |usr|
-        usr.assignment_groups << FactoryGirl.build(:assignment_group, owner: usr)
+        c = create :cohort, owner: usr
+        usr.assignment_groups << FactoryGirl.build(:assignment_group, cohort: c)
       end
     end
 

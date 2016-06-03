@@ -2,8 +2,8 @@ FactoryGirl.define do
   factory :assignment_group, class: Assignment::AssignmentGroup do
     title { Faker::Lorem.sentence }
     desc_md { Faker::Lorem.paragraph }
-    association :owner, factory: :admin, strategy: :build
     association :assignment_group_template, :with_surveys
+    association :cohort
 
     # also creates tables
     trait :with_full_template do
@@ -11,14 +11,7 @@ FactoryGirl.define do
     end
 
     trait :with_users do
-      transient do
-        users_count 3
-      end
-
-      after(:create) do |ag, evaluator|
-        ag.user_ids = create_list(:user, evaluator.users_count).map { |u| u.id.to_s }
-        ag.save!
-      end
+      association :cohort, :with_users
     end
 
     trait :with_comments do

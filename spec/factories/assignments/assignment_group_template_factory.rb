@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :assignment_group_template, class: 'Assignment::AssignmentGroupTemplate' do
-    association :permission_group
     title Faker::Hacker.noun
     desc_md Faker::Hacker.say_something_smart
     active true
