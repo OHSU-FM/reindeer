@@ -312,7 +312,7 @@ class User < ActiveRecord::Base
         owned = Cohort.find_by(owner: self)
         ags << owned.assignment_groups if owned
         ags << Assignment::AssignmentGroup.all.find_all { |ag|
-          ag.user_ids.include? id.to_s
+          ag.user_ids.include? id
         }
       end
       ags.flatten!

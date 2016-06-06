@@ -3,8 +3,7 @@ require 'spec_helper'
 describe User do
 
   it 'has a factory' do
-    user = create :user
-    expect(user).to be_valid
+    expect(build :user).to be_valid
   end
 
   it 'requires an email' do
@@ -35,10 +34,18 @@ describe User do
     end
   end
 
-  describe "assignment framework interactions" do
-    it 'can list assignment_groups it owns' do
-      user = create(:user)
-      create(:assignment_group, cohort: create(:cohort, owner: user))
+  describe "methods:" do
+    it "#assignment_groups lists ags user owns" do
+      user = build :user
+      create(:assignment_group, cohort: build(:cohort, owner: user))
+      expect(user.assignment_groups.count).to eq 1
+    end
+
+    it "#assignment_groups lists ags user belongs to" do
+      c = build :cohort, :with_users
+      user = c.users.first
+      create :assignment_group, cohort: c
+
       expect(user.assignment_groups.count).to eq 1
     end
   end
