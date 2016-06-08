@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        <% @rs_data.sort.each_with_index do |x, xi| %>
+        <% @rs_data.each_with_index do |x, xi| %>
              <tr>
                <% x.each_with_index do |y, yi| %>
                   <td> <%= y %> </td>

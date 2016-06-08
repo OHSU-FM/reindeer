@@ -21,6 +21,7 @@ class Dashboard < ActiveRecord::Base
 
     THEMES = [
         'theme-oregon-coast',
+        'theme-rainbow-tillikum',
         'theme-mt-hood',
         'theme-bokeh',
         'theme-starry-night',
