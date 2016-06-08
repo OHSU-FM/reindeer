@@ -20,14 +20,27 @@ class Cohort < ActiveRecord::Base
       field :id do
         read_only true
       end
-      include_all_fields
+      field :owner
+      field :users
+      field :permission_group
     end
-    field :owner
-    field :users
-    field :title
-    field :title
-    field :permission_group
-    field :assignment_groups
+    edit do
+      field :title
+      field :owner
+      field :permission_group
+      field :users do
+        associated_collection_scope do
+          cohort = bindings[:object]
+          Proc.new{|scope| scope = scope.where(permission_group_id: cohort.permission_group.id) }
+        end
+      end
+    end
+    show do
+      field :title
+      field :owner
+      field :permission_group
+      field :users
+    end
   end
 
   def users
