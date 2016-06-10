@@ -1,0 +1,16 @@
+<div class="row main fade-in two">
+  <div class="col-md-6 main fade-in two">
+    <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
+  </div>
+  <div class="col-md-6 main fade-in two" style="height:69px; display:table;vertical-align:middle;">
+    <div style="display:table-cell; vertical-align:middle;">
+      <button id="assignment-nav-toggle" type="button" class="btn btn-default" aria-label="Menu" style="float:right; vertical-align:bottom; margin: 0 auto;">
+        Menu <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<%# <%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
+
+<%# <%= render "response_nav" %>

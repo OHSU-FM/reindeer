@@ -29,8 +29,13 @@ module Assignment
 
     def perform_for_user assignment_group
       @index = assignment_group.user_assignments_for @user_id
-      uac = UACollection.new(@index)
-      @survey_types = uac.survey_types_enum
+      @survey_types = UACollection.new(@index).survey_types_enum
+        .sort_by(&:downcase)
+      @recent = @survey_types.map do |t|
+          @index.select{|ua|
+          ua.survey_type == t
+          }.sort_by(&:created_at).last
+      end
     end
   end
 end

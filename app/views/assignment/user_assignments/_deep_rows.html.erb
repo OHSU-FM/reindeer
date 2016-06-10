@@ -8,7 +8,7 @@
             <%= category.titleize %>
           </div>
           <div class="col-md-4">
-            <%= category_status_label(responses).html_safe %>
+            <%= hf_category_status_label(responses).html_safe %>
           </div>
           <div class="col-md-2">
             <i class='fa fa fa-comments-o'></i>
@@ -26,7 +26,7 @@
             <%= link_to ur.title, assignment_user_response_path(ur) %>
           </div>
           <div class="col-md-4">
-            <span class="label label-<%= status_label_color(ur) %>"><%= ur.status %></span>
+            <span class="label label-<%= hf_status_label_color(ur) %>"><%= ur.status %></span>
           </div>
           <div class="col-md-2">
             <%= link_to assignment_user_response_comments_path(ur), data: { toggle: :modal } do %>

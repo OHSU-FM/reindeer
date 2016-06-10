@@ -15,7 +15,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
     @assignment_groups = current_user.active_assignment_groups
     unless params[:user_id]
-      params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }
+      params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }.to_s
     end
     @user = User.find(params[:user_id])
     @service = Assignment::UserAssignmentsIndexService.new @assignment_group, params

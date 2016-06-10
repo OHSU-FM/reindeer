@@ -1,25 +1,22 @@
 <div class="row main fade-in two">
   <div id="assignment-group-nav" class='container-fluid'>
     <div class="btn-group">
-      <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        TODO<span class="caret"></span>
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Past Sessions<span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li class="dropdown-header">February</li>
-        <li><a href="#">Self-Assessment</a></li>
-        <li><a href="#">Goals</a></li>
-        <li class="dropdown-header">January</li>
-        <li><a href="#">Self-Assessment</a></li>
-        <li><a href="#">Goals</a></li>
-        <li class="dropdown-header">December</li>
-        <li><a href="#">Self-Assessment</a></li>
-        <li><a href="#">Goals</a></li>
+        <% hf_user_assignment_cycle_hash(@user_response).each do |k, types| %>
+          <li class="dropdown-header"><%= k %></li>
+          <% types.each do |title| %>
+            <li><a href="#"><%= title %></a></li>
+          <% end %>
+        <% end %>
       </ul>
     </div>
     <% if @user_response.user_assignment.ur_categories.keys.length > 1 %>
       <% @user_response.user_assignment.ur_categories.each do |category, responses| %>
       <div class="btn-group">
-        <%= category_status_button(responses, category).html_safe %>
+        <%= hf_category_status_button(responses, category).html_safe %>
         <ul class="dropdown-menu">
           <% responses.each do |ur| %>
             <li>

@@ -9,4 +9,7 @@ class Assignment::UserResponsesController < ApplicationController
     @assignment_group = @user_response.assignment_group
     @assignment_groups = current_user.active_assignment_groups
   end
+
+  def index
+  end
 end

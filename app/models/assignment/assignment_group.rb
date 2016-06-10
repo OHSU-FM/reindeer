@@ -35,6 +35,7 @@ module Assignment
         include_all_fields
       end
       field :assignment_group_template
+      field :cohort
       field :status
       field :title
       field :desc_md

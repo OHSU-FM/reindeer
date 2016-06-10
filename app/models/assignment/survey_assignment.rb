@@ -88,7 +88,7 @@ module Assignment
           comment_hash = {}
           user_assignments.each do |ua|
             ua.user_responses.each do |ur|
-              next if ur.comments.empty?
+              next if ur.comments.empty? || ur.empty?
               ur.comments.each do |c|
                 comment_hash[[ur.title, ur.category, ur.status]] = c.id
               end
