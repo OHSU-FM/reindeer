@@ -34,12 +34,12 @@ module Assignment::UserAssignmentsHelper
 
   # returns { "month": ["ua type", "ua type"] }
   def hf_user_assignment_cycle_hash ur
-    hash = {}
+    hash = Hash.new
     ur.user.user_assignments.each.map {|ua|
       ua.survey_assignment.title.chomp.split(":", 2) }.map {|k, v|
       !hash.key?(k) ? hash[k] = [v] : hash[k] << v
     }
-    hash
+    hash.sort.to_h
   end
 
   private
