@@ -13,7 +13,7 @@
 
 <%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
 
-<%= render "response_nav" %>
+<%= render "assignment/shared/response_nav" %>
 
 <div id="user-response-<%= @user_response.id %>" class="container-fluid response-display">
   <div class="col-md-6 main fade-in two left-panel">
@@ -24,6 +24,6 @@
     <p><%= @user_response.content %></p>
   </div>
   <div class="col-md-6 main fade-in two right-panel">
-    <%= render 'comments' %>
+    <%= render "comments" %>
   </div>
 </div>

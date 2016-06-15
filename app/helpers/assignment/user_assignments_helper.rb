@@ -32,12 +32,26 @@ module Assignment::UserAssignmentsHelper
            """
   end
 
-  # returns { "month": ["ua type", "ua type"] }
-  def hf_user_assignment_cycle_hash ur
+  def hf_ua_title_prettify ua
+    ua.group_and_title.join(": ")
+  end
+
+  def hf_user_assignment_button_text locals
+    if !locals.has_key?(:btn_text)
+      "All Sessions <span class='caret'></span>"
+    else
+      "<span class='caret'></span> #{locals[:btn_text]}"
+    end
+  end
+
+  # returns { "month": ["assignment type", ua] }
+  def hf_user_assignment_cycle_hash obj
+    usr = obj.methods.include?(:user) ? obj.user : User.find(obj)
+
     hash = Hash.new
-    ur.user.user_assignments.each.map {|ua|
-      ua.survey_assignment.title.chomp.split(":", 2) }.map {|k, v|
-      !hash.key?(k) ? hash[k] = [v] : hash[k] << v
+    usr.user_assignments.each.map {|ua|
+      k, v = ua.survey_assignment.title.chomp.split(":", 2)
+      !hash.key?(k) ? hash[k] = [[v, ua]] : hash[k] << [v, ua]
     }
     hash.sort.to_h
   end

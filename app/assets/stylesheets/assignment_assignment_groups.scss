@@ -23,12 +23,23 @@
   overflow-y: auto;
 }
 
+.left-panel-title {
+  text-align: center;
+}
+
 .right-panel {
   width: 50%;
   float: left;
   height: 100%;
   overflow-y: auto;
   padding-left: 10px;
+}
+
+.centered-content {
+  height: 100%;
+  padding-top: 40%;
+  display: inline-block;
+  vertical-align: bottom;
 }
 
 span.label.label-success, .btn.btn-success {
