@@ -6,9 +6,9 @@ class Cohort < ActiveRecord::Base
   has_many :users
   has_many :assignment_groups
 
-  validates :permission_group, presence: true
-  validates :owner, presence: true
-  validates :title, presence: true
+  validates_presence_of :permission_group
+  validates_presence_of :owner
+  validates_presence_of :title
 
   before_validation :set_defaults, on: :create
 
@@ -51,6 +51,7 @@ class Cohort < ActiveRecord::Base
     Assignment::AssignmentGroup.where(cohort: self)
   end
 
+  # TODO: #possible_users should always include #users (at minimum)
   def possible_users
     @possible_users ||= permission_group.present? ? permission_group.users : []
   end

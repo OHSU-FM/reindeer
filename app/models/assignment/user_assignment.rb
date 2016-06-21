@@ -4,6 +4,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
   belongs_to :survey_assignment
   has_one :lime_survey, :through=>:survey_assignment
   has_many :user_responses, dependent: :destroy
+  validates_presence_of :lime_survey
   validates_presence_of :token
   validates_presence_of :user
 

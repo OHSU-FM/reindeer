@@ -127,7 +127,7 @@ def create_min_survey sid = 12345
     sent character varying(17) DEFAULT 'N'::character varying,
     remindersent character varying(17) DEFAULT 'N'::character varying,
     remindercount integer DEFAULT 0,
-    completed character varying(17) DEFAULT 'N'::character varying,
+    completed character varying(17) DEFAULT 'Y'::character varying,
     usesleft integer DEFAULT 1,
     validfrom timestamp without time zone,
     validuntil timestamp without time zone,

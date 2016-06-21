@@ -13,4 +13,9 @@ describe Assignment::UserResponse do
   it "should validate content" do
     expect(build :user_response, content: nil).not_to be_valid
   end
+
+  it "has an assignment_group via user_assign & survey_assign" do
+    expect((build :user_response).assignment_group)
+    .to be_instance_of Assignment::AssignmentGroup
+  end
 end

@@ -171,7 +171,7 @@ describe Assignment::AssignmentGroupsController do
       ag = create :assignment_group, cohort: cohort
 
       get :index
-      expect(response).to be_success
+      expect(response).to redirect_to(assignment_assignment_group_path(ag))
     end
 
     it "cannot update assignment_group" do
