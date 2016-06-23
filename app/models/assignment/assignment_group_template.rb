@@ -33,12 +33,12 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   end
 
   def lime_surveys=(vals)
-    sids = vals.map(&:sid)
+    self.sids = vals.map{|v| v.sid.to_s }
     @lime_surveys = vals
   end
 
   def lime_surveys
-    @lime_surveys ||= LimeSurvey.where('sid in (?)', sids)
+    @lime_surveys ||= LimeSurvey.where("sid in (?)", sids)
   end
 
   def sids

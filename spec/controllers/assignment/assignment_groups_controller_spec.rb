@@ -5,7 +5,7 @@ describe Assignment::AssignmentGroupsController do
   let(:admin) { create :superadmin }
   let(:coach) { create(:coach) }
   let(:student) { create(:student) }
-  let(:agt) { FactoryGirl.create(:assignment_group_template, :with_surveys) }
+  let(:agt) { FactoryGirl.create(:assignment_group_template) }
 
   ##############################################################################
   # Public user tests
@@ -32,7 +32,7 @@ describe Assignment::AssignmentGroupsController do
     #crud
     it "can create assignment_group" do
       sign_in admin
-      agt = create :assignment_group_template, :with_surveys
+      agt = create :assignment_group_template
       c = create :cohort
       group_params = FactoryGirl.attributes_for(:assignment_group,
                                                 assignment_group_template_id: agt.id,

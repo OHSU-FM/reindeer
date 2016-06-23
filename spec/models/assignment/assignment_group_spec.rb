@@ -15,7 +15,7 @@ describe Assignment::AssignmentGroup do
   end
 
   it "sets some defaults" do
-    agt = build :assignment_group_template, :with_surveys
+    agt = build :assignment_group_template
     ag = build :assignment_group, assignment_group_template: agt,
       title: nil,
       desc_md: nil,

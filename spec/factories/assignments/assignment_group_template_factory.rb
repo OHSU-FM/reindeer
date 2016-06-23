@@ -4,10 +4,12 @@ FactoryGirl.define do
     desc_md Faker::Hacker.say_something_smart
     active true
 
-    trait :with_surveys do
-      after(:build) do |agt|
-        agt.lime_surveys = build_list(:lime_survey, 2)
-      end
+    transient do
+      ls_count 1
+    end
+
+    after(:build) do |agt, evaluator|
+      agt.lime_surveys = build_list(:lime_survey, evaluator.ls_count)
     end
 
     trait :with_full_survey do

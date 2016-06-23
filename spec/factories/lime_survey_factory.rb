@@ -33,6 +33,10 @@ FactoryGirl.define do
       end
     end
 
+    trait(:active) do
+      active 'Y'
+    end
+
     factory :lime_survey_full, traits: [:with_tables, :with_response]
   end
 end

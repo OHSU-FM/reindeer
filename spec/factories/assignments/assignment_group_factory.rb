@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :assignment_group, class: Assignment::AssignmentGroup do
     title { Faker::Lorem.sentence }
     desc_md { Faker::Lorem.paragraph }
-    association :assignment_group_template, :with_surveys
+    association :assignment_group_template
     association :cohort
 
     # also creates tables

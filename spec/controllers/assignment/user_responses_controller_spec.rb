@@ -21,12 +21,12 @@ describe Assignment::UserResponsesController do
 
     context "without signed in user" do
       before do
-        @ua = create :user_assignment
+        @ua = build :user_assignment
         @ur = create :user_response, user_assignment: @ua
         get :show, id: @ur.id
       end
 
-      it { expect(response).to redirect_to new_user_session_path }
+      it { is_expected.to redirect_to new_user_session_path }
       it { expect(assigns[:user_response]).to eq nil}
       it { expect(assigns[:assignment_group]).to eq nil}
       it { expect(assigns[:assignment_groups]).to eq nil}
