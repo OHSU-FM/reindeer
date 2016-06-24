@@ -3,9 +3,70 @@ require "spec_helper"
 describe Assignment::AssignmentGroupsController do
 
   let(:admin) { create :superadmin }
-  let(:coach) { create(:coach) }
-  let(:student) { create(:student) }
-  let(:agt) { FactoryGirl.create(:assignment_group_template) }
+  let(:coach) { create :coach }
+  let(:student) { create :student }
+  let(:agt) { create :assignment_group_template }
+
+  describe "controller actions" do
+    describe "#index" do
+      context "with signed in user" do
+        before do
+          user = create :user
+          c = create :cohort, :with_users, owner: user
+          @ag = create :assignment_group, cohort: c
+          sign_in user
+          get :index
+        end
+
+        it { is_expected
+             .to redirect_to assignment_assignment_group_path(@ag) }
+      end
+      context "without signed in user" do
+        before do
+          user = create :user
+          c = create :cohort, :with_users, owner: user
+          @ag = create :assignment_group, cohort: c
+          get :index
+        end
+        it { is_expected.to redirect_to new_user_session_path }
+      end
+    end
+
+    describe "#show" do
+      context "with signed in user" do
+        before do
+          user = create :user
+          c = create :cohort, :with_users, owner: user
+          @ag = create :assignment_group, cohort: c
+          sign_in user
+          get :show, assignment_group_id: @ag.id
+        end
+
+        it "sets @assignment_group" do
+          expect(assigns[:assignment_group]).to eq @ag
+        end
+        it "sets @assignment_groups" do
+          expect(assigns[:assignment_groups]).to include @ag
+        end
+        it "sets @user" do
+          expect(assigns[:user]).to eq @ag.users.first
+        end
+        it "generates and sets a service object" do
+          expect(assigns[:service])
+          .to be_an_instance_of Assignment::UserAssignmentsIndexService
+        end
+      end
+      context "without signed in user" do
+        before do
+          user = create :user
+          c = create :cohort, :with_users, owner: user
+          @ag = create :assignment_group, cohort: c
+          get :show, assignment_group_id: @ag.id
+        end
+        it { is_expected.to redirect_to new_user_session_path }
+      end
+    end
+  end
 
   ##############################################################################
   # Public user tests
