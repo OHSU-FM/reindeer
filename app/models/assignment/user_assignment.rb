@@ -143,8 +143,11 @@ class Assignment::UserAssignment < ActiveRecord::Base
     return @status_hash if defined? @status_hash
 
     lq = LimeQuestion.where(sid: sid, title: status_question).first
-    @status_hash = Hash[lq.lime_answers.map {|la| [la.code, la.answer] }]
-    return @status_hash
+    if lq
+      @status_hash = Hash[lq.lime_answers.map {|la| [la.code, la.answer]}]
+    else
+      @status_hash = {}
+    end
   end
 
   def user_responses

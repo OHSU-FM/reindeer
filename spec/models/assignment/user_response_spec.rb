@@ -6,7 +6,7 @@ describe Assignment::UserResponse do
     expect(FactoryGirl.create(:user_response)).to be_valid
   end
 
-  it 'requires a user_assignment' do
+  it "requires a user_assignment" do
     expect(build :user_response, user_assignment_id: nil).not_to be_valid
   end
 
@@ -14,8 +14,15 @@ describe Assignment::UserResponse do
     expect(build :user_response, content: nil).not_to be_valid
   end
 
-  it "has an assignment_group via user_assign & survey_assign" do
-    expect((build :user_response).assignment_group)
-    .to be_instance_of Assignment::AssignmentGroup
+  describe "methods" do
+    it "#assignment_group via user_assign & survey_assign" do
+      expect((build :user_response).assignment_group)
+      .to be_instance_of Assignment::AssignmentGroup
+    end
+
+    it "#has_comments?" do
+      expect((create :user_response, :with_comments).has_comments?).to be true
+      expect((create :user_response).has_comments?).to be false
+    end
   end
 end

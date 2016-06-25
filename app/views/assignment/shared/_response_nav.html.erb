@@ -18,7 +18,7 @@
     <% end %>
 
     <% if params[:controller] == "assignment/user_assignments" %>
-      <div style="float:right;">
+      <div class="ua-compare-menu-float">
         <%= render partial: "assignment/shared/all_sessions_dd", locals: { btn_text: "Compare to. . ." } %>
       </div>
     <% end %>

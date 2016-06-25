@@ -4,8 +4,6 @@ class Assignment::UserAssignmentsController < Assignment::AssignmentBaseControll
   authorize_resource
 
   def index
-    @assignments = Assignment::ListAssignmentsService.new(current_user, params[:username])
-    respond_with @assignments
   end
 
   def show

@@ -10,4 +10,7 @@ class Assignment::UserResponse < ActiveRecord::Base
     user_assignment.survey_assignment.assignment_group
   end
 
+  def has_comments?
+    !comments.empty?
+  end
 end

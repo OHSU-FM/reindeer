@@ -135,14 +135,14 @@ module Assignment
     end
 
     def survey_data_sid_and_gid
-      lg = lime_survey.lime_groups.where("group_name = ?", "SurveyData").first
-      [lg.sid, lg.gid]
+      lg = lime_survey.lime_groups.where(group_name: "SurveyData").first
+      [lg.sid, lg.gid] unless lg.nil?
     end
 
     def survey_data_questions_key
       key = {}
       sid, gid = survey_data_sid_and_gid
-      lqs = LimeQuestion.where("sid = ?", sid).where("gid = ?", gid)
+      lqs = LimeQuestion.where(sid: sid, gid: gid)
       lqs.each do |lq|
         key["#{lq.sid}X#{lq.gid}X#{lq.qid}"] = lq.title
       end
