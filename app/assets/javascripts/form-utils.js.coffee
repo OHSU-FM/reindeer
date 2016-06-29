@@ -150,7 +150,7 @@ $(document).ready ->
                 $target.html(new_html)
 
     # link_to_modal_dialog
-    $('a[data-toggle~=modal]').click (event) ->
+    $('body').on 'click', 'a[data-toggle~=modal]', (event) ->
         event.preventDefault()
         event.stopImmediatePropagation()
         url = this.href

@@ -31,5 +31,18 @@ describe Assignment::UserAssignmentsController do
       end
     end
   end
+
+  describe "get #fetch_compare" do
+    before do
+      user = create :superadmin
+      @ua = create :user_assignment, :with_user_responses, user: user
+      sign_in user
+      xhr :get, :fetch_compare, user_assignment_id: @ua.id
+    end
+
+    it "sets @compare" do
+      expect(assigns[:compare]).to eq @ua
+    end
+  end
 end
 

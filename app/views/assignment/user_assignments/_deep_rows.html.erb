@@ -1,7 +1,7 @@
 <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
 <% ua.ur_categories.each do |category, responses| %>
   <div class="panel panel-default">
-    <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
+    <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') + ua.id.to_s %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
       <div class="panel-heading" role="tab" id="heading<% category.delete(' ') %>">
         <div class="row">
           <div class="col-md-6">
@@ -17,7 +17,7 @@
       </div>
     </a>
   </div>
-  <div id="collapse<%= category.delete(' ')%>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(' ') %>">
+  <div id="collapse<%= category.delete(' ') + ua.id.to_s %>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(' ') + ua.id.to_s %>">
     <ul class="list-group">
       <% responses.each do |ur| %>
       <li class="list-group-item">

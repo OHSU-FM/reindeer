@@ -20,6 +20,13 @@ class Assignment::UserAssignmentsController < Assignment::AssignmentBaseControll
     @assignment_group = Assignment::AssignmentGroup.find params[:assignment_group_id]
   end
 
+  def fetch_compare
+    @compare = Assignment::UserAssignment.find(params[:user_assignment_id])
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def create
   end
 
