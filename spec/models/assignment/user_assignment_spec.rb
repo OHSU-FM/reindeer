@@ -22,21 +22,28 @@ describe Assignment::UserAssignment do
     end
   end
 
-  it "has a status string" do
-    ua = build :user_assignment
+  describe "methods" do
+    it "has a status string" do
+      ua = build :user_assignment
 
-    expect(ua.status_str).to eq "complete"
-  end
+      expect(ua.status_str).to eq "complete"
+    end
 
-  it "has an assignment_group via survey_assignment" do
-    ua = build :user_assignment
+    it "has an assignment_group via survey_assignment" do
+      ua = build :user_assignment
 
-    expect(ua.assignment_group).to be_instance_of(Assignment::AssignmentGroup)
-  end
+      expect(ua.assignment_group).to be_instance_of(Assignment::AssignmentGroup)
+    end
 
-  it "has a group_and_title_name via survey_assignment & lime_survey" do
-    ua = build :user_assignment
+    it "has a group_and_title_name via survey_assignment & lime_survey" do
+      ua = build :user_assignment
 
-    expect(ua.group_and_title).to be_instance_of(Array)
+      expect(ua.group_and_title).to be_instance_of(Array)
+    end
+
+    it "builds user_resposnes" do
+      ua = create :user_assignment
+      ua.user_responses
+    end
   end
 end

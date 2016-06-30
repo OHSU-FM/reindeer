@@ -16,7 +16,7 @@ describe Assignment::AssignmentGroupTemplate do
 
   it "has an enum of active lime_surveys" do
     agt = create :assignment_group_template
-    l_s = create :lime_survey, :active
+    l_s = create :lime_survey, :with_tables
 
     expect(agt.lime_surveys_enum).to include l_s
     expect(agt.lime_surveys_enum).not_to eq agt.lime_surveys
@@ -43,7 +43,7 @@ describe Assignment::AssignmentGroupTemplate do
 
   it "has a list of ls titles and sids" do
     agt = build :assignment_group_template, ls_count: 0
-    l_s = create :lime_survey, :active
+    l_s = create :lime_survey, :with_tables
 
     expect(agt.sids_enum).to eq [[l_s.title, l_s.sid]]
   end
