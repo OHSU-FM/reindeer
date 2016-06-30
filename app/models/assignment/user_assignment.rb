@@ -165,10 +165,10 @@ class Assignment::UserAssignment < ActiveRecord::Base
   def build_user_responses
     g_title, ra_title = group_and_title
     resps = gathered_responses.dup
-    create_list= []
+    create_list = []
     resps.each do |category, lol|
       lol.each do |list|
-        create_list<< [g_title, ra_title, category, *list]
+        create_list << [g_title, ra_title, category, *list]
       end
     end
     # have to iterate twice bc create fails otherwise for some reason
@@ -200,14 +200,11 @@ class Assignment::UserAssignment < ActiveRecord::Base
         lg.lime_questions.each do |lq|
           row = []
           response_key = "#{lg.sid}X#{lg.gid}X#{lq.qid}"
-          response_data.each do |key, value|
-            if key.include? response_key
-              if status_hash.keys.include? value
-                row << status_hash[value].to_s
-              else
-                row << value unless value.blank?
-              end
-            end
+          value = response_data[response_key]
+          if status_hash.keys.include? value
+            row << status_hash[value].to_s
+          else
+            row << value unless value.blank?
           end
           h[group_name] << row unless row.empty?
         end
