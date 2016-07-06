@@ -106,6 +106,10 @@ class Assignment::UserAssignment < ActiveRecord::Base
     survey_assignment.lime_survey.lime_groups
   end
 
+  def lime_questions
+    lime_groups.map {|g| g.lime_questions }.flatten()
+  end
+
   def get_meta_attribute attr
     data_key = survey_assignment.survey_data_questions_key
     response_data.each do |k, v|
@@ -190,6 +194,12 @@ class Assignment::UserAssignment < ActiveRecord::Base
     end
   end
 
+  # TODO make this return a list of hashs instead of hash of arrays
+  # reasoning: easier to iterate through. each hash should contain all
+  # information necessary to generate a user response. can call keys
+  # during creation to avoid worrying about getting strings out in the
+  # right order
+  #
   # generates row for each valid line of user_assignment.response_data
   def gathered_responses
     h = Hash.new
@@ -212,6 +222,30 @@ class Assignment::UserAssignment < ActiveRecord::Base
       end
     end
     h
+  end
+
+  def gathered_responses_2
+    l = []
+    h = Hash.new
+    lime_groups.each do |lg|
+      if lg.contains_visible_questions?
+        group_name = lg.group_name.to_s
+        h[group_name] = []
+        lg.lime_questions.each do |lq|
+          row = []
+          response_key = "#{lg.sid}X#{lg.gid}X#{lq.qid}"
+          value = response_data[response_key]
+          if status_hash.keys.include? value
+            row << Hash[lq.title, status_hash[value].to_s]
+          else
+            row << Hash[lq.title, value] unless value.blank?
+          end
+          h[group_name] << row unless row.empty?
+        end
+        h[group_name] = h[group_name].transpose
+      end
+    end
+    l
   end
 
 end

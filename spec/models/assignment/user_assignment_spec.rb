@@ -23,6 +23,18 @@ describe Assignment::UserAssignment do
   end
 
   describe "methods" do
+    it "#response_data" do
+      ua = create :user_assignment
+      l_s = ua.lime_survey
+      data = ua.response_data
+
+      expect(data).to be_instance_of Hash
+      expect(l_s.lime_tokens.dataset.first["token"]).to eq data["token"]
+      ua.lime_questions.each do |lq|
+        expect(data).to have_key "#{lq.sid}X#{lq.gid}X#{lq.qid}"
+      end
+    end
+
     it "has a status string" do
       ua = build :user_assignment
 
@@ -41,9 +53,18 @@ describe Assignment::UserAssignment do
       expect(ua.group_and_title).to be_instance_of(Array)
     end
 
-    it "builds user_resposnes" do
+    it "has a list of lime_question objects" do
       ua = create :user_assignment
-      ua.user_responses
+
+      expect(ua.lime_questions).to be_instance_of Array
+      ua.lime_questions.each do |obj|
+        expect(obj).to be_instance_of LimeQuestion
+      end
+    end
+
+    it "test" do
+      ua = create :user_assignment
+      ua.gathered_responses_2
     end
   end
 end
