@@ -22,6 +22,8 @@
 
     <h3><%= @user_response.user_assignment.survey_type.titleize %></h3>
     <p><%= @user_response.content %></p>
+    <h3>DATE TARGET</h3>
+    <p><%= @user_response.completion_target %></p>
   </div>
   <div class="col-md-6 main fade-in two right-panel">
     <%= render "comments" %>

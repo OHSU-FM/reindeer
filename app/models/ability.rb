@@ -68,7 +68,7 @@ class Ability
     can :comment_on, Assignment::AssignmentGroup do |ag|
       ag.owner == user
     end
-    can [:list, :read], Assignment::UserAssignment do |ua|
+    can [:list, :read, :fetch_compare], Assignment::UserAssignment do |ua|
       ua.user_id == user.id || ua.assignment_group.owner == user
     end
     can [:list, :read, :comment_on], Assignment::UserResponse do |ur|

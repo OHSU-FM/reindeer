@@ -1,6 +1,10 @@
 <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
 
-<%= render "assignment/shared/assignment_nav" %>
+<% if current_user == @assignment_group.owner || current_user.admin_or_higher? %>
+  <%= render "assignment/shared/assignment_nav" %>
+<% end %>
+
+<hr/>
 
 <div id="assignment-group-<%= @assignment_group.id %>" class="container-fluid assignment-container">
   <div class="fade-in two left-panel left-panel-scroll">

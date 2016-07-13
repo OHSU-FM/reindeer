@@ -30,7 +30,7 @@ module EdnaConsole
     # Search the models directory recursively
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"]
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/**/*.rb"]
-    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/**/*.rb"]
+    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/"]
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/services/**/*.rb"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).

@@ -27,7 +27,7 @@ describe "assignment_group#show" do
     expect(page).to have_content comment.body
   end
 
-  it "shows a list of users in the assignment_group" do
+  it "shows a list of users in the assignment_group if authorized" do
     user = create :coach
     c = create :cohort, owner: user
     ag = create :assignment_group, cohort: (create :cohort, :with_users)

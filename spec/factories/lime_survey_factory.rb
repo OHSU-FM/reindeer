@@ -75,8 +75,11 @@ def create_min_response sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039], opts={
       \"#{sid}X#{gid}X#{lqs[2]}\",
       \"#{sid}X#{gid}X#{lqs[3]}\")
     VALUES('#{ropts[:token]}', '#{ropts[:submitdate]}', #{ropts[:lastpage]},
-        '#{ropts[:startlanguage]}', '#{ropts[:col1]}', '#{ropts[:col2]}',
-        #{ropts[:col3]}, '#{ropts[:col4]}');
+        '#{ropts[:startlanguage]}',
+        '#{ropts[:col1]}',
+        '#{ropts[:col2]}',
+        '#{ropts[:col3]}',
+        '#{ropts[:col4]}');
 
     INSERT INTO #{LimeExt.table_prefix}_tokens_#{sid} (
       firstname, lastname, email, token, language, attribute_1, attribute_2

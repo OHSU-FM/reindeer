@@ -99,6 +99,7 @@ describe Ability do
         it { is_expected.not_to be_able_to(:alter, ua) }
         it { is_expected.to be_able_to(:list, ua) }
         it { is_expected.to be_able_to(:read, ua) }
+        it { is_expected.to be_able_to(:fetch_compare, ua) }
       end
     end
 
@@ -115,6 +116,7 @@ describe Ability do
         it { is_expected.not_to be_able_to(:alter, ua) }
         it { is_expected.to be_able_to(:list, ua) }
         it { is_expected.to be_able_to(:read, ua) }
+        it { is_expected.to be_able_to(:fetch_compare, ua) }
       end
     end
   end
