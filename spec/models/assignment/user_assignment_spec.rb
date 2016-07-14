@@ -37,6 +37,14 @@ describe Assignment::UserAssignment do
       expect(ua.group_and_title).to be_instance_of(Array)
     end
 
+    it "#is_shallow?" do
+      ua_w_1 = create :user_assignment, :with_user_responses
+      ua_w_2 = create :user_assignment, :with_user_responses, ur_count: 2
+
+      expect(ua_w_1.is_shallow?).to be true
+      expect(ua_w_2.is_shallow?).to be false
+    end
+
     describe "user_responses" do
       it "retrieves list of user_responses.where(ua: self) if they exist" do
         ua = create :user_assignment

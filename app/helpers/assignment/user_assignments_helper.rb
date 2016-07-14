@@ -2,10 +2,11 @@ module Assignment::UserAssignmentsHelper
 
   # returns bootstrap label type depending on resp status & possible statuses
   def hf_status_label_color ur
-    return "" if ur.user_assignment.status_hash.empty?
+    stat_h = ur.user_assignment.status_hash(ur.user_assignment.status_lime_question)
+    return "" if stat_h.empty?
 
-    status_possibilities = ur.user_assignment.status_hash.length
-    status_index = ur.user_assignment.status_hash.invert[ur.status][1].to_i - 1
+    status_possibilities = stat_h.length
+    status_index = stat_h.invert[ur.status][1].to_i - 1
 
     case status_possibilities
     when 2
@@ -69,9 +70,10 @@ module Assignment::UserAssignmentsHelper
       ]
       total, actual = 0, 0
       responses.each do |ur|
-        unless ur.user_assignment.status_hash.empty?
-          total += ur.user_assignment.status_hash.length
-          actual += ur.user_assignment.status_hash.invert[ur.status][1].to_i - 1
+        stat_h = ur.user_assignment.status_hash(ur.user_assignment.status_lime_question)
+        unless stat_h.empty?
+          total += stat_h.length
+          actual += stat_h.invert[ur.status][1].to_i - 1
         end
       end
       total += 1 unless total > 0
