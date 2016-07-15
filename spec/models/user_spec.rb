@@ -48,6 +48,23 @@ describe User do
 
       expect(user.assignment_groups.count).to eq 1
     end
+
+    it "#display_name" do
+      u = create :user
+      u_nil = create :user, full_name: nil, username: "test"
+      test_str = ["first last", "last, first", "first middle last",
+                  "last, first middle", "first last-last", "last-last, first"
+      ]
+      key = ["first last", "first last", "first middle last",
+             "first middle last", "first last-last", "first last-last"
+      ]
+
+      expect(u.display_name).to eq u.full_name
+      expect(u_nil.display_name).to eq "test"
+      test_str.each_with_index {|str, i|
+        expect(User.new.display_name str).to eq key[i]
+      }
+    end
   end
 
 end

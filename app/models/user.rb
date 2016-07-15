@@ -123,6 +123,17 @@ class User < ActiveRecord::Base
       self[:full_name] || self[:email]
     end
 
+    def display_name name=full_name
+      comma_re = /^\s*(\w{1,20} *[^,]*)+,\s+(\w{1,20}\s*)+$/ # last, first
+      if name.nil?
+        username
+      elsif comma_re === name
+        name.split(", ").reverse.join(" ")
+      else
+        name
+      end
+    end
+
     def is_ldap?
         self.is_ldap
     end
