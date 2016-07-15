@@ -10,7 +10,7 @@
     <div id="user-ids-nav" class="col-md-<%= @assignment_groups.count > 1 ? 6 : 12 %>">
       <% @assignment_group.user_ids.each do |uid| %>
         <% uid ? usr = User.find(uid) : next %>
-        <%= link_to usr.username, assignment_assignment_group_path(@assignment_group, user_id: usr.id),
+        <%= link_to usr.display_name, assignment_assignment_group_path(@assignment_group, user_id: usr.id),
             class: "btn btn-#{usr.id.to_s == params[:user_id] ? :primary : :link}"%>
       <% end %>
     </div>

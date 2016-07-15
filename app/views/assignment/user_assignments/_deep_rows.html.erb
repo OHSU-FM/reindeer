@@ -11,7 +11,9 @@
             <%= hf_category_status_label(responses).html_safe %>
           </div>
           <div class="col-md-2">
-            <i class='fa fa fa-comments-o'></i>
+            <% if responses.collect{|r| r.has_comments?}.any? %>
+              <i class='fa fa fa-comments-o'></i>
+            <% end %>
           </div>
        </div>
       </div>

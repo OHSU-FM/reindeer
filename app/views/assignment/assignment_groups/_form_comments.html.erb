@@ -2,5 +2,7 @@
 <%= render partial: 'comments/comments', locals: {commentable: @assignment_group} %>
 <%= render partial: 'comments/form', locals: {commentable: @assignment_group} %>
 <% if can? :comment_on, @assignment_group %>
-  <i>Only you can post here-- you can use this space to relay information to all the students you coach</i>
+  <p class="comment-info">
+    Only you can post here-- you can use this space to relay information to all the students you coach
+  </p>
 <% end %>

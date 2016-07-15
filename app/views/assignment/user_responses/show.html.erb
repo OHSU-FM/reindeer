@@ -17,13 +17,24 @@
 
 <div id="user-response-<%= @user_response.id %>" class="container-fluid response-display">
   <div class="col-md-6 main fade-in two left-panel">
-    <h2 style="text-align:center;"><%= @user_response.title %> - <span class="label label-<%= hf_status_label_color(@user_response) %>"><%= @user_response.status %></span></h2>
-    <hr />
-
-    <h3><%= @user_response.user_assignment.survey_type.titleize %></h3>
-    <p><%= @user_response.content %></p>
-    <h3>DATE TARGET</h3>
-    <p><%= @user_response.completion_target %></p>
+    <div class="row response-title">
+      <div class="col-md-12">
+        <h2 style="text-align:center;"><%= @user_response.title %> - <span class="label label-<%= hf_status_label_color(@user_response) %>"><%= @user_response.status %></span></h2>
+        <hr />
+      </div>
+    </div>
+    <div class="row response-content">
+      <div class="col-md-12">
+        <h3><%= @user_response.user_assignment.survey_type.singularize.titleize %></h3>
+        <p><%= @user_response.content %></p>
+      </div>
+    </div>
+    <div class="row response-completion-date">
+      <div class="col-md-12">
+        <h3>Date Target</h3>
+        <p><%= @user_response.completion_target %></p>
+      </div>
+    </div>
   </div>
   <div class="col-md-6 main fade-in two right-panel">
     <%= render "comments" %>
