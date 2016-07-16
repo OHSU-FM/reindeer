@@ -24,4 +24,8 @@ class Assignment::UserResponse < ActiveRecord::Base
   def has_comments?
     !comments.empty?
   end
+
+  def ag_owner
+    assignment_group.owner
+  end
 end

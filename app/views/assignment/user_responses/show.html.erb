@@ -19,8 +19,7 @@
   <div class="col-md-6 main fade-in two left-panel">
     <div class="row response-title">
       <div class="col-md-12">
-        <h2 style="text-align:center;"><%= @user_response.title %> - <span class="label label-<%= hf_status_label_color(@user_response) %>"><%= @user_response.status %></span></h2>
-        <hr />
+        <%= render partial: "response_title" %>
       </div>
     </div>
     <div class="row response-content">
