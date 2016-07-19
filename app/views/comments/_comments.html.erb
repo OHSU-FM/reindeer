@@ -2,17 +2,19 @@
   <% commentable.comments.each do |comment| %>
   <div class="comment-row">
     <%= comment.body %>
-    <b><%= comment.user.title %></b>
+    <b><%= comment.user.display_name %></b>
     <i><%= time_ago_in_words(comment.created_at.localtime) %> ago</i>
     <% if can? :destroy, comment %>
-    <%= link_to [commentable, comment], method: :delete,
-    data: { confirm: "Are you sure?"},
-    class: "comment-delete" do %>
+      <%= link_to [commentable, comment], method: :delete,
+      data: { confirm: "Are you sure?"},
+      class: "comment-delete" do %>
         <i class="glyphicon glyphicon-remove"></i>
       <% end %>
     <% end %>
   </div>
   <% end %>
 <% else %>
-  <div class="no-comments">No comments to display!</div>
+  <% if can? :comment_on, commentable %>
+    <div class="no-comments">No comments yet.</div>
+  <% end %>
 <% end %>

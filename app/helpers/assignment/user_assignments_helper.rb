@@ -1,5 +1,16 @@
 module Assignment::UserAssignmentsHelper
 
+  def hf_show_ur_status? resp, user
+    case resp
+    when ActiveRecord::Relation
+      !(resp.collect{|ur| ur.owner_status}.any?(&:blank?) && resp.first.ag_owner == user)
+    when Assignment::UserResponse
+      !(resp.owner_status.nil? && resp.ag_owner == user)
+    else
+      false
+    end
+  end
+
   # returns bootstrap label type depending on resp status & possible statuses
   def hf_status_label_color ur
     stat_h = ur.user_assignment.status_hash(ur.user_assignment.status_lime_question)
