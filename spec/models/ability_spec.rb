@@ -135,6 +135,7 @@ describe Ability do
         it { is_expected.to be_able_to(:comment_on, ur) }
         it { is_expected.to be_able_to(:list, ur) }
         it { is_expected.to be_able_to(:read, ur) }
+        it { is_expected.to be_able_to(:set_owner_status, ur) }
         it { is_expected.not_to be_able_to(:alter, ur) }
       end
 
@@ -163,6 +164,7 @@ describe Ability do
         it { is_expected.to be_able_to(:comment_on, ur) }
         it { is_expected.to be_able_to(:list, ur) }
         it { is_expected.to be_able_to(:read, ur) }
+        it { is_expected.not_to be_able_to(:set_owner_status, ur) }
         it { is_expected.not_to be_able_to(:alter, ur) }
       end
 

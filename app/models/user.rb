@@ -337,4 +337,11 @@ class User < ActiveRecord::Base
       return @active_assignment_groups
     end
 
+    # number (int) of ur where owner_status == nil
+    def unstatused_user_responses_count
+      user_assignments.map{|ua|
+        ua.user_responses.where(owner_status: nil).count
+      }.sum
+    end
+
 end

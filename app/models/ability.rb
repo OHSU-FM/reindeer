@@ -72,8 +72,9 @@ class Ability
       ua.user_id == user.id || ua.assignment_group.owner == user
     end
     can [:list, :read, :comment_on], Assignment::UserResponse do |ur|
-      ur.user == user || ur.assignment_group.owner == user
+      ur.user == user || ur.ag_owner == user
     end
+    can :set_owner_status, Assignment::UserResponse, ag_owner: user
 
     can :create, Comment do |c|
       case c.commentable.class.to_s

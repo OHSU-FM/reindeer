@@ -10,10 +10,12 @@ FactoryGirl.define do
     trait :with_user_responses do
       transient do
         ur_count 1
+        owner_status "hi!"
       end
 
       after(:build) do |ua, evaluator|
-        ua.user_responses = create_list(:user_response, evaluator.ur_count, user_assignment: ua)
+        ua.user_responses = create_list(:user_response, evaluator.ur_count,
+                                        owner_status: evaluator.owner_status, user_assignment: ua)
       end
     end
   end

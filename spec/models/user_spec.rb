@@ -65,6 +65,18 @@ describe User do
         expect(User.new.display_name str).to eq key[i]
       }
     end
+
+    it "#unstatused_user_responses?" do
+      (1..3).to_a.each do |i|
+        ua = create :user_assignment, :with_user_responses, ur_count: i, owner_status: nil
+        expect(ua.user.unstatused_user_responses_count).to eq i
+      end
+
+      ua = create :user_assignment
+      ur1 = create :user_response, user_assignment: ua
+      ur2 = create :user_response, owner_status: nil, user_assignment: ua
+      expect(ua.user.unstatused_user_responses_count).to eq 1
+    end
   end
 
 end

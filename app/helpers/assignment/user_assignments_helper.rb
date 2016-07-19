@@ -1,5 +1,15 @@
 module Assignment::UserAssignmentsHelper
 
+  # returns html badge span w # of ur w/o owner status
+  def hf_ur_owner_badge usr, current_user
+    return unless current_user == @assignment_group.owner || current_user.admin_or_higher?
+    if usr.unstatused_user_responses_count > 0
+      " <span class=\"badge\">#{usr.unstatused_user_responses_count}</span>"
+    end
+  end
+
+  # for single ur, false when user is owner & ur.owner_status == nil
+  # for mult urs, false when user is owner & any ur.owner_status == nil
   def hf_show_ur_status? resp, user
     case resp
     when ActiveRecord::Relation
@@ -39,6 +49,7 @@ module Assignment::UserAssignmentsHelper
 
   def hf_category_status_button responses, category
     btn_kls, btn_text = category_status_calculator(responses)
+    btn_kls = "default" unless hf_show_ur_status? responses, current_user
     return """
            <button type=\"button\" class=\"btn btn-#{btn_kls} dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">
              #{category.titleize}<span class=\"caret\"></span>

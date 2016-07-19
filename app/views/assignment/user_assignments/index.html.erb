@@ -13,9 +13,9 @@
         <% if ua.completed? %>
           <% if ua.survey_type == st %>
             <% if ua.is_shallow? %>
-              <%= render :partial => 'assignment/user_assignments/shallow_row', locals: { ua: ua } %>
+              <%= render :partial => "assignment/user_assignments/shallow_row", locals: { ua: ua } %>
             <% else %>
-              <%= render :partial => 'assignment/user_assignments/deep_rows', locals: { ua: ua } %>
+              <%= render :partial => "assignment/user_assignments/deep_rows", locals: { ua: ua } %>
             <% end %>
           <% end %>
         <% else %>
