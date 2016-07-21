@@ -7,4 +7,10 @@ class Comment < ActiveRecord::Base
   rails_admin do
     navigation_label 'Assignment'
   end
+
+  ##############################################################################
+  # :tagged_as possibilities
+  # "sys"-- used to designate a comment as a "system level" comment. changes
+  # css slightly, doesn't show user.display_name, though :user is still ag_owner
+  ##############################################################################
 end

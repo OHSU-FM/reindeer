@@ -1,0 +1,11 @@
+<div class="sys-comment-row">
+  <%= comment.body %>
+  <i><%= time_ago_in_words(comment.created_at.localtime) %> ago</i>
+  <% if can? :destroy, comment %>
+    <%= link_to [commentable, comment], method: :delete,
+    data: { confirm: "Are you sure?"},
+    class: "comment-delete" do %>
+      <i class="glyphicon glyphicon-remove"></i>
+    <% end %>
+  <% end %>
+</div>

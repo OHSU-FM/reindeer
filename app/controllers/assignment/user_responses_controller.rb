@@ -12,4 +12,20 @@ class Assignment::UserResponsesController < ApplicationController
 
   def index
   end
+
+  def set_owner_status
+    @user_response = Assignment::UserResponse.find(params[:user_response_id])
+    @user_response.owner_status = params[:status]
+    @user_response.save!
+    Comment.create(commentable: @user_response,
+                   user: @user_response.ag_owner,
+                   flagged_as: "sys",
+                   body: """
+    #{@user_response.ag_owner.display_name} set the status to #{params[:status]}
+    """
+                  )
+    respond_to do |format|
+      format.js
+    end
+  end
 end

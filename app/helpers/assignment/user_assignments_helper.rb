@@ -1,5 +1,9 @@
 module Assignment::UserAssignmentsHelper
 
+  def hf_set_status_button_class ur, status
+    ur.owner_status == status ? "primary" : "default"
+  end
+
   # returns html badge span w # of ur w/o owner status
   def hf_ur_owner_badge usr, current_user
     return unless current_user == @assignment_group.owner || current_user.admin_or_higher?

@@ -1,5 +1,12 @@
 <div class="panel-group" style="text-align:center;">
   <div class="centered-content">
-    WIP
+    <% ["Needs Work", "On Track", "Excelling"].each do |status| %>
+      <%= link_to status,
+      assignment_user_response_set_owner_status_path(@user_response, status: status),
+      class: "btn status-btn btn-#{hf_set_status_button_class @user_response, status }",
+      id: "owner_status_#{status.delete(' ')}",
+      remote: true
+      %>
+    <% end %>
   </div>
 </div>

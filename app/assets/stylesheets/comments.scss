@@ -6,6 +6,13 @@
   padding-left: 10px;
 }
 
+.sys-comment-row {
+  @extend .comment-row;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-left: solid #286090;
+}
+
 .comment-submit {
   padding-top: 10px;
 }

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
       end
       resources :user_responses, path: :responses, only: [:index, :show] do
         resources :comments, module: :user_response
+        get "/set_owner_status" => "user_responses#set_owner_status"
       end
       resources :survey_assignments, path: :forms, param: :survey_assignment_id
     end

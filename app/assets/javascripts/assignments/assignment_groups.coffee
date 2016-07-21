@@ -3,5 +3,5 @@
 $.fn.modal.Constructor::enforceFocus = ->
 
 $ ->
-  $('.comment-row').hover ->
+  $('.comment-row, .sys-comment-row').hover ->
     $(this).children('.comment-delete').toggle()
