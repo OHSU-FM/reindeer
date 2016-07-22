@@ -5,8 +5,14 @@
       assignment_user_response_set_owner_status_path(@user_response, status: status),
       class: "btn status-btn btn-#{hf_set_status_button_class @user_response, status }",
       id: "owner_status_#{status.delete(' ')}",
+      data: (hf_selected_owner_status?(@user_response, status) ? {toggle: "tooltip"} : nil),
+      "data-original-title": (hf_selected_owner_status?(@user_response, status) ? "Current Status" : nil),
+      "data-placement": (hf_selected_owner_status?(@user_response, status) ? "top" : nil),
       remote: true
       %>
     <% end %>
+    <a data-toggle="tooltip" data-placement="right" title="A goal for your coaching meetings should be to help students get better at self-assessment. Once you assess the status of this goal, if there's a discrepancy between your assessment and the student's, consider bringing this difference up during your in-person meeting (or use the comments section!).">
+      <i class="glyphicon fa-1g glyphicon-question-sign"></i>
+    </a>
   </div>
 </div>

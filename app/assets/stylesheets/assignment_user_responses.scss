@@ -20,20 +20,21 @@
 }
 
 .user-response-comments .row {
-  flex: 0 1 30px;
+  flex: 0 1 auto;
   margin-left: 0px;
 }
 
 .user-response-comments .row.header {
-  flex: 0 1 53px;
+  flex: 0 1 auto;
 }
 
 .user-response-comments .row.content {
   flex: 1 1 auto;
+  padding-top: 15px;
 }
 
 .user-response-comments .row.comments-box {
-  flex: 0 1 50px;
+  flex: 0 1 auto;
   border-top: 1px solid #eeeeee;
 
   .comments-input {
@@ -61,4 +62,8 @@
 
 .ua-compare-menu-float {
   float: right;
+}
+
+.nav.nav-tabs.pad-top{
+  padding-top: 32px;
 }

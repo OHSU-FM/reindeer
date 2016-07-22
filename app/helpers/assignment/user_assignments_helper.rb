@@ -1,5 +1,9 @@
 module Assignment::UserAssignmentsHelper
 
+  def hf_selected_owner_status? ur, status
+    ur.owner_status == status
+  end
+
   def hf_set_status_button_class ur, status
     ur.owner_status == status ? "primary" : "default"
   end

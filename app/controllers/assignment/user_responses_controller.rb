@@ -15,6 +15,7 @@ class Assignment::UserResponsesController < ApplicationController
 
   def set_owner_status
     @user_response = Assignment::UserResponse.find(params[:user_response_id])
+    return if @user_response.owner_status == params[:status]
     @user_response.owner_status = params[:status]
     @user_response.save!
     Comment.create(commentable: @user_response,

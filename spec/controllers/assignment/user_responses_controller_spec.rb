@@ -32,4 +32,32 @@ describe Assignment::UserResponsesController do
       it { expect(assigns[:assignment_groups]).to eq nil}
     end
   end
+
+  describe "get #set_owner_status" do
+    context "with initially nil owner_status" do
+      before do
+        @ua = create :user_assignment
+        @ur = create :user_response, user_assignment: @ua, owner_status: nil
+        sign_in @ua.user
+        xhr :get, :set_owner_status, user_response_id: @ur.id, status: "test"
+      end
+
+      it { expect(response.status).to eq 200 }
+      it { expect(assigns[:user_response].owner_status).to eq "test" }
+      it { expect(assigns[:user_response].comments.count).to eq 1 }
+    end
+
+    context "with same owner_status" do
+      before do
+        @ua = create :user_assignment
+        @ur = create :user_response, user_assignment: @ua, owner_status: "hi!"
+        sign_in @ua.user
+        xhr :get, :set_owner_status, user_response_id: @ur.id, status: "hi!"
+      end
+
+      it { expect(response.status).to eq 200 }
+      it { expect(assigns[:user_response].owner_status).to eq "hi!" }
+      it { expect(assigns[:user_response].comments.count).to eq 0 }
+    end
+  end
 end

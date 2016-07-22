@@ -37,7 +37,7 @@
   </div>
   <div class="col-md-6 main fade-in two right-panel">
     <% if can? :set_owner_status, @user_response %>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs pad-top">
       <li class=<%= "active" unless hf_show_ur_status? @user_response, current_user %>>
         <a href="#owner_status" data-toggle="tab">Owner Status</a>
       </li>
