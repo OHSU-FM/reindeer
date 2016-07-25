@@ -166,7 +166,7 @@ Array::min=->
 
         series: [{
                     
-                     name: 'Mean ' + graph.unfiltered_series_name,
+                     name: 'Class Mean ' + graph.unfiltered_series_name,
                      color: '#4497e3',
                      #pointPlacement: var_pointPlacement,
                      data: full_data  # q68

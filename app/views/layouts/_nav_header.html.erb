@@ -49,7 +49,7 @@
                              
                              <% #raise hell %>
                             </ul>
-                           </li>
+                            </li>
                              <li class="dropdown-submenu">
                              <a tabindex="-1" href="#">Med19</a>
                              <ul class="dropdown-menu">
@@ -61,7 +61,20 @@
                               <% end %>
                               <% #raise hell %>
                              </ul>
+                             </li>
+                             <li class="dropdown-submenu">
+                             <a tabindex="-1" href="#">Med20</a>
+                             <ul class="dropdown-menu">
+                              <% current_user.pinned_survey_groups.each do |group| %>
+                                  <% if group.title != "" and group.title.upcase.include? "Med20" %>
+                                       <% temp_group = group.title.split('~') %>
+                                       <%= nav_link_to(temp_group[1], main_app.ls_reports_path(filter: group.title)) %>
+                                 <% end %>
+                              <% end %>
+                              <% #raise hell %>
+                             </ul>
                             </li>
+
                        </ul>
                     </div>
                  </li>
@@ -106,6 +119,7 @@
                         <ul class="dropdown-menu">
                             <%= nav_link_to("Med18", current_user) %>
                             <%= nav_link_to("Med19", current_user) %>
+                            <%= nav_link_to("Med20", current_user) %>
                        </ul>
                     </div>
                  </li>
@@ -120,6 +134,7 @@
                         <ul class="dropdown-menu">
                             <%= nav_link_to("Med18", current_user) %>
                             <%= nav_link_to("Med19", current_user) %>
+                            <%= nav_link_to("Med20", current_user) %>
                        </ul>
                     </div>
                  </li>
@@ -134,6 +149,7 @@
                         <ul class="dropdown-menu">
                             <%= nav_link_to("Med18", current_user) %>
                             <%= nav_link_to("Med19", current_user) %>
+                            <%= nav_link_to("Med20", current_user) %>
                        </ul>
                     </div>
                  </li>
