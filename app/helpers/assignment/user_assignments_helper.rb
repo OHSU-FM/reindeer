@@ -8,9 +8,20 @@ module Assignment::UserAssignmentsHelper
     ur.owner_status == status ? "primary" : "default"
   end
 
+  def hf_ag_owner_or_higher? usr, obj
+    case obj
+    when Assignment::AssignmentGroup
+      usr == obj.owner || usr.admin_or_higher?
+    when Assignment::UserResponse
+      usr == obj.ag_owner || usr.admin_or_higher?
+    else
+      false
+    end
+  end
+
   # returns html badge span w # of ur w/o owner status
   def hf_ur_owner_badge usr, current_user
-    return unless current_user == @assignment_group.owner || current_user.admin_or_higher?
+    return unless hf_ag_owner_or_higher? current_user, @assignment_group
     if usr.unstatused_user_responses_count > 0
       " <span class=\"badge\">#{usr.unstatused_user_responses_count}</span>"
     end

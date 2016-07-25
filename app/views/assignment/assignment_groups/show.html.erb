@@ -1,6 +1,6 @@
 <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
 
-<% if current_user == @assignment_group.owner || current_user.admin_or_higher? %>
+<% if hf_ag_owner_or_higher? current_user, @assignment_group %>
   <%= render "assignment/shared/assignment_nav" %>
 <% end %>
 

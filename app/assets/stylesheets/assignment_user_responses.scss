@@ -67,3 +67,21 @@
 .nav.nav-tabs.pad-top{
   padding-top: 32px;
 }
+
+@media only screen and (min-width : 768px) {
+  .is-table-row {
+    display: table;
+    width: 100%;
+    padding-left: -15px;
+    padding-right: -15px;
+  }
+  .is-table-row [class*="col-"] {
+    float: none;
+    display: table-cell;
+    vertical-align: bottom;
+  }
+}
+
+#assignment-nav-toggle {
+  float: right;
+}
