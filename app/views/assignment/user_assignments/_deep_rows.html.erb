@@ -33,13 +33,20 @@
       <% responses.each do |ur| %>
       <li class="list-group-item">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-5">
             <%= link_to ur.title, assignment_user_response_path(ur) %>
           </div>
-          <div class="col-md-4">
-            <% if hf_show_ur_status? ur, current_user %>
-              <span class="label label-<%= hf_status_label_color(ur) %>"><%= ur.status %></span>
-            <% end %>
+          <div class="col-md-5">
+            <div class="col-md-<%= !ur.owner_status.nil? ? "6" : "12" %>">
+              <% if hf_show_ur_status? ur, current_user %>
+                <span class="label label-<%= hf_label_color(ur, :status) %>"><%= ur.status %></span>
+              <% end %>
+            </div>
+            <div class="col-md-<%= !ur.owner_status.nil? ? "6" : "12" %>">
+              <% unless ur.owner_status.nil? %>
+                <span class="label label-<%= hf_label_color(ur, :owner_status) %>"><%= ur.owner_status %></span>
+              <% end %>
+            </div>
           </div>
           <% if ur.has_comments? %>
             <div class="col-md-2">

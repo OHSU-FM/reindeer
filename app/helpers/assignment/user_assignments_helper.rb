@@ -41,24 +41,28 @@ module Assignment::UserAssignmentsHelper
   end
 
   # returns bootstrap label type depending on resp status & possible statuses
-  def hf_status_label_color ur
-    stat_h = ur.user_assignment.status_hash(ur.user_assignment.status_lime_question)
-    return "" if stat_h.empty?
+  def hf_label_color ur, sym
+    if ur.respond_to? sym
+      stat_h = ur.user_assignment.status_hash(ur.user_assignment.status_lime_question)
+      return "" if stat_h.empty?
 
-    status_possibilities = stat_h.length
-    status_index = stat_h.invert[ur.status][1].to_i - 1
+      status_possibilities = stat_h.length
+      status_index = stat_h.invert[ur[sym]][1].to_i - 1
 
-    case status_possibilities
-    when 2
-      possibilities = ["danger", "success"]
-    when 3
-      possibilities = ["warning", "info", "success"]
-    when 4
-      possibilities = ["warning", "info", "primary", "success"]
+      case status_possibilities
+      when 2
+        possibilities = ["danger", "success"]
+      when 3
+        possibilities = ["warning", "info", "success"]
+      when 4
+        possibilities = ["warning", "info", "primary", "success"]
+      else
+        possibilities = ["danger", "warning", "info", "primary", "success"]
+      end
+      possibilities[status_index * (status_possibilities / possibilities.length)]
     else
-      possibilities = ["danger", "warning", "info", "primary", "success"]
+      raise NoMethodError
     end
-    possibilities[status_index * (status_possibilities / possibilities.length)]
   end
 
   def hf_category_status_label responses

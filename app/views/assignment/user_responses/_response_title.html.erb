@@ -1,6 +1,7 @@
-<% if @user_response.owner_status.nil? and current_user == @user_response.ag_owner %>
-  <h2 class="user-response-title"><%= @user_response.title %></h2>
-<% else %>
-  <h2 class="user-response-title"><%= @user_response.title %> - <span class="label label-<%= hf_status_label_color(@user_response) %>"><%= @user_response.status %></span></h2>
-<% end %>
+<h2 class="user-response-title">
+  <%= @user_response.title %>
+  <% if hf_show_ur_status? @user_response, current_user %>
+    - <span class="label label-<%= hf_label_color(@user_response, :status) %>"><%= @user_response.status %></span>
+  <% end %>
+</h2>
 <hr />
