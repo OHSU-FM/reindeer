@@ -18,11 +18,12 @@
                             <% role_aggregates.each do |title, ra|%>
                             <li>
                                 <%= link_to title,
-                                        polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid),
+                                        polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid, :pk=>(@pk.nil? ? "_" : @pk)),
                                         :class=>"modal-click", 'data-target'=>'#modal-report' %>
                             </li>
                             <% end %>
                         <% end %>
+                        <% #raise hell!  %>
                     </ul>
                 </li>
             </ul>

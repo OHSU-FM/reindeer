@@ -1,6 +1,4 @@
 <!-- Data Table -->
-<%
-%>
 <div><class="btn btn-xs btn-primary"></div>
 <table style="width: 100%;" class="table table-condensed table-striped ls_report_filter_table report spreadsheet">
     <thead>
@@ -12,9 +10,6 @@
                         <%= strip_tags(pquestion.question)[0..30] %>
                     </span>
 
-                    <small>(<%= pquestion.title%>):
-                        <span data-toggle="tooltip" data-container="body" data-tiptype="qdesc" data-qtype="<%= pquestion.qtype %>"><%= pquestion.qtype %></span>
-                    </small>
                 </th>
             <% end %>
         </tr>
