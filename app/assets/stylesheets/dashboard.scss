@@ -23,13 +23,13 @@ body.theme-oregon-coast{
     -o-background-size: cover;
     background-size: cover;
     .inner-widget-container{
-        color:#222;    
+        color:#222;
     }
 }
-body.theme-rainbow-tillikum{
+body.theme-tillikum{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
-    background: #222 image-url('dashboard/themes/Rainbow_Over_Tillikum_Bridge.jpg') no-repeat center center fixed;
+    background: #222 image-url('dashboard/themes/tillikum.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
     -webkit-background-size: cover;
@@ -37,7 +37,7 @@ body.theme-rainbow-tillikum{
     -o-background-size: cover;
     background-size: cover;
     .inner-widget-container{
-        color:#222;    
+        color:#222;
     }
 }
 body.theme-starry-night{
@@ -51,7 +51,7 @@ body.theme-starry-night{
     -o-background-size: cover;
     background-size: cover;
     .inner-widget-container{
-        color:#222;    
+        color:#222;
     }
 }
 body.theme-bokeh{
@@ -61,21 +61,21 @@ body.theme-bokeh{
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-sunset{
     background: #332D4F image-url('dashboard/themes/sunset.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-mt-hood{
     background: #332D4F image-url('dashboard/themes/oregon_mt_hood.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-glass{
     background: #1E4353 image-url('dashboard/themes/blue_green_glass_eye.jpg') no-repeat center center fixed;
@@ -84,14 +84,14 @@ body.theme-glass{
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-blue-sky{
     background: #1E4353 image-url('dashboard/themes/blue_sky.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-blue-swirl{
     background: #1E4353 image-url('dashboard/themes/blue_swirl.jpg') no-repeat center center fixed;
@@ -100,7 +100,7 @@ body.theme-blue-swirl{
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-grid{
     background: #1E4353 image-url('dashboard/themes/grid.jpg') no-repeat center center fixed;
@@ -109,7 +109,7 @@ body.theme-grid{
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-fog{
     background: #1E4353 image-url('dashboard/themes/fog.jpg') no-repeat center center fixed;
@@ -118,10 +118,10 @@ body.theme-fog{
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover;
 }
 body.theme-black{
-    background: #000;    
+    background: #000;
 }
 .radio-select{
     a:hover,li:hover{background-color:#dfdfdf;}
@@ -151,18 +151,18 @@ body.theme-black{
     .navbar-collapse.collapse {
         display: block!important;
     }
-    
+
     .navbar-nav>li, .navbar-nav {
         float: left !important;
     }
-     
+
     .navbar-nav.navbar-right:last-child {
         margin-right: -15px !important;
     }
-    
+
     .navbar-right {
         float: right!important;
-    }    
+    }
 }
 
 .widget-resize-hook{
@@ -199,7 +199,7 @@ div.gridster{
                 display: none;
             }
         }
-    }  
+    }
     ul{list-style-type: none;}
     .navbar{
         .container-fluid{padding-left:7px;}
@@ -208,7 +208,7 @@ div.gridster{
         a{padding:5px;}
     }
     .navbar-nav.navbar-right:last-child, .navbar-right {
-        margin-right: -7px;    
+        margin-right: -7px;
     }
 }
 
