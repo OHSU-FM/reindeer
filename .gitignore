@@ -1,8 +1,6 @@
 *.rbc
 capybara-*.html
 .rspec
-/log
-/tmp
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /public/system
@@ -40,3 +38,8 @@ bower.json
 
 # Ignore pow environment settings
 .powenv
+
+# Docker 
+.dockerenv
+/data/db
+/data/lime_survey

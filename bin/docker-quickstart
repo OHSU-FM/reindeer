@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -e
+
+echo "
+Welcome to the reindeer docker configuration utility. This script will help you
+configure and start your initial reindeer environment.
+
+First we will need to collect some information about permissions:
+"
+
+read -e -p "User uid (file permissions): " -i "1000" USER_UID
+echo $USER_UID
+read -e -p "User gid: " -i "1000" USER_GID
+echo $USER_GID
+read -e -p "App admin login: " -i "admin" ADMIN_NAME
+echo $ADMIN_NAME
+read -e -p "App admin full name: " -i "John Smith" ADMIN_FULL_NAME
+echo $ADMIN_FULL_NAME
+read -e -p "App admin email: " -i "test@example.com" ADMIN_EMAIL
+echo $ADMIN_EMAIL
+read -e -p "App admin password: " -i "admin_password" ADMIN_PASS
+echo $ADMIN_PASS
+
+DB_HOST=db
+DB_PORT=5432
+DB_NAME=reindeer
+
+read -e -p "Rails env: " -i "development" RAILS_ENV
+echo $RAILS_ENV
+POSTGRES_USER=app
+read -e -p "Database admin password: " -i "some_password" POSTGRES_PASSWORD
+echo $POSTGRES_PASSWORD
+read -e -p "Rails relative url: " -i "/reindeer" RAILS_RELATIVE_URL_ROOT
+echo $RAILS_RELATIVE_URL_ROOT
+
+cat > .dockerenv <<EOL
+# File permissions on shared volumes (reindeer only)
+USER_UID=${USER_UID}
+USER_GID=${USER_GID}
+
+# LimeSurvey configuration
+ADMIN_NAME=${ADMIN_NAME}
+ADMIN_FULL_NAME=${ADMIN_FULL_NAME}
+ADMIN_EMAIL=${ADMIN_EMAIL}
+ADMIN_PASS=${ADMIN_PASS}
+
+# Database info
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT}
+DB_NAME=${DB_NAME}
+POSTGRES_USER=${POSTGRES_USER}
+POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+# Reindeer config
+RAILS_ENV=${RAILS_ENV}
+RAILS_RELATIVE_URL_ROOT=${RAILS_RELATIVE_URL_ROOT}
+EOL
+
+echo "
+
+Thank you for the environment details. We are now ready to fire up the 
+docker environment. The information you have provided has been saved to ./.dockerenv
+and will be used by docker-compose to build and configure the containers.
+
+"
+read -rsp $'Press any key to continue with the build process...\n' -n1 key
+
+echo "Initializing containers "
+docker-compose up -d
+echo "Initializing lime_survey"
+docker-compose exec lime /docker/init.sh
+echo "Initializing reindeer"
+docker-compose exec reindeer /docker/init.sh
+
+echo "
+
+Docker initialization complete.
+
+Details about running containers:
+
+"
+docker-compose ps
+

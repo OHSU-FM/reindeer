@@ -25,10 +25,10 @@ return array(
     'name' => 'LimeSurvey',
     'components' => array(
         'db' => array(
-            'connectionString' => 'pgsql:host=postgres;port=5432;user=postgres;password=;dbname=reindeer;',
-            'emulatePrepare' => true,
-            'username' => 'postgres',
-            'password' => '',
+			'connectionString' => 'pgsql:host=$DB_HOST;port=$DB_PORT;user=$POSTGRES_USER;password=$POSTGRES_PASSWORD;dbname=${DB_NAME}_${RAILS_ENV};',
+			'emulatePrepare' => true,
+			'username' => '$POSTGRES_USER',
+			'password' => '$POSTGRES_PASSWORD',
             'charset' => 'utf8',
             'tablePrefix' => 'lime_',
         ),

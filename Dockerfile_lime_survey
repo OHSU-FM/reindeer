@@ -1,0 +1,15 @@
+# vim:set ft=dockerfile:
+FROM php:5.6.23-fpm
+
+RUN apt-get update -qqy && \ 
+    apt-get install -y \
+        gettext-base \
+        libpq-dev php5 \
+        php5-curl \
+        php5-gd \
+        php5-imap \
+        php5-ldap \
+        php5-pgsql \
+        postgresql-client && \
+    docker-php-ext-install pdo_pgsql
+EXPOSE 9000

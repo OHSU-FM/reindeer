@@ -1,0 +1,24 @@
+# vim:set ft=dockerfile:
+FROM ruby:2.3
+
+# Set correct environment variables.
+ENV HOME /home/app
+ENV TERM xterm
+
+RUN apt-get update -qqy && \ 
+    apt-get install -y nodejs
+
+RUN useradd --create-home --shell /bin/bash app
+USER app
+
+# Install ruby gems
+WORKDIR $HOME
+
+ADD ./Gemfile .
+ADD ./Gemfile.lock .
+RUN gem install bundler
+RUN bundle install
+
+EXPOSE 3000
+CMD ["./bin/thin-start"]
+
