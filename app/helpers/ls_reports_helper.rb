@@ -51,10 +51,35 @@ module LsReportsHelper
     # Helper function
  
     def hf_group_title(title)
-        if title.include? "~"
-            title = title.gsub("~", "-")
+        title1, title2 = title.split(":", 2)
+        if title2.include? ":"
+            title2 = title2.gsub(":", "-")
         end
-        return title
+        return title2
+
+    end
+
+    def hf_lime_survey_title(role_aggregates)
+        result = []
+        role_aggregates.each do |ra|
+            survey_title = ra.lime_survey.lime_surveys_languagesettings[0].surveyls_title
+            if survey_title.include?("Student Assessment:") || survey_title.include?("Student Evaluation:")
+                result.push survey_title
+            end
+            #result.push ra.lime_survey.lime_surveys_languagesettings[0].surveyls_title
+        end 
+        result = result.sort
+        nested_hash = Hash.new { |hash, key| hash[key] = Hash.new(&hash.default_proc) } 
+
+        result.each do |arry|
+           title1, title2 = arry.split(":",2)
+           title3, title4 = title2.split(":",2)
+           title5, title6 = title4.split(":",2)
+           nested_hash[title1][title3][title5] = title6
+
+        end 
+
+        return nested_hash
 
     end 
 

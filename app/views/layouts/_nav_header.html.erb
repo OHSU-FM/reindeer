@@ -28,145 +28,52 @@
                 <% end %>
 
                 <% if can? :list, LimeSurvey %>
-
+                  <% nested_hash = hf_lime_survey_title(current_user.role_aggregates) %>
                   <li>
+                  <% nested_hash.each do |top_menu, hash_data| %>
                     <div style="" class="btn-group btn navbar-btn ">
-                        <%= link_to "Student Assessment".html_safe, "", type: :button, class: "btn btn-success btn-xs" %>
+                        <%= link_to top_menu.html_safe, "", type: :button, class: "btn btn-success btn-xs" %>
                         <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="caret"></span>
                           <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"  >
-                           <li class="dropdown-submenu">
-                             <a tabindex="-1" href="#">Med18</a>
-                             <ul class="dropdown-menu">
-                              <% current_user.pinned_survey_groups.each do |group| %>
-                                  <% if group.title != "" and group.title.upcase.include? "MED18" %>
-                                      <% temp_group = group.title.split('~') %>
-                                     <%= nav_link_to(temp_group[1], main_app.ls_reports_path(filter: group.title)) %>
-                                 <% end %>
-                             <% end %>
-                             
-                             <% #raise hell %>
-                            </ul>
-                            </li>
-                             <li class="dropdown-submenu">
-                             <a tabindex="-1" href="#">Med19</a>
-                             <ul class="dropdown-menu">
-                              <% current_user.pinned_survey_groups.each do |group| %>
-                                  <% if group.title != "" and group.title.upcase.include? "MED19" %>
-                                       <% temp_group = group.title.split('~') %>
-                                       <%= nav_link_to(temp_group[1], main_app.ls_reports_path(filter: group.title)) %>
-                                 <% end %>
-                              <% end %>
-                              <% #raise hell %>
-                             </ul>
-                             </li>
-                             <li class="dropdown-submenu">
-                             <a tabindex="-1" href="#">Med20</a>
-                             <ul class="dropdown-menu">
-                              <% current_user.pinned_survey_groups.each do |group| %>
-                                  <% if group.title != "" and group.title.upcase.include? "Med20" %>
-                                       <% temp_group = group.title.split('~') %>
-                                       <%= nav_link_to(temp_group[1], main_app.ls_reports_path(filter: group.title)) %>
-                                 <% end %>
-                              <% end %>
-                              <% #raise hell %>
-                             </ul>
-                            </li>
+                        <% if !current_user.permission_group.title.include? "Students" %>
+                           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"  >
+                             <% hash_data.each do |menu, hash_data2| %>  
+                                 <li class="dropdown-submenu">
+                                   <a tabindex="-1" href="#"><%= menu %></a>
+                                   <ul class="dropdown-menu">
+                                     <% hash_data2.each do |sub_menu,s| %>
+                                        <% group_name =  top_menu + ":" + menu + ":" + sub_menu  %>
+                                        <% #puts "group_name: " + group_name %>
+                                        <%= nav_link_to(sub_menu, main_app.ls_reports_path(filter: group_name )) %>
+                                     <% end %>
+                                     <% #raise hell %>
+                                  </ul>
+                                </li>
+                           <% end %>
+                           </ul>
+                       <% else %>
 
-                       </ul>
-                    </div>
-                 </li>
-                 <li>
-                    <div style="" class="btn-group btn navbar-btn ">
-                        <%= link_to "Coaching".html_safe, "", type: :button, class: "btn btn-primary btn-xs" %>
-                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                          <li><a href="#">Med18</a></li>
-                          <li><a href="#">Med19</a></li>
-                          <li class="divider"></li>
-                          <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#">Other options</a>
-                            <ul class="dropdown-menu">
-                              <li><a tabindex="-1" href="#">Second level</a></li>
-                              <li class="dropdown-submenu">
-                                <a href="#">Even More..</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">3rd level</a></li>
-                                    <li><a href="#">3rd level</a></li>
-                                </ul>
-                              </li>
-                              <li><a href="#">Second level</a></li>
-                              <li><a href="#">Second level</a></li>
-                            </ul>
-                          </li>
-                        </ul>
+                           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu"  >
+                             <% hash_data.each do |menu, hash_data2| %>  
+                                   <li class="dropdown">
+                                     <% hash_data2.each do |sub_menu,s| %>
+                                        <% group_name =  top_menu + ":" + menu + ":" + sub_menu  %>
+                                        <% #puts "group_name: " + group_name %>
+                                        <%= nav_link_to(sub_menu, main_app.ls_reports_path(filter: group_name )) %>
+                                     <% end %>
+                                     <% #raise hell %>
+                                  </li>
+                           <% end %>
+                           </ul>
 
-                    </div>
+                       <% end %>
+                   </div>
+                  <% end %>
                  </li>
 
-                 <li>
-                    <div style="" class="btn-group btn navbar-btn ">
-                        <%= link_to "EPAs & Competencies".html_safe, "", type: :button, class: "btn btn-primary btn-xs" %>
-                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <%= nav_link_to("Med18", current_user) %>
-                            <%= nav_link_to("Med19", current_user) %>
-                            <%= nav_link_to("Med20", current_user) %>
-                       </ul>
-                    </div>
-                 </li>
 
-                 <li>
-                    <div style="" class="btn-group btn navbar-btn ">
-                        <%= link_to "Teacher Evaluations".html_safe, "", type: :button, class: "btn btn-primary btn-xs" %>
-                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <%= nav_link_to("Med18", current_user) %>
-                            <%= nav_link_to("Med19", current_user) %>
-                            <%= nav_link_to("Med20", current_user) %>
-                       </ul>
-                    </div>
-                 </li>
-
-                 <li>
-                    <div style="" class="btn-group btn navbar-btn ">
-                        <%= link_to "Course Evaluations".html_safe, "", type: :button, class: "btn btn-primary btn-xs" %>
-                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <%= nav_link_to("Med18", current_user) %>
-                            <%= nav_link_to("Med19", current_user) %>
-                            <%= nav_link_to("Med20", current_user) %>
-                       </ul>
-                    </div>
-                 </li>
-
-                 <li>
-                    <div style="" class="btn-group btn navbar-btn ">
-                        <%= link_to "Preceptor/Learning".html_safe, "", type: :button, class: "btn btn-primary btn-xs" %>
-                        <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <%= nav_link_to("Med18", current_user) %>
-                            <%= nav_link_to("Med19", current_user) %>
-                       </ul>
-                    </div>
-                 </li>
                 <%= nav_link_to('Reports', main_app.ls_reports_path, :class=>'ls_reports-link')%>
                 <% end %>
 

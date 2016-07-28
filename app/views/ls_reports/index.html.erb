@@ -24,6 +24,7 @@
   <tbody>
   <% # Sort groups alphabetically and display %>
   <% @survey_groups.sort_by{ |g| g.title }.each do |group|%>
+
     <% if group.title %>
     <tr>
         <td colspan="5" style="text-align:left;">
