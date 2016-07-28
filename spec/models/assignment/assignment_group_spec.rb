@@ -66,5 +66,13 @@ describe Assignment::AssignmentGroup do
 
       expect(ag.user_assignments_for user.id).to eq [ua]
     end
+
+    it "#has_comments? returns a boolean" do
+      ag = create :assignment_group
+      ag_w_comments = create :assignment_group, :with_comments
+
+      expect(ag).not_to have_comments
+      expect(ag_w_comments).to have_comments
+    end
   end
 end

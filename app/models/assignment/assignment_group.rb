@@ -71,6 +71,10 @@ module Assignment
       cohort.user_ids
     end
 
+    def has_comments?
+      !comments.empty?
+    end
+
     protected
 
     def set_defaults

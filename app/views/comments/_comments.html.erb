@@ -1,4 +1,4 @@
-<% if !commentable.comments.empty? %>
+<% if commentable.has_comments? %>
   <% commentable.comments.each do |comment| %>
     <% if comment.flagged_as.nil? %>
       <%= render partial: "comments/comment_row",
