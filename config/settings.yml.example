@@ -8,7 +8,8 @@ defaults: &defaults
         name: Some Site
         name_html: Test
         logo: none
-        titles: 
+        logo_header: none
+        titles:
            user_assignment: Assignment
     devise:
         secret_key: 'somesuperlongsecretkeyhere'
