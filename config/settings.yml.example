@@ -1,9 +1,9 @@
 defaults: &defaults
-    secret_token: nil
+    secret_token: $APP_SECRET
     lime_url: nil
     admin:
-        email: name@example.com
-        name: Some Admin
+        email: $ADMIN_EMAIL
+        name: $ADMIN_FULL_NAME
     site:
         name: Some Site
         name_html: Test
@@ -11,7 +11,7 @@ defaults: &defaults
         titles: 
            user_assignment: Assignment
     devise:
-        secret_key: 'somesuperlongsecretkeyhere'
+        secret_key: $DEVISE_SECRET
         timeout_in: 60
     ldap:
         host: localhost
