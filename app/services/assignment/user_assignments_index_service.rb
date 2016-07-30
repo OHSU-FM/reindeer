@@ -2,37 +2,48 @@ module Assignment
 
   class UserAssignmentsIndexService
     # provides api to easily index user_assignments along with metadata
-    attr_reader :index
-    attr_reader :survey_types
-
-    def initialize assignment_group, opts={}
-      @user_id = opts[:user_id] if for_user? opts
-      perform assignment_group, opts
+    def initialize assignment_group, params
+      @assignment_group = assignment_group
+      @user_id = params[:user_id] if for_user? params
     end
 
-    def perform assignment_group, opts={}
+    def index
       if @user_id
-        perform_for_user assignment_group
+        get_index
       else
-        assignment_group.survey_assignments.each do |sa|
-          @index << sa.user_assignments
+        idex = []
+        @assignment_group.survey_assignments.each do |sa|
+          idex << sa.user_assignments
         end
-        @index.flatten
+        idex.flatten
       end
+    end
+
+    def survey_types
+      get_ua_collection
+    end
+
+    def recent
+      get_recent
     end
 
     protected
 
-    def for_user? opts
-      opts.has_key?(:user_id) && opts[:user_id].present?
+    def for_user? params
+      params.has_key?(:user_id) && params[:user_id].present?
     end
 
-    def perform_for_user assignment_group
-      @index = assignment_group.user_assignments_for @user_id
-      @survey_types = UACollection.new(@index).survey_types_enum
-        .sort_by(&:downcase)
-      @recent = @survey_types.map do |t|
-          @index.select{|ua|
+    def get_index
+      @assignment_group.user_assignments_for @user_id
+    end
+
+    def get_ua_collection
+      UACollection.new(get_index).survey_types_enum.sort_by(&:downcase)
+    end
+
+    def get_recent
+      get_ua_collection.map do |t|
+          get_index.select{|ua|
           ua.survey_type == t
           }.sort_by(&:created_at).last
       end

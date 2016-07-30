@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531210648) do
+ActiveRecord::Schema.define(version: 20160728230431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,15 +77,30 @@ ActiveRecord::Schema.define(version: 20160531210648) do
   add_index "cohorts", ["user_id"], name: "index_cohorts_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
-    t.string   "body"
-    t.integer  "user_id"
     t.integer  "commentable_id"
     t.string   "commentable_type"
+    t.text     "body"
+    t.string   "flagged_as"
+    t.integer  "user_id",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "compentencies", force: :cascade do |t|
+    t.string   "student_name"
+    t.string   "evaluator"
+    t.string   "rotation_date"
+    t.string   "service"
+    t.integer  "answer"
+    t.string   "compentency_code"
+    t.string   "block_name"
+    t.string   "question"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end
-
-  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
 
   create_table "content_slugs", force: :cascade do |t|
     t.integer "user_id"
@@ -265,6 +280,17 @@ ActiveRecord::Schema.define(version: 20160531210648) do
     t.string   "default_view",        limit: 255
   end
 
+  create_table "student_competencies", force: :cascade do |t|
+    t.string   "student_name"
+    t.integer  "mk1"
+    t.integer  "mk2"
+    t.integer  "mk3"
+    t.integer  "mk4"
+    t.integer  "mk5"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   create_table "survey_assignments", force: :cascade do |t|
     t.boolean  "as_inline",           default: false
     t.string   "title"
@@ -294,12 +320,17 @@ ActiveRecord::Schema.define(version: 20160531210648) do
   end
 
   create_table "user_responses", force: :cascade do |t|
-    t.string  "resp_type"
-    t.string  "title"
-    t.string  "category"
-    t.string  "status",             default: "0"
-    t.text    "content"
-    t.integer "user_assignment_id"
+    t.string   "resp_type"
+    t.string   "title"
+    t.string   "category"
+    t.string   "status",             default: "0"
+    t.text     "content"
+    t.integer  "user_assignment_id"
+    t.string   "completion_target"
+    t.string   "status_explanation"
+    t.string   "owner_status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|

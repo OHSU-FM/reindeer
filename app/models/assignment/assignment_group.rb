@@ -51,7 +51,7 @@ module Assignment
     end
 
     def possible_users
-      assignment_group_template ? assignment_group_template.possible_users : []
+      cohort ? cohort.possible_users : []
     end
 
     def user_ids_enum
@@ -69,6 +69,10 @@ module Assignment
 
     def user_ids
       cohort.user_ids
+    end
+
+    def has_comments?
+      !comments.empty?
     end
 
     protected

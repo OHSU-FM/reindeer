@@ -1,6 +1,10 @@
 <h1><%= Settings.assignments_route_name.titleize.pluralize %></h1>
 
-<%= render "assignment/shared/assignment_nav" %>
+<% if hf_ag_owner_or_higher? current_user, @assignment_group %>
+  <%= render "assignment/shared/assignment_nav" %>
+<% end %>
+
+<hr/>
 
 <div id="assignment-group-<%= @assignment_group.id %>" class="container-fluid assignment-container">
   <div class="fade-in two left-panel left-panel-scroll">
@@ -13,8 +17,7 @@
       <%= render partial: "form_comments" %>
     </div>
   </div>
-
-  <div class="fade-in three right-panel">
+  <div class="fade-in two right-panel">
     <% if @service.index.empty? %>
       <p>Nothing here</p>
     <% else %>

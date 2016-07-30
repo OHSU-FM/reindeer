@@ -27,18 +27,28 @@ FactoryGirl.define do
       end
     end
 
+    trait(:full) do
+      active "Y"
+      after(:create) do |survey|
+        lg = create :lime_group, group_name: "SurveyData", sid: survey.sid
+        lqs = create_list(:lime_question, 4, gid: lg.gid, sid: survey.sid).map {|lq| lq.qid }
+        create_min_survey(survey.sid, lg.gid, lqs)
+        create_min_response(survey.sid, lg.gid, lqs)
+      end
+    end
+
     trait(:with_languagesettings) do
       after(:create) do |survey|
         survey.lime_surveys_languagesettings << FactoryGirl.build(:lime_surveys_languagesetting)
       end
     end
 
-    factory :lime_survey_full, traits: [:with_tables, :with_response]
+    factory :lime_survey_full, traits: [:full]
   end
 end
 
 
-def create_min_response sid = 12345, opts={}
+def create_min_response sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039], opts={}
   topts = opts[:tokens] || {}
   topts[:firstname] ||= :fname
   topts[:lastname] ||= :lname
@@ -60,13 +70,16 @@ def create_min_response sid = 12345, opts={}
   query = "
     INSERT INTO #{LimeExt.table_prefix}_survey_#{sid}
     (token, submitdate, lastpage, startlanguage,
-      \"#{sid}X123X6036\",
-      \"#{sid}X123X6037\",
-      \"#{sid}X123X6038\",
-      \"#{sid}X123X6039\")
+      \"#{sid}X#{gid}X#{lqs[0]}\",
+      \"#{sid}X#{gid}X#{lqs[1]}\",
+      \"#{sid}X#{gid}X#{lqs[2]}\",
+      \"#{sid}X#{gid}X#{lqs[3]}\")
     VALUES('#{ropts[:token]}', '#{ropts[:submitdate]}', #{ropts[:lastpage]},
-        '#{ropts[:startlanguage]}', '#{ropts[:col1]}', '#{ropts[:col2]}',
-        #{ropts[:col3]}, '#{ropts[:col4]}');
+        '#{ropts[:startlanguage]}',
+        '#{ropts[:col1]}',
+        '#{ropts[:col2]}',
+        '#{ropts[:col3]}',
+        '#{ropts[:col4]}');
 
     INSERT INTO #{LimeExt.table_prefix}_tokens_#{sid} (
       firstname, lastname, email, token, language, attribute_1, attribute_2
@@ -77,7 +90,7 @@ def create_min_response sid = 12345, opts={}
 end
 
 
-def create_min_survey sid = 12345
+def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
   query = "
   CREATE SEQUENCE #{LimeExt.table_prefix}_survey_#{sid}_id_seq1
       START WITH 1
@@ -96,10 +109,10 @@ def create_min_survey sid = 12345
       submitdate timestamp without time zone,
       lastpage integer,
       startlanguage character varying(20) NOT NULL,
-      \"#{sid}X123X6036\" numeric(30,10),
-      \"#{sid}X123X6037\" timestamp without time zone,
-      \"#{sid}X123X6038\" character varying(1),
-      \"#{sid}X123X6039\" character varying(255)
+      \"#{sid}X#{gid}X#{lqs[0]}\" numeric(30,10),
+      \"#{sid}X#{gid}X#{lqs[1]}\" timestamp without time zone,
+      \"#{sid}X#{gid}X#{lqs[2]}\" character varying(1),
+      \"#{sid}X#{gid}X#{lqs[3]}\" character varying(255)
   );
 
 
@@ -127,7 +140,7 @@ def create_min_survey sid = 12345
     sent character varying(17) DEFAULT 'N'::character varying,
     remindersent character varying(17) DEFAULT 'N'::character varying,
     remindercount integer DEFAULT 0,
-    completed character varying(17) DEFAULT 'N'::character varying,
+    completed character varying(17) DEFAULT 'Y'::character varying,
     usesleft integer DEFAULT 1,
     validfrom timestamp without time zone,
     validuntil timestamp without time zone,

@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :lime_question do
-    qid { rand(1000..9999) }
-    question "a test question"
+    question { Faker::Lorem.sentence(3) }
+    title { Faker::Lorem.word }
     question_order 0
-    lime_group { LimeGroup.first || create(:lime_group) }
+    lime_group
   end
 end

@@ -1,15 +1,30 @@
 class Assignment::UserAssignmentsController < Assignment::AssignmentBaseController
+  layout 'full_width_height_margins'
+  respond_to :html
+  authorize_resource
+
   def index
-    @assignments = Assignment::ListAssignmentsService.new(current_user, params[:username])
-    respond_with @assignments
   end
 
   def show
+    @user_assignment = Assignment::UserAssignment.find params[:id]
+    if @user_assignment.is_shallow?
+      redirect_to assignment_user_response_path(@user_assignment.user_responses.first)
+    end
+    @assignment_groups = current_user.active_assignment_groups
+    @assignment_group = @user_assignment.assignment_group
   end
 
   def new
     @user_assignment = Assignment::UserAssignment.new
     @assignment_group = Assignment::AssignmentGroup.find params[:assignment_group_id]
+  end
+
+  def fetch_compare
+    @compare = Assignment::UserAssignment.find(params[:user_assignment_id])
+    respond_to do |format|
+      format.js
+    end
   end
 
   def create

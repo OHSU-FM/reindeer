@@ -1,38 +1,60 @@
 <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
 <% ua.ur_categories.each do |category, responses| %>
   <div class="panel panel-default">
-    <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
+    <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') + ua.id.to_s %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
       <div class="panel-heading" role="tab" id="heading<% category.delete(' ') %>">
         <div class="row">
-          <div class="col-md-6">
-            <%= category.titleize %>
-          </div>
-          <div class="col-md-4">
-            <%= hf_category_status_label(responses).html_safe %>
-          </div>
+          <% if hf_show_ur_status? responses, current_user %>
+            <div class="col-md-6">
+              <%= category.titleize %>
+            </div>
+            <div class="col-md-4">
+              <%= hf_category_status_label(responses).html_safe %>
+            </div>
+          <% else %>
+            <div class="col-md-4">
+              <%= category.titleize %>
+            </div>
+            <div class="col-md-6">
+              <span class="label label-default">Leave statuses to continue</span>
+            </div>
+          <% end %>
           <div class="col-md-2">
-            <i class='fa fa fa-comments-o'></i>
+            <% if responses.collect{|r| r.has_comments?}.any? %>
+              <i class='fa fa fa-comments-o'></i>
+            <% end %>
           </div>
        </div>
       </div>
     </a>
   </div>
-  <div id="collapse<%= category.delete(' ')%>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(' ') %>">
+  <div id="collapse<%= category.delete(' ') + ua.id.to_s %>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(' ') + ua.id.to_s %>">
     <ul class="list-group">
       <% responses.each do |ur| %>
       <li class="list-group-item">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-5">
             <%= link_to ur.title, assignment_user_response_path(ur) %>
           </div>
-          <div class="col-md-4">
-            <span class="label label-<%= hf_status_label_color(ur) %>"><%= ur.status %></span>
+          <div class="col-md-5">
+            <div class="col-md-<%= !ur.owner_status.nil? ? "6" : "12" %>">
+              <% if hf_show_ur_status? ur, current_user %>
+                <span class="label label-<%= hf_label_color(ur, :status) %>"><%= ur.status %></span>
+              <% end %>
+            </div>
+            <div class="col-md-<%= !ur.owner_status.nil? ? "6" : "12" %>">
+              <% unless ur.owner_status.nil? %>
+                <span class="label label-<%= hf_label_color(ur, :owner_status) %>"><%= ur.owner_status %></span>
+              <% end %>
+            </div>
           </div>
-          <div class="col-md-2">
-            <%= link_to assignment_user_response_comments_path(ur), data: { toggle: :modal } do %>
-              <i class='fa fa fa-comments-o'></i>
-            <% end %>
-          </div>
+          <% if ur.has_comments? %>
+            <div class="col-md-2">
+              <%= link_to assignment_user_response_comments_path(ur), data: { toggle: :modal } do %>
+                <i class='fa fa fa-comments-o'></i>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </li>
       <% end %>

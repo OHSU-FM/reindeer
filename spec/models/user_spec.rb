@@ -48,6 +48,35 @@ describe User do
 
       expect(user.assignment_groups.count).to eq 1
     end
+
+    it "#display_name" do
+      u = create :user
+      u_nil = create :user, full_name: nil, username: "test"
+      test_str = ["first last", "last, first", "first middle last",
+                  "last, first middle", "first last-last", "last-last, first"
+      ]
+      key = ["first last", "first last", "first middle last",
+             "first middle last", "first last-last", "first last-last"
+      ]
+
+      expect(u.display_name).to eq u.full_name
+      expect(u_nil.display_name).to eq "test"
+      test_str.each_with_index {|str, i|
+        expect(User.new.display_name str).to eq key[i]
+      }
+    end
+
+    it "#unstatused_user_responses?" do
+      (1..3).to_a.each do |i|
+        ua = create :user_assignment, :with_user_responses, ur_count: i, owner_status: nil
+        expect(ua.user.unstatused_user_responses_count).to eq i
+      end
+
+      ua = create :user_assignment
+      ur1 = create :user_response, user_assignment: ua
+      ur2 = create :user_response, owner_status: nil, user_assignment: ua
+      expect(ua.user.unstatused_user_responses_count).to eq 1
+    end
   end
 
 end

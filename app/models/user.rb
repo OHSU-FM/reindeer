@@ -123,6 +123,17 @@ class User < ActiveRecord::Base
       self[:full_name] || self[:email]
     end
 
+    def display_name name=full_name
+      comma_re = /^\s*(\w{1,20} *[^,]*)+,\s+(\w{1,20}\s*)+$/ # last, first
+      if name.nil?
+        username
+      elsif comma_re === name
+        name.split(", ").reverse.join(" ")
+      else
+        name
+      end
+    end
+
     def is_ldap?
         self.is_ldap
     end
@@ -324,6 +335,13 @@ class User < ActiveRecord::Base
       return @active_assignment_groups if defined? @active_assignment_groups
       @active_assignment_groups = assignment_groups.reject { |ag| ag.users.empty? }
       return @active_assignment_groups
+    end
+
+    # number (int) of ur where owner_status == nil
+    def unstatused_user_responses_count
+      user_assignments.map{|ua|
+        ua.user_responses.where(owner_status: nil).count
+      }.sum
     end
 
 end

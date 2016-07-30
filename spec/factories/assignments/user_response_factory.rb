@@ -1,7 +1,11 @@
 FactoryGirl.define do
   factory :user_response, class: Assignment::UserResponse do
     association :user_assignment
+    title { Faker::Hacker.ingverb }
     content { Faker::Hacker.say_something_smart }
+    category "test user_response"
+    completion_target { Faker::Date.backward(14) }
+    owner_status { Faker::Lorem.sentence(3) }
 
     after(:create) do |ur|
       ua = ur.user_assignment

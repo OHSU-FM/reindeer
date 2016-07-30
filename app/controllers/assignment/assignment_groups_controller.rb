@@ -1,5 +1,5 @@
 class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseController
-  layout 'full_width_height_margins'
+  layout "full_width_height_margins"
   respond_to :html
   authorize_resource
   before_filter :load_resource, only: [:show, :edit, :update, :destroy]
@@ -13,9 +13,17 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def show
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
-    @assignment_groups = current_user.active_assignment_groups
+    @assignment_groups = if current_user.active_assignment_groups.count > 1
+                           current_user.active_assignment_groups
+                         else
+                           nil
+                         end
     unless params[:user_id]
-      params[:user_id] = @assignment_group.user_ids.find { |uid| !uid.blank? }.to_s
+      params[:user_id] = if @assignment_group.user_ids.include? current_user.id
+        current_user.id
+      else
+        @assignment_group.user_ids.sort.find{|id| !id.blank?}.to_s
+      end
     end
     @user = User.find(params[:user_id])
     @service = Assignment::UserAssignmentsIndexService.new @assignment_group, params

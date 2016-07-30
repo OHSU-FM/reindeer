@@ -1,9 +1,14 @@
 class Assignment::UserAssignment < ActiveRecord::Base
+  include ModelUtils
+
   attr_accessible :user_id, :survey_assignment_id, :lime_token_tid
   belongs_to :user
   belongs_to :survey_assignment
-  has_one :lime_survey, :through=>:survey_assignment
+  has_one :lime_survey, through: :survey_assignment
   has_many :user_responses, dependent: :destroy
+  has_many :lime_groups, through: :lime_survey
+  has_many :lime_questions, through: :lime_groups
+  validates_presence_of :lime_survey
   validates_presence_of :token
   validates_presence_of :user
 
@@ -116,16 +121,19 @@ class Assignment::UserAssignment < ActiveRecord::Base
   end
 
   def survey_type
-    @survey_type ||= get_meta_attribute("SurveyType")
+    @survey_type ||= get_meta_attribute "SurveyType"
   end
 
   def status_question
     @status_question ||= get_meta_attribute "StatusQuestion"
   end
 
+  def status_lime_question
+    lime_questions.select{|lq| lq.title.include? status_question}.first
+  end
+
   # true if user_assignment has only one user_response
   def is_shallow?
-    user_responses # have to call this first or it comes through nil
     user_responses.count > 1 ? false : true
   end
 
@@ -137,13 +145,13 @@ class Assignment::UserAssignment < ActiveRecord::Base
     return hash
   end
 
-  # returns hash of lime answer code => status text for a user_assignment
-  def status_hash
-    return @status_hash if defined? @status_hash
-
-    lq = LimeQuestion.where(sid: sid, title: status_question).first
-    @status_hash = Hash[lq.lime_answers.map {|la| [la.code, la.answer] }]
-    return @status_hash
+  # returns hash of lime answer code => status text for a lime_question
+  def status_hash lq
+    if lq
+      Hash[lq.lime_answers.map {|la| [la.code, la.answer] }]
+    else
+      {}
+    end
   end
 
   def user_responses
@@ -160,33 +168,21 @@ class Assignment::UserAssignment < ActiveRecord::Base
 
   def build_user_responses
     g_title, ra_title = group_and_title
-    resps = gathered_responses.dup
-    create_list= []
-    resps.each do |category, lol|
-      lol.each do |list|
-        create_list<< [g_title, ra_title, category, *list]
+    create_list = []
+    gathered_responses.each do |category, loh|
+      loh.each do |h|
+        next if h.all? {|k,v| v.blank? }
+        new_h = { "resp_type" => ra_title,
+                  "category" => category,
+                  "user_assignment_id" => self.id
+        }.merge(h)
+        Assignment::UserResponse.new.populate_from_hash(new_h).save!
       end
     end
-    # have to iterate twice bc create fails otherwise for some reason
-    create_list.each do |f|
-      resp_type = f.shift()
-      ra_title = f.shift()
-      category = f.shift()
-      status = f.pop()
-      content = f.pop()
-      title = f.pop() || ra_title
-      Assignment::UserResponse.create(
-        resp_type: resp_type,
-        category: category,
-        title: title,
-        content: content,
-        status: status,
-        user_assignment_id: id
-      )
-    end
+    Assignment::UserResponse.where(user_assignment: self)
   end
 
-  # generates row for each valid line of user_assignment.response_data
+  # generates hash of hashes where each subhash will be a user_response
   def gathered_responses
     h = Hash.new
     lime_groups.each do |lg|
@@ -194,20 +190,35 @@ class Assignment::UserAssignment < ActiveRecord::Base
         group_name = lg.group_name.to_s
         h[group_name] = []
         lg.lime_questions.each do |lq|
-          row = []
-          response_key = "#{lg.sid}X#{lg.gid}X#{lq.qid}"
-          response_data.each do |key, value|
-            if key.include? response_key
-              if status_hash.keys.include? value
-                row << status_hash[value].to_s
+          q_list = []
+          if lq.has_sq?
+            lq.sub_questions.each do |sq|
+              row = Hash.new
+              value = response_data["#{lq.sid}X#{lq.gid}X#{lq.qid.to_s + sq.title}"]
+              unless value.blank?
+                if lq.title.include? status_question
+                  row.merge!(Hash[lq.title, status_hash(lq)[value]])
+                else
+                  row.merge!(Hash[lq.title, value])
+                end
+              end
+              q_list << strip_hash_values!(row) unless row.empty?
+            end
+          else
+            row = Hash.new
+            value = response_data["#{lq.sid}X#{lq.gid}X#{lq.qid}"]
+            unless value.blank?
+              if lq.title.include? status_question
+                row.merge!(Hash[lq.title, status_hash(lq)[value]])
               else
-                row << value unless value.blank?
+                row.merge!(Hash[lq.title, value])
               end
             end
+            q_list << strip_hash_values!(row) unless row.empty?
           end
-          h[group_name] << row unless row.empty?
+          h[group_name] << q_list unless q_list.empty?
         end
-        h[group_name] = h[group_name].transpose
+        h[group_name] = h[group_name].transpose.collect{|e| e.inject(&:merge)}
       end
     end
     h

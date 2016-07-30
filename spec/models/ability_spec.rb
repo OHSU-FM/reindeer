@@ -4,11 +4,44 @@ require 'cancan/matchers'
 describe Ability do
   subject(:ability) { Ability.new(user) }
 
-  describe "assignment_group" do
+  describe "User" do
+    let(:user) { create :user }
+
+    describe "actions" do
+      it { is_expected.to be_able_to(:update, user) }
+      it { is_expected.to be_able_to(:read, user) }
+      it { is_expected.not_to be_able_to(:create, user) }
+      it { is_expected.not_to be_able_to(:destroy, user) }
+    end
+  end
+
+  describe "AssignmentGroupTemplate" do
+    let(:agt) { create :assignment_group_template }
+
+    context "coach user" do
+      # !exist views for agt
+      let(:user) { create :coach }
+
+      describe "actions" do
+        it { is_expected.not_to be_able_to(:crud, agt) }
+      end
+    end
+
+    context "participant user" do
+      # !exist views for agt
+      let(:user) { create :student }
+
+      describe "actions" do
+        it { is_expected.not_to be_able_to(:crud, agt) }
+      end
+    end
+  end
+
+  describe "AssignmentGroup" do
     let(:ag) { create :assignment_group, :with_full_template,
                cohort: create(:cohort, :with_users, owner: user )}
 
-    describe "coach" do
+    context "coach user" do
       let(:user) { create :coach }
 
       describe "actions" do
@@ -30,7 +63,7 @@ describe Ability do
       end
     end
 
-    describe "participant" do
+    context "participant user" do
       let(:coach) { create :coach }
       let(:ag) { create :assignment_group, :with_full_template,
                  cohort: create(:cohort, :with_users, owner: coach )}
@@ -39,8 +72,8 @@ describe Ability do
       describe "actions" do
         it { is_expected.to be_able_to(:list, ag) }
         it { is_expected.to be_able_to(:read, ag) }
-        it { is_expected.not_to be_able_to(:comment_on, ag)}
-        it { is_expected.not_to be_able_to(:alter, ag)}
+        it { is_expected.not_to be_able_to(:comment_on, ag) }
+        it { is_expected.not_to be_able_to(:alter, ag) }
       end
 
       describe "comments" do
@@ -55,7 +88,7 @@ describe Ability do
 
   describe "user_assignment" do
 
-    describe "coach" do
+    context "coach user" do
       let(:user) { create :coach }
       let(:ag) { create :assignment_group, :with_full_template,
                  cohort: create(:cohort, owner: user )}
@@ -66,10 +99,11 @@ describe Ability do
         it { is_expected.not_to be_able_to(:alter, ua) }
         it { is_expected.to be_able_to(:list, ua) }
         it { is_expected.to be_able_to(:read, ua) }
+        it { is_expected.to be_able_to(:fetch_compare, ua) }
       end
     end
 
-    describe "participant" do
+    context "participant user" do
       let(:coach) { create :coach }
       let(:cohort) { create :cohort, :with_users, owner: coach}
       let(:ag) { create :assignment_group, :with_full_template,
@@ -82,13 +116,14 @@ describe Ability do
         it { is_expected.not_to be_able_to(:alter, ua) }
         it { is_expected.to be_able_to(:list, ua) }
         it { is_expected.to be_able_to(:read, ua) }
+        it { is_expected.to be_able_to(:fetch_compare, ua) }
       end
     end
   end
 
-  describe "user_response" do
+  describe "UserResponse" do
 
-    describe "coach" do
+    context "coach user" do
       let(:user) { create :coach }
       let(:ag) { create :assignment_group, :with_full_template,
                cohort: create(:cohort, :with_users, owner: user )}
@@ -100,6 +135,7 @@ describe Ability do
         it { is_expected.to be_able_to(:comment_on, ur) }
         it { is_expected.to be_able_to(:list, ur) }
         it { is_expected.to be_able_to(:read, ur) }
+        it { is_expected.to be_able_to(:set_owner_status, ur) }
         it { is_expected.not_to be_able_to(:alter, ur) }
       end
 
@@ -115,7 +151,7 @@ describe Ability do
       end
     end
 
-    describe "participant" do
+    context "participant user" do
       let(:coach) { create :coach }
       let(:ag) { create :assignment_group, :with_full_template,
                cohort: create(:cohort, :with_users, owner: coach )}
@@ -128,6 +164,7 @@ describe Ability do
         it { is_expected.to be_able_to(:comment_on, ur) }
         it { is_expected.to be_able_to(:list, ur) }
         it { is_expected.to be_able_to(:read, ur) }
+        it { is_expected.not_to be_able_to(:set_owner_status, ur) }
         it { is_expected.not_to be_able_to(:alter, ur) }
       end
 
@@ -140,6 +177,19 @@ describe Ability do
         it { is_expected.to be_able_to(:create, Comment.new(commentable: ur)) }
         it { is_expected.to be_able_to(:destroy, comment) }
         it { is_expected.not_to be_able_to(:destroy, other_comment) }
+      end
+    end
+  end
+
+  describe "Dashboard" do
+
+    context "logged in user" do
+      let(:user) { create :user, :with_dashboard }
+
+      describe "actions" do
+        let(:dash) { user.dashboard }
+
+        it { is_expected.to be_able_to(:crud, dash) }
       end
     end
   end

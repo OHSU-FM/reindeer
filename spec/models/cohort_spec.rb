@@ -29,7 +29,6 @@ describe Cohort do
     it "#users should return list of users" do
       c = build :cohort, :with_users
 
-      expect(c.users).to be_instance_of(User::ActiveRecord_Relation)
       c.users.each do |u|
         expect(u).to be_instance_of(User)
       end
@@ -55,9 +54,7 @@ describe Cohort do
       u = build :user, permission_group: pg, cohort: c
       pg.users << u
 
-      expect(c.user_ids_enum).to be_instance_of(Array)
       expect(c.user_ids_enum).to eq [[u.title, u.id]]
     end
   end
-
 end
