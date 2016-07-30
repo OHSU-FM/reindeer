@@ -2,6 +2,7 @@ version: '2'
 services:
   web:
     image: nginx:1.11.1
+    restart: on-failure:10
     volumes:
         - ./data/lime_survey/html:/code
         - ./data/logs/web:/var/log/nginx
@@ -12,6 +13,7 @@ services:
         - lime
         - reindeer
   lime:
+    restart: on-failure:10
     build: 
         context: .
         dockerfile: Dockerfile_lime_survey
@@ -30,6 +32,7 @@ services:
     ports:
         - 9000
   db: 
+    restart: on-failure:10
     image: postgres:9.5.3
     volumes:
         - ./data/db/data:/var/lib/postgresql/data
@@ -37,6 +40,7 @@ services:
     ports:
         - 5432
   reindeer:
+    restart: on-failure:10
     build: 
         context: .
         dockerfile: Dockerfile_reindeer

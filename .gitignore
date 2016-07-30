@@ -39,6 +39,10 @@ bower.json
 # Ignore pow environment settings
 .powenv
 
+# docker, reindeer 
+.bash_history
+.pry_history
+
 # Docker 
 .dockerenv
 /data/db
