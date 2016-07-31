@@ -8,7 +8,8 @@ set -e
 # $LIME_SHA256 
 ##
 
-APPDIR=/code
+APPDIR=/code/survey
+mkdir -p $APPDIR
 FILE=/tmp/downloads/limesurvey.tar.gz
 
 # Download tarfile if it does not exist
@@ -22,5 +23,8 @@ echo "$LIME_SHA256 $FILE" | sha256sum -c --strict
 # Extract tar file
 tar --strip-components=1 -C $APPDIR -xvzf $FILE
 
+cp /mnt/web/index.html /code
+
 # Change directory ownership or php will complain
+chown -R www-data:www-data /code
 chown -R www-data:www-data $APPDIR

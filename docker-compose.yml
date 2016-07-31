@@ -10,6 +10,7 @@ services:
     ports:
         - 80
     links:
+        - db
         - lime
         - reindeer
   lime:
@@ -20,6 +21,7 @@ services:
     volumes:
         - ./data/lime_survey/html:/code
         - ./data/lime_survey/downloads:/tmp/downloads
+        - ./build/web:/mnt/web:ro
         - ./build/lime:/docker:ro
     env_file: .dockerenv
     environment:
@@ -27,10 +29,10 @@ services:
         LIME_BIN_URL: "https://github.com/LimeSurvey/LimeSurvey/archive/2.06_plus_160123.tar.gz"
         # SHA256 for verifying validity of lime tar.gz
         LIME_SHA256: 499f8557701175d2ee3586184b6f88fa755ebf1113e29da3e8e3b2a65f263097
-    links:
-        - db
     ports:
         - 9000
+    links:
+        - db
   db: 
     restart: on-failure:10
     image: postgres:9.5.3
@@ -54,3 +56,4 @@ services:
         - 3000
     links:
         - db
+    command: ./bin/thin-start

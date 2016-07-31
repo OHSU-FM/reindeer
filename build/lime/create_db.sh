@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-APPDIR=/code
+APPDIR=/code/survey
 cd /docker
 envsubst < 'config_pgsql.php.template' > $APPDIR/application/config/config.php
 cd $APPDIR/application/commands
