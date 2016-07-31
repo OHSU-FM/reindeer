@@ -6,14 +6,13 @@ if [ ! ./.dockerenv ]; then
 fi
 
 echo "Initializing containers "
-docker-compose build
-echo "Initializing lime_survey"
-docker-compose run lime /docker/init.sh
-echo "Initializing reindeer"
-docker-compose run reindeer /docker/init.sh
-
-docker-compose stop
 docker-compose up -d
+echo "TODO: waiting for database, sleep 10"
+sleep 10
+echo "Initializing lime_survey"
+docker-compose exec lime /docker/init.sh
+echo "Initializing reindeer"
+docker-compose exec reindeer /docker/init.sh
 
 echo "
 

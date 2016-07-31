@@ -23,4 +23,4 @@ echo "$LIME_SHA256 $FILE" | sha256sum -c --strict
 tar --strip-components=1 -C $APPDIR -xvzf $FILE
 
 # Change directory ownership or php will complain
-chown -R www-data:www-data $APPDIR/tmp
+chown -R www-data:www-data $APPDIR
