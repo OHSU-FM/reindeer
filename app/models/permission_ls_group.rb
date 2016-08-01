@@ -71,21 +71,7 @@ class PermissionLsGroup < ActiveRecord::Base
       end
 
       field :lime_survey do
-        associated_collection_cache_all false
-        associated_collection_scope do
-          plg = bindings[:object]
-          Proc.new { |scope|
-            if plg.present?
-              scope = scope.
-                where('sid = ? OR sid not in (?)',
-                      plg.lime_survey.sid,
-                      plg.permission_group.lime_surveys.map{|ls|
-                        ls.sid})
-            else
-              scope.with_role_aggregate
-            end
-          }
-        end
+        LimeSurvey.with_data_table.map{|ls| ls.title}.sort_by {|e| e[0] }
       end
       field :enabled
       field :view_raw

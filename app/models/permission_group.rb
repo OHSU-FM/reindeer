@@ -28,7 +28,6 @@ class PermissionGroup < ActiveRecord::Base
       field :users
       field :permission_ls_groups do
         label 'Surveys'
-        nested_form false
       end
       field :pinned_survey_group_titles do
         label "Pinned Survey Groups"
