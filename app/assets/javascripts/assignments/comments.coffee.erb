@@ -1,4 +1,5 @@
 $ ->
+  # create
   $(".ajax-comments")
     .on "ajax:beforeSend", (evt, xhr, settings) ->
       $(this).find(".form-control")
@@ -10,3 +11,12 @@ $ ->
         .removeAttr("disabled", "disabled")
         .val("");
       $(data).insertAfter($(".comments-block").children().last()).show("fast");
+
+  # destroy
+  $(document)
+    .on "ajax:beforeSend", ".comment-row", ->
+      $(this).fadeTo("fast", 0.5);
+    .on "ajax:success", ".comment-row", ->
+      $(this).hide("hide");
+    .on "ajax:error", ".comment-row", ->
+      $(this).fadeTo("fast", 1);
