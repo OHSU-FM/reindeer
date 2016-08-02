@@ -27,6 +27,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
     end
     @user = User.find(params[:user_id])
     @service = Assignment::UserAssignmentsIndexService.new @assignment_group, params
+    @new_comment = Comment.new(commentable: @assignment_group, user: current_user)
   end
 
   def new

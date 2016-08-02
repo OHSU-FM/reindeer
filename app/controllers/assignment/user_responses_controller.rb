@@ -8,6 +8,7 @@ class Assignment::UserResponsesController < ApplicationController
     params[:user_id] = @user_response.user.id.to_s
     @assignment_group = @user_response.assignment_group
     @assignment_groups = current_user.active_assignment_groups
+    @new_comment = Comment.new(commentable: @user_response, user: current_user)
   end
 
   def index

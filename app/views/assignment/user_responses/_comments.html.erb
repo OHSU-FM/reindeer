@@ -1,8 +1,12 @@
 <%= stylesheet_link_tag "comments" %>
 <div class="user-response-comments">
-  <div class="row content">
-    <%= render partial: "comments/comments", locals: {commentable: @user_response} %>
-  </div>
+  <% if @user_response.has_comments? %>
+    <div class="row content comments-block">
+      <%= render partial: "comments/comments", locals: {commentable: @user_response} %>
+    </div>
+  <% else %>
+    <div class="row content no-comments">No comments yet.</div>
+  <% end %>
   <div class="row comments-box">
     <%= render partial: "comments/form", locals: {commentable: @user_response} %>
   </div>

@@ -1,5 +1,5 @@
 <%= stylesheet_link_tag 'comments' %>
-<div class="assignment-group-comments">
+<div class="assignment-group-comments comments-block">
   <%= render partial: 'comments/comments', locals: {commentable: @assignment_group} %>
 </div>
 <%= render partial: 'comments/form', locals: {commentable: @assignment_group} %>

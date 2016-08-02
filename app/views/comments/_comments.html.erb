@@ -8,8 +8,4 @@
       locals: { commentable: commentable, comment: comment } %>
     <% end %>
   <% end %>
-<% else %>
-  <% if can? :comment_on, commentable %>
-    <div class="no-comments">No comments yet.</div>
-  <% end %>
 <% end %>
