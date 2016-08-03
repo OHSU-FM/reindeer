@@ -20,11 +20,12 @@ class Dashboard < ActiveRecord::Base
     end
 
     THEMES = [
+        'theme-waterfront-fog',
         'theme-oregon-coast',
+        'theme-ncg-2070',
         'theme-tillikum',
         'theme-mt-hood',
         'theme-bokeh',
-        'theme-starry-night',
         'theme-sunset',
         'theme-glass',
         'theme-fog',

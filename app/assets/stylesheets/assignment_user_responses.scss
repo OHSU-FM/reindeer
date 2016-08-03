@@ -1,0 +1,87 @@
+// Place all the styles related to the assignment/user_response controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "assignment_assignment_groups";
+
+.back-to-assignment-root {
+  color: inherit;
+  text-decoration: inherit;
+
+  &:hover, :active {
+    color: darken(#777777, 10%);
+    text-decoration: inherit;
+  }
+}
+
+.user-response-comments {
+  display: flex;
+  height: 100%;
+  flex-flow: column;
+}
+
+.user-response-comments .row {
+  flex: 0 1 auto;
+  margin-left: 0px;
+}
+
+.user-response-comments .row.header {
+  flex: 0 1 auto;
+}
+
+.user-response-comments .row.content {
+  flex: 1 1 auto;
+  padding-top: 15px;
+}
+
+.user-response-comments .row.comments-box {
+  flex: 0 1 auto;
+  border-top: 1px solid #eeeeee;
+
+  .comments-input {
+    margin-left: 20px;
+    color: lightgrey;
+  }
+}
+
+.user-response-comments hr {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.user-response-comments h3 {
+  margin-bottom: 0px;
+}
+
+.user-response-title {
+  text-align: center;
+}
+
+.big-icon {
+  font-size: 128px;
+}
+
+.ua-compare-menu-float {
+  float: right;
+}
+
+.nav.nav-tabs.pad-top{
+  padding-top: 32px;
+}
+
+@media only screen and (min-width : 768px) {
+  .is-table-row {
+    display: table;
+    width: 100%;
+    padding-left: -15px;
+    padding-right: -15px;
+  }
+  .is-table-row [class*="col-"] {
+    float: none;
+    display: table-cell;
+    vertical-align: bottom;
+  }
+}
+
+#assignment-nav-toggle {
+  float: right;
+}

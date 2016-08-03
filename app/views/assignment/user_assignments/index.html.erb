@@ -1,34 +1,28 @@
-<%- model_class = Assignment::UserAssignment -%>
-<div class="page-header">
-  <h2><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h2>
+<ul class="nav nav-tabs" id="user-assignment-tabs">
+  <% @service.survey_types.each_with_index do |st, i| %>
+    <li class=<%= "active" if i == 0 %>>
+      <a href="#<%= st.to_s %>" data-toggle="tab"><%= st.pluralize.titleize %></a>
+    </li>
+  <% end %>
+</ul>
+<div class="tab-content">
+  <% @service.survey_types.each_with_index do |st, i| %>
+  <div class="tab-pane fade in <%= "active" if i == 0 %>" id="<%= st.to_s %>">
+    <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
+      <% @service.recent.each do |ua| %>
+        <% if ua.completed? %>
+          <% if ua.survey_type == st %>
+            <% if ua.is_shallow? %>
+              <%= render :partial => "assignment/user_assignments/shallow_row", locals: { ua: ua } %>
+            <% else %>
+              <%= render :partial => "assignment/user_assignments/deep_rows", locals: { ua: ua } %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= ua.status_str %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
 </div>
-<table class='table table-hover table-striped table-condensed'>
-    <tbody>
-        <tr>
-            <td><a href='#'>Area of focus exercise</a></td>
-            <td><span class='label label-primary'>Complete</span></td>
-            <td>
-                <%= link_to assignment_assignment_comments_path(user_assignment_id: 1),
-                        data: {toggle: :modal} do %>
-                    <i class='fa fa-2x fa-comments-o'>1</i>
-                <% end %>
-            </td>
-        </tr>
-        <tr>
-            <td><a href='#'>Create list of ideas</a></td>
-            <td><span class='label label-success'>Started</span></td>
-            <td><i class='fa fa-2x fa-comments-o'>3</i></td>
-        </tr>
-        <tr>
-            <td><a href='#'>Discuss ideas with mentor</a></td>
-            <td><span class='label label-default'>Not started</span></td>
-            <td><i class='fa fa-comments-o'>4</i></td>
-        </tr>
-        <tr>
-            <td><a href='#'>Plan goals to accomplish ideas</a></td>
-            <td><span class='label label-default'>Not started</span></td>
-            <td><i class='fa fa-comments-o'>9</i></td>
-        </tr>
-    </tbody>
-</table>
-

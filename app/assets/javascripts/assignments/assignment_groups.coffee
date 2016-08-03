@@ -1,11 +1,7 @@
-$(document).ready ->
-    return if $('body').attr('id') != 'assignment_groups'
+@Assignments.AssignmentGroup = {}
 
-    $('.assignment-group-user-ids').select2();
-    $('.assignment-group-user-ids').change (e)->
-        $(this).parent('form').trigger('submit.rails');
+$.fn.modal.Constructor::enforceFocus = ->
 
-    window.simplemde = new SimpleMDE({ element: document.getElementById("MyID") });
-
-
-
+$ ->
+  $('.comment-row, .sys-comment-row').hover ->
+    $(this).children('.comment-delete').toggle()

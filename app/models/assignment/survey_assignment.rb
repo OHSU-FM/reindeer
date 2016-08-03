@@ -1,7 +1,7 @@
 ##
 # the link between a survey
 module Assignment
-class SurveyAssignment < ActiveRecord::Base
+  class SurveyAssignment < ActiveRecord::Base
     attr_accessible :lime_survey_sid, :assignment_group_id,
       :title, :gather_user_tokens, :user_assignments_attributes, :as_inline
     attr_accessor :gather_user_tokens
@@ -28,33 +28,38 @@ class SurveyAssignment < ActiveRecord::Base
     after_validation :do_gather_user_tokens
 
     rails_admin do
-        field :title do
-            required false
-        end
-        field :assignment_group
-        field :lime_survey do
-          associated_collection_cache_all false
-          associated_collection_scope do
-            sas = bindings[:object]
-            Proc.new { |scope|
+      field :title do
+        required false
+        help "Defaults to LimeSurvey.title"
+      end
+      field :assignment_group
+      field :lime_survey do
+        associated_collection_cache_all false
+        associated_collection_scope do
+          sas = bindings[:object]
+          Proc.new { |scope|
+            if sas
               if sas.assignment_group.present?
                 sas.assignment_group.lime_surveys
               end
-            }
-          end
-        end
-        field :gather_user_tokens, :boolean
-        field :as_inline, :boolean do
-          help 'Show inline form for assignment'
-        end
-        edit do
-          field :gather_user_tokens do
-            help 'Scan "users" table for email addresses that are present in the tokens table for this survey.'
-            read_only do
-              bindings[:object].new_record?
+            else
+              LimeSurvey.all
             end
+          }
+        end
+      end
+      field :gather_user_tokens, :boolean
+      field :as_inline, :boolean do
+        help 'Show inline form for assignment'
+      end
+      edit do
+        field :gather_user_tokens do
+          help 'Scan "users" table for email addresses that are present in the tokens table for this survey.'
+          read_only do
+            bindings[:object].new_record?
           end
         end
+      end
     end
 
     def lime_survey_enum
@@ -65,7 +70,7 @@ class SurveyAssignment < ActiveRecord::Base
     # Set the default title if one is not set during update
     def do_default_title
       if title.blank? && lime_survey_sid.present?
-          self[:title] = lime_survey.title
+        self[:title] = lime_survey.title
       end
     end
 
@@ -78,6 +83,18 @@ class SurveyAssignment < ActiveRecord::Base
 
       ActiveRecord::Base.transaction do
 
+        if user_assignments
+          # gather old comments for transfer to new assignments
+          comment_hash = {}
+          user_assignments.each do |ua|
+            ua.user_responses.each do |ur|
+              next if !ur.has_comments? || ur.empty?
+              ur.comments.each do |c|
+                comment_hash[[ur.title, ur.category, ur.status]] = c.id
+              end
+            end
+          end
+        end
         # Remove all old assignments
         user_assignments.delete_all
 
@@ -103,8 +120,35 @@ class SurveyAssignment < ActiveRecord::Base
           ua.user_id = user.id
           ua.save!
         end
+
+        if comment_hash
+          # rebuild comment relationships
+          comment_hash.each do |k, v|
+            c = Comment.find(v)
+            new_id = Assignment::UserResponse.find_by(title: k[0],
+                                                      category: k[1],
+                                                      status: k[2]).id
+            c.commentable_id = new_id
+          end
+        end
       end
     end
 
-end
+    def survey_data_sid_and_gid
+      lg = lime_survey.lime_groups.where(group_name: "SurveyData").first
+      [lg.sid, lg.gid] unless lg.nil?
+    end
+
+    def survey_data_questions_key
+      key = {}
+      sid, gid = survey_data_sid_and_gid
+      lqs = LimeQuestion.where(sid: sid, gid: gid)
+      lqs.each do |lq|
+        key["#{lq.sid}X#{lq.gid}X#{lq.qid}"] = lq.title
+      end
+      key
+    end
+
+  end
+
 end

@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ##############################
 # Main
 ##############################
-gem 'bundler', '>= 1.8.4'
+gem 'bundler'
 # Rails version
 gem 'rails', '~> 4.2'
 gem 'rdoc' # documentation
@@ -99,11 +99,11 @@ gem 'statistics2'
 # Environments
 ##############################
 
-group :test do
-    gem 'minitest-rails'
-    gem "minitest-rails-capybara"
+group :test, :development do
+    gem 'rspec-rails'
+    gem 'capybara'
     gem 'rails-perftest'
-    gem "factory_girl_rails", "~> 4.0"
+    gem "factory_girl_rails"
     gem "faker"
 end
 
@@ -114,6 +114,7 @@ group :test, :development do
     elsif RUBY_VERSION =~ /^2./
         gem 'better_errors'
         gem 'pry-rails'
+        gem 'pry-stack_explorer'
         gem 'stackprof'
         gem 'ruby-prof'
     end
@@ -138,6 +139,10 @@ group :development do
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]
     gem 'redcarpet'
     gem "twitter-bootstrap-rails"
+
+    # guard
+    gem 'guard'
+    gem 'guard-rspec'
 end
 
 source 'https://rails-assets.org' do

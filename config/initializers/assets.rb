@@ -1,5 +1,9 @@
 Rails.application.config.assets.precompile += %w( print.css
     assignment/*
+    assignment_assignment_groups.css
+    assignment_user_responses.css
+    assignment_user_assignments.css
+    comments.css
     form-utils.js
     sync_triggers.js
     high_voltage_pages.css

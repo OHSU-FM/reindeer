@@ -1,7 +1,6 @@
 
-
-window.FormUtils = {}
-window.FormUtils.modal_template = '''
+@FormUtils = {}
+@FormUtils.modal_template = '''
 <div id="modal_blank" class="modal fade" tabindex="-1" role="dialog" data-keyboard="true" style="display:none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -20,13 +19,33 @@ window.FormUtils.modal_template = '''
 </div>
     '''
 
-window.FormUtils.error_templates = {
+@FormUtils.error_templates = {
     default: '''
 <div class='bs-callout bs-callout-danger'>
     {{error-message}}
 </div>
 '''
 }
+
+class @FormUtils.DataEvents
+    initialize: (nodes) ->
+        @$nodes = nodes
+        @event_handlers()
+
+    event_handlers:
+        console.log 'test'
+
+@FormUtils.classifier = (doc) ->
+    # Automagic behavior for html objects
+    $(doc).find('[data-class]').each ->
+        new_class = window
+        try
+            $($(this).data('class').split('.')).each ->
+                new_class = new_class[this]
+        catch e
+            console.log('FormUtils.classifier: Class not found => ' + $(this).data('class'))
+            throw e
+        new new_class($(this))
 
 # Wrap error message within template
 error_wrap = (msg, mtype) ->
@@ -36,27 +55,31 @@ error_wrap = (msg, mtype) ->
 
 # Insert / replace html near target
 resource_insert = ($target, html, insert) ->
+    # Method to call on target
+    switches = {
+        ':before': 'before',
+        ':replace': 'html',
+        ':after': 'after'
+    }
+    # Set default method
     insert = insert || ':replace'
-    if insert == ':before'
-      $target.before(html)
-    else if insert == ':replace'
-      $target.html(html)
-    else if insert == ':after'
-      $target.after(html)
-    else
-      return
+    # Call Method
+    $target[switches[insert]](html)
+    # Initialize automagic classifiers
+    FormUtils.classifier(html)
+    return
 
 # Load resource
 resource_load = ($node, data) ->
     data = data || $node.data()
     $target = $(data.target)
-    method = data.method || 'GET' 
-    url = $node.attr('href') || data.url 
+    method = data.method || 'GET'
+    url = $node.attr('href') || data.url
     insert = data.insert
     $.ajax
         url: url
         type: method
-        data: 
+        data:
             layout: false
         dataType: 'html'
         contentType: 'application/html; charset=utf-8'
@@ -75,11 +98,15 @@ resource_load = ($node, data) ->
             $(data.onResourceCompleteShow).show() if data.onResourceCompleteShow?
             $(data.onResourceCompleteHide).hide() if data.onResourceCompleteHide?
             $(data.onResourceCompleteRemove).remove() if data.onResourceCompleteRemove?
-            
+
 
 $(document).ready ->
+    # Add template modal to body
     $('body').append($.parseHTML(FormUtils.modal_template))
 
+    FormUtils.classifier(document)
+
+    # Automatic data actions
     $(document).on 'click', 'button,a', (event) ->
         $node = $(this)
         data = $node.data()
@@ -97,10 +124,12 @@ $(document).ready ->
             event.stopImmediatePropagation()
             resource_load($node)
         return
-    
+
+    # replace_on_submit
     $('form button[type=submit][data-toggle~=replace]').click (event) ->
         console.log 'hello GGGGGGGG'
 
+    # link_to_update_content
     $('a[data-toggle~=replace]').click (event) ->
         event.preventDefault()
         event.stopImmediatePropagation()
@@ -110,7 +139,7 @@ $(document).ready ->
         $.ajax
             url: url
             type: 'GET'
-            data: 
+            data:
                 layout: false
             dataType: 'html'
             contentType: 'application/html; charset=utf-8'
@@ -118,9 +147,10 @@ $(document).ready ->
                 $target.html('Error<br/>' +g2)
             success: (data) ->
                 new_html = $('<div/>').html(data)
-                $target.html(new_html) 
+                $target.html(new_html)
 
-    $('a[data-toggle~=modal]').click (event) ->
+    # link_to_modal_dialog
+    $('body').on 'click', 'a[data-toggle~=modal]', (event) ->
         event.preventDefault()
         event.stopImmediatePropagation()
         url = this.href
@@ -131,16 +161,15 @@ $(document).ready ->
         $.ajax
             url: url
             type: method
-            data: 
+            data:
                 layout: false
             dataType: 'html'
             contentType: 'application/html; charset=utf-8'
             error: (data, g1, g2) ->
                 $('#modal_blank .modal-title').html('Error')
                 $('#modal_blank .modal-body').html(g2)
-
             success: (data) ->
                 new_html = $('<div/>').html(data)
                 title = new_html.find('.page-header').remove()
                 $('#modal_blank .modal-title').html(title.text())
-                $('#modal_blank .modal-body').html(new_html)
+                $('#modal_blank .modal-body').html(new_html.find('.modal-body-content'))

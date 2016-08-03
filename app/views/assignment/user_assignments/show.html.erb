@@ -1,25 +1,27 @@
-<%- model_class = Assignment::UserAssignment -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+<div class="row main fade-in two">
+  <div class="col-md-6 main fade-in two">
+    <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
+  </div>
+  <div class="col-md-6 main fade-in two" style="height:69px; display:table;vertical-align:middle;">
+    <div style="display:table-cell; vertical-align:middle;">
+      <button id="assignment-nav-toggle" type="button" class="btn btn-default" aria-label="Menu" style="float:right; vertical-align:bottom; margin: 0 auto;">
+        Menu <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </button>
+    </div>
+  </div>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
-  <dd><%= @user_assignment.user_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:survey_assignment_id) %>:</strong></dt>
-  <dd><%= @user_assignment.survey_assignment_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:lime_token_tid) %>:</strong></dt>
-  <dd><%= @user_assignment.lime_token_tid %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:started_at) %>:</strong></dt>
-  <dd><%= @user_assignment.started_at %></dd>
-</dl>
+<%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
-              assignment_user_assignments_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_assignment_user_assignment_path(@user_assignment), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              assignment_user_assignment_path(@user_assignment),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+<%= render partial: "assignment/shared/response_nav" %>
+
+<div class="fade-in two left-panel left-panel-scroll">
+  <h2 class="left-panel-title"><%= hf_ua_title_prettify @user_assignment %></h2>
+  <%= render partial: "assignment/user_assignments/deep_rows", locals: { ua: @user_assignment } %>
+</div>
+
+<div class="fade-in two right-panel compare-panel" style="text-align:center;">
+  <div class="centered-content">
+    <i class="fa fa-archive big-icon"></i>
+  </div>
+</div>

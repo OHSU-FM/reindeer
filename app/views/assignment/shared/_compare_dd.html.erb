@@ -1,0 +1,18 @@
+<div class="btn-group">
+  <button type="button" id="compare-dd" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <%= hf_user_assignment_button_text(local_assigns).html_safe %>
+  </button>
+  <ul class="dropdown-menu">
+    <% obj = @user_response || @user_assignment %>
+    <% hf_user_assignment_cycle_hash(obj).each do |k, v| %>
+      <% unless obj.group_and_title.first == k %>
+        <li class="dropdown-header"><%= k %></li>
+      <% end %>
+      <% v.each do |title, comp_obj| %>
+        <% unless comp_obj == obj || comp_obj.survey_type != obj.survey_type %>
+          <li><%= link_to title, assignment_user_assignment_fetch_compare_path(user_assignment_id: comp_obj.id), remote: true, class: "ua-compare" %></li>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

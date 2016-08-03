@@ -3,9 +3,6 @@ class PermissionGroup < ActiveRecord::Base
   has_many :permission_ls_groups, :inverse_of=>:permission_group, :dependent=>:destroy
   has_many :lime_surveys, :through=>:permission_ls_groups
   has_many :role_aggregates, :through=>:lime_surveys
-  has_many :assignment_group_templates, ->{ active },
-    class_name: 'Assignment::AssignmentGroupTemplate'
-
 
   accepts_nested_attributes_for :permission_ls_groups, :allow_destroy=>true,
     :reject_if=>:all_blank

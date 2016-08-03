@@ -1,0 +1,19 @@
+<% if can? :comment_on, commentable %>
+<div class="ajax-comments">
+  <%= simple_form_for [commentable, @new_comment], remote: true do |f| %>
+  <div class="form-group comment-submit row">
+    <div class="col-md-12">
+      <div class="input-group">
+          <%= f.text_field :body, class: "form-control", label: false, placeholder: "Add a comment..." %>
+          <span class="input-group-btn">
+            <%= f.button :button, "Submit", class: "btn-secondary", data: {disable_with: "Submitting..."} %>
+          </span>
+          <%= f.input :commentable_id, as: :hidden, value: @new_comment.commentable_id %>
+          <%= f.input :commentable_type, as: :hidden, value: @new_comment.commentable_type %>
+          <%= f.input :user_id, as: :hidden, value: current_user.id %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</div>
+<% end %>

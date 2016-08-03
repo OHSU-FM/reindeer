@@ -28,10 +28,10 @@ module EdnaConsole
     # config.autoload_paths += %W(#{config.root}/extras)
 
     # Search the models directory recursively
-    config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"] 
-    config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/**/*.rb"] 
-    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/**/*.rb"] 
-    config.autoload_paths += Dir["#{Rails.root.to_s}/app/services/**/*.rb"] 
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"]
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/**/*.rb"]
+    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/"]
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/services/**/*.rb"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -62,23 +62,17 @@ module EdnaConsole
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    # Enforce whitelist mode for mass assignment.
-    # This will create an empty whitelist of attributes available for mass-assignment for all models
-    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
-    # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = true
-
     # Enable the asset pipeline
     config.assets.enabled = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.5'
-    
+
     # Setup automatic code generator configuration
     # E.g. $ rails g model WhipperSnapper
     config.generators do |g|
       g.test_framework :minitest, spec: true, fixture: false
-      g.integration_tool :mini_test
+      g.integration_tool :minitest
     end
 
   end

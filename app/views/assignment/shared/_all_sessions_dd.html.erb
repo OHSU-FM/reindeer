@@ -1,0 +1,14 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <%= hf_user_assignment_button_text(local_assigns).html_safe %>
+  </button>
+  <ul class="dropdown-menu">
+    <% obj = @user_response || @user_assignment %>
+    <% hf_user_assignment_cycle_hash(obj).each do |k, v| %>
+      <li class="dropdown-header"><%= k %></li>
+      <% v.each do |title, obj| %>
+        <li><%= link_to title, obj %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

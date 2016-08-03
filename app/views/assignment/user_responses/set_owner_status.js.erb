@@ -1,0 +1,6 @@
+$(".status-btn").each(function() {
+  $(this).removeClass("btn-primary");
+  $(this).addClass("btn btn-default status-btn");
+});
+$("#owner_status_<%= @user_response.owner_status.delete(' ') %>").addClass("btn-primary");
+$("#ur-user-status").show();

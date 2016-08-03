@@ -1,0 +1,7 @@
+<h2 class="user-response-title">
+  <%= @user_response.title %>
+  <span id="ur-user-status" <%= hf_show_ur_status?(@user_response, current_user) ? nil : "style=display:none;" %>>
+  - <span class="label label-<%= hf_label_color(@user_response, :status) %>"><%= @user_response.status %></span>
+  </span>
+</h2>
+<hr />

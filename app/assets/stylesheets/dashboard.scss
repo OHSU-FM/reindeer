@@ -12,6 +12,20 @@ $contrast-color: red;
     border-bottom: 3px solid $contrast-color;
 }
 
+body.theme-waterfront-fog{
+    #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
+    // Background image
+    background: #222 image-url('dashboard/themes/waterfront-fog.jpg') no-repeat center center fixed;
+    // Widget area transparency
+    div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .inner-widget-container{
+        color:#222;
+    }
+}
 body.theme-oregon-coast{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
@@ -40,10 +54,10 @@ body.theme-tillikum{
         color:#222;
     }
 }
-body.theme-starry-night{
+body.theme-ncg-2070{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
-    background: #222 image-url('dashboard/themes/starry_night.jpg') no-repeat center center fixed;
+    background: #222 image-url('dashboard/themes/ncg-2070.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
     -webkit-background-size: cover;

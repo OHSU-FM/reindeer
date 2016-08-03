@@ -1,0 +1,27 @@
+<div class="row main fade-in two">
+  <div id="user-assignment-nav" class="container-fluid">
+    <%= render partial: "assignment/shared/all_sessions_dd" %>
+
+    <% if @user_response && @user_response.user_assignment.ur_categories.keys.length > 1 %>
+      <% @user_response.user_assignment.ur_categories.each do |category, responses| %>
+      <div class="btn-group">
+        <%= hf_category_status_button(responses, category).html_safe %>
+        <ul class="dropdown-menu">
+          <% responses.each do |ur| %>
+            <li>
+              <%= link_to ur.title, assignment_user_response_path(ur) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
+    <% end %>
+
+    <% if params[:controller] == "assignment/user_assignments" %>
+      <div class="ua-compare-menu-float">
+        <%= render partial: "assignment/shared/compare_dd", locals: { btn_text: "Compare to. . ." } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<hr/>

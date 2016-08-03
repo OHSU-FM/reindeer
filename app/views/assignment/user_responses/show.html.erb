@@ -1,0 +1,66 @@
+<div class="container-fluid">
+  <div class="row fade-in two is-table-row">
+    <div class="col-md-<%= hf_ag_owner_or_higher? current_user, @user_response ? "6" : "12" %> main fade-in two">
+      <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
+    </div>
+    <% if hf_ag_owner_or_higher? current_user, @user_response %>
+      <div class="col-md-6 main fade-in two">
+        <button id="assignment-nav-toggle" type="button" class="btn btn-default" aria-label="Menu">
+          Menu <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if hf_ag_owner_or_higher? current_user, @user_response %>
+  <%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
+<% end %>
+
+<%= render "assignment/shared/response_nav" %>
+
+<div id="user-response-<%= @user_response.id %>" class="container-fluid response-display">
+  <div class="col-md-6 main fade-in two left-panel">
+    <div class="row response-title">
+      <div class="col-md-12">
+        <%= render partial: "response_title" %>
+      </div>
+    </div>
+    <div class="row response-content">
+      <div class="col-md-12">
+        <h3><%= @user_response.user_assignment.survey_type.singularize.titleize %></h3>
+        <p><%= @user_response.content %></p>
+      </div>
+    </div>
+    <div class="row response-completion-date">
+      <div class="col-md-12">
+        <h3>Date Target</h3>
+        <p><%= @user_response.completion_target %></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 main fade-in two right-panel">
+    <% if can? :set_owner_status, @user_response %>
+    <ul class="nav nav-tabs pad-top">
+      <li class=<%= "active" unless hf_show_ur_status? @user_response, current_user %>>
+        <a href="#owner_status" data-toggle="tab">Owner Status</a>
+      </li>
+      <li class=<%= "active" if hf_show_ur_status? @user_response, current_user %>>
+        <a href="#comments" data-toggle="tab">Comments</a>
+      </li>
+    </ul>
+    <div class="tab-content" style="height:90%">
+      <div class="tab-pane fade in <%= "active" unless hf_show_ur_status? @user_response, current_user %>" id="owner_status">
+        <%= render "owner_status" %>
+      </div>
+      <div class="tab-pane fade in <%= "active" if hf_show_ur_status? @user_response, current_user %>" id="comments" style="height:100%">
+        <div class="panel-group" style="height:100%">
+          <%= render "comments" %>
+        </div>
+      </div>
+    </div>
+    <% else %>
+      <%= render "comments" %>
+    <% end %>
+  </div>
+</div>

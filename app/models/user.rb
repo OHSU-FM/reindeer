@@ -15,14 +15,17 @@ class User < ActiveRecord::Base
 
     attr_accessor :login
     serialize :roles, Array
+
     belongs_to :lime_user, :foreign_key=>:username, :primary_key=>:users_name
     belongs_to :permission_group, :inverse_of=>:users
+    belongs_to :cohort
+
     has_many :charts, :inverse_of=>:user, :dependent=>:destroy
     has_many :dashboard_widgets, :through=>:dashboard
     has_many :permission_ls_groups, :through=>:permission_group
     has_many :question_widgets, :dependent=>:delete_all
     has_many :user_externals, :dependent=>:delete_all, :inverse_of=>:user
-    has_many :assignment_group_templates, through: :permission_group
+
     has_one :dashboard, :dependent=>:destroy
 
     include EdnaConsole::UserHasAssignments
@@ -34,18 +37,29 @@ class User < ActiveRecord::Base
             :case_sensitive => false
         },
         :presence => true
-
+    validates :encrypted_password, presence: true
     validates :email,
         :uniqueness => {
             :case_sensitive => false
         },
         :presence => true
+
+    validate :ldap_cannot_update_password
+
+    def ldap_cannot_update_password
+      if is_ldap? && encrypted_password_changed?
+        errors.add :password, 'cannot be updated for LDAP users'
+        return false
+      end
+    end
+
     ##
     # Assign roles to a user like this:
     # user = User.new
     # user.admin = true
     # user.can_chart = true
     ROLES = {
+        # can view assignments that they belong to
         :participant=>0,
 
         # Piecemeal permissions
@@ -56,7 +70,7 @@ class User < ActiveRecord::Base
         :can_lime=>1,
         :can_lime_all=>1,
         :can_view_spreadsheet=>1,
-
+        :can_create_assignment_group=>1,
         # Role permissions
         :admin=>25,
         :superadmin=>50
@@ -107,6 +121,17 @@ class User < ActiveRecord::Base
 
     def title
       self[:full_name] || self[:email]
+    end
+
+    def display_name name=full_name
+      comma_re = /^\s*(\w{1,20} *[^,]*)+,\s+(\w{1,20}\s*)+$/ # last, first
+      if name.nil?
+        username
+      elsif comma_re === name
+        name.split(", ").reverse.join(" ")
+      else
+        name
+      end
     end
 
     def is_ldap?
@@ -162,6 +187,7 @@ class User < ActiveRecord::Base
             field :password
             field :password_confirmation
             field :is_ldap
+            field :cohort
         end
 
         ##
@@ -270,13 +296,52 @@ class User < ActiveRecord::Base
     def to_param
         username.parameterize
     end
-   
+
     def pinned_survey_groups
       permission_group.present? ? permission_group.pinned_survey_groups : []
     end
 
     def survey_groups
       permission_group.present? ? permission_group.survey_groups : []
+    end
+
+    def cohort
+      if !self.cohort_id.nil?
+        Cohort.find(cohort_id)
+      else
+        Cohort.where(owner: self).first
+      end
+    end
+
+    def assignment_groups
+      return @assignment_groups if defined? @assignment_groups
+      ags = []
+      if self.admin_or_higher?
+        ags << Assignment::AssignmentGroup.all
+      else
+        # all AG user owns or participates in
+        owned = Cohort.find_by(owner: self)
+        ags << owned.assignment_groups if owned
+        ags << Assignment::AssignmentGroup.all.find_all { |ag|
+          ag.user_ids.include? id
+        }
+      end
+      ags.flatten!
+      @assignment_groups ||= ags
+      return @assignment_groups
+    end
+
+    def active_assignment_groups
+      return @active_assignment_groups if defined? @active_assignment_groups
+      @active_assignment_groups = assignment_groups.reject { |ag| ag.users.empty? }
+      return @active_assignment_groups
+    end
+
+    # number (int) of ur where owner_status == nil
+    def unstatused_user_responses_count
+      user_assignments.map{|ua|
+        ua.user_responses.where(owner_status: nil).count
+      }.sum
     end
 
 end
