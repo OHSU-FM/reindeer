@@ -28,7 +28,6 @@
     <% if group.title %>
     <tr>
         <td colspan="5" style="text-align:left;">
-            <% #temp_group_title = group.title.gsub("~", " ") %>
             <h3><i><%= hf_group_title(group.title).html_safe %></i></h3>
         </td>
     </tr>

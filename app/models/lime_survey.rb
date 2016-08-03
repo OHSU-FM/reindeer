@@ -93,7 +93,7 @@ class LimeSurvey < ActiveRecord::Base
         if max_row
             @last_updated = max_row['submitdate']
         else
-            @last_updated = nil
+            @last_updated = "01/01/1980" 
         end
         return @last_updated
     end
