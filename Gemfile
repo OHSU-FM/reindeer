@@ -133,7 +133,6 @@ group :development do
     gem 'thin'
     gem 'rails_layout'
     gem 'awesome_print'
-    gem 'byebug'
 
     # Interactive debugging from the web
     gem 'binding_of_caller'#, :platforms=>[:ruby_19, :ruby_22]

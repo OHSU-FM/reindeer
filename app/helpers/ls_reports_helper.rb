@@ -48,7 +48,7 @@ module LsReportsHelper
   end
 
   def hf_group_title(title)
-    title.include? ":" ? title.split(":").last.gsub(":", "-") : title
+    title.include?(":") ? title.split(":").last(2).join(" - ") : title
   end
 
   # needed for menu generation and translation
