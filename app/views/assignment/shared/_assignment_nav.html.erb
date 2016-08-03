@@ -11,7 +11,7 @@
       <% @assignment_group.users.sort_by{|u| u.id}.each do |usr| %>
       <%= link_to "#{usr.display_name}#{hf_ur_owner_badge usr, current_user}".html_safe,
           assignment_assignment_group_path(@assignment_group, user_id: usr.id),
-          class: "btn btn-#{usr.id.to_s == params[:user_id] ? :primary : :link}"%>
+          class: "btn btn-#{usr.id.to_s == params[:user_id] ? :primary : :default}"%>
       <% end %>
     </div>
   </div>

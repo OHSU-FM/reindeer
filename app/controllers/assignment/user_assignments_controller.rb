@@ -8,6 +8,7 @@ class Assignment::UserAssignmentsController < Assignment::AssignmentBaseControll
 
   def show
     @user_assignment = Assignment::UserAssignment.find params[:id]
+    params[:user_id] = @user_assignment.user.id.to_s
     if @user_assignment.is_shallow?
       redirect_to assignment_user_response_path(@user_assignment.user_responses.first)
     end
