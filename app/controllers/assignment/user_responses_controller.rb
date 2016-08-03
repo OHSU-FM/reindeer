@@ -18,16 +18,19 @@ class Assignment::UserResponsesController < ApplicationController
     @user_response = Assignment::UserResponse.find(params[:user_response_id])
     return if @user_response.owner_status == params[:status]
     @user_response.owner_status = params[:status]
-    @user_response.save!
-    Comment.create(commentable: @user_response,
-                   user: @user_response.ag_owner,
-                   flagged_as: "sys",
-                   body: """
-    #{@user_response.ag_owner.display_name} set the status to #{params[:status]}
-    """
-                  )
-    respond_to do |format|
-      format.js
+    if @user_response.save!
+      Comment.create(commentable: @user_response,
+                     user: @user_response.ag_owner,
+                     flagged_as: "sys",
+                     body: """
+      #{@user_response.ag_owner.display_name} set the status to #{params[:status]}
+      """
+                    )
+      respond_to do |format|
+        format.js
+      end
+    else
+      render js: "alert('Error setting status')"
     end
   end
 end
