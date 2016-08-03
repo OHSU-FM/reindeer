@@ -2,6 +2,7 @@ $ ->
   # create
   $(".ajax-comments")
     .on "ajax:beforeSend", (evt, xhr, settings) ->
+      console.log("hi")
       $(this).find(".form-control")
         .addClass("uneditable-input")
         .attr("disabled", "disabled");
@@ -10,8 +11,9 @@ $ ->
         .removeClass("uneditable-input")
         .removeAttr("disabled", "disabled")
         .val("");
-      $(data).insertAfter($(".comments-block").children().last()).show("fast");
+      $(data).appendTo($(".comments-block").last()).show("fast")
 
+$ ->
   # destroy
   $(document)
     .on "ajax:beforeSend", ".comment-row", ->
@@ -20,3 +22,4 @@ $ ->
       $(this).hide("hide");
     .on "ajax:error", ".comment-row", ->
       $(this).fadeTo("fast", 1);
+
