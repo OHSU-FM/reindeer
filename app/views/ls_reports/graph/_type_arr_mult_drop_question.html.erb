@@ -1,0 +1,17 @@
+<% if !pquestion.response_set.related_data.first[1].nil? %>
+   <div class="well">
+
+        <table class="table table-striped table-condensed">
+            <% col_names = pquestion.response_set.related_columns %>
+            <tr> 
+              <td><span class="desc_<%= pquestion.response_set.qtype %>"><%= strip_tags(pquestion.response_set.question.question) %></span></td>
+                 
+              <% pquestion.response_set.related_data.each do |rs| %>
+                   <td><%= rs[1].first %></td>
+              <% end %>
+           <tr>
+        </table>
+
+    <% #raise hell %>
+   </div>
+<% end %>

@@ -20,7 +20,6 @@ Rails.application.config.assets.precompile += %w( print.css
     dashboard.css dashboard.js
     ls_reports_spreadsheet.css
     devise_sessions.css
-    sessions.js
     users.css users.js
     settings_sync_triggers.css
     settings.css

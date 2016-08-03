@@ -145,8 +145,12 @@ class LimeSurvey < ActiveRecord::Base
 
     def group_and_title_name
         # Generate a title to go with each of them
-        title1, title2 = title.split(':', 2)
+        title1, title2, title3, title4 = title.split(':', 4)
         g_title, ra_title = title2.nil? ? ['', title1] : [title1, title2]
+        if !title3.nil?
+            g_title = title1 + ":" + title2 + ":" + title3
+            ra_title = title4
+        end 
         return g_title, ra_title
     end
 

@@ -23,6 +23,8 @@ class Dashboard < ActiveRecord::Base
         'theme-waterfront-fog',
         'theme-oregon-coast',
         'theme-ncg-2070',
+        'theme-tillikum',
+        'theme-mt-hood',
         'theme-bokeh',
         'theme-sunset',
         'theme-glass',

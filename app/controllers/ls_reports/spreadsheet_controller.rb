@@ -16,8 +16,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
         @lime_survey.wipe_response_sets
 
-        @response_sets = hf_get_response_sets @lime_survey, cols
+        #@response_sets = hf_get_response_sets @lime_survey, cols
+        @response_sets = hf_flatten_response_sets @lime_survey
+ 
         @rs_data = hf_transpose_response_sets @response_sets
+        @rs_data = @rs_data.sort
+
         render :show
     end
 

@@ -67,13 +67,13 @@ ActiveRecord::Schema.define(version: 20160728230431) do
 
   create_table "cohorts", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "permission_group_id"
+    t.text     "user_ids"
     t.string   "title"
+    t.integer  "permission_group_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
 
-  add_index "cohorts", ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
   add_index "cohorts", ["user_id"], name: "index_cohorts_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
@@ -88,6 +88,19 @@ ActiveRecord::Schema.define(version: 20160728230431) do
 
   add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+
+  create_table "compentencies", force: :cascade do |t|
+    t.string   "student_name"
+    t.string   "evaluator"
+    t.string   "rotation_date"
+    t.string   "service"
+    t.integer  "answer"
+    t.string   "compentency_code"
+    t.string   "block_name"
+    t.string   "question"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
   create_table "content_slugs", force: :cascade do |t|
     t.integer "user_id"
@@ -373,6 +386,17 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.string   "agg_label",           limit: 255
     t.string   "agg_title_fieldname", limit: 255
     t.string   "default_view",        limit: 255
+  end
+
+  create_table "student_competencies", force: :cascade do |t|
+    t.string   "student_name"
+    t.integer  "mk1"
+    t.integer  "mk2"
+    t.integer  "mk3"
+    t.integer  "mk4"
+    t.integer  "mk5"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "survey_assignments", force: :cascade do |t|

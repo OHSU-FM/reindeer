@@ -1,4 +1,7 @@
 class LimeQuestion < ActiveRecord::Base
+
+    include LsReports::CompetencyHelper
+
     ##
     # Question types used by LimeSurvey and the short names we use for partials
     QTYPES = {
@@ -31,6 +34,7 @@ class LimeQuestion < ActiveRecord::Base
         ';'=>'arr_mult_text',     # - Array (Flexible Labels) multiple texts
         '|'=>'file_upload'        # - File Upload Question
     }
+
 
     default_scope { order('question_order ASC') }
     self.inheritance_column = nil
@@ -77,7 +81,7 @@ class LimeQuestion < ActiveRecord::Base
 
     def lime_data
         lime_survey.lime_data
-    end
+    end  
 
     #################################################################
     ## Get attributes possibly from cache                           #
@@ -92,7 +96,7 @@ class LimeQuestion < ActiveRecord::Base
     ###                                                        ######
     ## Get attributes in database for this question             #
     #def get_lq_attributes                                       #
-    #    result = HashWithIndifferentAccess.new
+    # s  result = HashWithIndifferentAccess.new
     #    attrs = ActiveRecord::Base.connection.execute("SELECT attribute, value FROM #{self.class.table_name.singularize}_attributes where qid=#{qid}").to_a
     #    attrs.each do |attr|
     #        result[attr['attribute']] = attr['value']

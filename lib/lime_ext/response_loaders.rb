@@ -67,6 +67,14 @@ module LimeExt::ResponseLoaders
         def self.dual_arr pquestion
             return ResponseSets::ResponseSetDualArr.new pquestion
         end
+
+        def self.arr_mult_drop pquestion
+            return ResponseSets::ResponseSetArrMultDrop.new pquestion
+        end
+
+        def self.arr_mult_text pquestion
+            return ResponseSets::ResponseSetArrMultText.new pquestion
+        end 
     end
     
     module ResponseSets
@@ -302,7 +310,8 @@ module LimeExt::ResponseLoaders
                 @data_labels ||= {}
             end
         end
-        
+
+       
         ##
         # 
         class ResponseSetYesNo < ResponseSetGeneric
@@ -450,7 +459,7 @@ module LimeExt::ResponseLoaders
         
         ##
         #
-        class ResponseSetMultText < ResponseSetGenericParent
+        class ResponseSetMultText < ResponseSetMult
             def data_labels 
                 return {}
             end
@@ -484,7 +493,54 @@ module LimeExt::ResponseLoaders
             
             
         end
-        
+
+        ## This one is NOT working very well.  Need to fix the log a bit.
+        #
+        class ResponseSetArrMultDrop < ResponseSetGenericParent
+
+            def data_labels 
+                return {}
+            end
+            
+            def data
+                return @data if defined? @data
+                @data = []
+                question.sub_questions.each do |sub_question|
+                    @data.push ResponseSetGeneric.new sub_question, 
+                        :status_questions=>select_status_questions(sub_question)
+                end
+                return @data
+            end
+
+            #binding.pry
+           
+        end
+ 
+        ## array with multiple text (2-dimensional array)
+        #
+        class ResponseSetArrMultText < ResponseSetGeneric
+
+            def data_labels 
+                return {}
+            end
+            
+            def data
+                #return @data if defined? @data
+                @data = []
+                question.sub_questions.each do |sub_question|
+                    @data.push ResponseSetGeneric.new sub_question, 
+                        :status_questions=>select_status_questions(sub_question),
+                        :format_as=>@format_as
+                end
+
+                binding.pry
+                return @data
+            end
+
+            #binding.pry
+           
+        end
+         
         ##
         #
         class ResponseSetDualArr < ResponseSetGeneric

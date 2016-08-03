@@ -40,6 +40,20 @@ body.theme-oregon-coast{
         color:#222;
     }
 }
+body.theme-tillikum{
+    #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
+    // Background image
+    background: #222 image-url('dashboard/themes/tillikum.jpg') no-repeat center center fixed;
+    // Widget area transparency
+    div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .inner-widget-container{
+        color:#222;
+    }
+}
 body.theme-ncg-2070{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
@@ -65,6 +79,13 @@ body.theme-bokeh{
 }
 body.theme-sunset{
     background: #332D4F image-url('dashboard/themes/sunset.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+body.theme-mt-hood{
+    background: #332D4F image-url('dashboard/themes/oregon_mt_hood.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
