@@ -3,6 +3,10 @@
     @extend .btn-danger
 }
 
-
-
-
+.nav-header-btn {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  font: inherit;
+  color: #9d9d9d;
+}

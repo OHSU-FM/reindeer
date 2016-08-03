@@ -29,13 +29,9 @@
 
         <% if can? :list, LimeSurvey %>
         <% hf_generate_menu_hash(current_user.role_aggregates).each do |top_link, first_level| %>
-        <li>
+        <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
           <div class="btn-group btn navbar-btn ">
-            <%= link_to hf_translate_header(top_link), "", type: :button, class: "btn btn-success btn-xs" %>
-            <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="caret"></span>
-              <span class="sr-only">Toggle Dropdown</span>
-            </button>
+            <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %> <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
               <% first_level.each do |first_level_item, second_level| %>
               <% if first_level.keys.count > 1 %>
