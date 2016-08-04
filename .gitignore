@@ -40,3 +40,6 @@ bower.json
 
 # Ignore pow environment settings
 .powenv
+
+.svn
+public/
