@@ -306,11 +306,7 @@ class User < ActiveRecord::Base
     end
 
     def cohorts
-      if !self.cohort_id.nil?
-        Cohort.find(cohort_id)
-      else
-        Cohort.where(owner: self)
-      end
+      Cohort.where(owner: self)
     end
 
     def assignment_groups

@@ -80,7 +80,7 @@ class PermissionGroup < ActiveRecord::Base
       ra = plg.lime_survey.role_aggregate
       unless plg.ready_for_use?
         unless ra.nil?
-          details.push([ra.lime_survey_title, 'Permission ls group not ready for use'])
+          details.push([ra, 'Permission ls group not ready for use'])
         end
         result.delete ra
         next
