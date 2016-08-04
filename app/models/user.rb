@@ -305,11 +305,11 @@ class User < ActiveRecord::Base
       permission_group.present? ? permission_group.survey_groups : []
     end
 
-    def cohort
+    def cohorts
       if !self.cohort_id.nil?
         Cohort.find(cohort_id)
       else
-        Cohort.where(owner: self).first
+        Cohort.where(owner: self)
       end
     end
 

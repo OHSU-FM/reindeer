@@ -67,13 +67,13 @@ ActiveRecord::Schema.define(version: 20160728230431) do
 
   create_table "cohorts", force: :cascade do |t|
     t.integer  "user_id"
-    t.text     "user_ids"
-    t.string   "title"
     t.integer  "permission_group_id"
+    t.string   "title"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
   end
 
+  add_index "cohorts", ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
   add_index "cohorts", ["user_id"], name: "index_cohorts_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|

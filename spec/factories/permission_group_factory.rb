@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :permission_group do
-    title { Faker::Hipster.sentence }
+    title { Faker::Lorem.sentence }
 
     trait :coach do
       title "Coach"

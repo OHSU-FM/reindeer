@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :comment do
-    body { Faker::Hipster.sentence }
+    body { Faker::Lorem.sentence }
     association :user
 
     trait :assignment_comment do
