@@ -1,10 +1,17 @@
 <div id="assignment-nav" style=<%= display ? "display:#{display}" : "" %>>
   <div class="row main fade-in two">
-    <% if @assignment_groups && @assignment_groups.count > 1 %>
+    <% if (1..4).to_a.include? @assignment_groups.count %>
       <div id="assignment-group-nav" class="col-md-6 left-panel">
         <% @assignment_groups.each do |group| %>
           <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>
         <% end %>
+      </div>
+    <% elsif @assignment_groups.count > 4 %>
+      <div id="assignment-group-nav" class="col-md-6 left-panel">
+        <%= select_tag "assignment_group_id",
+        options_for_select(@assignment_groups.collect{|ag|
+        [ag.owner.display_name + " - " + ag.title, ag.id]
+        }, @assignment_group.id), class: "needs-select2 assignment-group-select" %>
       </div>
     <% end %>
     <div id="user-ids-nav" class="col-md-<%= (@assignment_groups && @assignment_groups.count > 1) ? 6 : 12 %>">
