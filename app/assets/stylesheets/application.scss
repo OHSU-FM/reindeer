@@ -12,7 +12,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import 'select2';
-@import 'simplemde/simplemde.min.scss';
 @import 'bootstrap-growl';
 @import 'bootstrap-mods';
 @import 'bootstrap-callouts';
@@ -30,3 +29,4 @@
 @import 'dataTables/extensions/TableTools/css/dataTables.tableTools';
 @import 'layouts';
 @import 'sessions';
+@import 'simplemde';

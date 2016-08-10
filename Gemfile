@@ -58,11 +58,12 @@ gem 'jquery-ui-rails'
 #gem 'turbolinks'
 
 # CSS / js
-gem 'bootstrap-sass'#, '~> 3.1.1.1'
+gem 'bootstrap-sass'
 # Random bug:
 # Error encountered while saving cache (".....") can't dump anonymous class
 # http://stackoverflow.com/questions/22276991/heroku-error-encountered-while-saving-cache
 gem 'sass'#, '~> 3.2.13'
+gem 'select2-rails'
 
 ##############################
 # UI: Charts
@@ -146,6 +147,5 @@ group :development do
 end
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-select2'
   gem 'rails-assets-simplemde'
 end

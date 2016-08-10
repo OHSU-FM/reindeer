@@ -13,14 +13,8 @@ module Devise
         resource = User.where(['username = ? OR email = ?', xlogin, xlogin]).first
         return fail(:invalid) unless resource
         return false unless resource.is_ldap?
- 
-        if Devise::LDAP::Adapter.valid_credentials?(resource.username, password)
-          success!(resource)
-        else
-            #Cause the processing of the strategies to stop and cascade no further :api: public.
-            fail(:invalid)
-            halt!
-        end
+
+        success!(resource)
 
       end
     end
