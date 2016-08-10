@@ -1,8 +1,10 @@
 version: '2'
 services:
   web:
-    image: nginx:1.11.1
-    restart: on-failure:10
+    build: 
+        context: .
+        dockerfile: Dockerfile_web
+    restart: on-failure
     volumes:
         - ./data/lime_survey/html:/code
         - ./data/logs/web:/var/log/nginx
@@ -10,11 +12,11 @@ services:
     ports:
         - 80
     links:
-        - db
         - lime
         - reindeer
+    command: dockerize -wait http://reindeer:3000/reindeer/robots.txt -wait tcp://lime:9000 bash -c "nginx -g 'daemon off;'"
   lime:
-    restart: on-failure:10
+    restart: on-failure
     build: 
         context: .
         dockerfile: Dockerfile_lime_survey
@@ -24,18 +26,14 @@ services:
         - ./build/web:/mnt/web:ro
         - ./build/lime:/docker:ro
     env_file: .dockerenv
-    environment:
-        # Version of lime_survey to download
-        LIME_BIN_URL: "https://github.com/LimeSurvey/LimeSurvey/archive/2.06_plus_160123.tar.gz"
-        # SHA256 for verifying validity of lime tar.gz
-        LIME_SHA256: 499f8557701175d2ee3586184b6f88fa755ebf1113e29da3e8e3b2a65f263097
     ports:
         - 9000
     links:
         - db
+    command: dockerize -wait tcp://db:5432 php-fpm
   db: 
-    restart: on-failure:10
-    image: postgres:9.5.3
+    restart: on-failure
+    image: postgres:9.5
     volumes:
         - ./data/db/data:/var/lib/postgresql/data
     env_file: .dockerenv
@@ -56,4 +54,4 @@ services:
         - 3000
     links:
         - db
-    command: ./bin/thin-start
+    command: dockerize -wait tcp://db:5432 ./bin/thin-start

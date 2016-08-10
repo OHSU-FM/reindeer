@@ -8,19 +8,25 @@ ENV TERM xterm
 RUN apt-get update -qqy && \ 
     apt-get install -y \
         gettext-base \
-        nodejs && \
+        nodejs \
+        wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ENV DOCKERIZE_VERSION v0.2.0
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
 RUN useradd --create-home --shell /bin/bash app
+
+WORKDIR $HOME
+ADD ./ .
+RUN rm -rf ./.bundle
+RUN chown app:app -R ./
+
 USER app
 
-# Install ruby gems
-WORKDIR $HOME
-
-ADD ./Gemfile .
-ADD ./Gemfile.lock .
-RUN gem install bundler
-RUN bundle install
+RUN gem install bundler && \
+    bundle install
 
 EXPOSE 3000
