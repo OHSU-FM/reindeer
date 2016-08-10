@@ -4,6 +4,13 @@ class ApplicationController < ActionController::Base
     before_filter :dynamic_destroy, only: :update
     helper_method :auto_path
 
+    rescue_from PG::ConnectionBad do |exception|
+      flash[:alert] = 'Unable to contact database'
+      respond_to do |format|
+        format.html { render 'errors/internal_server_error', :status=>500, :layout=>'full_width_margins' }
+      end
+    end
+
     rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
         flash[:alert] = 'Unable to reach authentication server'
         respond_to do |format|
