@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-RAILS_RELATIVE_URL_ROOT=/reindeer thin start --prefix=$RAILS_RELATIVE_URL_ROOT
+thin start --prefix=$RAILS_RELATIVE_URL_ROOT
+rm -rf ./tmp/*

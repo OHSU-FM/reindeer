@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-if [ ! ./.dockerenv ]; then
+if [ ! -f ./.dockerenv ]; then
     ./bin/docker-dotenv
 fi
 
