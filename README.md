@@ -9,9 +9,6 @@ Project Reindeer is a portal website for LimeSurvey that allows you to control, 
 **Dashboard**
 ![Image of Daskboard](https://github.com/OHSU-FM/reindeer/blob/master/doc/dashboard.png)
 
-**Early Release**
-This project is ready to share, but requires a little work to get everything started. See notes below for details.
-
 ## Features
 
 **Data exploration**
@@ -34,7 +31,7 @@ A central interface for exploring the lower lever details of the application.
 
 **LDAP**
 
-LDAP authentication is supported
+LDAP authentication is supported, see ./config/ldap.yml.example for details
 
 
 ## Quick Start Guide
@@ -94,13 +91,29 @@ rails s
 
 #### Option II: Docker
 
-```bash
+1. **Install docker**
 
+https://docs.docker.com/engine/installation/linux/ubuntulinux/
+
+2. **Install docker-compose**
+
+https://docs.docker.com/compose/install/
+
+3. **Download reindeer**
+
+```bash
 # Clone repository
 git clone https://github.com/OHSU-FM/reindeer.git
-cd reindeer
+```
 
-# Run docker configuration utility
+4. **Create configuration and build containers**
+
+```bash
+# The docker-quickstart utility will 
+# - Create a .dockerenv file
+# - Build the required docker containers for reindeer
+# - Start the containers to give you a complete environment
+cd reindeer
 ./bin/docker-quickstart
 
 ```
