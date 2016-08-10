@@ -1,6 +1,6 @@
 <div id="assignment-nav" style=<%= display ? "display:#{display}" : "" %>>
   <div class="row main fade-in two">
-    <% if (1..4).to_a.include? @assignment_groups.count %>
+    <% if (2..4).to_a.include? @assignment_groups.count %>
       <div id="assignment-group-nav" class="col-md-6 left-panel">
         <% @assignment_groups.each do |group| %>
           <%= link_to group.title, group, class: "btn btn-#{group.id == @assignment_group.id ? :primary : :link}" %>

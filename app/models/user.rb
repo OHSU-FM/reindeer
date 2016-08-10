@@ -335,6 +335,7 @@ class User < ActiveRecord::Base
 
     # number (int) of ur where owner_status == nil
     def unstatused_user_responses_count
+      return 0 unless user_assignments.any?{|ua| !ua.user_responses.empty? }
       user_assignments.map{|ua|
         ua.user_responses.where(owner_status: nil).count
       }.sum

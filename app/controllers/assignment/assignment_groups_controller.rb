@@ -13,7 +13,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def show
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
-    @assignment_groups = if current_user.active_assignment_groups.count > 1
+    @assignment_groups = if current_user.active_assignment_groups.count >= 1
                            current_user.active_assignment_groups
                          else
                            nil
