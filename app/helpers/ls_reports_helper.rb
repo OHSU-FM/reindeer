@@ -109,6 +109,14 @@ module LsReportsHelper
     end
   end
 
+  def hf_assignment_groups_select_hash ags
+    outh = Hash.new{ |h,k| h[k] = [] }
+    ags.each do |ag|
+      outh[ag.owner.display_name] << [ag.title, ag.id]
+    end
+    outh
+  end
+
   # TODO: Move to ls_files_helper.rb
   class FileAccessRequest
     attr_reader :fm, :col_id, :row_id

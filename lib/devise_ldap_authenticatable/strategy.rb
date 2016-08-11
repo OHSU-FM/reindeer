@@ -17,7 +17,7 @@ module Devise
         if Devise::LDAP::Adapter.valid_credentials?(resource.username, password)
           success!(resource)
         else
-          Cause the processing of the strategies to stop and cascade no further :api: public.
+          # Cause the processing of the strategies to stop and cascade no further :api: public.
             fail(:invalid)
           halt!
         end
