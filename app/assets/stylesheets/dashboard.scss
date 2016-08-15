@@ -15,7 +15,7 @@ $contrast-color: red;
 body.theme-waterfront-fog{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
-    background: #222 image-url('dashboard/themes/waterfront-fog.jpg') no-repeat center center fixed;
+    background: #222 url('dashboard/themes/waterfront-fog.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
     -webkit-background-size: cover;
@@ -29,7 +29,7 @@ body.theme-waterfront-fog{
 body.theme-oregon-coast{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
-    background: #222 image-url('dashboard/themes/oregon_coast.jpg') no-repeat center center fixed;
+    background: #222 url('dashboard/themes/oregon_coast.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
     -webkit-background-size: cover;
@@ -43,7 +43,7 @@ body.theme-oregon-coast{
 body.theme-tillikum{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
-    background: #222 image-url('dashboard/themes/tillikum.jpg') no-repeat center center fixed;
+    background: #222 url('dashboard/themes/tillikum.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
     -webkit-background-size: cover;
@@ -57,7 +57,7 @@ body.theme-tillikum{
 body.theme-ncg-2070{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     // Background image
-    background: #222 image-url('dashboard/themes/ncg-2070.jpg') no-repeat center center fixed;
+    background: #222 url('dashboard/themes/ncg-2070.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.6);}
     -webkit-background-size: cover;
@@ -69,7 +69,7 @@ body.theme-ncg-2070{
     }
 }
 body.theme-bokeh{
-    background: #FF7F50 image-url('dashboard/themes/bokeh.jpg') no-repeat center center fixed;
+    background: #FF7F50 url('dashboard/themes/bokeh.jpg') no-repeat center center fixed;
     #dashboard-controls{background-color: rgba(220, 220, 220, 0.8);}
     div.gridster li.gs-w{background-color: rgba(220, 170, 170, 0.7);}
     -webkit-background-size: cover;
@@ -78,14 +78,14 @@ body.theme-bokeh{
     background-size: cover;
 }
 body.theme-sunset{
-    background: #332D4F image-url('dashboard/themes/sunset.jpg') no-repeat center center fixed;
+    background: #332D4F url('dashboard/themes/sunset.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
 body.theme-glass{
-    background: #1E4353 image-url('dashboard/themes/blue_green_glass_eye.jpg') no-repeat center center fixed;
+    background: #1E4353 url('dashboard/themes/blue_green_glass_eye.jpg') no-repeat center center fixed;
     #dashboard-controls{background-color: rgba(140, 210, 140, 0.8);}
     div.gridster li.gs-w{background-color: rgba(140, 210, 140, 0.7);}
     -webkit-background-size: cover;
@@ -94,14 +94,14 @@ body.theme-glass{
     background-size: cover;
 }
 body.theme-blue-sky{
-    background: #1E4353 image-url('dashboard/themes/blue_sky.jpg') no-repeat center center fixed;
+    background: #1E4353 url('dashboard/themes/blue_sky.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
 }
 body.theme-blue-swirl{
-    background: #1E4353 image-url('dashboard/themes/blue_swirl.jpg') no-repeat center center fixed;
+    background: #1E4353 url('dashboard/themes/blue_swirl.jpg') no-repeat center center fixed;
     // Widget area transparency
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.8);}
     -webkit-background-size: cover;
@@ -110,7 +110,7 @@ body.theme-blue-swirl{
     background-size: cover;
 }
 body.theme-grid{
-    background: #1E4353 image-url('dashboard/themes/grid.jpg') no-repeat center center fixed;
+    background: #1E4353 url('dashboard/themes/grid.jpg') no-repeat center center fixed;
     #dashboard-controls{background-color: rgba(240, 240, 240, 0.8);}
     div.gridster li.gs-w{background-color: rgba(220, 220, 220, 0.8);}
     -webkit-background-size: cover;
@@ -119,7 +119,7 @@ body.theme-grid{
     background-size: cover;
 }
 body.theme-fog{
-    background: #1E4353 image-url('dashboard/themes/fog.jpg') no-repeat center center fixed;
+    background: #1E4353 url('dashboard/themes/fog.jpg') no-repeat center center fixed;
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
     div li.gs-w {background-color: rgba(130, 120, 190, 0.3);}
     -webkit-background-size: cover;

@@ -109,6 +109,14 @@ module LsReportsHelper
     end
   end
 
+  def hf_assignment_groups_select_hash ags
+    outh = Hash.new{ |h,k| h[k] = [] }
+    ags.each do |ag|
+      outh[ag.owner.display_name] << [ag.title, ag.id]
+    end
+    outh
+  end
+
   # TODO: Move to ls_files_helper.rb
   class FileAccessRequest
     attr_reader :fm, :col_id, :row_id
@@ -297,6 +305,8 @@ module LsReportsHelper
 
       unless @hide_pk
         @pk = add_param_filter lime_survey, :pk, role_aggregate.pk_fieldname
+        # default to last val if only one pk option
+        @pk.nil? ? @pk = @pk_enum.last : @pk
       end
     end
 

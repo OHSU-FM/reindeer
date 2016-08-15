@@ -67,8 +67,6 @@ class LsReports::BaseController < ApplicationController
         authorize! :read, @lime_survey
         authorize! :read_raw_data, @lime_survey if will_view_raw_data?
         @view_type = params[:view_type]
-
-        #binding.pry
     end
 
     def export_to_gon
