@@ -83,12 +83,12 @@ module Assignment
 
       ActiveRecord::Base.transaction do
 
-        if user_assignments
+        unless user_assignments.empty?
           # gather old comments for transfer to new assignments
           comment_hash = {}
           user_assignments.each do |ua|
             ua.user_responses.each do |ur|
-              next if !ur.has_comments? || ur.empty?
+              next if !ur.has_comments? || !ur.present?
               ur.comments.each do |c|
                 comment_hash[[ur.title, ur.category, ur.status]] = c.id
               end
@@ -121,7 +121,7 @@ module Assignment
           ua.save!
         end
 
-        if comment_hash
+        if !comment_hash.nil? && !comment_hash.empty?
           # rebuild comment relationships
           comment_hash.each do |k, v|
             c = Comment.find(v)
