@@ -67,10 +67,6 @@ module Assignment
       return user_assignments.flatten()
     end
 
-    def user_ids
-      cohort.user_ids
-    end
-
     def has_comments?
       !comments.empty?
     end

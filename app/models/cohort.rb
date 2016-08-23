@@ -4,7 +4,6 @@ class Cohort < ActiveRecord::Base
   belongs_to :permission_group
 
   has_many :users
-  has_many :assignment_groups
 
   validates_presence_of :permission_group
   validates_presence_of :owner
@@ -43,9 +42,6 @@ class Cohort < ActiveRecord::Base
     end
   end
 
-  def users
-    User.where(cohort: self)
-  end
 
   def assignment_groups
     Assignment::AssignmentGroup.where(cohort: self)

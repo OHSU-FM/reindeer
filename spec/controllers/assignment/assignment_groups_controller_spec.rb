@@ -43,7 +43,7 @@ describe Assignment::AssignmentGroupsController do
           expect(assigns[:assignment_group]).to eq @ag
         end
         it "sets @assignment_groups" do
-          expect(assigns[:assignment_groups]).to eq nil
+          expect(assigns[:assignment_groups]).to eq [@ag]
         end
         it "sets @user" do
           expect(assigns[:user]).to eq @ag.users.first
@@ -66,7 +66,7 @@ describe Assignment::AssignmentGroupsController do
           expect(assigns[:assignment_group]).to eq @ag
         end
         it "sets @assignment_groups" do
-          expect(assigns[:assignment_groups]).to eq nil
+          expect(assigns[:assignment_groups]).to eq [@ag]
         end
         it "sets @user" do
           expect(assigns[:user]).to eq @ag.users.first
