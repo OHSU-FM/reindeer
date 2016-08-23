@@ -20,8 +20,8 @@ describe Cohort do
 
     expect(c.user_ids).to be_instance_of(Array)
     c.user_ids.each do |uid|
-      expect(uid).to be_instance_of(String)
-      expect(User.find(uid)).to exist
+      expect(uid).to be_instance_of(Fixnum)
+      expect(User.find(uid)).to be_valid
     end
   end
 

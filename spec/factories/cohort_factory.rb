@@ -9,7 +9,7 @@ FactoryGirl.define do
       end
 
       after(:build) do |c, evaluator|
-        create_list(:student, evaluator.users_count, cohort: c)
+        c.users = create_list(:student, evaluator.users_count, cohort: c)
       end
     end
   end

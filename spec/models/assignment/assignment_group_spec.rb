@@ -52,7 +52,7 @@ describe Assignment::AssignmentGroup do
 
       expect(ag.user_ids).to be_instance_of(Array)
       ag.user_ids.each do |uid|
-        expect(uid).to be_instance_of(String)
+        expect(uid).to be_instance_of(Fixnum)
         expect(User.find(uid)).to be_valid
       end
     end
