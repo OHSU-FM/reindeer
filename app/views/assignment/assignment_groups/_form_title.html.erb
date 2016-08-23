@@ -1,8 +1,8 @@
 <%= form_for @assignment_group, remote: true do |f| %>
     <% fid = '#' + f.options[:html][:id] %>
-    
+
     <h2>
-      <span><%= @assignment_group.title %></span>
+      <span><%= @assignment_groups.count > 4 ? "#{@assignment_group.owner.display_name} - " : "" %><%= @assignment_group.title %></span>
       <button type='button'
           class='btn btn-link <%= :hidden unless can?(:edit, @assignment_group) %>'
           data-show="<%= fid %>_title"
@@ -12,8 +12,8 @@
     </h2>
     <!-- Edit -->
 
-    <div id='<%= f.options[:html][:id] %>_title' 
-      class='bs-callout bs-callout-primary' 
+    <div id='<%= f.options[:html][:id] %>_title'
+      class='bs-callout bs-callout-primary'
       style='display:none;'>
       <h3>
           <span class="label label-primary">Editing</span>
@@ -30,9 +30,9 @@
                 target: "#{fid} h2 span"
               },
               class: 'btn btn-link' do %>
-              <i class='glyphicon glyphicon-ok'></i> 
+              <i class='glyphicon glyphicon-ok'></i>
           <% end %> <!-- Submit -->
-          <button type="button" 
+          <button type="button"
               data-show="<%= "#{fid} h2" %>"
               data-hide="<%= "#{fid}_title" %>"
               class="btn btn-link" style="color:red;">
