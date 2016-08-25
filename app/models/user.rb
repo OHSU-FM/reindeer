@@ -316,11 +316,8 @@ class User < ActiveRecord::Base
         ags << Assignment::AssignmentGroup.all
       else
         # all AG user owns or participates in
-        owned = Cohort.find_by(owner: self)
-        ags << owned.assignment_groups if owned
-        ags << Assignment::AssignmentGroup.all.find_all { |ag|
-          ag.user_ids.include? id
-        }
+        ags << cohorts.map {|c| c.assignment_groups } unless cohorts.empty?
+        ags << cohort.assignment_groups unless cohort.nil?
       end
       ags.flatten!
       @assignment_groups ||= ags

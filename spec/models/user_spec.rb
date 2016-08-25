@@ -1,40 +1,66 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe User do
 
-  it 'has a factory' do
+  it "has a factory" do
     expect(build :user).to be_valid
   end
 
-  it 'requires an email' do
+  it "requires an email" do
     user = build :user, email: nil
     expect(user).not_to be_valid
   end
 
-  it 'requires a username' do
+  it "requires a username" do
     user = build :user, username: nil
     expect(user).not_to be_valid
   end
 
-  it 'requires a password' do
+  it "requires a password" do
     user = build :user, password: nil
     expect(user).not_to be_valid
   end
 
-  it 'has roles' do
+  it "has roles" do
     user = build :user
     expect(user.admin?).to be false
     user.roles = [:admin]
     expect(user.admin?).to be true
   end
 
-  describe 'superadmin' do
+  describe "superadmin" do
     it "is admin or higher" do
       expect(build(:superadmin).admin_or_higher?).to be true
     end
   end
 
   describe "methods:" do
+    it "#cohort returns cohort user belongs to" do
+      c = create :cohort, :with_users
+      user = c.users.first
+      expect(user.cohort).to eq c
+    end
+
+    it "#cohorts returns list of cohorts user owns" do
+      user = build :user
+      c = create :cohort, owner: user
+      expect(user.cohorts).to eq [c]
+
+      user = build :user
+      c = create :cohort, owner: user
+      c2 = create :cohort, owner: user
+      expect(user.cohorts).to eq [c, c2]
+    end
+
+    it "#active_assignment_groups returns ags user owns that have users" do
+      user = build :user
+      create(:assignment_group, cohort: build(:cohort, owner: user))
+      expect(user.active_assignment_groups.count).to eq 0
+      user2 = build :user
+      create(:assignment_group, cohort: build(:cohort, :with_users, owner: user2))
+      expect(user2.active_assignment_groups.count).to eq 1
+    end
+
     it "#assignment_groups lists ags user owns" do
       user = build :user
       create(:assignment_group, cohort: build(:cohort, owner: user))
