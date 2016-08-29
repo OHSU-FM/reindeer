@@ -30,8 +30,8 @@ FactoryGirl.define do
     trait(:full) do
       active "Y"
       after(:create) do |survey|
-        lg = create :lime_group, group_name: "SurveyData", sid: survey.sid
-        lqs = create_list(:lime_question, 4, gid: lg.gid, sid: survey.sid).map {|lq| lq.qid }
+        lg = create :lime_group, group_name: "SurveyData", lime_survey: survey
+        lqs = create_list(:lime_question, 4, lime_group: lg).map {|lq| lq.qid }
         create_min_survey(survey.sid, lg.gid, lqs)
         create_min_response(survey.sid, lg.gid, lqs)
       end

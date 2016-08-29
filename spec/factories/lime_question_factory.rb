@@ -4,5 +4,6 @@ FactoryGirl.define do
     title { Faker::Lorem.word }
     question_order 0
     lime_group
+    sid { lime_group.sid }
   end
 end
