@@ -16,9 +16,9 @@ class LimeExt::LimeSurveyGroup
     end
 
     # Filter groups if filter present
-    filter = *opts[:filter]
-    if filter.present?
-      groups.select!{|group| filter.include?(group.title) }
+    group_filter = *opts[:group_filter]
+    if group_filter.present?
+      groups.select!{|group| group_filter.include?(group.title) }
     end
     groups
   end
@@ -39,11 +39,6 @@ class LimeExt::LimeSurveyGroup
   def in_group?(lime_survey)
     g_title, ra_title = lime_survey.group_and_title_name
 
-
-    #if g_title == nil
-    #    g_title = n_title
-    #end
-
     @group_title ||= g_title
     group_title == g_title
   end
@@ -54,17 +49,17 @@ class LimeExt::LimeSurveyGroup
   class GroupCollection < Array
 
     def initialize( items=nil, opts={} )
-      @filter = *opts[:filter]
+      @group_filter = *opts[:group_filter]
       items = *items
       items.each{|item| push(item) if in_filter?(item) }
     end
 
     def in_filter? item
-      @filter.empty? || @filter.include?(item.title)
+      @group_filter.empty? || @group_filter.include?(item.title)
     end
 
-    def filter filter
-      self.class.new(self, filter: filter)
+    def group_filter filter
+      self.class.new(self, group_filter: filter)
     end
 
     def titles

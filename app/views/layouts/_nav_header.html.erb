@@ -43,7 +43,7 @@
                 <ul class="dropdown-menu">
                   <% end %>
                   <% second_level.each do |sub_menu_item, s| %>
-                  <%= nav_link_to(sub_menu_item, main_app.ls_reports_path(filter: "#{top_link}:#{first_level_item}:#{sub_menu_item}")) %>
+                  <%= nav_link_to(sub_menu_item, main_app.ls_reports_path(group_filter: "#{top_link}:#{first_level_item}:#{sub_menu_item}")) %>
                   <% end %>
                   <% if first_level.keys.count > 1 %>
                 </ul>
