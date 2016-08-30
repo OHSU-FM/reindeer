@@ -306,7 +306,9 @@ class User < ActiveRecord::Base
   end
 
   def cohorts
-    Cohort.where(owner: self)
+    return @cohorts if defined? @cohorts
+    @cohorts ||= admin_or_higher? ? Cohort.all : Cohort.where(owner: self)
+    return @cohorts
   end
 
   def assignment_groups

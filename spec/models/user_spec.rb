@@ -44,12 +44,15 @@ describe User do
     it "#cohorts returns list of cohorts user owns" do
       user = build :user
       c = create :cohort, owner: user
+      c2 = create :cohort
       expect(user.cohorts).to eq [c]
+      expect(user.cohorts).not_to include c2
+    end
 
-      user = build :user
-      c = create :cohort, owner: user
-      c2 = create :cohort, owner: user
-      expect(user.cohorts).to eq [c, c2]
+    it "#cohorts returns list of all cohorts as admin" do
+      admin = build :admin
+      c = create :cohort
+      expect(admin.cohorts).to include c
     end
 
     it "#active_assignment_groups returns ags user owns that have users" do
