@@ -1,9 +1,14 @@
 # vim:set ft=dockerfile:
 FROM php:5.6.23-fpm
+
+# Dockerize version
+ENV DOCKERIZE_VERSION v0.2.0
 # Version of lime_survey to download
 ENV LIME_BIN_URL https://github.com/LimeSurvey/LimeSurvey/archive/2.06_plus_160123.tar.gz
 # SHA256 for verifying validity of lime tar.gz
 ENV LIME_SHA256 499f8557701175d2ee3586184b6f88fa755ebf1113e29da3e8e3b2a65f263097
+# sub-uri of limesurvey
+ENV APPDIR /code/survey
 
 RUN apt-get update -qqy && \ 
     apt-get install -y \
@@ -17,8 +22,11 @@ RUN apt-get update -qqy && \
         postgresql-client \
         wget && \
         docker-php-ext-install pdo_pgsql
-ENV DOCKERIZE_VERSION v0.2.0
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+ADD ./build/lime /docker
+RUN /docker/download.sh
+VOLUME $APPDIR
 
 EXPOSE 9000
