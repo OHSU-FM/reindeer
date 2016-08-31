@@ -6,6 +6,14 @@ class Assignment::UserResponse < ActiveRecord::Base
   validates :user_assignment, presence: true
   validates :content, presence: true
 
+  def self.dedupe
+    grouped = all.group_by{|ur| [ur.title, ur.user.id, ur.category, ur.content]}
+    grouped.values.each do |duplicates|
+      first = duplicates.shift
+      duplicates.each {|duplicate| duplicate.destroy }
+    end
+  end
+
   def populate_from_hash hash
     (attribute_names - ["id"]).each do |attr|
       if hash.has_key? attr

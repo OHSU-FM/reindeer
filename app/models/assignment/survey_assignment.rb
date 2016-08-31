@@ -110,10 +110,10 @@ module Assignment
           return
         end
 
-        emails = tid_emails.map{|tid, email| email}
-        users = User.where(['email in (?)', emails])
-        tid_emails.each do |tid, email|
-          user = users.find{|uu|uu.email == email}
+        ag_emails = assignment_group.users.map{|u| u.email}
+        filtered_tids = tid_emails.select{|tid, email| ag_emails.include? email}
+        filtered_tids.each do |tid, email|
+          user = User.find_by(email: email)
           next if user.nil?
           ua = user_assignments.build
           ua.lime_token_tid = tid
