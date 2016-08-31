@@ -9,18 +9,20 @@
   <% @service.survey_types.each_with_index do |st, i| %>
   <div class="tab-pane fade in <%= "active" if i == 0 %>" id="<%= st.to_s %>">
     <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
-      <% @service.recent.each do |ua| %>
-        <% if ua.completed? %>
-          <% if ua.survey_type == st %>
-            <% if ua.is_shallow? %>
-              <%= render :partial => "assignment/user_assignments/shallow_row", locals: { ua: ua } %>
-            <% else %>
-              <%= render :partial => "assignment/user_assignments/deep_rows", locals: { ua: ua } %>
-            <% end %>
+      <% if @service.recent.select{|ua| ua.user_responses.present?}.each do |ua| %>
+        <% if ua.completed? && ua.survey_type == st %>
+          <% if ua.is_shallow? %>
+            <%= render :partial => "assignment/user_assignments/shallow_row", locals: { ua: ua } %>
+          <% else %>
+            <%= render :partial => "assignment/user_assignments/deep_rows", locals: { ua: ua } %>
           <% end %>
         <% else %>
           <%= ua.status_str %>
         <% end %>
+      <% end.empty? %>
+        <div class="fade-in two right-panel" style="text-align;center">
+          <p>No goals for this student</p>
+        </div>
       <% end %>
     </div>
   </div>
