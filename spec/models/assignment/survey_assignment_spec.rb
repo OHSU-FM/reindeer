@@ -11,14 +11,25 @@ describe "SurveyAssignment" do
   end
 
   describe "methods" do
-    it "#do_gather_user_tokens" do
-      u = create :user, email: "test@example.com"
-      sa = create :survey_assignment
-      sa.gather_user_tokens = "1"
-      sa.save!
+    describe "#do_gather_user_tokens" do
+      it "generates user_assignments for users in sa.assignment_group" do
+        ag = create :assignment_group, :with_full_template, :with_users
+        u = ag.users.first
+        u.email = "test@example.com"; u.save!
+        sa = create :survey_assignment, assignment_group: ag
+        sa.gather_user_tokens = "1"
 
-      expect(sa.user_assignments.count).to eq 1
-      expect(sa.user_assignments.first.user).to eq u
+        expect{sa.save!}.to change(u.user_assignments, :count).by(1)
+      end
+
+      it "doesn't generate uas for users not in sa.assignment_group" do
+        u = create :user
+        sa = create :survey_assignment
+        sa.gather_user_tokens = "1"
+
+        expect{sa.save!}.not_to change(Assignment::UserAssignment, :count)
+        expect{sa.save!}.not_to change(u.user_assignments, :count)
+      end
     end
 
     it "#survey_data_sid_and_gid" do

@@ -96,14 +96,13 @@ module Assignment
           end
         end
         # Remove all old assignments
-        user_assignments.delete_all
+        user_assignments.each{|ua| ua.destroy }
 
         unless lime_survey_sid
           errors.add(:lime_survey_sid, 'No lime survey selected')
           return
         end
 
-        #
         tid_emails = lime_survey.lime_tokens.pluck :tid, :email
         unless tid_emails
           errors.add(:gather_user_tokens, 'No tokens to add')
@@ -119,6 +118,7 @@ module Assignment
           ua.lime_token_tid = tid
           ua.user_id = user.id
           ua.save!
+          ua.user_responses
         end
 
         if !comment_hash.nil? && !comment_hash.empty?

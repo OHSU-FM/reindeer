@@ -166,6 +166,8 @@ class Assignment::UserAssignment < ActiveRecord::Base
     end
   end
 
+  private
+
   def build_user_responses
     g_title, ra_title = group_and_title
     create_list = []
@@ -223,5 +225,4 @@ class Assignment::UserAssignment < ActiveRecord::Base
     end
     h
   end
-
 end
