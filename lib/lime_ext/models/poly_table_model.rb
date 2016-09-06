@@ -85,15 +85,15 @@ module LimeExt
     ##
     # Add a filter to the dataset generator
     def add_filter col, val, opts={}
-      col = self.class.sql_sub(col)
-      val = self.class.sql_sub(val)
+      col = self.class.sql_sub(col, sid)
+      val = self.class.sql_sub(val, sid)
       if col.to_s.empty? || val.to_s.empty?
         raise LimeExt::Errors::LimeDataFiltersError,  'Error adding filter'
       end
       @dataset_stale = true
       filters.push(opts.merge({:col=>col, :val=>val})).uniq!
       filter_names.push(opts[:name]||val)
-      return self
+      self
     end
 
     ##
@@ -105,15 +105,32 @@ module LimeExt
     ##
     # Is the dataset stale?
     def dataset_stale?
-      return @dataset_stale ||= false
+      @dataset_stale ||= false
+    end
+
+    def self.update_token token, sid
+      mod_token = token.gsub("~", "@")
+      q = """
+      UPDATE #{self.table_name sid} SET token='#{mod_token}' WHERE token='#{token}';
+      UPDATE #{self.token_table_name sid} SET token='#{mod_token}' WHERE token='#{token}';
+      """
+      run_sql q
+      return mod_token
     end
 
     ##
     # SQL secure substitution
-    def self.sql_sub val
+    def self.sql_sub val, sid
       xval = val.to_s.gsub(SQL_SUB_REGEX,'')
-      warn("Caught illegal characters in: #{val}") if xval != val.to_s
-      return xval
+      if xval != val.to_s
+        warn("Caught illegal characters in: #{val}")
+        if val.to_s.include? "~"
+          # val is likely token with psql illegal character '~'
+          warn("Caught '~', modifying entry in survey and token tables")
+          return self.update_token(val, sid)
+        end
+      end
+      xval
     end
 
   end

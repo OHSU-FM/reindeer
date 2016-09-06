@@ -44,7 +44,11 @@ module LimeExt
     ##
     # Return name of table for this survey
     def self.table_name sid
-      return "#{LimeExt.table_prefix}_survey_#{sid}"
+      "#{LimeExt.table_prefix}_survey_#{sid}"
+    end
+
+    def self.token_table_name sid
+      "#{LimeExt.table_prefix}_tokens_#{sid}"
     end
 
     def column_to_question col
