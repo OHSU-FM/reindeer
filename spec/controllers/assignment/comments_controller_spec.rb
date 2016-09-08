@@ -46,7 +46,7 @@ describe Assignment::UserResponse::CommentsController do
         expect(assigns[:commentable]).to eq @ur
       end
       it "should assign ur comments to @comments" do
-        expect(assigns[:comments]).to eq @ur.comments
+        expect(assigns[:comments]).to eq @ur.comments.order("updated_at DESC")
       end
     end
 

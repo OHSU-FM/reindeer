@@ -13,7 +13,7 @@ $ ->
   });
 
 $ ->
-  $(".assignment-group-select").bind "change", ->
+  $(".collection-select").bind "change", ->
     url = $(this).val()
     if url
       window.location.replace url

@@ -93,7 +93,7 @@ class LimeSurvey < ActiveRecord::Base
         if max_row
             @last_updated = max_row['submitdate']
         else
-            @last_updated = "01/01/1980" 
+            @last_updated = "01/01/1980"
         end
         return @last_updated
     end
@@ -150,7 +150,7 @@ class LimeSurvey < ActiveRecord::Base
         if !title3.nil?
             g_title = title1 + ":" + title2 + ":" + title3
             ra_title = title4
-        end 
+        end
         return g_title, ra_title
     end
 
@@ -178,5 +178,14 @@ class LimeSurvey < ActiveRecord::Base
       "#{Settings.lime_url}/admin/survey/sa/view/surveyid/#{sid}"
     end
 
+    def student_email_column
+      q = """
+      SELECT * FROM information_schema.columns
+      WHERE table_name LIKE 'lime_survey_#{sid}'
+      AND column_name LIKE '%StudentEmail';
+      """
+      resp = ActiveRecord::Base.connection.execute(q)
+      resp.to_a.present? ? resp.first["column_name"] : nil
+    end
 end
 

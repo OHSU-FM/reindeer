@@ -15,7 +15,7 @@ class LsReportsController < ApplicationController
 
     # Group surveys by group title
     @survey_groups = LimeExt::LimeSurveyGroup.classify(surveys,
-                                                       filter: params[:group_filter])
+                                                       params)
 
     # collect role aggregates
     @role_aggregates = @survey_groups.role_aggregates

@@ -6,10 +6,14 @@ class LimeExt::LimeSurveyGroup
   alias_method :title, :group_title
   alias_method :surveys, :lime_surveys
 
-
-  def self.classify(lime_surveys, opts = {})
+  def self.classify(lime_surveys, opts={})
     # dup our own copy of array to mutate
-    lime_surveys = lime_surveys.to_a.dup
+    lime_surveys = if opts[:pk_filter].present?
+      pk_list lime_surveys.to_a.dup, *opts[:pk_filter]
+    else
+      lime_surveys.to_a.dup
+    end
+
     groups = GroupCollection.new
     while lime_surveys.present?
       groups.push(new(lime_surveys))
@@ -30,6 +34,19 @@ class LimeExt::LimeSurveyGroup
 
   def role_aggregates
     @role_aggregates ||= surveys.map{|survey| survey.role_aggregate }
+  end
+
+  def self.pk_list lime_surveys, pk
+   lime_surveys.map {|survey|
+      survey.student_email_column
+    }.compact.select {|column_name|
+      check_table("lime_survey_#{column_name.split("X").first}", column_name, pk)
+    }.map {|column_name| LimeSurvey.find(column_name.split("X").first.to_i)}
+  end
+
+  def self.check_table(table_name, col_name, pk)
+    LimeTable.table_name = table_name
+    LimeTable.where("#{col_name}" => pk).present?
   end
 
   protected
@@ -74,4 +91,7 @@ class LimeExt::LimeSurveyGroup
       map{|group|group.lime_surveys}.flatten
     end
   end
+end
+
+class LimeTable < ActiveRecord::Base
 end

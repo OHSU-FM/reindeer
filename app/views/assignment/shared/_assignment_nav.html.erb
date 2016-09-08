@@ -10,7 +10,7 @@
       <div id="assignment-group-nav" class="col-md-6 left-panel">
         <%= select_tag "assignment_group_id",
         grouped_options_for_select(hf_assignment_groups_select_hash @assignment_groups),
-        class: "needs-select2 assignment-group-select" %>
+        class: "needs-select2 collection-select" %>
       </div>
     <% end %>
     <div id="user-ids-nav" class="col-md-<%= (@assignment_groups && @assignment_groups.count > 1) ? 6 : 12 %>">
