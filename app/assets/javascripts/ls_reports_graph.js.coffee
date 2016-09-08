@@ -21,23 +21,23 @@ Array::min=->
     max_item = data.max()
     if (max_item < 10 )
             max_item = 10
-            max_tick = null 
+            max_tick = null
     else if (max_item > 10 && max_item < 50)
             max_item = 50
             max_tick = null
-        else if (max_item > 50 && max_item <= 100) 
+        else if (max_item > 50 && max_item <= 100)
                 max_item = 100
                 max_tick = 10
             else
-                max_item = 100 
-                max_tick = 10 
+                max_item = 100
+                max_tick = 10
 
 
     category_labels = graph.category_labels()
     chart_type = graph.chart_type
 
     switch chart_type
-        when 'spider' 
+        when 'spider'
             chart_type = 'line'
             var_pointPlacement = 'on'
             polar = true
@@ -48,7 +48,7 @@ Array::min=->
             chart_type = 'scatter'
             var_pointPlacement = 'off'
             polar = false
-            yTitleText = graph.yTitleText 
+            yTitleText = graph.yTitleText
             xTitleText = graph.xTitleText
             three_d_enabled = false
 
@@ -57,11 +57,11 @@ Array::min=->
 
         else
             var_pointPlacement = 'off'
-            yTitleText = graph.yTitleText 
+            yTitleText = graph.yTitleText
             xTitleText = graph.xTitleText
             three_d_enabled = false #true
 
-        
+
 
     return {
         chart: {
@@ -96,7 +96,7 @@ Array::min=->
                         enabled: true,
                         format: '{point.name}'
                     },
-                    showInLegend: false 
+                    showInLegend: false
                  }
         },
 
@@ -107,9 +107,9 @@ Array::min=->
         title: {text:graph.title},
 
         yAxis: {
-            min: 0, max: max_item, lineWidth: 0, tickInterval: max_tick, 
-            pointPlacement: var_pointPlacement, 
-            lineWidth: 0, 
+            min: 0, max: max_item, lineWidth: 0, tickInterval: max_tick,
+            pointPlacement: var_pointPlacement,
+            lineWidth: 0,
             gridLineInterpolation: 'polygon',
             gridLineColor: '#555'
             title: {
@@ -125,7 +125,7 @@ Array::min=->
             }
         },
         xAxis: {
-            tickInterval: 1, 
+            tickInterval: 1,
             tickmarkPlacement: 'on',
             pointPlacement: 'on',
             lineWidth: 0,
@@ -136,13 +136,13 @@ Array::min=->
                     color: '#222'
                 }
             },
-            labels: { 
-                formatter: -> 
+            labels: {
+                formatter: ->
                     if (this.value.length > 20)
                         return this.value.substr(0,20) + "...";
                     else
-                        return this.value;   
-                                               
+                        return this.value;
+
 
                 style: {
                     color: '#222',
@@ -161,22 +161,22 @@ Array::min=->
                                   width:'50px',
                                   textOverflow: 'ellipsis',
                                   overflow: 'hidden'
-                                }  
+                                }
                 },
 
         series: [{
-                    
+
                      name: 'Class Mean ' + graph.unfiltered_series_name,
                      color: '#4497e3',
                      #pointPlacement: var_pointPlacement,
                      data: full_data  # q68
                   }, {
-                     
+
                      name: graph.filtered_series_name,      #'Judith Bowen',
                      visible: graph.filtered_series_name,
                      showInLegend: graph.filtered_series_name,
                      pointPlacement: var_pointPlacement,
-                     color: 'lime',             
+                     color: 'lime',
                      data: data
                   }]
     };
@@ -192,14 +192,14 @@ class LsGraphBase
         if graph_type?
             @chart_type = graph_type
         else
-            @chart_type = 'column' 
+            @chart_type = 'column'
 
         @filters_equal = filters_equal
         @yTitleText = undefined
         @xTitleText = undefined
 
         @filtered_series_name = filtered_series_name   # Filtered data series name
-        if unfiltered_series_name 
+        if unfiltered_series_name
             @unfiltered_series_name =  unfiltered_series_name  # unfiltered data series name
         else
             @unfiltered_series_name = '(All)'
@@ -207,14 +207,14 @@ class LsGraphBase
         @title = if title? then title else ''
 
         return
-    
-    event_handlers: -> 
+
+    event_handlers: ->
         klass = @
         @$container.on 'change', '.role-chart-options', (event) =>
             @chart_type = klass.$options.val()
             $('.new_question_widget').append('<input type="hidden" name="question_widget[graph_type]" value=' + @chart_type + '>')
-            klass.draw() 
-    
+            klass.draw()
+
     chart_args: ->
         chart_args(@)
 
@@ -222,9 +222,9 @@ class LsGraphBase
         # Draw chart
         highchart = $(@$target).highcharts(@chart_args());
         highchart = $(highchart).highcharts()
-    
+
         # Hide second series if they are equal
-        if @filters_equal == true 
+        if @filters_equal == true
             highchart.series[1].hide()
         # Add hook for dashboard
 
@@ -234,11 +234,11 @@ class LsGraphBase
 
 class LsGraphCategories extends LsGraphBase
 
-    constructor: -> 
-        super 
+    constructor: ->
+        super
         @yTitleText = '% Responses'
         @xTitleText = 'Answer Options'
-     
+
     data: ->
         qstat = @qstat
         result = (Number(cat.percent.toFixed(2)) for cat in qstat.categorical_stats)
@@ -272,9 +272,9 @@ class LsGraphCategories extends LsGraphBase
                 ca.xAxis.title.text = ''
                 ca.yAxis.title.text = ''
                 ca.yAxis.gridLineInterpolation = 'polygon'
-                ca.yAxis.min = 0 
-                ca.yAxis.max = null 
-                ca.yAxis.tickInterval = null 
+                ca.yAxis.min = 0
+                ca.yAxis.max = null
+                ca.yAxis.tickInterval = null
                 ca.series[0].type = ''
             else
                 ca.chart.poloar = false
@@ -286,11 +286,11 @@ class LsGraphCategories extends LsGraphBase
     full_data: ->
         qstat = @full_qstat
         return (Number(cat.percent.toFixed(2)) for cat in qstat.categorical_stats)
-   
+
     category_labels: ->
         qstat = @qstat
         return (cat.answer for cat in qstat.categorical_stats)
-    
+
     category_data: ->
         qstat = @qstat
         return ([cat.answer, cat.percent] for cat in qstat.categorical_stats when cat.frequency != 0)
@@ -298,7 +298,7 @@ class LsGraphCategories extends LsGraphBase
 class LsGraphDescriptivesMultNumeric extends LsGraphBase
 
     constructor: ->
-        super 
+        super
         @yTitleText = 'Scores'
         @xTitleText = 'Categories'
 
@@ -310,16 +310,14 @@ class LsGraphDescriptivesMultNumeric extends LsGraphBase
         #return result
         result = []
         for sub in qstat.sub_stats
-            rounded_float = sub.descriptive_stats.mean 
+            rounded_float = sub.descriptive_stats.mean
             if !rounded_float
                 rounded_float = 0
 
-            if rounded_float < 50
+            if rounded_float < 70.00
+                result.push {y: rounded_float, color:'#FFA500'}
+            else
                 result.push rounded_float
-            else if rounded_float < 70.00
-                    result.push {y: rounded_float, color:'#FFA500'} 
-                 else
-                    result.push rounded_float
         return result
 
     full_data: ->
@@ -333,16 +331,13 @@ class LsGraphDescriptivesMultNumeric extends LsGraphBase
                 rounded_float = 0
             else
                 rounded_float = Number(rounded_float.toFixed(2))
-    
-            if rounded_float < 50
-                result.push rounded_float
-            else if rounded_float < 70.00
-                    result.push {y: rounded_float, borderColor:'#FFA500'} 
-                else
-                    result.push rounded_float
 
+            if rounded_float < 70.00
+                result.push {y: rounded_float, borderColor:'#FFA500'}
+            else
+                result.push rounded_float
         return result
-   
+
     category_labels: ->
         qstat = @qstat
         return (sub_stat.q_text for sub_stat in qstat.sub_stats)
@@ -350,7 +345,7 @@ class LsGraphDescriptivesMultNumeric extends LsGraphBase
 class LsGraphDescriptivesNumeric extends LsGraphBase
 
     constructor: ->
-        super 
+        super
         @yTitleText = 'Scores'
         @xTitleText = 'Categories'
 
@@ -358,10 +353,10 @@ class LsGraphDescriptivesNumeric extends LsGraphBase
         qstat = @qstat
         result = []
         rounded_float = Number(qstat.descriptive_stats.mean.toFixed(2))
-        if rounded_float < 70.00   
+        if rounded_float < 70.00
             result.push {y: rounded_float, color:'#FFA500'}
         else
-            result.push rounded_float 
+            result.push rounded_float
         return result
 
     full_data: ->
@@ -369,12 +364,12 @@ class LsGraphDescriptivesNumeric extends LsGraphBase
         result = []
         result.push Number(qstat.descriptive_stats.mean.toFixed(2))
         return result
-   
+
     category_labels: ->
         qstat = @qstat
         result = []
         result.push qstat.q_text
-        return result 
+        return result
 
 class LsGraphArrFlex
     #
@@ -423,20 +418,20 @@ window.LsReport.Graph.load = (target, graph_type, qstat, full_qstat, series_name
 
         else
             #console.log 'Unimplemented graph type: ' + qstat.qtype
-        
+
     if chart?
         chart.draw()
     return chart
 $(document).ready ->
     return if $('body').attr('id') != 'ls_reports_graph'
-    window.scroll_spy_init() 
-    
+    window.scroll_spy_init()
+
     window.charts = []
 
-    
+
     return unless gon?
     return unless gon.qstats?
-    
+
     series_name = if gon.series_name? then gon.series_name else ''
     unfiltered_series_name = if gon.unfiltered_series_name? then gon.unfiltered_series_name else ''
     filters_equal = if gon.filters_equal? then gon.filters_equal else false
@@ -445,12 +440,12 @@ $(document).ready ->
         full_qstat = gon.full_qstats[idx]
         $target = $('.chart-visualization-' + full_qstat.qid)
         chart = window.LsReport.Graph.load($target, @chart_type, qstat, full_qstat, series_name, unfiltered_series_name, filters_equal)
-        window.charts.push chart 
+        window.charts.push chart
     $('body').scrollspy('refresh');
 
     $('[data-toggle="tooltip"]').popover({
         container: 'body'
     });
 
-    
-  
+
+
