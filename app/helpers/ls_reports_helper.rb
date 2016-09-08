@@ -117,6 +117,17 @@ module LsReportsHelper
     outh
   end
 
+  def hf_report_filter_hash cohorts
+    outh = Hash.new{ |h,k| h[k] = [] }
+    cohorts.each do |c|
+      c.users.each do |user|
+        outh[c.permission_group.title] << [ user.display_name, url_for(ls_reports_path(pk_filter: "#{user.email}")) ]
+      end
+      outh[c.permission_group.title].sort_by!{|e| e.first.split(" ").last}
+    end
+    outh
+  end
+
   # TODO: Move to ls_files_helper.rb
   class FileAccessRequest
     attr_reader :fm, :col_id, :row_id
