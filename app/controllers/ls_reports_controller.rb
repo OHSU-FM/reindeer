@@ -22,5 +22,7 @@ class LsReportsController < ApplicationController
 
     # Sort groups alphabetically
     @survey_groups.sort_by{|group| group.title }
+
+    @cohorts = current_user.cohorts
   end
 end

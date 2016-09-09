@@ -17,6 +17,15 @@ describe LsReportsController do
     expect(assigns["survey_groups"].lime_surveys).to include l
   end
 
+  it "should set @cohorts" do
+    a = create :admin
+    c = create :cohort, owner: a
+
+    sign_in a
+    get :index
+    expect(assigns["cohorts"]).to include c
+  end
+
   it "should set @role_aggregates" do
     l = create :lime_survey, role_aggregate: (create :role_aggregate, :ready)
     u = create :admin

@@ -4,7 +4,7 @@
   <div class="row main">
     <div class="col-md-12">
       <%= select_tag "user",
-      grouped_options_for_select(hf_report_filter_hash(current_user.cohorts), ls_reports_path(pk_filter: params[:pk_filter])),
+      grouped_options_for_select(hf_report_filter_hash(@cohorts), ls_reports_path(pk_filter: params[:pk_filter])),
       include_blank: "All Students",
       class: "needs-select2 collection-select" %>
     </div>
