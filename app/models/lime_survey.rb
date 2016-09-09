@@ -179,13 +179,8 @@ class LimeSurvey < ActiveRecord::Base
     end
 
     def student_email_column
-      q = """
-      SELECT * FROM information_schema.columns
-      WHERE table_name LIKE 'lime_survey_#{sid}'
-      AND column_name LIKE '%StudentEmail';
-      """
-      resp = ActiveRecord::Base.connection.execute(q)
-      resp.to_a.present? ? resp.first["column_name"] : nil
+      lime_data.column_names.filter {|name|
+        name.include? "StudentEmail"}.first
     end
 end
 
