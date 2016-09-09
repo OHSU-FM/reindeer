@@ -184,6 +184,7 @@ class User < ActiveRecord::Base
       end
       field :email
       field :username
+      field :full_name
       field :password
       field :password_confirmation
       field :is_ldap

@@ -16,6 +16,7 @@ class Cohort < ActiveRecord::Base
     weight -5
 
     list do
+      sort_by :owner
       field :id do
         read_only true
       end
