@@ -5,12 +5,8 @@ cd $HOME
 SETTINGS=config/settings.yml
 DATABASE=config/database.yml
 
-#if [ ! -f $DATABASE ]; then
-    cp ${DATABASE}.example $DATABASE
-#fi
+cp ${DATABASE}.example $DATABASE
 
 export APP_SECRET=`rake secret`
 export DEVISE_SECRET=`rake secret`
-#if [ ! -f $SETTINGS ]; then
-    envsubst < 'config/settings.yml.example' > $SETTINGS
-#fi
+envsubst < 'config/settings.yml.example' > $SETTINGS

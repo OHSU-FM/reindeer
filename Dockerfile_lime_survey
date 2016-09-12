@@ -8,7 +8,7 @@ ENV LIME_BIN_URL https://github.com/LimeSurvey/LimeSurvey/archive/2.06_plus_1601
 # SHA256 for verifying validity of lime tar.gz
 ENV LIME_SHA256 499f8557701175d2ee3586184b6f88fa755ebf1113e29da3e8e3b2a65f263097
 # sub-uri of limesurvey
-ENV APPDIR /code/survey
+ENV APPDIR /var/www/html/survey
 
 RUN apt-get update -qqy && \ 
     apt-get install -y \
@@ -23,7 +23,8 @@ RUN apt-get update -qqy && \
         wget && \
         docker-php-ext-install pdo_pgsql
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 ADD ./build/lime /docker
 RUN /docker/download.sh

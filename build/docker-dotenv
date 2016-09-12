@@ -35,7 +35,15 @@ echo $POSTGRES_PASSWORD
 read -e -p "Rails relative url: " -i "/reindeer" RAILS_RELATIVE_URL_ROOT
 echo $RAILS_RELATIVE_URL_ROOT
 
-cat > .dockerenv <<EOL
+echo "
+    Generating secret keys for your application
+"
+touch ./data/dockerenv
+APP_SECRET=`$CMD rake secret`
+DEVISE_SECRET=`$CMD rake secret`
+
+
+cat > ./data/dockerenv <<EOL
 # File permissions on shared volumes (reindeer only)
 USER_UID=${USER_UID}
 USER_GID=${USER_GID}
@@ -60,10 +68,9 @@ EOL
 
 echo "
 
-Thank you for the environment details. We are now ready to fire up the 
-docker environment. The information you have provided has been saved to ./.dockerenv
-and will be used by docker-compose to build and configure the containers.
+    The information you have provided has been saved 
+    to ./data/dockerenv and will be used by docker-compose to build and 
+    configure the containers.
 
 "
-read -rsp $'Press any key to continue with the build process...\n' -n1 key
 

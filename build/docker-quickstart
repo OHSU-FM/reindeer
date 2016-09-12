@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -e
+
+CMD='docker-compose run --no-deps --rm reindeer'
+
+# Create config files, allows docker-compose to run
+touch ./data/dockerenv
+touch ./data/database.yml
+touch ./data/settings.yml
+touch ./data/config.php
+
+# create env file if empty
+if [ ! -s ./data/dockerenv ]; then
+    ./build/docker-dotenv
+fi
+
+# create web if missing
+[ -d ./data/web ] || mkdir ./data/web
+
+if [ ! -s ./data/web/index.html ]; then
+    cp ./build/web/index.html ./data/web/
+fi
+
+# Create Settings.yml if empty
+if [ ! -s ./data/database.yml ]; then
+    $CMD bash -c 'envsubst < "config/database.yml.example"' > ./data/database.yml
+fi
+
+# Create database.yml if empty
+if [ ! -s ./data/setttings.yml ]; then
+    $CMD bash -c 'envsubst < "config/settings.yml.example"' > ./data/settings.yml
+fi
+
+# Create limesurvey database config file if empty
+if [ ! -s ./data/config.php ]; then
+    $CMD bash -c 'envsubst < "build/lime/config_pgsql.php.template"' > ./data/config.php
+fi
+
+# tput echo to change color of prompt, run through docker for compatibility
+$CMD bash -c 'echo "
+    Initializing database structure
+
+    $(tput setaf 3)
+    -- NOTE: If you receive database access errors past this point, make sure that 
+             your dockerd network is configured to run in bridged mode.
+             
+             Example:
+             ps -ef|grep dockerd|grep bridge
+             dockerd --bridge=docker0 -H fd://
+    $(tput sgr0)
+"'
+
+docker-compose run --rm lime sh -c 'dockerize -wait tcp://$DB_HOST:$DB_PORT /docker/init.sh'
+echo "
+    Initializing reindeer
+"
+docker-compose run --rm reindeer sh -c 'dockerize -wait tcp://$DB_HOST:$DB_PORT /docker/init.sh'
+
+docker-compose stop
+# tput echo to change color of prompt, run through docker for compatibility
+$CMD bash -c 'echo "
+    $(tput setaf 2)
+
+    Reindeer docker initialization complete.
+
+    Run \"docker-compose up -d\" to access your application
+    $(tput sgr0)
+"'

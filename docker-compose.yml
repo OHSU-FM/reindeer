@@ -6,11 +6,14 @@ services:
         dockerfile: Dockerfile_web
     restart: on-failure
     volumes:
-        - ./data/lime_survey/html:/code
+        - ./data/web:/var/www/html
         - ./data/logs/web:/var/log/nginx
         - ./build/web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    volumes_from:
+        - lime
     ports:
         - 80
+    env_file: ./data/dockerenv
     links:
         - lime
         - reindeer
@@ -21,11 +24,10 @@ services:
         context: .
         dockerfile: Dockerfile_lime_survey
     volumes:
-        - ./data/lime_survey/html:/code
-        - ./data/lime_survey/downloads:/tmp/downloads
+        - ./data/config.php:/var/www/html/survey/application/config/config.php
         - ./build/web:/mnt/web:ro
         - ./build/lime:/docker:ro
-    env_file: .dockerenv
+    env_file: ./data/dockerenv
     ports:
         - 9000
     links:
@@ -36,7 +38,7 @@ services:
     image: postgres:9.5
     volumes:
         - ./data/db/data:/var/lib/postgresql/data
-    env_file: .dockerenv
+    env_file: ./data/dockerenv
     ports:
         - 5432
   reindeer:
@@ -44,12 +46,14 @@ services:
     build: 
         context: .
         dockerfile: Dockerfile_reindeer
-    env_file: .dockerenv
+    env_file: ./data/dockerenv
     volumes:
         - ./:/home/app
+        - ./data/settings.yml:/home/app/config/settings.yml
+        - ./data/database.yml:/home/app/config/database.yml
         - /home/app/data    # hide contents of data from container
         - ./build/reindeer:/docker:ro
-        - ./data/lime_survey:/lime_survey
+        - ./data/reindeer/public:/home/app/public/data
     ports:
         - 3000
     links:
