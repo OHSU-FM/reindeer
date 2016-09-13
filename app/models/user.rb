@@ -72,6 +72,7 @@ class User < ActiveRecord::Base
     :can_view_spreadsheet=>1,
     :can_create_assignment_group=>1,
     # Role permissions
+    :evaluator=> 2,
     :admin=>25,
     :superadmin=>50
   }

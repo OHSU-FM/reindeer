@@ -164,6 +164,7 @@ module LsReportsHelper
       add_permission_group_filters
       add_all_param_filters
       do_titles
+      obfuscate_labels if @user.evaluator?
       Rails.logger.info lime_survey.lime_data.query
       Rails.logger.info lime_survey_unfiltered.lime_data.query
     end
@@ -234,6 +235,7 @@ module LsReportsHelper
       @virtual_groups = []
       # Process every group
       lime_survey.lime_groups.each do |group|
+        next if group.group_name == "Personal Data" && @user.evaluator?
         next unless group.contains_visible_questions?
         @virtual_groups += VirtualGroup.spread group
       end
@@ -330,6 +332,9 @@ module LsReportsHelper
       return nil if @params[filter_name].to_s.empty?     # No filter val specified
       filter_val = @params[filter_name]
       return nil if filter_val == '_'                         # Blank filter val specified
+      if filter_val.to_i > 0
+        filter_val = User.find(filter_val.to_i).email
+      end
       cur_survey.add_filter(fieldname, filter_val)   # Add filter
       return filter_val
     end
@@ -338,6 +343,27 @@ module LsReportsHelper
     def do_titles
       @series_name = build_title(lime_survey).map{|k,v|"#{k}(#{v})"}.join(', ')
       @unfiltered_series_name = build_title(lime_survey_unfiltered).map{|k,v|"#{k}(#{v})"}.join(', ')
+    end
+
+    def obfuscate_labels
+      @pk_enum = pk_enum.each_with_index.map {|pk, i|
+          begin
+            i == 0 ? pk : ["#{role_aggregate.pk_label} #{i}", User.find_by(email: pk[1]).id]
+          rescue
+            next
+          end
+      }.compact
+      if role_aggregate.agg_label == "Coach"
+        @agg_enum = agg_enum.each_with_index.map {|agg, i|
+          begin
+            i == 0 ? agg : ["#{role_aggregate.agg_label} #{i}", User.find_by(email: agg[1]).id]
+          rescue
+            next
+          end
+        }.compact
+      end
+      @series_name = role_aggregate.pk_label
+      @unfiltered_series_name = role_aggregate.agg_label
     end
 
     # Build the title for an individual dataset

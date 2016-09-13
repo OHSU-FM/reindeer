@@ -1,8 +1,10 @@
+<% unless current_user.evaluator? %>
+  <ul>
+    <% lime_file_links(pquestion).flatten.each do |link| %>
+    <li><%= link %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Attached PDF containing identifying information (disabled)</p>
+<% end %>
 
-<ul>
-    <% #if lime_file_links(pquestion).flatten.count == 1 %>
-        <% lime_file_links(pquestion).flatten.each do |link| %>
-             <li><%= link %></li>
-        <% end %>
-    <% #end %>
-</ul>
