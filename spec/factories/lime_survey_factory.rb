@@ -14,30 +14,34 @@ FactoryGirl.define do
     allowregister 'Y'
     allowsave 'Y'
 
-    trait(:with_tables) do
+    trait :with_tables do
       active 'Y'
       after(:create) do |survey|
         create_min_survey(survey.sid)
       end
     end
 
-    trait(:with_response) do
+    trait :with_response do
       after(:create) do |survey|
         create_min_response(survey.sid)
       end
     end
 
-    trait(:full) do
+    trait :full do
+      transient do
+        opts {{}}
+      end
+
       active "Y"
-      after(:create) do |survey|
+      after(:create) do |survey, evaluator|
         lg = create :lime_group, group_name: "SurveyData", lime_survey: survey
         lqs = create_list(:lime_question, 4, lime_group: lg).map {|lq| lq.qid }
         create_min_survey(survey.sid, lg.gid, lqs)
-        create_min_response(survey.sid, lg.gid, lqs)
+        create_min_response(survey.sid, lg.gid, lqs, evaluator.opts)
       end
     end
 
-    trait(:with_languagesettings) do
+    trait :with_languagesettings do
       after(:create) do |survey|
         survey.lime_surveys_languagesettings << FactoryGirl.build(:lime_surveys_languagesetting)
       end

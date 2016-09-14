@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :role_aggregate do
-    association :lime_survey, factory: :lime_survey_full
+    association :lime_survey, :full, :with_languagesettings
     default_view "graph"
 
     trait :ready do

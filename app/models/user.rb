@@ -263,19 +263,19 @@ class User < ActiveRecord::Base
   def role_aggregates
     return @role_aggregates if defined? @role_aggregates
     @role_aggregates = []
-    if self.admin_or_higher?
+    if admin_or_higher?
       @role_aggregates = RoleAggregate.includes(:lime_survey=>[
         :lime_surveys_languagesettings,
         :lime_groups=>[:lime_questions]
       ])
     else
-      @role_aggregates = self.permission_group.present? ? self.permission_group.role_aggregates_for(self) : []
+      @role_aggregates = permission_group.present? ? permission_group.role_aggregates_for(self) : []
     end
     return @role_aggregates.select{|ra|ra.ready_for_use?}
   end
 
   def explain_survey_access
-    if self.admin_or_higher?
+    if admin_or_higher?
       details = ['Admin can see everything']
     elsif permission_group.present?
       details, ra = self.permission_group.explain_role_aggregates_for(self)
@@ -288,6 +288,17 @@ class User < ActiveRecord::Base
 
   def lime_surveys
     @lime_surveys ||= role_aggregates.map{|ra|ra.lime_survey}
+  end
+
+  def lime_surveys_most_recent n = 1
+    lime_surveys.sort_by { |s|
+      next unless s.lime_data.column_names.include? "submitdate"
+      ActiveRecord::Base.connection.execute(
+        """
+        SELECT 'submitdate' from lime_survey_#{s.sid};
+        """
+      ).max_by{|k, v| next unless v.present?; v.to_date}
+    }.first(n)
   end
 
   def institution

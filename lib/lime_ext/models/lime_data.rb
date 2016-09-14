@@ -34,10 +34,11 @@ module LimeExt
     end
 
     def cache_store_key
-      [   self.class.name,
-          query,
-          @lime_survey,
-          @lime_survey.role_aggregate
+      [
+        self.class.name,
+        query,
+        @lime_survey,
+        @lime_survey.role_aggregate
       ]
     end
 
