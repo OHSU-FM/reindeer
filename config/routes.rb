@@ -3,14 +3,6 @@ Rails.application.routes.draw do
   devise_for :users
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
 
-  resource :settings do
-    resources :sync_triggers, except: [:update], controller: 'settings/sync_triggers'
-    get 'users', to: 'settings#show_users', as: :users
-    get 'surveys', to: 'settings#show_lime_surveys', as: :surveys
-    get 'permissions_groups', to: 'settings#show_permissions_groups', as: :permissions_groups
-    get Settings.assignments_route_name, to: 'settings#show_assignments', as: :assignments
-  end
-
   resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]
   get 'dashboard/:id/widgets/:widget_id', :to=>'dashboard#show_widget', :constraints=>{:id=>/\d+/, :widget_id=>/\d+/}, :as=>'show_widget'
 
@@ -18,13 +10,6 @@ Rails.application.routes.draw do
 
   resources :question_widgets, :only=>[:create]
   get 'question_widgets', :controller=>'question_widgets'
-
-
-  resources :data, :only=>[:index], :controller=>:reports, :as=>:reports
-  get 'data/:id/:type', :to=>'reports#show', :via => [:get], :constraints=>{:id=>/[A-N]/}, :as=>'show_report'
-
-  resources :reports, :only=>[:index], :controller=>:stats, :as=>:stats
-  get 'reports/:id/:year', :to=>'stats#show', :via => [:get], :constraints=>{:year=> /\d\d\d\d/, :id=>/[0A-N]/}, :as=>'show_stat'
 
   resources :ls_reports, :only=>[:index, :show], :param=>:sid do
     member do
@@ -58,7 +43,6 @@ Rails.application.routes.draw do
 
   namespace :assignment, path: Settings.assignments_route_name  do
     root to: 'assignment_groups#index'
-    resources :assignment_group_templates, as: :templates, path: :templates
     resources :assignment_groups, param: :assignment_group_id, path: :groups do
       resources :comments, module: :assignment_group, only: [:index, :create, :destroy]
     end

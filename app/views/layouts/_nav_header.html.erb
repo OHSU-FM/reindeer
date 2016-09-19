@@ -70,7 +70,6 @@
               "#{Settings.lime_url}/admin",
               :target=>'_blank') if can? :read, :lime_survey_website %>
               <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank') if can? :access, :rails_admin %>
-              <%= nav_link_to('<i class="fa fa-cog"></i> Settings'.html_safe, settings_path) if can? :manage, :all %>
               <li role="separator" class="divider"></li>
 
               <li>
