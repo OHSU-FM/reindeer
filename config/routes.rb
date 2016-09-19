@@ -34,26 +34,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update] do
-    member do
-      get Settings.assignments_route_name,
-        :to=>'users/assignment_group#show', :as=>:assignments_for
-    end
-  end
+  resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update]
 
   namespace :assignment, path: Settings.assignments_route_name  do
     root to: 'assignment_groups#index'
-    resources :assignment_groups, param: :assignment_group_id, path: :groups do
+    resources :assignment_groups, param: :assignment_group_id, path: :groups, only: [:index, :show] do
       resources :comments, module: :assignment_group, only: [:index, :create, :destroy]
     end
-    resources :user_assignments, path: :tasks do
+    resources :user_assignments, path: :tasks, only: [:show] do
       get "/fetch_compare" => "user_assignments#fetch_compare"
     end
-    resources :user_responses, path: :responses, only: [:index, :show] do
+    resources :user_responses, path: :responses, only: [:show] do
       resources :comments, module: :user_response, only: [:index, :create, :destroy]
       get "/set_owner_status" => "user_responses#set_owner_status"
     end
-    resources :survey_assignments, path: :forms, param: :survey_assignment_id
   end
 
   get 'ls_files/:sid/:row_id/:qid/:name', :to=>'ls_files#show', :constraints=>{:name=>/[^\/]+/}, :as=>:lime_file
