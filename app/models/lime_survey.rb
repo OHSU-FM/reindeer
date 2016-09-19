@@ -120,6 +120,15 @@ class LimeSurvey < ActiveRecord::Base
     settings.nil? ? 'New' : settings.surveyls_title
   end
 
+  def pretty_title
+    t = title.split(":")
+    if t.count  == 4
+      "#{t[1]}: #{t[3]} \n"
+    else
+      t.last
+    end
+  end
+
   def status_questions
     return @status_questions if defined? @status_questions
     group = lime_groups.find{|group|group.group_name == CONFIG_GROUP_CODE}

@@ -36,17 +36,15 @@ describe LsReportsController do
   end
 
   it "should allow a filter by group title" do
-    ra = create :role_aggregate, :ready
-    l = ra.lime_survey
-    lsls = create :lime_surveys_languagesetting, lime_survey: l, surveyls_title: "test:survey"
-    l.save!
+    lsls = create :lime_surveys_languagesetting, surveyls_title: "test:survey"
+    l = create :lime_survey_full; l.lime_surveys_languagesettings << lsls; l.save!
+    ra = create :role_aggregate, :ready, lime_survey: l
     l2 = create :lime_survey, role_aggregate: (create :role_aggregate, :ready)
     u = create :admin
 
     sign_in u
     get :index, group_filter: "test"
     expect(assigns["survey_groups"].first.group_title).to eq "test"
-    expect(assigns["survey_groups"].first.surveys).to include l
-    expect(assigns["survey_groups"].first.surveys).not_to include l2
+    expect(assigns["survey_groups"].first.surveys).to eq [ l ]
   end
 end

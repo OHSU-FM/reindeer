@@ -1,0 +1,28 @@
+<li class="nested-fields gs-w"
+  data-col="<%= dash.first_empty_col %>" data-row="<%= dash.first_empty_row %>"
+  data-sizey="1" data-min-sizey="1" data-max-sizey="1"
+  data-sizex="1" data-min-sizex="1" data-max-sizex="1" >
+  <div class="inner-widget-container">
+    <div class="widget-controls">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="widget-title-container">
+          <p class="widget-title truncate">
+            Recent surveys
+          </p>
+        </div>
+        <a class="close pull-right existing" href="#" data-toggle="tooltip" data-placement="top" title="The five most recently updated surveys that your account has access to">?</a>
+      </nav>
+    </div>
+  </div>
+  <div class="chart-visualization">
+    <div class="widget-content">
+      <ul class="list-inline" style="padding:0 20px;">
+        <% @surveys.each do |survey| %>
+        <li>
+          <%= link_to(survey.pretty_title, "/ls_reports/#{survey.sid}/#{survey.role_aggregate.default_view}", {style: "text-decoration:none;"}) %>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</li>

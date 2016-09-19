@@ -290,15 +290,16 @@ class User < ActiveRecord::Base
     @lime_surveys ||= role_aggregates.map{|ra|ra.lime_survey}
   end
 
-  def lime_surveys_most_recent n = 1
-    lime_surveys.sort_by { |s|
+  def lime_surveys_by_most_recent n = nil
+    surveys = lime_surveys.sort_by { |s|
       next unless s.lime_data.column_names.include? "submitdate"
       ActiveRecord::Base.connection.execute(
         """
-        SELECT 'submitdate' from lime_survey_#{s.sid};
+        SELECT submitdate FROM lime_survey_#{s.sid} WHERE submitdate IS NOT null;
         """
-      ).max_by{|k, v| next unless v.present?; v.to_date}
-    }.first(n)
+      ).max_by{|k, v| next unless v.present?; v.to_date}.values.first.to_date
+    }.reverse!
+    n.present? ? surveys.first(n) : surveys
   end
 
   def institution

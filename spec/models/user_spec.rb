@@ -47,8 +47,7 @@ describe User do
       s2 = create :lime_survey, :with_languagesettings, :full
       ra1 = create :role_aggregate, :ready, lime_survey: s1
       ra2 = create :role_aggregate, :ready, lime_survey: s2
-      expect(a.lime_surveys_most_recent).to eq [s1]
-      expect(a.lime_surveys_most_recent(2)).to eq [s1, s2]
+      expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
     end
 
     it "#cohort returns cohort user belongs to" do

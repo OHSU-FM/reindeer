@@ -47,6 +47,14 @@ class Dashboard < ActiveRecord::Base
     self[:theme] || DEFAULT_THEME
   end
 
+  def first_empty_col
+    dashboard_widgets.map {|w| w.position }.max % 6 + 1
+  end
+
+  def first_empty_row
+    (dashboard_widgets.map {|w| w.position }.max - 1)/ 5 + 1
+  end
+
   def validate_widget_positions
     @widget_positions = []
     detector = EdnaConsole::DashboardLib::CollisionDetector.new :max_cols=>5
