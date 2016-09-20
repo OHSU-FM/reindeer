@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]
   get 'dashboard/:id/widgets/:widget_id', :to=>'dashboard#show_widget', :constraints=>{:id=>/\d+/, :widget_id=>/\d+/}, :as=>'show_widget'
 
-  resources :charts
-
   resources :question_widgets, :only=>[:create]
   get 'question_widgets', :controller=>'question_widgets'
 
