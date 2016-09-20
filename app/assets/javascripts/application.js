@@ -29,6 +29,7 @@
 //= require startup.js
 //= require scrollspy.js
 //= require typeahead.bundle.js
+//= require charts.js
 //= require reports.js
 //= require stats.js
 //= require users.js
