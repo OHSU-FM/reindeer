@@ -98,9 +98,9 @@
     <ul class="list-unstyled">
       <% @recent.each do |survey| %>
         <li>
-      <%= link_to(survey.pretty_title, "/ls_reports/#{survey.sid}/#{survey.role_aggregate.default_view}") %>
-      </li>
-    <% end %>
+          <%= link_to(survey.pretty_title, "#{ls_report_path(survey.sid)}/#{survey.role_aggregate.default_view}") %>
+        </li>
+      <% end %>
     </ul>
   </div>
 <% end %>
