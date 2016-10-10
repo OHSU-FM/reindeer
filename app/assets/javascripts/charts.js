@@ -47,26 +47,26 @@ ChartModel = function(opts){
     // Produce the chart dataset with the values converted to labels
     klass.converted_dataset = function(){
         console.log('checking dataset');
-        
+
         var dataset = klass.dataset;        // Shorthand alias for our dataset
         var result = $.extend(true, [], dataset);
         var questions = klass.questions;    // Shorthand alias for our questions
-        var attr_names = [];                // Store the name of each attribute we've processed 
+        var attr_names = [];                // Store the name of each attribute we've processed
 
         // Bail out if no dataset present
         if(dataset.length == 0){throw new EmptyDatasetError('Empty Dataset')}
-         
+
         // For each question
         for (var q_idx = 0; q_idx < questions.length; ++q_idx) {
 
             // Make sure this is a question with an attr_name that is new
             var question = questions[q_idx];
             var options = $.parseJSON(question.options_hash);
-             
+
             // Find index of this question in the dataset
-            var col_idx = dataset[0].indexOf(question.attribute_name); 
+            var col_idx = dataset[0].indexOf(question.attribute_name);
             if(col_idx==-1){throw new MissingQuestionError('Unknown Question: '+question.attribute_name);}
-            
+
             // Change header for this column
             result[0][col_idx] = question.short_name;
 
@@ -116,7 +116,7 @@ Chart = function(container, opts){
     var klass = $.extend({}, defaults, opts);
     klass.container = $(container);
     klass.chart_model = new ChartModel(klass.chart_model);
-    
+
     /*
         Class methods
     */
@@ -128,12 +128,12 @@ Chart = function(container, opts){
         klass.container.on('change','.chart-series-container select', function(event){
             klass.refresh();
         });
- 
+
         // Update form based on current contents of the chart
         klass.container.on('submit', 'form.chart-container', function(event){
             klass.dump_visualization_to_form_data();
         });
-        
+
         /* We removed a column */
         klass.container.on('cocoon:after-insert', function(e, ItemInserted){
             console.log('cocoon after insert');
@@ -143,7 +143,7 @@ Chart = function(container, opts){
                 klass.form().addClass('dirty');
             }
         });
-        
+
         klass.container.on('cocoon:before-insert', function(e, ItemToInsert, result){
             console.log('cocoon before insert');
             if(klass.form().find('.chart-series').length >= klass.chart_model.max_series_count){
@@ -167,7 +167,7 @@ Chart = function(container, opts){
             klass.container.find('#chart_title_label').text($(this).val());
             klass.form().addClass('dirty');
         });
-        
+
         // A select field has changed, submit and update the form
         klass.container.on('click','a.submit-chart', function(event){
             klass.save();
@@ -201,7 +201,7 @@ Chart = function(container, opts){
         }
     }
 
-    /* 
+    /*
         pull new form data from website based on current form
     */
     klass.refresh = function(method){
@@ -224,7 +224,7 @@ Chart = function(container, opts){
             data: $(form).serialize() + '&layout=false',  // Tell rails to render without a full html body
             success: function(xhr){
                 console.log('Refresh: success');
-                form.replaceWith($(xhr).find('form'));  // 
+                form.replaceWith($(xhr).find('form'));  //
                 klass.init_chart();     // Re initialize and replace chart with new one
             },
             error: function(xhr){
@@ -239,7 +239,7 @@ Chart = function(container, opts){
         });
     }
 
-    /* 
+    /*
         Update form based on state of chart
     */
     klass.dump_visualization_to_form_data = function(){
@@ -273,7 +273,7 @@ Chart = function(container, opts){
         // Add new nodes
         var new_nodes = $.makeArray(t_cols).join()+$.makeArray(t_rows).join();//+$.makeArray(t_filters).join();
         hidden_fields.append( new_nodes );
-        
+
         /* Update aggregator type and table type */
         klass.form().find('#chart_chart_type').val( pivot_parser.chartType() );
         klass.form().find('#chart_aggregator_type').val( pivot_parser.aggregatorType() );
@@ -286,15 +286,15 @@ Chart = function(container, opts){
         var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers);
         var derivers = $.pivotUtilities.derivers;
         var chart = klass.chart_model;
-        
+
         if(typeof(chart) == 'undefined'){throw new MissingChartDataError('Missing Chart Element')}
         if(chart.dataset == null ){throw new MissingChartDataError('Missing Data Set')}
         var node = $(container).find('.chart-visualization');
         if(typeof(node) == 'undefined' ){throw new MissingChartDataError('Missing Node')}
-        
+
         width = width || chart.width || 200;
         height = height || chart.height || 200;
-        
+
         var opts = {
             renderers: renderers,
             rendererOptions: {chart_width: width, chart_height: height},
@@ -305,14 +305,14 @@ Chart = function(container, opts){
             onRefresh: klass.on_visualization_refresh, //klass.dump_visualization_to_form_data,
             aggregatorName: chart.aggregator_type || 'Count'
         };
-       
+
         if (klass.show_ui == true){
             klass.pivot = $(node).pivotUI(chart.converted_dataset(), opts, true);
         }else{
             klass.pivot = $(node).pivot(chart.converted_dataset(), opts, true);
         }
         // Add a resize hook for the chart, used by dashboard
-        klass.pivot.find('table').addClass('widget-resize-hook'); 
+        klass.pivot.find('table').addClass('widget-resize-hook');
     }
 
     /* Find form node for the chart */
@@ -332,7 +332,7 @@ Chart = function(container, opts){
             if(e.name == 'MissingChartDataError'){
                 console.log(e.message);
             }else{
-                throw(e); 
+                throw(e);
             }
         }
     }
@@ -368,14 +368,14 @@ MissingQuestionError.prototype = new Error();
 
 PivotParser = function(container, opts){
     /*
-        Class initialization: 
+        Class initialization:
         A helper class for getting useful information out of
         the Pivot Table Object.
     */
 
     // import jQuery
     $ = jQuery;
-    
+
     // Class instance variables
     var defaults = {
     };
@@ -396,7 +396,7 @@ PivotParser = function(container, opts){
     // Helper function to list rows and columns
     klass.rc_extract = function(selector){
         return klass.container.find(selector).clone().children().remove().end().map(function(){
-            return $(this).text();    
+            return $(this).text();
         }).get();
     }
 
@@ -412,7 +412,7 @@ PivotParser = function(container, opts){
             }
         }).get();
     }
-    
+
     // List aggregator type
     klass.aggregatorType = function(){
         return klass.container.find('.pvtAggregator').val();

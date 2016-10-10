@@ -1,4 +1,4 @@
-@import 'bootstrap'; 
+@import 'bootstrap';
 @import 'pivottable/pivot';
 
 /* Make sure pivot labels dont stick together */
@@ -15,7 +15,7 @@
     background-color:#ACDCBA;
 }
 header{
-    [class^="icon-"]{margin-right:1em;line-height:normal;}    
+    [class^="icon-"]{margin-right:1em;line-height:normal;}
 }
 
 .widget-with-header{
@@ -33,7 +33,7 @@ header{
 }*/
 
 /* Google visualization css is messing up our bootstrap modal dialog box
-    - Here is a shim to repair the display of it 
+    - Here is a shim to repair the display of it
 */
 body#charts > .modal{
     .modal-dialog{

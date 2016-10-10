@@ -1,24 +1,17 @@
 module DashboardHelper
 
-    def default_widget_view widget
-        # decide on the default div to be visible
-        has_type = widget.widget_type
-        has_widget = has_type && !widget.widget.nil?
-        if widget.invalid? || !has_widget
-            return 'widget-config'
-        elsif has_type && has_widget
-            return 'widget-show'
-        elsif has_type
-            return 'widget-index'
-        else
-            return 'widget-config'
-        end
+  def default_widget_view widget
+    # decide on the default div to be visible
+    has_type = widget.widget_type
+    has_widget = has_type && !widget.widget.nil?
+    if widget.invalid? || !has_widget
+      return 'widget-config'
+    elsif has_type && has_widget
+      return 'widget-show'
+    elsif has_type
+      return 'widget-index'
+    else
+      return 'widget-config'
     end
-
-
-    def self.dashboard_defaults dash
-        widget = dash.dashboard_widgets.build
-        cont = ContentSlug.new
-
-    end
+  end
 end
