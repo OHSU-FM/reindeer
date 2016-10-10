@@ -9,9 +9,7 @@ class LsReportsController < ApplicationController
     authorize! :list, LimeSurvey
 
     # List role_aggregates in order of last updated date
-    surveys = current_user.lime_surveys.sort_by{|lime_survey|
-      lime_survey.last_updated.to_s.to_date
-    }
+    surveys = current_user.lime_surveys_by_most_recent
 
     # Group surveys by group title
     @survey_groups = LimeExt::LimeSurveyGroup.classify(surveys,
@@ -24,5 +22,6 @@ class LsReportsController < ApplicationController
     @survey_groups.sort_by{|group| group.title }
 
     @cohorts = current_user.cohorts
+    @recent = surveys.first(5)
   end
 end

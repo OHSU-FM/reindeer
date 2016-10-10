@@ -89,9 +89,9 @@ class LimeSurvey < ActiveRecord::Base
 
   def last_updated
     return @last_updated if defined? @last_updated
-    max_row = dataset.max_by{|row|row['submitdate'].to_s}
-    if max_row
-      @last_updated = max_row['submitdate']
+    max_row = dataset.max_by{|row|row["submitdate"].to_s}
+    if max_row && max_row["submitdate"].present?
+      @last_updated = max_row["submitdate"]
     else
       @last_updated = "01/01/1980"
     end
@@ -118,6 +118,15 @@ class LimeSurvey < ActiveRecord::Base
   def title
     settings = lime_surveys_languagesettings.first
     settings.nil? ? 'New' : settings.surveyls_title
+  end
+
+  def pretty_title
+    t = title.split(":")
+    if t.count  == 4
+      "#{t[1]}: #{t[3]} \n"
+    else
+      t.last
+    end
   end
 
   def status_questions

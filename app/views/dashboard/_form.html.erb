@@ -78,24 +78,27 @@
       you see fit">
       <ul>
 
-        <%= render :partial=>'dashboard/widgets/form_empty', :locals=>{:dash=>@dash}%>
+        <%= render partial: "dashboard/widgets/form_empty", :locals=>{:dash=>@dash} %>
 
         <% @w_counter = 0 %>
         <%= f.fields_for :dashboard_widgets, :id=>'widget-fields' do |widget| %>
           <% @w_counter += 1 %>
           <% begin %>
-            <%= render :partial=>'dashboard/widgets/form', :locals=>{:f=>widget, :dash=>@dash}%>
+            <%= render :partial=>"dashboard/widgets/form", :locals=>{:f=>widget, :dash=>@dash} %>
           <% rescue LsReportsHelper::AccessDenied => e %>
-            <%= render :partial=>'dashboard/widgets/form_access_denied', :locals=>{:f=>widget, :dash=>@dash} %>
+            <%= render :partial=>"dashboard/widgets/form_access_denied", :locals=>{:f=>widget, :dash=>@dash} %>
           <% rescue Dashboard::WidgetExpired => e %>
             <% widget.object.destroy %>
           <% end %>
-          <!-- After render -->
+        <!-- After render -->
+        <% end %>
+        <% if @surveys.present? %>
+          <%= render partial: "dashboard/widgets/recent_surveys", locals: {dash: @dash} %>
         <% end %>
       </ul>
     </div>
   </div>
 <% end %>
-<%= render :partial=>'shared/modal_blank'%>
+<%= render :partial=>"shared/modal_blank" %>
 
 </div>

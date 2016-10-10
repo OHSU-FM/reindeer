@@ -35,6 +35,21 @@ describe User do
   end
 
   describe "methods:" do
+    it "#lime_surveys lists lime_surveys user has access to" do
+      ra = create :role_aggregate, :ready
+      a = create :admin
+      expect(a.lime_surveys.count).to eq 1
+    end
+
+    it "#lime_surveys_most_recent returns most recent lime_surveys" do
+      a = create :admin
+      s1 = create :lime_survey, :with_languagesettings, :full, opts: {"response": {"submitdate": '2016-08-08'}}
+      s2 = create :lime_survey, :with_languagesettings, :full
+      ra1 = create :role_aggregate, :ready, lime_survey: s1
+      ra2 = create :role_aggregate, :ready, lime_survey: s2
+      expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
+    end
+
     it "#cohort returns cohort user belongs to" do
       c = create :cohort, :with_users
       user = c.users.first
