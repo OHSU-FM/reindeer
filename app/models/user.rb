@@ -267,11 +267,11 @@ class User < ActiveRecord::Base
       @role_aggregates = RoleAggregate.includes(:lime_survey=>[
         :lime_surveys_languagesettings,
         :lime_groups=>[:lime_questions]
-      ])
+      ]).select{|ra|ra.ready_for_use?}
     else
       @role_aggregates = permission_group.present? ? permission_group.role_aggregates_for(self) : []
     end
-    return @role_aggregates.select{|ra|ra.ready_for_use?}
+    return @role_aggregates
   end
 
   def explain_survey_access

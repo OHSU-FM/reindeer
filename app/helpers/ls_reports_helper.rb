@@ -76,7 +76,7 @@ module LsReportsHelper
       level1, level2, level3, val = title.split(":")
       nested_hash[level1][level2][level3] = val
     end
-    nested_hash
+    nested_hash.merge({"C"=>{}}) unless nested_hash.has_key?("C")
   end
 
   def hf_translate_header abbrev
