@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728230431) do
+ActiveRecord::Schema.define(version: 20161013195312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -442,8 +442,8 @@ ActiveRecord::Schema.define(version: 20160728230431) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "",    null: false
-    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "email",                  limit: 255, default: "",      null: false
+    t.string   "encrypted_password",     limit: 255, default: "",      null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -452,8 +452,8 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.text     "p4_program_id"
     t.text     "roles"
     t.string   "full_name",              limit: 255
@@ -462,6 +462,7 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.boolean  "is_ldap",                            default: false
     t.integer  "permission_group_id"
     t.integer  "cohort_id"
+    t.string   "ls_list_state",                      default: "dirty"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

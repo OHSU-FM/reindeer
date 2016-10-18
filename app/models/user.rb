@@ -43,6 +43,11 @@ class User < ActiveRecord::Base
     :case_sensitive => false
   },
   :presence => true
+  validates :ls_list_state, inclusion: {
+    in: %w(dirty clean),
+    message: "%{value} must be one of dirty or clean"
+  },
+  presence: true
 
   validate :ldap_cannot_update_password
 
@@ -160,6 +165,28 @@ class User < ActiveRecord::Base
   # Generic getter for username or email
   def login
     @login || self.username || self.email
+  end
+
+  def get_ls_list_state
+    ls_list_state
+  end
+
+  def dirty_ls_list
+    self.ls_list_state = "dirty"
+    save!
+  end
+
+  def has_dirty_ls_list?
+    self.ls_list_state == "dirty"
+  end
+
+  def clean_ls_list
+    self.ls_list_state = "clean"
+    save!
+  end
+
+  def has_clean_ls_list?
+    self.ls_list_state == "clean"
   end
 
   ##
@@ -287,7 +314,17 @@ class User < ActiveRecord::Base
   end
 
   def lime_surveys
-    @lime_surveys ||= role_aggregates.map{|ra|ra.lime_survey}
+    if has_dirty_ls_list? or admin_or_higher? or Redis.current.smembers("user:#{id}:ls_p_list").empty?
+      ls_list = role_aggregates.map{|ra| ra.lime_survey }
+      unless ls_list.empty?
+        Redis.current.sadd("user:#{id}:ls_p_list", ls_list.map{|ls| ls.sid })
+      end
+      self.clean_ls_list
+      ls_list
+    else
+      sids = Redis.current.smembers("user:#{id}:ls_p_list")
+      LimeSurvey.where(sid: sids)
+    end
   end
 
   def lime_surveys_by_most_recent n = nil

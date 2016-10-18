@@ -1,28 +1,40 @@
-require 'php_serialize'
+require "php_serialize"
 
 class LimeSurvey < ActiveRecord::Base
 
-  CONFIG_GROUP_CODE   = 'ReindeerConfig'
-  QRESPONSE_STATUS_CODE = 'responseStatus'
+  CONFIG_GROUP_CODE   = "ReindeerConfig"
+  QRESPONSE_STATUS_CODE = "responseStatus"
 
   include EdnaConsole
 
   self.inheritance_column = nil
   self.primary_key = :sid
-  has_many :permission_ls_groups, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
-  has_many :lime_groups, -> {order 'lime_groups.group_order'}, :foreign_key=>:sid, :inverse_of=>:lime_survey
-  #has_many :lime_questions, :through=>:lime_groups
-  has_many :lime_surveys_languagesettings, :foreign_key=>:surveyls_survey_id
-  has_one :role_aggregate, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
-  delegate :add_filter, :dataset, :to=>:lime_data
-  has_many :survey_assignments, :foreign_key=>:lime_survey_sid, :inverse_of=>:lime_survey
-  scope :active, -> { where(active: 'Y') }
+  has_many :permission_ls_groups,
+    foreign_key: :lime_survey_sid,
+    inverse_of: :lime_survey
+  has_many :lime_groups, -> {order "lime_groups.group_order"},
+    foreign_key: :sid,
+    inverse_of: :lime_survey
+  has_many :lime_surveys_languagesettings,
+    foreign_key: :surveyls_survey_id
+  has_one :role_aggregate,
+    foreign_key: :lime_survey_sid,
+    inverse_of: :lime_survey
+  delegate :add_filter, :dataset, to: :lime_data
+  has_many :survey_assignments,
+    class_name: Assignment::SurveyAssignment,
+    foreign_key: :lime_survey_sid,
+    inverse_of: :lime_survey
+  scope :active, -> { where(active: "Y") }
   scope :with_role_aggregate, -> { joins(:role_aggregate) }
   # TODO: Double check to see if with_data_table is the same as "active"
   scope :with_data_table, -> {
-    match = ActiveRecord::Base.connection.tables.join(' ').scan(/#{table_name.singularize}_(\d+)/)
-    match.present? ? where(['sid in (?)', match.flatten]) : none
+    match = ActiveRecord::Base.connection.tables.join(" ")
+      .scan(/#{table_name.singularize}_(\d+)/)
+    match.present? ? where(["sid in (?)", match.flatten]) : none
   }
+
+  after_save :dirty_user_ls_lists
 
   rails_admin do
     navigation_label "Lime Survey"
@@ -33,10 +45,22 @@ class LimeSurvey < ActiveRecord::Base
       field :role_aggregate
       field :lime_config_link do
         pretty_value do
-          bindings[:view].link_to('', bindings[:object].lime_config_link, class: 'fa fa-external-link', target: '_blank')
+          bindings[:view].link_to('',
+                                  bindings[:object].lime_config_link,
+                                  class: "fa fa-external-link",
+                                  target: "_blank")
         end
       end
     end
+  end
+
+  def dirty_user_ls_lists
+    permission_ls_groups.map {|plsg|
+      plsg.permission_group
+    }.map {|pg| pg.users
+    }.flatten.each {|u|
+      u.dirty_ls_list
+    }
   end
 
   ##
@@ -66,13 +90,13 @@ class LimeSurvey < ActiveRecord::Base
   end
 
   def completed_surveys_count
-    @completed_surveys_count ||= dataset.count{|row|!row['submitdate'].nil?}
+    @completed_surveys_count ||= dataset.count{|row|!row["submitdate"].nil?}
   end
 
   def started_surveys_count
     return @started_surveys_count if defined? @started_surveys_count
-    if lime_data.column_names.include?('startdate')
-      @started_surveys_count = dataset.count{|row|!row['startdate'].nil?}
+    if lime_data.column_names.include?("startdate")
+      @started_surveys_count = dataset.count{|row|!row["startdate"].nil?}
     else
       @started_surveys_count = nil
     end
@@ -117,23 +141,21 @@ class LimeSurvey < ActiveRecord::Base
   # RailsAdmin label
   def title
     settings = lime_surveys_languagesettings.first
-    settings.nil? ? 'New' : settings.surveyls_title
+    settings.nil? ? "New" : settings.surveyls_title
   end
 
   def pretty_title
     t = title.split(":")
-    if t.count  == 4
-      "#{t[1]}: #{t[3]} \n"
-    else
-      t.last
-    end
+    t.count == 4 ? "#{t[1]}: #{t[3]} \n" : t.last
   end
 
   def status_questions
     return @status_questions if defined? @status_questions
     group = lime_groups.find{|group|group.group_name == CONFIG_GROUP_CODE}
     return [] if group.nil?
-    pquestion = group.parent_questions.find{|pquestion|pquestion.title==QRESPONSE_STATUS_CODE}
+    pquestion = group.parent_questions.find{|pquestion|
+      pquestion.title == QRESPONSE_STATUS_CODE
+    }
     return [] if pquestion.nil?
     @status_questions = pquestion.sub_questions
   end
@@ -154,7 +176,7 @@ class LimeSurvey < ActiveRecord::Base
 
   def group_and_title_name
     # Generate a title to go with each of them
-    title1, title2, title3, title4 = title.split(':', 4)
+    title1, title2, title3, title4 = title.split(":", 4)
     g_title, ra_title = title2.nil? ? ['', title1] : [title1, title2]
     if !title3.nil?
       g_title = title1 + ":" + title2 + ":" + title3
@@ -172,14 +194,14 @@ class LimeSurvey < ActiveRecord::Base
   ##
   # Instantiate a lime_data object if one does not already exist
   def lime_data
-    raise 'sid not set' if not(sid)
+    raise "sid not set" if not(sid)
     @lime_data ||= ::LimeExt::LimeData.new(self)
   end
 
   ##
   # Instantiate a lime_data object if one does not already exist
   def lime_tokens
-    raise 'sid not set' if not(sid)
+    raise "sid not set" if not(sid)
     @lime_tokens ||= ::LimeExt::LimeTokens.new(self)
   end
 

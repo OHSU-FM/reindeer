@@ -62,5 +62,6 @@ FactoryGirl.define do
     factory :admin, traits: [:admin]
     factory :coach, traits: [:coach, :with_uex, :with_assignment_group]
     factory :student, traits: [:student]
+    factory :user_w_externals, traits: [:with_uex]
   end
 end

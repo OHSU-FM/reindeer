@@ -1,6 +1,9 @@
 require "spec_helper"
 
 describe LsReportsController do
+  after :each do
+    Redis.current.flushdb
+  end
 
   it "should require authentication" do
     get :index
