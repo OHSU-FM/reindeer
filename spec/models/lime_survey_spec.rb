@@ -37,8 +37,8 @@ describe LimeSurvey do
 
     it "#column_names" do
       s = create :lime_survey_full
-      expect(s.column_names).to eq LimeQuestion.all.map{ |q|
-        [q.title, "#{q.sid}X#{q.gid}X#{q.qid}"]
+      LimeQuestion.all.map{ |q| [q.title, "#{q.sid}X#{q.gid}X#{q.qid}"]}.each {
+        |entry| expect(s.column_names).to include entry
       }
     end
 
