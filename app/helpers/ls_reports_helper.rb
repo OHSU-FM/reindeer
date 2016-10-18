@@ -63,11 +63,11 @@ module LsReportsHelper
   }.stringify_keys!
 
   # sorts ls titles available to user
-  def hf_generate_menu_hash role_aggregates
+  def hf_generate_menu_hash lime_surveys
     nested_hash = Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
 
-    filtered_titles = role_aggregates.map{|ra|
-      ra.lime_survey.lime_surveys_languagesettings[0].surveyls_title
+    filtered_titles = lime_surveys.map{|s|
+      s.lime_surveys_languagesettings[0].surveyls_title
     }.select{|title|
       MENU_HEADERS.keys.include? title.split(":").first
     }.sort
@@ -274,7 +274,6 @@ module LsReportsHelper
         # Filters for comparison
         plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
         raise "Permissions Error: User cannot access this survey" unless plg.present?
-        uexts = user.user_externals
         plg.permission_ls_group_filters.each do |plgk|
           fieldname = plgk.lime_question.my_column_name
           if plgk.restricted_val.present?

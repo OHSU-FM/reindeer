@@ -47,6 +47,18 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_plsg do
+      full
+      with_languagesettings
+
+      after(:create) do |survey|
+        create :role_aggregate, :ready, lime_survey: survey
+        plsg = create :pls_group, lime_survey: survey
+        survey.permission_ls_groups << plsg
+        survey.save!
+      end
+    end
+
     factory :lime_survey_full, traits: [:full]
   end
 end

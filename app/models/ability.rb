@@ -134,8 +134,7 @@ class Ability
 
     can :read_unfiltered, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
-        has_ls = user.role_aggregates.map{|ra|ra.lime_survey_sid}.include? lime_survey.sid
-        if has_ls
+        if user.lime_surveys.include? lime_survey
           plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
           (plg.present? && plg.ready_for_use? && plg.view_all) ? true : false
         else
@@ -150,7 +149,7 @@ class Ability
     can :read_raw_data, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
         has_ls = user.role_aggregates.map{|ra|ra.lime_survey_sid}.include? lime_survey.sid
-        if has_ls
+        if user.lime_surveys.include? lime_survey
           plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
           (plg.present? && plg.ready_for_use? && plg.view_raw) ? true : false
         else

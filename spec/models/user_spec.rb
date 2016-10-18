@@ -2,6 +2,10 @@ require "spec_helper"
 
 describe User do
 
+  after :each do
+    Redis.current.flushdb
+  end
+
   it "has a factory" do
     expect(build :user).to be_valid
   end
@@ -34,10 +38,48 @@ describe User do
     end
   end
 
+  describe "states" do
+    it "requires a ls_list_state" do
+      user = build :user, ls_list_state: nil
+      expect(user).not_to be_valid
+    end
+
+    it "initializes with a dirty ls_list_state" do
+      user = create :user
+      expect(user.has_dirty_ls_list?).to be_truthy
+    end
+
+    it "are either clean or dirty" do
+      user = create :user
+      user.clean_ls_list
+      expect(user.has_clean_ls_list?).to be_truthy
+      user.dirty_ls_list
+      expect(user.has_dirty_ls_list?).to be_truthy
+      expect(build :user, ls_list_state: "lol").not_to be_valid
+    end
+
+    it "becomes dirty when surveys are saved" do
+      l = create :lime_survey, :with_plsg
+      user = l.permission_ls_groups.first.permission_group.users.first
+      user.ls_list_state = "clean"; user.save!
+      l.save!
+      expect(user.has_dirty_ls_list?).to be_truthy
+    end
+
+    it "doesn't receive #role_aggregates with clean ls_list_state" do
+      l = create :lime_survey, :with_plsg
+      user = create :user, ls_list_state: "clean"
+      Redis.current.sadd("user:#{user.id}:ls_p_list", l.sid)
+      expect(user).not_to receive(:role_aggregates)
+      user.lime_surveys
+    end
+  end
+
   describe "methods:" do
     it "#lime_surveys lists lime_surveys user has access to" do
       ra = create :role_aggregate, :ready
       a = create :admin
+
       expect(a.lime_surveys.count).to eq 1
     end
 
@@ -122,5 +164,4 @@ describe User do
       expect(ua.user.unstatused_user_responses_count).to eq 1
     end
   end
-
 end

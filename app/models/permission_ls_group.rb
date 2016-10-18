@@ -5,7 +5,7 @@ class PermissionLsGroup < ActiveRecord::Base
   belongs_to :permission_group, :inverse_of=>:permission_ls_groups
   has_many :permission_ls_group_filters, :dependent=>:destroy, :inverse_of=>:permission_ls_group
 
-  validates_presence_of :lime_survey_sid, :permission_group_id
+  validates_presence_of :lime_survey, :permission_group
   validates_presence_of :role_aggregate
   validates_uniqueness_of :lime_survey_sid, :scope=>:permission_group_id
   accepts_nested_attributes_for :permission_ls_group_filters, :allow_destroy=>true

@@ -98,7 +98,7 @@ class PermissionGroup < ActiveRecord::Base
     end
 
     # Remove RA where user has nothing to see in the dataset ie does not have records in the dataset
-    result = result.select  do |ra|
+    result = result.select do |ra|
       begin
         fm = LsReportsHelper::FilterManager.new user, ra.lime_survey_sid
         lime_data = fm.lime_survey.lime_data
