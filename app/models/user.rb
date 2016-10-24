@@ -255,6 +255,12 @@ class User < ActiveRecord::Base
       field :explain_survey_access do
         partial 'users/field_explain_survey_access'
       end
+      field :ls_list_state, :enum do
+        enum do
+          ["dirty", "clean"]
+        end
+        default_value "dirty"
+      end
       field :permission_ls_groups do
         read_only true
       end

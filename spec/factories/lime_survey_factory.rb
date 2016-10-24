@@ -116,7 +116,7 @@ def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
       CACHE 1;
 
   --
-  -- Name: lime_survey_#{sid}; Type: TABLE; Schema: public;
+  -- Name: lime_survey_#{sid}; Type: TABLE; Schema: #{LimeExt.schema};
   --
 
   CREATE TABLE #{LimeExt.table_prefix}_survey_#{sid} (
@@ -140,7 +140,7 @@ def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
       CACHE 1;
 
   --
-  -- Name: lime_tokens_#{sid}; Type: TABLE; Schema: public; Owner: sa; Tablespace:
+  -- Name: lime_tokens_#{sid}; Type: TABLE; Schema: #{LimeExt.schema}; Owner: sa; Tablespace:
   --
 
   CREATE TABLE #{LimeExt.table_prefix}_tokens_#{sid} (
@@ -167,14 +167,14 @@ def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
 
 
   --
-  -- Name: #{LimeExt.table_prefix}_tokens_#{sid}_pkey; Type: CONSTRAINT; Schema: public; Owner: sa; Tablespace:
+  -- Name: #{LimeExt.table_prefix}_tokens_#{sid}_pkey; Type: CONSTRAINT; Schema: #{LimeExt.schema}; Owner: sa; Tablespace:
   --
 
   ALTER TABLE ONLY #{LimeExt.table_prefix}_tokens_#{sid}
     ADD CONSTRAINT #{LimeExt.table_prefix}_tokens_#{sid}_pkey PRIMARY KEY (tid);
 
   --
-  -- Name: idx_token_token_#{sid}_18071; Type: INDEX; Schema: public; Owner: sa; Tablespace:
+  -- Name: idx_token_token_#{sid}_18071; Type: INDEX; Schema: #{LimeExt.schema}; Owner: sa; Tablespace:
   --
 
   CREATE INDEX idx_token_token_#{sid}_18071 ON #{LimeExt.table_prefix}_tokens_#{sid} USING btree (token);
