@@ -43,9 +43,7 @@ module Assignment
 
     def get_recent
       get_ua_collection.map do |t|
-          get_index.select{|ua|
-          ua.survey_type == t
-          }.sort_by(&:created_at).last
+        get_index.select{|ua| ua.survey_type == t }.sort_by(&:created_at).last
       end
     end
   end

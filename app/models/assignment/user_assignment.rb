@@ -83,11 +83,16 @@ class Assignment::UserAssignment < ActiveRecord::Base
     {}
   end
 
-  ##
   # returns {} of response table data
   def response_data
-    @response_data ||= survey_assignment.
-      lime_survey.lime_data.add_filter(:token, token).dataset.first || {}
+    @response_data ||= response_data_mult.first || []
+  end
+
+  # returns {} of response table data if multiple?
+  def response_data_mult
+    @response_data_mult ||= survey_assignment.
+      lime_survey.lime_data.add_filter(:token, token).dataset.select{ |h|
+      h["submitdate"].present? } || {}
   end
 
   def status_str
@@ -100,6 +105,10 @@ class Assignment::UserAssignment < ActiveRecord::Base
 
   def assignment_group
     survey_assignment.assignment_group
+  end
+
+  def ag_owner
+    assignment_group.owner
   end
 
   def group_and_title
@@ -134,15 +143,35 @@ class Assignment::UserAssignment < ActiveRecord::Base
 
   # true if user_assignment has only one user_response
   def is_shallow?
-    user_responses.count > 1 ? false : true
+    user_responses.count == 1 ? true : false
   end
 
-  def ur_categories
+  # { cat => [urs], cat => [urs] }. n is the number of dates back to include
+  def ur_categories n=1
     hash = {}
     user_responses.map{ |ur| ur.category }.uniq.each do |category|
-      hash[category] = Assignment::UserResponse.where(user_assignment: self, category: category)
+      hash[category] = Hash.new {|h, k| h[k] = []}
+      urs = Assignment::UserResponse.where(user_assignment: self,
+                                                  category: category)
+      urs.order(submitdate: "desc").map{|ur| ur.submitdate }.uniq.first(n)
+        .map{|d| hash[category] = urs.where(submitdate: d) }
     end
-    return hash
+    hash
+  end
+
+  def ur_dates
+    user_responses.order(submitdate: "desc").map {|ur| ur.submitdate }.uniq
+  end
+
+  def ur_categories_by date
+    hash = {}
+    user_responses.map{ |ur| ur.category }.uniq.each do |category|
+      urs = Assignment::UserResponse.where(user_assignment: self,
+                                                      category: category,
+                                                      submitdate: date)
+      hash[category] = urs unless urs.empty?
+    end
+    hash
   end
 
   # returns hash of lime answer code => status text for a lime_question
@@ -155,7 +184,9 @@ class Assignment::UserAssignment < ActiveRecord::Base
   end
 
   def user_responses
-    if completed?
+    if multiple? # user could have left new responses since we last checked
+      check_for_new_responses
+    elsif completed? # lime_survey is not persisted, so response_data.count == 1
       if Assignment::UserResponse.where(user_assignment: self).empty?
         build_user_responses
       else
@@ -166,16 +197,39 @@ class Assignment::UserAssignment < ActiveRecord::Base
     end
   end
 
+  def check_for_new_responses
+    resps = Assignment::UserResponse.where(user_assignment: self)
+    if !resps.empty?
+      max = resps.max_by{|ur| ur.updated_at}.updated_at
+      new = response_data_mult.select{|d| d["submitdate"].to_time > max }
+      if new.count > 0
+        new.each do |r|
+          build_user_responses r
+        end
+      else
+        return resps
+      end
+    elsif resps.empty?
+      response_data_mult.each {|r|
+        build_user_responses r
+      }
+    end
+    Assignment::UserResponse.where(user_assignment: self)
+  end
+
   private
 
-  def build_user_responses
+  def build_user_responses resp = nil
+    resp ||= response_data
     g_title, ra_title = group_and_title
+    submitdate = resp["submitdate"]
     create_list = []
-    gathered_responses.each do |category, loh|
+    gathered_responses(resp).each do |category, loh|
       loh.each do |h|
         next if h.all? {|k,v| v.blank? }
-        new_h = { "resp_type" => ra_title,
-                  "category" => category,
+        new_h = { "resp_type"          => ra_title,
+                  "category"           => category,
+                  "submitdate"         => submitdate,
                   "user_assignment_id" => self.id
         }.merge(h)
         Assignment::UserResponse.new.populate_from_hash(new_h).save!
@@ -185,7 +239,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
   end
 
   # generates hash of hashes where each subhash will be a user_response
-  def gathered_responses
+  def gathered_responses resp = nil
     h = Hash.new
     lime_groups.each do |lg|
       if lg.contains_visible_questions?
@@ -196,7 +250,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
           if lq.has_sq?
             lq.sub_questions.each do |sq|
               row = Hash.new
-              value = response_data["#{lq.sid}X#{lq.gid}X#{lq.qid.to_s + sq.title}"]
+              value = resp["#{lq.sid}X#{lq.gid}X#{lq.qid.to_s + sq.title}"]
               unless value.blank?
                 if lq.title.include? status_question
                   row.merge!(Hash[lq.title, status_hash(lq)[value]])
@@ -208,7 +262,7 @@ class Assignment::UserAssignment < ActiveRecord::Base
             end
           else
             row = Hash.new
-            value = response_data["#{lq.sid}X#{lq.gid}X#{lq.qid}"]
+            value = resp["#{lq.sid}X#{lq.gid}X#{lq.qid}"]
             unless value.blank?
               if lq.title.include? status_question
                 row.merge!(Hash[lq.title, status_hash(lq)[value]])

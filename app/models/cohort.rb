@@ -43,7 +43,6 @@ class Cohort < ActiveRecord::Base
     end
   end
 
-
   def assignment_groups
     Assignment::AssignmentGroup.where(cohort: self)
   end

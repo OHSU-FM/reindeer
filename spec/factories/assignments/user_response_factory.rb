@@ -6,6 +6,7 @@ FactoryGirl.define do
     category "test user_response"
     completion_target { Faker::Date.backward(14) }
     owner_status { Faker::Lorem.sentence(3) }
+    submitdate { Faker::Date.between(2.days.ago, Date.today) }
 
     after(:create) do |ur|
       ua = ur.user_assignment

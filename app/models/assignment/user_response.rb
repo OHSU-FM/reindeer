@@ -18,7 +18,7 @@ class Assignment::UserResponse < ActiveRecord::Base
     (attribute_names - ["id"]).each do |attr|
       if hash.has_key? attr
         self[attr.to_sym] = hash[attr]
-      elsif
+      else
         self[attr.to_sym] = hash[hash.keys.select{|k| k.include? attr.camelize}.first]
       end
     end

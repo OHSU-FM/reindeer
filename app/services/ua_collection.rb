@@ -12,7 +12,7 @@ class UACollection < Array
   end
 
   def survey_types_enum
-    map {|ua| ua.survey_type }.uniq
+    map {|ua| ua.survey_type }.uniq.reject{|st| st.empty? }
   end
 
   def hash_with_survey_type_keys

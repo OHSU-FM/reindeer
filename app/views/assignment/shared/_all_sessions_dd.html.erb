@@ -4,11 +4,13 @@
   </button>
   <ul class="dropdown-menu">
     <% obj = @user_response || @user_assignment %>
-    <% hf_user_assignment_cycle_hash(obj).each do |k, v| %>
-      <li class="dropdown-header"><%= k %></li>
-      <% v.each do |title, obj| %>
-        <li><%= link_to title, obj %></li>
-      <% end %>
+    <% @user_assignment = @user_response.user_assignment unless @user_assignment.present? %>
+    <% hf_user_assignment_cycle_hash(obj).each do |date, urs| %>
+      <li>
+        <%= link_to date.to_date.to_s(:short),
+          assignment_user_assignment_path(@user_assignment, date: date)
+          %>
+      </li>
     <% end %>
   </ul>
 </div>

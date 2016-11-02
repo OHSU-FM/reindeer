@@ -12,6 +12,8 @@ module Assignment::UserAssignmentsHelper
     case obj
     when Assignment::AssignmentGroup
       usr == obj.owner || usr.admin_or_higher?
+    when Assignment::UserAssignment
+      usr == obj.ag_owner || usr.admin_or_higher?
     when Assignment::UserResponse
       usr == obj.ag_owner || usr.admin_or_higher?
     else
@@ -31,8 +33,11 @@ module Assignment::UserAssignmentsHelper
   # for mult urs, false when user is owner & any ur.owner_status == nil
   def hf_show_ur_status? resp, user
     case resp
-    when ActiveRecord::Relation
-      !(resp.collect{|ur| ur.owner_status}.any?(&:blank?) && resp.first.ag_owner == user)
+    when Assignment::UserResponse::ActiveRecord_Relation
+      !resp.any?{|r| r.owner_status.blank? && r.ag_owner == user}
+    when Hash
+      r = resp.values.first
+      !(r.collect{|ur| ur.owner_status}.any?(&:blank?) && r.first.ag_owner == user)
     when Assignment::UserResponse
       !(resp.owner_status.nil? && resp.ag_owner == user)
     else
@@ -81,7 +86,7 @@ module Assignment::UserAssignmentsHelper
   end
 
   def hf_ua_title_prettify ua
-    ua.group_and_title.join(": ")
+    ua.user_responses.max_by(&:submitdate).submitdate.to_date.to_s(:short)
   end
 
   def hf_user_assignment_button_text locals
@@ -96,12 +101,18 @@ module Assignment::UserAssignmentsHelper
   def hf_user_assignment_cycle_hash obj
     usr = obj.methods.include?(:user) ? obj.user : User.find(obj)
 
-    hash = Hash.new
-    usr.user_assignments.each.map {|ua|
-      k, v = ua.survey_assignment.title.chomp.split(":", 2)
-      !hash.key?(k) ? hash[k] = [[v, ua]] : hash[k] << [v, ua]
+    hash = Hash.new {|h, k| h[k] = []}
+    usr.user_assignments.each{|ua|
+      ua.ur_dates.each{|d|
+        hash[d] = Assignment::UserResponse.where(user_assignment: ua, submitdate: d)
+      }
     }
-    hash.sort.to_h
+    hash
+  end
+
+  def hf_ua_lime_link_for user
+    url = user.user_assignments.order(updated_at: "desc").first.url
+    /^http/i.match(url) ? url : "http://#{url}"
   end
 
   private

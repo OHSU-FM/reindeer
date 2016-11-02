@@ -36,12 +36,17 @@ describe Assignment::UserAssignmentsController do
     before do
       user = create :superadmin
       @ua = create :user_assignment, :with_user_responses, user: user
+      @date = @ua.user_responses.first.submitdate
       sign_in user
-      xhr :get, :fetch_compare, user_assignment_id: @ua.id
+      xhr :get, :fetch_compare, user_assignment_id: @ua.id, date: @date
     end
 
-    it "sets @compare" do
-      expect(assigns[:compare]).to eq @ua
+    it "sets @ua" do
+      expect(assigns[:ua]).to eq @ua
+    end
+
+    it "sets @date" do
+      expect(assigns[:date]).to eq @date
     end
   end
 end

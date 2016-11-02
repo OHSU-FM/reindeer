@@ -10,11 +10,11 @@
   <div class="tab-pane fade in <%= "active" if i == 0 %>" id="<%= st.to_s %>">
     <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
       <% if @service.recent.select{|ua| ua.user_responses.present?}.each do |ua| %>
-        <% if ua.completed? && ua.survey_type == st %>
+        <% if ua.survey_type == st %>
           <% if ua.is_shallow? %>
-            <%= render :partial => "assignment/user_assignments/shallow_row", locals: { ua: ua } %>
+            <%= render :partial => "assignment/user_assignments/shallow_row", locals: { user_assignment: ua } %>
           <% else %>
-            <%= render :partial => "assignment/user_assignments/deep_rows", locals: { ua: ua } %>
+            <%= render :partial => "assignment/user_assignments/deep_rows", locals: { user_assignment: ua } %>
           <% end %>
         <% else %>
           <%= ua.status_str %>
