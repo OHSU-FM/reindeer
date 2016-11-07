@@ -7,7 +7,7 @@
     <% @user_assignment = @user_response.user_assignment unless @user_assignment.present? %>
     <% hf_user_assignment_cycle_hash(obj).each do |date, urs| %>
       <li>
-        <%= link_to date.to_date.to_s(:short),
+        <%= link_to date.to_date.to_s(:long),
           assignment_user_assignment_path(@user_assignment, date: date)
           %>
       </li>

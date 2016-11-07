@@ -19,5 +19,11 @@ FactoryGirl.define do
         create_list(:user_response_comment, 1, commentable: ur, user: ur.assignment_group.owner)
       end
     end
+
+    trait :with_sys_comment do
+      after(:create) do |ur|
+        create_list(:user_response_comment, 1, commentable: ur, user: ur.ag_owner, flagged_as: "sys")
+      end
+    end
   end
 end

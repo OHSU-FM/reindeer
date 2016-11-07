@@ -33,6 +33,11 @@ class Assignment::UserResponse < ActiveRecord::Base
     !comments.empty?
   end
 
+  # disregard sys comments
+  def has_user_comments?
+    !comments.collect{|c| c.flagged_as == "sys"}.all?
+  end
+
   def ag_owner
     assignment_group.owner
   end

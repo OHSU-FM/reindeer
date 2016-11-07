@@ -7,7 +7,7 @@
     <% if iter.each do |date, urs| %>
       <% next if date == @date %>
       <li>
-        <%= link_to date.to_date.to_s(:short),
+        <%= link_to date.to_date.to_s(:long),
           assignment_user_assignment_fetch_compare_path(user_assignment_id: @user_assignment.id, date: date),
           remote: true,
           class: "ua-compare"

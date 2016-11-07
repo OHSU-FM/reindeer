@@ -91,7 +91,7 @@ module Assignment::UserAssignmentsHelper
 
   def hf_user_assignment_button_text locals
     if !locals.has_key?(:btn_text)
-      "All Sessions <span class='caret'></span>"
+      "All Goals <span class='caret'></span>"
     else
       "<span class='caret'></span> #{locals[:btn_text]}"
     end
@@ -107,7 +107,7 @@ module Assignment::UserAssignmentsHelper
         hash[d] = Assignment::UserResponse.where(user_assignment: ua, submitdate: d)
       }
     }
-    hash
+    hash.sort{|h1, h2| h2[0] <=> h1[0]}.to_h
   end
 
   def hf_ua_lime_link_for user

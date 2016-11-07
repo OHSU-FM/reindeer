@@ -24,5 +24,10 @@ describe Assignment::UserResponse do
       expect((create :user_response, :with_comments).has_comments?).to be true
       expect((create :user_response).has_comments?).to be false
     end
+
+    it "#has_user_comments?" do
+      expect((create :user_response, :with_comments).has_user_comments?).to be true
+      expect((create :user_response, :with_sys_comment).has_user_comments?).to be false
+    end
   end
 end

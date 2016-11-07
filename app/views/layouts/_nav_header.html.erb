@@ -14,45 +14,44 @@
 
       <%= image_tag Settings.site.logo_header, alt: Settings.site.name_html, :size=>"50x50" %>
       <%= link_to auto_path do %>
-      <%= Settings.site.name %>
-      <% unless Rails.env.production? %>
-      <small style="color:#DD0000;"><%= Rails.env %></small>
-      <% end %>
+        <%= Settings.site.name %>
+        <% unless Rails.env.production? %>
+          <small style="color:#DD0000;"><%= Rails.env %></small>
+        <% end %>
       <% end %>
     </div>
     <div id="nav-links" class="collapse navbar-collapse">
       <ul class="nav navbar-nav pull-right">
         <% if can? :crud, Dashboard %>
-        <%= nav_link_to('Home', main_app.root_path,
-        :class=>'dashboard-link') %>
+          <%= nav_link_to("Home", main_app.root_path, class: "dashboard-link") %>
         <% end %>
 
         <% if can? :list, LimeSurvey %>
-        <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>
-        <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
-          <div class="btn-group btn navbar-btn ">
-            <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %> <span class="caret"></span></button>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-              <% if current_user.active_assignment_groups.count > 0 %>
-                <%= nav_link_to("Coaching Documentation System", main_app.assignment_assignment_groups_path) unless top_link != "C" %>
-              <% end %>
-              <% first_level.each do |first_level_item, second_level| %>
-              <% if first_level.keys.count > 1 %>
-              <li class="dropdown-submenu">
-                <a tabindex="-1" href="#"><%= first_level_item %></a>
-                <ul class="dropdown-menu">
-                  <% end %>
-                  <% second_level.each do |sub_menu_item, s| %>
-                  <%= nav_link_to(sub_menu_item, main_app.ls_reports_path(group_filter: "#{top_link}:#{first_level_item}:#{sub_menu_item}")) %>
-                  <% end %>
-                  <% if first_level.keys.count > 1 %>
-                </ul>
-              </li>
-              <% end %>
-              <% end %>
-            </ul>
-          </div>
-        </li>
+          <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>
+          <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
+            <div class="btn-group btn navbar-btn ">
+              <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %> <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <% if current_user.active_assignment_groups.count > 0 %>
+                  <%= nav_link_to("Coaching Documentation System", main_app.assignment_assignment_groups_path) unless top_link != "C" %>
+                <% end %>
+                <% first_level.each do |first_level_item, second_level| %>
+                <% if first_level.keys.count > 1 %>
+                <li class="dropdown-submenu">
+                  <a tabindex="-1" href="#"><%= first_level_item %></a>
+                  <ul class="dropdown-menu">
+                    <% end %>
+                    <% second_level.each do |sub_menu_item, s| %>
+                    <%= nav_link_to(sub_menu_item, main_app.ls_reports_path(group_filter: "#{top_link}:#{first_level_item}:#{sub_menu_item}")) %>
+                    <% end %>
+                    <% if first_level.keys.count > 1 %>
+                  </ul>
+                </li>
+                <% end %>
+                <% end %>
+              </ul>
+            </div>
+          </li>
         <% end %>
         <%= nav_link_to('Reports', main_app.ls_reports_path, :class=>'ls_reports-link')%>
         <% end %>

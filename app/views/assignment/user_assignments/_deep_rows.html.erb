@@ -3,7 +3,7 @@
   <% iter = user_assignment.ur_categories_by date # from ua#fetch_compare %>
 <% else %>
   <% ident = "" %>
-  <% iter = user_assignment.ur_categories # from ua#index %>
+  <% iter = user_assignment.ur_categories_by user_assignment.ur_dates.first # from ua#index %>
 <% end %>
 
 <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
@@ -28,7 +28,7 @@
             </div>
           <% end %>
           <div class="col-md-2">
-            <% if responses.any?{|r| r.has_comments?} %>
+            <% if responses.any?{|r| r.has_user_comments? } %>
               <i class='fa fa fa-comments-o'></i>
             <% end %>
           </div>
