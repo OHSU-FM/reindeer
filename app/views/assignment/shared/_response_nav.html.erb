@@ -3,7 +3,7 @@
     <%= render partial: "assignment/shared/all_sessions_dd" %>
 
     <% if @user_response && @user_response.user_assignment.ur_categories.keys.length > 1 %>
-      <% @user_response.user_assignment.ur_categories.each do |category, responses| %>
+      <% @user_response.user_assignment.ur_categories_by(@user_response.submitdate).each do |category, responses| %>
       <div class="btn-group">
         <%= hf_category_status_button(responses, category).html_safe %>
         <ul class="dropdown-menu">

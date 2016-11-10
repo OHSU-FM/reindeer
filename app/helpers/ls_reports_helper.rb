@@ -76,7 +76,7 @@ module LsReportsHelper
       level1, level2, level3, val = title.split(":")
       nested_hash[level1][level2][level3] = val
     end
-    nested_hash.merge({"C"=>{}}) unless nested_hash.has_key?("C")
+    nested_hash.merge!({"C"=>{}}) unless nested_hash.has_key?("C")
     return nested_hash
   end
 
@@ -372,7 +372,7 @@ module LsReportsHelper
   def user_has_widget? user, question, pk, agg, view_type, graph_type
     !user.question_widgets.find{|qw|
       qw.lime_question_qid == question.qid &&
-        qw.agg=agg.to_s && qw.pk==pk.to_s &&
+        qw.agg=agg.to_s && qw.pk==pk[1].to_s &&
         qw.view_type.to_s == view_type.to_s &&
         qw.graph_type.to_s == graph_type.to_s}.nil?
   end

@@ -1,16 +1,20 @@
-<div class="container-fluid">
-  <div class="row fade-in two is-table-row">
-    <div class="col-md-<%= hf_ag_owner_or_higher? current_user, @user_response ? "6" : "12" %> main fade-in two">
-      <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
-    </div>
-    <% if hf_ag_owner_or_higher? current_user, @user_response %>
-      <div class="col-md-6 main fade-in two">
+<div class="row main fade-in two">
+  <div class="col-lg-6 col-xs-6 fade-in two">
+    <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
+  </div>
+  <% if hf_ag_owner_or_higher? current_user, @user_response %>
+    <div class="col-md-6 main fade-in two">
+      <h1>
         <button id="assignment-nav-toggle" type="button" class="btn btn-default" aria-label="Menu">
           Menu <span class="glyphicon glyphicon-menu-hamburger"></span>
         </button>
-      </div>
-    <% end %>
-  </div>
+      </h1>
+    </div>
+  <% elsif @user_response.user_assignment.user == current_user %>
+    <div class="col-md-6 main fade-in two">
+      <h1><%= button_to "Record new goals", hf_ua_lime_link_for(current_user), id: "assignment-nav-toggle", class: "btn btn-default", method: :get, form: {target: "_new"} %></h1>
+    </div>
+  <% end %>
 </div>
 
 <% if hf_ag_owner_or_higher? current_user, @user_response %>

@@ -66,6 +66,18 @@ describe User do
       expect(user.has_dirty_ls_list?).to be_truthy
     end
 
+    it "becomes dirty after new lime_survey is added to #permission_group" do
+      pg = create :permission_group, :with_users
+      pg.users.first.lime_surveys
+      expect(pg.users.first.has_clean_ls_list?).to be_truthy
+      l = create :lime_survey, :with_plsg
+      q = l.find_question :title, "TestQuestion"
+      l.role_aggregate.agg_title_fieldname = q.my_column_name; l.role_aggregate.save!
+      l.role_aggregate.pk_title_fieldname = q.my_column_name; l.role_aggregate.save!
+      pg.permission_ls_groups = l.permission_ls_groups; pg.save!
+      expect(pg.users.first.has_dirty_ls_list?).to be_truthy
+    end
+
     it "doesn't receive #role_aggregates with clean ls_list_state" do
       l = create :lime_survey, :with_plsg
       user = create :user, ls_list_state: "clean"

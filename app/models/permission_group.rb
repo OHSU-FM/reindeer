@@ -1,13 +1,16 @@
 class PermissionGroup < ActiveRecord::Base
-  has_many :users, :inverse_of=>:permission_group
-  has_many :permission_ls_groups, :inverse_of=>:permission_group, :dependent=>:destroy
-  has_many :lime_surveys, :through=>:permission_ls_groups
-  has_many :role_aggregates, :through=>:lime_surveys
+  has_many :users, inverse_of: :permission_group
+  has_many :permission_ls_groups,
+    inverse_of: :permission_group,
+    dependent: :destroy,
+    after_add: :dirty_user_ls_lists
+  has_many :lime_surveys, through: :permission_ls_groups
+  has_many :role_aggregates, through: :lime_surveys
 
-  accepts_nested_attributes_for :permission_ls_groups, :allow_destroy=>true,
-    :reject_if=>:all_blank
+  accepts_nested_attributes_for :permission_ls_groups, allow_destroy: true,
+    reject_if: :all_blank
   validates_associated :permission_ls_groups
-  attr_accessible :permission_ls_groups_attributes, :allow_destroy=>true
+  attr_accessible :permission_ls_groups_attributes, allow_destroy: true
   attr_accessible :title, :user_ids, :pinned_survey_group_titles
   validates :title, presence: true, uniqueness: true
 
@@ -31,6 +34,10 @@ class PermissionGroup < ActiveRecord::Base
         help "Survey groups that are pinned to the users nav bar"
       end
     end
+  end
+
+  def dirty_user_ls_lists plsg
+    users.each {|u| u.dirty_ls_list }
   end
 
   ##

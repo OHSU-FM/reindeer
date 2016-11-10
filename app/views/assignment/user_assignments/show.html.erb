@@ -1,23 +1,31 @@
 <div class="row main fade-in two">
-  <div class="col-md-6 main fade-in two">
+  <div class="col-lg-6 col-xs-6 fade-in two">
     <h1><%= link_to Settings.assignments_route_name.titleize.pluralize, assignment_root_path, {:class => "back-to-assignment-root"} %></h1>
   </div>
-  <div class="col-md-6 main fade-in two" style="height:69px; display:table;vertical-align:middle;">
-    <div style="display:table-cell; vertical-align:middle;">
-      <button id="assignment-nav-toggle" type="button" class="btn btn-default" aria-label="Menu" style="float:right; vertical-align:bottom; margin: 0 auto;">
-        Menu <span class="glyphicon glyphicon-menu-hamburger"></span>
-      </button>
+  <% if hf_ag_owner_or_higher? current_user, @user_assignment %>
+    <div class="col-md-6 main fade-in two">
+      <h1>
+        <button id="assignment-nav-toggle" type="button" class="btn btn-default" aria-label="Menu">
+          Menu <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </button>
+      </h1>
     </div>
-  </div>
+  <% elsif @user_assignment.user == current_user %>
+    <div class="col-md-6 main fade-in two">
+      <h1><%= button_to "Record new goals", hf_ua_lime_link_for(current_user), id: "assignment-nav-toggle", class: "btn btn-default", method: :get, form: {target: "_new"} %></h1>
+    </div>
+  <% end %>
 </div>
 
-<%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
+<% if hf_ag_owner_or_higher? current_user, @user_assignment %>
+  <%= render partial: "assignment/shared/assignment_nav", locals: { display: "none" } %>
+<% end %>
 
 <%= render partial: "assignment/shared/response_nav" %>
 
 <div class="fade-in two left-panel left-panel-scroll">
-  <h2 class="left-panel-title"><%= hf_ua_title_prettify @user_assignment %></h2>
-  <%= render partial: "assignment/user_assignments/deep_rows", locals: { ua: @user_assignment } %>
+  <h2 class="left-panel-title"><%= @date.to_date.to_s(:short) %></h2>
+  <%= render partial: "assignment/user_assignments/deep_rows", locals: { user_assignment: @user_assignment } %>
 </div>
 
 <div class="fade-in two right-panel compare-panel" style="text-align:center;">

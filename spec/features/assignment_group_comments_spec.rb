@@ -3,7 +3,7 @@ require "spec_helper"
 describe "assignment_group#show" do
 
   it "shows a list of assignment_groups the user owns" do
-    user = build :user
+    user = build :coach
     c = create :cohort, :with_users, owner: user
     user.cohort = c
     user.save!

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20161031152617) do
+=======
+ActiveRecord::Schema.define(version: 20161031201548) do
+>>>>>>> 64bfa469b633f1abcb7a33652c287cc68fa075d7
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -429,6 +433,7 @@ ActiveRecord::Schema.define(version: 20161031152617) do
     t.string   "owner_status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "submitdate"
   end
 
   create_table "users", force: :cascade do |t|

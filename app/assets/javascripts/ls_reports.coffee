@@ -64,7 +64,6 @@ $(document).ready ->
   ##
   # Mark question widget as successfully added on ajax success
   $(document).on 'ajax:success', '.new_question_widget', (event, xhr, status) ->
-    window.CrossTabs.trigger('widget:new', xhr)
     $(this).find('button').
         removeClass('btn-primary').addClass('btn-success').prop('disabled', true).html(xhr.message)
     return
@@ -76,8 +75,8 @@ $(document).ready ->
       msg = xhr.responseJSON.message
     else
       msg = 'Server Error'
-      $(this).find('button').
-          removeClass('btn-primary').addClass('btn-danger').prop('disabled', true).html(msg)
+    $(this).find('button').
+        removeClass('btn-primary').addClass('btn-danger').prop('disabled', true).html(msg)
     return
 
   ##
