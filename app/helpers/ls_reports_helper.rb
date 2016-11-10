@@ -317,7 +317,7 @@ module LsReportsHelper
       unless @hide_pk
         @pk = add_param_filter lime_survey, :pk, role_aggregate.pk_fieldname
         # default to last val if only one pk option
-        @pk.nil? ? @pk = @pk_enum.last : @pk
+        @pk.nil? ? @pk = @pk_enum.last[1] : @pk
       end
     end
 
@@ -372,7 +372,7 @@ module LsReportsHelper
   def user_has_widget? user, question, pk, agg, view_type, graph_type
     !user.question_widgets.find{|qw|
       qw.lime_question_qid == question.qid &&
-        qw.agg=agg.to_s && qw.pk==pk[1].to_s &&
+        qw.agg=agg.to_s && qw.pk==pk.to_s &&
         qw.view_type.to_s == view_type.to_s &&
         qw.graph_type.to_s == graph_type.to_s}.nil?
   end

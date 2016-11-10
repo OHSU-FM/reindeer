@@ -4,7 +4,7 @@
   <%= f.hidden_field :user_id, value: @user.id %>
   <%= f.hidden_field :role_aggregate_id, value: @role_aggregate.id %>
   <%= f.hidden_field :agg, value: @agg %>
-  <%= f.hidden_field :pk, value: @pk[1] %>
+  <%= f.hidden_field :pk, value: @pk %>
   <%= f.hidden_field :graph_type, value: graph_type %>
   <%= f.hidden_field :lime_question_qid, value: question.qid %>
   <% if user_has_widget?(@user, question, @pk, @agg, @view_type, graph_type) %>
