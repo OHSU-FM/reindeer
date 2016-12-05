@@ -5,6 +5,6 @@
 <%= render partial: 'comments/form', locals: {commentable: @assignment_group} %>
 <% if can? :comment_on, @assignment_group %>
   <p class="comment-info">
-    Only you can post here-- you can use this space to relay information to all the students you coach
+    Only you can post here-- anything you enter will be visible to all the students you coach
   </p>
 <% end %>
