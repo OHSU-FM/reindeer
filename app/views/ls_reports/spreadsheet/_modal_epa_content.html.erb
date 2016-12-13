@@ -1,0 +1,100 @@
+
+<div id="EPA<%= i %>" class="modal fade" role="dialog">
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <a href="#close" class="close" data-dismiss="modal" >X</a>
+                     <h3 class="modal-title modal-text-align-center"><font color="tomato"> EPA<%= i %> - <%= epa_desc %> </font></h3>
+             </div>
+
+             <div class="modal-body">
+
+              <div class="container-fluid">
+                <ul class="list-inline">
+                    <li class="active"><a data-toggle="tab" href="#SummaryEPA<%= i %>">Summary</li>
+                    <li><a data-toggle="tab" href="#DetailEPA<%= i %>">Detail EPA</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="SummaryEPA<%= i %>" class="tab-pane fade in active">
+             
+                         <table class="table borderless table-condensed table-striped modal-text-align-center">
+                            <tr>
+                                <td>Competency</td>
+                                <td># of Not Able To Access (Level 0)</td>
+                                <td># of Pre-Entrustables (Level 1)</td>
+                                <td># of Approaching Entrustables (Level 2)</td>
+                                <td># of Entrustables Achieved (Level 3)</td>
+                                <td># of Entrustables Required by Assessors </td>
+                                <td># of Entrustables Remaining</td>
+                            </tr>
+                             <% epa_level0 = hf_epa(@rs_data, i.to_s, "0") %>
+                             <% epa_level1 = hf_epa(@rs_data, i.to_s, "1") %>                 
+                             <% epa_level2 = hf_epa(@rs_data, i.to_s, "2") %>
+                             <% epa.each do |k, v| %>
+                                <tr>
+
+                                   <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
+                                   <%= k %></a></span></td>
+
+                                    <td><font color="purple"><%= epa_level0[k] == 0? "" : epa_level0[k] %></td>
+                                    <td><font color="red"><b><%= epa_level1[k] == 0? "" : epa_level1[k] %></b></font></td> 
+                                    <td><font color="tomato"><%= epa_level2[k] == 0? "" : epa_level2[k]%></font></td>
+                                    <td><font color="green"> <%= v == 0? "" : v %></font></td>
+                                    <td><font color="blue"> <%= assessors[k] %></font></td>
+                                    <% rem = (v-assessors[k])*(-1) %>
+                                    <% if rem <=0 %>
+                                       <td><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
+                                    <% else %>
+                                        <td><font color="Orange"><%= rem %></font></td>
+                                    <% end %>
+                                </tr>
+                             <% end %>
+                         
+                         </table>
+                    </div>
+                    <div id="DetailEPA<%= i %>" class="tab-pane fade in">
+                        <% epa_detail_3 = hf_epa_courses(@rs_data, i.to_s, "3") %>
+                        <% epa_detail_2 = hf_epa_courses(@rs_data, i.to_s, "2") %>
+                        <% epa_detail_1 = hf_epa_courses(@rs_data, i.to_s, "1") %>  
+                        <% epa_detail_0 = hf_epa_courses(@rs_data, i.to_s, "0") %>                 
+
+                        <table class="table borderless table-condensed table-striped table-hover">
+
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content_detail', :locals=>{:epa=>epa, :epa_level=>epa_level0, :epa_detail=>epa_detail_0, :comp_type=>"", :level=>"0"} %>   
+
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content_detail', :locals=>{:epa=>epa, :epa_level=>epa_level1, :epa_detail=>epa_detail_1, :comp_type=>"-E", :level=>"1"} %>  
+
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content_detail', :locals=>{:epa=>epa, :epa_level=>epa_level2, :epa_detail=>epa_detail_2, :comp_type=>"-P", :level=>"2"} %>                                                         
+
+                            <% epa.each do |k, v| %>
+                                <tr>  
+                                  <% if v != 0 %>
+                                       <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
+                                          <%= k %></a></span>
+                                       </td>
+                                       <td class="align-right"><font color="green">Level 3 = <%= v %></font></td>
+                                        <% temp_detail = epa_detail_3[k][0...-2].split(", ") %>
+
+                                        <td class="align-left"> 
+                                            <% temp_detail.each do |t| %>
+                                            <td><%= t %> </td>
+                                            <% end %>
+                                        </td>
+                                   <% end %>
+
+                                </tr>
+                            <% end %>
+
+                        </table>
+                    </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>.
+    </div>
+  </div>
+</div>

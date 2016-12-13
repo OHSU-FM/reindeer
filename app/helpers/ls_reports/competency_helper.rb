@@ -95,6 +95,53 @@ module LsReports::CompetencyHelper
 
     }
 
+
+    COMP_CODES = ["ICS1", "ICS2", "ICS3", "ICS4", "ICS5", "ICS6", "ICS7","ICS8", 
+        "MK1", "MK2", "MK3", "MK4", "MK5", 
+        "PBLI1", "PBLI2", "PBLI3", "PBLI4", "PBLI5", "PBLI6", "PBLI7", "PBLI8",
+        "PCP1", "PCP2", "PCP3", "PCP4", "PCP5", "PCP6", 
+        "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD5", "PPPD6", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "PPPD11",
+        "SBPIC1", "SBPIC2", "SBPIC3", "SBPIC4", "SBPIC5"]
+
+    ASSESSORS = {   "ICS1" => 6, "ICS2" => 3, "ICS3" => 3, "ICS4" => 3, "ICS5" => 7, "ICS6" => 3, "ICS7" => 3, "ICS8" => 3,
+                    "MK1" => 4, "MK2" => 6, "MK3" => 3, "MK4" => 3, "MK5" => 5,
+                    "PBLI1" => 8, "PBLI2" => 4, "PBLI3" => 3, "PBLI4" => 4, "PBLI5" => 3, "PBLI6" => 3, "PBLI7" => 3, "PBLI8" => 3,
+                    "PCP1" => 8, "PCP2" => 8, "PCP3" => 8, "PCP4" => 3, "PCP5" => 3, "PCP6" => 3,
+                    "PPPD1" => 6,"PPPD2" => 4,"PPPD3" => 3,"PPPD4" => 3,"PPPD5" => 3,"PPPD6" => 3,"PPPD7" => 3,"PPPD8" => 3,"PPPD9" => 8,"PPPD10" => 6,"PPPD11" => 3,
+                    "SBPIC1" => 3,"SBPIC2" => 3,"SBPIC3" => 3,"SBPIC4" => 6,"SBPIC5" => 3
+                }
+
+    EPA = { "EPA1" => ["PCP1", "ICS1", "ICS2", "ICS3", "ICS4", "PPPD1", "PPPD2", "PPPD3", "PPPD7", "PPPD10", "SBPIC3" ],
+            "EPA2" => ["PCP1", "PCP2", "PCP3", "MK1", "MK2", "MK3", "PBLI1", "ICS6", "PPPD7", "PPPD10", "PPPD11", "SBPIC3"],
+            "EPA3" => ["PCP2", "PCP3", "PCP4", "PCP5", "MK2", "MK3", "MK4", "MK5", "PBLI3", "PBLI4", "ICS2", "PPPD3", "PPPD7", "PPPD10", "SBPIC2", "SBPIC3" ],
+            "EPA4" => ["PCP3", "PCP4", "MK1", "MK2", "MK3", "PBLI1", "PBLI3", "PBLI4", "ICS1", "ICS2", "PPPD7", "PPPD10", "SBPIC2", "SBPIC3"],
+            "EPA5" => ["PCP4", "MK5", "ICS1", "ICS2", "ICS5", "ICS6", "ICS8", "PPPD2", "PPPD5", "PPPD7", "PPPD9", "PPPD10", "SBPIC1", "SBPIC3", "SBPIC4", "SBPIC5"],
+            "EPA6" => ["PCP4", "PBLI1", "PBLI2", "ICS1", "ICS2", "ICS6", "ICS7", "ICS8", "PPPD2", "PPPD4", "PPPD7", "PPPD10", "PPPD11", "SBPIC3", "SBPIC4", "SBPIC5"],
+            "EPA7" => ["MK1", "MK2", "MK3", "MK4", "MK5", "PBLI1", "PBLI2", "PBLI3", "PBLI4", "PBLI5", "PPPD7", "PPPD10", "SBPIC3" ],
+            "EPA8" => ["ICS4", "ICS5", "ICS6", "ICS7", "ICS8", "PPPD2", "PPPD7", "PPPD10", "SBPIC3", "SBPIC4", "SBPIC5"],
+            "EPA9" => ["MK5", "ICS3", "ICS6", "PPPD4", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "SBPIC3", "SBPIC4", "SBPIC5"],
+            "EPA10" => ["PCP1", "PCP2", "PCP3", "PCP4", "PCP6", "MK2", "ICS3", "ICS6", "ICS8", "PPPD3", "PPPD4", "PPPD6", "PPPD7", "PPPD10", "SBPIC3", "SBPIC5"],
+            "EPA11" => ["PCP4", "MK1", "MK2", "MK3", "ICS1", "ICS2", "ICS3", "ICS5", "PPPD7", "PPPD9", "PPPD10", "SBPIC2", "SBPIC3"],
+            "EPA12" => ["PCP6", "ICS1", "ICS5", "PPPD3", "PPPD4", "PPPD6", "PPPD7", "PPPD9", "PPPD10", "SBPIC3"],
+            "EPA13" => ["MK5", "PBLI2", "PBLI5", "PBLI6", "PBLI8", "ICS1", "ICS6", "PPPD7", "PPPD10", "SBPIC1", "SBPIC3", "SBPIC5"]
+    }
+
+    EPA_DESC={"EPA1" => "Gather a history and perform a physical examination",
+              "EPA2" => "Prioritize a differential diagnosis following a clinical encounter",
+              "EPA3" => "Recommend and interpret common diagnostic and screening tests",
+              "EPA4" => "Enter and discuss orders and prescriptions",
+              "EPA5" => "Document a clinical encounter in the patient record",
+              "EPA6" => "Provide an oral presentation of a clinical encounter",
+              "EPA7" => "Form clinical questions and retrieve evidence to advance patient care",              
+              "EPA8" => "Give or receive a patient handover to transition care responsibility",
+              "EPA9" => "Collaborate as a member of an interprofessional team",
+              "EPA10" => "Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
+              "EPA11" => "Obtain informed consent for tests and/or procedures",
+              "EPA12" => "Perform general procedures of a physician ",              
+              "EPA13" => " Identify system failures and contribute to a culture of safety and improvement"
+            }
+
+
     def hf_has_epa? rs_question
         #if parent_question.question.include? "Level 1"
            comp_code = rs_question.question
@@ -135,6 +182,145 @@ module LsReports::CompetencyHelper
             return LEVEL3[comp_code]
         end
 
+    end
+
+    def hf_get_comp_desc2 in_code
+        
+        comp_code = in_code
+        if LEVEL1[comp_code]
+            # comp_code contains "-P", need to replace it with "-E" as we display the desc side by side.
+            e_code = comp_code.split("-").first + "-E"
+            ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td><b>#{comp_code}</b> #{LEVEL1[comp_code]}</td><td>" + 
+                       "<b>#{e_code}</b> #{LEVEL3[e_code]}</td></tr></table>"
+            return ret_desc 
+        end 
+        if  LEVEL3[comp_code] 
+            return LEVEL3[comp_code]
+        end
+
+    end
+
+    def hf_total_competency in_comp
+        total_comp = 0
+        COMP_CODES.each do |c|
+           if !in_comp[c].nil?
+               total_comp += 1
+           end
+        end 
+        return total_comp
+    end
+
+    # level = "0", "1", '2', "3"
+    
+    def hf_total_level(in_comp,level)
+        total_level = 0
+        COMP_CODES.each do |c|
+           if !in_comp[c].nil? and in_comp[c][0] == level
+               total_level += 1
+           end
+        end 
+        return total_level
+ 
+    end 
+
+    def hf_level_comp_codes(in_comp, level)
+        level_comp_codes = ""
+        COMP_CODES.each do |c|
+           if !in_comp[c].nil? and in_comp[c][0] == level
+               level_comp_codes << c << ", "
+           end
+        end 
+        return level_comp_codes[0...-2]  # remove the last char, ","      
+    end
+
+
+    def hf_epa(rs_data, epa_id, level)
+
+        epa = {}
+        epa_code = "EPA" + epa_id
+
+        EPA[epa_code].each do |c|
+            epa[c] = 0
+        end 
+
+        rs_data.each do |rec|
+            EPA[epa_code].each do |comp|
+              if !rec[comp].nil? and rec[comp][0] == level
+                    epa[comp] += 1
+                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+               end
+            end
+
+        end 
+        return epa
+    end
+
+    def hf_epa_courses(rs_data, epa_id, level)
+        epa_courses = {}
+        epa_code = "EPA" + epa_id
+
+        EPA[epa_code].each do |c|
+            epa_courses[c] = ''
+        end 
+
+        rs_data.each do |rec|
+            EPA[epa_code].each do |comp|
+              if !rec[comp].nil? and rec[comp][0] == level
+                    epa_courses[comp] << rec["CourseName"] << ", "
+                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+               end
+            end
+
+        end 
+        #binding.pry
+        return epa_courses      
+    end
+
+    def hf_average_epa epa
+        ave = 0.0
+        total = 0.00
+        epa.each do |index, value|
+            total += value.to_f/ASSESSORS[index]
+        end 
+
+        return ave = ((total/epa.count)*100).round(0)
+
+    end 
+
+    def hf_all_average_epas rs_data
+        overall_ave_epa = 0
+        total_ave = 0
+        ave = 0
+
+        for i in 1..13
+           epa = hf_epa(rs_data, i.to_s, "3")
+           ave = hf_average_epa epa
+           total_ave += ave
+           
+        end
+
+        #TOTAL EPA = 13
+
+        overall_ave_epa = (total_ave/13).round(0)
+        
+        return overall_ave_epa
+    end
+
+    def hf_display_epa_detail epa
+        temp_epa = ""
+        epa.each do |k, v|
+            temp_epa << "#{k}=#{v}, " 
+        end 
+
+        return temp_epa[0...-2]  # remove the last char, ","  
+    end
+
+    def hf_epa_desc
+        return EPA_DESC
+    end 
+
+    def hf_assessors
+        return ASSESSORS
     end
 
 end 

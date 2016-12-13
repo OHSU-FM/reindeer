@@ -1,4 +1,4 @@
-$(document).ready -> 
+$(document).ready ->   
     $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
     dom: '<"H"Tfr>t<"F"ip>', 
     tableTools: {aButtons: ["copy",
@@ -30,4 +30,13 @@ $(document).ready ->
                         "button": "li",
                         "liner": "a"
                       }
-     } ); 
+     } );
+ 
+    $('[title]').each ->
+        $(this).tooltip
+            placement: if typeof $(this).attr('data-placement') == 'undefined' then 'bottom' else $(this).attr('data-placement')
+            trigger: 'hover'
+        return
+
+
+    

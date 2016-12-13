@@ -20,9 +20,15 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         @response_sets = hf_flatten_response_sets @lime_survey
  
         @rs_data = hf_transpose_response_sets @response_sets
-        @rs_data = @rs_data.sort
+        @rs_data.sort_by!{|obj| obj["StartDt"]}
+        @rs_questions = hf_transpose_questions @response_sets
 
-        render :show
+        if hf_found_competency(@response_sets)
+            render :show_epa
+        else
+        #binding.pry
+            render :show
+        end
     end
 
 

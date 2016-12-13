@@ -29,14 +29,51 @@ module LsReports::SpreadsheetHelper
     end 
 
     def hf_transpose_response_sets response_sets
+
         result = []
+        temp_data = []
         response_sets.each do |dt|
-            result.push dt.data
+            temp_data.push dt.data
         end
-        return result.transpose
+        temp_data = temp_data.transpose
+
+        temp_hash = {}
+        title_array = hf_transpose_titles response_sets
+        temp_data.each do |x|
+            temp_hash = Hash[title_array.zip(x)]
+            result.push temp_hash
+        end
+        return result
+
     end
 
+    def hf_transpose_titles response_sets
+        result = []
+        response_sets.each do |rs|
+            result.push rs.title
+        end
+        return result
+    end 
 
+    def hf_transpose_questions response_sets
+        result = {} 
+        response_sets.each do |rs|
+            pquestion = rs.question
+            result[rs.title] =  pquestion.question
+        end
 
+        return result
+
+    end
+
+    def hf_found_competency response_sets
+
+        response_sets.each do |rs|
+            if rs.title.include? "ICS1"
+                return true 
+                break
+            end
+        end
+        return false
+    end 
 end
-

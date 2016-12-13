@@ -1,0 +1,102 @@
+
+<span>
+    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Detail</button>
+</span>
+<div id="CourseID<%= x["CourseID"]%>" class="modal fade" role="dialog">
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+             <div class="modal-header blue-italic">
+                 <a href="#close" class="close" data-dismiss="modal" >X</a>
+                     <h3 class="modal-title"> <%= x["StudentName"] %> - <%= x["CourseName"] %> </h3>
+             </div>
+
+             <div class="modal-body">
+              <div class="container-fluid">
+                <ul class="list-inline">
+                    <li class="active"><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Core Data</li>
+                    <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Detail Competency</a></li>
+                    <li><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Detail/Comments</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="CoreData<%= x["CourseID"] %>" class="tab-pane fade in active">
+                         <table class="table borderless table-condensed table-striped ">
+                             <% total_comp = hf_total_competency(x) %>
+                             <% total_level3 = hf_total_level(x, "3") %>
+                             <% total_level2 = hf_total_level(x, "2") %>
+                             <% total_level1 = hf_total_level(x, "1") %>
+                             <% total_level0 = hf_total_level(x, "0") %>
+
+                             <tr><h4>Total Competencies Achievable = <%= total_comp.to_s %> </h4></tr>
+                             <tr>
+                                 <td>Not Able to Access (Level 0)</td>
+                                 <td><%= total_level0.to_s %> </td> 
+                                 <td><%= hf_level_comp_codes(x, "0") %> </td>
+                             </tr>
+                             <tr>
+                                 <td>Pre-entrustable (Level 1)</td>
+                                 <td><%= total_level1.to_s %> </td>
+                                 <td><%= hf_level_comp_codes(x, "1") %> </td>
+                            <tr>
+                                <td>Approching Entrustable (Level 2)</td>
+                                <td><%= total_level2.to_s %></td>
+                                <td><%= hf_level_comp_codes(x, "2") %> </td>
+                            </tr>
+                            <tr>
+                                <td>Entrustable (Level 3)</td>
+                                <td><%= total_level3.to_s %> </td>
+                                <td><%= hf_level_comp_codes(x, "3") %> </td>
+                            </tr>
+                            <tr>
+                                <td>Total Competencies Achieved</td>
+                                <td><%= total_level3.to_s %> of <%= total_comp.to_s %></td>
+                            </tr>
+                         </table>
+                       
+                    </div>
+
+                    <div id="DetailCompetency<%= x["CourseID"] %>" class="tab-pane fade">
+                         <table class="table borderless table-condensed table-striped ">
+                            <% x.each do |k, v| %>
+                                <tr>
+                                  <% if !v.nil?  %>
+                                       <% if v.include? "^" %>
+                                            <td><%= k %></td>
+                                            <% tmp_comment = v.split("^") %>
+                                            <td>Level <%= tmp_comment[0].gsub("~", ": ")   %>
+                                                <% if tmp_comment[1] != "Comments: None" %>
+                                                      <hr ><b><font color="blue"><%= tmp_comment[1] %> </font></b>
+                                                <% end %>
+                                            </td>
+                                       <% end %>
+                                  <% end %>
+                                </tr>
+                            <% end %>
+                         </table>  
+                    </div>
+
+                    <div id="Comments<%= x["CourseID"] %>" class="tab-pane fade">
+                         <table class="table borderless table-condensed table-striped ">
+                            <% x.each do |k, v| %>
+                                <tr>
+                                  <% if !v.nil?  %>
+                                       <% if !v.include? "^" %>
+                                             <td><%= k %></td>
+                                             <td><%= v %></td>
+                                       <% end %>
+                                  <% end %>
+                                </tr>
+                            <% end %>
+                         </table>  
+                    </div>
+                    
+
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+    </div>
+  </div>
+</div>

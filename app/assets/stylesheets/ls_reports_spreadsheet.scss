@@ -1,0 +1,116 @@
+@import 'ls_reports_graph';
+
+
+.spreadsheet-body {
+        background-color: #F2FFF2;
+    }
+
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.modal-text-align-center {
+    text-align: center;
+}
+
+.blue-italic {
+    font-weight: regular;
+    font-style: italic;
+    color: blue;
+}
+
+.bold-italic {
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+
+.italic {
+    font-style: italic;
+}
+
+.table {
+    border-collapse:separate;
+    border:solid black 1px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius: 5px;
+}
+
+th {
+    background-color: #669999;
+    border-top: none;
+}
+
+td:first-child {
+     border-left: none;
+}
+
+.modal-dialog > div {
+    width: 1200px;
+}
+
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: 12px;
+    text-align: center;
+    top: 10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #00d9ff; }
+
+.borderless {
+    border: none;
+}
+
+.progress {
+  position: relative;
+  height: 31px;
+  background: rgb(255, 0, 0);
+  background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+  background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+}
+
+.amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: all 0.8s;
+  background: #E8FDD5;
+  width: 0;
+}
+
+.progress:before {
+  content: attr(data-amount)"% Complete";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  text-align: center;
+  line-height: 31px;
+}
+

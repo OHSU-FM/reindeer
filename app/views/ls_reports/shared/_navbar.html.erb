@@ -51,7 +51,7 @@
                 <div class="pull-right pad-right">
                     <b><%= @role_aggregate.pk_label %></b>
                     <br/>
-                    <select id="pk_selector" class="select_a_link form-control input-sm">
+                    <select id="pk_selector" name="pk_selector" class="select_a_link form-control input-sm">
                         <% @pk_enum.each do |key, val|%>
                             <option value="<%= polymorphic_path([@view_type, :ls_report],:pk=>val, :agg=>@agg)%>"
                                 <%= @pk==val ? 'selected="selected"' : '' %>><%= key%></option>
