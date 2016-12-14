@@ -26,12 +26,17 @@
 
 <body>
  <div class="container-fluid">
-    <ul class="nav nav-tabs">
-        <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experience</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#intersession">Intersession</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>  
-        <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPA/Competency</a></li>       
-    </ul>
+    <% overall_ave_epa = hf_all_average_epas(@rs_data) %>
+    <% if @rs_data.count <= 100 %>
+        <ul id="mainTab" class="nav nav-tabs">
+            <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experience</a></li>
+            <li class="bold-italic"><a data-toggle="tab" href="#intersession">Intersession</a></li>
+            <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>  
+            <% if overall_ave_epa <= 100 %>
+               <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPA/Competency</a></li>     
+            <% end %>  
+        </ul>
+    <% end %>
     <div class="tab-content">
 
         <div id="core" class="tab-pane fade in active">
@@ -91,7 +96,7 @@
         <div id="EPA" class="tab-pane fade">
              <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">
                 <tbody class="bold-italic">
-                    <% overall_ave_epa = hf_all_average_epas(@rs_data) %>
+
                     <% epa_desc = hf_epa_desc %>
                     <tr>
                         <td class="text-right">

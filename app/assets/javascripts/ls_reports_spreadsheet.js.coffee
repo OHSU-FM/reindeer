@@ -31,12 +31,22 @@ $(document).ready ->
                         "liner": "a"
                       }
      } );
- 
+
+    $('#mainTab a').click (e) ->
+        if $(this).parent('li').hasClass('active')
+            if $('#progress-epa0').attr('data-amount') > 100
+                $($(this).attr('href')).hide()
+            else
+                $($(this).attr('href')).show()
+            return
+
     $('[title]').each ->
         $(this).tooltip
             placement: if typeof $(this).attr('data-placement') == 'undefined' then 'bottom' else $(this).attr('data-placement')
             trigger: 'hover'
         return
+
+
 
 
     
