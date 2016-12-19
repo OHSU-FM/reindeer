@@ -1,6 +1,7 @@
 
 <span>
-    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Detail</button>
+
+    <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Detail</button>
 </span>
 <div id="CourseID<%= x["CourseID"]%>" class="modal fade" role="dialog">
      <div class="modal-dialog modal-lg">
@@ -31,21 +32,41 @@
                              <tr>
                                  <td>Not Able to Access (Level 0)</td>
                                  <td><%= total_level0.to_s %> </td> 
-                                 <td><%= hf_level_comp_codes(x, "0") %> </td>
+                                <% comp_codes = hf_level_comp_codes2(x, "0") %>
+                                <td>
+                                    <% comp_codes.each do |c| %>
+                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
+                                    <% end %>
+                                </td>
                              </tr>
                              <tr>
                                  <td>Pre-entrustable (Level 1)</td>
                                  <td><%= total_level1.to_s %> </td>
-                                 <td><%= hf_level_comp_codes(x, "1") %> </td>
+                                <% comp_codes = hf_level_comp_codes2(x, "1") %>
+                                <td>
+                                    <% comp_codes.each do |c| %>
+                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-P") %>" ><%= "#{c} " %></a></span>
+                                    <% end %>
+                                </td>
                             <tr>
                                 <td>Approching Entrustable (Level 2)</td>
                                 <td><%= total_level2.to_s %></td>
-                                <td><%= hf_level_comp_codes(x, "2") %> </td>
+                                <% comp_codes = hf_level_comp_codes2(x, "2") %>
+                                <td>
+                                    <% comp_codes.each do |c| %>
+                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
+                                    <% end %>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Entrustable (Level 3)</td>
                                 <td><%= total_level3.to_s %> </td>
-                                <td><%= hf_level_comp_codes(x, "3") %> </td>
+                                <% comp_codes = hf_level_comp_codes2(x, "3") %>
+                                <td>
+                                    <% comp_codes.each do |c| %>
+                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
+                                    <% end %>
+                                </td>
                             </tr>
                             <tr>
                                 <td>Total Competencies Achieved</td>
@@ -61,13 +82,16 @@
                                 <tr>
                                   <% if !v.nil?  %>
                                        <% if v.include? "^" %>
-                                            <td><%= k %></td>
-                                            <% tmp_comment = v.split("^") %>
-                                            <td>Level <%= tmp_comment[0].gsub("~", ": ")   %>
-                                                <% if tmp_comment[1] != "Comments: None" %>
-                                                      <hr ><b><font color="blue"><%= tmp_comment[1] %> </font></b>
-                                                <% end %>
-                                            </td>
+                                               <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
+                                                  <%= k %></a></span>
+                                               </td>
+                                           
+                                                <% tmp_comment = v.split("^") %>
+                                                <td>Level <%= tmp_comment[0].gsub("~", ": ")   %>
+                                                    <% if tmp_comment[1] != "Comments: None" %>
+                                                          <hr ><b><font color="blue"><%= tmp_comment[1] %> </font></b>
+                                                    <% end %>
+                                                </td>
                                        <% end %>
                                   <% end %>
                                 </tr>

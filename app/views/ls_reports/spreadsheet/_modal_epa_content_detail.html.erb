@@ -6,20 +6,24 @@
           	   	<% if comp_type == "" %>
                		<td class="align-right"><%= k %></td>
                	<% else %>
-		           <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + comp_type) %>" >
-		              <%= k %></a></span>
-		           </td>
-		        <% end %>
+		                <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + comp_type) %>" >
+		                  <%= k %></a></span>
+		                </td>
+		            <% end %>
 
                 <td class="align-right"><font color="purple">Level <%= level %> = <%= epa_level[k] %></font></td>
                 <% temp_detail = epa_detail[k][0...-2].split(", ") %>
 
                 <td class="align-left"> 
                     <% temp_detail.each do |t| %>
-                        <td><%= t %> </td>
+                        <% temp_t = t.sub("Final Grade and Competency Assessment", "") %>
+                        <td><%= temp_t %></td>
                     <% end %>
                 </td>
           <% end %>
 
         </tr>
     <% end %>  
+
+
+

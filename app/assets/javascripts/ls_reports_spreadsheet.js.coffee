@@ -32,21 +32,20 @@ $(document).ready ->
                       }
      } );
 
-    $('#mainTab a').click (e) ->
-        if $(this).parent('li').hasClass('active')
-            if $('#progress-epa0').attr('data-amount') > 100
-                $($(this).attr('href')).hide()
-            else
-                $($(this).attr('href')).show()
-            return
-
     $('[title]').each ->
         $(this).tooltip
             placement: if typeof $(this).attr('data-placement') == 'undefined' then 'bottom' else $(this).attr('data-placement')
             trigger: 'hover'
         return
 
-
+    $('a[data-tab-destination]').on 'click', ->
+        tab = $(this).attr('data-tab-destination')
+        console.log("tab: " + tab)
+        tab = tab.replace('tab-3-epa-','CourseDetail')
+        console.log('after string-sub - tab:' + tab)
+        $('#' + tab).show
+        $('#Mytabs').tabs "select", 2
+        return
 
 
     

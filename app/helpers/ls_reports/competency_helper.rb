@@ -233,6 +233,16 @@ module LsReports::CompetencyHelper
         return level_comp_codes[0...-2]  # remove the last char, ","      
     end
 
+    def hf_level_comp_codes2(in_comp, level)
+        level_comp_codes = []
+        COMP_CODES.each do |c|
+           if !in_comp[c].nil? and in_comp[c][0] == level
+               level_comp_codes.push c
+           end
+        end 
+        return level_comp_codes  
+    end
+
 
     def hf_epa(rs_data, epa_id, level)
 

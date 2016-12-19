@@ -6,5 +6,26 @@
     </div>
 </div>
 <div class="fade-in four">
+    <% if @rs_data.count <= 100 %>
     	<%= render :partial=>'ls_reports/spreadsheet/content_epa', :locals=>{:lime_survey=>@lime_survey}%>
+    <% else %>
+    	<h3><font color="red"><b> *** Warning! *** </b></font></h3>
+    	<h4><font color="tomato">
+    	<p>1 - The data was extracted from Medhub Test Server using API calls (as of 11/28/2016). </p>
+    	<p>2 - The data is NOT being audited. </p>
+    	<p>3 - There is no mean for the EPAs for the entire class. </p>
+    	<p>4 - The progress bar's gradient color will eventually turn GREEN once 100% is reached. </p>
+    	<p>5 - Have fun with it!!! </p>
+    	</font></h4>
+    	<br/><br/>
+    	<h3><font color="green"><b> *** Hint! *** </b></font></h3>
+    	<h4><font color="green">
+        <p>1 - Select Med18 Cohort, then select Clinical Phase in the menu </p>
+    	<p>2 - The data is arranged by clickable Tabs (Core Experience, Intersession, Electives & EPA/Comptency). </p>
+    	<p>3 - Inside each tab, there is a clickable blue button. </p>
+    	<p>4 - A pop up screen will appear when you click on the button.</p>
+    	<p>5 - The pop screen also contains clickable Tabs. </p>
+    	<p>6 - If you are color BLIND, my apologies! The critical data is displayed in various colors such as EPAs info, etc. </p>
+    	</font></h4>
+    <% end %>
 </div>
