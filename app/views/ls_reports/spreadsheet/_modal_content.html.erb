@@ -1,7 +1,7 @@
 
 <span>
 
-    <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Detail</button>
+    <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Details</button>
 </span>
 <div id="CourseID<%= x["CourseID"]%>" class="modal fade" role="dialog">
      <div class="modal-dialog modal-lg">
@@ -13,14 +13,33 @@
 
              <div class="modal-body">
               <div class="container-fluid">
-                <ul class="list-inline">
-                    <li class="active"><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Core Data</li>
-                    <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Detail Competency</a></li>
-                    <li><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Detail/Comments</a></li>
+                <ul class="list-inline" id="MyCompetencyTab">
+                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li>
+                    <li><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Competency Summary</li>
+                    <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Competency Details</a></li>
+
                 </ul>
 
                 <div class="tab-content">
-                    <div id="CoreData<%= x["CourseID"] %>" class="tab-pane fade in active">
+
+                    <div id="Comments<%= x["CourseID"] %>" class="tab-pane fade in active">
+                         <table class="table borderless table-condensed table-striped ">
+                            <% x.each do |k, v| %>
+                                <tr>
+                                  <% if !v.nil?  %>
+                                       <% if !v.include? "^" %>
+                                             <% if !["MedhubID", "StudentEmail", "StudentName", "CoachEmail", "CoachName", "CourseID"].include? k %>
+                                                <td><%= k %></td>
+                                                <td><%= v %></td>
+                                             <% end %>
+                                       <% end %>
+                                  <% end %>
+                                </tr>
+                            <% end %>
+                         </table>  
+                    </div>
+
+                    <div id="CoreData<%= x["CourseID"] %>" class="tab-pane fade">
                          <table class="table borderless table-condensed table-striped ">
                              <% total_comp = hf_total_competency(x) %>
                              <% total_level3 = hf_total_level(x, "3") %>
@@ -99,21 +118,7 @@
                          </table>  
                     </div>
 
-                    <div id="Comments<%= x["CourseID"] %>" class="tab-pane fade">
-                         <table class="table borderless table-condensed table-striped ">
-                            <% x.each do |k, v| %>
-                                <tr>
-                                  <% if !v.nil?  %>
-                                       <% if !v.include? "^" %>
-                                             <td><%= k %></td>
-                                             <td><%= v %></td>
-                                       <% end %>
-                                  <% end %>
-                                </tr>
-                            <% end %>
-                         </table>  
-                    </div>
-                    
+
 
                   </div>
                 </div>

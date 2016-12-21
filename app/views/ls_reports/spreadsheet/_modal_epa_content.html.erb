@@ -12,8 +12,8 @@
               <div class="container-fluid">
                 <ul class="list-inline" id="MyTabs">
                     <li class="active"><a data-toggle="tab" href="#EPASummary<%= i %>" id="tab-1-epa-<%= i %>">EPA Summary</li>
-                    <li><a data-toggle="tab" href="#EPADetail<%= i %>" id="tab-2-epa-<%= i %>">EPA Detail</a></li>
-                    <li><a data-toggle="tab" href="#CourseDetail<%= i %>" id="tab-3-epa-<%= i %>" >Course Detail</a></li>
+                    <li><a data-toggle="tab" href="#EPADetail<%= i %>" id="tab-2-epa-<%= i %>">EPA Details</a></li>
+                    <li><a data-toggle="tab" href="#CourseDetail<%= i %>" id="tab-3-epa-<%= i %>" >Course Details</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -45,7 +45,6 @@
                                     <td><font color="blue"> <%= assessors[k] %></font></td>
 
                                     <% if rem <=0 %>
-
                                        <td><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
                                     <% else %>
                                         <td><font color="Orange"><%= rem %></font></td>
@@ -81,7 +80,7 @@
                                         <td class="align-left"> 
                                             <% temp_detail.each do |t| %>
                                               <% temp_t = t.sub("Final Grade and Competency Assessment", "") %>
-                                              <td><%= temp_t %></a> </td>
+                                              <td><a data-tab-destination="CourseDetail<%= i %>"> <%= temp_t %></a> </td>
                                               <!-- <a data-tab-destination="tab-3-epa-<%= i %>"> -->
                                             <% end %>
                                         </td>

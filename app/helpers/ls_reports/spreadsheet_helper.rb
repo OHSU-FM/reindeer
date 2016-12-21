@@ -71,7 +71,6 @@ module LsReports::SpreadsheetHelper
         response_sets.each do |rs|
             if rs.title.include? "ICS1"
                 return true 
-                break
             end
         end
         return false

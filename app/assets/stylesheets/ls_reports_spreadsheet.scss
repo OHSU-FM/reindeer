@@ -42,7 +42,7 @@
 }
 
 th {
-    background-color: #669999;
+    background-color: #FFFFF2;
     border-top: none;
 }
 
@@ -118,4 +118,22 @@ a {
   text-align: center;
   line-height: 31px;
 }
+/* tab color */
+.nav-tabs>li>a {
+  background-color: #333333; 
+  border-color: #777777;
+  color:#fff;
+}
 
+/* active tab color */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  color: #fff;
+  background-color: #666;
+  border: 1px solid #888888;
+}
+
+/* hover tab color */
+.nav-tabs>li>a:hover {
+  border-color: #000000;
+  background-color: #111111;
+}

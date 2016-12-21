@@ -38,13 +38,10 @@ $(document).ready ->
             trigger: 'hover'
         return
 
-    $('a[data-tab-destination]').on 'click', ->
+    $('a[data-tab-destination]').click ->
         tab = $(this).attr('data-tab-destination')
         console.log("tab: " + tab)
-        tab = tab.replace('tab-3-epa-','CourseDetail')
-        console.log('after string-sub - tab:' + tab)
-        $('#' + tab).show
-        $('#Mytabs').tabs "select", 2
+        $('#MyTabs a[href="#' + tab + '"]').tab('show')
         return
 
 
