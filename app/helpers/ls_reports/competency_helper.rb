@@ -291,14 +291,19 @@ module LsReports::CompetencyHelper
         total_ent = 0.00
         total_assess = 0.00
         epa.each do |index, value|
-            total_ent += value.to_f   #/ASSESSORS[index]
-            total_assess += ASSESSORS[index]
+            total_ent += value.to_f/ASSESSORS[index]
+            #total_assess += ASSESSORS[index]
         end 
 
-        #return ave = ((total/epa.count)*100).round(0)
+        ave = ((total_ent/epa.count)*100).round(0)
 
-        return ave = ((total_ent/total_assess)*100).round(0)
-
+        #ave = ((total_ent/total_assess)*100).round(0)
+        if ave >= 100
+            return ave = 100
+        else
+            return ave
+        end
+        
     end 
 
     def hf_all_average_epas rs_data

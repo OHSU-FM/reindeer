@@ -158,9 +158,12 @@ Array::min=->
 
         legend: {
                     itemStyle: {
-                                  width:'50px',
+                                  width:'200px',
                                   textOverflow: 'ellipsis',
-                                  overflow: 'hidden'
+                                  overflow: 'hidden',
+                                  color: '#000000',
+                                  fontWeight: 'bold',
+                                  font: '12px Helvetica'
                                 }
                 },
 

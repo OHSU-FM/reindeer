@@ -97,12 +97,19 @@
                     <% epa_desc = hf_epa_desc %>
                     <tr>
                         <td class="text-right">
-                            <h4><b>EPA</b></h4>
+                            <h4><b>EPA </b></h4>
+                            <span>
+                                <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#EPA0">Detail
+                                </button> 
+                                <%= render :partial=>'ls_reports/spreadsheet/modal_epa_overall_progress', :locals=>{:i=>0, :overall_progress_val=>overall_ave_epa } %>
+                            </span>
                         </td>
                         <td>
+                            <span><h4><p><font color="green">&emsp;Overall Progress</font></p></h4>
+                            </span>
                             <span>
                                 <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
-                                  <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div><p>&emsp;Overall Progress</p>
+                                  <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
                                 </div>
                             </span> 
                         </td>                   
@@ -113,13 +120,13 @@
                             <td class="text-right"><h4>EPA<%= i.to_s %></h4>
                                 <span>
                                     <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#EPA<%= i.to_s %>">Detail
-                                    </button>
+                                    </button> 
 
                                     <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content', :locals=>{:i=>i, :epa=>epa, :epa_desc=>epa_desc["EPA#{i}"], :assessors=> hf_assessors} %>
                                 </span>
                             </td>
                             <td> 
-                                 <% ave = hf_average_epa(epa) %>
+                                <% ave = hf_average_epa(epa) %>
                                 <span>
                                     <h4><font color="purple">
                                         <%= epa_desc["EPA#{i}"] %>

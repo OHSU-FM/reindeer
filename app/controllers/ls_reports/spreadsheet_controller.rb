@@ -1,7 +1,7 @@
 class LsReports::SpreadsheetController < LsReports::BaseController
     layout 'full_width'
     include LsReports::SpreadsheetHelper
-
+    include LsReports::CompetencyHelper
     ##
     # show lime_survey
     def show
@@ -24,9 +24,11 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         @rs_questions = hf_transpose_questions @response_sets
 
         if hf_found_competency(@response_sets)
+            export_to_gon
             render :show_epa
         else
         #binding.pry
+
             render :show
         end
     end
@@ -41,5 +43,18 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     def show_params
         params.permit(:cols=>[])
     end
+
+    def export_to_gon
+
+      temp_ave = []
+
+      for i in 1..13
+        epa = hf_epa(@rs_data, i.to_s, "3")
+        ave = hf_average_epa(epa)
+        temp_ave.push ave
+       end 
+       gon.series_data = temp_ave
+
+    end 
 
 end

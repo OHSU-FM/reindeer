@@ -1,0 +1,54 @@
+
+<div id="EPA<%= i %>" class="modal fade" role="dialog" data-modal-index="1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                 <a href="#close" class="close" data-dismiss="modal" >X</a>
+                     <h3 class="modal-title modal-text-align-center"><font color="Green"> EPA Overall Progress - <%= overall_progress_val %>%</font></h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <ul class="list-inline" id="MyOverallProgressTabs">
+                        <li class="active"><a data-toggle="tab" href="#EPAGraph<%= i %>" id="tab-1-epa-<%= i %>">EPA Graph</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="EPAGraph<%= i %>" class="tab-pane fade in active">
+                            <div class="col-sm-4">
+                                 <table id="EPATable" class="table borderless table-condensed modal-text-align-center table-striped table-hover">
+                                    <tr>
+                                        <td>EPA</td>
+                                        <td>Complete (%)</td>
+                                    </tr> 
+                                    <% for j in 1..13 %>
+                                        <% epa = hf_epa(@rs_data, j.to_s, "3") %>
+                                        <% ave = hf_average_epa(epa) %>
+                                        <tr>
+                                            <td><%= j %></td>
+                                            <td><%= ave %></td>
+                                        </tr>
+                                    <% end %>
+                                 </table>    
+                            </div>  
+
+                            <div class="col-sm-6">
+                            <div id="epa-container" style="min-width: 600px; height: 400px; margin: 0 auto"></div>
+                                <div id="graph-buttons">
+                                <button id="plain" class="btn btn-info btn-sm">Column</button>
+                                <button id="inverted" class="btn btn-info btn-sm">Bar</button>
+                                <button id="polar" class="btn btn-info btn-sm">Polar</button>
+                                </div>
+                            </div>     
+
+                        </div>
+                    </div>
+ 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
