@@ -287,7 +287,7 @@ module LsReports::CompetencyHelper
     end
 
     def hf_average_epa epa
-        ave = 0.0
+        ave = 0.0 
         total_ent = 0.00
         total_assess = 0.00
         epa.each do |index, value|
@@ -341,5 +341,64 @@ module LsReports::CompetencyHelper
     def hf_assessors
         return ASSESSORS
     end
+
+    def get_unique_medhub_id rs_data_unfiltered
+        return rs_data_unfiltered.uniq{|e| e["MedhubID"]}
+    end 
+
+    def get_courses(medhubID, rs_data_unfiltered)
+        return rs_data_unfiltered.select {|c| c["MedhubID"]==medhubID}
+    end
+
+    def hf_get_complete courses
+        overall_epa_complete = 0
+        total_complete = 0
+        complete = 0
+        student_epa = []
+
+        for i in 1..13
+           epa = hf_epa(courses, i.to_s, "3")
+           complete = hf_average_epa epa
+           total_complete += complete
+           student_epa[i] = complete
+           
+        end
+        #TOTAL EPA = 13
+        overall_epa_complete = (total_complete/13).round(0)
+        student_epa[0] = overall_epa_complete
+        return student_epa
+        
+
+    end
+
+
+    def hf_epa_class_mean (rs_data_unfiltered)
+        courses = {}
+        students_epa = {}
+        temp_epa = []
+        uniq_students = get_unique_medhub_id(rs_data_unfiltered)
+        uniq_students.each do |k, v|
+            courses = get_courses(k["MedhubID"], rs_data_unfiltered)
+            temp_epa = hf_get_complete(courses)
+            students_epa[k["MedhubID"]] = temp_epa
+        end 
+        total_epa =  Array.new(14,0)
+        class_mean_epa = []
+        i = 0
+        students_epa.each do |k,v|
+            i = 0
+            v.each do |x|
+                total_epa[i] += x
+                i += 1
+            end 
+        end 
+
+        for i in 0..13
+            class_mean_epa[i] = (total_epa[i]/students_epa.count.to_f).round(0)
+        end 
+
+        return class_mean_epa
+
+    end 
 
 end 

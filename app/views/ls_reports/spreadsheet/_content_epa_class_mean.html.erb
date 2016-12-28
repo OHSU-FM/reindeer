@@ -1,0 +1,43 @@
+<body>
+ <div class="container-fluid">
+
+    <ul id="mainTab" class="nav nav-tabs">
+        <li class="active bold-italic"><a data-toggle="tab" href="#classmean">Class Mean</a></li>
+  
+    </ul>
+
+    <div class="tab-content">
+
+        <div id="classmean" class="tab-pane fade in active">
+          <div class="col-sm-4">
+             <table id="EPATable" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+                <tr>
+                    <td>EPA Class Mean</td>
+                    <td>Complete (%)</td>
+                </tr> 
+                <% for j in 1..13 %>
+                    <tr>
+                        <td><%= j %></td>
+                        <td><%= @class_mean[j] %></td>
+                    </tr>
+                <% end %>
+             </table>    
+          </div>  
+
+          <div class="col-sm-6">
+              <div id="epa-container" style="min-width: 600px; height: 600px; margin: 0 auto"></div>
+              <div id="graph-buttons">
+              <button id="plain" class="btn btn-info btn-sm">Column</button>
+              <button id="inverted" class="btn btn-info btn-sm">Bar</button>
+              <button id="polar" class="btn btn-info btn-sm">Polar</button>
+              </div>
+          </div>     
+
+        </div>
+    </div>
+  </div>
+</body>
+
+<div style="height:450px;width:200px;"></div>
+<!-- Bumper for scroll-spy-->
+

@@ -50,13 +50,18 @@ $(document).ready ->
     $ ->
       #alert("gon " + gon.series_data)
       series_data = if gon.series_data? then gon.series_data else ''
+      series_data_unfiltered = if gon.series_data_unfiltered? then gon.series_data_unfiltered else ''  
+      overall_epa_mean = series_data_unfiltered[0]
+      if JSON.stringify(series_data) == JSON.stringify(series_data_unfiltered)
+        series_data = []
+
       chart = Highcharts.chart(
         chart:
           renderTo: 'epa-container'
           polar: true
         title: text: '% of Completion'
         subtitle: text: ''
-        xAxis: categories: ['EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
+        xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
         series: [ {
           type: 'column'
           name: 'Student'
@@ -75,8 +80,8 @@ $(document).ready ->
           type: 'line'
           name: 'Class Mean'
           colorByPoint: false
-          data: [25, 35, 28, 32, 15, 20, 35, 18, 25, 28, 32, 15, 18]
-          showInLegend: true
+          data: series_data_unfiltered
+          showInLegend: true 
           legend: {
             itemStyle: {
                         width:'200px',

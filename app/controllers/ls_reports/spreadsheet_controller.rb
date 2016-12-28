@@ -23,12 +23,16 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         @rs_data.sort_by!{|obj| obj["StartDt"]}
         @rs_questions = hf_transpose_questions @response_sets
 
+        @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
+        @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
+        @rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
+
+
         if hf_found_competency(@response_sets)
             export_to_gon
+            export_to_gon_unfiltered
             render :show_epa
         else
-        #binding.pry
-
             render :show
         end
     end
@@ -45,16 +49,14 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     end
 
     def export_to_gon
+      @percent_complete = hf_epa_class_mean(@rs_data)
+      gon.series_data = @percent_complete
 
-      temp_ave = []
+    end 
 
-      for i in 1..13
-        epa = hf_epa(@rs_data, i.to_s, "3")
-        ave = hf_average_epa(epa)
-        temp_ave.push ave
-       end 
-       gon.series_data = temp_ave
-
+    def export_to_gon_unfiltered
+        @class_mean = hf_epa_class_mean(@rs_data_unfiltered)
+        gon.series_data_unfiltered = @class_mean
     end 
 
 end
