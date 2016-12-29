@@ -1,24 +1,26 @@
 <body>
  <div class="container-fluid">
-
-    <ul id="mainTab" class="nav nav-tabs">
+    <ul id="mainTab" class="list-inline">
         <li class="active bold-italic"><a data-toggle="tab" href="#classmean">Class Mean</a></li>
   
     </ul>
 
     <div class="tab-content">
-
         <div id="classmean" class="tab-pane fade in active">
-          <div class="col-sm-4">
-             <table id="EPATable" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+          <div class="col-sm-2">
+             <table id="EPATable" class="table borderless table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
                 <tr>
-                    <td>EPA Class Mean</td>
-                    <td>Complete (%)</td>
+                    <th><center>EPA Class Mean</center></th>
+                    <th><center>Complete (%)</center></th>
                 </tr> 
+                <tr>
+                    <td><center>Overall Progress</center></td>
+                    <td><center><%= @class_mean[0] %></center></td>
+                </tr>
                 <% for j in 1..13 %>
                     <tr>
-                        <td><%= j %></td>
-                        <td><%= @class_mean[j] %></td>
+                        <td><center>EPA<%= j %></center></td>
+                        <td><center><%= @class_mean[j] %></center></td>
                     </tr>
                 <% end %>
              </table>    
@@ -38,6 +40,4 @@
   </div>
 </body>
 
-<div style="height:450px;width:200px;"></div>
-<!-- Bumper for scroll-spy-->
 

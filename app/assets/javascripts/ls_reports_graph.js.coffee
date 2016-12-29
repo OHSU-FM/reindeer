@@ -180,7 +180,16 @@ Array::min=->
                      showInLegend: graph.filtered_series_name,
                      pointPlacement: var_pointPlacement,
                      color: 'lime',
-                     data: data
+                     data: data,
+                     legend: {
+                            itemStyle: {
+                            color: '#000000',
+                            width:'200px',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            font: '12px Helvetica'
+                            }
+                    }
                   }]
     };
 
@@ -420,7 +429,7 @@ window.LsReport.Graph.load = (target, graph_type, qstat, full_qstat, series_name
             chart = new LsGraphCategories(target, graph_type, qstat, full_qstat, series_name, unfiltered_series_name, filters_equal, title)
 
         else
-            #console.log 'Unimplemented graph type: ' + qstat.qtype
+            console.log 'Unimplemented graph type: ' + qstat.qtype
 
     if chart?
         chart.draw()

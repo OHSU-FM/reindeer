@@ -310,18 +310,14 @@ module LsReports::CompetencyHelper
         overall_ave_epa = 0
         total_ave = 0
         ave = 0
-
         for i in 1..13
            epa = hf_epa(rs_data, i.to_s, "3")
            ave = hf_average_epa epa
            total_ave += ave
            
         end
-
         #TOTAL EPA = 13
-
-        overall_ave_epa = (total_ave/13).round(0)
-        
+        overall_ave_epa = (total_ave/13).round(0)       
         return overall_ave_epa
     end
 
@@ -367,8 +363,6 @@ module LsReports::CompetencyHelper
         overall_epa_complete = (total_complete/13).round(0)
         student_epa[0] = overall_epa_complete
         return student_epa
-        
-
     end
 
 

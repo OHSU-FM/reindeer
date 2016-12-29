@@ -30,7 +30,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
         if hf_found_competency(@response_sets)
             export_to_gon
-            export_to_gon_unfiltered
             render :show_epa
         else
             render :show
@@ -52,11 +51,11 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       @percent_complete = hf_epa_class_mean(@rs_data)
       gon.series_data = @percent_complete
 
-    end 
+      @class_mean = hf_epa_class_mean(@rs_data_unfiltered)
+      gon.series_data_unfiltered = @class_mean 
 
-    def export_to_gon_unfiltered
-        @class_mean = hf_epa_class_mean(@rs_data_unfiltered)
-        gon.series_data_unfiltered = @class_mean
+      gon.series_name = @rs_data.first["StudentName"]   
+
     end 
 
 end

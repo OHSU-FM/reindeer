@@ -50,24 +50,51 @@ $(document).ready ->
     $ ->
       #alert("gon " + gon.series_data)
       series_data = if gon.series_data? then gon.series_data else ''
-      series_data_unfiltered = if gon.series_data_unfiltered? then gon.series_data_unfiltered else ''  
+      series_name = if gon.series_name? then gon.series_name else ''
+      series_data_unfiltered = if gon.series_data_unfiltered? then gon.series_data_unfiltered else '' 
       overall_epa_mean = series_data_unfiltered[0]
+
       if JSON.stringify(series_data) == JSON.stringify(series_data_unfiltered)
         series_data = []
-
-      chart = Highcharts.chart(
-        chart:
-          renderTo: 'epa-container'
-          polar: true
-        title: text: '% of Completion'
-        subtitle: text: ''
-        xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
-        series: [ {
+        graph_title = "% Complete for the Class Mean"
+        graph_type = "column"
+        series_data_name_1 = "Class Mean"
+        series_data_name_2 = "No Student Data"
+        series_data_1 = series_data_unfiltered
+        series_data_2 = series_data
+        show_legend_1 = true
+        show_legend_2 = false
+        remove_series_2 = true
+        series_option = [{
           type: 'column'
-          name: 'Student'
+          name: series_data_name_1
           colorByPoint: true
-          data: series_data
-          showInLegend: true
+          data: series_data_1
+          showInLegend: show_legend_1
+          legend: {
+            itemStyle: {
+                        width:'200px',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                        font: '12px Helvetica'
+                      }
+          }
+        }]
+      else
+        graph_title = "% Complete - " + series_name
+        series_data_name_1 = series_name
+        series_data_name_2 = "Class Mean"
+        series_data_1 = series_data
+        series_data_2 = series_data_unfiltered
+        graph_type = "line"
+        show_legend_1 = true
+        show_legend_2 = true
+        series_option = [{
+          type: 'column'
+          name: series_data_name_1
+          colorByPoint: true
+          data: series_data_1
+          showInLegend: show_legend_1
           legend: {
             itemStyle: {
                         width:'200px',
@@ -77,11 +104,12 @@ $(document).ready ->
                       }
           }
         },{
-          type: 'line'
-          name: 'Class Mean'
+          type: graph_type
+          color: '#ffffff'
+          name: series_data_name_2
           colorByPoint: false
-          data: series_data_unfiltered
-          showInLegend: true 
+          data: series_data_2
+          showInLegend: show_legend_2
           legend: {
             itemStyle: {
                         width:'200px',
@@ -90,8 +118,19 @@ $(document).ready ->
                         font: '12px Helvetica'
                       }
           }
-         }])
-        
+         }]
+
+
+      chart = Highcharts.chart(
+        chart:
+          renderTo: 'epa-container'
+          polar: true
+        title: text: graph_title
+        subtitle: text: ''
+        xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
+        series: series_option
+        )
+
       $('#plain').click ->
           chart.update
             chart:
@@ -129,6 +168,7 @@ Highcharts.createElement 'link', {
 }, null, document.getElementsByTagName('head')[0]
 Highcharts.theme =
   colors: [
+    '#6a00d9'
     '#2b908f'
     '#90ee7e'
     '#f45b5b'
@@ -140,6 +180,8 @@ Highcharts.theme =
     '#DF5353'
     '#7798BF'
     '#aaeeee'
+    '#ffff02'
+    '#a32a00'
   ]
   chart:
     backgroundColor:
