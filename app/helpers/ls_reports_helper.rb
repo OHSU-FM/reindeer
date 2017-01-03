@@ -317,7 +317,7 @@ module LsReportsHelper
       unless @hide_pk
         @pk = add_param_filter lime_survey, :pk, role_aggregate.pk_fieldname
         # default to last val if only one pk option
-        @pk.nil? ? @pk = @pk_enum.last[1] : @pk
+        @pk.nil? ? @pk = @pk_enum.first[1] : @pk
       end
     end
 

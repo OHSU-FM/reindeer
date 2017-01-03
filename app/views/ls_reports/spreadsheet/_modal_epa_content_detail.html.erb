@@ -17,7 +17,7 @@
                 <td class="align-left"> 
                     <% temp_detail.each do |t| %>
                         <% temp_t = t.sub("Final Grade and Competency Assessment", "") %>
-                        <td><a data-tab-destination="CourseDetail<%= i %>"> <%= temp_t %></td>
+                            <td><a data-tab-destination="CourseDetail<%= i %>^<%= temp_t %>"> <%= hf_course_desc(temp_t) %></a> </td>
                     <% end %>
                 </td>
           <% end %>

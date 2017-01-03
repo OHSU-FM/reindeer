@@ -1,5 +1,26 @@
-$(document).ready ->   
+getObjects = (obj, key, val) ->
+  objects = []
+  for i of obj
+    if !obj.hasOwnProperty(i)
+      continue
+    if typeof obj[i] == 'object'
+      objects = objects.concat(getObjects(obj[i], key, val))
+    else if i == key and obj[key] == val
+      objects.push obj
+  objects
 
+parseComments = (competency_comment) ->
+  temp_com = competency_comment.split("^")
+  if temp_com[1] != undefined
+    if temp_com[1] == "Comments: None"
+        temp_com[0]
+    else
+        temp_com = temp_com[0] + "<hr> " + temp_com[1]
+  else
+    temp_com
+
+
+$(document).ready ->   
         
     $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
     dom: '<"H"Tfr>t<"F"ip>', 
@@ -39,24 +60,69 @@ $(document).ready ->
             placement: if typeof $(this).attr('data-placement') == 'undefined' then 'bottom' else $(this).attr('data-placement')
             trigger: 'hover'
         return
+     
 
     $('a[data-tab-destination]').click ->
-        tab = $(this).attr('data-tab-destination')
-        console.log("tab: " + tab)
-        $('#MyTabs a[href="#' + tab + '"]').tab('show')
-        return
 
+        tab = $(this).attr('data-tab-destination')
+        tab = tab.split("^")
+        temp_rs_data = {}
+        console.log("tab1 " + tab[1])
+        $('#MyTabs a[href="#' + tab[0] + '"]').tab('show')
+        $('.course_detail #course_name').val(tab[1])
+        course_id = tab[1].split("~")
+        rs_data = if gon.rs_data? then gon.rs_data else ''
+
+        data = $.parseJSON(rs_data)
+        found_course = getObjects(data, 'CourseID', course_id[1])
+        #console.log(JSON.stringify(found_course, null, "    "))
+        #onsole.log("found_course: " + found_course[0].CourseID)
+
+        $('.course_detail').remove
+        $('.course_detail').html ''
+        #Crate table html tag
+
+        #table = $('<table id=DynamicTable ></table>').appendTo('.course_detail')
+        table = $('.course_detail').append('<table></table>')
+        console.log("length: " + found_course.length)
+        exclude_headers = "MedhubID, StudentEmail, CoachEmail, CoachName, CourseID"
+        content = ""
+        col = ""
+        i = 0
+        while i < found_course.length
+          obj = found_course[i]
+          for key of obj
+            attrName = key
+            attrValue = obj[key]
+            if attrValue != null
+              if not exclude_headers.includes(attrName)
+                col = "<td>" + attrName + "</td>"
+                temp_com = attrValue.split("^")
+                if temp_com[1] != undefined
+                      if temp_com[1] == "Comments: None"
+                         col = col + '<td align="left">' + "Level: " + temp_com[0] + "</td>"
+                      else
+                        col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
+                else
+                  col = col + "<td align='left'>" + temp_com[0] + "</td>"
+                #console.log ("col: " + col)   
+                content = "<tr>" + col + "</tr>"
+                #console.log("content:" + content)
+                table.append(content)                                           
+          i++ 
+ 
 
     $ ->
       #alert("gon " + gon.series_data)
       series_data = if gon.series_data? then gon.series_data else ''
       series_name = if gon.series_name? then gon.series_name else ''
+
       series_data_unfiltered = if gon.series_data_unfiltered? then gon.series_data_unfiltered else '' 
       overall_epa_mean = series_data_unfiltered[0]
 
       if JSON.stringify(series_data) == JSON.stringify(series_data_unfiltered)
         series_data = []
-        graph_title = "% Complete for the Class Mean"
+        graph_title = "Average EPAs (Class)"
         graph_type = "column"
         series_data_name_1 = "Class Mean"
         series_data_name_2 = "No Student Data"

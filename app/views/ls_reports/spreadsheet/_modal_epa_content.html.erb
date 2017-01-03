@@ -1,4 +1,4 @@
- 
+<%= include_gon %>
 <div id="EPA<%= i %>" class="modal fade" role="dialog" data-modal-index="1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -80,7 +80,7 @@
                                         <td class="align-left"> 
                                             <% temp_detail.each do |t| %>
                                               <% temp_t = t.sub("Final Grade and Competency Assessment", "") %>
-                                              <td><a data-tab-destination="CourseDetail<%= i %>"> <%= temp_t %></a> </td>
+                                              <td><a data-tab-destination="CourseDetail<%= i %>^<%= temp_t %>"> <%= hf_course_desc(temp_t) %></a> </td>
                                               <!-- <a data-tab-destination="tab-3-epa-<%= i %>"> -->
                                             <% end %>
                                         </td>
@@ -93,7 +93,9 @@
                     </div>
 
                     <div id="CourseDetail<%= i %>" class="tab-pane fade in">
-                          <h4><font color="tomato"> Course detail information goes here.  Coming attraction!!</font></h4>
+                        <div class="course_detail" >
+                            <!-- Dynamic table is created here by Jquery -->
+                        </div>
                     </div>
             </div>
 

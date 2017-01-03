@@ -276,7 +276,7 @@ module LsReports::CompetencyHelper
         rs_data.each do |rec|
             EPA[epa_code].each do |comp|
               if !rec[comp].nil? and rec[comp][0] == level
-                    epa_courses[comp] << rec["CourseName"] << ", "
+                    epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
                     # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
                end
             end
@@ -284,6 +284,11 @@ module LsReports::CompetencyHelper
         end 
         #binding.pry
         return epa_courses      
+    end
+
+    def hf_course_desc(in_course_desc)
+        temp_desc = in_course_desc.split("~")
+        return temp_desc[0]
     end
 
     def hf_average_epa epa

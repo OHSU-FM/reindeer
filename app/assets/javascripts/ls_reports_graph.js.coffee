@@ -104,7 +104,12 @@ Array::min=->
                  size: '100%'
               },
 
-        title: {text:graph.title},
+        title: {
+                text: graph.title,
+                style: {
+                    color: '#000000'
+                }
+        },
 
         yAxis: {
             min: 0, max: max_item, lineWidth: 0, tickInterval: max_tick,
@@ -173,6 +178,15 @@ Array::min=->
                      color: '#4497e3',
                      #pointPlacement: var_pointPlacement,
                      data: full_data  # q68
+                     legend: {
+                            itemStyle: {
+                            color: '#000000',
+                            width:'200px',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            font: '12px Helvetica'
+                            }
+                    }                     
                   }, {
 
                      name: graph.filtered_series_name,      #'Judith Bowen',

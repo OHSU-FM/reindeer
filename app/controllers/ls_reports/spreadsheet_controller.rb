@@ -54,7 +54,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       @class_mean = hf_epa_class_mean(@rs_data_unfiltered)
       gon.series_data_unfiltered = @class_mean 
 
-      gon.series_name = @rs_data.first["StudentName"]   
+      gon.series_name = @rs_data.first["StudentName"]
+      gon.rs_data = @rs_data.to_json
 
     end 
 
