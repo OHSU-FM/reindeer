@@ -266,15 +266,15 @@ Highcharts.theme =
           '#3e3e40'
         ]
       ]
-    style: fontFamily: '\'Unica One\', sans-serif'
+    style: fontFamily: 'sans-serif'
     plotBorderColor: '#606063'
   title: style:
     color: '#E0E0E3'
-    textTransform: 'uppercase'
+    textTransform: 'none'
     fontSize: '20px'
   subtitle: style:
     color: '#E0E0E3'
-    textTransform: 'uppercase'
+    textTransform: 'none'
   xAxis:
     gridLineColor: '#707073'
     labels: style: color: '#E0E0E3'

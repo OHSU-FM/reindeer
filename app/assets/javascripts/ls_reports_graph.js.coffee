@@ -78,8 +78,15 @@ Array::min=->
             #backgroundColor:'rgba(255, 255, 255, 0.4)'
             backgroundColor: null,
             height: 380,
-            width:490
+            width: 490 
         },
+
+        tooltip: {
+            shared: false,
+            positioner: -> {
+                 x: 60, y: 60 
+            }
+        }
 
         plotOptions: {
             column: {
