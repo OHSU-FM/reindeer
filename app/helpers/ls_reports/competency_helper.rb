@@ -141,6 +141,12 @@ module LsReports::CompetencyHelper
               "EPA13" => " Identify system failures and contribute to a culture of safety and improvement"
             }
 
+    def hf_get_epa_desc epa_code
+        ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td>" + 
+               "<b>#{epa_code} - </b> #{EPA_DESC[epa_code]}</td></tr></table>"
+        return ret_desc
+    end 
+
 
     def hf_has_epa? rs_question
         #if parent_question.question.include? "Level 1"

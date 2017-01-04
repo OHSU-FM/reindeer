@@ -13,13 +13,18 @@
                     <th><center>EPA</center></th>
                     <th><center>Average Complete (%)</center></th>
                 </tr> 
+                <!--
                 <tr>
                     <td><center>Overall Progress</center></td>
                     <td><center><%= @class_mean[0] %></center></td>
                 </tr>
+                -->
                 <% for j in 1..13 %>
                     <tr>
-                        <td><center>EPA<%= j %></center></td>
+                        <td><center> 
+                            <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_epa_desc("EPA"+j.to_s) %>" ><%= j %></a></span>                       
+                          
+                        </center></td>
                         <td><center><%= @class_mean[j] %></center></td>
                     </tr>
                 <% end %>

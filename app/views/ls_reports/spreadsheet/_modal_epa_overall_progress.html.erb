@@ -25,7 +25,10 @@
                                         <% epa = hf_epa(@rs_data, j.to_s, "3") %>
                                         <% ave = hf_average_epa(epa) %>
                                         <tr>
-                                            <td><%= j %></td>
+                                            <td>
+                                                <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_epa_desc("EPA"+j.to_s) %>" ><%= j %></span></a>      
+                                            </td>
+
                                             <td><%= ave %></td>
                                         </tr>
                                     <% end %>
