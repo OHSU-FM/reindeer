@@ -1,8 +1,9 @@
+<% if show_button %>
+    <span>
+        <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Details</button>
+    </span>
+<% end %>
 
-<span>
-
-    <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#CourseID<%= x["CourseID"]%>">Details</button>
-</span>
 <div id="CourseID<%= x["CourseID"]%>" class="modal fade" role="dialog">
      <div class="modal-dialog modal-lg">
          <div class="modal-content">
@@ -10,31 +11,30 @@
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
                      <h3 class="modal-title"> <%= x["StudentName"] %> - <%= x["CourseName"] %> </h3>
              </div>
-
+   
              <div class="modal-body">
               <div class="container-fluid">
-                <ul class="list-inline" id="MyCompetencyTab">
-                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li>
+                <ul class="list-inline" id="MyCompetencyTabs">
+                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li> 
                     <li><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Competency Summary</li>
                     <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Competency Details</a></li>
 
                 </ul>
 
-                <div class="tab-content">
-
+                <div class="tab-content">  
                     <div id="Comments<%= x["CourseID"] %>" class="tab-pane fade in active">
                          <table class="table borderless table-condensed table-striped ">
                             <% x.each do |k, v| %>
-                                <tr>
                                   <% if !v.nil?  %>
                                        <% if !v.include? "^" %>
-                                             <% if !["MedhubID", "StudentEmail", "StudentName", "CoachEmail", "CoachName", "CourseID"].include? k %>
-                                                <td><%= k %></td>
-                                                <td><%= v %></td>
-                                             <% end %>
+                                            <% if !["MedhubID", "StudentEmail", "StudentName", "CoachEmail", "CoachName", "CourseID"].include? k %>
+                                                <tr>
+                                                    <td><%= k %></td>
+                                                    <td><%= v %></td>
+                                                </tr>
+                                            <% end %>
                                        <% end %>
                                   <% end %>
-                                </tr>
                             <% end %>
                          </table>  
                     </div>
@@ -98,9 +98,9 @@
                     <div id="DetailCompetency<%= x["CourseID"] %>" class="tab-pane fade">
                          <table class="table borderless table-condensed table-striped ">
                             <% x.each do |k, v| %>
-                                <tr>
-                                  <% if !v.nil?  %>
+                                  <% if !v.nil?  %>                                    
                                        <% if v.include? "^" %>
+                                            <tr>
                                                <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
                                                   <%= k %></a></span>
                                                </td>
@@ -111,9 +111,9 @@
                                                           <hr ><b><font color="blue"><%= tmp_comment[1] %> </font></b>
                                                     <% end %>
                                                 </td>
-                                       <% end %>
+                                            </tr>      
+                                       <% end %>                                                                
                                   <% end %>
-                                </tr>
                             <% end %>
                          </table>  
                     </div>

@@ -26,12 +26,26 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
         @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
         @rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
+        @comp_domain_desc = hf_comp_domain_desc
 
+        @comp_hash3 = hf_load_all_competencies(@rs_data, "3") 
+        @comp_hash2 = hf_load_all_competencies(@rs_data, "2") 
+        @comp_hash1 = hf_load_all_competencies(@rs_data, "1") 
+        @comp_hash0 = hf_load_all_competencies(@rs_data, "0")
+
+        @comp_level3 = hf_comp_courses(@rs_data, "3")
+        @comp_level2 = hf_comp_courses(@rs_data, "2")
+        @comp_level1 = hf_comp_courses(@rs_data, "1")
+        @comp_level0 = hf_comp_courses(@rs_data, "0")
+
+        #binding.pry
 
         if hf_found_competency(@response_sets)
+            @rs_data.sort_by!{|obj| obj["SubmitDt"]}.reverse!
             export_to_gon
             render :show_epa
         else
+            @rs_data.sort_by!{|obj| obj["StartDt"]}            
             render :show
         end
     end

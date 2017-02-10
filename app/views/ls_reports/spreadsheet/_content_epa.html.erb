@@ -1,4 +1,3 @@
-<!-- Data Table -->
 
 <table style="width: 30%;" class="table table-condensed  spreadsheet-body">
     <tr>
@@ -27,16 +26,18 @@
 <body>
  <div class="container-fluid">
 
-    <ul id="mainTab" class="nav nav-tabs">
+    <ul id="MainTabs" class="nav nav-tabs">
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>  
-        <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPAs/Competencies</a></li>     
+        <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPAs</a></li> 
+        <li class="bold-italic"><a data-toggle="tab" href="#Competencies">Competencies</a></li>         
+        <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>   
     </ul>
 
     <div class="tab-content">
 
-        <div id="core" class="tab-pane fade in active">
+        <div id="core" class="tab-pane active fade in">
           <table style="width: 100%;" class="table table-condensed table-striped ls_reports_filter spreadsheet-body">
             <tbody>
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
@@ -44,7 +45,7 @@
                     <tr>
                      <% if x["CourseName"].include? "730" %>
                              <td class="bold-italic"> <%= x["CourseName"] %>
-                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x}%>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
                              <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
                      <% end %>
@@ -62,7 +63,7 @@
                         <tr>
                           <% if x["CourseName"].include? "INTS" %>
                                  <td class="italic"> <%= x["CourseName"] %>
-                                     <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x}%>
+                                     <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                                  </td>
                                  <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>   
                          <% end %>
@@ -80,15 +81,59 @@
                     <tr>
                      <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "INTS" %>
                              <td class="italic"> <%= x["CourseName"] %>
-                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x}%>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
                              <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>   
-                         <% end %>
+                     <% end %>
                     </tr>
                  <% end %>
                 </tbody>
              </table>        
         </div>
+
+        <div id="all_courses" class="tab-pane fade">
+            <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+              <tbody>
+                <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
+                <% @rs_data.each do |x| %>
+                    <tr>
+                     <td class="italic"> <%= x["CourseName"] %>
+                         <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>false}%>
+                     </td>
+                     <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>   
+                    </tr>
+                 <% end %>
+                </tbody>
+             </table>        
+        </div>  
+
+        <div  id="Competencies" class="tab-pane fade">
+
+            <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">    
+                <% @comp_domain_desc.each do |key, value| %>
+                  <tr>
+                    <td>
+                        <span>
+                            <%= key %> 
+                            <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-<%= key %>">Chart
+                            </button> 
+                                <%= render :partial=>'ls_reports/spreadsheet/modal_competency', :locals=>{:comp_code=>key, :comp_desc=>value } %>
+
+                        </span>
+                    </td>
+                    <td>
+                        <%= value %>
+                    </td>
+                  </tr>
+
+                  <tr>
+                  </tr>
+
+                <% end %>
+            </table>
+
+
+        </div>   
 
         <div id="EPA" class="tab-pane fade">
              <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">

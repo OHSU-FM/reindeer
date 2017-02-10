@@ -95,6 +95,59 @@ module LsReports::CompetencyHelper
 
     }
 
+    COMP_DOMAIN_DESC = {    "PCP" => "Provide patient-centered care that is compassionate, appropriate, and effective for the treatment of health problems and the promotion of health.",
+                            "MK" => "Demonstrate knowledge of established and evolving biomedical, clinical, epidemiological, and social-behavioral sciences, as well as the application of this knowledge to patient care.",
+                            "PBLI" => "Demonstrate the ability to investigate and evaluate the care provided to patients, to appraise and assimilate scientific evidence, and to continuously improve patient care based on analysis of performance data, self-evaluation, and lifelong learning.",   
+                            "ICS" => "Demonstrate interpersonal and communication skills that result in the effective exchange of information and collaboration with patients, their families, and health professionals.",
+                            "PPPD" => "Demonstrate a commitment to carrying out professional responsibilities, an adherence to ethical principles, and the qualities required to sustain lifelong personal and professional growth.",
+                            "SBPIC" => "Demonstrate an awareness of and responsiveness to the larger context and system of healthcare, as well as the ability to effectively call upon other resources in the system to provide optimal care, including engaging in interprofessional teams in a manner that optimizes safe, effective patient and population-centered care."
+                        }
+    COMP_DESC = {   "PCP1" => "1. Gather essential and accurate information about patients and their conditions through history taking, physical examination, review of prior data and health records, laboratory data, imaging and other tests.", 
+                    "PCP2" => "2. Interpret and critically evaluate historical information, physical examination findings, laboratory data, imaging studies, and other tests required for health screening and diagnosis.", 
+                    "PCP3" => "3. Construct a prioritized differential diagnosis and make informed decisions about diagnostic and therapeutic interventions based on patient information and preferences, up-to-date scientific evidence, and clinical judgment.", 
+                    "PCP4" => "4. Develop, implement, and revise as indicated, patient management plans.", 
+                    "PCP5" => "5. Apply personalized healthcare services to patients, families, and communities aimed at preventing health problems and maintaining health.", 
+                    "PCP6" => "6. Perform all medical, diagnostic, and surgical procedures considered essential for the specific clinical practice context.",
+                    "MK1" => "1. Apply established and emerging bio-medical scientific principles fundamental to the healthcare of patients and populations.", 
+                    "MK2" => "2. Apply established and emerging knowledge and principles of clinical sciences to diagnostic and therapeutic decision-making, clinical problem-solving and other aspects of evidence-based healthcare.", 
+                    "MK3" => "3. Apply principles of epidemiological sciences to the identification of health risk factors, prevention and treatment strategies, use of healthcare resources, and health promotion efforts for patients and populations.", 
+                    "MK4" => "4. Apply principles of social-behavioral sciences to assess the impact of psychosocial and cultural influences on health, disease, care-seeking, care-adherence, barriers to and attitudes toward care.", 
+                    "MK5" => "5. Apply principles of performance improvement, systems science, and science of health care delivery to the care of patients and populations.",
+                    "PBLI1" => "1. Demonstrate skills necessary to support independent lifelong learning and ongoing professional development by identifying one’s own strengths, deficiencies, and limits in knowledge and expertise, set learning and improvement goals, and perform learning activities that address gaps in knowledge, skills or attitudes.", 
+                    "PBLI2" => "2. Participate in the education of peers and other healthcare professionals, students and trainees. ", 
+                    "PBLI3" => "3. Use clinical decision support tools to improve the care of patients and populations.", 
+                    "PBLI4" => "4. Use information technology to search, identify, and apply knowledge-based information to healthcare for patients and populations.", 
+                    "PBLI5" => "5. Continually identify, analyze, and implement new knowledge, guidelines, practice standards, technologies, products, and services that have been demonstrated to improve outcomes.", 
+                    "PBLI6" => "6. Analyze practice data using quality measurement tools and adjust clinical performance with the goal of improving patient outcomes and reducing errors.", 
+                    "PBLI7" => "7. Participate in scholarly activity thereby contributing to the creation, dissemination, application, and translation of new healthcare knowledge and practices. ", 
+                    "PBLI8" => "8. Incorporate feedback received from clinical performance data, patients, mentors, teachers, and colleagues into clinical practice to improve health outcomes.",
+                    "ICS1" => "1. Communicate effectively with patients, families and the public, as appropriate, across a broad range of socioeconomic and cultural backgrounds.", 
+                    "ICS2" => "2. Counsel, educate and empower patients and their families to participate in their care and improve their health; enable shared decision-making; and engage patients through personal health records and patient health information access systems.", 
+                    "ICS3" => "3. Demonstrate insight and understanding about pain, emotions and human responses to disease states that allow one to develop rapport and manage interpersonal interactions.", 
+                    "ICS4" => "4. Use health information exchanges (e.g., Care Everywhere within the EPIC electronic health record) to identify and access patient information across clinical settings.", 
+                    "ICS5" => "5. Effectively access, review, and contribute to the electronic health record for patient care and other clinical activities.", 
+                    "ICS6" => "6. Effectively communicate with colleagues, other health professionals, and health related agencies in a responsive and responsible manner that supports the maintenance of health and the treatment of disease in individual patients and populations.", 
+                    "ICS7" => "7. Effectively communicate patient handoffs during transitions of care between providers or settings, and maintain continuity through follow-up on patient progress and outcomes.",
+                    "ICS8" => "8. Act in a consultative role, including participation in the provision of clinical care remotely via telemedicine or other technology.", 
+                    "PPPD1" => "1. Demonstrate responsiveness to a diverse patient population, including but not limited to diversity in gender, age, culture, race, religion, disability, socioeconomic status, and sexual orientation.", 
+                    "PPPD2" => "2. Demonstrate respect for protected health information and safeguard patient privacy, security, and autonomy.", 
+                    "PPPD3" => "3. Demonstrate a commitment to ethical principles pertaining to provision or withholding of interventions, palliative care, confidentiality, informed consent, and business practices, including conflicts of interest, compliance with relevant laws, policies, and regulations.", 
+                    "PPPD4" => "4. Demonstrate sensitivity, honesty, and compassion in difficult conversations about issues such as death, end-of-life issues, adverse events, bad news, disclosure of errors, and other sensitive topics.", 
+                    "PPPD5" => "5. Adhere to professional standards when using information technology tools and electronic/social media.", 
+                    "PPPD6" => "6. Demonstrate responsiveness to patient needs that supersedes self-interest by mitigating conflict between personal and professional responsibilities.", 
+                    "PPPD7" => "7. Demonstrate awareness of one’s knowledge, skills, and emotional limitations and demonstrate healthy coping mechanisms and appropriate help-seeking behaviors.", 
+                    "PPPD8" => "8. Demonstrate integrity, establish oneself as a role model, and recognize and respond appropriately to unprofessional behavior or distress in professional colleagues.", 
+                    "PPPD9" => "9. Demonstrate accountability by completing academic and patient care responsibilities in a comprehensive and timely manner.", 
+                    "PPPD10" => "10. demonstrate trustworthiness that engenders trust in colleagues, patients, and society at large.", 
+                    "PPPD11" => "11. Recognize that ambiguity and uncertainty are part of clinical care and respond by demonstrating flexibility and an ability to modify one’s behavior.",
+                    "SBPIC1" => "1. Participate in identifying system errors and implementing system solutions to improve patient safety.", 
+                    "SBPIC2" => "2. Incorporate considerations of resource allocation, cost awareness and risk-benefit analysis in patient and population-centered care.",
+                    "SBPIC3" => "3. Demonstrate accountability to patients, society and the profession by fully engaging in patient care activities, and maintaining a sense of duty in the professional role of a physician.", 
+                    "SBPIC4" => "4. Effectively work with other healthcare professionals to establish and maintain a climate of mutual respect, dignity, diversity, integrity, honesty, and trust.", 
+                    "SBPIC5" => "5. Effectively work with other healthcare professionals as a member of an interprofessional team to provide patient care and population health management approaches that are coordinated, safe, timely, efficient, effective, and equitable."
+
+    }
+
 
     COMP_CODES = ["ICS1", "ICS2", "ICS3", "ICS4", "ICS5", "ICS6", "ICS7","ICS8", 
         "MK1", "MK2", "MK3", "MK4", "MK5", 
@@ -138,8 +191,58 @@ module LsReports::CompetencyHelper
               "EPA10" => "Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
               "EPA11" => "Obtain informed consent for tests and/or procedures",
               "EPA12" => "Perform general procedures of a physician ",              
-              "EPA13" => " Identify system failures and contribute to a culture of safety and improvement"
+              "EPA13" => "Identify system failures and contribute to a culture of safety and improvement"
             }
+
+    def hf_comp_type(level)
+        case level
+        when "0" then return ""
+        when "1" then return "-P"
+        when "2" then return ""
+        when "3" then return "-E"
+        else
+            return ""
+        end
+    end
+
+    def hf_comp_domain_desc
+        comp_domain_desc = COMP_DOMAIN_DESC
+    end
+
+    def hf_load_all_competencies(rs_data, level)
+        comp_hash = {}
+        COMP_CODES.each do |comp|
+            comp_hash[comp] = 0
+        end
+        rs_data.each do |rec|
+         COMP_CODES.each do |comp|
+              if !rec[comp].nil? and rec[comp][0] == level
+                    comp_hash[comp] += 1
+                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+               end
+            end
+        end 
+        return comp_hash
+    end 
+
+    def hf_comp_courses(rs_data, level)
+        competency_courses = {}
+        COMP_CODES.each do |comp|
+            competency_courses[comp] = ''
+        end
+
+        rs_data.each do |rec|
+            COMP_CODES.each do |comp|
+              if !rec[comp].nil? and rec[comp][0] == level
+                    competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+               end
+            end
+
+        end 
+        #binding.pry
+        return competency_courses   
+    end
 
     def hf_get_epa_desc epa_code
         ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td>" + 
@@ -301,13 +404,20 @@ module LsReports::CompetencyHelper
         ave = 0.0 
         total_ent = 0.00
         total_assess = 0.00
+        temp_percent = 0.00
         epa.each do |index, value|
-            total_ent += value.to_f/ASSESSORS[index]
+            temp_percent = value.to_f/ASSESSORS[index]
+            if temp_percent >= 1.0
+                total_ent += 1.0
+            else
+                total_ent += temp_percent
+            end 
+            
             #total_assess += ASSESSORS[index]
         end 
 
         ave = ((total_ent/epa.count)*100).round(0)
-
+        #binding.pry
         #ave = ((total_ent/total_assess)*100).round(0)
         if ave >= 100
             return ave = 100

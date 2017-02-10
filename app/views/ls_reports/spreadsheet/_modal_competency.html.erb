@@ -1,0 +1,67 @@
+
+<div id="Domain-<%= comp_code%>" class="modal fade" role="dialog" data-modal-index="1">
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <a href="#close" class="close" data-dismiss="modal" >X</a>
+                     <h3 class="modal-title modal-text-align-center">Domain: <%= comp_code %></h3>
+             </div>
+   
+             <div class="modal-body">
+              <div class="container-fluid">
+                <ul class="list-inline" id="DomainTabs">
+                    <li class="active"><a data-toggle="tab" href="#Competency-<%= comp_code %>"><%= comp_code %></a></li> 
+                    <li><a data-toggle="tab" href="#<%= comp_code %>-Graph"><%= comp_code %>-Graph </a></li>
+                    <li><a data-toggle="tab" href="#<%= comp_code %>-Courses"><%= comp_code %>-Courses </a></li>
+                    <li><a data-toggle="tab" href="#CourseDetail-<%=comp_code %>">CourseDetail </a></li>
+
+                </ul>
+
+                <div class="tab-content">   
+                    <div id="Competency-<%= comp_code %>" class="tab-pane fade in active">                     
+                        <%= render :partial=>'ls_reports/spreadsheet/competency_detail', :locals=>{:comp_code=>comp_code} %>
+                    </div>
+
+                    <div id="<%= comp_code %>-Graph" class="tab-pane fade">
+                         <table class="table borderless table-condensed table-striped ">
+                            <tr> Inside Domain Graph </tr>  
+                         </table>
+                       
+                    </div>
+
+                     <div id="<%= comp_code %>-Courses" class="tab-pane fade">
+                         <table class="table borderless table-condensed table-striped ">
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_comp_content_detail', 
+                            :locals=>{:comp_code => comp_code, :comp_hash => @comp_hash0, 
+                                      :comp_level => @comp_level0, :i=>0} %>   
+
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_comp_content_detail', 
+                            :locals=>{:comp_code => comp_code, :comp_hash => @comp_hash1, 
+                                      :comp_level => @comp_level1, :i=>1} %>   
+
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_comp_content_detail', 
+                            :locals=>{:comp_code => comp_code, :comp_hash => @comp_hash2, 
+                                      :comp_level => @comp_level2, :i=>2} %>   
+
+                            <%= render :partial=>'ls_reports/spreadsheet/modal_comp_content_detail', 
+                            :locals=>{:comp_code => comp_code, :comp_hash => @comp_hash3, 
+                                      :comp_level => @comp_level3, :i=>3} %>   
+
+                         </table>
+                       
+                    </div>                   
+                    <div id="CourseDetail-<%= comp_code %>" class="tab-pane fade">
+                        <div class="course_detail" >
+                            <!-- Dynamic table is created here by Jquery -->
+                        </div>
+                       
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+    </div>
+  </div>
+</div>

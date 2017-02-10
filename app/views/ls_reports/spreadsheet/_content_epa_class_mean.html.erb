@@ -1,45 +1,16 @@
 <body>
  <div class="container-fluid">
     <ul id="mainTab" class="list-inline">
-        <li class="active bold-italic"><a data-toggle="tab" href="#classmean">Class Mean</a></li>
-  
+        <li class="active bold-italic"><a data-toggle="tab" href="#darkunica">Dark Unica</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#gridlight">Grid Light</a></li>  
     </ul>
 
     <div class="tab-content">
-        <div id="classmean" class="tab-pane fade in active">
-          <div class="col-sm-2">
-             <table id="EPATable" class="table borderless table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
-                <tr>
-                    <th><center>EPA</center></th>
-                    <th><center>Average Complete (%)</center></th>
-                </tr> 
-                <!--
-                <tr>
-                    <td><center>Overall Progress</center></td>
-                    <td><center><%= @class_mean[0] %></center></td>
-                </tr>
-                -->
-                <% for j in 1..13 %>
-                    <tr>
-                        <td><center> 
-                            <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_epa_desc("EPA"+j.to_s) %>" ><%= j %></a></span>                       
-                          
-                        </center></td>
-                        <td><center><%= @class_mean[j] %></center></td>
-                    </tr>
-                <% end %>
-             </table>    
-          </div>  
-
-          <div class="col-sm-6">
-              <div id="epa-container" style="min-width: 600px; height: 600px; margin: 0 auto"></div>
-              <div id="graph-buttons">
-              <button id="plain" class="btn btn-info btn-sm">Column</button>
-              <button id="inverted" class="btn btn-info btn-sm">Bar</button>
-              <button id="polar" class="btn btn-info btn-sm">Polar</button>
-              </div>
-          </div>     
-
+        <div id="darkunica" class="tab-pane fade in active">
+              <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean_graph', :locals=>{:graph_color=>"dark"} %>   
+        </div>
+        <div id="gridlight" class="tab-pane fade in">
+              <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean_graph', :locals=>{:graph_color=>"light"} %>             
         </div>
     </div>
   </div>

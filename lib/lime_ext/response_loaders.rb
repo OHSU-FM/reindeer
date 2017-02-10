@@ -292,6 +292,7 @@ module LimeExt::ResponseLoaders
           end
           @data.push({:files=>JSON.parse(row[col]), :row_id=>row['id']})
         end
+
         return @data
       end
 

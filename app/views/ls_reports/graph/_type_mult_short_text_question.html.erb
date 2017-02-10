@@ -14,7 +14,7 @@
 
                        <% end %>
                        <% rs.data.each do |dt| %>
-                           <% if dt.include? "^" %>
+                           <% if !dt.nil? and dt.include? "^" %>
                                <% tmp_dt = dt.split("^") %>
                                   <td><%= tmp_dt[0] %>
                                   <hr><b><i><%= tmp_dt[1] %></i></b>
