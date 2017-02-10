@@ -95,10 +95,10 @@ module LsReports::CompetencyHelper
 
     }
 
-    COMP_DOMAIN_DESC = {    "PCP" => "Provide patient-centered care that is compassionate, appropriate, and effective for the treatment of health problems and the promotion of health.",
+    COMP_DOMAIN_DESC = {    "ICS" => "Demonstrate interpersonal and communication skills that result in the effective exchange of information and collaboration with patients, their families, and health professionals.",
                             "MK" => "Demonstrate knowledge of established and evolving biomedical, clinical, epidemiological, and social-behavioral sciences, as well as the application of this knowledge to patient care.",
                             "PBLI" => "Demonstrate the ability to investigate and evaluate the care provided to patients, to appraise and assimilate scientific evidence, and to continuously improve patient care based on analysis of performance data, self-evaluation, and lifelong learning.",   
-                            "ICS" => "Demonstrate interpersonal and communication skills that result in the effective exchange of information and collaboration with patients, their families, and health professionals.",
+                            "PCP" => "Provide patient-centered care that is compassionate, appropriate, and effective for the treatment of health problems and the promotion of health.",
                             "PPPD" => "Demonstrate a commitment to carrying out professional responsibilities, an adherence to ethical principles, and the qualities required to sustain lifelong personal and professional growth.",
                             "SBPIC" => "Demonstrate an awareness of and responsiveness to the larger context and system of healthcare, as well as the ability to effectively call upon other resources in the system to provide optimal care, including engaging in interprofessional teams in a manner that optimizes safe, effective patient and population-centered care."
                         }
@@ -242,6 +242,32 @@ module LsReports::CompetencyHelper
         end 
         #binding.pry
         return competency_courses   
+    end
+
+    def hf_average_domain(comp_hash, comp_code)
+        ave = 0.0 
+        total_ent = 0.00
+        temp_percent = 0.00
+        no_of_comp = 0
+        comp_hash.each do |index, value|
+            if index.include?(comp_code)
+                no_of_comp += 1
+                temp_percent = value.to_f/ASSESSORS[index]
+                if temp_percent >= 1.0
+                    total_ent += 1.0
+                else
+                    total_ent += temp_percent
+                end 
+            end
+
+        end 
+ 
+        ave = ((total_ent/no_of_comp)*100).round(0)
+        if ave >= 100
+            return ave = 100
+        else
+            return ave
+        end
     end
 
     def hf_get_epa_desc epa_code

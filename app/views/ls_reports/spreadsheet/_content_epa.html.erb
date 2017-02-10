@@ -114,15 +114,21 @@
                   <tr>
                     <td>
                         <span>
-                            <%= key %> 
+                            <b><%= key %></b>
                             <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-<%= key %>">Chart
                             </button> 
                                 <%= render :partial=>'ls_reports/spreadsheet/modal_competency', :locals=>{:comp_code=>key, :comp_desc=>value } %>
-
                         </span>
                     </td>
                     <td>
-                        <%= value %>
+                        <b><%= value %></b>
+                        <% domain_progress = hf_average_domain(@comp_hash3, key) %>
+                        <span>
+                            <div id="domain-<%= key %>" class = "progress" data-amount = "<%= domain_progress %>" >
+                                <div id="<%= key %>" class="amount" style="width: <%= 100-domain_progress %>%"> </div>
+                            </div>                            
+                        </span>                           
+
                     </td>
                   </tr>
 
