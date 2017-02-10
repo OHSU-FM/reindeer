@@ -261,8 +261,12 @@ $(document).ready ->
         tab = $(this).attr('data-tab-destination')
         tab = tab.split("^")
         temp_rs_data = {}
+        console.log("tab0" + tab[0])
         console.log("tab1 " + tab[1])
-        $('#MyTabs a[href="#' + tab[0] + '"]').tab('show')
+        if tab[0].includes("-")
+          $('#DomainTabs a[href="#' + tab[0] + '"]').tab('show')
+        else
+          $('#MyTabs a[href="#' + tab[0] + '"]').tab('show')
         $('.course_detail #course_name').val(tab[1])
         course_id = tab[1].split("~")
         rs_data = if gon.rs_data? then gon.rs_data else ''

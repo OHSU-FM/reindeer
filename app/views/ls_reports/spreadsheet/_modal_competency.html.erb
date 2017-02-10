@@ -13,7 +13,7 @@
                     <li class="active"><a data-toggle="tab" href="#Competency-<%= comp_code %>"><%= comp_code %></a></li> 
                     <li><a data-toggle="tab" href="#<%= comp_code %>-Graph"><%= comp_code %>-Graph </a></li>
                     <li><a data-toggle="tab" href="#<%= comp_code %>-Courses"><%= comp_code %>-Courses </a></li>
-                    <li><a data-toggle="tab" href="#CourseDetail-<%=comp_code %>">CourseDetail </a></li>
+                    <li><a data-toggle="tab" href="#<%=comp_code %>-CourseDetail">CourseDetail </a></li>
 
                 </ul>
 
@@ -50,7 +50,7 @@
                          </table>
                        
                     </div>                   
-                    <div id="CourseDetail-<%= comp_code %>" class="tab-pane fade">
+                    <div id="<%= comp_code %>-CourseDetail" class="tab-pane fade">
                         <div class="course_detail" >
                             <!-- Dynamic table is created here by Jquery -->
                         </div>
