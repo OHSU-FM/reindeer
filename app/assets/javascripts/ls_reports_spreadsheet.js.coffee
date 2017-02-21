@@ -21,6 +21,84 @@ parseComments = (competency_comment) ->
     temp_com
 
 
+get_series_data = (series_data_hash, in_code) ->
+  series_data = []
+  for k of series_data_hash
+    #alert("k: " + k + " in_code: " + in_code)
+    if series_data_hash.hasOwnProperty(k)
+      if k.includes(in_code)
+        series_data.push series_data_hash[k]
+  series_data
+
+
+
+create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code) ->
+          series_data_1 = get_series_data(series_data_hash, in_code)
+          series_data_2 = get_series_data(comp_class_mean_hash, in_code)
+
+          #alert("series_data_2: " + series_data_2)
+          render_to_2 = graph_target
+          graph_title = "Domain: " + in_code
+          graph_sub_title = "% Complete"
+          series_data_name_2= "Class Mean"
+          series_data_name_1 = in_code 
+          series_data_1 = series_data_1
+          series_data_2 = series_data_2
+
+          #series_data_2 = "Null"
+          graph_type = "column"
+          show_legend_1 = true
+          show_legend_2 = true
+          xAxis_category = xAxis_category
+          
+          series_option2 = [{
+            type: 'column'
+            name: series_data_name_1
+            colorByPoint: true
+            data: series_data_1
+            showInLegend: show_legend_1
+            legend: {
+              itemStyle: {
+                          width:'200px',
+                          textOverflow: 'ellipsis',
+                          overflow: 'hidden',
+                          font: '12px Helvetica'
+                        }
+            }
+            },{
+                type: 'column'
+                color: 'blue'
+                name: series_data_name_2
+                colorByPoint: false
+                data: series_data_2
+                showInLegend: show_legend_2
+                legend: {
+                  itemStyle: {
+                              width:'200px',
+                              textOverflow: 'ellipsis',
+                              overflow: 'hidden',
+                              font: '12px Helvetica'
+                            }
+                }
+            
+           }]
+
+
+          window.chart2 = Highcharts.chart(
+            chart: renderTo: render_to_2
+            title: text: graph_title
+            subtitle: text: graph_sub_title
+            xAxis: categories: xAxis_category
+            series: series_option2
+            yAxis: {
+                min: 0,
+                max: 100,
+                endOnTick:false,
+                tickInterval:25
+              }
+            )
+
+
 
 Highcharts.theme_dark =
       colors: [
@@ -118,7 +196,7 @@ Highcharts.theme_dark =
               style: color: 'white'
         inputBoxBorderColor: '#505053'
         inputStyle:
-          backgroundColor: '#333'
+          backgroundColor: '#3Comp33'
           color: 'silver'
         labelStyle: color: 'silver'
       navigator:
@@ -444,16 +522,28 @@ $(document).ready ->
             text: 'Polar'
         chart.redraw
 
-        return        
+        return   
+
+    Domain = []
+    Domain = ["ICS", "MK", "PBLI", "PCP", "PPPD", "SBPIC"]     
 
     $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
-    # get current tab
+      # get current tab
       currentTab = $(e.target).text()
       #LastTab = $(e.relatedTarget).text()
-      #alert(currentTab)
-      #alert(series_option)
-      #console.log(window.series_option)
+      @comp_code = currentTab.split("-")
+      if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
+          #alert("currentTab: " + currentTab)
+          @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
+          @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+          @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+          @xAxis_category = @comp_domain[@comp_code[0]]
+          @graph_target = "data-visualization-" + @comp_code[0]
+          series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])
+
     return 
+
+
 
     'use strict'
 

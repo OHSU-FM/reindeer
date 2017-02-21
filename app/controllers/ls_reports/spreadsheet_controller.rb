@@ -38,6 +38,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         @comp_level1 = hf_comp_courses(@rs_data, "1")
         @comp_level0 = hf_comp_courses(@rs_data, "0")
 
+        @all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3") 
+
         #binding.pry
 
         if hf_found_competency(@response_sets)
@@ -70,6 +72,11 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
       gon.series_name = @rs_data.first["StudentName"]
       gon.rs_data = @rs_data.to_json
+
+      gon.comp_domain = hf_comp_domain
+      gon.series_data_comp_2 = hf_average_comp (@comp_hash3)
+
+      gon.comp_class_mean = hf_competency_class_mean(@rs_data_unfiltered)
 
     end 
 

@@ -102,6 +102,17 @@ module LsReports::CompetencyHelper
                             "PPPD" => "Demonstrate a commitment to carrying out professional responsibilities, an adherence to ethical principles, and the qualities required to sustain lifelong personal and professional growth.",
                             "SBPIC" => "Demonstrate an awareness of and responsiveness to the larger context and system of healthcare, as well as the ability to effectively call upon other resources in the system to provide optimal care, including engaging in interprofessional teams in a manner that optimizes safe, effective patient and population-centered care."
                         }
+
+    COMP_DOMAIN = {  "ICS"  => ["ICS1", "ICS2", "ICS3", "ICS4", "ICS5", "ICS6", "ICS7", "ICS8"],
+                     "MK"   => ["MK1", "MK2", "MK3", "MK4", "MK5"],
+                     "PBLI" => ["PBLI1", "PBLI2", "PBLI3", "PBLI4", "PBLI5", "PBLI6", "PBLI7", "PBLI8"],
+                     "PCP"  => ["PCP1", "PCP2", "PCP3", "PCP4", "PCP5", "PCP6"],
+                     "PPPD" => ["PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD5", "PPPD6", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "PPPD11"],
+                     "SBPIC"=> ["SBPIC1", "SBPIC2", "SBPIC3", "SBPIC4", "SBPIC5"]
+
+                  }
+
+                        
     COMP_DESC = {   "PCP1" => "1. Gather essential and accurate information about patients and their conditions through history taking, physical examination, review of prior data and health records, laboratory data, imaging and other tests.", 
                     "PCP2" => "2. Interpret and critically evaluate historical information, physical examination findings, laboratory data, imaging studies, and other tests required for health screening and diagnosis.", 
                     "PCP3" => "3. Construct a prioritized differential diagnosis and make informed decisions about diagnostic and therapeutic interventions based on patient information and preferences, up-to-date scientific evidence, and clinical judgment.", 
@@ -194,6 +205,9 @@ module LsReports::CompetencyHelper
               "EPA13" => "Identify system failures and contribute to a culture of safety and improvement"
             }
 
+    TOTAL_COMPETENCIES = 43
+    TOTAL_DOMAINS = 6
+
     def hf_comp_type(level)
         case level
         when "0" then return ""
@@ -208,6 +222,10 @@ module LsReports::CompetencyHelper
     def hf_comp_domain_desc
         comp_domain_desc = COMP_DOMAIN_DESC
     end
+
+    def hf_comp_domain
+        comp_domain = COMP_DOMAIN
+    end 
 
     def hf_load_all_competencies(rs_data, level)
         comp_hash = {}
@@ -244,6 +262,25 @@ module LsReports::CompetencyHelper
         return competency_courses   
     end
 
+    def hf_average_comp (comp_hash3)
+        percent_complete_hash = {}
+        COMP_CODES.each do |comp|
+            percent_complete_hash[comp] = 0.0
+        end
+
+        percent_complete = 0.0
+
+        comp_hash3.each do |index, value|
+                percent_complete = ((value.to_f/ASSESSORS[index])*100).round(0)
+                percent_complete > 100? 100 : percent_complete
+                percent_complete_hash[index] = percent_complete
+
+        end
+
+        return percent_complete_hash
+
+    end
+
     def hf_average_domain(comp_hash, comp_code)
         ave = 0.0 
         total_ent = 0.00
@@ -260,7 +297,7 @@ module LsReports::CompetencyHelper
                 end 
             end
 
-        end 
+        end
  
         ave = ((total_ent/no_of_comp)*100).round(0)
         if ave >= 100
@@ -269,6 +306,44 @@ module LsReports::CompetencyHelper
             return ave
         end
     end
+
+    #-------------------------------------------------------------------
+
+
+    def hf_competency_class_mean (rs_data_unfiltered)
+        courses = {}
+        students_comp = {}
+        temp_comp = []
+        uniq_students = get_unique_medhub_id(rs_data_unfiltered)
+        uniq_students.each do |k, v|
+            rs_courses = get_courses(k["MedhubID"], rs_data_unfiltered)
+            comp_hash3 = hf_load_all_competencies(rs_courses, "3") 
+            ave_comp_per_student   = hf_average_comp(comp_hash3)
+            students_comp[k["MedhubID"]] = ave_comp_per_student
+        end 
+
+        temp_comp_hash = {}
+        COMP_CODES.each do |comp|
+            temp_comp_hash[comp] = 0.0
+        end
+        students_comp.each do |k,v|
+           v.each do |key, val|
+                temp_comp_hash[key] += val
+
+            end
+
+        end 
+        class_mean_comp_hash = {}
+        temp_comp_hash.each do |k,v|
+            class_mean_comp_hash[k]= (v/students_comp.count.to_f).round(0)
+
+        end
+
+        return class_mean_comp_hash
+
+    end 
+
+    #------------------------------------------------------------------------
 
     def hf_get_epa_desc epa_code
         ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td>" + 
@@ -312,7 +387,7 @@ module LsReports::CompetencyHelper
             rs_question.question = comp_code.split("-").first 
             return ret_desc 
         end 
-        if  LEVEL3[comp_code] 
+        if  LEVEL3[comp_code]
             rs_question.question = comp_code.split("-").first
             return LEVEL3[comp_code]
         end
@@ -365,7 +440,7 @@ module LsReports::CompetencyHelper
                level_comp_codes << c << ", "
            end
         end 
-        return level_comp_codes[0...-2]  # remove the last char, ","      
+        return levelinclude_comp_codes[0...-2]  # remove the last char, ","      
     end
 
     def hf_level_comp_codes2(in_comp, level)
@@ -377,7 +452,6 @@ module LsReports::CompetencyHelper
         end 
         return level_comp_codes  
     end
-
 
     def hf_epa(rs_data, epa_id, level)
 
@@ -410,10 +484,10 @@ module LsReports::CompetencyHelper
 
         rs_data.each do |rec|
             EPA[epa_code].each do |comp|
-              if !rec[comp].nil? and rec[comp][0] == level
-                    epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+                if !rec[comp].nil? and rec[comp][0] == level
+                   epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
                     # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
-               end
+                end
             end
 
         end 
@@ -512,8 +586,7 @@ module LsReports::CompetencyHelper
         return student_epa
     end
 
-
-    def hf_epa_class_mean (rs_data_unfiltered)
+    def hf_epa_class_mean(rs_data_unfiltered)
         courses = {}
         students_epa = {}
         temp_epa = []
@@ -523,7 +596,7 @@ module LsReports::CompetencyHelper
             temp_epa = hf_get_complete(courses)
             students_epa[k["MedhubID"]] = temp_epa
         end 
-        total_epa =  Array.new(14,0)
+        total_epa = Array.new(14,0)
         class_mean_epa = []
         i = 0
         students_epa.each do |k,v|
@@ -532,14 +605,13 @@ module LsReports::CompetencyHelper
                 total_epa[i] += x
                 i += 1
             end 
-        end 
-
+        end
         for i in 0..13
             class_mean_epa[i] = (total_epa[i]/students_epa.count.to_f).round(0)
         end 
-
         return class_mean_epa
 
     end 
+
 
 end 

@@ -22,10 +22,11 @@
                         <%= render :partial=>'ls_reports/spreadsheet/competency_detail', :locals=>{:comp_code=>comp_code} %>
                     </div>
 
+
                     <div id="<%= comp_code %>-Graph" class="tab-pane fade">
-                         <table class="table borderless table-condensed table-striped ">
-                            <tr> Inside Domain Graph </tr>  
-                         </table>
+                        <div class="col-sm-6">
+                          <div id="data-visualization-<%= comp_code %>" style="min-width: 600px; height: 350px; margin: 0 auto"></div>
+                        </div>
                        
                     </div>
 
