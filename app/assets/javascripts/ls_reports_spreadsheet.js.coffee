@@ -84,7 +84,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
            }]
 
 
-          window.chart2 = Highcharts.chart(
+          window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
             chart: renderTo: render_to_2
             title: text: graph_title
             subtitle: text: graph_sub_title
@@ -96,11 +96,11 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
                 endOnTick:false,
                 tickInterval:25
               }
-            )
+            }))
 
 
 
-Highcharts.theme_dark =
+theme_dark =
       colors: [
         '#6a00d9'
         '#2b908f'
@@ -225,7 +225,7 @@ Highcharts.theme_dark =
       contrastTextColor: '#F0F0F3'
       maskColor: 'rgba(255,255,255,0.3)'
 
-Highcharts.theme_light =
+theme_light =
   colors: [
     '#7cb5ec'
     '#f7a35c'
@@ -273,8 +273,7 @@ $(document).ready ->
     }, null, document.getElementsByTagName('head')[0]    
 
 
-    Highcharts.setOptions(Highcharts.theme_dark) 
-        
+       
     $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
     dom: '<"H"Tfr>t<"F"ip>', 
     tableTools: {aButtons: ["copy",
@@ -451,7 +450,7 @@ $(document).ready ->
         }
       },{
         type: graph_type
-        color: '#FFFFFF'
+        color: 'lime' #FFFFFF'
         name: series_data_name_2
         colorByPoint: false
         data: series_data_2
@@ -466,7 +465,11 @@ $(document).ready ->
         }
        }]
 
-    window.chart = Highcharts.chart(
+    #Highcharts.setOptions(Highcharts.theme_dark) 
+    #Save the HighChart Default Theme
+    HCDefaults = $.extend(true, {}, Highcharts.getOptions(), {})
+
+    window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
       chart:
         renderTo: window.render_to
         polar: true
@@ -480,7 +483,7 @@ $(document).ready ->
           endOnTick:false,
           tickInterval:25
         }
-      )
+      }))
 
     
     $('#plain').click ->
@@ -502,7 +505,7 @@ $(document).ready ->
         return
 
     $('#polar').click ->
-        chart.update
+        chart.updateRing WiFi-Enabled Video Doorbell
           chart:
             inverted: false
             polar: true
@@ -510,17 +513,43 @@ $(document).ready ->
             text: 'Polar'
         return 
 
-    $('#printer-friendly').click ->
-        Highcharts.setOptions(Highcharts.theme_light) 
-        chart.series[1].color = '#000000'
-
-        chart.update
-          chart:
-            inverted: false
-            polar: true
-          subtitle: 
-            text: 'Polar'
-        chart.redraw
+    $('#update-theme').click ->
+        button_val = $(this).html()
+        #alert("button_val:" + button_val)
+        if button_val == 'Dark-Theme'
+          $("#update-theme").text('Printer-Friendly')
+          window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
+            chart:
+              renderTo: window.render_to
+              polar: true
+            title: text: graph_title
+            subtitle: text: ''
+            xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
+            series: window.series_option
+            yAxis: {
+                min: 0,
+                max: 100,
+                endOnTick:false,
+                tickInterval:25
+              }
+            }))          
+        else
+          $("#update-theme").text('Dark-Theme')
+          window.chart = Highcharts.chart($.extend(true, null, HCDefaults, {
+            chart:
+              renderTo: window.render_to
+              polar: true
+            title: text: graph_title
+            subtitle: text: ''
+            xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
+            series: window.series_option
+            yAxis: {
+                min: 0,
+                max: 100,
+                endOnTick:false,
+                tickInterval:25
+              }
+            })) 
 
         return   
 

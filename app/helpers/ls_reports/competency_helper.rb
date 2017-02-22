@@ -272,8 +272,11 @@ module LsReports::CompetencyHelper
 
         comp_hash3.each do |index, value|
                 percent_complete = ((value.to_f/ASSESSORS[index])*100).round(0)
-                percent_complete > 100? 100 : percent_complete
-                percent_complete_hash[index] = percent_complete
+                if percent_complete >= 100
+                    percent_complete_hash[index] = 100
+                else
+                    percent_complete_hash[index] = percent_complete
+                end 
 
         end
 
@@ -335,7 +338,12 @@ module LsReports::CompetencyHelper
         end 
         class_mean_comp_hash = {}
         temp_comp_hash.each do |k,v|
-            class_mean_comp_hash[k]= (v/students_comp.count.to_f).round(0)
+            class_mean = (v/students_comp.count.to_f).round(0)
+            if class_mean > 100
+                class_mean_comp_hash[k] = 100
+            else   
+                class_mean_comp_hash[k] = class_mean
+            end
 
         end
 
