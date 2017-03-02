@@ -1,4 +1,4 @@
-  
+
 getObjects = (obj, key, val) ->
   objects = []
   for i of obj
@@ -41,7 +41,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
           graph_title = "Domain: " + in_code
           graph_sub_title = "% Complete"
           series_data_name_2= "Class Mean"
-          series_data_name_1 = in_code 
+          series_data_name_1 = in_code
           series_data_1 = series_data_1
           series_data_2 = series_data_2
 
@@ -50,7 +50,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
           show_legend_1 = true
           show_legend_2 = true
           xAxis_category = xAxis_category
-          
+
           series_option2 = [{
             type: 'column'
             name: series_data_name_1
@@ -80,7 +80,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
                               font: '12px Helvetica'
                             }
                 }
-            
+
            }]
 
 
@@ -263,27 +263,27 @@ theme_light =
   plotOptions: candlestick: lineColor: '#404048'
   background2: '#F0F0EA'
 
-$(document).ready ->  
+$(document).ready ->
 
     # Load the fonts
     Highcharts.createElement 'link', {
       href: 'https://fonts.googleapis.com/css?family=Unica+One'
       rel: 'stylesheet'
       type: 'text/css'
-    }, null, document.getElementsByTagName('head')[0]    
+    }, null, document.getElementsByTagName('head')[0]
 
 
-       
+
     $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
-    dom: '<"H"Tfr>t<"F"ip>', 
+    dom: '<"H"Tfr>t<"F"ip>',
     tableTools: {aButtons: ["copy",
                               {
-                                    "sExtends": "collection", 
+                                    "sExtends": "collection",
                                     "sPdfOrientation": "landscape",
                                     "sButtonText": 'Save <span class="caret" />',
                                     "aButtons":    [ "csv", "xls" ]
                                 }], sSwfPath: window.BASE_URL+"assets/dataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf" }}  )
-    
+
     $.extend( true, $.fn.DataTable.TableTools.classes, {
         "container": "btn-group",
         "buttons": {
@@ -316,17 +316,17 @@ $(document).ready ->
     #$('#MyTabs a').hover (e) ->
     #  e.preventDefault()
     #  $(this).tab 'show'
-    #  return   
+    #  return
 
     # $('#MainTabs a').hover (e) ->
     #  e.preventDefault()
     #  $(this).tab 'show'
-    #  return   
+    #  return
 
     #$('#MyCompetencyTabs a').hover (e) ->
     #  e.preventDefault()
     #  $(this).tab 'show'
-    #  return           
+    #  return
 
     $('#pk_selector').change ->
       $("[id^=CourseID").empty
@@ -380,20 +380,17 @@ $(document).ready ->
                         col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
                 else
                   col = col + "<td align='left'>" + temp_com[0] + "</td>"
-                #console.log ("col: " + col)   
+                #console.log ("col: " + col)
                 content = "<tr>" + col + "</tr>"
                 #console.log("content:" + content)
-                table.append(content)                                           
-          i++ 
-  
+                table.append(content)
+          i++
 
-
-
-    #alert("gon " + gon.series_data)
+    return unless gon?
     @series_data = if gon.series_data? then gon.series_data else ''
     @series_name = if gon.series_name? then gon.series_name else ''
 
-    @series_data_unfiltered = if gon.series_data_unfiltered? then gon.series_data_unfiltered else '' 
+    @series_data_unfiltered = if gon.series_data_unfiltered? then gon.series_data_unfiltered else ''
     overall_epa_mean = @series_data_unfiltered[0]
 
     if JSON.stringify(@series_data) == JSON.stringify(@series_data_unfiltered)
@@ -433,7 +430,7 @@ $(document).ready ->
       graph_type = "line"
       show_legend_1 = true
       show_legend_2 = true
-      
+
       window.series_option = [{
         type: 'column'
         name: series_data_name_1
@@ -465,7 +462,7 @@ $(document).ready ->
         }
        }]
 
-    #Highcharts.setOptions(Highcharts.theme_dark) 
+    #Highcharts.setOptions(Highcharts.theme_dark)
     #Save the HighChart Default Theme
     HCDefaults = $.extend(true, {}, Highcharts.getOptions(), {})
 
@@ -485,13 +482,13 @@ $(document).ready ->
         }
       }))
 
-    
+
     $('#plain').click ->
         chart.update
           chart:
             inverted: false
             polar: false
-          subtitle: 
+          subtitle:
             text: 'Plain'
         return
 
@@ -500,7 +497,7 @@ $(document).ready ->
           chart:
             inverted: true
             polar: false
-          subtitle: 
+          subtitle:
               text: 'Inverted'
         return
 
@@ -509,9 +506,9 @@ $(document).ready ->
           chart:
             inverted: false
             polar: true
-          subtitle: 
+          subtitle:
             text: 'Polar'
-        return 
+        return
 
     $('#update-theme').click ->
         button_val = $(this).html()
@@ -532,7 +529,7 @@ $(document).ready ->
                 endOnTick:false,
                 tickInterval:25
               }
-            }))          
+            }))
         else
           $("#update-theme").text('Dark-Theme')
           window.chart = Highcharts.chart($.extend(true, null, HCDefaults, {
@@ -549,12 +546,12 @@ $(document).ready ->
                 endOnTick:false,
                 tickInterval:25
               }
-            })) 
+            }))
 
-        return   
+        return
 
     Domain = []
-    Domain = ["ICS", "MK", "PBLI", "PCP", "PPPD", "SBPIC"]     
+    Domain = ["ICS", "MK", "PBLI", "PCP", "PPPD", "SBPIC"]
 
     $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
       # get current tab
@@ -570,7 +567,7 @@ $(document).ready ->
           @graph_target = "data-visualization-" + @comp_code[0]
           series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])
 
-    return 
+    return
 
 
 
