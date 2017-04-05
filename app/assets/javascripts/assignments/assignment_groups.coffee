@@ -10,7 +10,8 @@ $ ->
   $(".needs-select2").select2({
     width: "100%",
     matcher: optGroupMatcher
-  });
+  })
+    .val('-1').trigger('change')
 
 $ ->
   $(".collection-select").bind "change", ->

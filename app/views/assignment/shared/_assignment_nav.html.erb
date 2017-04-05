@@ -9,7 +9,7 @@
     <% elsif @assignment_groups.count > 4 %>
       <div id="assignment-group-nav" class="col-md-6 left-panel">
         <%= select_tag "assignment_group_id",
-        grouped_options_for_select(hf_assignment_groups_select_hash @assignment_groups),
+        grouped_options_for_select(hf_assignment_groups_select_hash(@assignment_groups)),
         class: "needs-select2 collection-select" %>
       </div>
     <% end %>

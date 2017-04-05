@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20161031152617) do
-=======
-ActiveRecord::Schema.define(version: 20161031201548) do
->>>>>>> 64bfa469b633f1abcb7a33652c287cc68fa075d7
+ActiveRecord::Schema.define(version: 20170331215323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +75,15 @@ ActiveRecord::Schema.define(version: 20161031201548) do
 
   add_index "cohorts", ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
   add_index "cohorts", ["user_id"], name: "index_cohorts_on_user_id", using: :btree
+
+  create_table "comment_threads", force: :cascade do |t|
+    t.string   "threadable_type"
+    t.integer  "threadable_id"
+    t.integer  "first_user_id",   null: false
+    t.integer  "second_user_id",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.integer  "commentable_id"
@@ -417,7 +422,6 @@ ActiveRecord::Schema.define(version: 20161031201548) do
     t.integer "user_id"
     t.string  "ident",      limit: 255
     t.string  "ident_type", limit: 255
-    t.boolean "filter_all",             default: false
     t.boolean "use_email",              default: false
   end
 
@@ -454,7 +458,6 @@ ActiveRecord::Schema.define(version: 20161031201548) do
     t.string   "full_name",              limit: 255
     t.string   "username",               limit: 255
     t.datetime "locked_at"
-    t.boolean  "use_ldap"
     t.boolean  "is_ldap",                            default: false
     t.integer  "permission_group_id"
     t.integer  "cohort_id"

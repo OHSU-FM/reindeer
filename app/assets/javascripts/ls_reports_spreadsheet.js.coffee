@@ -24,7 +24,6 @@ parseComments = (competency_comment) ->
 get_series_data = (series_data_hash, in_code) ->
   series_data = []
   for k of series_data_hash
-    #alert("k: " + k + " in_code: " + in_code)
     if series_data_hash.hasOwnProperty(k)
       if k.includes(in_code)
         series_data.push series_data_hash[k]
@@ -36,7 +35,6 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
           series_data_1 = get_series_data(series_data_hash, in_code)
           series_data_2 = get_series_data(comp_class_mean_hash, in_code)
 
-          #alert("series_data_2: " + series_data_2)
           render_to_2 = graph_target
           graph_title = "Domain: " + in_code
           graph_sub_title = "% Complete"
@@ -350,8 +348,6 @@ $(document).ready ->
 
         data = $.parseJSON(rs_data)
         found_course = getObjects(data, 'CourseID', course_id[1])
-        #console.log(JSON.stringify(found_course, null, "    "))
-        #onsole.log("found_course: " + found_course[0].CourseID)
 
         $('.course_detail').remove
         $('.course_detail').html ''
@@ -380,9 +376,7 @@ $(document).ready ->
                         col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
                 else
                   col = col + "<td align='left'>" + temp_com[0] + "</td>"
-                #console.log ("col: " + col)
                 content = "<tr>" + col + "</tr>"
-                #console.log("content:" + content)
                 table.append(content)
           i++
 
@@ -512,7 +506,6 @@ $(document).ready ->
 
     $('#update-theme').click ->
         button_val = $(this).html()
-        #alert("button_val:" + button_val)
         if button_val == 'Dark-Theme'
           $("#update-theme").text('Printer-Friendly')
           window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
@@ -550,31 +543,16 @@ $(document).ready ->
 
         return
 
-    Domain = []
     Domain = ["ICS", "MK", "PBLI", "PCP", "PPPD", "SBPIC"]
 
     $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
       # get current tab
       currentTab = $(e.target).text()
-      #LastTab = $(e.relatedTarget).text()
       @comp_code = currentTab.split("-")
       if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
-          #alert("currentTab: " + currentTab)
-          @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
-          @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
-          @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
-          @xAxis_category = @comp_domain[@comp_code[0]]
-          @graph_target = "data-visualization-" + @comp_code[0]
-          series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])
-
-    return
-
-
-
-    'use strict'
-
-    ### global document ###
-
-
-
-
+        @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @xAxis_category = @comp_domain[@comp_code[0]]
+        @graph_target = "data-visualization-" + @comp_code[0]
+        series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])

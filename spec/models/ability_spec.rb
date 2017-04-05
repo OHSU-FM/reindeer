@@ -181,6 +181,46 @@ describe Ability do
     end
   end
 
+  describe "CommentThread" do
+    describe "first_user" do
+      let(:user) { create :user }
+      let(:thread) { create :comment_thread, first_user: user}
+
+      it { is_expected.to be_able_to(:comment_on, thread) }
+    end
+
+    describe "second_user" do
+      let(:user) { create :user }
+      let(:thread) { create :comment_thread, second_user: user}
+
+      it { is_expected.to be_able_to(:comment_on, thread) }
+    end
+
+    describe "other user" do
+      let(:user) { create :user }
+      let(:thread) { create :comment_thread }
+
+      it { is_expected.not_to be_able_to(:comment_on, thread) }
+      it { is_expected.not_to be_able_to(:read, thread) }
+      it { is_expected.not_to be_able_to(:update, thread) }
+      it { is_expected.not_to be_able_to(:destroy, thread) }
+    end
+
+    describe "comments" do
+      let(:user) { create :user }
+      let(:other_user) { create :user }
+      let(:thread) { create :comment_thread, first_user: user, second_user: other_user}
+      let(:comment) { create :comment, commentable: thread, user: user }
+      let(:other_comment) { create :comment, commentable: thread, user: other_user }
+
+      it { is_expected.to be_able_to(:read, comment) }
+      it { is_expected.to be_able_to(:read, other_comment) }
+      it { is_expected.to be_able_to(:create, Comment.new(commentable: thread)) }
+      it { is_expected.to be_able_to(:destroy, comment) }
+      it { is_expected.not_to be_able_to(:destroy, other_comment) }
+    end
+  end
+
   describe "Dashboard" do
 
     context "logged in user" do

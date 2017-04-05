@@ -32,9 +32,6 @@ class @FormUtils.DataEvents
         @$nodes = nodes
         @event_handlers()
 
-    event_handlers:
-        console.log 'test'
-
 @FormUtils.classifier = (doc) ->
     # Automagic behavior for html objects
     $(doc).find('[data-class]').each ->
@@ -127,7 +124,6 @@ $(document).ready ->
 
     # replace_on_submit
     $('form button[type=submit][data-toggle~=replace]').click (event) ->
-        console.log 'hello GGGGGGGG'
 
     # link_to_update_content
     $('a[data-toggle~=replace]').click (event) ->

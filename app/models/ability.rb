@@ -68,6 +68,9 @@ class Ability
     can :comment_on, Assignment::AssignmentGroup do |ag|
       ag.owner == user
     end
+    can :comment_on, CommentThread do |t|
+      [t.first_user, t.second_user].include? user
+    end
     can [:list, :read, :fetch_compare], Assignment::UserAssignment do |ua|
       ua.user_id == user.id || ua.assignment_group.owner == user
     end
@@ -82,6 +85,8 @@ class Ability
         c.commentable.owner == user
       when "Assignment::UserResponse"
         c.commentable.user == user || c.commentable.assignment_group.owner == user
+      when "CommentThread"
+        c.commentable.first_user == user || c.commentable.second_user == user
       else
         false
       end
@@ -92,6 +97,8 @@ class Ability
         c.commentable.owner == user || c.commentable.users.include?(user)
       when "Assignment::UserResponse"
         c.commentable.user == user || c.commentable.assignment_group.owner == user
+      when "CommentThread"
+        c.commentable.first_user == user || c.commentable.second_user == user
       else
         false
       end

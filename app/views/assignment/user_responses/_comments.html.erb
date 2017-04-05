@@ -4,6 +4,6 @@
     <%= render partial: "comments/comments", locals: {commentable: @user_response} %>
   </div>
   <div class="row comments-box">
-    <%= render partial: "comments/form", locals: {commentable: @user_response} %>
+    <%= render partial: "comments/form", locals: {commentable: @user_response, new_c: @new_ur_comment} %>
   </div>
 </div>
