@@ -11,32 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728230431) do
+ActiveRecord::Schema.define(version: 20170410232028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "assignment_group_templates", force: :cascade do |t|
-    t.string   "title"
-    t.text     "sids"
-    t.text     "desc_md"
-    t.boolean  "active",     default: true
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  create_table "assignment_groups", force: :cascade do |t|
-    t.integer  "assignment_group_template_id"
-    t.string   "title"
-    t.integer  "status"
-    t.text     "desc_md"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "cohort_id"
-  end
-
-  add_index "assignment_groups", ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
-  add_index "assignment_groups", ["cohort_id"], name: "index_assignment_groups_on_cohort_id", using: :btree
 
   create_table "chart_series", force: :cascade do |t|
     t.integer  "chart_id"
@@ -65,41 +43,13 @@ ActiveRecord::Schema.define(version: 20160728230431) do
 
   add_index "charts", ["user_id"], name: "index_charts_on_user_id", using: :btree
 
-  create_table "cohorts", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "permission_group_id"
-    t.string   "title"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-  end
-
-  add_index "cohorts", ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
-  add_index "cohorts", ["user_id"], name: "index_cohorts_on_user_id", using: :btree
-
-  create_table "comments", force: :cascade do |t|
-    t.integer  "commentable_id"
-    t.string   "commentable_type"
-    t.text     "body"
-    t.string   "flagged_as"
-    t.integer  "user_id",          null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
-
-  create_table "compentencies", force: :cascade do |t|
-    t.string   "student_name"
-    t.string   "evaluator"
-    t.string   "rotation_date"
-    t.string   "service"
-    t.integer  "answer"
-    t.string   "compentency_code"
-    t.string   "block_name"
-    t.string   "question"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+  create_table "comment_threads", force: :cascade do |t|
+    t.string   "threadable_type"
+    t.integer  "threadable_id"
+    t.integer  "first_user_id",   null: false
+    t.integer  "second_user_id",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "content_slugs", force: :cascade do |t|
@@ -174,19 +124,6 @@ ActiveRecord::Schema.define(version: 20160728230431) do
 
   add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
   add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-
-  create_table "meta_attribute_entity_groups", force: :cascade do |t|
-    t.text    "group_name",                                 null: false
-    t.text    "parent_table",                               null: false
-    t.boolean "visible",                     default: true
-    t.string  "parent_table_pk", limit: 255
-  end
-
-  create_table "meta_attribute_groups", force: :cascade do |t|
-    t.text    "group_name",                  null: false
-    t.text    "parent_table",                null: false
-    t.boolean "visible",      default: true
-  end
 
   create_table "meta_attribute_questions", force: :cascade do |t|
     t.text    "meta_attribute_entity_entity_type",                null: false
@@ -388,38 +325,6 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.string   "default_view",        limit: 255
   end
 
-  create_table "student_competencies", force: :cascade do |t|
-    t.string   "student_name"
-    t.integer  "mk1"
-    t.integer  "mk2"
-    t.integer  "mk3"
-    t.integer  "mk4"
-    t.integer  "mk5"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  create_table "survey_assignments", force: :cascade do |t|
-    t.boolean  "as_inline",           default: false
-    t.string   "title"
-    t.integer  "lime_survey_sid",                     null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "assignment_group_id"
-  end
-
-  add_index "survey_assignments", ["assignment_group_id"], name: "index_survey_assignments_on_assignment_group_id", using: :btree
-  add_index "survey_assignments", ["lime_survey_sid"], name: "index_survey_assignments_on_lime_survey_sid", using: :btree
-
-  create_table "user_assignments", force: :cascade do |t|
-    t.integer  "user_id",              null: false
-    t.integer  "survey_assignment_id", null: false
-    t.integer  "lime_token_tid"
-    t.datetime "started_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "user_externals", force: :cascade do |t|
     t.integer "user_id"
     t.string  "ident",      limit: 255
@@ -427,23 +332,9 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.boolean "use_email",              default: false
   end
 
-  create_table "user_responses", force: :cascade do |t|
-    t.string   "resp_type"
-    t.string   "title"
-    t.string   "category"
-    t.string   "status",             default: "0"
-    t.text     "content"
-    t.integer  "user_assignment_id"
-    t.string   "completion_target"
-    t.string   "status_explanation"
-    t.string   "owner_status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "",    null: false
-    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "email",                  limit: 255, default: "",      null: false
+    t.string   "encrypted_password",     limit: 255, default: "",      null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -452,8 +343,8 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
     t.string   "last_sign_in_ip",        limit: 255
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
     t.text     "p4_program_id"
     t.text     "roles"
     t.string   "full_name",              limit: 255
@@ -462,6 +353,7 @@ ActiveRecord::Schema.define(version: 20160728230431) do
     t.boolean  "is_ldap",                            default: false
     t.integer  "permission_group_id"
     t.integer  "cohort_id"
+    t.string   "ls_list_state",                      default: "dirty"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -488,10 +380,5 @@ ActiveRecord::Schema.define(version: 20160728230431) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
 
-  add_foreign_key "assignment_groups", "assignment_group_templates"
-  add_foreign_key "cohorts", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
-  add_foreign_key "survey_assignments", "assignment_groups"
-  add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
-  add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
 end

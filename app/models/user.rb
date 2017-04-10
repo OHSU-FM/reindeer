@@ -18,7 +18,6 @@ class User < ActiveRecord::Base
 
   belongs_to :lime_user, :foreign_key=>:username, :primary_key=>:users_name
   belongs_to :permission_group, :inverse_of=>:users
-  belongs_to :cohort
 
   has_many :charts, :inverse_of=>:user, :dependent=>:destroy
   has_many :dashboard_widgets, :through=>:dashboard
@@ -188,7 +187,6 @@ class User < ActiveRecord::Base
       field :password
       field :password_confirmation
       field :is_ldap
-      field :cohort
     end
 
     ##
@@ -304,41 +302,6 @@ class User < ActiveRecord::Base
 
   def survey_groups
     permission_group.present? ? permission_group.survey_groups : []
-  end
-
-  def cohorts
-    return @cohorts if defined? @cohorts
-    @cohorts ||= admin_or_higher? ? Cohort.all : Cohort.where(owner: self)
-    return @cohorts
-  end
-
-  def assignment_groups
-    return @assignment_groups if defined? @assignment_groups
-    ags = []
-    if self.admin_or_higher?
-      ags << Assignment::AssignmentGroup.all
-    else
-      # all AG user owns or participates in
-      ags << cohorts.map {|c| c.assignment_groups } unless cohorts.empty?
-      ags << cohort.assignment_groups unless cohort.nil?
-    end
-    ags.flatten!
-    @assignment_groups ||= ags
-    return @assignment_groups
-  end
-
-  def active_assignment_groups
-    return @active_assignment_groups if defined? @active_assignment_groups
-    @active_assignment_groups = assignment_groups.reject { |ag| ag.users.empty? }
-    return @active_assignment_groups
-  end
-
-  # number (int) of ur where owner_status == nil
-  def unstatused_user_responses_count
-    return 0 unless user_assignments.any?{|ua| !ua.user_responses.empty? }
-    user_assignments.map{|ua|
-      ua.user_responses.where(owner_status: nil).count
-    }.sum
   end
 
 end

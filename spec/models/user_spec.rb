@@ -35,49 +35,6 @@ describe User do
   end
 
   describe "methods:" do
-    it "#cohort returns cohort user belongs to" do
-      c = create :cohort, :with_users
-      user = c.users.first
-      expect(user.cohort).to eq c
-    end
-
-    it "#cohorts returns list of cohorts user owns" do
-      user = build :user
-      c = create :cohort, owner: user
-      c2 = create :cohort
-      expect(user.cohorts).to eq [c]
-      expect(user.cohorts).not_to include c2
-    end
-
-    it "#cohorts returns list of all cohorts as admin" do
-      admin = build :admin
-      c = create :cohort
-      expect(admin.cohorts).to include c
-    end
-
-    it "#active_assignment_groups returns ags user owns that have users" do
-      user = build :user
-      create(:assignment_group, cohort: build(:cohort, owner: user))
-      expect(user.active_assignment_groups.count).to eq 0
-      user2 = build :user
-      create(:assignment_group, cohort: build(:cohort, :with_users, owner: user2))
-      expect(user2.active_assignment_groups.count).to eq 1
-    end
-
-    it "#assignment_groups lists ags user owns" do
-      user = build :user
-      create(:assignment_group, cohort: build(:cohort, owner: user))
-      expect(user.assignment_groups.count).to eq 1
-    end
-
-    it "#assignment_groups lists ags user belongs to" do
-      c = build :cohort, :with_users
-      user = c.users.first
-      create :assignment_group, cohort: c
-
-      expect(user.assignment_groups.count).to eq 1
-    end
-
     it "#display_name" do
       u = create :user
       u_nil = create :user, full_name: nil, username: "test"
@@ -94,18 +51,5 @@ describe User do
         expect(User.new.display_name str).to eq key[i]
       }
     end
-
-    it "#unstatused_user_responses?" do
-      (1..3).to_a.each do |i|
-        ua = create :user_assignment, :with_user_responses, ur_count: i, owner_status: nil
-        expect(ua.user.unstatused_user_responses_count).to eq i
-      end
-
-      ua = create :user_assignment
-      ur1 = create :user_response, user_assignment: ua
-      ur2 = create :user_response, owner_status: nil, user_assignment: ua
-      expect(ua.user.unstatused_user_responses_count).to eq 1
-    end
   end
-
 end

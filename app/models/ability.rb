@@ -59,46 +59,6 @@ class Ability
   ##
   # Non Admin users
   def other_users_permissions user
-    can [:list, :read], Assignment::AssignmentGroup do |ag|
-      ag.owner == user || ag.users.include?(user)
-    end
-
-    can :create, Assignment::AssignmentGroup if user.can_create_assignment_group?
-    # only owners can comment on assignment_groups (broadcast)
-    can :comment_on, Assignment::AssignmentGroup do |ag|
-      ag.owner == user
-    end
-    can [:list, :read, :fetch_compare], Assignment::UserAssignment do |ua|
-      ua.user_id == user.id || ua.assignment_group.owner == user
-    end
-    can [:list, :read, :comment_on], Assignment::UserResponse do |ur|
-      ur.user == user || ur.ag_owner == user
-    end
-    can :set_owner_status, Assignment::UserResponse, ag_owner: user
-
-    can :create, Comment do |c|
-      case c.commentable.class.to_s
-      when "Assignment::AssignmentGroup"
-        c.commentable.owner == user
-      when "Assignment::UserResponse"
-        c.commentable.user == user || c.commentable.assignment_group.owner == user
-      else
-        false
-      end
-    end
-    can [:list, :read], Comment do |c|
-      case c.commentable.class.to_s
-      when "Assignment::AssignmentGroup"
-        c.commentable.owner == user || c.commentable.users.include?(user)
-      when "Assignment::UserResponse"
-        c.commentable.user == user || c.commentable.assignment_group.owner == user
-      else
-        false
-      end
-    end
-    can :destroy, Comment do |c|
-      c.user.id == user.id
-    end
 
     can :update, User, :id=>user.id
     can :read, User, :id=>user.id
