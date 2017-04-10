@@ -30,25 +30,58 @@ get_series_data = (series_data_hash, in_code) ->
         series_data.push series_data_hash[k]
   series_data
 
+get_all_series_data = (series_data_hash) ->
+  series_data = []
+  for k of series_data_hash
+    if series_data_hash.hasOwnProperty(k)
+      series_data.push series_data_hash[k]
+  series_data
 
 
-create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code) ->
-          series_data_1 = get_series_data(series_data_hash, in_code)
-          series_data_2 = get_series_data(comp_class_mean_hash, in_code)
 
-          #alert("series_data_2: " + series_data_2)
-          render_to_2 = graph_target
-          graph_title = "Domain: " + in_code
-          graph_sub_title = "% Complete"
-          series_data_name_2= "Class Mean"
-          series_data_name_1 = in_code
-          series_data_1 = series_data_1
-          series_data_2 = series_data_2
+create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code, in_series_name) ->
+          console.log("graph_target:" + graph_target)
+          if in_code == 'all-comp'
+            series_data_1 = get_all_series_data(series_data_hash)
+            series_data_2 = get_all_series_data(comp_class_mean_hash)
+            render_to_2 = graph_target
+            graph_title = "All Competencies"
+            graph_sub_title = "% Complete"
+            series_data_name_2= ""
+            series_data_name_1 = "Class Mean"
+            series_data_1 = series_data_2
+            series_data_2 = "Null"
+            show_legend_1 = true        # No student data to show
+            show_legend_2 = false          #series_data_2 = "Null"
+          else if in_code == 'student'
+            series_data_1 = get_all_series_data(series_data_hash)
+            series_data_2 = get_all_series_data(comp_class_mean_hash)
+            render_to_2 = graph_target
+            graph_title = "All Competencies"
+            graph_sub_title = "% Complete"
+            series_data_name_2= "Class Mean"
+            series_data_name_1 = in_series_name
+            series_data_1 = series_data_1
+            series_data_2 = series_data_2
+            show_legend_1 = true        # No student data to show
+            show_legend_2 = true          #series_data_2 = "Null"
+          else
+            series_data_1 = get_series_data(series_data_hash, in_code)
+            series_data_2 = get_series_data(comp_class_mean_hash, in_code)            
+            #alert("series_data_2: " + series_data_2)
+            render_to_2 = graph_target
+            graph_title = "Domain: " + in_code
+            graph_sub_title = "% Complete"
+            series_data_name_2= "Class Mean"
+            series_data_name_1 = in_code
+            series_data_1 = series_data_1
+            series_data_2 = series_data_2
+            show_legend_1 = true
+            show_legend_2 = true          #series_data_2 = "Null"
 
-          #series_data_2 = "Null"
+
           graph_type = "column"
-          show_legend_1 = true
-          show_legend_2 = true
+
           xAxis_category = xAxis_category
 
           series_option2 = [{
@@ -84,7 +117,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
            }]
 
 
-          window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
+          window.chart2 = Highcharts.chart($.extend(true, null, theme_dark, {
             chart: renderTo: render_to_2
             title: text: graph_title
             subtitle: text: graph_sub_title
@@ -346,6 +379,7 @@ $(document).ready ->
           $('#MyTabs a[href="#' + tab[0] + '"]').tab('show')
         $('.course_detail #course_name').val(tab[1])
         course_id = tab[1].split("~")
+        return unless gon?
         rs_data = if gon.rs_data? then gon.rs_data else ''
 
         data = $.parseJSON(rs_data)
@@ -355,7 +389,7 @@ $(document).ready ->
 
         $('.course_detail').remove
         $('.course_detail').html ''
-        #Crate table html tag
+        #Create table html tag
 
         #table = $('<table id=DynamicTable ></table>').appendTo('.course_detail')
         table = $('.course_detail').append('<table></table>')
@@ -427,7 +461,7 @@ $(document).ready ->
       series_data_name_2 = "Class Mean"
       series_data_1 = @series_data
       series_data_2 = @series_data_unfiltered
-      graph_type = "line"
+      graph_type = "column"
       show_legend_1 = true
       show_legend_2 = true
 
@@ -482,6 +516,23 @@ $(document).ready ->
         }
       }))
 
+    $('#plain1').click ->
+        chart2.update
+          chart:
+            inverted: false
+            polar: false
+          subtitle:
+            text: 'Plain'
+        return
+
+    $('#inverted1').click ->
+        chart2.update
+          chart:
+            inverted: true
+            polar: false
+          subtitle:
+              text: 'Inverted'
+        return
 
     $('#plain').click ->
         chart.update
@@ -502,7 +553,7 @@ $(document).ready ->
         return
 
     $('#polar').click ->
-        chart.updateRing WiFi-Enabled Video Doorbell
+        chart.update
           chart:
             inverted: false
             polar: true
@@ -556,24 +607,40 @@ $(document).ready ->
     $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
       # get current tab
       currentTab = $(e.target).text()
+      #alert("currentTab: " + currentTab)
       #LastTab = $(e.relatedTarget).text()
       @comp_code = currentTab.split("-")
       if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
-          #alert("currentTab: " + currentTab)
+          return unless gon?
           @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
           @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
           @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+          @series_name = if gon.series_name? then gon.series_name else ''
           @xAxis_category = @comp_domain[@comp_code[0]]
           @graph_target = "data-visualization-" + @comp_code[0]
-          series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])
+          comp_ind_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0], @series_name)
+          ## Competency graph
+      else if currentTab.includes("Competency")
+              return unless gon?
+              @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+              @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+              @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+              @series_name = if gon.series_name? then gon.series_name else ''
+              @xAxis_category = @all_comp_codes
+              @code = 'all-comp'
+              @graph_target = "data-visualization-" + "all-comp"
+              comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+           else 
+              return unless gon?
+              @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+              @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+              @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+              @series_name = if gon.series_name? then gon.series_name else ''
+              @xAxis_category = @all_comp_codes
+              @code = "student"  #'all-comp'
+              @graph_target = "data-visualization-" + 'student'  #"all-comp"
+              student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
 
-    return
-
-
-
-    'use strict'
-
-    ### global document ###
 
 
 

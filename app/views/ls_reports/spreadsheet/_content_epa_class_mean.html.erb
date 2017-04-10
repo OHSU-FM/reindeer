@@ -1,18 +1,26 @@
 <body>
  <div class="container-fluid">
-    <ul id="mainTab" class="list-inline">
-        <li class="active bold-italic"><a data-toggle="tab" href="#darkunica">Dark Unica</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#gridlight">Grid Light</a></li>  
-    </ul>
 
+    <ul id="GraphTabs" class="nav nav-tabs">
+      <li class="active bold-italic"><a data-toggle="tab" href="#competency-graph">Competency-Graph</a></li>
+      <% if @permission_group_title.include? "Dean" %>
+         <li class="bold-italic"><a data-toggle="tab" href="#epa-graph">EPA-Graph</a></li>
+      <% end %>
+
+    </ul>
     <div class="tab-content">
-        <div id="darkunica" class="tab-pane fade in active">
+        <div id="competency-graph" class="tab-pane fade in active">
+              <%= render :partial=>'ls_reports/spreadsheet/content_comp_class_mean_graph', :locals=>{:graph_color=>"dark"} %>   
+        </div>
+
+        <div id="epa-graph" class="tab-pane fade in">
               <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean_graph', :locals=>{:graph_color=>"dark"} %>   
         </div>
-        <div id="gridlight" class="tab-pane fade in">
-              <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean_graph', :locals=>{:graph_color=>"light"} %>             
-        </div>
+
+
+
     </div>
+
   </div>
 </body>
 

@@ -143,3 +143,7 @@ end
 source "https://rails-assets.org" do
   gem "rails-assets-simplemde"
 end
+
+gem 'rufus-scheduler'
+gem 'whenever', :require => false
+gem 'minitest', "~> 5.1" 

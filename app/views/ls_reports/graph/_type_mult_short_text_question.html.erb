@@ -1,6 +1,6 @@
 <% #if !pquestion.response_set.data[0].data[0].nil? %>
    <div class="well">
-    <% if pquestion.response_set.data[0].data.count < 4 and !@pk.to_s.empty? %>
+    <% if pquestion.response_set.data[0].data.count < 5 and !@pk.to_s.empty? %>
 
         <table class="table table-striped table-condensed">
             <% pquestion.response_set.data.each do |rs| %>

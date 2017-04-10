@@ -17,6 +17,8 @@ Array::min=->
     data = graph.data()
 
     full_data = graph.full_data()
+    console.log ('data: ' + data)
+    console.log ('full_data: ' + full_data)
 
     max_item = data.max()
     if (max_item < 10 )
@@ -34,6 +36,8 @@ Array::min=->
 
 
     category_labels = graph.category_labels()
+    console.log('category_labels: ' + category_labels)
+    
     chart_type = graph.chart_type
 
     switch chart_type
@@ -239,6 +243,8 @@ class LsGraphBase
 
         @title = if title? then title else ''
 
+        console.log('graph_type: ' + @chart_type)
+
         return
 
     event_handlers: ->
@@ -253,6 +259,7 @@ class LsGraphBase
 
     draw: ->
         # Draw chart
+
         highchart = $(@$target).highcharts(@chart_args());
         highchart = $(highchart).highcharts()
 
@@ -454,13 +461,14 @@ window.LsReport.Graph.load = (target, graph_type, qstat, full_qstat, series_name
 
     if chart?
         chart.draw()
+
     return chart
+
 $(document).ready ->
     return if $('body').attr('id') != 'ls_reports_graph'
     window.scroll_spy_init()
 
     window.charts = []
-
 
     return unless gon?
     return unless gon.qstats?
@@ -471,9 +479,10 @@ $(document).ready ->
 
     $(gon.qstats).each (idx, qstat) ->
         full_qstat = gon.full_qstats[idx]
-        $target = $('.chart-visualization-' + full_qstat.qid)
+        $target = $('#chart-visualization-' + full_qstat.qid)
         chart = window.LsReport.Graph.load($target, @chart_type, qstat, full_qstat, series_name, unfiltered_series_name, filters_equal)
         window.charts.push chart
+
     $('body').scrollspy('refresh');
 
     $('[data-toggle="tooltip"]').popover({

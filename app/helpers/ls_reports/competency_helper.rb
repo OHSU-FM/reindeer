@@ -227,6 +227,10 @@ module LsReports::CompetencyHelper
         comp_domain = COMP_DOMAIN
     end 
 
+    def hf_all_comp_codes
+        return COMP_CODES
+    end 
+
     def hf_load_all_competencies(rs_data, level)
         comp_hash = {}
         COMP_CODES.each do |comp|
