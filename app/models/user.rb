@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :user_externals, :dependent=>:delete_all, :inverse_of=>:user
 
   has_one :dashboard, :dependent=>:destroy
+  has_one :review, dependent: :destroy
 
   include EdnaConsole::UserHasAssignments
 
