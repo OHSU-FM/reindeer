@@ -1,12 +1,19 @@
 <ul class="nav nav-tabs" id="user-assignment-tabs">
-  <% @service.survey_types.each_with_index do |st, i| %>
+  <% if @service.survey_types.each_with_index do |st, i| %>
     <li class=<%= "active" if i == 0 %>>
       <a href="#<%= st.to_s %>" data-toggle="tab"><%= st.pluralize.titleize %></a>
     </li>
+  <% end.empty? %>
+    <li class="active">
+      <a href="#goals" data-toggle="tab">Goals</a>
+    </li>
   <% end %>
+  <li>
+    <a href="#comments" data-toggle="tab">Comments</a>
+  </li>
 </ul>
 <div class="tab-content">
-  <% @service.survey_types.each_with_index do |st, i| %>
+  <% if @service.survey_types.each_with_index do |st, i| %>
   <div class="tab-pane fade in <%= "active" if i == 0 %>" id="<%= st.to_s %>">
     <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
       <% if @service.recent.select{|ua| ua.user_responses.present?}.each do |ua| %>
@@ -20,11 +27,25 @@
           <%= ua.status_str %>
         <% end %>
       <% end.empty? %>
-        <div class="fade-in two right-panel" style="text-align;center">
-          <p>No goals for this student</p>
+        <div class="fade-in two right-panel">
+          <p>No goals yet</p>
         </div>
       <% end %>
     </div>
   </div>
+  <% end.empty? %>
+    <div class="tab-pane fade in active" id="goals">
+      <div class="fade-in two right-panel">
+        <p>No goals yet</p>
+      </div>
+    </div>
   <% end %>
+  <div class="tab-pane fade in" id="comments">
+    <div class="row content ct-comments-block">
+      <%= render partial: "comments/comments", locals: {commentable: @thread} %>
+    </div>
+    <div class="row ct-comments-box">
+      <%= render partial: "comments/form", locals: {commentable: @thread, new_c: @new_thread_comment} %>
+    </div>
+  </div>
 </div>

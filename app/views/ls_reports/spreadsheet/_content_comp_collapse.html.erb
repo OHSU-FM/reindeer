@@ -1,0 +1,31 @@
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h5 class="panel-title">
+          <a  data-toggle="collapse" data-target="#collapse-<%= comp_code %>" >
+            <i><%= comp_code %>&nbsp;<span class="glyphicon glyphicon-collapse-down"> </span></i>
+          </a>        
+        </h5>
+      </div>
+      <div id="collapse-<%= comp_code %>" class="panel-collapse collapse">
+        <div class="panel-body">
+          <table id="CompTable-<%= comp_code %>" class="table borderless table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+                <tr>
+                    <th><center>Competency</center></th>
+                    <th><center>Average Complete (%)</center></th>
+                </tr> 
+
+                <% @comp_class_mean.each do |k,v| %>
+                    <tr>
+                        <% if k.include? comp_code %>
+                            <td><center>
+                                <%= k %>
+                            </center>
+                            </td>
+                            <td><center><%= v %></center></td>
+                        <% end %>
+                    </tr>
+                <% end %>
+            </table>    
+        </div>
+      </div>
+    </div>

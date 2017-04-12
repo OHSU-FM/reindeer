@@ -32,50 +32,93 @@ describe Assignment::AssignmentGroupsController do
     describe "#show" do
       context "with signed in owner" do
         before do
-          user = create :user
-          c = create :cohort, :with_users, owner: user
-          @ag = create :assignment_group, cohort: c
-          sign_in user
+          @user = create :user
+          @c = create :cohort, :with_users, owner: @user
+          @ag = create :assignment_group, cohort: @c
+          sign_in @user
           get :show, assignment_group_id: @ag.id
         end
 
         it "sets @assignment_group" do
           expect(assigns[:assignment_group]).to eq @ag
         end
+
         it "sets @assignment_groups" do
           expect(assigns[:assignment_groups]).to eq [@ag]
         end
+
         it "sets @user" do
           expect(assigns[:user]).to eq @ag.users.first
         end
+
         it "generates and sets a service object" do
           expect(assigns[:service])
           .to be_an_instance_of Assignment::UserAssignmentsIndexService
         end
+
+        it "gets a comment thread for the current user" do
+          thread = assigns[:thread]
+          expect(thread).to be_a CommentThread
+          expect(thread.first_user).to eq @user
+          expect(thread.second_user).to eq @c.users.first
+        end
+
+        it "creates an empty comment for the assignment_group" do
+          expect(assigns[:new_ag_comment]).to be_a Comment
+          expect(assigns[:new_ag_comment].commentable).to eq @ag
+        end
+
+        it "creates an empty comment for the comment_thread" do
+          expect(assigns[:new_thread_comment]).to be_a Comment
+          expect(assigns[:new_thread_comment].commentable)
+            .to eq @c.comment_thread_for(@c.users.first.id)
+        end
       end
+
       context "with signed in user" do
         before do
-          c = create :cohort, :with_users
-          user = c.users.first
-          @ag = create :assignment_group, cohort: c
-          sign_in user
+          @c = create :cohort, :with_users
+          @user = @c.users.first
+          @ag = create :assignment_group, cohort: @c
+          sign_in @user
           get :show, assignment_group_id: @ag.id
         end
 
         it "sets @assignment_group" do
           expect(assigns[:assignment_group]).to eq @ag
         end
+
         it "sets @assignment_groups" do
           expect(assigns[:assignment_groups]).to eq [@ag]
         end
+
         it "sets @user" do
           expect(assigns[:user]).to eq @ag.users.first
         end
+
         it "generates and sets a service object" do
           expect(assigns[:service])
           .to be_an_instance_of Assignment::UserAssignmentsIndexService
         end
+
+        it "gets a comment thread for the current user" do
+          thread = assigns[:thread]
+          expect(thread).to be_a CommentThread
+          expect(thread.first_user).to eq @c.owner
+          expect(thread.second_user).to eq @user
+        end
+
+        it "creates an empty comment for the assignment_group" do
+          expect(assigns[:new_ag_comment]).to be nil
+        end
+
+        it "creates an empty comment for the comment_thread" do
+          expect(assigns[:new_thread_comment]).to be_a Comment
+          expect(assigns[:new_thread_comment].commentable)
+            .to eq @c.comment_thread_for @user.id
+        end
       end
+
       context "without signed in user" do
         before do
           user = create :user
@@ -83,6 +126,7 @@ describe Assignment::AssignmentGroupsController do
           @ag = create :assignment_group, cohort: c
           get :show, assignment_group_id: @ag.id
         end
+
         it { is_expected.to redirect_to new_user_session_path }
       end
     end

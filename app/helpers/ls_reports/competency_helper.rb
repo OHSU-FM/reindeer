@@ -238,12 +238,20 @@ module LsReports::CompetencyHelper
         end
         rs_data.each do |rec|
          COMP_CODES.each do |comp|
-              if !rec[comp].nil? and rec[comp][0] == level
-                    comp_hash[comp] += 1
-                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+            if !rec[comp].nil?
+              temp_level = rec[comp].split("~")
+              if temp_level[0] == level
+                    comp_hash[comp] += 1                  
+               else if level == "3" and temp_level[0].to_i > 3 
+                       temp_val = temp_level[0].to_f/3.0
+                       comp_hash[comp] = comp_hash[comp] + temp_val.round
+                    end
                end
             end
+          end
         end 
+
+        #binding.pry
         return comp_hash
     end 
 
@@ -255,10 +263,17 @@ module LsReports::CompetencyHelper
 
         rs_data.each do |rec|
             COMP_CODES.each do |comp|
-              if !rec[comp].nil? and rec[comp][0] == level
-                    competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
-                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
-               end
+                if !rec[comp].nil?
+                    temp_level = rec[comp].split("~")
+                    if temp_level[0] == level
+                        competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+                        # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+                    else if level == "3" and temp_level[0].to_i > 3 ## contains FoM - Pre-clinical courses
+                           competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+                        end 
+
+                    end
+                end
             end
 
         end 
@@ -437,9 +452,16 @@ module LsReports::CompetencyHelper
     def hf_total_level(in_comp,level)
         total_level = 0
         COMP_CODES.each do |c|
-           if !in_comp[c].nil? and in_comp[c][0] == level
-               total_level += 1
-           end
+            if !in_comp[c].nil? 
+                temp_level = in_comp[c].split("~")
+                if temp_level[0] == level
+                   total_level += 1
+                else if level == "3" and temp_level[0].to_i > 3 
+                           temp_val = temp_level[0].to_f/3.0
+                           total_level = total_level + temp_val.round
+                      end 
+                end
+            end
         end 
         return total_level
  
@@ -448,9 +470,15 @@ module LsReports::CompetencyHelper
     def hf_level_comp_codes(in_comp, level)
         level_comp_codes = ""
         COMP_CODES.each do |c|
-           if !in_comp[c].nil? and in_comp[c][0] == level
-               level_comp_codes << c << ", "
-           end
+            if !in_comp[c].nil? 
+                temp_level = in_comp[c].split("~")
+                if temp_level[0] == level
+                   level_comp_codes << c << ", "
+                else if level == "3" and temp_level[0]  > "3"  ## load FoM - pre-clinical competencies
+                        level_comp_codes << c << ", "
+                    end
+                end
+            end
         end 
         return levelinclude_comp_codes[0...-2]  # remove the last char, ","      
     end
@@ -458,9 +486,15 @@ module LsReports::CompetencyHelper
     def hf_level_comp_codes2(in_comp, level)
         level_comp_codes = []
         COMP_CODES.each do |c|
-           if !in_comp[c].nil? and in_comp[c][0] == level
-               level_comp_codes.push c
-           end
+            if !in_comp[c].nil? 
+                temp_level = in_comp[c].split("~")
+               if temp_level[0] == level
+                   level_comp_codes.push c
+               else if level == "3" and temp_level[0] > "3"  ## load FoM - pre-clinical competencies
+                        level_comp_codes.push c
+                    end 
+               end
+            end
         end 
         return level_comp_codes  
     end
@@ -476,10 +510,17 @@ module LsReports::CompetencyHelper
 
         rs_data.each do |rec|
             EPA[epa_code].each do |comp|
-              if !rec[comp].nil? and rec[comp][0] == level
-                    epa[comp] += 1
-                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
-               end
+                if !rec[comp].nil?
+                    temp_level = rec[comp].split("~")
+                    if temp_level[0] == level
+                        epa[comp] += 1
+                    else if level == "3" and temp_level[0].to_i > 3 
+                           temp_val = temp_level[0].to_f/3.0
+                           epa[comp] = epa[comp] + temp_val.round
+                         end 
+
+                    end
+                end
             end
 
         end 
@@ -496,9 +537,14 @@ module LsReports::CompetencyHelper
 
         rs_data.each do |rec|
             EPA[epa_code].each do |comp|
-                if !rec[comp].nil? and rec[comp][0] == level
-                   epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
-                    # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
+                if !rec[comp].nil? 
+                    temp_level = rec[comp].split("~")
+                    if temp_level[0] == level
+                       epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+                    else if level == "3" and temp_level[0] > "3"  ## load FoM records
+                            epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", " 
+                          end                
+                    end
                 end
             end
 
@@ -603,7 +649,7 @@ module LsReports::CompetencyHelper
         students_epa = {}
         temp_epa = []
         uniq_students = get_unique_medhub_id(rs_data_unfiltered)
-        uniq_students.each do |k, v|
+        uniq_students.each do |k, v| 
             courses = get_courses(k["MedhubID"], rs_data_unfiltered)
             temp_epa = hf_get_complete(courses)
             students_epa[k["MedhubID"]] = temp_epa

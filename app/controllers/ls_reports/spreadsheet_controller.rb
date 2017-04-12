@@ -38,6 +38,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         @comp_level1 = hf_comp_courses(@rs_data, "1")
         @comp_level0 = hf_comp_courses(@rs_data, "0")
 
+        #binding.pry
+
         @all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3") 
 
         #binding.pry

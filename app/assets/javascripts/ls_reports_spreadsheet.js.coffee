@@ -24,7 +24,6 @@ parseComments = (competency_comment) ->
 get_series_data = (series_data_hash, in_code) ->
   series_data = []
   for k of series_data_hash
-    #alert("k: " + k + " in_code: " + in_code)
     if series_data_hash.hasOwnProperty(k)
       if k.includes(in_code)
         series_data.push series_data_hash[k]
@@ -36,6 +35,7 @@ get_all_series_data = (series_data_hash) ->
     if series_data_hash.hasOwnProperty(k)
       series_data.push series_data_hash[k]
   series_data
+
 
 
 
@@ -80,6 +80,15 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
             show_legend_2 = true          #series_data_2 = "Null"
 
 
+          #render_to_2 = graph_target
+          #graph_title = "Domain: " + in_code
+          #graph_sub_title = "% Complete"
+          #series_data_name_2= "Class Mean"
+          #series_data_name_1 = in_code
+          #series_data_1 = series_data_1
+          #series_data_2 = series_data_2
+
+
           graph_type = "column"
 
           xAxis_category = xAxis_category
@@ -117,7 +126,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
            }]
 
 
-          window.chart2 = Highcharts.chart($.extend(true, null, theme_dark, {
+          window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
             chart: renderTo: render_to_2
             title: text: graph_title
             subtitle: text: graph_sub_title
@@ -371,8 +380,8 @@ $(document).ready ->
         tab = $(this).attr('data-tab-destination')
         tab = tab.split("^")
         temp_rs_data = {}
-        console.log("tab0" + tab[0])
-        console.log("tab1 " + tab[1])
+        #console.log("tab0" + tab[0])
+        #console.log("tab1 " + tab[1])
         if tab[0].includes("-")
           $('#DomainTabs a[href="#' + tab[0] + '"]').tab('show')
         else
@@ -384,8 +393,6 @@ $(document).ready ->
 
         data = $.parseJSON(rs_data)
         found_course = getObjects(data, 'CourseID', course_id[1])
-        #console.log(JSON.stringify(found_course, null, "    "))
-        #onsole.log("found_course: " + found_course[0].CourseID)
 
         $('.course_detail').remove
         $('.course_detail').html ''
@@ -393,7 +400,6 @@ $(document).ready ->
 
         #table = $('<table id=DynamicTable ></table>').appendTo('.course_detail')
         table = $('.course_detail').append('<table></table>')
-        console.log("length: " + found_course.length)
         exclude_headers = "MedhubID, StudentEmail, CoachEmail, CoachName, CourseID"
         content = ""
         col = ""
@@ -407,6 +413,7 @@ $(document).ready ->
               if not exclude_headers.includes(attrName)
                 col = "<td>" + attrName + "</td>"
                 temp_com = attrValue.split("^")
+                #console.log("*** temp_com[1]: " + temp_com[1])
                 if temp_com[1] != undefined
                       if temp_com[1] == "Comments: None"
                          col = col + '<td align="left">' + "Level: " + temp_com[0] + "</td>"
@@ -414,9 +421,7 @@ $(document).ready ->
                         col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
                 else
                   col = col + "<td align='left'>" + temp_com[0] + "</td>"
-                #console.log ("col: " + col)
                 content = "<tr>" + col + "</tr>"
-                #console.log("content:" + content)
                 table.append(content)
           i++
 
@@ -563,7 +568,6 @@ $(document).ready ->
 
     $('#update-theme').click ->
         button_val = $(this).html()
-        #alert("button_val:" + button_val)
         if button_val == 'Dark-Theme'
           $("#update-theme").text('Printer-Friendly')
           window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
@@ -601,7 +605,6 @@ $(document).ready ->
 
         return
 
-    Domain = []
     Domain = ["ICS", "MK", "PBLI", "PCP", "PPPD", "SBPIC"]
 
     $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
@@ -641,7 +644,12 @@ $(document).ready ->
               @graph_target = "data-visualization-" + 'student'  #"all-comp"
               student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
 
-
-
-
+      @comp_code = currentTab.split("-")
+      if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
+        @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @xAxis_category = @comp_domain[@comp_code[0]]
+        @graph_target = "data-visualization-" + @comp_code[0]
+        series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])
 

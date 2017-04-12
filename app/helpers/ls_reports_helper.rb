@@ -110,12 +110,17 @@ module LsReportsHelper
     end
   end
 
+  # merge hash with default select text so that dd doesn't default to a cohort.
+  # without this, select2 will always default to the first cohort in the list,
+  # which blocks the user from selecting the default selection. option w value
+  # == -1 is manually selected when select2 is called from the js on the option
+  # hash
   def hf_assignment_groups_select_hash ags
     outh = Hash.new{ |h,k| h[k] = [] }
     ags.each do |ag|
       outh[ag.owner.display_name] << [ag.title, ag.id]
     end
-    outh
+    {"" => [["Select a Cohort...",-1]]}.merge(outh)
   end
 
   def hf_report_filter_hash cohorts

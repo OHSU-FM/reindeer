@@ -34,6 +34,10 @@ Rails.application.routes.draw do
 
   resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update]
 
+  resources :comment_thread, only: :show do
+    resources :comments, only: [:index, :create, :destroy]
+  end
+
   namespace :assignment, path: Settings.assignments_route_name  do
     root to: "assignment_groups#index"
     resources :assignment_groups, param: :assignment_group_id, path: :groups, only: [:index, :show, :update] do
