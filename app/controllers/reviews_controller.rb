@@ -1,4 +1,5 @@
 class ReviewsController < ApplicationController
+  layout 'full_width_margins'
   before_action :set_review, only: [:show, :edit, :update, :destroy]
 
   # GET /reviews
@@ -53,6 +54,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def review_params
-      params[:review]
+      params.require(:review).permit(:user_id)
     end
 end

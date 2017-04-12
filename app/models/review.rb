@@ -4,7 +4,9 @@ class Review < ActiveRecord::Base
   has_many :sources
   has_many :role_aggregates, through: :sources
 
-  validates :user, presence: true
+  enum user_type: [:md, :icuapp, :crna]
+
+  validates :user, :user_type, presence: true
 
   def role_aggregates
     sources.map{|s|

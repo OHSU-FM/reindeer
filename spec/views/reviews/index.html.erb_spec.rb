@@ -2,13 +2,21 @@ require 'rails_helper'
 
 RSpec.describe "reviews/index", type: :view do
   before(:each) do
+    # @user = create :admin
+    # sign_in @user
     assign(:reviews, [
-      Review.create!(),
-      Review.create!()
+      create(:review),
+      create(:review)
     ])
+  end
+
+  it "should be successful" do
+    render
+    expect(controller.response).to be_success
   end
 
   it "renders a list of reviews" do
     render
+    expect(rendered).to have_selector('h1', text: "Reviews")
   end
 end

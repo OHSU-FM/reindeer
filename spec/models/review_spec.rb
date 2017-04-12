@@ -13,6 +13,10 @@ RSpec.describe Review, type: :model do
     it "presence of a user" do
       expect(build :review, user: nil).not_to be_valid
     end
+
+    it "presence of a user_type" do
+      expect(build :review, user_type: nil).not_to be_valid
+    end
   end
 
   describe "sources" do
@@ -27,6 +31,24 @@ RSpec.describe Review, type: :model do
 
     it "#role_aggregates should be a list of role_aggregates" do
       expect(review.role_aggregates.first).to be_a RoleAggregate
+    end
+  end
+
+  describe "user_type enum" do
+    it "holds user_type as enum" do
+      r = create :review
+      expect(r.md?).to be_truthy
+    end
+
+    it "has three possible user_types" do
+      expect(Review.user_types.count).to eq 3
+    end
+
+    it "can collect instances based on user_type val" do
+      r1 = create :review, user_type: "icuapp"
+      r2 = create :review, user_type: "md"
+      expect(Review.md.count).to eq 1
+      expect(Review.md.first).to eq r2
     end
   end
 end
