@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "reviews/index", type: :view do
   before(:each) do
-    # @user = create :admin
-    # sign_in @user
     assign(:reviews, [
       create(:review),
       create(:review)

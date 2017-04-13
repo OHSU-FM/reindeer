@@ -2,24 +2,33 @@
 
 <h1>Reviews</h1>
 
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
-      <th colspan="3">Who is it?</th>
+      <th>
+        who is it?
+      </th>
     </tr>
   </thead>
-
   <tbody>
-    <% @reviews.each do |review| %>
+    <% Review.user_types.keys.each do |key| %>
       <tr>
-        <td><%= link_to 'Show', review %></td>
-        <td><%= link_to 'Edit', edit_review_path(review) %></td>
-        <td><%= link_to 'Destroy', review, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <h3><%= key.to_s.upcase %></h3>
+        </td>
       </tr>
+
+      <% if Review.send(key).each do |review| %>
+        <tr>
+          <td><%= link_to review.user.full_name, review %></td>
+        </tr>
+      <% end.empty? %>
+        <tr>
+          <td>
+            <h6>None of these yet!</h6>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Review', new_review_path %>

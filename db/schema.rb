@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412213146) do
+ActiveRecord::Schema.define(version: 20170413202059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,10 +214,20 @@ ActiveRecord::Schema.define(version: 20170412213146) do
 
   create_table "reviews", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-    t.integer  "user_type",  default: 0
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "user_type",          default: 0
+    t.string   "title"
+    t.float    "clinical_fte"
+    t.float    "research_fte"
+    t.float    "research_grant_fte"
+    t.float    "research_dept_fte"
+    t.float    "administrative_fte"
+    t.float    "total_fte"
+    t.datetime "hire_date"
   end
+
+  add_index "reviews", ["user_id"], name: "index_reviews_on_user_id", unique: true, using: :btree
 
   create_table "role_aggregates", force: :cascade do |t|
     t.string   "pk_fieldname",        limit: 255

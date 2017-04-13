@@ -177,10 +177,5 @@ class LimeSurvey < ActiveRecord::Base
   def lime_config_link
     "#{Settings.lime_url}/admin/survey/sa/view/surveyid/#{sid}"
   end
-
-  def student_email_column
-    lime_data.column_names.select {|name|
-      name.include? "StudentEmail"}.first
-  end
 end
 

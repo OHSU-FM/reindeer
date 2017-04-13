@@ -9,6 +9,12 @@ RSpec.describe Review, type: :model do
     expect((create :review).user).to be_a(User)
   end
 
+  it "is unique per user" do
+    u = create :user
+    r = create :review, user: u
+    expect{ create :review, user: u }.to raise_error ActiveRecord::RecordNotUnique
+  end
+
   describe "validates" do
     it "presence of a user" do
       expect(build :review, user: nil).not_to be_valid
