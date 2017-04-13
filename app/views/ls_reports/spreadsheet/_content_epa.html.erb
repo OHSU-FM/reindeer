@@ -27,7 +27,7 @@
  <div class="container-fluid">
 
     <ul id="MainTabs" class="nav nav-tabs">
-        <li class="bold-italic"><a data-toggle="tab" href="#Pre-Clinical">Pre-Clinical</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#fom">Foundation of Medicine</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#transition">Transition Courses</a></li>
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
@@ -63,7 +63,7 @@
           </table>
         </div>
 
-         <div id="Pre-Clinical" class="tab-pane fade">
+         <div id="fom" class="tab-pane fade">
               <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
                 <tbody>
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
@@ -144,7 +144,7 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM"%>
+                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM" and !x["CourseName"].include? "703" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
