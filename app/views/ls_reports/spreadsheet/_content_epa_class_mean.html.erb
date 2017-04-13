@@ -3,7 +3,7 @@
 
     <ul id="GraphTabs" class="nav nav-tabs">
       <li class="active bold-italic"><a data-toggle="tab" href="#competency-graph">Competency-Graph</a></li>
-      <% if @permission_group_title.include? "Dean" %>
+      <% if @permission_group_title == "Dean" %>
          <li class="bold-italic"><a data-toggle="tab" href="#epa-graph">EPA-Graph</a></li>
       <% end %>
 

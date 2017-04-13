@@ -34,7 +34,7 @@
         <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>                
         <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">Shelf Exams</a></li>
 
-        <% if @permission_group_title.include? "Dean" %>                     
+        <% if @permission_group_title == "Dean" %>                     
             <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPAs</a></li> 
         <% end %>
 
