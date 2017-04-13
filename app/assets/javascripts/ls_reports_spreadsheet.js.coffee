@@ -126,7 +126,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
            }]
 
 
-          window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
+          window.chart2 = Highcharts.chart($.extend(true, null, theme_dark, {
             chart: renderTo: render_to_2
             title: text: graph_title
             subtitle: text: graph_sub_title
@@ -565,6 +565,19 @@ $(document).ready ->
           subtitle:
             text: 'Polar'
         return
+
+    $('#ShowAllComp').click ->
+        console.log("Is clicked!")
+        return unless gon?
+        @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = @all_comp_codes
+        @code = 'all-comp'
+        @graph_target = "data-visualization-" + "all-comp"
+        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+      return
 
     $('#update-theme').click ->
         button_val = $(this).html()

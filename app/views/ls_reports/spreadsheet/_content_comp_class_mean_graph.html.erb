@@ -1,4 +1,6 @@
 <div class="col-sm-2">
+  <button class="btn btn-info btn-info fa fa-bar-chart" id="ShowAllComp">Charts
+  </button> 
   <div class="panel-group" id="accordion">
     <% @comp_domain_desc.each do |key, desc|%>
         <%= render :partial=>'ls_reports/spreadsheet/content_comp_collapse', :locals=>{:comp_code => key} %>
@@ -9,7 +11,7 @@
 </div>  
 
 <div class="col-sm-6">
-      <div id="data-visualization-all-comp" style="min-width: 1000px; height: 600px; margin: 0 auto"></div>
+    <div id="data-visualization-all-comp" style="min-width: 1000px; height: 600px; margin: 0 auto"></div>
     <div id="comp-graph-buttons">
     <button id="plain1" class="btn btn-info btn-sm">Column</button>
     <button id="inverted1" class="btn btn-info btn-sm">Bar</button>

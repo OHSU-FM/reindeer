@@ -51,7 +51,7 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if x["CourseName"].include? "730" or x["CourseName"].include? "731" %>
+                     <% if x["CourseName"].include? "730" or x["CourseName"].include? "731"%>
                              <td class="bold-italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -81,7 +81,23 @@
               </table> 
         </div>
         <div id="transition" class="tab-pane fade">
-            <h4> *** TBD *** </h4>
+            <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+                <tbody>
+                     <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
+                     <% @rs_data.each do |x| %>
+                        <tr>
+                          <% if x["CourseName"].include? "TRAN 703" %> 
+
+                                 <td class="italic"> <%= x["CourseName"] %>
+                                     <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
+                                 </td>
+                                 <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>  
+
+                         <% end %>
+                        </tr>
+                     <% end %>
+                </tbody>
+              </table> 
         </div>
          <div id="shelfexams" class="tab-pane fade">
               <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
@@ -128,7 +144,7 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" %>
+                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM"%>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
