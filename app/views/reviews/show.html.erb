@@ -3,7 +3,7 @@
 
 <%= link_to 'Back', reviews_path %>
 
-<h1>Annual Review for <%= @review.user.full_name %></h1>
+<h1><%= @review.title %> for <%= @review.user.full_name %></h1>
 
 <p>This review has <%= pluralize(@review.sources.count, 'source') %>.</p>
 
