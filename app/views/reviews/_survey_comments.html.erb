@@ -1,4 +1,62 @@
-<p>comment placeholder</p>
-<% review.sources.where(sourceable_type: "RoleAggregate").each do |s| %>
-  <%= s %>
-<% end %>
+<h3>Comments</h3>
+<div class="row">
+  <div class="col-lg-6 col-sm-6 col-md-6">
+    <p>Employee Name: <%= @review.user.full_name %></p>
+  </div>
+  <div class="col-lg-6 col-sm-6 col-md-6">
+    <p>Date: 8/28/15</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 col-sm-6 col-md-6">
+    <p>Review Period: Academic Year 2014-2015</p>
+  </div>
+  <div class="col-lg-6 col-sm-6 col-md-6">
+    <p>Reviewer: Kirsch</p>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12 col-md-12">
+    <h4>Significant accomplishments over the past year</h4>
+    <ol>
+      <li>These handwritten notes are gibberish</li>
+      <li>But they wouldn't be if this was administered via LimeSurvey!</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12 col-md-12">
+    <h4>Performance Indexes (Rate from 1-10)</h4>
+    <ol>
+      <li>Exhibits Best Practices</li>
+      <li>Medical Decision Making</li>
+      <li>Contributions to Academic Mission/Leadership roles/Willingness to help out?</li>
+      <li>Interactions with superiors, colleagues, subordinates, patients, staff?</li>
+      <li>Dependability (on time for case starts)</li>
+      <li>Productivity compared to care team</li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12 col-md-12">
+    <h4>Goals for the upcoming academic year:</h4>
+    <ol>
+      <li>More national involvment (?)</li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ol>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-sm-12 col-md-12">
+    <h4>Concerns/Issues:</h4>
+    <ol>
+      <li></li>
+      <li></li>
+    </ol>
+  </div>
+</div>
+<%# <% 50.times do |i| %>
+<%#   <p><%= i %></p>
+<%# <% end %>
