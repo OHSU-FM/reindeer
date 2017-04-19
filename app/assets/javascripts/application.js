@@ -47,4 +47,4 @@
 //= require animations.js
 //= require form-utils.js
 //= require select2
-//= require simplemde
+//= require simplemde.min
