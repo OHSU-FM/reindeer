@@ -1,7 +1,6 @@
 class Assignment::UserAssignment < ActiveRecord::Base
   include ModelUtils
 
-  attr_accessible :user_id, :survey_assignment_id, :lime_token_tid
   belongs_to :user
   belongs_to :survey_assignment
   has_one :lime_survey, through: :survey_assignment

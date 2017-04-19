@@ -3,12 +3,12 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   self.table_name = :pg_trigger
   self.primary_key = :tgrelid
 
-  default_scope { 
+  default_scope {
     where(['tgname LIKE ? AND tgname LIKE ?', "tr_#{rule_prefix}%", "%cleaner"]) }
-  
+
   attr_accessible :sid_src, :sid_dest, :cols, :map_src, :map_dest
   attr_accessor :sid_src, :sid_dest, :cols, :map_src, :map_dest
- 
+
   validates_presence_of :sid_src, :sid_dest, :cols, :map_src, :map_dest
   validates_presence_of :lime_survey_src, :lime_survey_dest
   validates_length_of :cols, minimum: 1, maximum: MAX_COL_COUNT, allow_blank: false
@@ -24,15 +24,15 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   end
 
   ##
-  # name prefix for 
+  # name prefix for
   def self.rule_prefix; @rule_prefix ||= "lsrule"; end
   def lime_survey_dest; @lime_survey_dest ||= get_survey(sid_dest); end
   def lime_survey_src; @lime_survey_src ||= get_survey(sid_src); end
   def get_survey(sid); sid.present? ? LimeSurvey.find(sid) : nil; end
   def parser; @parser ||= LimeExt::SyncTriggerParser.new self.tgname; end
-  def sid_src; @sid_src ||= parser.sid_src; end  
+  def sid_src; @sid_src ||= parser.sid_src; end
   def sid_dest; @sid_dest ||= parser.sid_dest; end
-  def map_src; @map_src ||= parser.map_src; end  
+  def map_src; @map_src ||= parser.map_src; end
   def map_dest; @map_dest ||= parser.map_dest; end
   def cols; @cols ||= parser.cols; end
   def rulename; @rulename ||= new_record? ? '' : self[:rulename]; end
@@ -47,43 +47,19 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   ##
   # Are we ready to start using the cols enum?
   def cols_enum_ready?; sid_src.present? && sid_dest.present?; end
-  
+
   ##
   # Should we allow building a new column?
   def allow_more_cols?
     !cols_enum_empty? && cols_enum_ready? && !(cols.values.include?('') || cols.values.include?(nil)) && cols.values.count < MAX_COL_COUNT
   end
-  
+
   ##
-  # 
+  #
   def gen_rulename
     @rulename = "#{self.class.rule_prefix}_#{sid_src}_#{sid_dest}"
   end
-  
-  ##
-  # Return array of sids that are available
-  # - Token table exists
-  # - Responses table exists
-  def self.available_sids
-    r_prefix = "#{LimeSurvey.table_name.singularize}_"
-    t_prefix = "#{LimeExt.table_prefix}_tokens_"
-    query = "
-    SELECT responses.sid 
-      FROM (
-        SELECT replace(table_name, '#{r_prefix}', '')::integer as sid
-          FROM information_schema.tables
-          WHERE table_name ~ '^#{r_prefix}\\d+$'
-          ) as responses
-      JOIN (
-        SELECT replace(table_name, '#{t_prefix}', '')::integer as sid
-          FROM information_schema.tables
-          WHERE table_name ~ '^#{t_prefix}\\d+$' 
-      ) as tokens
-        ON tokens.sid = responses.sid
-    "
-     ActiveRecord::Base.connection.select_values(query).collect(&:to_i)
-  end
- 
+
   ##
   # Enumerator for sid_sources
   def sid_src_enum
@@ -125,7 +101,7 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   end
 
   ##
-  # List all available values that are not already used 
+  # List all available values that are not already used
   def cols_enum_filter(sid, vals, except_id)
     return [] unless cols_enum_ready?
     @cols_enum_filter = {} unless defined? @cols_enum_filter
@@ -142,7 +118,7 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   def map_src_enum
     [[:token, :token]] + cols_src_enum(map_src)
   end
-  
+
   def map_dest_enum
     cols_dest_enum(map_dest)
   end
@@ -152,7 +128,7 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   def create_queries
     gen_rulename
     ["
-      -- FN for sync updates 
+      -- FN for sync updates
       CREATE FUNCTION fn_#{suffix}()
       RETURNS TRIGGER
       LANGUAGE plpgsql
@@ -167,7 +143,7 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
       "
       -- TR for sync updates
       CREATE TRIGGER tr_#{suffix}
-        AFTER INSERT OR UPDATE ON #{src_table} 
+        AFTER INSERT OR UPDATE ON #{src_table}
         FOR EACH ROW EXECUTE PROCEDURE fn_#{suffix}();",
       "
       -- FN for cleaner
@@ -198,11 +174,11 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   end
 
   ##
-  # 
+  #
   def tr_delete tr
     "DROP TRIGGER #{tr} ON (
-      SELECT relname 
-      FROM pg_trigger pgt 
+      SELECT relname
+      FROM pg_trigger pgt
       JOIN pg_class pgc
         ON pgc.oid = pgt.tgrelid
       WHERE tgname = '#{tr}'
@@ -257,4 +233,28 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
     raise NotImplementedError.new()
   end
 
+  private
+  ##
+  # Return array of sids that are available
+  # - Token table exists
+  # - Responses table exists
+  def self.available_sids
+    r_prefix = "#{LimeSurvey.table_name.singularize}_"
+    t_prefix = "#{LimeExt.table_prefix}_tokens_"
+    query = "
+    SELECT responses.sid
+      FROM (
+        SELECT replace(table_name, '#{r_prefix}', '')::integer as sid
+          FROM information_schema.tables
+          WHERE table_name ~ '^#{r_prefix}\\d+$'
+          ) as responses
+      JOIN (
+        SELECT replace(table_name, '#{t_prefix}', '')::integer as sid
+          FROM information_schema.tables
+          WHERE table_name ~ '^#{t_prefix}\\d+$'
+      ) as tokens
+        ON tokens.sid = responses.sid
+    "
+    ActiveRecord::Base.connection.select_values(sanitize_sql(query)).collect(&:to_i)
+  end
 end

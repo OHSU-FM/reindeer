@@ -1,23 +1,16 @@
-##
-# the link between a survey
 module Assignment
   class SurveyAssignment < ActiveRecord::Base
-    attr_accessible :lime_survey_sid, :assignment_group_id,
-      :title, :gather_user_tokens, :user_assignments_attributes, :as_inline
     attr_accessor :gather_user_tokens
 
     belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:survey_assignments
-
     belongs_to :assignment_group
+
     has_many :user_assignments, :inverse_of=>:survey_assignment, :dependent=>:delete_all
 
-    validates :assignment_group,
-      presence: true
-
+    validates :assignment_group, presence: true
     validates :lime_survey,
       presence: true,
       if: Proc.new { |f| f.assignment_group.present? }
-
     validates :title,
       presence: true,
       if: Proc.new {|f| f.lime_survey_sid.present?}

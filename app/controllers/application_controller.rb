@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery with: :exception
   before_filter :authenticate_user!
   before_filter :dynamic_destroy, only: :update
   helper_method :auto_path
