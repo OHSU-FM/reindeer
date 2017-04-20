@@ -28,8 +28,6 @@ class User < ActiveRecord::Base
   has_one :dashboard, :dependent=>:destroy
   has_one :review, dependent: :destroy
 
-  include EdnaConsole::UserHasAssignments
-
   accepts_nested_attributes_for :user_externals, :allow_destroy=>true
 
   validates :username,

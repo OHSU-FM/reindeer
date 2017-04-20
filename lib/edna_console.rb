@@ -1,7 +1,6 @@
 require 'edna_console/ar_extensions'
 require 'edna_console/rails_admin'
 require 'edna_console/dashboard_lib'
-require 'edna_console/user_has_assignments'
 
 module EdnaConsole
     class Application < Rails::Application
