@@ -79,6 +79,8 @@ gem "simple_form"
 # UI: Misc
 ##############################
 
+gem "simplemde-rails"
+
 # Static Pages
 gem "high_voltage"
 # Statistics
@@ -140,10 +142,5 @@ group :development do
     gem "guard-rspec"
 end
 
-source "https://rails-assets.org" do
-  gem "rails-assets-simplemde"
-end
-
 gem 'rufus-scheduler'
 gem 'whenever', :require => false
-gem 'minitest', "~> 5.1" 

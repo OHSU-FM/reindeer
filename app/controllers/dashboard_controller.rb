@@ -39,7 +39,7 @@ class DashboardController < ApplicationController
     authorize! :create, @dash
     respond_to do |format|
       if @dash.save
-        format.html{ redirect_to @dash }
+        format.html{ redirect_to dashboard_path(@dash) }
         format.json{ render :json=>{:dash=>@dash},
                      :status=>:ok
         }

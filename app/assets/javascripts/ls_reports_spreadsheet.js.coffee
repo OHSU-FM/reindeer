@@ -65,7 +65,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
             show_legend_2 = true          #series_data_2 = "Null"
           else
             series_data_1 = get_series_data(series_data_hash, in_code)
-            series_data_2 = get_series_data(comp_class_mean_hash, in_code)            
+            series_data_2 = get_series_data(comp_class_mean_hash, in_code)
             #alert("series_data_2: " + series_data_2)
             render_to_2 = graph_target
             graph_title = "Domain: " + in_code
@@ -564,6 +564,7 @@ $(document).ready ->
             text: 'Polar'
         return
 
+<<<<<<< HEAD
     $('#ShowAllComp').click ->
         console.log("Is clicked!")
         return unless gon?
@@ -578,6 +579,8 @@ $(document).ready ->
         first_display = 1      
 
 
+=======
+>>>>>>> d93513a79197849909a1788d327cefb200c27203
     $('#update-theme').click ->
         button_val = $(this).html()
         if button_val == 'Dark-Theme'
@@ -622,8 +625,6 @@ $(document).ready ->
     $('a[data-toggle="tab"]').on 'shown.bs.tab', (e) ->
       # get current tab
       currentTab = $(e.target).text()
-      #alert("currentTab: " + currentTab)
-      #LastTab = $(e.relatedTarget).text()
       @comp_code = currentTab.split("-")
       if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
           return unless gon?
@@ -645,7 +646,11 @@ $(document).ready ->
               @code = 'all-comp'
               @graph_target = "data-visualization-" + "all-comp"
               comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+<<<<<<< HEAD
            else if not currentTab.includes("EPA-Graph")
+=======
+           else
+>>>>>>> d93513a79197849909a1788d327cefb200c27203
               return unless gon?
               @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
               @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
