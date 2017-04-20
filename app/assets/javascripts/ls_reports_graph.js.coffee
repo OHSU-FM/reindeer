@@ -17,8 +17,8 @@ Array::min=->
     data = graph.data()
 
     full_data = graph.full_data()
-    console.log ('data: ' + data)
-    console.log ('full_data: ' + full_data)
+    #console.log ('data: ' + data)
+    #console.log ('full_data: ' + full_data)
 
     max_item = data.max()
     if (max_item < 10 )

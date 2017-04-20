@@ -97,6 +97,11 @@
 
                     <div id="DetailCompetency<%= x["CourseID"] %>" class="tab-pane fade">
                          <table class="table borderless table-condensed table-striped ">
+                            <% if x["CourseName"].include? "FoM" %>
+                                <tr><td></td>
+                                    <td><b> ** You have earned enstrustable status for the following competencies in the Foundations of Medicine curriculum. </b></td>
+                                </tr>
+                            <% end %>
                             <% x.each do |k, v| %>
                                   <% if !v.nil?  %>                                    
                                        <% if v.include? "^" %>
@@ -106,11 +111,16 @@
                                                </td>
                                            
                                                 <% tmp_comment = v.split("^") %>
-                                                <td>Level <%= tmp_comment[0].gsub("~", ": ")   %>
-                                                    <% if tmp_comment[1] != "Comments: None" %>
-                                                          <hr ><b><font color="blue"><%= tmp_comment[1] %> </font></b>
-                                                    <% end %>
-                                                </td>
+                                                <% if x["CourseName"].include? "FoM" %>
+                                                      <% tmp_comment_fom = tmp_comment[0].split("~") %>
+                                                      <td><%= tmp_comment_fom[1] %></td>
+                                                <% else %>
+                                                    <td>Level <%= tmp_comment[0].gsub("~", ": ")   %>
+                                                        <% if tmp_comment[1] != "Comments: None" %>
+                                                              <hr ><b><font color="blue"><%= tmp_comment[1] %> </font></b>
+                                                        <% end %>
+                                                    </td>
+                                                <% end %>
                                             </tr>      
                                        <% end %>                                                                
                                   <% end %>

@@ -37,8 +37,6 @@ get_all_series_data = (series_data_hash) ->
   series_data
 
 
-
-
 create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code, in_series_name) ->
           console.log("graph_target:" + graph_target)
           if in_code == 'all-comp'
@@ -79,16 +77,6 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
             show_legend_1 = true
             show_legend_2 = true          #series_data_2 = "Null"
 
-
-          #render_to_2 = graph_target
-          #graph_title = "Domain: " + in_code
-          #graph_sub_title = "% Complete"
-          #series_data_name_2= "Class Mean"
-          #series_data_name_1 = in_code
-          #series_data_1 = series_data_1
-          #series_data_2 = series_data_2
-
-
           graph_type = "column"
 
           xAxis_category = xAxis_category
@@ -108,8 +96,10 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
                         }
             }
             },{
-                type: 'column'
+                type: 'scatter'
                 color: 'blue'
+                marker: { symbol: 'diamond'
+                }
                 name: series_data_name_2
                 colorByPoint: false
                 data: series_data_2
@@ -131,6 +121,10 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
             title: text: graph_title
             subtitle: text: graph_sub_title
             xAxis: categories: xAxis_category
+            tooltip: {
+              formatter: -> 
+                return this.x+'<br/>'+this.series.name+': '+this.y;
+            },
             series: series_option2
             yAxis: {
                 min: 0,
@@ -282,7 +276,7 @@ theme_light =
     '#aaeeee'
   ]
   chart:
-    backgroundColor: null
+    backgroundColor: 'white'
     style: fontFamily: 'sans-serif'
   title: style:
     fontSize: '16px'
@@ -354,21 +348,6 @@ $(document).ready ->
             placement: if typeof $(this).attr('data-placement') == 'undefined' then 'bottom' else $(this).attr('data-placement')
             trigger: 'hover'
         return
-    # hover all the tab, it will display the tab data
-    #$('#MyTabs a').hover (e) ->
-    #  e.preventDefault()
-    #  $(this).tab 'show'
-    #  return
-
-    # $('#MainTabs a').hover (e) ->
-    #  e.preventDefault()
-    #  $(this).tab 'show'
-    #  return
-
-    #$('#MyCompetencyTabs a').hover (e) ->
-    #  e.preventDefault()
-    #  $(this).tab 'show'
-    #  return
 
     $('#pk_selector').change ->
       $("[id^=CourseID").empty
@@ -403,6 +382,18 @@ $(document).ready ->
         exclude_headers = "MedhubID, StudentEmail, CoachEmail, CoachName, CourseID"
         content = ""
         col = ""
+        found_FOM = false
+        j = 0
+        while j < found_course.length
+          obj = found_course[j]
+          for key of obj
+            attrValue = obj[key]
+            if attrValue != null and attrValue.includes("FoM")
+              found_FOM = true
+              console.log ("found FoM course!")
+              break
+          j++
+
         i = 0
         while i < found_course.length
           obj = found_course[i]
@@ -413,13 +404,19 @@ $(document).ready ->
               if not exclude_headers.includes(attrName)
                 col = "<td>" + attrName + "</td>"
                 temp_com = attrValue.split("^")
-                #console.log("*** temp_com[1]: " + temp_com[1])
                 if temp_com[1] != undefined
-                      if temp_com[1] == "Comments: None"
-                         col = col + '<td align="left">' + "Level: " + temp_com[0] + "</td>"
+                  if temp_com[1] == "Comments: None"
+                    if found_FOM
+                      comp_fom = temp_com[0].split("~")
+                      if comp_fom[1] != undefined
+                          col = col + "<td align='left'>" + comp_fom[1] + "</td>"
                       else
-                        col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
-                else
+                        col = col + '<td align="left">' + "Level: " + comp_fom[0] + "</td>"
+                    else
+                      col = col + '<td align="left">' + "Level: " + temp_com[0] + "</td>"
+                  else 
+                    col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
+                else 
                   col = col + "<td align='left'>" + temp_com[0] + "</td>"
                 content = "<tr>" + col + "</tr>"
                 table.append(content)
@@ -504,22 +501,23 @@ $(document).ready ->
     #Highcharts.setOptions(Highcharts.theme_dark)
     #Save the HighChart Default Theme
     HCDefaults = $.extend(true, {}, Highcharts.getOptions(), {})
-
-    window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
-      chart:
-        renderTo: window.render_to
-        polar: true
-      title: text: graph_title
-      subtitle: text: ''
-      xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
-      series: window.series_option
-      yAxis: {
-          min: 0,
-          max: 100,
-          endOnTick:false,
-          tickInterval:25
-        }
-      }))
+    console.log ("@series_data: " + @series_data)
+    if @series_data != ""
+      window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
+        chart:
+          renderTo: window.render_to
+          polar: true
+        title: text: graph_title
+        subtitle: text: ''
+        xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
+        series: window.series_option
+        yAxis: {
+            min: 0,
+            max: 100,
+            endOnTick:false,
+            tickInterval:25
+          }
+        }))
 
     $('#plain1').click ->
         chart2.update
@@ -566,18 +564,19 @@ $(document).ready ->
             text: 'Polar'
         return
 
-    #$('#ShowAllComp').click ->
-    #    console.log("Is clicked!")
-    #    return unless gon?
-    #   @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
-    #    @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
-    #    @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
-     #   @series_name = if gon.series_name? then gon.series_name else ''
-     #   @xAxis_category = @all_comp_codes
-     #   @code = 'all-comp'
-     #   @graph_target = "data-visualization-" + "all-comp"
-     #   comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
-     # return
+    $('#ShowAllComp').click ->
+        console.log("Is clicked!")
+        return unless gon?
+        @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = @all_comp_codes
+        @code = 'all-comp'
+        @graph_target = "data-visualization-" + "all-comp"
+        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+        first_display = 1      
+
 
     $('#update-theme').click ->
         button_val = $(this).html()
@@ -636,7 +635,7 @@ $(document).ready ->
           @graph_target = "data-visualization-" + @comp_code[0]
           comp_ind_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0], @series_name)
           ## Competency graph
-      else if currentTab.includes("Competency")
+      else if currentTab.includes("Competency-Graph")
               return unless gon?
               @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
               @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
@@ -646,7 +645,7 @@ $(document).ready ->
               @code = 'all-comp'
               @graph_target = "data-visualization-" + "all-comp"
               comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
-           else 
+           else if not currentTab.includes("EPA-Graph")
               return unless gon?
               @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
               @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
@@ -655,7 +654,10 @@ $(document).ready ->
               @xAxis_category = @all_comp_codes
               @code = "student"  #'all-comp'
               @graph_target = "data-visualization-" + 'student'  #"all-comp"
-              student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+              #console.log("@all_comp_codes: " + @all_comp_codes)
+              #console.log("@series_data_2: " + @series_data_2)
+              if @all_comp_codes != ""
+                student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
 
       @comp_code = currentTab.split("-")
       if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")

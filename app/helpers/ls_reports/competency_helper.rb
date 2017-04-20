@@ -101,7 +101,7 @@ module LsReports::CompetencyHelper
                             "PCP" => "Provide patient-centered care that is compassionate, appropriate, and effective for the treatment of health problems and the promotion of health.",
                             "PPPD" => "Demonstrate a commitment to carrying out professional responsibilities, an adherence to ethical principles, and the qualities required to sustain lifelong personal and professional growth.",
                             "SBPIC" => "Demonstrate an awareness of and responsiveness to the larger context and system of healthcare, as well as the ability to effectively call upon other resources in the system to provide optimal care, including engaging in interprofessional teams in a manner that optimizes safe, effective patient and population-centered care."
-                        }
+    }
 
     COMP_DOMAIN = {  "ICS"  => ["ICS1", "ICS2", "ICS3", "ICS4", "ICS5", "ICS6", "ICS7", "ICS8"],
                      "MK"   => ["MK1", "MK2", "MK3", "MK4", "MK5"],
@@ -110,9 +110,9 @@ module LsReports::CompetencyHelper
                      "PPPD" => ["PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD5", "PPPD6", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "PPPD11"],
                      "SBPIC"=> ["SBPIC1", "SBPIC2", "SBPIC3", "SBPIC4", "SBPIC5"]
 
-                  }
+    }
 
-                        
+
     COMP_DESC = {   "PCP1" => "1. Gather essential and accurate information about patients and their conditions through history taking, physical examination, review of prior data and health records, laboratory data, imaging and other tests.", 
                     "PCP2" => "2. Interpret and critically evaluate historical information, physical examination findings, laboratory data, imaging studies, and other tests required for health screening and diagnosis.", 
                     "PCP3" => "3. Construct a prioritized differential diagnosis and make informed decisions about diagnostic and therapeutic interventions based on patient information and preferences, up-to-date scientific evidence, and clinical judgment.", 
@@ -161,11 +161,11 @@ module LsReports::CompetencyHelper
 
 
     COMP_CODES = ["ICS1", "ICS2", "ICS3", "ICS4", "ICS5", "ICS6", "ICS7","ICS8", 
-        "MK1", "MK2", "MK3", "MK4", "MK5", 
-        "PBLI1", "PBLI2", "PBLI3", "PBLI4", "PBLI5", "PBLI6", "PBLI7", "PBLI8",
-        "PCP1", "PCP2", "PCP3", "PCP4", "PCP5", "PCP6", 
-        "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD5", "PPPD6", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "PPPD11",
-        "SBPIC1", "SBPIC2", "SBPIC3", "SBPIC4", "SBPIC5"]
+                  "MK1", "MK2", "MK3", "MK4", "MK5", 
+                  "PBLI1", "PBLI2", "PBLI3", "PBLI4", "PBLI5", "PBLI6", "PBLI7", "PBLI8",
+                  "PCP1", "PCP2", "PCP3", "PCP4", "PCP5", "PCP6", 
+                  "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD5", "PPPD6", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "PPPD11",
+                  "SBPIC1", "SBPIC2", "SBPIC3", "SBPIC4", "SBPIC5"]
 
     ASSESSORS = {   "ICS1" => 6, "ICS2" => 3, "ICS3" => 3, "ICS4" => 3, "ICS5" => 7, "ICS6" => 3, "ICS7" => 3, "ICS8" => 3,
                     "MK1" => 4, "MK2" => 6, "MK3" => 3, "MK4" => 3, "MK5" => 5,
@@ -173,7 +173,7 @@ module LsReports::CompetencyHelper
                     "PCP1" => 8, "PCP2" => 8, "PCP3" => 8, "PCP4" => 3, "PCP5" => 3, "PCP6" => 3,
                     "PPPD1" => 6,"PPPD2" => 4,"PPPD3" => 3,"PPPD4" => 3,"PPPD5" => 3,"PPPD6" => 3,"PPPD7" => 3,"PPPD8" => 3,"PPPD9" => 8,"PPPD10" => 6,"PPPD11" => 3,
                     "SBPIC1" => 3,"SBPIC2" => 3,"SBPIC3" => 3,"SBPIC4" => 6,"SBPIC5" => 3
-                }
+    }
 
     EPA = { "EPA1" => ["PCP1", "ICS1", "ICS2", "ICS3", "ICS4", "PPPD1", "PPPD2", "PPPD3", "PPPD7", "PPPD10", "SBPIC3" ],
             "EPA2" => ["PCP1", "PCP2", "PCP3", "MK1", "MK2", "MK3", "PBLI1", "ICS6", "PPPD7", "PPPD10", "PPPD11", "SBPIC3"],
@@ -203,7 +203,7 @@ module LsReports::CompetencyHelper
               "EPA11" => "Obtain informed consent for tests and/or procedures",
               "EPA12" => "Perform general procedures of a physician ",              
               "EPA13" => "Identify system failures and contribute to a culture of safety and improvement"
-            }
+    }
 
     TOTAL_COMPETENCIES = 43
     TOTAL_DOMAINS = 6
@@ -237,18 +237,17 @@ module LsReports::CompetencyHelper
             comp_hash[comp] = 0
         end
         rs_data.each do |rec|
-         COMP_CODES.each do |comp|
-            if !rec[comp].nil?
-              temp_level = rec[comp].split("~")
-              if temp_level[0] == level
-                    comp_hash[comp] += 1                  
-               else if level == "3" and temp_level[0].to_i > 3 
-                       temp_val = temp_level[0].to_f/3.0
-                       comp_hash[comp] = comp_hash[comp] + temp_val.round
+            COMP_CODES.each do |comp|
+                if !rec[comp].nil?
+                    temp_level = rec[comp].split("~")
+                    if temp_level[0] == level
+                        comp_hash[comp] += 1                  
+                    elsif level == "3" and temp_level[0].to_i > 3 
+                        temp_val = temp_level[0].to_f/3.0
+                        comp_hash[comp] = comp_hash[comp] + temp_val.round
                     end
-               end
+                end
             end
-          end
         end 
 
         #binding.pry
@@ -268,10 +267,8 @@ module LsReports::CompetencyHelper
                     if temp_level[0] == level
                         competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
                         # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences 
-                    else if level == "3" and temp_level[0].to_i > 3 ## contains FoM - Pre-clinical courses
-                           competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
-                        end 
-
+                    elsif level == "3" and temp_level[0].to_i > 3 ## contains FoM - Pre-clinical courses
+                        competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
                     end
                 end
             end
@@ -290,12 +287,12 @@ module LsReports::CompetencyHelper
         percent_complete = 0.0
 
         comp_hash3.each do |index, value|
-                percent_complete = ((value.to_f/ASSESSORS[index])*100).round(0)
-                if percent_complete >= 100
-                    percent_complete_hash[index] = 100
-                else
-                    percent_complete_hash[index] = percent_complete
-                end 
+            percent_complete = ((value.to_f/ASSESSORS[index])*100).round(0)
+            if percent_complete >= 100
+                percent_complete_hash[index] = 100
+            else
+                percent_complete_hash[index] = percent_complete
+            end 
 
         end
 
@@ -320,7 +317,7 @@ module LsReports::CompetencyHelper
             end
 
         end
- 
+
         ave = ((total_ent/no_of_comp)*100).round(0)
         if ave >= 100
             return ave = 100
@@ -349,7 +346,7 @@ module LsReports::CompetencyHelper
             temp_comp_hash[comp] = 0.0
         end
         students_comp.each do |k,v|
-           v.each do |key, val|
+            v.each do |key, val|
                 temp_comp_hash[key] += val
 
             end
@@ -374,23 +371,22 @@ module LsReports::CompetencyHelper
 
     def hf_get_epa_desc epa_code
         ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td>" + 
-               "<b>#{epa_code} - </b> #{EPA_DESC[epa_code]}</td></tr></table>"
+            "<b>#{epa_code} - </b> #{EPA_DESC[epa_code]}</td></tr></table>"
         return ret_desc
     end 
 
 
     def hf_has_epa? rs_question
         #if parent_question.question.include? "Level 1"
-           comp_code = rs_question.question
-              
-           if LEVEL1[comp_code] 
-             return true
-           else if LEVEL3[comp_code]
-                   return true
-                else
-                   return false
-                end
-           end
+        comp_code = rs_question.question
+
+        if LEVEL1[comp_code] 
+            return true
+        elsif LEVEL3[comp_code]
+            return true
+        else
+            return false
+        end
         #if parent_question.question.include? "Level 3"
         #        return true
         #     else if parent_question.question.include? "Total MK"
@@ -399,17 +395,17 @@ module LsReports::CompetencyHelper
         #             return false
         #          end 
         #end
-        
+
     end 
 
     def hf_get_comp_desc rs_question
-        
+
         comp_code = rs_question.question
         if LEVEL1[comp_code]
             # comp_code contains "-P", need to replace it with "-E" as we display the desc side by side.
             e_code = comp_code.split("-").first + "-E"
             ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td><b>#{comp_code}</b> #{LEVEL1[comp_code]}</td><td>" + 
-                       "<b>#{e_code}</b> #{LEVEL3[e_code]}</td></tr></table>"
+                "<b>#{e_code}</b> #{LEVEL3[e_code]}</td></tr></table>"
 
             rs_question.question = comp_code.split("-").first 
             return ret_desc 
@@ -422,13 +418,13 @@ module LsReports::CompetencyHelper
     end
 
     def hf_get_comp_desc2 in_code
-        
+
         comp_code = in_code
         if LEVEL1[comp_code]
             # comp_code contains "-P", need to replace it with "-E" as we display the desc side by side.
             e_code = comp_code.split("-").first + "-E"
             ret_desc = "<table border=1 CELLPADDING=3 CELLSPACING=1 RULES=COLS FRAME=VSIDES ><tr><td><b>#{comp_code}</b> #{LEVEL1[comp_code]}</td><td>" + 
-                       "<b>#{e_code}</b> #{LEVEL3[e_code]}</td></tr></table>"
+                "<b>#{e_code}</b> #{LEVEL3[e_code]}</td></tr></table>"
             return ret_desc 
         end 
         if  LEVEL3[comp_code] 
@@ -440,31 +436,30 @@ module LsReports::CompetencyHelper
     def hf_total_competency in_comp
         total_comp = 0
         COMP_CODES.each do |c|
-           if !in_comp[c].nil?
-               total_comp += 1
-           end
+            if !in_comp[c].nil?
+                total_comp += 1
+            end
         end 
         return total_comp
     end
 
     # level = "0", "1", '2', "3"
-    
+
     def hf_total_level(in_comp,level)
         total_level = 0
         COMP_CODES.each do |c|
             if !in_comp[c].nil? 
                 temp_level = in_comp[c].split("~")
                 if temp_level[0] == level
-                   total_level += 1
-                else if level == "3" and temp_level[0].to_i > 3 
-                           temp_val = temp_level[0].to_f/3.0
-                           total_level = total_level + temp_val.round
-                      end 
+                    total_level += 1
+                elsif level == "3" and temp_level[0].to_i > 3 
+                    temp_val = temp_level[0].to_f/3.0
+                    total_level = total_level + temp_val.round                    
                 end
             end
         end 
         return total_level
- 
+
     end 
 
     def hf_level_comp_codes(in_comp, level)
@@ -473,10 +468,9 @@ module LsReports::CompetencyHelper
             if !in_comp[c].nil? 
                 temp_level = in_comp[c].split("~")
                 if temp_level[0] == level
-                   level_comp_codes << c << ", "
-                else if level == "3" and temp_level[0]  > "3"  ## load FoM - pre-clinical competencies
-                        level_comp_codes << c << ", "
-                    end
+                    level_comp_codes << c << ", "
+                elsif level == "3" and temp_level[0]  > "3"  ## load FoM - pre-clinical competencies
+                    level_comp_codes << c << ", "
                 end
             end
         end 
@@ -488,12 +482,11 @@ module LsReports::CompetencyHelper
         COMP_CODES.each do |c|
             if !in_comp[c].nil? 
                 temp_level = in_comp[c].split("~")
-               if temp_level[0] == level
-                   level_comp_codes.push c
-               else if level == "3" and temp_level[0] > "3"  ## load FoM - pre-clinical competencies
-                        level_comp_codes.push c
-                    end 
-               end
+                if temp_level[0] == level
+                    level_comp_codes.push c
+                elsif level == "3" and temp_level[0] > "3"  ## load FoM - pre-clinical competencies
+                    level_comp_codes.push c
+                end
             end
         end 
         return level_comp_codes  
@@ -514,11 +507,9 @@ module LsReports::CompetencyHelper
                     temp_level = rec[comp].split("~")
                     if temp_level[0] == level
                         epa[comp] += 1
-                    else if level == "3" and temp_level[0].to_i > 3 
-                           temp_val = temp_level[0].to_f/3.0
-                           epa[comp] = epa[comp] + temp_val.round
-                         end 
-
+                    elsif level == "3" and temp_level[0].to_i > 3 
+                        temp_val = temp_level[0].to_f/3.0
+                        epa[comp] = epa[comp] + temp_val.round
                     end
                 end
             end
@@ -540,10 +531,9 @@ module LsReports::CompetencyHelper
                 if !rec[comp].nil? 
                     temp_level = rec[comp].split("~")
                     if temp_level[0] == level
-                       epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
-                    else if level == "3" and temp_level[0] > "3"  ## load FoM records
-                            epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", " 
-                          end                
+                        epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+                    elsif level == "3" and temp_level[0] > "3"  ## load FoM records
+                        epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "              
                     end
                 end
             end
@@ -570,7 +560,7 @@ module LsReports::CompetencyHelper
             else
                 total_ent += temp_percent
             end 
-            
+
             #total_assess += ASSESSORS[index]
         end 
 
@@ -582,7 +572,7 @@ module LsReports::CompetencyHelper
         else
             return ave
         end
-        
+
     end 
 
     def hf_all_average_epas rs_data
@@ -590,10 +580,10 @@ module LsReports::CompetencyHelper
         total_ave = 0
         ave = 0
         for i in 1..13
-           epa = hf_epa(rs_data, i.to_s, "3")
-           ave = hf_average_epa epa
-           total_ave += ave
-           
+            epa = hf_epa(rs_data, i.to_s, "3")
+            ave = hf_average_epa epa
+            total_ave += ave
+
         end
         #TOTAL EPA = 13
         overall_ave_epa = (total_ave/13).round(0)       
@@ -632,11 +622,11 @@ module LsReports::CompetencyHelper
         student_epa = []
 
         for i in 1..13
-           epa = hf_epa(courses, i.to_s, "3")
-           complete = hf_average_epa epa
-           total_complete += complete
-           student_epa[i] = complete
-           
+            epa = hf_epa(courses, i.to_s, "3")
+            complete = hf_average_epa epa
+            total_complete += complete
+            student_epa[i] = complete
+
         end
         #TOTAL EPA = 13
         overall_epa_complete = (total_complete/13).round(0)
@@ -672,4 +662,4 @@ module LsReports::CompetencyHelper
     end 
 
 
-end 
+    end 

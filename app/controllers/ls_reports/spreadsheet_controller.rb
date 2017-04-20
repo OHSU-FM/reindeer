@@ -77,11 +77,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
       gon.comp_domain = hf_comp_domain
       gon.series_data_comp_2 = hf_average_comp (@comp_hash3)
-
       gon.all_comp_codes = hf_all_comp_codes
-
       @comp_class_mean = hf_competency_class_mean(@rs_data_unfiltered)
-      #binding.pry
       gon.comp_class_mean = @comp_class_mean 
       @permission_group_title = current_user.permission_group.title
 
