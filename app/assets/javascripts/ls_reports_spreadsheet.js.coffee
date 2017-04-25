@@ -496,7 +496,6 @@ $(document).ready ->
     #Highcharts.setOptions(Highcharts.theme_dark)
     #Save the HighChart Default Theme
     HCDefaults = $.extend(true, {}, Highcharts.getOptions(), {})
-    console.log ("@series_data: " + @series_data)
     if @series_data != ""
       window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
         chart:
@@ -648,8 +647,6 @@ $(document).ready ->
               @xAxis_category = @all_comp_codes
               @code = "student"  #'all-comp'
               @graph_target = "data-visualization-" + 'student'  #"all-comp"
-              #console.log("@all_comp_codes: " + @all_comp_codes)
-              #console.log("@series_data_2: " + @series_data_2)
               if @all_comp_codes != ""
                 student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
 

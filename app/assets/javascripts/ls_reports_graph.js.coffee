@@ -17,9 +17,6 @@ Array::min=->
     data = graph.data()
 
     full_data = graph.full_data()
-    #console.log ('data: ' + data)
-    #console.log ('full_data: ' + full_data)
-
     max_item = data.max()
     if (max_item < 10 )
             max_item = 10
@@ -36,8 +33,6 @@ Array::min=->
 
 
     category_labels = graph.category_labels()
-    console.log('category_labels: ' + category_labels)
-    
     chart_type = graph.chart_type
 
     switch chart_type
@@ -242,8 +237,6 @@ class LsGraphBase
             @unfiltered_series_name = '(All)'
 
         @title = if title? then title else ''
-
-        console.log('graph_type: ' + @chart_type)
 
         return
 
