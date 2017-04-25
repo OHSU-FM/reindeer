@@ -355,7 +355,6 @@ $(document).ready ->
       return
 
     $('a[data-tab-destination]').click ->
-
         tab = $(this).attr('data-tab-destination')
         tab = tab.split("^")
         temp_rs_data = {}
@@ -369,14 +368,10 @@ $(document).ready ->
         course_id = tab[1].split("~")
         return unless gon?
         rs_data = if gon.rs_data? then gon.rs_data else ''
-
         data = $.parseJSON(rs_data)
         found_course = getObjects(data, 'CourseID', course_id[1])
-
         $('.course_detail').remove
         $('.course_detail').html ''
-        #Create table html tag
-
         #table = $('<table id=DynamicTable ></table>').appendTo('.course_detail')
         table = $('.course_detail').append('<table></table>')
         exclude_headers = "MedhubID, StudentEmail, CoachEmail, CoachName, CourseID"
@@ -564,7 +559,7 @@ $(document).ready ->
             text: 'Polar'
         return
 
-<<<<<<< HEAD
+
     $('#ShowAllComp').click ->
         console.log("Is clicked!")
         return unless gon?
@@ -578,9 +573,6 @@ $(document).ready ->
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
         first_display = 1      
 
-
-=======
->>>>>>> d93513a79197849909a1788d327cefb200c27203
     $('#update-theme').click ->
         button_val = $(this).html()
         if button_val == 'Dark-Theme'
@@ -646,11 +638,8 @@ $(document).ready ->
               @code = 'all-comp'
               @graph_target = "data-visualization-" + "all-comp"
               comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
-<<<<<<< HEAD
+
            else if not currentTab.includes("EPA-Graph")
-=======
-           else
->>>>>>> d93513a79197849909a1788d327cefb200c27203
               return unless gon?
               @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
               @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
