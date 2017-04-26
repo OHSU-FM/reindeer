@@ -84,7 +84,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
     series_data_name_1 = "Class Mean"
     series_data_1 = series_data_2
     series_data_2 = "Null"
-    show_legend_1 = true        # No student data to show
+    show_legend_1 = true       
     show_legend_2 = false          #series_data_2 = "Null"
   else if in_code == 'student'
     series_data_1 = get_all_series_data(series_data_hash, "student")
