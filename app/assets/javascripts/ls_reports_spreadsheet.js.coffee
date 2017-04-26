@@ -20,119 +20,149 @@ parseComments = (competency_comment) ->
   else
     temp_com
 
+select_color = (in_code) ->
+  switch in_code
+    when "ICS" then color = '#7cb5ec'
+    when "MK" then color = '#f7a35c'
+    when "PBLI" then color = '#f45b5b'
+    when "PCP" then color = '#7798BF'
+    when "PPPD" then color = '#aaeeee'
+    when "SBPIC" then color = '#eeaaee'
+    else 
+        console.log ("Invalid code: " + in_code)
+  color
 
-get_series_data = (series_data_hash, in_code) ->
+get_series_data = (series_data_hash, in_code, in_type) ->
   series_data = []
   for k of series_data_hash
-    if series_data_hash.hasOwnProperty(k)
-      if k.includes(in_code)
-        series_data.push series_data_hash[k]
+      if series_data_hash.hasOwnProperty(k)
+          if k.includes(in_code)
+              if in_type == "student"
+                  selected_color = select_color(in_code)
+                  series_data.push {y: series_data_hash[k], color:selected_color}
+              else
+                series_data.push {y: series_data_hash[k], color:'black'}
+
   series_data
 
-get_all_series_data = (series_data_hash) ->
+get_all_series_data = (series_data_hash, in_type) ->
   series_data = []
   for k of series_data_hash
     if series_data_hash.hasOwnProperty(k)
-      series_data.push series_data_hash[k]
+      if in_type =="student"
+        if k.includes('ICS')
+          series_data.push {y: series_data_hash[k], color:'#7cb5ec'}
+        else if k.includes('MK')
+          series_data.push {y: series_data_hash[k], color:select_color("MK")}
+        else if k.includes('PBLI')
+          series_data.push {y: series_data_hash[k], color:select_color("PBLI")}
+        else if k.includes('PCP') 
+          series_data.push {y: series_data_hash[k], color:select_color("PCP")}
+        else if k.includes('PPPD')
+          series_data.push {y: series_data_hash[k], color:select_color("PPPD")}
+        else if k.includes('SBPIC')
+          series_data.push {y: series_data_hash[k], color:select_color("SBPIC")}
+        else
+          console.log ('found else: ' + k)
+          series_data.push series_data_hash[k]
+        
+      else
+        series_data.push series_data_hash[k]
   series_data
 
 
 create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code, in_series_name) ->
-          console.log("graph_target:" + graph_target)
-          if in_code == 'all-comp'
-            series_data_1 = get_all_series_data(series_data_hash)
-            series_data_2 = get_all_series_data(comp_class_mean_hash)
-            render_to_2 = graph_target
-            graph_title = "All Competencies"
-            graph_sub_title = "% Complete"
-            series_data_name_2= ""
-            series_data_name_1 = "Class Mean"
-            series_data_1 = series_data_2
-            series_data_2 = "Null"
-            show_legend_1 = true        # No student data to show
-            show_legend_2 = false          #series_data_2 = "Null"
-          else if in_code == 'student'
-            series_data_1 = get_all_series_data(series_data_hash)
-            series_data_2 = get_all_series_data(comp_class_mean_hash)
-            render_to_2 = graph_target
-            graph_title = "All Competencies"
-            graph_sub_title = "% Complete"
-            series_data_name_2= "Class Mean"
-            series_data_name_1 = in_series_name
-            series_data_1 = series_data_1
-            series_data_2 = series_data_2
-            show_legend_1 = true        # No student data to show
-            show_legend_2 = true          #series_data_2 = "Null"
-          else
-            series_data_1 = get_series_data(series_data_hash, in_code)
-            series_data_2 = get_series_data(comp_class_mean_hash, in_code)
-            #alert("series_data_2: " + series_data_2)
-            render_to_2 = graph_target
-            graph_title = "Domain: " + in_code
-            graph_sub_title = "% Complete"
-            series_data_name_2= "Class Mean"
-            series_data_name_1 = in_code
-            series_data_1 = series_data_1
-            series_data_2 = series_data_2
-            show_legend_1 = true
-            show_legend_2 = true          #series_data_2 = "Null"
+  date = new Date()
+  new_date = "As of Date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear()
+  if in_code == 'all-comp'
+    series_data_1 = get_all_series_data(series_data_hash, "student")
+    series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
+    render_to_2 = graph_target
+    graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
+    series_data_name_2= ""
+    series_data_name_1 = "Class Mean"
+    series_data_1 = series_data_2
+    series_data_2 = "Null"
+    show_legend_1 = true        # No student data to show
+    show_legend_2 = false          #series_data_2 = "Null"
+  else if in_code == 'student'
+    series_data_1 = get_all_series_data(series_data_hash, "student")
+    series_data_2 = get_all_series_data(comp_class_mean_hash, "mean")
+    render_to_2 = graph_target
+    graph_title = new_date
+    graph_sub_title = "<b>% Complete</b>"
+    series_data_name_2= "Class Mean"
+    series_data_name_1 = in_series_name
+    show_legend_1 = true        # No student data to show
+    show_legend_2 = true          #series_data_2 = "Null"
+  else
+    series_data_1 = get_series_data(series_data_hash, in_code, "student")
+    series_data_2 = get_series_data(comp_class_mean_hash, in_code, "mean")
+    render_to_2 = graph_target
+    graph_title = "Domain: " + in_code
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
+    series_data_name_2= "Class Mean"
+    series_data_name_1 = in_series_name
+    show_legend_1 = true
+    show_legend_2 = true          #series_data_2 = "Null"
 
-          graph_type = "column"
+  graph_type = "column"
 
-          xAxis_category = xAxis_category
+  xAxis_category = xAxis_category
 
-          series_option2 = [{
-            type: 'column'
-            name: series_data_name_1
-            colorByPoint: true
-            data: series_data_1
-            showInLegend: show_legend_1
-            legend: {
-              itemStyle: {
-                          width:'200px',
-                          textOverflow: 'ellipsis',
-                          overflow: 'hidden',
-                          font: '12px Helvetica'
-                        }
-            }
-            },{
-                type: 'scatter'
-                color: 'blue'
-                marker: { symbol: 'diamond'
+  series_option2 = [{
+    type: 'column'
+    name: series_data_name_1
+    colorByPoint: true
+    data: series_data_1
+    showInLegend: show_legend_1
+    legend: {
+      itemStyle: {
+                  width:'200px',
+                  textOverflow: 'ellipsis',
+                  overflow: 'hidden',
+                  font: '12px Helvetica'
                 }
-                name: series_data_name_2
-                colorByPoint: false
-                data: series_data_2
-                showInLegend: show_legend_2
-                legend: {
-                  itemStyle: {
-                              width:'200px',
-                              textOverflow: 'ellipsis',
-                              overflow: 'hidden',
-                              font: '12px Helvetica'
-                            }
-                }
+    }
+    },{
+        type: 'scatter'
+        color: 'black'
+        marker: { symbol: 'diamond'
+        }
+        name: series_data_name_2
+        colorByPoint: false
+        data: series_data_2
+        showInLegend: show_legend_2
+        legend: {
+          itemStyle: {
+                      width:'200px',
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                      font: '12px Helvetica'
+                    }
+        }
 
-           }]
+   }]
 
 
-          window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
-            chart: renderTo: render_to_2
-            title: text: graph_title
-            subtitle: text: graph_sub_title
-            xAxis: categories: xAxis_category
-            tooltip: {
-              formatter: -> 
-                return this.x+'<br/>'+this.series.name+': '+this.y;
-            },
-            series: series_option2
-            yAxis: {
-                min: 0,
-                max: 100,
-                endOnTick:false,
-                tickInterval:25
-              }
-            }))
+  window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
+    chart: renderTo: render_to_2
+    title: text: graph_title
+    subtitle: text: graph_sub_title
+    xAxis: categories: xAxis_category
+    tooltip: {
+      formatter: -> 
+        return this.x+'<br/>'+this.series.name+': '+this.y;
+    },
+    series: series_option2
+    yAxis: {
+        min: 0,
+        max: 100,
+        endOnTick:false,
+        tickInterval:25
+      }
+    }))
 
 
 
@@ -281,7 +311,7 @@ theme_light =
   title: style:
     fontSize: '16px'
     fontWeight: 'bold'
-    textTransform: 'uppercase'
+    textTransform: ''
   tooltip:
     borderWidth: 0
     backgroundColor: 'rgba(219,219,216,0.8)'
@@ -477,8 +507,10 @@ $(document).ready ->
                     }
         }
       },{
-        type: graph_type
+        type: 'scatter'
         color: 'lime' #FFFFFF'
+        marker: { symbol: 'diamond'
+        }        
         name: series_data_name_2
         colorByPoint: false
         data: series_data_2
@@ -650,12 +682,4 @@ $(document).ready ->
               if @all_comp_codes != ""
                 student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
 
-      @comp_code = currentTab.split("-")
-      if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
-        @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
-        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
-        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
-        @xAxis_category = @comp_domain[@comp_code[0]]
-        @graph_target = "data-visualization-" + @comp_code[0]
-        series_option2 = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0])
 
