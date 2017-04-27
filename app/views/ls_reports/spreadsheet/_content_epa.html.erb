@@ -19,7 +19,6 @@
      <tr>
         <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
         <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
- 
      </tr>
  </table>
 
@@ -31,16 +30,15 @@
         <li class="bold-italic"><a data-toggle="tab" href="#transition">Transition Courses</a></li>
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>                
+        <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">Shelf Exams</a></li>
 
-        <% if @permission_group_title == "Dean" %>                     
-            <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPAs</a></li> 
+        <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean"%>
+            <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPAs</a></li>
         <% end %>
 
-
-        <li class="bold-italic"><a data-toggle="tab" href="#Competencies">Competencies</a></li>         
-        <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>   
+        <li class="bold-italic"><a data-toggle="tab" href="#Competencies">Competencies</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
     </ul>
 
     <div class="tab-content">
@@ -70,15 +68,15 @@
                      <% @rs_data.each do |x| %>
                         <tr>
                           <% if x["CourseName"].include? "FoM" %>
-                                 <td class="italic"> <%= x["CourseName"] %>
-                                     <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
-                                 </td>
-                                 <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>   
-                         <% end %>
+                             <td class="italic"> <%= x["CourseName"] %>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
+                             </td>
+                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
+                          <% end %>
                         </tr>
                      <% end %>
                 </tbody>
-              </table> 
+              </table>
         </div>
         <div id="transition" class="tab-pane fade">
             <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
@@ -86,18 +84,16 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "TRAN 703" %> 
-
-                                 <td class="italic"> <%= x["CourseName"] %>
-                                     <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
-                                 </td>
-                                 <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>  
-
-                         <% end %>
+                          <% if x["CourseName"].include? "TRAN 703" %>
+                             <td class="italic"> <%= x["CourseName"] %>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
+                             </td>
+                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
+                          <% end %>
                         </tr>
                      <% end %>
                 </tbody>
-              </table> 
+              </table>
         </div>
          <div id="shelfexams" class="tab-pane fade">
               <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
@@ -106,15 +102,15 @@
                      <% @rs_data.each do |x| %>
                         <tr>
                           <% if x["CourseName"].include? "INTS 770" %>
-                                 <td class="italic"> <%= x["CourseName"] %>
-                                     <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
-                                 </td>
-                                 <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>   
-                         <% end %>
+                             <td class="italic"> <%= x["CourseName"] %>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
+                             </td>
+                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
+                          <% end %>
                         </tr>
                      <% end %>
                 </tbody>
-              </table> 
+              </table>
         </div>
 
         <div id="intersessions" class="tab-pane fade">
@@ -128,13 +124,13 @@
                                  <td class="italic"> <%= x["CourseName"] %>
                                      <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                                  </td>
-                                 <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>  
-                              <% end %> 
+                                 <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
+                              <% end %>
                          <% end %>
                         </tr>
                      <% end %>
                 </tbody>
-              </table>        
+              </table>
         </div>
 
         <div id="electives" class="tab-pane fade">
@@ -147,12 +143,12 @@
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
-                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>   
+                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
                      <% end %>
                     </tr>
                  <% end %>
                 </tbody>
-             </table>        
+             </table>
         </div>
 
         <div id="all_courses" class="tab-pane fade">
@@ -175,23 +171,23 @@
                     </tr>
                  <% end %>
                 </tbody>
-             </table>        
-        </div>  
+             </table>
+        </div>
 
         <div  id="Competencies" class="tab-pane fade">
 
-            <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body"> 
+            <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">
 
                 <tr>
                     <td><span><b>All Domains</b>
                           <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-All">Chart
-                          </button> 
-                             <%= render :partial=>'ls_reports/spreadsheet/modal_competency_graph' %>                    
+                          </button>
+                             <%= render :partial=>'ls_reports/spreadsheet/modal_competency_graph' %>
                         </span>
                     </td>
                     <td><b><i>Overall Competencies Progress </i></b>
                     </td>
-                </tr> 
+                </tr>
 
 
                 <% @comp_domain_desc.each do |key, value| %>
@@ -200,7 +196,7 @@
                         <span>
                             <b><%= key %></b>
                             <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-<%= key %>">Chart
-                            </button> 
+                            </button>
                                 <%= render :partial=>'ls_reports/spreadsheet/modal_competency', :locals=>{:comp_code=>key, :comp_desc=>value } %>
                         </span>
                     </td>
@@ -210,8 +206,8 @@
                         <span>
                             <div id="domain-<%= key %>" class = "progress" data-amount = "<%= domain_progress %>" >
                                 <div id="<%= key %>" class="amount" style="width: <%= 100-domain_progress %>%"> </div>
-                            </div>                            
-                        </span>                           
+                            </div>
+                        </span>
 
                     </td>
                   </tr>
@@ -222,7 +218,7 @@
                 <% end %>
             </table>
 
-        </div>   
+        </div>
 
         <div id="EPA" class="tab-pane fade">
              <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">
@@ -234,7 +230,7 @@
                             <h4><b>EPA </b></h4>
                             <span>
                                 <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#EPA0">Charts
-                                </button> 
+                                </button>
                                 <%= render :partial=>'ls_reports/spreadsheet/modal_epa_overall_progress', :locals=>{:i=>0, :overall_progress_val=>overall_ave_epa } %>
                             </span>
                         </td>
@@ -245,8 +241,8 @@
                                 <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
                                   <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
                                 </div>
-                            </span> 
-                        </td>                   
+                            </span>
+                        </td>
                     </tr>
                     <% for i in 1..13 %>
                         <tr>
@@ -254,12 +250,12 @@
                             <td class="text-right"><h4>EPA<%= i.to_s %></h4>
                                 <span>
                                     <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#EPA<%= i.to_s %>">Detail
-                                    </button> 
+                                    </button>
 
                                     <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content', :locals=>{:i=>i, :epa=>epa, :epa_desc=>epa_desc["EPA#{i}"], :assessors=> hf_assessors} %>
                                 </span>
                             </td>
-                            <td> 
+                            <td>
                                 <% ave = hf_average_epa(epa) %>
                                 <span>
                                     <h4><font color="purple">
@@ -268,7 +264,7 @@
                                 </span>
                                 <span>
                                     <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
-                                      <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>     
+                                      <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
                                     </div>
                                 </span>
                                 <!--<%= hf_display_epa_detail(epa) %> -->
@@ -277,7 +273,7 @@
                     <% end %>
                 </tbody>
             </table>
-                              
+
         </div>
 
     </div>
@@ -286,5 +282,3 @@
 
 <div style="height:450px;width:200px;"></div>
 <!-- Bumper for scroll-spy-->
-
-

@@ -3,18 +3,18 @@
 
     <ul id="GraphTabs" class="nav nav-tabs">
       <li class="active bold-italic"><a data-toggle="tab" href="#competency-graph">Competency-Graph</a></li>
-      <% if @permission_group_title == "Dean" %>
+      <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean" %>
          <li class="bold-italic"><a data-toggle="tab" href="#epa-graph">EPA-Graph</a></li>
       <% end %>
 
     </ul>
     <div class="tab-content">
         <div id="competency-graph" class="tab-pane fade in active">
-              <%= render :partial=>'ls_reports/spreadsheet/content_comp_class_mean_graph', :locals=>{:graph_color=>"dark"} %>   
+              <%= render :partial=>'ls_reports/spreadsheet/content_comp_class_mean_graph', :locals=>{:graph_color=>"dark"} %>
         </div>
 
         <div id="epa-graph" class="tab-pane fade in">
-              <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean_graph', :locals=>{:graph_color=>"dark"} %>   
+              <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean_graph', :locals=>{:graph_color=>"dark"} %>
         </div>
 
 

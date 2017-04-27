@@ -28,20 +28,20 @@ select_color = (in_code) ->
     when "PCP" then color = '#7798BF'
     when "PPPD" then color = '#aaeeee'
     when "SBPIC" then color = '#eeaaee'
-    else 
-        console.log ("Invalid code: " + in_code)
+    else
+      console.log ("Invalid code: " + in_code)
   color
 
 get_series_data = (series_data_hash, in_code, in_type) ->
   series_data = []
   for k of series_data_hash
-      if series_data_hash.hasOwnProperty(k)
-          if k.includes(in_code)
-              if in_type == "student"
-                  selected_color = select_color(in_code)
-                  series_data.push {y: series_data_hash[k], color:selected_color}
-              else
-                series_data.push {y: series_data_hash[k], color:'black'}
+    if series_data_hash.hasOwnProperty(k)
+      if k.includes(in_code)
+        if in_type == "student"
+          selected_color = select_color(in_code)
+          series_data.push {y: series_data_hash[k], color: selected_color}
+        else
+          series_data.push {y: series_data_hash[k], color: 'black'}
 
   series_data
 
@@ -56,7 +56,7 @@ get_all_series_data = (series_data_hash, in_type) ->
           series_data.push {y: series_data_hash[k], color:select_color("MK")}
         else if k.includes('PBLI')
           series_data.push {y: series_data_hash[k], color:select_color("PBLI")}
-        else if k.includes('PCP') 
+        else if k.includes('PCP')
           series_data.push {y: series_data_hash[k], color:select_color("PCP")}
         else if k.includes('PPPD')
           series_data.push {y: series_data_hash[k], color:select_color("PPPD")}
@@ -65,7 +65,7 @@ get_all_series_data = (series_data_hash, in_type) ->
         else
           console.log ('found else: ' + k)
           series_data.push series_data_hash[k]
-        
+
       else
         series_data.push series_data_hash[k]
   series_data
@@ -74,42 +74,36 @@ get_all_series_data = (series_data_hash, in_type) ->
 create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code, in_series_name) ->
   date = new Date()
   new_date = "As of Date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear()
+  render_to_2 = graph_target
+  show_legend_1 = true
+  show_legend_2 = true          #series_data_2 = "Null"
+
   if in_code == 'all-comp'
     series_data_1 = get_all_series_data(series_data_hash, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
-    render_to_2 = graph_target
     graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
     graph_sub_title = "<b>% Complete - " + new_date + "</b>"
-    series_data_name_2= ""
-    series_data_name_1 = "Class Mean"
     series_data_1 = series_data_2
     series_data_2 = "Null"
-    show_legend_1 = true       
     show_legend_2 = false          #series_data_2 = "Null"
+    series_data_name_1 = "Class Mean"
+    series_data_name_2 = ""
   else if in_code == 'student'
     series_data_1 = get_all_series_data(series_data_hash, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "mean")
-    render_to_2 = graph_target
     graph_title = new_date
     graph_sub_title = "<b>% Complete</b>"
-    series_data_name_2= "Class Mean"
     series_data_name_1 = in_series_name
-    show_legend_1 = true        # No student data to show
-    show_legend_2 = true          #series_data_2 = "Null"
+    series_data_name_2 = "Class Mean"
   else
     series_data_1 = get_series_data(series_data_hash, in_code, "student")
     series_data_2 = get_series_data(comp_class_mean_hash, in_code, "mean")
-    render_to_2 = graph_target
     graph_title = "Domain: " + in_code
     graph_sub_title = "<b>% Complete - " + new_date + "</b>"
-    series_data_name_2= "Class Mean"
     series_data_name_1 = in_series_name
-    show_legend_1 = true
-    show_legend_2 = true          #series_data_2 = "Null"
+    series_data_name_2 = "Class Mean"
 
   graph_type = "column"
-
-  xAxis_category = xAxis_category
 
   series_option2 = [{
     type: 'column'
@@ -123,13 +117,13 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
                   textOverflow: 'ellipsis',
                   overflow: 'hidden',
                   font: '12px Helvetica'
-                }
+                 }
     }
-    },{
+    },
+    {
         type: 'scatter'
         color: 'black'
-        marker: { symbol: 'diamond'
-        }
+        marker: { symbol: 'diamond' }
         name: series_data_name_2
         colorByPoint: false
         data: series_data_2
@@ -140,10 +134,10 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
                       font: '12px Helvetica'
-                    }
+                     }
         }
-
-   }]
+   }
+  ]
 
 
   window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
@@ -152,8 +146,8 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
     subtitle: text: graph_sub_title
     xAxis: categories: xAxis_category
     tooltip: {
-      formatter: -> 
-        return this.x+'<br/>'+this.series.name+': '+this.y;
+      formatter: ->
+        return this.x + '<br/>' + this.series.name + ': '+ this.y;
     },
     series: series_option2
     yAxis: {
@@ -331,14 +325,14 @@ theme_light =
 
 $(document).ready ->
 
+    return unless gon?
+
     # Load the fonts
     Highcharts.createElement 'link', {
       href: 'https://fonts.googleapis.com/css?family=Unica+One'
       rel: 'stylesheet'
       type: 'text/css'
     }, null, document.getElementsByTagName('head')[0]
-
-
 
     $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
     dom: '<"H"Tfr>t<"F"ip>',
@@ -388,12 +382,11 @@ $(document).ready ->
         tab = $(this).attr('data-tab-destination')
         tab = tab.split("^")
         temp_rs_data = {}
-        #console.log("tab0" + tab[0])
-        #console.log("tab1 " + tab[1])
         if tab[0].includes("-")
           $('#DomainTabs a[href="#' + tab[0] + '"]').tab('show')
         else
           $('#MyTabs a[href="#' + tab[0] + '"]').tab('show')
+
         $('.course_detail #course_name').val(tab[1])
         course_id = tab[1].split("~")
         return unless gon?
@@ -402,7 +395,6 @@ $(document).ready ->
         found_course = getObjects(data, 'CourseID', course_id[1])
         $('.course_detail').remove
         $('.course_detail').html ''
-        #table = $('<table id=DynamicTable ></table>').appendTo('.course_detail')
         table = $('.course_detail').append('<table></table>')
         exclude_headers = "MedhubID, StudentEmail, CoachEmail, CoachName, CourseID"
         content = ""
@@ -439,15 +431,14 @@ $(document).ready ->
                         col = col + '<td align="left">' + "Level: " + comp_fom[0] + "</td>"
                     else
                       col = col + '<td align="left">' + "Level: " + temp_com[0] + "</td>"
-                  else 
+                  else
                     col = col + "<td align='left'>" + "Level: " + temp_com[0] + "<br /><br /><font color='blue'>" + temp_com[1] + "</font></td>"
-                else 
+                else
                   col = col + "<td align='left'>" + temp_com[0] + "</td>"
                 content = "<tr>" + col + "</tr>"
                 table.append(content)
           i++
 
-    return unless gon?
     @series_data = if gon.series_data? then gon.series_data else ''
     @series_name = if gon.series_name? then gon.series_name else ''
 
@@ -478,7 +469,7 @@ $(document).ready ->
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
                       font: '12px Helvetica'
-                    }
+                     }
         }
       }]
     else
@@ -508,9 +499,9 @@ $(document).ready ->
         }
       },{
         type: 'scatter'
-        color: 'lime' #FFFFFF'
+        color: 'lime'
         marker: { symbol: 'diamond'
-        }        
+        }
         name: series_data_name_2
         colorByPoint: false
         data: series_data_2
@@ -560,7 +551,7 @@ $(document).ready ->
             inverted: true
             polar: false
           subtitle:
-              text: 'Inverted'
+            text: 'Inverted'
         return
 
     $('#plain').click ->
@@ -578,7 +569,7 @@ $(document).ready ->
             inverted: true
             polar: false
           subtitle:
-              text: 'Inverted'
+            text: 'Inverted'
         return
 
     $('#polar').click ->
@@ -592,7 +583,6 @@ $(document).ready ->
 
 
     $('#ShowAllComp').click ->
-        console.log("Is clicked!")
         return unless gon?
         @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
         @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
@@ -602,7 +592,7 @@ $(document).ready ->
         @code = 'all-comp'
         @graph_target = "data-visualization-" + "all-comp"
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
-        first_display = 1      
+        first_display = 1
 
     $('#update-theme').click ->
         button_val = $(this).html()
@@ -619,8 +609,8 @@ $(document).ready ->
             yAxis: {
                 min: 0,
                 max: 100,
-                endOnTick:false,
-                tickInterval:25
+                endOnTick: false,
+                tickInterval: 25
               }
             }))
         else
@@ -636,8 +626,8 @@ $(document).ready ->
             yAxis: {
                 min: 0,
                 max: 100,
-                endOnTick:false,
-                tickInterval:25
+                endOnTick: false,
+                tickInterval: 25
               }
             }))
 
@@ -649,37 +639,38 @@ $(document).ready ->
       # get current tab
       currentTab = $(e.target).text()
       @comp_code = currentTab.split("-")
-      if Domain.includes(@comp_code[0])   #currentTab.includes("PBLI")
-          return unless gon?
-          @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
-          @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
-          @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
-          @series_name = if gon.series_name? then gon.series_name else ''
-          @xAxis_category = @comp_domain[@comp_code[0]]
-          @graph_target = "data-visualization-" + @comp_code[0]
-          comp_ind_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0], @series_name)
-          ## Competency graph
+      if Domain.includes(@comp_code[0])
+        # Competency graph
+        return unless gon?
+
+        @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = @comp_domain[@comp_code[0]]
+        @graph_target = "data-visualization-" + @comp_code[0]
+        comp_ind_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0], @series_name)
       else if currentTab.includes("Competency-Graph")
-              return unless gon?
-              @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
-              @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
-              @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
-              @series_name = if gon.series_name? then gon.series_name else ''
-              @xAxis_category = @all_comp_codes
-              @code = 'all-comp'
-              @graph_target = "data-visualization-" + "all-comp"
-              comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+        return unless gon?
 
-           else if not currentTab.includes("EPA-Graph")
-              return unless gon?
-              @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
-              @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
-              @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
-              @series_name = if gon.series_name? then gon.series_name else ''
-              @xAxis_category = @all_comp_codes
-              @code = "student"  #'all-comp'
-              @graph_target = "data-visualization-" + 'student'  #"all-comp"
-              if @all_comp_codes != ""
-                student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+        @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = @all_comp_codes
+        @code = 'all-comp'
+        @graph_target = "data-visualization-" + "all-comp"
+        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
 
+      else if not currentTab.includes("EPA-Graph")
+        return unless gon?
 
+        @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+        @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = @all_comp_codes
+        @code = "student"  #'all-comp'
+        @graph_target = "data-visualization-" + 'student'  #"all-comp"
+        if @all_comp_codes != ""
+          student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)

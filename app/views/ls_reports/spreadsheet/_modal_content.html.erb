@@ -11,17 +11,17 @@
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
                      <h3 class="modal-title"> <%= x["StudentName"] %> - <%= x["CourseName"] %> </h3>
              </div>
-   
+
              <div class="modal-body">
               <div class="container-fluid">
                 <ul class="list-inline" id="MyCompetencyTabs">
-                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li> 
+                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li>
                     <li><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Competency Summary</li>
                     <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Competency Details</a></li>
 
                 </ul>
 
-                <div class="tab-content">  
+                <div class="tab-content">
                     <div id="Comments<%= x["CourseID"] %>" class="tab-pane fade in active">
                          <table class="table borderless table-condensed table-striped ">
                             <% x.each do |k, v| %>
@@ -36,7 +36,7 @@
                                        <% end %>
                                   <% end %>
                             <% end %>
-                         </table>  
+                         </table>
                     </div>
 
                     <div id="CoreData<%= x["CourseID"] %>" class="tab-pane fade">
@@ -50,8 +50,8 @@
                              <tr><h4>Total Competencies Achievable = <%= total_comp.to_s %> </h4></tr>
                              <tr>
                                  <td>Not Able to Access (Level 0)</td>
-                                 <td><%= total_level0.to_s %> </td> 
-                                <% comp_codes = hf_level_comp_codes2(x, "0") %>
+                                 <td><%= total_level0.to_s %> </td>
+                                <% comp_codes = hf_level_comp_codes(x, "0") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
                                         <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
@@ -61,7 +61,7 @@
                              <tr>
                                  <td>Pre-entrustable (Level 1)</td>
                                  <td><%= total_level1.to_s %> </td>
-                                <% comp_codes = hf_level_comp_codes2(x, "1") %>
+                                <% comp_codes = hf_level_comp_codes(x, "1") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
                                         <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-P") %>" ><%= "#{c} " %></a></span>
@@ -70,7 +70,7 @@
                             <tr>
                                 <td>Approching Entrustable (Level 2)</td>
                                 <td><%= total_level2.to_s %></td>
-                                <% comp_codes = hf_level_comp_codes2(x, "2") %>
+                                <% comp_codes = hf_level_comp_codes(x, "2") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
                                         <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
@@ -80,7 +80,7 @@
                             <tr>
                                 <td>Entrustable (Level 3)</td>
                                 <td><%= total_level3.to_s %> </td>
-                                <% comp_codes = hf_level_comp_codes2(x, "3") %>
+                                <% comp_codes = hf_level_comp_codes(x, "3") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
                                         <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
@@ -92,7 +92,7 @@
                                 <td><%= total_level3.to_s %> of <%= total_comp.to_s %></td>
                             </tr>
                          </table>
-                       
+
                     </div>
 
                     <div id="DetailCompetency<%= x["CourseID"] %>" class="tab-pane fade">
@@ -103,13 +103,13 @@
                                 </tr>
                             <% end %>
                             <% x.each do |k, v| %>
-                                  <% if !v.nil?  %>                                    
+                                  <% if !v.nil?  %>
                                        <% if v.include? "^" %>
                                             <tr>
                                                <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
                                                   <%= k %></a></span>
                                                </td>
-                                           
+
                                                 <% tmp_comment = v.split("^") %>
                                                 <% if x["CourseName"].include? "FoM" %>
                                                       <% tmp_comment_fom = tmp_comment[0].split("~") %>
@@ -121,11 +121,11 @@
                                                         <% end %>
                                                     </td>
                                                 <% end %>
-                                            </tr>      
-                                       <% end %>                                                                
+                                            </tr>
+                                       <% end %>
                                   <% end %>
                             <% end %>
-                         </table>  
+                         </table>
                     </div>
 
 
