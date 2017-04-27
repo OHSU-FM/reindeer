@@ -1,5 +1,13 @@
 @import 'ls_reports_graph';
 
+.modal {
+    overflow: hidden;
+}
+
+.modal-dialog {
+  width: 60%;
+  margin: auto;
+}
 
 .spreadsheet-body {
         background-color: #F2FFF2;
@@ -24,6 +32,7 @@
     font-weight: regular;
     font-style: italic;
     color: blue;
+    text-align: center;
 }
 
 .bold-italic {
@@ -166,7 +175,7 @@ a {
 
 /* tab color */
 .nav-tabs>li>a {
-  background-color: #333333; 
+  background-color: #555; 
   border-color: #777777;
   color:#fff;
 }

@@ -6,7 +6,7 @@
             <% @response_sets.each do |rs| %>
                 <% pquestion = rs.question %>
                 <th>
-                    <span data-toggle="tooltip" data-container="body" title="<%= strip_tags(pquestion.question) %>">
+                    <span data-toggle="tooltip" data-placement="right" data-container="body" title="<%= strip_tags(pquestion.question) %>">
                         <%= strip_tags(pquestion.question)[0..30] %>
                     </span>
 

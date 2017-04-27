@@ -581,6 +581,9 @@ $(document).ready ->
             text: 'Polar'
         return
 
+    $("[id^=Domain]").draggable handle: '.modal-header'
+    $("[id^=EPA]").draggable handle: '.modal-header'
+    $("[id^=CourseID]").draggable handle: '.modal-header'
 
     $('#ShowAllComp').click ->
         return unless gon?

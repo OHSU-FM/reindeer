@@ -10,8 +10,8 @@
              <div class="modal-body">
 
               <div class="container-fluid">
-                <ul class="list-inline" id="MyTabs">
-                    <li class="active"><a data-toggle="tab" href="#EPASummary<%= i %>" id="tab-1-epa-<%= i %>">EPA Summary</li>
+                <ul class="nav nav-tabs" id="MyTabs">
+                    <li class="active"><a data-toggle="tab" href="#EPASummary<%= i %>" id="tab-1-epa-<%= i %>">EPA Summary</a></li>
                     <li><a data-toggle="tab" href="#EPADetail<%= i %>" id="tab-2-epa-<%= i %>">EPA Details</a></li>
                     <li><a data-toggle="tab" href="#CourseDetail<%= i %>" id="tab-3-epa-<%= i %>" >Course Details</a></li>
                 </ul>
@@ -35,7 +35,7 @@
                              <% epa.each do |k, v| %>
                                 <% rem = (v-assessors[k])*(-1) %>  
 
-                                   <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
+                                   <td><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
                                    <%= k %></a></span></td>
 
                                     <td><font color="purple"><%= epa_level0[k] == 0? "" : epa_level0[k] %></td>
@@ -71,7 +71,7 @@
                             <% epa.each do |k, v| %>
                                 <tr>  
                                   <% if v != 0 %>
-                                       <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
+                                       <td><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
                                           <%= k %></a></span>
                                        </td>
                                        <td class="align-right"><font color="green">Level 3 = <%= v %></font></td>

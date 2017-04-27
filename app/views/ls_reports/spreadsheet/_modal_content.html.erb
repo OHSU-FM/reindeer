@@ -7,16 +7,17 @@
 <div id="CourseID<%= x["CourseID"]%>" class="modal fade" role="dialog">
      <div class="modal-dialog modal-lg">
          <div class="modal-content">
-             <div class="modal-header blue-italic">
+             <div class="modal-header">
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
-                     <h3 class="modal-title"> <%= x["StudentName"] %> - <%= x["CourseName"] %> </h3>
+                     <h3 class="modal-title blue-italic"> <%= x["StudentName"] %> - <%= x["CourseName"] %> </h3>
              </div>
 
              <div class="modal-body">
               <div class="container-fluid">
-                <ul class="list-inline" id="MyCompetencyTabs">
-                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li>
-                    <li><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Competency Summary</li>
+
+                <ul class="nav nav-tabs" id="MyCompetencyTabs">
+                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li> 
+                    <li><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Competency Summary</a></li>
                     <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Competency Details</a></li>
 
                 </ul>
@@ -54,7 +55,7 @@
                                 <% comp_codes = hf_level_comp_codes(x, "0") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
-                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
+                                        <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
                                     <% end %>
                                 </td>
                              </tr>
@@ -64,7 +65,7 @@
                                 <% comp_codes = hf_level_comp_codes(x, "1") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
-                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-P") %>" ><%= "#{c} " %></a></span>
+                                        <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-P") %>" ><%= "#{c} " %></a></span>
                                     <% end %>
                                 </td>
                             <tr>
@@ -73,7 +74,7 @@
                                 <% comp_codes = hf_level_comp_codes(x, "2") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
-                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
+                                        <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
                                     <% end %>
                                 </td>
                             </tr>
@@ -83,7 +84,7 @@
                                 <% comp_codes = hf_level_comp_codes(x, "3") %>
                                 <td>
                                     <% comp_codes.each do |c| %>
-                                        <a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
+                                        <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(c + "-E") %>" ><%= "#{c} " %></a></span>
                                     <% end %>
                                 </td>
                             </tr>
@@ -106,7 +107,7 @@
                                   <% if !v.nil?  %>
                                        <% if v.include? "^" %>
                                             <tr>
-                                               <td><a href="#" data-html="true" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
+                                               <td><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k + "-E") %>" >
                                                   <%= k %></a></span>
                                                </td>
 
