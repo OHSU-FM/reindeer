@@ -1,11 +1,24 @@
 <div id="top" class="section scrollspy"></div>
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Back', reviews_path %>
+<div class="row">
+  <%= link_to 'Back', reviews_path %>
+</div>
 
-<h1><%= @review.title %> for <%= @review.user.full_name %></h1>
+<div class="row">
+  <div class="col-lg-8 col-sm-10 col-md-7">
+    <h1><%= @review.title %> for <%= @review.user.full_name %></h1>
+  </div>
+  <div class="col-lg-2 col-sm-2 col-md-1">
+    <%= link_to "#{@review.id}.pdf", class: "btn btn-default" do %>
+      <i class="glyphicon glyphicon-file">Make it a PDF!</i>
+    <% end %>
+  </div>
+</div>
 
-<p>This review has <%= pluralize(@review.sources.count, 'source') %>.</p>
+<div class="row">
+  <p>This review has <%= pluralize(@review.sources.count, 'source') %>.</p>
+</div>
 
 <div class="row">
   <div class="col-lg-10 col-sm-12 col-md-7">

@@ -9,6 +9,14 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/1
   def show
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "#{@review.user.full_name.gsub(/( )/, '_')}_review",
+               template: "reviews/show.pdf.erb",
+               locals: {review: @review}
+      end
+    end
   end
 
   # GET /reviews/new

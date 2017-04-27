@@ -91,6 +91,9 @@ gem 'descriptive-statistics'
 
 gem 'smart_listing'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+
 ##############################
 # Analysis
 ##############################

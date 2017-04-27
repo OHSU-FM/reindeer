@@ -1,0 +1,5 @@
+<h1><%= @review.title %> for <%= @review.user.full_name %></h1>
+<%= render partial: "fte_numbers.html.erb", locals: {review: @review} %>
+<%= render partial: "clinical.html.erb", locals: {review: @review} %>
+<%= render partial: "education.html.erb", locals: {review: @review} %>
+<%= render partial: "survey_comments.html.erb", locals: {review: @review} %>
