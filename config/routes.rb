@@ -20,14 +20,6 @@ Rails.application.routes.draw do
         :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:graph
     end
     member do
-      get 'spreadsheet(/:pk(/:agg))', :action=>:show, :as=>:spreadsheet, :controller=>'ls_reports/spreadsheet',
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:spreadsheet
-    end
-    member do
-      get 'instrument(/:pk(/:agg))', :action=>:show, :as=>:instrument, :controller=>'ls_reports/instrument',
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}
-    end
-    member do
       get 'partial/:view_type/:gid(/:pk(/:agg))', :to=>'ls_reports/base#show_part', :as=>:part_of,
         :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/, :gid=>/[^\/]+/}
     end

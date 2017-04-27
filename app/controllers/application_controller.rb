@@ -65,7 +65,6 @@ class ApplicationController < ActionController::Base
         return main_app.dashboards_path if can?(:crud, Dashboard)
         return main_app.reports_path if can?(:read, :reports)
         return main_app.stats_path if can?(:read, :stats)
-        return main_app.charts_path if can?(:crud, Chart)
         return main_app.user_path(current_user) if current_user.present?
         return main_app.page_path('no_permissions')
       end

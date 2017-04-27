@@ -29,7 +29,6 @@
 //= require startup.js
 //= require scrollspy.js
 //= require typeahead.bundle.js
-//= require charts.js
 //= require reports.js
 //= require stats.js
 //= require users.js
@@ -37,9 +36,6 @@
 //= require ls_reports.js
 //= require ls_reports_filter.js
 //= require ls_reports_graph.js
-//= require ls_reports_spreadsheet.js
-//= require assignments.js
-//= require_tree ./assignments
 //= require sync_triggers.js
 //= require dataTables/dataTables.js
 //= require dataTables/extensions/TableTools/js/dataTables.tableTools.js
