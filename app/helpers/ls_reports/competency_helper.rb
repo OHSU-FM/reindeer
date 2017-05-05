@@ -238,7 +238,7 @@ module LsReports::CompetencyHelper
     end
     rs_data.each do |rec|
       COMP_CODES.each do |comp|
-        if !rec[comp].nil?
+        if rec[comp].to_s != ""
           temp_level = rec[comp].split("~")
           if temp_level[0] == level
             comp_hash[comp] += 1
@@ -262,7 +262,7 @@ module LsReports::CompetencyHelper
 
     rs_data.each do |rec|
       COMP_CODES.each do |comp|
-        if !rec[comp].nil?
+        if rec[comp].to_s != ""
           temp_level = rec[comp].split("~")
           if temp_level[0] == level
             competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
