@@ -265,10 +265,10 @@ module LsReports::CompetencyHelper
         if !rec[comp].nil?
           temp_level = rec[comp].split("~")
           if temp_level[0] == level
-            competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+            competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
             # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences
           elsif level == "3" and temp_level[0].to_i > 3 ## contains FoM - Pre-clinical courses
-            competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+            competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
           end
         end
       end
@@ -326,12 +326,12 @@ module LsReports::CompetencyHelper
     courses = {}
     students_comp = {}
     temp_comp = []
-    uniq_students = get_unique_medhub_id(rs_data_unfiltered)
+    uniq_students = get_unique_student_id(rs_data_unfiltered)
     uniq_students.each do |k, v|
-      rs_courses = get_courses(k["MedhubID"], rs_data_unfiltered)
+      rs_courses = get_courses(k["StudentID"], rs_data_unfiltered)
       comp_hash3 = hf_load_all_competencies(rs_courses, "3")
       ave_comp_per_student   = hf_average_comp(comp_hash3)
-      students_comp[k["MedhubID"]] = ave_comp_per_student
+      students_comp[k["StudentID"]] = ave_comp_per_student
     end
 
     temp_comp_hash = {}
@@ -420,7 +420,7 @@ module LsReports::CompetencyHelper
       if !in_comp[c].nil?
         total_comp += 1
       end
-    end
+     end
     return total_comp
   end
 
@@ -494,9 +494,9 @@ module LsReports::CompetencyHelper
         if !rec[comp].nil?
           temp_level = rec[comp].split("~")
           if temp_level[0] == level
-            epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+            epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
           elsif level == "3" and temp_level[0] > "3"  ## load FoM records
-            epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << ", "
+            epa_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
           end
         end
       end
@@ -563,12 +563,12 @@ module LsReports::CompetencyHelper
     return ASSESSORS
   end
 
-  def get_unique_medhub_id rs_data_unfiltered
-    return rs_data_unfiltered.uniq{|e| e["MedhubID"] }
+  def get_unique_student_id rs_data_unfiltered
+    return rs_data_unfiltered.uniq{|e| e["StudentID"] }
   end
 
-  def get_courses(medhubID, rs_data_unfiltered)
-    return rs_data_unfiltered.select {|c| c["MedhubID"] == medhubID }
+  def get_courses(studentID, rs_data_unfiltered)
+    return rs_data_unfiltered.select {|c| c["StudentID"] == studentID }
   end
 
   def hf_get_complete courses
@@ -594,11 +594,11 @@ module LsReports::CompetencyHelper
     courses = {}
     students_epa = {}
     temp_epa = []
-    uniq_students = get_unique_medhub_id(rs_data_unfiltered)
+    uniq_students = get_unique_student_id(rs_data_unfiltered)
     uniq_students.each do |k, v|
-      courses = get_courses(k["MedhubID"], rs_data_unfiltered)
+      courses = get_courses(k["StudentID"], rs_data_unfiltered)
       temp_epa = hf_get_complete(courses)
-      students_epa[k["MedhubID"]] = temp_epa
+      students_epa[k["StudentID"]] = temp_epa
     end
     total_epa = Array.new(14,0)
     class_mean_epa = []
