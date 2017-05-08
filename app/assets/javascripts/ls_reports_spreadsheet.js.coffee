@@ -24,13 +24,26 @@ select_color = (in_code) ->
   switch in_code
     when "ICS" then color = '#7cb5ec'
     when "MK" then color = '#f7a35c'
-    when "PBLI" then color = '#f45b5b'
+    when "PBLI" then color = '#f9c6c6'
     when "PCP" then color = '#7798BF'
     when "PPPD" then color = '#aaeeee'
     when "SBPIC" then color = '#eeaaee'
     else
       console.log ("Invalid code: " + in_code)
   color
+
+get_series_data_nc = (series_data_hash, in_code, in_type) ->
+  series_data = []
+  for k of series_data_hash
+    if series_data_hash.hasOwnProperty(k)
+      if k.includes(in_code)
+        if in_type == "student"
+          series_data.push {y: series_data_hash[k], color: '#d33af0'}
+        else
+          series_data.push {y: series_data_hash[k], color: 'black'}
+
+  series_data
+
 
 get_series_data = (series_data_hash, in_code, in_type) ->
   series_data = []
@@ -43,6 +56,15 @@ get_series_data = (series_data_hash, in_code, in_type) ->
         else
           series_data.push {y: series_data_hash[k], color: 'black'}
 
+  series_data
+
+get_all_series_data_nc = (series_data_hash, in_type) ->
+  series_data = []
+  for k of series_data_hash
+    if series_data_hash.hasOwnProperty(k)
+          series_data.push {y: series_data_hash[k], color:'#d33af0'}
+    else
+      series_data.push series_data_hash[k]
   series_data
 
 get_all_series_data = (series_data_hash, in_type) ->
@@ -71,9 +93,9 @@ get_all_series_data = (series_data_hash, in_type) ->
   series_data
 
 
-create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_hash, in_code, in_series_name) ->
+create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc,comp_class_mean_hash, in_code, in_series_name) ->
   date = new Date()
-  new_date = "As of Date: " + date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear()
+  new_date = "As of Date: " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()
   render_to_2 = graph_target
   show_legend_1 = true
   show_legend_2 = true          #series_data_2 = "Null"
@@ -82,7 +104,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
     series_data_1 = get_all_series_data(series_data_hash, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
     graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
-    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>" 
     series_data_1 = series_data_2
     series_data_2 = "Null"
     show_legend_2 = false          #series_data_2 = "Null"
@@ -90,26 +112,29 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
     series_data_name_2 = ""
   else if in_code == 'student'
     series_data_1 = get_all_series_data(series_data_hash, "student")
+    series_data_1_nc = get_all_series_data_nc(series_data_hash_nc, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "mean")
-    graph_title = new_date
+    graph_title = new_date + " (" + in_series_name + ")"
     graph_sub_title = "<b>% Complete</b>"
     series_data_name_1 = in_series_name
     series_data_name_2 = "Class Mean"
   else
     series_data_1 = get_series_data(series_data_hash, in_code, "student")
+    series_data_1_nc = get_series_data_nc(series_data_hash_nc, in_code, "student")
     series_data_2 = get_series_data(comp_class_mean_hash, in_code, "mean")
-    graph_title = "Domain: " + in_code
+    graph_title = "Domain: " + in_code + " (" + in_series_name + ")"
     graph_sub_title = "<b>% Complete - " + new_date + "</b>"
     series_data_name_1 = in_series_name
     series_data_name_2 = "Class Mean"
 
   graph_type = "column"
 
+  #data: series_data_1
+
   series_option2 = [{
     type: 'column'
     name: series_data_name_1
     colorByPoint: true
-    data: series_data_1
     showInLegend: show_legend_1
     legend: {
       itemStyle: {
@@ -118,7 +143,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
                   overflow: 'hidden',
                   font: '12px Helvetica'
                  }
-    }
+      }
     },
     {
         type: 'scatter'
@@ -145,17 +170,103 @@ create_graph = (graph_target, xAxis_category, series_data_hash, comp_class_mean_
     title: text: graph_title
     subtitle: text: graph_sub_title
     xAxis: categories: xAxis_category
+    series: series_option2
+    colors: [
+      '#7cb5ec'
+      '#f7a35c'
+      '#90ee7e'
+      '#7798BF'
+      '#aaeeee'
+      '#ff0066'
+      '#eeaaee'
+      '#55BF3B'
+      '#DF5353'
+      '#7798BF'
+      '#aaeeee'
+    ]
     tooltip: {
       formatter: ->
         return this.x + '<br/>' + this.series.name + ': '+ this.y;
     },
-    series: series_option2
-    yAxis: {
-        min: 0,
-        max: 100,
-        endOnTick:false,
-        tickInterval:25
-      }
+    yAxis: [{
+            labels: {
+                format: '{value}%',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            min: 0,
+            max:100,
+            title: {
+                text: 'Percent',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            }
+        }, { 
+            title: {
+                text: '',
+                style: {
+                    color: Highcharts.getOptions().colors[0]
+                }
+            },
+            min: 0,
+            max: 100,
+            labels: {
+                format: '{value}%',
+                style: {
+                    color: Highcharts.getOptions().colors[0],
+                    display:'none'
+                }
+            },
+            opposite: true
+        }],
+    tooltip: {
+        shared: true
+    },
+    plotOptions: {
+        series: {
+          pointPadding: 0, 
+          groupPadding: 0
+        }
+    },
+    series: [{
+    name: 'Non-Clinical',
+    type: 'column',
+    yAxis: 1,
+    data: series_data_1_nc,
+    tooltip: {
+        valueSuffix: ' %'
+    }
+    }, {
+        name: 'Clinical',
+        type: 'column',
+        yAxis: 1,
+        data: series_data_1,
+        tooltip: {
+            valueSuffix: ' %'
+        }        
+    }, {
+        type: 'scatter'
+        color: 'black'
+        marker: { symbol: 'diamond' }
+        name: series_data_name_2
+        colorByPoint: false
+        data: series_data_2
+        showInLegend: show_legend_2
+        tooltip: {
+          formatter: ->
+            return this.x + '<br/>' + this.series.name + ': '+ this.y;
+        },
+        legend: {
+          itemStyle: {
+                      width:'200px',
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                      font: '12px Helvetica'
+                     }
+        }
+    }]    
     }))
 
 
@@ -589,12 +700,13 @@ $(document).ready ->
         return unless gon?
         @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
         @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @series_data_2_nc = if gon.series_data_comp_2_nc? then gon.series_data_comp_2_nc else ''
         @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = @all_comp_codes
         @code = 'all-comp'
         @graph_target = "data-visualization-" + "all-comp"
-        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
         first_display = 1
 
     $('#update-theme').click ->
@@ -648,32 +760,35 @@ $(document).ready ->
 
         @comp_domain = if gon.comp_domain? then gon.comp_domain else ''
         @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @series_data_2_nc = if gon.series_data_comp_2_nc? then gon.series_data_comp_2_nc else ''
         @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = @comp_domain[@comp_code[0]]
         @graph_target = "data-visualization-" + @comp_code[0]
-        comp_ind_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @comp_code[0], @series_name)
+        comp_ind_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @comp_code[0], @series_name)
       else if currentTab.includes("Competency-Graph")
         return unless gon?
 
         @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
         @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @series_data_2_nc = if gon.series_data_comp_2_nc? then gon.series_data_comp_2_nc else ''
         @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = @all_comp_codes
         @code = 'all-comp'
         @graph_target = "data-visualization-" + "all-comp"
-        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
 
       else if not currentTab.includes("EPA-Graph")
         return unless gon?
 
         @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
         @series_data_2 = if gon.series_data_comp_2? then gon.series_data_comp_2 else ''
+        @series_data_2_nc = if gon.series_data_comp_2_nc? then gon.series_data_comp_2_nc else ''
         @comp_class_mean = if gon.comp_class_mean? then gon.comp_class_mean else ''
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = @all_comp_codes
         @code = "student"  #'all-comp'
         @graph_target = "data-visualization-" + 'student'  #"all-comp"
         if @all_comp_codes != ""
-          student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @comp_class_mean, @code, @series_name)
+          student_comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)

@@ -27,7 +27,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
     @comp_domain_desc = hf_comp_domain_desc
 
+    @non_clinical_course_arry = hf_get_non_clinical_courses
+
+    @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
     @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
+
+
     @comp_hash2 = hf_load_all_competencies(@rs_data, "2")
     @comp_hash1 = hf_load_all_competencies(@rs_data, "1")
     @comp_hash0 = hf_load_all_competencies(@rs_data, "0")
@@ -37,6 +42,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
+    
     @all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")
 
     if hf_found_competency(@response_sets)
@@ -71,9 +77,17 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     gon.rs_data = @rs_data.to_json
 
     gon.comp_domain = hf_comp_domain
-    gon.series_data_comp_2 = hf_average_comp (@comp_hash3)
+    @comp_data_clinical = hf_average_comp (@comp_hash3)
+    @comp_data_non_clinical = hf_average_comp (@comp_hash3_nc)
+
+    #@merged_comp = @comp_data_clinical.merge(@comp_data_non_clinical){|key,oldval,newval| [*oldval].to_a + [*newval].to_a }
+
+    gon.series_data_comp_2 = @comp_data_clinical
+    gon.series_data_comp_2_nc = @comp_data_non_clinical
+
     gon.all_comp_codes = hf_all_comp_codes
     @comp_class_mean = hf_competency_class_mean(@rs_data_unfiltered)
     gon.comp_class_mean = @comp_class_mean
+
   end
 end

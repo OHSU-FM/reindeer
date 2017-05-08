@@ -167,6 +167,12 @@ module LsReports::CompetencyHelper
                 "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD5", "PPPD6", "PPPD7", "PPPD8", "PPPD9", "PPPD10", "PPPD11",
                 "SBPIC1", "SBPIC2", "SBPIC3", "SBPIC4", "SBPIC5"]
 
+  COMP_CODES_CC = ["ICS1", "ICS2", "ICS4", "ICS5", "ICS6", "ICS7","ICS8",
+                   "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD10", "PPPD11",
+                   "PBLI3", "PBLI6", "PBLI8","PCP1", 
+                   "PCP2", "PCP3", "PCP4", "PCP5", "PCP6",
+                   "SBPIC3"]
+
   ASSESSORS = {   "ICS1" => 6, "ICS2" => 3, "ICS3" => 3, "ICS4" => 3, "ICS5" => 7, "ICS6" => 3, "ICS7" => 3, "ICS8" => 3,
                   "MK1" => 4, "MK2" => 6, "MK3" => 3, "MK4" => 3, "MK5" => 5,
                   "PBLI1" => 8, "PBLI2" => 4, "PBLI3" => 3, "PBLI4" => 4, "PBLI5" => 3, "PBLI6" => 3, "PBLI7" => 3, "PBLI8" => 3,
@@ -208,6 +214,26 @@ module LsReports::CompetencyHelper
   TOTAL_COMPETENCIES = 43
   TOTAL_DOMAINS = 6
 
+  def hf_get_non_clinical_courses
+    non_clinical_courses_arry = []
+    pathFile = File.join(Rails.root, 'tmp','non_clinical_courses.txt')
+    non_clinical_courses_arry = IO.readlines(pathFile)
+    non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
+    return non_clinical_courses_arry
+  end 
+
+  def tag_non_clinical_course(in_course)
+    course_code = in_course.split("]")
+    course_code[0] = course_code[0].gsub("[", "")
+
+    if @non_clinical_course_arry.include? course_code[0]
+        in_course = "*" + in_course
+    elsif course_code[0].include? "INTS"
+        in_course = "*" + in_course
+    end
+    return in_course
+  end
+
   def hf_comp_type(level)
     case level
     when "0" then return ""
@@ -231,6 +257,42 @@ module LsReports::CompetencyHelper
     return COMP_CODES
   end
 
+  def check_clinical_comp(in_course, in_level, in_comp_code)
+    course_code = in_course.split("]") 
+    course_code[0] = course_code[0].gsub("[", "")
+    if @non_clinical_course_arry.include?(course_code[0]) and in_level == "3" and COMP_CODES_CC.include?(in_comp_code)
+        #puts "in_course: " + course_code[0] + " in_comp_code: " + in_comp_code + " level: " + in_level
+        return false
+    else
+        return true
+    end
+
+  end
+
+
+  # nc means non-clinical courses
+  def hf_load_all_competencies_nc(rs_data, level)
+    comp_hash = {}
+    COMP_CODES.each do |comp|
+      comp_hash[comp] = 0      
+    end  
+
+    rs_data.each do |rec|
+      COMP_CODES.each do |comp|
+        if rec[comp].to_s != ""
+          temp_level = rec[comp].split("~")
+          if temp_level[0] == level and check_clinical_comp(rec["CourseName"], level, comp) == false
+                comp_hash[comp] += 1
+          #elsif temp_level[0] > "3"
+          #      puts "temp_level[0]: " + temp_level[0] + " - " + comp + " " + rec["CourseName"]
+          end
+        end
+      end
+    end
+    return comp_hash
+
+  end
+
   def hf_load_all_competencies(rs_data, level)
     comp_hash = {}
     COMP_CODES.each do |comp|
@@ -240,7 +302,7 @@ module LsReports::CompetencyHelper
       COMP_CODES.each do |comp|
         if rec[comp].to_s != ""
           temp_level = rec[comp].split("~")
-          if temp_level[0] == level
+          if temp_level[0] == level and check_clinical_comp(rec["CourseName"], level, comp)
             comp_hash[comp] += 1
           elsif level == "3" and temp_level[0].to_i > 3
             temp_val = temp_level[0].to_f/3.0
@@ -253,7 +315,7 @@ module LsReports::CompetencyHelper
     #binding.pry
     return comp_hash
   end
-
+ 
   def hf_comp_courses(rs_data, level)
     competency_courses = {}
     COMP_CODES.each do |comp|
@@ -265,10 +327,10 @@ module LsReports::CompetencyHelper
         if rec[comp].to_s != ""
           temp_level = rec[comp].split("~")
           if temp_level[0] == level
-            competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
+            competency_courses[comp] << tag_non_clinical_course(rec["CourseName"]) << "~" << rec["CourseID"] << "| "
             # need to check for 2, 1, 0 codes - to figure how many times a student had encountered these experiences
           elsif level == "3" and temp_level[0].to_i > 3 ## contains FoM - Pre-clinical courses
-            competency_courses[comp] << rec["CourseName"] << "~" << rec["CourseID"] << "| "
+            competency_courses[comp] << tag_non_clinical_course(rec["CourseName"]) << "~" << rec["CourseID"] << "| "
           end
         end
       end
