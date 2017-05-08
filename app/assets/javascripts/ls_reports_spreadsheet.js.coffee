@@ -38,7 +38,7 @@ get_series_data_nc = (series_data_hash, in_code, in_type) ->
     if series_data_hash.hasOwnProperty(k)
       if k.includes(in_code)
         if in_type == "student"
-          series_data.push {y: series_data_hash[k], color: '#d33af0'}
+          series_data.push {y: series_data_hash[k],  color: 'gray'}
         else
           series_data.push {y: series_data_hash[k], color: 'black'}
 
@@ -62,7 +62,7 @@ get_all_series_data_nc = (series_data_hash, in_type) ->
   series_data = []
   for k of series_data_hash
     if series_data_hash.hasOwnProperty(k)
-          series_data.push {y: series_data_hash[k], color:'#d33af0'}
+          series_data.push {y: series_data_hash[k],  color: 'gray'}
     else
       series_data.push series_data_hash[k]
   series_data
@@ -172,8 +172,8 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     xAxis: categories: xAxis_category
     series: series_option2
     colors: [
-      '#7cb5ec'
-      '#f7a35c'
+      '#aaeeee'
+      'gray'
       '#90ee7e'
       '#7798BF'
       '#aaeeee'
@@ -231,18 +231,18 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
         }
     },
     series: [{
-    name: 'Non-Clinical',
+    name: 'Clinical',
     type: 'column',
     yAxis: 1,
-    data: series_data_1_nc,
+    data: series_data_1,
     tooltip: {
         valueSuffix: ' %'
     }
     }, {
-        name: 'Clinical',
+        name: 'Non-Clinical',
         type: 'column',
         yAxis: 1,
-        data: series_data_1,
+        data: series_data_1_nc,
         tooltip: {
             valueSuffix: ' %'
         }        
@@ -263,7 +263,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
                       width:'200px',
                       textOverflow: 'ellipsis',
                       overflow: 'hidden',
-                      font: '12px Helvetica'
+                      font: '10px Helvetica'
                      }
         }
     }]    
@@ -437,6 +437,7 @@ theme_light =
 $(document).ready ->
 
     return unless gon?
+
 
     # Load the fonts
     Highcharts.createElement 'link', {
