@@ -43,7 +43,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
     
-    @all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")
+    #@all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")
 
     if hf_found_competency(@response_sets)
       @rs_data.sort_by!{|obj| obj["SubmitDt"]}.reverse!

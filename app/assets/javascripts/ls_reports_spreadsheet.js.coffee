@@ -38,7 +38,7 @@ get_series_data_nc = (series_data_hash, in_code, in_type) ->
     if series_data_hash.hasOwnProperty(k)
       if k.includes(in_code)
         if in_type == "student"
-          series_data.push {y: series_data_hash[k],  color: 'gray'}
+          series_data.push {y: series_data_hash[k],  color: '#d3d3d3'}
         else
           series_data.push {y: series_data_hash[k], color: 'black'}
 
@@ -62,7 +62,7 @@ get_all_series_data_nc = (series_data_hash, in_type) ->
   series_data = []
   for k of series_data_hash
     if series_data_hash.hasOwnProperty(k)
-          series_data.push {y: series_data_hash[k],  color: 'gray'}
+          series_data.push {y: series_data_hash[k],  color: '#d3d3d3'}
     else
       series_data.push series_data_hash[k]
   series_data
@@ -131,49 +131,15 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
 
   #data: series_data_1
 
-  series_option2 = [{
-    type: 'column'
-    name: series_data_name_1
-    colorByPoint: true
-    showInLegend: show_legend_1
-    legend: {
-      itemStyle: {
-                  width:'200px',
-                  textOverflow: 'ellipsis',
-                  overflow: 'hidden',
-                  font: '12px Helvetica'
-                 }
-      }
-    },
-    {
-        type: 'scatter'
-        color: 'black'
-        marker: { symbol: 'diamond' }
-        name: series_data_name_2
-        colorByPoint: false
-        data: series_data_2
-        showInLegend: show_legend_2
-        legend: {
-          itemStyle: {
-                      width:'200px',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      font: '12px Helvetica'
-                     }
-        }
-   }
-  ]
-
 
   window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
     chart: renderTo: render_to_2
     title: text: graph_title
     subtitle: text: graph_sub_title
     xAxis: categories: xAxis_category
-    series: series_option2
     colors: [
       '#aaeeee'
-      'gray'
+      '#d3d3d3'
       '#90ee7e'
       '#7798BF'
       '#aaeeee'
@@ -184,10 +150,6 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
       '#7798BF'
       '#aaeeee'
     ]
-    tooltip: {
-      formatter: ->
-        return this.x + '<br/>' + this.series.name + ': '+ this.y;
-    },
     yAxis: [{
             labels: {
                 format: '{value}%',
@@ -195,8 +157,8 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
                     color: Highcharts.getOptions().colors[1]
                 }
             },
-            min: 0,
-            max:100,
+            min: 0
+            max: 100
             title: {
                 text: 'Percent',
                 style: {
@@ -210,8 +172,8 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
                     color: Highcharts.getOptions().colors[0]
                 }
             },
-            min: 0,
-            max: 100,
+            min: 0
+            max: 100
             labels: {
                 format: '{value}%',
                 style: {
@@ -233,18 +195,16 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     series: [{
     name: 'Clinical',
     type: 'column',
-    yAxis: 1,
     data: series_data_1,
     tooltip: {
-        valueSuffix: ' %'
+        valueSuffix: '%'
     }
     }, {
         name: 'Non-Clinical',
         type: 'column',
-        yAxis: 1,
         data: series_data_1_nc,
         tooltip: {
-            valueSuffix: ' %'
+            valueSuffix: '%'
         }        
     }, {
         type: 'scatter'
@@ -255,8 +215,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
         data: series_data_2
         showInLegend: show_legend_2
         tooltip: {
-          formatter: ->
-            return this.x + '<br/>' + this.series.name + ': '+ this.y;
+            valueSuffix: '%'
         },
         legend: {
           itemStyle: {
