@@ -50,7 +50,30 @@ module LsReports::SpreadsheetHelper
     def hf_transpose_titles response_sets
         result = []
         response_sets.each do |rs|
-            result.push rs.title
+        case rs.title
+            when "PPPD01"
+              result.push "PPPD1"
+            when "PPPD02"
+              result.push "PPPD2"
+            when "PPPD03"
+              result.push "PPPD3"
+            when "PPPD04"
+              result.push "PPPD4"
+            when "PPPD05"
+              result.push "PPPD5"
+            when "PPPD06"
+              result.push "PPPD6"
+            when "PPPD07"
+              result.push "PPPD7"
+            when "PPPD08"
+              result.push "PPPD8"
+            when "PPPD09"
+              result.push "PPPD9"
+            else
+              result.push rs.title
+            end
+
+
         end
         return result
     end 

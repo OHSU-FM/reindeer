@@ -17,13 +17,14 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @lime_survey.wipe_response_sets
 
     @response_sets = hf_flatten_response_sets @lime_survey
-
     @rs_data = hf_transpose_response_sets @response_sets
+
     @rs_data.sort_by!{|obj| obj["StartDt"]}
     @rs_questions = hf_transpose_questions @response_sets
 
     @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
     @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
+
     @rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
     @comp_domain_desc = hf_comp_domain_desc
 

@@ -115,7 +115,9 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     series_data_1_nc = get_all_series_data_nc(series_data_hash_nc, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "mean")
     graph_title = new_date + " (" + in_series_name + ")"
-    graph_sub_title = "<b>% Complete</b>"
+    graph_sub_title = "<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
+<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
+
     series_data_name_1 = in_series_name
     series_data_name_2 = "Class Mean"
   else
@@ -193,19 +195,23 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
         }
     },
     series: [{
-    name: 'Clinical',
+    name: 'Clinical Courses',
     type: 'column',
     data: series_data_1,
     tooltip: {
         valueSuffix: '%'
     }
     }, {
-        name: 'Non-Clinical',
+        name: 'Non-Clinical Courses',
         type: 'column',
         data: series_data_1_nc,
         tooltip: {
-            valueSuffix: '%'
-        }        
+          valueSuffix: '%'
+          formatter: ->       
+              return '<b>'+ this.x +'</b>' + '<br/><span style="color:'+ this.point.series.color +'"> ' + this.point.series.name + ': ' + this.y+'%</span>';
+
+        } 
+               
     }, {
         type: 'scatter'
         color: 'black'
