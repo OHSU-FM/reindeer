@@ -230,7 +230,10 @@ module LsReports::CompetencyHelper
         in_course = "*" + in_course
     elsif course_code[0].include? "INTS"
         in_course = "*" + in_course
+    elsif in_course.include? "Non-Clinical Foundations of Medicine"
+        in_course = "*" + in_course
     end
+    
     return in_course
   end
 
