@@ -119,7 +119,8 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS" %>
+                          <% if x["CourseName"].include? "INTS 771" or x["CourseName"].include? "INTS 772" or x["CourseName"].include? "INTS 773" or x["CourseName"].include? "INTS 774"%>
+                         
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
