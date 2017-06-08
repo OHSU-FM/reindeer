@@ -6,7 +6,7 @@
     </div>
 </div>
 <div class="fade-in four">
-    <% if @rs_data.count <= 20 %>
+    <% if @pk != "_" %>
     	<%= render :partial=>'ls_reports/spreadsheet/content_epa', :locals=>{:lime_survey=>@lime_survey}%>
     <% else %>
         <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean' %>
