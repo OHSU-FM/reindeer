@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170413202059) do
+ActiveRecord::Schema.define(version: 20170607210219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,14 @@ ActiveRecord::Schema.define(version: 20170413202059) do
     t.integer "df",                   null: false
     t.decimal "t",                    null: false
     t.decimal "alpha", default: 0.05, null: false
+  end
+
+  create_table "csv_sources", force: :cascade do |t|
+    t.string   "field1"
+    t.integer  "field2"
+    t.datetime "field3"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "dashboard_widgets", force: :cascade do |t|
@@ -168,6 +176,17 @@ ActiveRecord::Schema.define(version: 20170413202059) do
 
   add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
   add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
+
+  create_table "on_time_starts", force: :cascade do |t|
+    t.string   "provider"
+    t.string   "site"
+    t.integer  "total_first_cases"
+    t.integer  "late_starts"
+    t.integer  "on_time_starts"
+    t.float    "pct_on_time"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "permission_groups", force: :cascade do |t|
     t.text     "title",                      null: false

@@ -28,6 +28,7 @@ gem 'protected_attributes'
 # Config file loader
 # see ./lib/settings.rb and ./config/settings.yml for details
 gem 'settingslogic'
+gem 'roo'
 
 # Authorization
 gem 'cancancan'

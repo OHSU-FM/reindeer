@@ -1,0 +1,24 @@
+<h1>CSV Sources</h1>
+<p><%= link_to "home", root_path %></p>
+<p>
+  Download:
+  <%# <%= link_to "CSV", products_path(format: "csv") %> |
+  <%# <%= link_to "Excel", products_path(format: "xls") %>
+</p>
+
+<table id="sources">
+  <tr>
+    <th>Product Name</th>
+    <th>Release Date</th>
+    <th>Price</th>
+  </tr>
+  <% @csv_sources.each do |source| %>
+    <tr>
+      <td><%= source.field1 %></td>
+      <td><%= source.field3.strftime("%B %e, %Y") %></td>
+      <td><%= number_to_currency(source.field2) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "Import source", new_csv_source_import_path %></p>

@@ -1,0 +1,19 @@
+<h3>On Time Starts</h3>
+<table class="table table-hover">
+  <tr>
+    <td>Site</td>
+    <td># on Time</td>
+    <td># of Late Starts</td>
+    <td># of First Cases</td>
+    <td>% on Time</td>
+  </tr>
+  <% review.on_time_starts_by_site.each do |ots| %>
+    <tr>
+      <td><%= ots.site %></td>
+      <td><%= ots.on_time_starts %></td>
+      <td><%= ots.late_starts %></td>
+      <td><%= ots.total_first_cases %></td>
+      <td><%= ots.pct_on_time %></td>
+    </tr>
+  <% end %>
+</table>

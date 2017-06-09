@@ -8,9 +8,20 @@ class Review < ActiveRecord::Base
 
   validates :user, :user_type, presence: true
 
-  def role_aggregates
-    sources.map{|s|
-      s.sourceable if s.sourceable_type == "RoleAggregate"
-    }
+  SOURCE_TYPES = [:role_aggregates, :on_time_starts]
+
+  def method_missing name, *args, &block
+    if SOURCE_TYPES.include? name
+      sources.map {|s|
+        s.sourceable if s.sourceable_type == name.to_s.classify
+      }
+    else
+      super
+    end
+  end
+
+  # a list of hashes
+  def on_time_starts_by_site
+    on_time_starts
   end
 end

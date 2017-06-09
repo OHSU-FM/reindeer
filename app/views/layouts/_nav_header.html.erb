@@ -31,6 +31,8 @@
           <%= nav_link_to('Reviews', reviews_path, :class=>'ls_reports-link')%>
         <% end %>
 
+        <%= nav_link_to('Uploads', new_csv_source_import_path, class: 'ls_reports-link') %>
+
         <% if current_user.present? %>
         <li>
           <div style="" class="btn-group btn navbar-btn navbar-right">

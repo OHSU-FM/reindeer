@@ -1,0 +1,35 @@
+<h1>CSV Source Import</h1>
+
+<p>A CSV or Excel file can be used to import records. The first row should be the column name. The following columns are allowed.</p>
+
+<ul>
+  <% CsvSource.columns.each do |column| %>
+    <% if column.name.in? ["id", *CsvSource.attribute_names] %>
+      <li>
+        <strong><%= column.name %></strong> -
+        <%= column.type.to_s.titleize %> type
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<p>If an <strong>id</strong> is supplied it will update the matching record instead of creating a new one.</p>
+
+<%= form_for @csv_source_import do |f| %>
+  <% if @csv_source_import.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@csv_source_import.errors.count, "error") %> prohibited this import from completing:</h2>
+      <ul>
+        <% @csv_source_import.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.select :kind_of, [['On Time Starts', 'on_time_starts'], ['CSV Source', 'csv_source']] %>
+    <%= f.file_field :file %>
+  </div>
+  <div class="buttons"><%= f.submit "Import" %></div>
+<% end %>
