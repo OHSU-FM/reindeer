@@ -1,0 +1,32 @@
+<div class="col-lg-10 col-sm-12 col-md-7">
+  <div id="introduction" class="section scrollspy">
+    <%= render partial: "crna_introduction", locals: {review: review} %>
+  </div>
+  <div id="averages" class="section scrollspy">
+    <%= render partial: "crna_averages", locals: {review: review} %>
+  </div>
+  <div id="first-case-starts" class="section scrollspy">
+    <%= render partial: "crna_first_case_starts", locals: {review: review} %>
+  </div>
+  <div id="turnovers" class="section scrollspy">
+    <%= render partial: "turnovers", locals: {review: review} %>
+  </div>
+  <div id="abx-compliance" class="section scrollspy">
+    <%= render partial: "abx_complience", locals: {review: review} %>
+  </div>
+  <div id="comments" class="section scrollspy">
+    <%= render partial: "crna_comments", locals: {review: review} %>
+  </div>
+</div>
+<div class="col-md-4 col-lg-2">
+  <div id="scroll-spy-nav" class="hidden-print affix-top hidden-sm hidden-xs" role="complementary" data-spy="affix" data-offset-top="500">
+    <ul class="section table-of-contents nav">
+      <li><a href="#top">Top of page</a></li>
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#first-case-starts">First Case Starts</a></li>
+      <li><a href="#turnovers">Turnovers</a></li>
+      <li><a href="#abx-compliance">ABX Compliance</a></li>
+      <li><a href="#comments">Comments</a></li>
+    </ul>
+  </div>
+</div>

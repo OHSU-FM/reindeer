@@ -21,29 +21,5 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-10 col-sm-12 col-md-7">
-    <div id="introduction" class="section scrollspy">
-      <%= render partial: "fte_numbers", locals: {review: @review} %>
-    </div>
-    <div id="clinical" class="section scrollspy">
-      <%= render partial: "clinical", locals: {review: @review} %>
-    </div>
-    <div id="education" class="section scrollspy">
-      <%= render partial: "education", locals: {review: @review} %>
-    </div>
-    <div id="survey-comments" class="section scrollspy">
-      <%= render partial: "survey_comments", locals: {review: @review} %>
-    </div>
-  </div>
-  <div class="col-md-4 col-lg-2">
-    <div id="scroll-spy-nav" class="hidden-print affix-top hidden-sm hidden-xs" role="complementary" data-spy="affix" data-offset-top="500">
-      <ul class="section table-of-contents nav">
-        <li><a href="#top">Top of page</a></li>
-        <li><a href="#introduction">FTE</a></li>
-        <li><a href="#clinical">Clinical</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#survey-comments">Peer Comments</a></li>
-      </ul>
-    </div>
-  </div>
+  <%= render partial: "#{@review.user_type}_partials", locals: {review: @review} %>
 </div>
