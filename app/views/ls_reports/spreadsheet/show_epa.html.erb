@@ -7,8 +7,11 @@
 </div>
 <div class="fade-in four">
     <% if @pk == "_" %>
-          <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean' %>
-
+          <% if current_user.permission_group.title.include? "Students" %>
+              <%= render :partial=>'ls_reports/spreadsheet/content_epa', :locals=>{:lime_survey=>@lime_survey}%>
+          <% else %>
+              <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean' %>
+          <% end %>
     <% else %>
       <%= render :partial=>'ls_reports/spreadsheet/content_epa', :locals=>{:lime_survey=>@lime_survey}%>
     <% end %>
