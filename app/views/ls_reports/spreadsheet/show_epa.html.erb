@@ -6,9 +6,10 @@
     </div>
 </div>
 <div class="fade-in four">
-    <% if @pk != "_" or @pk != "" %>
-    	<%= render :partial=>'ls_reports/spreadsheet/content_epa', :locals=>{:lime_survey=>@lime_survey}%>
+    <% if @pk == "_" %>
+          <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean' %>
+
     <% else %>
-        <%= render :partial=>'ls_reports/spreadsheet/content_epa_class_mean' %>
+      <%= render :partial=>'ls_reports/spreadsheet/content_epa', :locals=>{:lime_survey=>@lime_survey}%>
     <% end %>
 </div>
