@@ -360,6 +360,8 @@ theme_dark =
       textColor: '#C0C0C0'
       contrastTextColor: '#F0F0F3'
       maskColor: 'rgba(255,255,255,0.3)'
+"<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
+<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
 
 theme_light =
   colors: [
@@ -619,7 +621,8 @@ $(document).ready ->
             inverted: false
             polar: false
           subtitle:
-            text: 'Plain'
+            text: "<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
+<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
         return
 
     $('#inverted1').click ->
@@ -628,7 +631,8 @@ $(document).ready ->
             inverted: true
             polar: false
           subtitle:
-            text: 'Inverted'
+            text: "<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
+<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
         return
 
     $('#plain').click ->
