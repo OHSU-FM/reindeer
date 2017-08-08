@@ -21,10 +21,6 @@ class LimeSurvey < ActiveRecord::Base
     foreign_key: :lime_survey_sid,
     inverse_of: :lime_survey
   delegate :add_filter, :dataset, to: :lime_data
-  has_many :survey_assignments,
-    class_name: Assignment::SurveyAssignment,
-    foreign_key: :lime_survey_sid,
-    inverse_of: :lime_survey
   scope :active, -> { where(active: "Y") }
   scope :with_role_aggregate, -> { joins(:role_aggregate) }
   # TODO: Double check to see if with_data_table is the same as "active"

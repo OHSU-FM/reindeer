@@ -11,32 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170331215323) do
+ActiveRecord::Schema.define(version: 20170808202227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "assignment_group_templates", force: :cascade do |t|
-    t.string   "title"
-    t.text     "sids"
-    t.text     "desc_md"
-    t.boolean  "active",     default: true
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  create_table "assignment_groups", force: :cascade do |t|
-    t.integer  "assignment_group_template_id"
-    t.string   "title"
-    t.integer  "status"
-    t.text     "desc_md"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "cohort_id"
-  end
-
-  add_index "assignment_groups", ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
-  add_index "assignment_groups", ["cohort_id"], name: "index_assignment_groups_on_cohort_id", using: :btree
 
   create_table "chart_series", force: :cascade do |t|
     t.integer  "chart_id"
@@ -126,12 +104,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.decimal "alpha", default: 0.05, null: false
   end
 
-  create_table "critical_values", id: false, force: :cascade do |t|
-    t.integer "df",                   null: false
-    t.decimal "t",                    null: false
-    t.decimal "alpha", default: 0.05, null: false
-  end
-
   create_table "dashboard_widgets", force: :cascade do |t|
     t.integer "dashboard_id"
     t.integer "position"
@@ -153,192 +125,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
   create_table "data_migrations", force: :cascade do |t|
     t.text "version", null: false
   end
-
-  create_table "meta_attribute_entities", force: :cascade do |t|
-    t.text    "entity_type",                                                       null: false
-    t.text    "meta_attribute_entity_group_group_name",                            null: false
-    t.integer "edition"
-    t.integer "version"
-    t.date    "start_date"
-    t.date    "stop_date"
-    t.boolean "visible",                                            default: true
-    t.integer "reference_year"
-    t.string  "entity_type_fk",                         limit: 255
-  end
-
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-
-  create_table "meta_attribute_entities", force: :cascade do |t|
-    t.text    "entity_type",                                                       null: false
-    t.text    "meta_attribute_entity_group_group_name",                            null: false
-    t.integer "edition"
-    t.integer "version"
-    t.date    "start_date"
-    t.date    "stop_date"
-    t.boolean "visible",                                            default: true
-    t.integer "reference_year"
-    t.string  "entity_type_fk",                         limit: 255
-  end
-
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-
-  create_table "meta_attribute_entity_groups", force: :cascade do |t|
-    t.text    "group_name",                                 null: false
-    t.text    "parent_table",                               null: false
-    t.boolean "visible",                     default: true
-    t.string  "parent_table_pk", limit: 255
-  end
-
-  create_table "meta_attribute_groups", force: :cascade do |t|
-    t.text    "group_name",                  null: false
-    t.text    "parent_table",                null: false
-    t.boolean "visible",      default: true
-  end
-
-  create_table "meta_attribute_questions", force: :cascade do |t|
-    t.text    "meta_attribute_entity_entity_type",                null: false
-    t.text    "category"
-    t.text    "attribute_name"
-    t.text    "description"
-    t.text    "original_text"
-    t.text    "data_type"
-    t.text    "options_hash"
-    t.boolean "continuous"
-    t.boolean "optional"
-    t.boolean "visible",                           default: true
-    t.text    "short_name"
-  end
-
-  create_table "meta_attribute_questions", force: :cascade do |t|
-    t.text    "meta_attribute_entity_entity_type",                null: false
-    t.text    "category"
-    t.text    "attribute_name"
-    t.text    "description"
-    t.text    "original_text"
-    t.text    "data_type"
-    t.text    "options_hash"
-    t.boolean "continuous"
-    t.boolean "optional"
-    t.boolean "visible",                           default: true
-    t.text    "short_name"
-  end
-
-  create_table "meta_attribute_statistics", primary_key: "meta_attribute_statistic_id", force: :cascade do |t|
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.integer "attribute_index",       limit: 8
-    t.string  "attribute_name"
-    t.string  "attribute_description"
-    t.string  "attribute_data_type"
-    t.decimal "count"
-    t.decimal "n"
-    t.decimal "n_percent",                       precision: 5, scale: 2
-    t.decimal "mean"
-    t.decimal "stddev"
-    t.decimal "min"
-    t.decimal "max"
-    t.decimal "subset_count"
-    t.decimal "subset_n"
-    t.decimal "subset_n_percent",                precision: 5, scale: 2
-    t.decimal "subset_mean"
-    t.decimal "subset_stddev"
-    t.decimal "subset_min"
-    t.decimal "subset_max"
-    t.decimal "ci_lower"
-    t.decimal "ci_upper"
-    t.decimal "subset_ci_lower"
-    t.decimal "subset_ci_upper"
-    t.boolean "is_continuous",                                           default: false, null: false
-  end
-
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-
-  create_table "meta_attribute_statistics", primary_key: "meta_attribute_statistic_id", force: :cascade do |t|
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.integer "attribute_index",       limit: 8
-    t.string  "attribute_name"
-    t.string  "attribute_description"
-    t.string  "attribute_data_type"
-    t.decimal "count"
-    t.decimal "n"
-    t.decimal "n_percent",                       precision: 5, scale: 2
-    t.decimal "mean"
-    t.decimal "stddev"
-    t.decimal "min"
-    t.decimal "max"
-    t.decimal "subset_count"
-    t.decimal "subset_n"
-    t.decimal "subset_n_percent",                precision: 5, scale: 2
-    t.decimal "subset_mean"
-    t.decimal "subset_stddev"
-    t.decimal "subset_min"
-    t.decimal "subset_max"
-    t.decimal "ci_lower"
-    t.decimal "ci_upper"
-    t.decimal "subset_ci_lower"
-    t.decimal "subset_ci_upper"
-    t.boolean "is_continuous",                                           default: false, null: false
-  end
-
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.string  "attribute_name"
-    t.decimal "value"
-    t.string  "value_description"
-    t.decimal "count"
-    t.decimal "subset_count"
-  end
-
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.string  "attribute_name"
-    t.decimal "value"
-    t.string  "value_description"
-    t.decimal "count"
-    t.decimal "subset_count"
-  end
-
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.string  "attribute_name"
-    t.decimal "value"
-    t.string  "value_description"
-    t.decimal "count"
-    t.decimal "subset_count"
-  end
-
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
 
   create_table "permission_groups", force: :cascade do |t|
     t.text     "title",                      null: false
@@ -397,48 +183,11 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string   "default_view",        limit: 255
   end
 
-  create_table "survey_assignments", force: :cascade do |t|
-    t.boolean  "as_inline",           default: false
-    t.string   "title"
-    t.integer  "lime_survey_sid",                     null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "assignment_group_id"
-  end
-
-  add_index "survey_assignments", ["assignment_group_id"], name: "index_survey_assignments_on_assignment_group_id", using: :btree
-  add_index "survey_assignments", ["lime_survey_sid"], name: "index_survey_assignments_on_lime_survey_sid", using: :btree
-
-  create_table "user_assignments", force: :cascade do |t|
-    t.integer  "user_id",              null: false
-    t.integer  "survey_assignment_id", null: false
-    t.integer  "lime_token_tid"
-    t.datetime "started_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "user_externals", force: :cascade do |t|
     t.integer "user_id"
     t.string  "ident",      limit: 255
     t.string  "ident_type", limit: 255
-    t.boolean "filter_all",             default: false
     t.boolean "use_email",              default: false
-  end
-
-  create_table "user_responses", force: :cascade do |t|
-    t.string   "resp_type"
-    t.string   "title"
-    t.string   "category"
-    t.string   "status",             default: "0"
-    t.text     "content"
-    t.integer  "user_assignment_id"
-    t.string   "completion_target"
-    t.string   "status_explanation"
-    t.string   "owner_status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "submitdate"
   end
 
   create_table "users", force: :cascade do |t|
@@ -459,7 +208,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string   "full_name",              limit: 255
     t.string   "username",               limit: 255
     t.datetime "locked_at"
-    t.boolean  "use_ldap"
     t.boolean  "is_ldap",                            default: false
     t.integer  "permission_group_id"
     t.integer  "cohort_id"
@@ -490,10 +238,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   add_index "versions", ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
 
-  add_foreign_key "assignment_groups", "assignment_group_templates"
   add_foreign_key "cohorts", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
-  add_foreign_key "survey_assignments", "assignment_groups"
-  add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
-  add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
 end

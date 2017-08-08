@@ -34,13 +34,6 @@ describe Cohort do
       end
     end
 
-    it "#assignment_groups should return list of assignment_groups" do
-      c = build :cohort
-      ag = create :assignment_group, cohort: c
-
-      expect(c.assignment_groups).to eq [ag]
-    end
-
     it "#possible_users returns list of pg users" do
       pg = build :permission_group, :with_users
       c = build :cohort, permission_group: pg

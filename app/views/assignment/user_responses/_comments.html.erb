@@ -1,9 +1,0 @@
-<%= stylesheet_link_tag "comments" %>
-<div class="user-response-comments">
-  <div class="row content comments-block">
-    <%= render partial: "comments/comments", locals: {commentable: @user_response} %>
-  </div>
-  <div class="row comments-box">
-    <%= render partial: "comments/form", locals: {commentable: @user_response, new_c: @new_ur_comment} %>
-  </div>
-</div>

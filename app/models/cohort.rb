@@ -44,10 +44,6 @@ class Cohort < ActiveRecord::Base
     end
   end
 
-  def assignment_groups
-    Assignment::AssignmentGroup.where(cohort: self)
-  end
-
   def comment_thread_for user_id
     CommentThread.find_or_create_by(first_user: owner,
                                     second_user: User.find(user_id),

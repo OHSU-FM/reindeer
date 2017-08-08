@@ -34,24 +34,6 @@ Rails.application.routes.draw do
 
   resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update]
 
-  resources :comment_thread, only: :show do
-    resources :comments, only: [:index, :create, :destroy]
-  end
-
-  namespace :assignment, path: Settings.assignments_route_name  do
-    root to: "assignment_groups#index"
-    resources :assignment_groups, param: :assignment_group_id, path: :groups, only: [:index, :show, :update] do
-      resources :comments, module: :assignment_group, only: [:index, :create, :destroy]
-    end
-    resources :user_assignments, path: :tasks, only: [:show] do
-      get "/fetch_compare" => "user_assignments#fetch_compare"
-    end
-    resources :user_responses, path: :responses, only: [:show] do
-      resources :comments, module: :user_response, only: [:index, :create, :destroy]
-      get "/set_owner_status" => "user_responses#set_owner_status"
-    end
-  end
-
   get "ls_files/:sid/:row_id/:qid/:name", :to=>"ls_files#show", :constraints=>{:name=>/[^\/]+/}, :as=>:lime_file
 
   root :to=>"dashboard#index"

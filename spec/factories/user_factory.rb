@@ -46,13 +46,6 @@ FactoryGirl.define do
       end
     end
 
-    trait :with_assignment_group do
-      after(:build) do |usr|
-        c = create :cohort, owner: usr
-        usr.assignment_groups << FactoryGirl.build(:assignment_group, cohort: c)
-      end
-    end
-
     trait :with_no_permissions do
       roles { [] }
     end
@@ -60,7 +53,7 @@ FactoryGirl.define do
     factory :no_permissions_user, traits: [:with_no_permissions]
     factory :superadmin, traits: [:superadmin]
     factory :admin, traits: [:admin]
-    factory :coach, traits: [:coach, :with_uex, :with_assignment_group]
+    factory :coach, traits: [:coach, :with_uex]
     factory :student, traits: [:student]
     factory :user_w_externals, traits: [:with_uex]
   end

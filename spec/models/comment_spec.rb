@@ -15,11 +15,6 @@ describe Comment do
     expect(build :comment, body: nil).to be_invalid
   end
 
-  it "is polymorphic in assignment_group and user_response" do
-    expect(create :comment, :assignment_comment).to be_valid
-    expect(create :comment, :user_response_comment).to be_valid
-  end
-
   it "has a text body" do
     c = create :comment, body: "test"
     expect(c.body).to eql("test")

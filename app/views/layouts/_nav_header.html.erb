@@ -32,9 +32,6 @@
             <div class="btn-group btn navbar-btn ">
               <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %> <span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <% if current_user.active_assignment_groups.count > 0 %>
-                  <%= nav_link_to("Coaching Documentation System", main_app.assignment_assignment_groups_path) unless top_link != "C" %>
-                <% end %>
                 <% first_level.each do |first_level_item, second_level| %>
                 <% if first_level.keys.count > 1 %>
                 <li class="dropdown-submenu">
