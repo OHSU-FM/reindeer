@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe User do
+RSpec.describe User, type: :model do
 
   after :each do
     Redis.current.flushdb

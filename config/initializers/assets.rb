@@ -25,4 +25,5 @@ Rails.application.config.assets.precompile += %w( print.css
     settings.css
     rails_admin_iframe.css
     dataTables/*
+    goals.css
     )
