@@ -126,6 +126,24 @@ ActiveRecord::Schema.define(version: 20170808202227) do
     t.text "version", null: false
   end
 
+  create_table "meta_attribute_entities", force: :cascade do |t|
+  end
+
+  create_table "meta_attribute_entity_groups", force: :cascade do |t|
+  end
+
+  create_table "meta_attribute_groups", force: :cascade do |t|
+  end
+
+  create_table "meta_attribute_questions", force: :cascade do |t|
+  end
+
+  create_table "meta_attribute_statistics", force: :cascade do |t|
+  end
+
+  create_table "meta_attribute_values", force: :cascade do |t|
+  end
+
   create_table "permission_groups", force: :cascade do |t|
     t.text     "title",                      null: false
     t.datetime "created_at"

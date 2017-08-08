@@ -22,7 +22,6 @@ describe LimeSurvey do
     it "#lime_questions" do
       s = create :lime_survey_full
       lq = LimeQuestion.first
-      binding.pry
       expect(s.find_question :qid, lq.qid).to eq lq
     end
 
