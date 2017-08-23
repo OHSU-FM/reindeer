@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe Goal, type: :model do
   it 'has a factory' do
-    expect(build :goal).to be_valid
+    expect(create :goal).to be_valid
   end
 
   it 'requires a title' do
@@ -19,5 +19,13 @@ RSpec.describe Goal, type: :model do
 
   it 'belongs to a user' do
     expect(build :goal, user: nil).not_to be_valid
+  end
+
+  it 'has valid tag' do
+    expect(create :goal, tag: nil).to be_valid
+    expect(build :goal, tag: "test").not_to be_valid
+    Goal::ALLOWABLE_TAGS.each do |tag|
+      expect(create :goal, tag: tag).to be_valid
+    end
   end
 end

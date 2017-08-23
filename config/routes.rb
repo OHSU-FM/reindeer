@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :goals
+
   devise_for :users
   mount RailsAdmin::Engine => "/admin", :as => "rails_admin"
 
@@ -53,4 +53,9 @@ Rails.application.routes.draw do
 
   match "*any", via: :all, to: "errors#file_not_found"
 
+  # coaching routes
+
+  resources :action_plan_items
+
+  resources :goals
 end
