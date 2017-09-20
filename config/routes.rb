@@ -4,6 +4,16 @@ Rails.application.routes.draw do
   devise_for :users
   mount RailsAdmin::Engine => "/admin", :as => "rails_admin"
 
+    # coaching routes
+
+  resources :action_plan_items
+
+  resources :goals
+
+  resources :comments
+
+  
+
   resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]
   get "dashboard/:id/widgets/:widget_id", :to=>"dashboard#show_widget", :constraints=>{:id=>/\d+/, :widget_id=>/\d+/}, :as=>"show_widget"
 
@@ -53,9 +63,6 @@ Rails.application.routes.draw do
 
   match "*any", via: :all, to: "errors#file_not_found"
 
-  # coaching routes
 
-  resources :action_plan_items
 
-  resources :goals
 end

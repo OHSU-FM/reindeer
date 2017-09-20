@@ -1,10 +1,56 @@
-<%= simple_form_for(@goal) do |f| %>
-  <%= f.error_notification %>
 
-  <div class="form-inputs">
-  </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
-<% end %>
+<table class="table no-border" >
+  <div class="container" >
+      <tr>
+        <th class="col-sm-1"><%= f.label(:title) %></th>
+        <td><%= f.text_field(:title) %></td>
+      </tr>
+      <tr>
+        <th><%= f.label(:description) %></th>
+        <td><%= f.text_area(:description, size: '40x5') %></td>
+      </tr>  
+
+      <tr>
+        <th><%= f.label(:tag) %></th>
+        <td><%= f.select :tag, 
+            options_for_select(Goal::ALLOWABLE_TAGS, @goal.tag), include_blank: true %> </td>
+      </tr>
+
+      <tr>
+        <th><%= f.label(:status) %></th>
+        <td> <%= f.select :status, 
+            options_for_select(Goal::ALLOWABLE_STATUSES, @goal.status), include_blank: true %> </td>
+      </tr>
+      <tr>
+        <th><%= f.label(:target_date) %></th>
+        <td><%= f.text_field(:target_date) %></td>
+      </tr>
+
+      <tr>
+        <th><%= f.label(:user_id) %></th>
+        <td><%= f.text_field(:user_id) %></td>
+      </tr>  
+      <tr>
+        <th><%= f.label(:type) %></th>
+        <td><%= f.select :type, 
+            options_for_select(Goal::ALLOWABLE_TYPES, @goal.type), include_blank: true %> </td>
+      </tr>    
+      <tr>
+        <th><%= f.label(:location) %></th>
+        <td><%= f.text_field(:location) %></td>
+      </tr> 
+
+      <div id="action_plan_items" class="nested-fields">
+       <%= f.fields_for :action_plan_items do |a| %>
+            <%= render 'action_plan_item_fields', f: a %>
+        <%end%>
+      </div>
+      <div class="links"
+        <tr><%= link_to_add_association "+ New Action", f, :action_plan_items %></tr>
+      </div>
+
+  </div>     
+</table>
+
+

@@ -1,6 +1,11 @@
 class CommentsController < ApplicationController
   authorize_resource
 
+  def new
+    @comment = Comment.new
+
+  end 
+
   def index
     @comments = @commentable.comments.order("updated_at DESC")
   end

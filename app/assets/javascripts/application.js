@@ -11,7 +11,7 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery-ui-1.9.2.js
+//= require jquery-ui/effect-highlight
 //= require jquery_ujs
 //= require jquery_mods
 //= require jquery.mobile.custom.js
@@ -46,3 +46,6 @@
 //= require form-utils.js
 //= require select2
 //= require simplemde.min
+//= require nested_form_fields
+//= require goals.js
+//= require turbolinks

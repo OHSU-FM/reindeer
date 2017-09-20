@@ -1,5 +1,10 @@
 <h1>New Goal</h1>
 
-<%= render 'form' %>
+    <%= form_for(@goal, url: {action: 'create'}) do |f| %>
+      <%= render(:partial=> "form", :locals => {:f => f}) %>
+      <div class="form-buttons">
+        <%= submit_tag("Save Goal") %>
+      </div>
+    <% end %>
 
 <%= link_to 'Back', goals_path %>

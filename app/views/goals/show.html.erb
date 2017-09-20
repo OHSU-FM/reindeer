@@ -1,4 +1,14 @@
-<p id="notice"><%= notice %></p>
+<%= link_to("<< back to list", {action:'index', class:'back-link'}) %>
 
-<%= link_to 'Edit', edit_goal_path(@goal) %> |
-<%= link_to 'Back', goals_path %>
+  <div class="Goal Edit">
+  <%= form_for(:goal, :url=>{:action=>'update', :id=>@goal.id}) do |f| %>
+    <%= render(:partial=> "form", :locals => {:f => f}) %>
+    <div class="form-buttons">
+      <%= submit_tag("Update Goal") %>
+    </div>
+  <% end %>
+
+  </div>
+
+ 
+

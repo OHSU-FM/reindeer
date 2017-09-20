@@ -174,6 +174,10 @@ GEM
     multi_json (1.12.1)
     nenv (0.3.0)
     nested_form (0.3.2)
+    nested_form_fields (0.8.2)
+      coffee-rails (>= 3.2.1)
+      jquery-rails
+      rails (>= 3.2.0)
     net-ldap (0.11)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
@@ -324,6 +328,9 @@ GEM
     thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.8)
+    turbolinks (5.0.1)
+      turbolinks-source (~> 5)
+    turbolinks-source (5.0.3)
     twitter-bootstrap-rails (3.2.2)
       actionpack (>= 3.1)
       execjs (>= 2.2.2, >= 2.2)
@@ -369,6 +376,7 @@ DEPENDENCIES
   jquery-ui-rails
   json
   lograge
+  nested_form_fields
   paper_trail
   pg
   php-serialize
@@ -396,6 +404,7 @@ DEPENDENCIES
   stackprof
   statistics2
   thin
+  turbolinks (~> 5.0, >= 5.0.1)
   twitter-bootstrap-rails
   uglifier
   webrick

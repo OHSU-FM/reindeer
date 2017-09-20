@@ -1,6 +1,22 @@
-<h1>Editing Goal</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @goal %> |
-<%= link_to 'Back', goals_path %>
+<div class="modal-dialog" id='myModal'>
+  <div class="modal-content">
+  <div class="modal-header">
+     <a href="#close" class="close" data-dismiss="modal">X</a>
+    <h3>Editing Goal</h3>
+    <%= link_to("<< back to listing goals", {action:'index', class:'back-link'}) %>
+  </div>
+  <div class="modal-body">
+    <div class="Goal Edit">
+      <%= form_for(@goal, url: {action: 'update', id:@goal.id}) do |f| %>
+        <%= render(:partial=> "form", :locals => {f:f}) %>
+        <div class="form-buttons">
+          <%= submit_tag("Update Goal") %>
+        </div>
+      <% end %>
+      <div id="action-plan-item-form" style="display:none;"></div>
+    </div>
+   </div>
+  <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
