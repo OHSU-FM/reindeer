@@ -1,58 +1,24 @@
+<div class="container-fluid">
+  <h1>Goals</h1>
 
- <div class="container-fluid">
+  <form class="filter_form">Choose a student
+    <%= select_tag "user_id", options_from_collection_for_select(@cohorts, "user_id", "title") %>
+    <input type="submit" value="Get Goal" >
+  </form>
 
-    <ul id="MainTabs" class="nav nav-tabs">
-        <li class="nav active" ><a data-toggle="tab" href="#myGoals">Goals</a></li>
-        <li class="nav" ><a data-toggle="tab" href="#facetoface">Face to Face Meetings</a></li>
+  <ul id="MainTabs" class="nav nav-tabs">
+    <li class="nav active" ><a data-toggle="tab" href="#myGoals">Goals</a></li>
+    <li class="nav" ><a data-toggle="tab" href="#facetoface">Face to Face Meetings</a></li>
+  </ul>
 
-    </ul>
-    <div class="tab-content">
-        <div id="myGoals" class="tab-pane active fade in">
-          <div class="filter_options_container">
-            <form class="filter_form">Choose a student 
-               <%= select_tag "user_id", options_from_collection_for_select(@cohorts, "user_id", "title") %>
-              <input type="submit" value="Get Goal" >
-            </form>
-          </div>
-          <h3>Listing Goals</h3> <%= link_to '+ Add New Goal', new_goal_path %>
-          <table class="table table-inverse">
-            <thead>
-              <tr>
-                <td>Created Date</td>
-                <td>Title</td>
-                <td>Tag</td>
-                <td>Status</t  d>
-                <td>Target Date</td>
-                <td>User ID</td>
-                <td>Location</td>
-              </tr>
-            </thead>
-            <tbody>
-              <% if !@goals.nil? %>
-                <% @goals.each do |goal| %>
-                  <tr>
-                    <td><%= goal.created_at.to_date %>
-                    <td><%= goal.title %>
-                    <td><%= goal.tag %>
-                    <td><%= goal.status %>
-                    <td><%= goal.target_date %>
-                    <td><%= goal.user_id %>
-                    <td><%= goal.location %>
-                    <td><%= link_to 'Edit', edit_goal_path(goal) %></td>
-                    <td><%= link_to 'Destroy', goal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                  </tr>
-                <% end %>
-              <% end %>
-            </tbody>
-          </table>
-          <%= link_to '+ Add New Comments to Goal', new_comment_path %>
-        </div>
+  <div class="tab-content">
+    <div id="myGoals" class="tab-pane active fade in">
+      <%= render partial: 'goal_list', locals: { goals: @goals } %>
+    </div>
 
-        <div id="facetoface" class="tab-pane fade">
-          <h4> Face to Face </h4>
-        </div>
-      </div>
-
+    <div id="facetoface" class="tab-pane fade">
+      <%= render partial: 'meetings_list', locals: { meetings: @meetings } %>
+    </div>
+  </div>
+  <%= link_to '+ Add New Comment', new_comment_path %>
 </div>
-
-

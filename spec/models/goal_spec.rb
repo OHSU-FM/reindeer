@@ -12,8 +12,8 @@ RSpec.describe Goal, type: :model do
   it 'requires a status' do
     expect(build :goal, status: nil).not_to be_valid
     expect(build :goal, status: "test").not_to be_valid
-    Goal::ALLOWABLE_STATUSES.each do |status|
-      expect(create :goal, status: status).to be_valid
+    Goal::ALLOWABLE_GOAL_STATUSES.each do |status|
+      expect(create :goal, type: 'Goal', status: status).to be_valid
     end
   end
 
@@ -34,7 +34,7 @@ RSpec.describe Goal, type: :model do
   end
 
   it 'has valid type' do
-    expect(create :goal, type: nil).not_to be_valid
+    expect(build :goal, type: nil).not_to be_valid
     expect(build :goal, type: "test").not_to be_valid
     Goal::ALLOWABLE_TYPES.each do |type|
       expect(create :goal, type: type).to be_valid
@@ -42,10 +42,9 @@ RSpec.describe Goal, type: :model do
   end
 
   it 'has valid tag' do
-    expect(create :goal, tag: nil).to be_valid
-    expect(build :goal, tag: "test").not_to be_valid
-    Goal::ALLOWABLE_TAGS.each do |tag|
-      expect(create :goal, tag: tag).to be_valid
+    expect(build :goal, tag: 'test').not_to be_valid
+    Goal::ALLOWABLE_MEETING_TAGS.each do |tag|
+      expect(create :goal, type: 'Meeting', tag: tag).to be_valid
     end
   end
 
@@ -53,7 +52,7 @@ RSpec.describe Goal, type: :model do
     it 'has_many comments' do
       goal = create :goal
       comment = create :comment, commentable: goal
-      goal.reload 
+      goal.reload
       expect(goal.comments).to include comment
     end
   end

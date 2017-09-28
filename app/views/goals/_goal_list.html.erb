@@ -1,0 +1,34 @@
+<div class="filter_options_container">
+  this is where filtering will go
+</div>
+<table class="table table-inverse">
+  <thead>
+    <tr>
+      <td>Created Date</td>
+      <td>Title</td>
+      <td>Tag</td>
+      <td>Status</td>
+      <td>Target Date</td>
+      <td>User ID</td>
+      <td>Location</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% if !@goals.nil? %>
+      <% @goals.each do |goal| %>
+        <tr>
+          <td><%= goal.created_at.to_date %>
+          <td><%= goal.title %>
+          <td><%= goal.tag %>
+          <td><%= goal.status %>
+          <td><%= goal.target_date %>
+          <td><%= goal.user_id %>
+          <td><%= goal.location %>
+          <td><%= link_to 'Edit', edit_goal_path(goal) %></td>
+          <td><%= link_to 'Destroy', goal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to '+ Add New Goal', new_goal_path(user_id: @user.id) %>
