@@ -1,8 +1,23 @@
-<h1>New Goal</h1>
-<%= form_for(@goal, url: { action: 'create' }) do |f| %>
-  <%= render partial: "goal_form", locals: { f: f, user: @user } %>
-  <div class="form-buttons">
-    <%= submit_tag("Save Goal") %>
-  </div>
-<% end %>
-<%= link_to 'Back', goals_path %>
+    <%= link_to("<< back to listing goals", {action:'index', class:'back-link'}) %>
+
+    <% if @goal_type == 'Meeting' %>
+        <h3> Create Face-to-Face Meeting</h3>
+        <%= form_for @goal do |f| %>
+          <%= render(:partial=> "meeting_form", locals: {f: f}) %>
+          <div class="form-buttons">
+            <%= submit_tag("Save Goal") %>
+          </div>
+        <% end %>  
+    <% else %>
+        <h3> New Goal </h3>
+        <%= form_for(@goal, remote: request.xhr?, html: { data: { modal: true } }) do |f| %>
+          <%= render(:partial=> "goal_form", locals: {f: f}) %>
+          <div class="form-buttons">
+            <%= submit_tag("Save Goal") %>
+          </div>
+        <% end %>
+    <% end %>
+
+
+
+      

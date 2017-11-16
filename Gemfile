@@ -8,7 +8,7 @@ gem "bundler"
 gem "rails", "~> 4.2"
 gem "rdoc" # documentation
 # Database
-gem "pg"
+gem "pg", "~> 0.20"
 gem "composite_primary_keys"
 gem "redis", "~>3.2"
 
@@ -146,3 +146,6 @@ gem 'rufus-scheduler'
 gem 'whenever', :require => false
 gem 'nested_form_fields'
 gem 'turbolinks', '~> 5.0', '>= 5.0.1'
+gem 'react_on_rails', '>=10.0'
+gem 'react-rails', '~> 1.0'
+gem 'webpacker', '~> 3.0'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825151650) do
+ActiveRecord::Schema.define(version: 20170926160232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20170825151650) do
     t.integer  "user_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.string   "type"
+    t.string   "goal_type"
     t.string   "location"
   end
 
@@ -399,6 +399,7 @@ ActiveRecord::Schema.define(version: 20170825151650) do
     t.integer "user_id"
     t.string  "ident",      limit: 255
     t.string  "ident_type", limit: 255
+    t.boolean "filter_all",             default: false
     t.boolean "use_email",              default: false
   end
 
@@ -420,6 +421,7 @@ ActiveRecord::Schema.define(version: 20170825151650) do
     t.string   "full_name",              limit: 255
     t.string   "username",               limit: 255
     t.datetime "locked_at"
+    t.boolean  "use_ldap"
     t.boolean  "is_ldap",                            default: false
     t.integer  "permission_group_id"
     t.integer  "cohort_id"

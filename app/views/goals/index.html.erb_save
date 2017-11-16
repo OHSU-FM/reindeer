@@ -1,0 +1,59 @@
+
+<div class="col-sm-3">
+      <div class="panel panel-default">
+          <div class="panel-body panel-hints">
+            <li><b>Hints: </b>Please be prepared to discuss the following topics. Students, please remember you are responsible for focusing your discussion on the items you feel you need the most assistance.
+              <ul>
+                <li>What are some of your biggest successes since you last met?</li>
+                <li>What have been some of the biggest challenges since you last met?</li>
+                <li>What specialt(y/ies) are you considering?</li>
+                <li>What have you learned from your self-reflections?</li>
+                <li>What have you used your flex time to focus on?</li>
+                <li>What extracurricular activities have you participated in? What extracurricular activities do you want to participate in (electives, interest groups)?</li>
+                <li>How you developed/changed your experience/advancement plan (review competencies met, competencies in progress, competencies you will be working on next quarter)?</li>
+                <li>Have you developed/changed your capstone project? What is your progress?</li>
+                <li>Have you participated in remediation? If so, how did the process do? What did you learn?</li>
+                <li>Have you revisited your goals? Are they the same or have them changed? If they’ve changed, how have they changed?</li>
+                <li>Do you have questions/need assistance?</li>
+              </ul>
+            </li>  
+          </div>
+      </div>
+</div>
+
+<div class="col-sm-6">
+  <h1>Goals</h1>
+  <form class="filter_form">Choose a student
+    <%= select_tag "user_id", options_from_collection_for_select(@cohorts, "user_id", "title", params[:user_id]) %>
+    <input type="submit" value="Get Goal" >
+  </form>
+
+  <ul id="MainTabs" class="nav nav-tabs">
+    <li class="nav active" ><a data-toggle="tab" href="#myGoals">Goals</a></li>
+    <li class="nav" ><a data-toggle="tab" href="#facetoface">Face to Face Meetings</a></li>
+  </ul> 
+
+  <div class="tab-content">
+    <div id="myGoals" class="tab-pane active fade in">
+      <%= render partial: 'goal_list', locals: { goals: @goals } %>
+    </div>
+
+    <div id="facetoface" class="tab-pane fade">
+      <%= render partial: 'meetings_list', locals: { meetings: @meetings } %>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-3">
+      <div class="panel panel-default">
+          <div class="panel-body">
+              <div class="row">
+                  <div class="col-sm-2">Test1</div>
+                  <div class="col-sm-1">Test2</div>
+              </div> 
+          </div>
+      </div>
+</div>
+
+
+

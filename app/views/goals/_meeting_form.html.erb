@@ -1,0 +1,48 @@
+<div class="container-fluid" >
+
+    <%= f.hidden_field :title, value: 'FaceToFace' %>
+    <%= f.hidden_field :tag, value: nil %>
+
+    <div class="row">
+      <div class="col-sm-1">
+          <b><%= f.label(:description, 'Desc') %></b>
+      </div>
+      <div class="col-sm-1">
+          <%= f.text_area(:description, size: '40x5') %>
+      </div>
+  </div>
+
+
+  <div class="row">
+      <div class="col-sm-1">
+          <b><%= f.label(:status) %></b>
+      </div>
+      <div class="col-sm-1">
+          <%= f.select :status,
+          options_for_select(Goal::ALLOWABLE_MEETING_STATUSES, @goal.status), include_blank: true %> 
+      </div>
+  </div>
+      
+  <div class="row">
+      <div class="col-sm-1">
+          <b><%= f.label(:target_date, "Schedule Dt") %></b>
+      </div>
+      <div class="col-sm-1">
+          <%= f.text_field(:target_date) %> 
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-sm-1">
+          <b><%= f.label(:location) %></b>
+      </div>
+      <div class="col-sm-1">
+          <%= f.text_field(:location) %>
+      </div>
+  </div>     
+      
+    <%= f.hidden_field :goal_type, value: 'Meeting' %>
+    <%= f.hidden_field :user_id, value: params[:user_id] %>
+
+
+</div>

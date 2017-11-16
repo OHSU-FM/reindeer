@@ -15,6 +15,7 @@ Array::min=->
 @chart_args = (graph) ->
 
     data = graph.data()
+    console.log("data: " + data)
 
     full_data = graph.full_data()
     max_item = data.max()

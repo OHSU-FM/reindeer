@@ -1,21 +1,26 @@
         <% #cache( :action_suffix => "ls_report_controller_#{@user_id}_#{@pk}_#{@agg}_#{@id}") do %>
             <% @virtual_groups.each do |lgroup| %>
+              <% if !lgroup.group_name.include? "Selecting Student" %>
                 <h4 class="question-group" id="gid<%= lgroup.gid %>" style="color:green"><%= strip_tags(lgroup.group_name).html_safe %></h4>
                 <% lgroup.parent_questions.each do |pquestion| %>
                     <div>
                         <div id="qid<%= pquestion.qid %>"></div>
                         <div  class="parent-question panel panel-default">
                             <div class="panel-heading">
-                                <h4><%= strip_tags(pquestion.question).html_safe %></h4>
+                                <% if !pquestion.question.include? "TOKEN" %>
+                                    <h4><%= strip_tags(pquestion.question).html_safe %></h4>
+                                <% end %>
                             </div>
                             <div class="panel-body">
                                 <%= render :partial=>"ls_reports/graph/type_#{pquestion.qtype}_question",
                                     :locals=>{:pquestion=>pquestion}%>
+
                             </div>
                         </div>
                     </div>
                 <% end %>
                 <hr/>
+              <% end %> 
             <% end %>
         <% #end # cache do  %>
 

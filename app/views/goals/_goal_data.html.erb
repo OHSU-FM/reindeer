@@ -1,0 +1,49 @@
+<div class="container" >
+  <table class="table no-border" >
+    <tr>
+      <th class="col-sm-1">Title</th>
+      <td><%= f.title %></td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td><%= f.description %></td>
+    </tr>
+
+    <tr>
+      <th>Tag</th>
+      <td><%= f.tag %></td>
+    </tr>
+
+    <tr>
+      <th>Status</th>
+      <td><%= f.status %> </td>
+    </tr>
+    <tr>
+      <th>Target Date</th>
+      <td><%= f.target_date %></td>
+    </tr>
+
+    <tr>
+      <th>Location</th>
+      <td><%= f.location %></td>
+    </tr>
+
+
+    <tr>
+      <th>UserId</th>
+      <td><%= f.user_id %> </td>
+    </tr>
+    <tr>
+      <% f.action_plan_items.each do |a| %>
+        <th>Action Plan Item </th>
+        <td><%= a.description %> </td>
+      <% end %>
+    </tr>
+    <tr>
+      <ul>
+        <%= render(partial: 'comments/comment', locals: {commentable: f}) %>
+      </ul>
+    </tr>
+
+  </table>
+</div>

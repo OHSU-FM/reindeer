@@ -11,8 +11,9 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery-ui/effect-highlight
 //= require jquery_ujs
+//= require jquery.min.js
+//= require jquery-ui
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
@@ -49,3 +50,6 @@
 //= require nested_form_fields
 //= require goals.js
 //= require turbolinks
+//= require react
+//= require react_ujs
+//= require components

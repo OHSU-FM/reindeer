@@ -1,0 +1,68 @@
+
+<table class="table no-border" >
+  <div class="container" >
+  <div id="goalsTable" >
+
+        <ul>
+            <% if @goal.errors.any? %>
+              <% @goal.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            <% end %>
+        </ul>
+
+        <tr>
+          <th class="col-sm-1"><%= f.label(:title) %></th>
+          <td><%= f.text_field(:title) %></td>
+        </tr>
+        <tr>
+          <th><%= f.label(:description) %></th>
+          <td><%= f.text_area(:description, size: '40x5') %></td>
+        </tr>  
+
+        <tr>
+          <th><%= f.label(:tag) %></th>
+          <td><%= f.select :tag, 
+              options_for_select(Goal::ALLOWABLE_TAGS, f.object.tag), include_blank: true %> </td>
+        </tr>
+
+        <tr>
+          <th><%= f.label(:status) %></th>
+          <td> <%= f.select :status, 
+              options_for_select(Goal::ALLOWABLE_STATUSES, f.object.status), include_blank: true %> </td>
+        </tr>
+        <tr>
+          <th><%= f.label(:target_date) %></th>
+          <td><%= f.text_field(:target_date) %></td>
+        </tr>
+
+        <tr>
+          <th><%= f.label(:user_id) %></th>
+          <td><%= f.text_field(:user_id) %></td>
+        </tr>  
+        <tr>
+          <th><%= f.label(:goal_type) %></th>
+          <td><%= f.select :goal_type, 
+              options_for_select(Goal::ALLOWABLE_TYPES, f.object.goal_type), include_blank: true %> </td>
+        </tr>    
+        <tr>
+          <th><%= f.label(:location) %></th>
+          <td><%= f.text_field(:location) %></td>
+        </tr> 
+
+        <div id="action_plan_items" class="nested-fields">
+         <%= f.fields_for :action_plan_items do |a| %>
+              <%= render 'action_plan_item_fields', f: a %>
+          <%end%>
+        </div>
+        <div class="links"
+          <tr><%= link_to_add_association "+ New Action", f, :action_plan_items %></tr>
+        </div>
+
+
+
+  </div>  
+  </div>     
+</table>
+
+

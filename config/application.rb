@@ -75,6 +75,7 @@ module EdnaConsole
       g.test_framework :minitest, spec: true, fixture: false
       g.integration_tool :minitest
     end
+    config.react.addons = true
 
   end
 end

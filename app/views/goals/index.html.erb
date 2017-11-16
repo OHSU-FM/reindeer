@@ -1,24 +1,2 @@
-<div class="container-fluid">
-  <h1>Goals</h1>
-
-  <form class="filter_form">Choose a student
-    <%= select_tag "user_id", options_from_collection_for_select(@cohorts, "user_id", "title") %>
-    <input type="submit" value="Get Goal" >
-  </form>
-
-  <ul id="MainTabs" class="nav nav-tabs">
-    <li class="nav active" ><a data-toggle="tab" href="#myGoals">Goals</a></li>
-    <li class="nav" ><a data-toggle="tab" href="#facetoface">Face to Face Meetings</a></li>
-  </ul>
-
-  <div class="tab-content">
-    <div id="myGoals" class="tab-pane active fade in">
-      <%= render partial: 'goal_list', locals: { goals: @goals } %>
-    </div>
-
-    <div id="facetoface" class="tab-pane fade">
-      <%= render partial: 'meetings_list', locals: { meetings: @meetings } %>
-    </div>
-  </div>
-  <%= link_to '+ Add New Comment', new_comment_path %>
-</div>
+Test!
+ <%= react_component("Goals", {title: "Hello World!"}) %>

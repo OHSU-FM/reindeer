@@ -1,0 +1,69 @@
+<h4> Goal Data </h4>
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-2">
+        <b><u>Title</u></b>
+      </div>
+      <div class="col-sm-3">
+        <b><u>Description</u></b>
+      </div>
+      <div class="col-sm-1">
+        <b><u>Tag</u></b>
+      </div>
+      <div class="col-sm-1">
+        <b><u>Status</u></b>
+      </div>
+      <div class="col-sm-2">
+        <b><u>Target Date</u></b>
+      </div>
+      <div class="col-sm-1">
+        <b><u>Location</u></b>
+      </div>      
+  </div>
+  <div class="row">
+      <div class="col-sm-2">
+        <%= @goal.title %> 
+      </div>
+      <div class="col-sm-3">
+        <%= @goal.description %>
+      </div>
+      <div class="col-sm-1">
+        <%= @goal.tag %>
+      </div>
+      <div class="col-sm-1">
+        <%= @goal.status %>
+      </div>
+      <div class="col-sm-2">
+        <%= @goal.target_date %>
+      </div>
+      <div class="col-sm-1">
+        <%= @goal.location %>
+      </div>                  
+  </div>
+</div>
+<hr>
+  <h5><b> Action Plan Items </b></h5>
+    <% @goal.action_plan_items.each do |a| %>
+      <li><%= a.description %> </li>
+    <% end %>
+<hr>
+
+<h4><b> Comments </b></h4>
+<% if !commentable.nil? %>
+    <% commentable.comments.each do |c| %>
+      <li><%= c.body %> submitted by <%= c.user_full_name(c.user_id) %> <%= time_ago_in_words(c.created_at) %> ago</li>
+    <% end %>
+<% end %>
+
+
+<%= form_for [commentable, Comment.new] do |f| %>
+      <%= f.text_area :body, size: '40x1', placeholder: "Add a Comment" %><br/>
+      <% if params[:goal_type] == 'Meeting' %>
+          <%= f.hidden_field :commentable_type, value: 'Meeting' %>
+      <% else %>
+          <%= f.hidden_field :commentable_type, value: 'Goal' %>
+      <% end %>
+
+      <%= f.submit "Save"  %>
+<% end %>

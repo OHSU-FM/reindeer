@@ -22,3 +22,6 @@ jQuery(document).on 'turbolinks:load', ->
 
   action_plan_items.on 'cocoon:after-remove', (e, removed_el) ->
     recount()
+
+
+

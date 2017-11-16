@@ -1,4 +1,35 @@
 <div class="filter_options_container">
-  this is where filtering will go
+  <!--this is where filtering will go  -->
 </div>
-this is where meetings go
+<table class="table table-inverse">
+  <thead>
+    <tr>
+      <td>Created Date</td>
+      <td>Desc</td>
+      <td>Status</td>
+      <td>Scheduled Date</td>
+      <td>User ID</td>
+      <td>Location</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% if !@goals.nil? %>
+      <% @meetings.each do |meeting| %>
+        <tr>
+          <td><%= meeting.created_at.to_date %>
+          <td><%= meeting.description %>
+          <td><%= meeting.status %>
+          <td><%= meeting.target_date %>
+          <td><%= meeting.user_id %>
+          <td><%= meeting.location %>
+          <td><%= link_to "+Comments(#{meeting.get_no_comments(meeting.id)})", [@meeting, meeting, goal_type: 'Meeting']  %></td>          
+          <td><%= link_to 'Edit', edit_goal_path(meeting, goal_type: 'Meeting') %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="filter_options_container">
+  <%= link_to '+ Create Face to Face Comment', new_goal_path(user_id: @user.id, goal_type: 'Meeting') %>
+</div>

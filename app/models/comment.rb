@@ -1,5 +1,6 @@
 class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
+  has_many :comments, as: :commentable
   belongs_to :user
   validates :user, presence: true
   validates :body, presence: true
@@ -18,7 +19,7 @@ class Comment < ActiveRecord::Base
   #   to_update.each do |c|
   #     ur = c.commentable
   #     new_ur = Assignment::UserResponse.where(title: ur.title,
-  #                                           resp_type: ur.resp_type,
+  #                  user                         resp_type: ur.resp_type,
   #                                           content: ur.content)
   #       .sort_by{|ur| ur.id }.last
   #     c.commentable_id = new_ur.id
@@ -29,4 +30,10 @@ class Comment < ActiveRecord::Base
   def row_partial_path
     flagged_as.nil? ? "comment_row" : "#{flagged_as}_comment_row"
   end
+
+  def user_full_name (curr_user)
+    return User.find(curr_user).full_name
+  end
+
+
 end

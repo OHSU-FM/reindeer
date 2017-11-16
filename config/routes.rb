@@ -5,12 +5,22 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => "/admin", :as => "rails_admin"
 
     # coaching routes
+  Rails.application.routes.draw do
+    resources :goals do
+      resources :action_plan_items
+      resources :comments
+    end
 
-  resources :action_plan_items
+    resources :comments do
+      resources :comments
+    end
 
-  resources :goals
+  end
 
-  resources :comments
+
+  #resources :action_plan_items
+  #resources :goals
+  #resources :comments
 
   
 

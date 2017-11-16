@@ -1,13 +1,14 @@
-<%= link_to("<< back to list", {action:'index', class:'back-link'}) %>
+<%= link_to("<< back to list", {action:'index'}) %>
 
-  <div class="Goal Edit">
-  <%= form_for(:goal, :url=>{:action=>'update', :id=>@goal.id}) do |f| %>
-    <%= render(:partial=> "form", :locals => {:f => f}) %>
-    <div class="form-buttons">
-      <%= submit_tag("Update Goal") %>
-    </div>
-  <% end %>
+  <div class="Goal Info">
+    <ul>
+      <% if params[:goal_type] == 'Goal' %>
+        <%= render(partial: 'comments/comment', locals: {commentable: @goal}) %>
+      <% else %>
+        <%= render(partial: 'comments/comment', locals: {commentable: @meeting}) %>
 
+      <% end %>
+    </ul>
   </div>
 
  
