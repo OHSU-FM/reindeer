@@ -10,8 +10,6 @@ class PermissionGroup < ActiveRecord::Base
   accepts_nested_attributes_for :permission_ls_groups, allow_destroy: true,
     reject_if: :all_blank
   validates_associated :permission_ls_groups
-  attr_accessible :permission_ls_groups_attributes, allow_destroy: true
-  attr_accessible :title, :user_ids, :pinned_survey_group_titles
   validates :title, presence: true, uniqueness: true
 
   serialize :pinned_survey_group_titles, Array

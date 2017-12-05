@@ -1,20 +1,7 @@
 module LimeExt
 
-  ##
-  # Class: LimeData
-  #
   # The LimeData class is used to generate datasets from LimeSurvey datasets
   class LimeData < LimeExt::PolyTableModel
-    attr_accessor :questions, :user
-
-    ##
-    # Class methods
-
-    ##
-    # Instance Methods
-
-    ##
-    #
     def initialize lime_survey
       @lime_survey = lime_survey
       @sid = lime_survey.sid

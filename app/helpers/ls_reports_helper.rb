@@ -136,7 +136,6 @@ module LsReportsHelper
 
   # TODO: Move to ls_files_helper.rb
   class FileAccessRequest
-    attr_reader :fm, :col_id, :row_id
 
     def initialize fm, col_id, row_id
       @fm = fm
@@ -156,8 +155,6 @@ module LsReportsHelper
 
   # Move to lib/lime_ext?
   class FilterManager
-    attr_reader :hide_pk, :hide_agg, :lime_survey, :lime_survey_unfiltered, :pk, :agg, :pk_enum, :agg_enum, :params, :user,
-      :filters_equal, :series_name, :unfiltered_series_name
 
     def initialize user, sid, opts={}
       @user = user
@@ -173,6 +170,14 @@ module LsReportsHelper
       Rails.logger.info lime_survey.lime_data.query
       Rails.logger.info lime_survey_unfiltered.lime_data.query
     end
+
+    def user; @user; end
+    def agg; @agg; end
+    def hide_agg; @hide_agg; end
+    def pk; @pk; end
+    def hide_pk; @hide_pk; end
+    def series_name; @series_name; end
+    def unfiltered_series_name; @unfiltered_series_name; end
 
     def its_important_to_check_ids
       raise "Identical Survey Object ids" if lime_survey.object_id == lime_survey_unfiltered.object_id
@@ -386,7 +391,6 @@ module LsReportsHelper
   # Virtual Groups: Split lime groups into groups with
   # at most 10 parent questions each.
   class VirtualGroup
-    attr_reader :group
     @questions = []
 
     ##

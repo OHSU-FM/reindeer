@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :pls_group, class: PermissionLsGroup do
     association :permission_group, :with_users
     lime_survey :full

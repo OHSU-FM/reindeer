@@ -1,5 +1,5 @@
 # RSpec
-# spec/support/factory_girl.rb
+# spec/support/factory_bot.rb
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 end

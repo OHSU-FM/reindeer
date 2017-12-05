@@ -1,13 +1,11 @@
 module LimeExt
 
-  ##
-  # Class: LimeData
-  #
-  # The LimeData class is used to generate datasets from LimeSurvey datasets
   class PolyTableModel
     SQL_SUB_REGEX = /[^A-Za-z0-9 @,._]+/
 
-    attr_accessor :sid, :query
+    def sid
+      @sid
+    end
 
     ##
     # Build query

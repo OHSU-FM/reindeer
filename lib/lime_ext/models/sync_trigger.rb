@@ -6,9 +6,6 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   default_scope {
     where(['tgname LIKE ? AND tgname LIKE ?', "tr_#{rule_prefix}%", "%cleaner"]) }
 
-  attr_accessible :sid_src, :sid_dest, :cols, :map_src, :map_dest
-  attr_accessor :sid_src, :sid_dest, :cols, :map_src, :map_dest
-
   validates_presence_of :sid_src, :sid_dest, :cols, :map_src, :map_dest
   validates_presence_of :lime_survey_src, :lime_survey_dest
   validates_length_of :cols, minimum: 1, maximum: MAX_COL_COUNT, allow_blank: false
@@ -31,10 +28,15 @@ class LimeExt::SyncTrigger < ActiveRecord::Base
   def get_survey(sid); sid.present? ? LimeSurvey.find(sid) : nil; end
   def parser; @parser ||= LimeExt::SyncTriggerParser.new self.tgname; end
   def sid_src; @sid_src ||= parser.sid_src; end
+  def sid_src= val; @sid_src = val; end
   def sid_dest; @sid_dest ||= parser.sid_dest; end
+  def sid_dest= val; @sid_dest = val; end
   def map_src; @map_src ||= parser.map_src; end
+  def map_src= val; @map_src = val; end
   def map_dest; @map_dest ||= parser.map_dest; end
+  def map_dest= val; @map_dest = val; end
   def cols; @cols ||= parser.cols; end
+  def cols= val; @cols = val; end
   def rulename; @rulename ||= new_record? ? '' : self[:rulename]; end
   def name; tgrelid; end
   def src_table; "#{LimeExt.table_prefix}_survey_#{sid_src}"; end

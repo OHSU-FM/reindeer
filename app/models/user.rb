@@ -8,12 +8,6 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :is_ldap,
-    :password, :password_confirmation,
-    :remember_me, :username,
-    :user_externals_attributes, :permission_group_id
-
-  attr_accessor :login
   serialize :roles, Array
 
   belongs_to :lime_user, :foreign_key=>:username, :primary_key=>:users_name
@@ -117,7 +111,6 @@ class User < ActiveRecord::Base
     define_method(role) do
       self.roles.include? role
     end
-    attr_accessible role
   }
 
   def roles_enum

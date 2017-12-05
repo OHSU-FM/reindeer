@@ -5,8 +5,6 @@ class Assignment::AssignmentGroupTemplate < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
   serialize :sids, Array
-  attr_accessible :title, :sids, :desc_md,
-    :lime_surveys
 
   STATES = {
     inactive: 0,

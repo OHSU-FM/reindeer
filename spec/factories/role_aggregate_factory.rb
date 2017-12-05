@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :role_aggregate do
     association :lime_survey, :full, :with_languagesettings
     default_view "graph"

@@ -3,8 +3,6 @@ class DashboardWidget < ActiveRecord::Base
 
   belongs_to :widget, :polymorphic=>true
   belongs_to :dashboard, :inverse_of=>:dashboard_widgets
-  attr_accessible :position, :widget_id, :widget_type, :sizex, :sizey, :widget, :widget_title
-  attr_accessor :status
 
   # Always require a dashboard
   validates_presence_of :dashboard

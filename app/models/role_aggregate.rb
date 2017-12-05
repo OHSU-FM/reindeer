@@ -1,18 +1,9 @@
 class RoleAggregate < ActiveRecord::Base
   has_paper_trail
-  attr_accessible :lime_survey_sid, :agg_fieldname, :agg_label, :agg_title_fieldname,
-    :pk_fieldname, :pk_title_fieldname, :pk_label, :default_view, :managed_permissions
 
-  attr_reader :questions
-  attr_accessor :agg, :pk
-
-  ##
-  # Associations
   belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:role_aggregate
   has_many :question_widgets
 
-  ##
-  # Validations
   validates_presence_of :default_view, :lime_survey_sid, :lime_survey
   validate :validates_table_existance
 

@@ -97,10 +97,10 @@ GEM
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
     execjs (2.7.0)
-    factory_girl (4.9.0)
+    factory_bot (4.8.2)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.9.0)
-      factory_girl (~> 4.9.0)
+    factory_bot_rails (4.8.2)
+      factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
     faker (1.8.4)
       i18n (~> 0.5)
@@ -145,10 +145,6 @@ GEM
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    kaminari-actionview (1.1.1)
-      actionview
-      kaminari-core (= 1.1.1)
-    kaminari-core (1.1.1)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (3.0.0)
@@ -191,8 +187,6 @@ GEM
       request_store (~> 1.1)
     pg (0.21.0)
     php-serialize (1.2.0)
-    protected_attributes (1.1.4)
-      activemodel (>= 4.0.1, < 5.0)
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -362,7 +356,7 @@ DEPENDENCIES
   devise
   devise_ldap_authenticatable
   exception_notification
-  factory_girl_rails
+  factory_bot_rails
   faker
   gon
   guard
@@ -375,7 +369,6 @@ DEPENDENCIES
   paper_trail
   pg
   php-serialize
-  protected_attributes
   pry-rails
   pry-stack_explorer
   rack-mini-profiler

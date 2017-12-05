@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :lime_question do
     question { Faker::Lorem.sentence(3) }
     title { Faker::Lorem.word }

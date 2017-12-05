@@ -9,8 +9,6 @@ class PermissionLsGroup < ActiveRecord::Base
   validates_presence_of :role_aggregate
   validates_uniqueness_of :lime_survey_sid, :scope=>:permission_group_id
   accepts_nested_attributes_for :permission_ls_group_filters, :allow_destroy=>true
-  attr_accessible :lime_survey_sid, :permission_group_id, :view_raw, :enabled, :view_all
-  attr_accessible :permission_ls_group_filters_attributes, :allow_destroy=>true
   validate :validate_enabled_allowed
 
   def validate_enabled_allowed

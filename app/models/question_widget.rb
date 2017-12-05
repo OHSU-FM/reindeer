@@ -5,24 +5,12 @@ class QuestionWidget < ActiveRecord::Base
   # Because Science
   has_paper_trail
 
-  attr_accessible :role_aggregate_id,
-    :user_id,
-    :agg,
-    :pk,
-    :lime_question_qid,
-    :dash_widget_attributes,
-    :graph_type,
-    :view_type
-
   # Associations
   belongs_to :role_aggregate
   belongs_to :lime_question, :foreign_key=>:lime_question_qid, :primary_key=>:qid
   belongs_to :user
   has_one :dash_widget, :class_name=>'DashboardWidget', :as=>:widget
   has_one :dashboard, :through=>:user
-
-  # ?
-  attr_accessor :status
 
   # Accepted variables
   accepts_nested_attributes_for :dash_widget, :allow_destroy => true

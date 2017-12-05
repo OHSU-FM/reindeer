@@ -2,9 +2,6 @@
 # Sort lime_surveys into groups based on their group name
 # RoleAggregateGroup.classify(lime_surveys)
 class LimeExt::LimeSurveyGroup
-  attr_reader :lime_surveys, :group_title
-  alias_method :title, :group_title
-  alias_method :surveys, :lime_surveys
 
   def self.classify(lime_surveys, opts={})
     # dup our own copy of array to mutate
@@ -49,6 +46,22 @@ class LimeExt::LimeSurveyGroup
     LimeTable.where("#{col_name}" => pk).present?
   end
 
+  def title
+    @group_title
+  end
+
+  def group_title
+    title
+  end
+
+  def surveys
+    @lime_surveys
+  end
+
+  def lime_surveys
+    surveys
+  end
+
   protected
 
   ##
@@ -57,7 +70,7 @@ class LimeExt::LimeSurveyGroup
     g_title, ra_title = lime_survey.group_and_title_name
 
     @group_title ||= g_title
-    group_title == g_title
+    @group_title == g_title
   end
 
   ##

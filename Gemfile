@@ -23,9 +23,6 @@ gem "php-serialize"
 # Administration Panel
 gem "rails_admin"
 
-# Needed until we migrate to strong-parameters
-gem "protected_attributes"
-
 # Config file loader
 # see ./lib/settings.rb and ./config/settings.yml for details
 gem "settingslogic"
@@ -101,7 +98,7 @@ group :test, :development do
     gem "rspec-rails"
     gem "capybara"
     gem "rails-perftest"
-    gem "factory_girl_rails"
+    gem "factory_bot_rails"
     gem "faker"
 end
 

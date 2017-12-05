@@ -3,7 +3,6 @@ class Chart < ActiveRecord::Base
   MAX_GROUPS = 2
   MAX_CHART_SERIES = 3
 
-  attr_accessor :show_controls
 
   has_one :dash_widget, :class_name=>'DashboardWidget', :as=>:widget
   has_many :chart_series, -> { order :created_at }, :inverse_of=>:chart, :dependent=>:destroy
