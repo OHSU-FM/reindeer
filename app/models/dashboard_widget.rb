@@ -1,13 +1,13 @@
 class DashboardWidget < ActiveRecord::Base
   has_paper_trail
 
-  belongs_to :widget, :polymorphic=>true
-  belongs_to :dashboard, :inverse_of=>:dashboard_widgets
+  belongs_to :widget, polymorphic: true
+  belongs_to :dashboard, inverse_of: :dashboard_widgets
 
   # Always require a dashboard
   validates_presence_of :dashboard
   # Only require existence of widget if one was added
-  validates_presence_of :widget, :if=> Proc.new { |o| !(o.widget_type.nil? || o.widget_id.nil?) }
+  validates_presence_of :widget, if: Proc.new { |o| !(o.widget_type.nil? || o.widget_id.nil?) }
   #
   before_save :set_status
   after_save :set_status
@@ -17,7 +17,7 @@ class DashboardWidget < ActiveRecord::Base
   WIDGET_ALLOWABLE_TYPES = ['Chart', 'QuestionWidget', 'Page']
   DEPENDENT_DESTROY_TYPES = ['QuestionWidget']
   EDITABLE_WIDGETS = ['Chart']
-  validates :widget_type, :inclusion=> { :in => WIDGET_ALLOWABLE_TYPES }, :allow_blank=>true
+  validates :widget_type, inclusion: { in: WIDGET_ALLOWABLE_TYPES }, allow_blank: true
 
   rails_admin do
     include_all_fields
@@ -43,12 +43,12 @@ class DashboardWidget < ActiveRecord::Base
   end
 
   def widget_type_enum
-    {'Chart'=>'Chart'}
+    { 'Chart'=>'Chart' }
   end
 
   def widget_id_enum
     return [] unless widget_type_enum.keys.include? widget_type
-    widget_type.constantize.where(:user_id=>dashboard.user_id).map do |record|
+    widget_type.constantize.where(user_id: dashboard.user_id).map do |record|
       title = record.title.strip.empty? ? "Untitled" : record.title
       [title, record.id]
     end
@@ -60,7 +60,7 @@ class DashboardWidget < ActiveRecord::Base
   end
 
   def set_status
-    if widget_id_changed? || widget_type_changed?
+    if saved_change_to_widget_id? || saved_change_to_widget_type?
       status.push 'refresh-widget'
     elsif status.include? 'new-record'
       status.delete 'new-record'
@@ -69,7 +69,7 @@ class DashboardWidget < ActiveRecord::Base
   end
 
   def status
-    @status ||=[]
+    @status ||= []
     if new_record?
       @status.push 'new-record'
     end
@@ -78,7 +78,6 @@ class DashboardWidget < ActiveRecord::Base
   end
 
   def content
-
   end
 
   def editable_widget?
@@ -89,8 +88,8 @@ class DashboardWidget < ActiveRecord::Base
 
   ##
   # Dump widget to json
-  def as_json(options=nil)
-    super({:include =>{:widget=>{:methods=>:content}}}.merge(options || {}))
+  def as_json options=nil
+    super({ include: { widget: { methods: :content } } }.merge(options || {}))
   end
 
   def optionally_delete_widget

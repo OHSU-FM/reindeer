@@ -343,7 +343,7 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    username.parameterize
+    username.to_s
   end
 
   def pinned_survey_groups
