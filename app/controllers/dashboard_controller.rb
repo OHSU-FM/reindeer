@@ -35,7 +35,7 @@ class DashboardController < ApplicationController
 
   def create
     @dash = Dashboard.where(user_id: current_user.id).first_or_initialize
-    @dash.assign_attributes(params[:dashboard])
+    @dash.assign_attributes(dashboard_params)
     authorize! :create, @dash
 
     respond_to do |format|
@@ -55,7 +55,7 @@ class DashboardController < ApplicationController
     authorize! :update, @dash
 
     respond_to do |format|
-      if @dash.update_attributes(params[:dashboard])
+      if @dash.update_attributes(dashboard_params)
         format.html{ render action: :show}
         format.json{ render json: { dash: @dash }, status: :ok }
       else
@@ -70,5 +70,14 @@ class DashboardController < ApplicationController
 
   def do_gon
     gon.dashboard_widgets = @dash.dashboard_widgets
+  end
+
+  def dashboard_params
+    params
+      .require(:dashboard)
+      .permit(:theme,
+              dashboard_widgets_attributes: [:widget_title, :position, :sizex,
+                                             :sizey, :id, :_destroy ]
+             )
   end
 end
