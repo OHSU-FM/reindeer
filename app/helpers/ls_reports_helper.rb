@@ -218,16 +218,15 @@ module LsReportsHelper
     ##
     # Load LimeSurvey and associations
     def get_lime_survey sid
-      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(:lime_survey_sid=>sid).pluck(:updated_at).first.to_i}"
+      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
       result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
         # Load resource and pre-load associations
         LimeSurvey.includes(:role_aggregate,
-                            :lime_groups=>[
-                              :lime_questions=>[
-                                :lime_answers,
-                                :lime_question_attributes
+                            lime_groups: [
+                              lime_questions: [
+                                :lime_answers
                               ]
-        ]).where(:sid=>sid.to_i).first
+        ]).where(sid: sid.to_i).first
       end
       raise ActiveRecord::RecordNotFound unless result
 

@@ -2,9 +2,8 @@ class User < ActiveRecord::Base
   has_paper_trail :ignore=>[:encrypted_password, :password, :password_confirmation]
 
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
-  devise :ldap_authenticatable, :database_authenticatable, :lockable,
+  # :token_authenticatable, :confirmable, :omniauthable
+  devise :ldap_authenticatable, :database_authenticatable,
     :recoverable, :rememberable, :trackable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
