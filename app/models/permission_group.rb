@@ -93,7 +93,7 @@ class PermissionGroup < ActiveRecord::Base
 
       plg.permission_ls_group_filters.each do |plgk|
         next unless plgk.ident_type.present?
-        match = uex.where(:ident_type=>plgk.ident_type).first
+        match = uex.where(ident_type: plgk.ident_type).first
         if match.nil?
           result.delete ra
           details.push [ra,  "No User External matching: #{plgk.ident_type}"]

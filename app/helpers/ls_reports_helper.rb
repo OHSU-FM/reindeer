@@ -281,14 +281,14 @@ module LsReportsHelper
 
       unless @ability.can? :read_unfiltered, lime_survey
         # Filters for comparison
-        plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
+        plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
         raise "Permissions Error: User cannot access this survey" unless plg.present?
         plg.permission_ls_group_filters.each do |plgk|
           fieldname = plgk.lime_question.my_column_name
           if plgk.restricted_val.present?
             filter_val = plgk.restricted_val
           else
-            uex = plgk.user_externals.where(:user_id=>@user.id).first
+            uex = plgk.user_externals.where(user_id: @user.id).first
             raise 'Permissions Error: UserExternal is missing' unless uex.present?
             filter_val = uex.filter_val
           end

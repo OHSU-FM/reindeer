@@ -7,8 +7,9 @@ class DashboardWidget < ActiveRecord::Base
   # Always require a dashboard
   validates_presence_of :dashboard
   # Only require existence of widget if one was added
-  validates_presence_of :widget, if: Proc.new { |o| !(o.widget_type.nil? || o.widget_id.nil?) }
-  #
+  validates_presence_of :widget,
+    if: Proc.new { |o| !(o.widget_type.nil? || o.widget_id.nil?) }
+
   before_save :set_status
   after_save :set_status
   before_destroy :optionally_delete_widget
@@ -37,13 +38,10 @@ class DashboardWidget < ActiveRecord::Base
     field :sizey
     field :position
     field :resizeable
-    field :editable_widget? do
-      read_only true
-    end
   end
 
   def widget_type_enum
-    { 'Chart'=>'Chart' }
+    { 'Chart' => 'Chart' }
   end
 
   def widget_id_enum
@@ -80,13 +78,12 @@ class DashboardWidget < ActiveRecord::Base
   def content
   end
 
+  # Should we allow this widget to be edited?
   def editable_widget?
-    # Should we allow this widget to be edited?
     return true if self.widget_type.to_s == ""          # Editable if nothing is set
     return EDITABLE_WIDGETS.include?(self.widget_type)  # Editable if in editable types
   end
 
-  ##
   # Dump widget to json
   def as_json options=nil
     super({ include: { widget: { methods: :content } } }.merge(options || {}))
