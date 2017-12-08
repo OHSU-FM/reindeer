@@ -60,7 +60,7 @@ class RoleAggregate < ActiveRecord::Base
   end
 
   def delete_dash_widgets
-    question_widgets.each{|qw| qw.dash_widget.destroy}
+    question_widgets.each{|qw| qw.dash_widget.destroy }
   end
 
   def validates_table_existance
@@ -103,7 +103,6 @@ class RoleAggregate < ActiveRecord::Base
     lime_data.dataset
   end
 
-  ##
   # Array of questions and their associated Answers
   #   - We had to store it this way because we need to register the dataset with the answers
   #   - The objects are garbage collected and forgotten if we register on the fly

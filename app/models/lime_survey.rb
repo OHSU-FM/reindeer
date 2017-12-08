@@ -211,4 +211,3 @@ class LimeSurvey < ActiveRecord::Base
     lime_data.column_names.select{ |name| name.include? "StudentEmail" }.first
   end
 end
-

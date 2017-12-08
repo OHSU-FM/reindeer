@@ -1,13 +1,12 @@
 class LimeUser < ActiveRecord::Base
-    self.inheritance_column = nil
-    self.primary_key = :uid
+  self.inheritance_column = nil
+  self.primary_key = :uid
 
-    rails_admin do
-        navigation_label "Lime Survey"
-    end
+  rails_admin do
+    navigation_label "Lime Survey"
+  end
 
-    def title
-        email
-    end
+  def title
+    email
+  end
 end
-

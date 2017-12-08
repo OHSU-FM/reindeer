@@ -1,10 +1,11 @@
 class PermissionLsGroupFilter < ActiveRecord::Base
-  belongs_to :permission_ls_group, :inverse_of=>:permission_ls_group_filters
-  belongs_to :lime_question, :primary_key=>:qid, :foreign_key=>:lime_question_qid, :inverse_of=>:permission_ls_group_filters
+  belongs_to :permission_ls_group, inverse_of: :permission_ls_group_filters
+  belongs_to :lime_question, primary_key: :qid, foreign_key: :lime_question_qid,
+    inverse_of: :permission_ls_group_filters
 
   validates_presence_of :permission_ls_group
-  validates_presence_of :ident_type, :if=>Proc.new {|obj|obj.restricted_val.to_s.empty?}
-  validates_presence_of :restricted_val, :if=>Proc.new {|obj| obj.ident_type.to_s.empty?}
+  validates_presence_of :ident_type, if: Proc.new {|obj| obj.restricted_val.to_s.empty? }
+  validates_presence_of :restricted_val, if: Proc.new {|obj| obj.ident_type.to_s.empty? }
 
   before_validation :check_ident_and_val
 
@@ -24,7 +25,7 @@ class PermissionLsGroupFilter < ActiveRecord::Base
         plgk = bindings[:object]
         Proc.new { |scope|
           if plgk.present?
-            qids = plgk.permission_ls_group.lime_survey.lime_questions.map{|pq|pq.qid}
+            qids = plgk.permission_ls_group.lime_survey.lime_questions.map{|pq| pq.qid }
             scope = scope.where('qid in (?)', qids) if plgk.present?
           end
         }
@@ -44,7 +45,7 @@ class PermissionLsGroupFilter < ActiveRecord::Base
 
   def user_externals
     if ident_type.present?
-      @user_externals ||= UserExternal.where(:ident_type=>ident_type)
+      @user_externals ||= UserExternal.where(ident_type: ident_type)
     else
       []
     end
@@ -62,5 +63,3 @@ class PermissionLsGroupFilter < ActiveRecord::Base
     ident_type.present? ? ident_type : restricted_val.to_s
   end
 end
-
-

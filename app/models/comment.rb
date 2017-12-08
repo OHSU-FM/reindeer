@@ -1,8 +1,7 @@
 class Comment < ActiveRecord::Base
   belongs_to :commentable, polymorphic: true
   belongs_to :user
-  validates :user, presence: true
-  validates :body, presence: true
+  validates_presence_of :user, :body
 
   rails_admin do
     navigation_label 'Assignment'

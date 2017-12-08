@@ -1,16 +1,14 @@
 class VersionNote < ActiveRecord::Base
   has_many :versions
-  has_many :possible_versions, ->{
+  has_many :possible_versions, -> {
     where "version_note_id IS NULL OR version_note_id = '#{self.id}'"
-  },
-  :class_name=>"Version"
+  }, class_name: "Version"
+
   validates_presence_of :note
   validates_presence_of :versions
 
   rails_admin do
-    field :versions do
-
-    end
+    field :versions
 
     edit do
       field :versions, :has_many_association do
@@ -25,7 +23,6 @@ class VersionNote < ActiveRecord::Base
             end
           }
         end
-
       end
       field :note
     end

@@ -3,11 +3,11 @@ class Chart < ActiveRecord::Base
   MAX_GROUPS = 2
   MAX_CHART_SERIES = 3
 
-
-  has_one :dash_widget, :class_name=>'DashboardWidget', :as=>:widget
-  has_many :chart_series, -> { order :created_at }, :inverse_of=>:chart, :dependent=>:destroy
-  belongs_to :user, :inverse_of=>:charts
-  accepts_nested_attributes_for :chart_series, :allow_destroy => true
+  has_one :dash_widget, class_name: 'DashboardWidget', as: :widget
+  has_many :chart_series, -> { order :created_at },
+   inverse_of: :chart, dependent: :destroy
+  belongs_to :user, inverse_of: :charts
+  accepts_nested_attributes_for :chart_series, allow_destroy: true
   validates_presence_of :user
   validate :validate_max_number_of_groups
   validate :validate_max_number_of_series
@@ -23,7 +23,7 @@ class Chart < ActiveRecord::Base
       if chart.new_record?
         suffix = user.charts.size + 1
       else
-        suffix = user.charts.index{|uchart|uchart.created_at == chart.created_at}.to_i + 1
+        suffix = user.charts.index{|uchart| uchart.created_at == chart.created_at }.to_i + 1
       end
       chart.title = "Untitled #{suffix}"
     end
@@ -44,13 +44,13 @@ class Chart < ActiveRecord::Base
   end
 
   def any_changed?
-    return changed? || chart_series.map{|cs|cs.changed?}.include?(true)
+    return changed? || chart_series.map{|cs| cs.changed? }.include? true
   end
 
   def validate_max_number_of_groups
     return if questions.empty?
 
-    groups = questions.map{|question|question.meta_attribute_entity_group}.uniq
+    groups = questions.map{|question| question.meta_attribute_entity_group }.uniq
     if groups.size > MAX_GROUPS
       errors.add :chart_series, 'A maximum of 2 groups are allowed'
     end
@@ -86,8 +86,9 @@ class Chart < ActiveRecord::Base
   end
 
   def aggregator_type_enum
-    return %w'count countUnique listUnique intSum sum average sumOverSum ub80 lb80 sumAsFractionOfTotal sumAsFractionOfRow sumAsFractionOfCol
-            countAsFractionOfTotal countAsFractionOfRow countAsFractionOfCol undefined'
+    return %w'count countUnique listUnique intSum sum average sumOverSum ub80
+     lb80 sumAsFractionOfTotal sumAsFractionOfRow sumAsFractionOfCol
+     countAsFractionOfTotal countAsFractionOfRow countAsFractionOfCol undefined'
   end
 
   def chart_type_name
@@ -107,33 +108,33 @@ class Chart < ActiveRecord::Base
   # Any listed question that is not in rows
   def cols_enum
     data_maker.questions.
-      map{|q|q.attribute_name}.
-      uniq.select{|val| val.size > 0 && !self.rows.include?(val)}
+      map{|q|q.attribute_name }.
+      uniq.select{|val| val.size > 0 && !self.rows.include?(val) }
   end
 
   # Any listed question that is not in cols
   def rows_enum
     data_maker.questions.
-      map{|q|q.attribute_name}.
-      uniq.select{|val| val.size > 0 && !self.cols.include?(val)}
+      map{|q|q.attribute_name }.
+      uniq.select{|val| val.size > 0 && !self.cols.include?(val) }
   end
 
   def cols= val
-    write_attribute :cols, val.reject{|col|col==''}
+    write_attribute :cols, val.reject{|col| col=='' }
   end
 
   def rows= val
-    write_attribute :rows, val.reject{|row|row==''}
+    write_attribute :rows, val.reject{|row| row=='' }
   end
 
 
   # customize serialized output for this model
   # Will automatically show up on to_json, to_xml etc...
-  def serializable_hash(options={})
+  def serializable_hash options={}
     options = {
-      :methods=>[:attr_names, :dataset, :questions, :max_series_count],
-      :chart_series=>{
-        :methods=>[:attribute_name, :short_name]
+      methods: [:attr_names, :dataset, :questions, :max_series_count],
+      chart_series: {
+        methods: [:attribute_name, :short_name]
       }
     }.update(options)
     super(options)
@@ -145,18 +146,18 @@ class Chart < ActiveRecord::Base
 
   # return all meta_attribute_questions associated with this chart
   def questions
-    ready_series = chart_series.select{|series|series.ready_for_data?}
+    ready_series = chart_series.select{|series| series.ready_for_data? }
     result = []
-    ready_series.each{|series|result += series.meta_attribute_questions}
-    return result.uniq.sort_by{|series|series.category}
+    ready_series.each{|series| result += series.meta_attribute_questions }
+    return result.uniq.sort_by{|series| series.category }
   end
 
   def groups
-    questions.map{|question|question.meta_attribute_entity_group}.uniq
+    questions.map{|question| question.meta_attribute_entity_group }.uniq
   end
 
   def attr_names
-    result = {'year'=>'year'}
+    result = { 'year' => 'year' }
     chart_series.each do |series|
       result[series.attribute_name] = series.short_name
       result[series.short_name] = series.attribute_name

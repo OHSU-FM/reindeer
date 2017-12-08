@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_paper_trail :ignore=>[:encrypted_password, :password, :password_confirmation]
+  has_paper_trail ignore: [:encrypted_password, :password, :password_confirmation]
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :omniauthable
@@ -9,38 +9,29 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   serialize :roles, Array
 
-  belongs_to :lime_user, :foreign_key=>:username, :primary_key=>:users_name
-  belongs_to :permission_group, :inverse_of=>:users
+  belongs_to :lime_user, foreign_key: :username, primary_key: :users_name
+  belongs_to :permission_group, inverse_of: :users
   belongs_to :cohort
 
-  has_many :charts, :inverse_of=>:user, :dependent=>:destroy
-  has_many :dashboard_widgets, :through=>:dashboard
-  has_many :permission_ls_groups, :through=>:permission_group
-  has_many :question_widgets, :dependent=>:delete_all
-  has_many :user_externals, :dependent=>:delete_all, :inverse_of=>:user
+  has_many :charts, inverse_of: :user, dependent: :destroy
+  has_many :dashboard_widgets, through: :dashboard
+  has_many :permission_ls_groups, through: :permission_group
+  has_many :question_widgets, dependent: :delete_all
+  has_many :user_externals, dependent: :delete_all, inverse_of: :user
 
-  has_one :dashboard, :dependent=>:destroy
+  has_one :dashboard, dependent: :destroy
 
   include EdnaConsole::UserHasAssignments
 
-  accepts_nested_attributes_for :user_externals, :allow_destroy=>true
+  accepts_nested_attributes_for :user_externals, allow_destroy: true
 
-  validates :username,
-    :uniqueness => {
-    :case_sensitive => false
-  },
-  :presence => true
-  validates :encrypted_password, presence: true
-  validates :email,
-    :uniqueness => {
-    :case_sensitive => false
-  },
-  :presence => true
-  validates :ls_list_state, inclusion: {
+  validates_presence_of :username, uniqueness: { case_sensitive: false }
+  validates_presence_of :encrypted_password
+  validates_presence_of :email, uniqueness: { case_sensitive: false }
+  validates_presence_of :ls_list_state, inclusion: {
     in: %w(dirty clean),
     message: "%{value} must be one of dirty or clean"
-  },
-  presence: true
+  }
 
   validate :ldap_cannot_update_password
 
@@ -51,39 +42,39 @@ class User < ActiveRecord::Base
     end
   end
 
-  ##
   # Assign roles to a user like this:
   # user = User.new
   # user.admin = true
   # user.can_chart = true
   ROLES = {
     # can view assignments that they belong to
-    :participant=>0,
+    participant: 0,
 
     # Piecemeal permissions
-    :can_dashboard=>1,
-    :can_stats=>1,
-    :can_reports=>1,
-    :can_chart=>1,
-    :can_lime=>1,
-    :can_lime_all=>1,
-    :can_view_spreadsheet=>1,
-    :can_create_assignment_group=>1,
+    can_dashboard: 1,
+    can_stats: 1,
+    can_reports: 1,
+    can_chart: 1,
+    can_lime: 1,
+    can_lime_all: 1,
+    can_view_spreadsheet: 1,
+    can_create_assignment_group: 1,
+
     # Role permissions
-    :admin=>25,
-    :superadmin=>50
+    admin: 25,
+    superadmin: 50
   }
 
   ROLES.each{|role, i|
     # setter
     define_method("#{role.to_s}=") do |val_str|
       # parse setter value to boolean
-      val =  [1, true, '1'].include?(val_str)
+      val =  [1, true, '1'].include? val_str
       # Update roles
       if val && !self.roles.include?(role)
-        self.roles.push(role)
+        self.roles.push role
       elsif !val && self.roles.include?(role)
-        self.roles.delete( role )
+        self.roles.delete role
       end
     end
 
@@ -97,7 +88,7 @@ class User < ActiveRecord::Base
       self.roles.each do |role|
         # Does this role actually exist?
         # log error if not
-        unless ROLES.include?(role)
+        unless ROLES.include? role
           Rails.logger.error("<#{self.class} id:#{self.id} bad_role:#{role}>")
           next
         end
@@ -135,25 +126,25 @@ class User < ActiveRecord::Base
     self.is_ldap
   end
 
-  ##
   # Overwrite a method inserted by Devise
   #   This allows us to authenticate with either username or email during login
   #   https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
-  def self.find_for_database_authentication(warden_conditions)
+  def self.find_for_database_authentication warden_conditions
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+      where(conditions).where(
+        ["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]
+      ).first
     else
       where(conditions).first
     end
   end
 
-  ##
   # Generic setter for devise authentication, allow users to use email or login
-  def login=(login)
+  def login= login
     @login = login
   end
-  ##
+
   # Generic getter for username or email
   def login
     @login || self.username || self.email
@@ -181,14 +172,12 @@ class User < ActiveRecord::Base
     self.ls_list_state == "clean"
   end
 
-  ##
   # Rails Admin config
   rails_admin do
 
     navigation_label 'Permissions'
     weight -5
 
-    ##
     # Default group
     group :account do
       active false
@@ -210,7 +199,6 @@ class User < ActiveRecord::Base
       field :cohort
     end
 
-    ##
     # Should be read only
     group :sign_in_details do
       active false
@@ -221,7 +209,6 @@ class User < ActiveRecord::Base
        end
     end
 
-    ##
     # should be read only
     group :forms do
       active false
@@ -301,12 +288,12 @@ class User < ActiveRecord::Base
 
   def explain_survey_access
     if admin_or_higher?
-      details = ['Admin can see everything']
+      details = 'Admin can see everything'
     elsif permission_group.present?
       details, ra = self.permission_group.explain_role_aggregates_for(self)
-      details = details.map{|ra, detail| "#{ra.lime_survey.title}:#{detail}"}.join("<br/>")
+      details = details.map{|ra, detail| "#{ra.lime_survey.title}:#{detail}" }.join("<br/>")
     else
-      details = ['No permission group set']
+      details = 'No permission group set'
     end
     return details.html_safe
   end

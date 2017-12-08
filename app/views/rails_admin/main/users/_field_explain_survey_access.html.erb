@@ -1,23 +1,22 @@
 <% user = @object %>
 
 <% if user.admin_or_higher? %>
-    <div class="bs-callout bs-callout-success">
-        <h4>Admin can access all surveys</h4>
-    </div>
+  <div class="bs-callout bs-callout-success">
+    <h4>Admin can access all surveys</h4>
+  </div>
 <% elsif user.permission_group.present? %>
-    <div class="bs-callout bs-callout-primary">
-        <h4><span class="text-primary">Access Details</span></h4>
-        <% details, ra = user.permission_group.explain_role_aggregates_for(user) %>
-        <dl>
-        <% details.each do |ra, detail| %>
-            <dt><%= ra.lime_survey.title %></dt>
-            <dd><%= detail %></dd>
-        <% end %>
-        </dl>
-    </div>
+  <div class="bs-callout bs-callout-primary">
+    <h4><span class="text-primary">Access Details</span></h4>
+    <% details, ra = user.permission_group.explain_role_aggregates_for(user) %>
+    <dl>
+      <% details.each do |ra, detail| %>
+      <dt><%= ra.lime_survey.title %></dt>
+      <dd><%= detail %></dd>
+      <% end %>
+    </dl>
+  </div>
 <% else %>
-    <div class="bs-callout bs-callout-danger">
-        <h4>Permission group not set</h4>
-    </div>
-
+  <div class="bs-callout bs-callout-danger">
+    <h4>Permission group not set</h4>
+  </div>
 <% end %>

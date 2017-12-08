@@ -113,7 +113,7 @@ class PermissionGroup < ActiveRecord::Base
           details.push [ra, 'Ready']
         end
         !lime_data.empty?
-      rescue LsReportsHelper::AccessDenied=>e
+      rescue LsReportsHelper::AccessDenied => e
         details.push [ra, 'Access Denied Error']
         false
       end

@@ -60,7 +60,7 @@ class ChartSeries < ActiveRecord::Base
 
   def entities_filter
     # if empty show all
-    val = Array(self[:entities_filter]).reject{|j|j==''}
+    val = Array(self[:entities_filter]).reject{|j| j=='' }
     if val.empty?
       val = entities_filter_enum
     end
@@ -70,19 +70,19 @@ class ChartSeries < ActiveRecord::Base
   # group filter enumerator
   def group_filter_enum
     options = MetaAttribute::MetaAttributeEntityGroup.
-      where(:visible=>true).
+      where(visible: true).
       pluck(:group_name)
     return options if not chart
 
     # TODO: Remove ugly hack
     bad_val = 'P4 Continuity Clinic Surveys'
-    all_groups =  chart.chart_series.map{|series|series.group_filter}
+    all_groups = chart.chart_series.map{|series| series.group_filter }
     if all_groups.include? bad_val
       options.delete('P4 Graduate Surveys')
       options.delete('P4 Resident Surveys')
     end
     bad_val = 'P4 Resident Surveys'
-    all_groups =  chart.chart_series.map{|series|series.group_filter}
+    all_groups =  chart.chart_series.map{|series| series.group_filter }
     if all_groups.include? bad_val
       options.delete('P4 Continuity Clinic Surveys')
     end
@@ -123,7 +123,7 @@ class ChartSeries < ActiveRecord::Base
       where('meta_attribute_questions.category IS NOT NULL').
       where(['meta_attribute_entities.meta_attribute_entity_group_group_name = ?', group_filter]).
       where(['meta_attribute_questions.category=?', category_filter]).
-      distinct('attribute_name, short_name').order(:description).pluck(:description,:attribute_name)
+      distinct('attribute_name, short_name').order(:description).pluck(:description, :attribute_name)
     return q_enum.uniq{|desc, attr| attr} || []
   end
 

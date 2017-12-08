@@ -1,15 +1,18 @@
 class PermissionLsGroup < ActiveRecord::Base
-  belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:permission_ls_groups
-  has_one :role_aggregate, :through=>:lime_survey
+  belongs_to :lime_survey, primary_key: :sid, foreign_key: :lime_survey_sid,
+   inverse_of: :permission_ls_groups
+  belongs_to :permission_group, inverse_of: :permission_ls_groups
 
-  belongs_to :permission_group, :inverse_of=>:permission_ls_groups
-  has_many :permission_ls_group_filters, :dependent=>:destroy, :inverse_of=>:permission_ls_group
+  has_one :role_aggregate, through: :lime_survey
+  has_many :permission_ls_group_filters, :ependent: :destroy,
+   inverse_of: :permission_ls_group
 
   validates_presence_of :lime_survey, :permission_group
   validates_presence_of :role_aggregate
-  validates_uniqueness_of :lime_survey_sid, :scope=>:permission_group_id
-  accepts_nested_attributes_for :permission_ls_group_filters, :allow_destroy=>true
+  validates_uniqueness_of :lime_survey_sid, scope: :permission_group_id
   validate :validate_enabled_allowed
+
+  accepts_nested_attributes_for :permission_ls_group_filters, allow_destroy: true
 
   def validate_enabled_allowed
     if enabled && !enabled_allowed?
@@ -27,7 +30,7 @@ class PermissionLsGroup < ActiveRecord::Base
 
   def enabled_allowed?
     return role_aggregate.present? && role_aggregate.ready_for_use? && (
-      view_all == true || permission_ls_group_filters.select{|plgf|plgf.enabled?}.count > 0
+      view_all == true || permission_ls_group_filters.select{|plgf| plgf.enabled? }.count > 0
     )
   end
 
@@ -88,6 +91,4 @@ class PermissionLsGroup < ActiveRecord::Base
   def disabled?
     !ready_for_use?
   end
-
 end
-
