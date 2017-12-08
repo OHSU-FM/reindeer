@@ -1,5 +1,5 @@
 <!-- Modal blank for iframe links -->
-<%= render :partial=>'shared/modal_blank'%>
+<%= render partial: 'shared/modal_blank' %>
 
 <div id="ls_reports_nav">
   <div id="container"></div>
@@ -15,7 +15,7 @@
             <% hf_role_aggregate_groups(@user.role_aggregates).each do |group_name, role_aggregates| %>
               <li><span><%= group_name.nil? ? 'Reports' : group_name %></span></li>
               <li class="divider"></li>
-              <% role_aggregates.each do |title, ra|%>
+              <% role_aggregates.each do |title, ra| %>
                 <li>
                   <%= link_to title,
                     polymorphic_path([ra.default_view, :ls_report], sid: ra.lime_survey_sid, pk: (@pk.nil? ? "_" : @pk)),
