@@ -1,0 +1,33 @@
+<table style="width: 100%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+  <tr><th >Blocks</th>
+      <th class="centered-cell">Component 1 (MCQs) <br > Student / Class Mean</th>
+      <th class="centered-cell">Component 2 (Skill Assessments) <br > Student / Class Mean</th>
+      <th class="centered-cell">Component 3 (OHSU Final) <br > Student / Class Mean</th>
+      <th class="centered-cell">Component 4 (NBME) <br > Student / Class Mean</th>
+      <th class="centered-cell">Component 5 (Final Skills) <br > Student / Class Mean</th>
+     
+  </tr>
+  <% class_mean = @allblocks_class_mean %>
+  <% j = 1 %>
+  <% i = 0 %>
+  <% @allblocks.each do |k, v| %>
+    <tr><td><%= k %> </td>
+        <% v.each do |item| %>
+            <td class="centered-cell">
+                <font color="green"><%= "%3.2f" % item.to_d.truncate(2).to_s %> </font>
+                <%= " / " %>
+                <% if class_mean["Comp#{j}"][i].nil? %>
+                    <font color="blue"> 00.00 </font>
+                <% else %>
+                  <font color="blue"> <%= "%3.2f" % class_mean["Comp#{j}"][i].to_d.truncate(2).to_s %> </font>
+                <% end %>
+                <% j = j + 1 %>
+            </td>
+        <% end %>
+    </tr>
+    <% i = i + 1 %>
+    <% j = 1 %>
+
+  <% end %>
+
+</table>

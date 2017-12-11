@@ -32,7 +32,8 @@ class LimeQuestion < ActiveRecord::Base
         '!'=>'list_drop',         # - List (Dropdown)
         ':'=>'arr_mult_drop',     # - Array (Flexible Labels) multiple drop down
         ';'=>'arr_mult_text',     # - Array (Flexible Labels) multiple texts
-        '|'=>'file_upload'        # - File Upload Question
+        '|'=>'file_upload',       # - File Upload Question
+        '*'=>'equation'           # - Equation type question
     }
 
 
