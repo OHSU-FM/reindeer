@@ -272,7 +272,7 @@ class LsGraphCategories extends LsGraphBase
 
     data: ->
         qstat = @qstat
-        result = (Number(cat.percent.toFixedDown(2)) for cat in qstat.categorical_stats)
+        result = (Number(cat.percent.toFixed(2)) for cat in qstat.categorical_stats)
         return result
 
 
@@ -316,7 +316,7 @@ class LsGraphCategories extends LsGraphBase
 
     full_data: ->
         qstat = @full_qstat
-        return (Number(cat.percent.toFixedDown(2)) for cat in qstat.categorical_stats)
+        return (Number(cat.percent.toFixed(2)) for cat in qstat.categorical_stats)
 
     category_labels: ->
         qstat = @qstat
@@ -361,7 +361,7 @@ class LsGraphDescriptivesMultNumeric extends LsGraphBase
             if !rounded_float?
                 rounded_float = 0
             else
-                rounded_float = Number(rounded_float.toFixedDown(2))
+                rounded_float = Number(rounded_float.toFixed(2))
 
             if rounded_float < 70.00
                 result.push {y: rounded_float, borderColor:'#FFA500'}
@@ -383,7 +383,7 @@ class LsGraphDescriptivesNumeric extends LsGraphBase
     data: ->
         qstat = @qstat
         result = []
-        rounded_float = Number(qstat.descriptive_stats.mean.toFixedDown(2))
+        rounded_float = Number(qstat.descriptive_stats.mean.toFixed(2))
         if rounded_float < 70.00
             result.push {y: rounded_float, color:'#FFA500'}
         else
@@ -393,7 +393,7 @@ class LsGraphDescriptivesNumeric extends LsGraphBase
     full_data: ->
         qstat = @full_qstat
         result = []
-        result.push Number(qstat.descriptive_stats.mean.toFixedDown(2))
+        result.push Number(qstat.descriptive_stats.mean.toFixed(2))
         return result
 
     category_labels: ->

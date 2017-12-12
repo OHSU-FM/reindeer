@@ -145,10 +145,6 @@ GEM
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    kaminari-actionview (1.1.1)
-      actionview
-      kaminari-core (= 1.1.1)
-    kaminari-core (1.1.1)
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (3.0.0)
