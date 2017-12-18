@@ -41,9 +41,6 @@ class LsReports::BaseController < ApplicationController
   private
 
   def load_data
-    authorize! :read, @lime_survey
-    authorize! :read_raw_data, @lime_survey if will_view_raw_data?
-
     # TODO: Fix this
     # dirty hack to accept forms from graph/filter forms
     kparams = params[:role_aggregate] || { agg: params[:agg], pk: params[:pk] }
@@ -56,6 +53,8 @@ class LsReports::BaseController < ApplicationController
     # Alias used in view
     @lime_survey = fm.lime_survey
     @lime_survey_unfiltered = fm.lime_survey_unfiltered
+    authorize! :read, @lime_survey
+    authorize! :read_raw_data, @lime_survey if will_view_raw_data?
     @pk_enum = fm.pk_enum
     @agg_enum = fm.agg_enum
     @agg = fm.agg
