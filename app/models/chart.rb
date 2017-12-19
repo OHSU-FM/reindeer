@@ -44,7 +44,7 @@ class Chart < ActiveRecord::Base
   end
 
   def any_changed?
-    return changed? || chart_series.map{|cs| cs.changed? }.include? true
+    return changed? || chart_series.map{|cs| cs.changed? }.include?(true)
   end
 
   def validate_max_number_of_groups
