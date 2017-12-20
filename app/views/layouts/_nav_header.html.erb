@@ -9,7 +9,6 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-
       </button>
 
       <%= image_tag Settings.site.logo_header, alt: Settings.site.name_html, :size=>"50x50" %>
@@ -87,5 +86,6 @@
     </div>
   </div>
 </div>
-<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal_nav_reports', :message=>'Loading Report'}%>
-<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal_nav_stats', :message=>'Loading Data Set'}%>
+
+<%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_reports', message: 'Loading Report' }%>
+<%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_stats', message: 'Loading Data Set' }%>

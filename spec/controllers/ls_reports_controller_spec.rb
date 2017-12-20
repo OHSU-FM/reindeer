@@ -46,7 +46,7 @@ describe LsReportsController do
     u = create :admin
 
     sign_in u
-    get :index, group_filter: "test"
+    get :index, params: { group_filter: "test" }
     expect(assigns["survey_groups"].first.group_title).to eq "test"
     expect(assigns["survey_groups"].first.surveys).to eq [ l ]
   end

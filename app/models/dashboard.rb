@@ -7,7 +7,6 @@ class Dashboard < ActiveRecord::Base
   belongs_to :user
   has_many :dashboard_widgets, :inverse_of=>:dashboard, :dependent=>:destroy
   accepts_nested_attributes_for :dashboard_widgets, :allow_destroy=>true
-  attr_accessible :theme, :dashboard_widgets_attributes
   validates_presence_of :user
 
   rails_admin do

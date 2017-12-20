@@ -2,6 +2,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   layout 'full_width'
   include LsReports::SpreadsheetHelper
   include LsReports::CompetencyHelper
+  include LsReports::AllblocksHelper
   ##
   # show lime_survey
   def show
@@ -42,6 +43,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level2 = hf_comp_courses(@rs_data, "2")
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
+
+    if @pk != "_"
+      @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings)
+      @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
+
+    end
 
     
     #@all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")

@@ -136,7 +136,6 @@ module LsReportsHelper
 
   # TODO: Move to ls_files_helper.rb
   class FileAccessRequest
-    attr_reader :fm, :col_id, :row_id
 
     def initialize fm, col_id, row_id
       @fm = fm
@@ -156,8 +155,6 @@ module LsReportsHelper
 
   # Move to lib/lime_ext?
   class FilterManager
-    attr_reader :hide_pk, :hide_agg, :lime_survey, :lime_survey_unfiltered, :pk, :agg, :pk_enum, :agg_enum, :params, :user,
-      :filters_equal, :series_name, :unfiltered_series_name
 
     def initialize user, sid, opts={}
       @user = user
@@ -173,6 +170,14 @@ module LsReportsHelper
       Rails.logger.info lime_survey.lime_data.query
       Rails.logger.info lime_survey_unfiltered.lime_data.query
     end
+
+    def user; @user; end
+    def agg; @agg; end
+    def hide_agg; @hide_agg; end
+    def pk; @pk; end
+    def hide_pk; @hide_pk; end
+    def series_name; @series_name; end
+    def unfiltered_series_name; @unfiltered_series_name; end
 
     def its_important_to_check_ids
       raise "Identical Survey Object ids" if lime_survey.object_id == lime_survey_unfiltered.object_id
@@ -213,16 +218,15 @@ module LsReportsHelper
     ##
     # Load LimeSurvey and associations
     def get_lime_survey sid
-      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(:lime_survey_sid=>sid).pluck(:updated_at).first.to_i}"
+      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
       result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
         # Load resource and pre-load associations
         LimeSurvey.includes(:role_aggregate,
-                            :lime_groups=>[
-                              :lime_questions=>[
-                                :lime_answers,
-                                :lime_question_attributes
+                            lime_groups: [
+                              lime_questions: [
+                                :lime_answers
                               ]
-        ]).where(:sid=>sid.to_i).first
+        ]).where(sid: sid.to_i).first
       end
       raise ActiveRecord::RecordNotFound unless result
 
@@ -277,14 +281,14 @@ module LsReportsHelper
 
       unless @ability.can? :read_unfiltered, lime_survey
         # Filters for comparison
-        plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
+        plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
         raise "Permissions Error: User cannot access this survey" unless plg.present?
         plg.permission_ls_group_filters.each do |plgk|
           fieldname = plgk.lime_question.my_column_name
           if plgk.restricted_val.present?
             filter_val = plgk.restricted_val
           else
-            uex = plgk.user_externals.where(:user_id=>@user.id).first
+            uex = plgk.user_externals.where(user_id: @user.id).first
             raise 'Permissions Error: UserExternal is missing' unless uex.present?
             filter_val = uex.filter_val
           end
@@ -386,7 +390,6 @@ module LsReportsHelper
   # Virtual Groups: Split lime groups into groups with
   # at most 10 parent questions each.
   class VirtualGroup
-    attr_reader :group
     @questions = []
 
     ##

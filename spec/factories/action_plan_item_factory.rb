@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :action_plan_item do
     association :goal
     description { Faker::Lorem.sentence }

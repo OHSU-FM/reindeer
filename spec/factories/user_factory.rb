@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     full_name { Faker::Name.name }
     username { Faker::Internet.user_name("#{full_name}") }
@@ -43,6 +43,13 @@ FactoryGirl.define do
     trait :with_uex do
       after(:build) do |usr|
         usr.user_externals << build(:user_external, user: usr)
+      end
+    end
+
+    trait :with_assignment_group do
+      after(:build) do |usr|
+        c = create :cohort, owner: usr
+        usr.assignment_groups << FactoryBot.build(:assignment_group, cohort: c)
       end
     end
 

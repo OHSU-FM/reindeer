@@ -40,7 +40,7 @@
       </td>
     </tr>
   <% end %>
-    <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date}.reverse! %>
+    <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date} %>
     <% role_aggregates.each do |ra| %>
       <tr>
       <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]),

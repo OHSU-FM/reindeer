@@ -1,10 +1,10 @@
 <%  # Do nothing, prevent layout from displaying messages
 content_for :messages do %>
-<!-- -->
+
 <% end %>
 <div class="container">
   <div id="login-banner" class="row">
-    <%= image_tag Settings.site.logo, :alt=>Settings.site.name %>
+    <%= image_tag Settings.site.logo, alt: Settings.site.name %>
   </div>
 
   <div class="row">
@@ -18,23 +18,23 @@ content_for :messages do %>
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
       <div>
-        <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-        <div class="form-group">
-          <%= f.label :login %>
-          <%= f.text_field :login, :class=>'form-control', :placeholder=>"Enter username/email" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :password %>
-          <%= f.password_field :password, :class=>"form-control", :placeholder=>"Password" %>
-        </div>
-        <div class="checkbox">
-          <%= f.label :remember_me do %>
-          <%= f.check_box :remember_me %>Remember me
-          <% end %>
-        </div>
+          <div class="form-group">
+            <%= f.label :login %>
+            <%= f.text_field :login, class: 'form-control', placeholder: "Enter username/email" %>
+          </div>
+          <div class="form-group">
+            <%= f.label :password %>
+            <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+          </div>
+          <div class="checkbox">
+            <%= f.label :remember_me do %>
+              <%= f.check_box :remember_me %>Remember me
+            <% end %>
+          </div>
 
-        <%= f.submit "Sign in", :class=>"btn btn-default" %>
+          <%= f.submit "Sign in", class: "btn btn-default" %>
 
         <% end %>
       </div>

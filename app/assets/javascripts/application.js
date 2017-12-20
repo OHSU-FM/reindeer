@@ -50,6 +50,3 @@
 //= require nested_form_fields
 //= require goals.js
 //= require turbolinks
-//= require react
-//= require react_ujs
-//= require components

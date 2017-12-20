@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :lime_survey do
     sequence(:sid) { |n| n + 12345}
     owner_id 1
@@ -43,7 +43,7 @@ FactoryGirl.define do
 
     trait :with_languagesettings do
       after(:create) do |survey|
-        survey.lime_surveys_languagesettings << FactoryGirl.build(:lime_surveys_languagesetting)
+        survey.lime_surveys_languagesettings << FactoryBot.build(:lime_surveys_languagesetting)
       end
     end
 

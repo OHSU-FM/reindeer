@@ -1,12 +1,15 @@
 <% if pquestion.hidden? %>
-    <p>hidden question</p>
+  <p>hidden question</p>
 <% else %>
-      <div class="panel-heading panel-title"></div>
-      <ol id="qid<%= pquestion.qid %>" class="sub-question">
-        <% pquestion.response_set.data.uniq.each do |ans| %>
-           <% unless ans.to_s.empty? %>
-              <li><%= strip_tags(ans) %></li>
-           <% end %>
-         <% end %>
-       </ol>
-<% end %> 
+  <% if !pquestion.question.include? "TOKEN" %>
+    <div class="panel-heading panel-title"><%= strip_tags(pquestion.question) %></div>
+  <% end %>
+
+  <ol id="qid<%= pquestion.qid %>" class="sub-question">
+    <% pquestion.response_set.data.uniq.each do |ans| %>
+      <% unless ans.to_s.empty? %>
+        <li><%= strip_tags(ans) %></li>
+      <% end %>
+    <% end %>
+  </ol>
+<% end %>

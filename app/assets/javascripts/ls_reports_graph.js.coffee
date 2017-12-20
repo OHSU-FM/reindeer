@@ -15,9 +15,8 @@ Array::min=->
 @chart_args = (graph) ->
 
     data = graph.data()
-    console.log("data: " + data)
-
     full_data = graph.full_data()
+
     max_item = data.max()
     if (max_item < 10 )
             max_item = 10
@@ -61,8 +60,6 @@ Array::min=->
             xTitleText = graph.xTitleText
             three_d_enabled = false #true
 
-
-
     return {
         chart: {
             type: chart_type,
@@ -78,13 +75,13 @@ Array::min=->
             #backgroundColor:'rgba(255, 255, 255, 0.4)'
             backgroundColor: null,
             height: 380,
-            width: 490 
+            width: 490
         },
 
         tooltip: {
             shared: false,
             positioner: -> {
-                 x: 60, y: 60 
+                 x: 60, y: 60
             }
         }
 
@@ -193,7 +190,7 @@ Array::min=->
                             overflow: 'hidden',
                             font: '12px Helvetica'
                             }
-                    }                     
+                    }
                   }, {
 
                      name: graph.filtered_series_name,      #'Judith Bowen',
@@ -416,8 +413,9 @@ class LsGraphArrFlex
         charts = @charts
         $(qstat.sub_stats).each (idy, cur_qstat) ->
             cur_full_qstat = full_qstat.sub_stats[idy]
+            cur_qstat      = qstat.sub_stats[idy]
             # Assume we can find the target
-            cur_target = target.find('.chart-visualization-'+ cur_qstat.qid)
+            cur_target = $('#chart-visualization-'+ cur_qstat.qid)
             chart = new LsGraphArrFlexChild(cur_target, graph_type, cur_qstat, cur_full_qstat, series_name, unfiltered_series_name, filters_equal, title)
             charts.push chart
 
@@ -482,6 +480,3 @@ $(document).ready ->
     $('[data-toggle="tooltip"]').popover({
         container: 'body'
     });
-
-
-
