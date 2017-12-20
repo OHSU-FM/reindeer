@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user_external do
     user
     ident_type "TestQuestion"

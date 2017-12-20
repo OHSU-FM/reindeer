@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :comment_thread do
     assignment_group_thread
     association :first_user, factory: :coach

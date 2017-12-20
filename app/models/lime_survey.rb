@@ -12,7 +12,7 @@ class LimeSurvey < ActiveRecord::Base
   has_many :permission_ls_groups,
     foreign_key: :lime_survey_sid,
     inverse_of: :lime_survey
-  has_many :lime_groups, -> {order "lime_groups.group_order"},
+  has_many :lime_groups, -> { order "lime_groups.group_order" },
     foreign_key: :sid,
     inverse_of: :lime_survey
   has_many :lime_surveys_languagesettings,
@@ -22,7 +22,7 @@ class LimeSurvey < ActiveRecord::Base
     inverse_of: :lime_survey
   delegate :add_filter, :dataset, to: :lime_data
   has_many :survey_assignments,
-    class_name: Assignment::SurveyAssignment,
+    class_name: 'Assignment::SurveyAssignment',
     foreign_key: :lime_survey_sid,
     inverse_of: :lime_survey
   scope :active, -> { where(active: "Y") }
@@ -63,7 +63,6 @@ class LimeSurvey < ActiveRecord::Base
     }
   end
 
-  ##
   # Description of token attributes
   def token_attrs
     return @token_attrs if defined? @token_attrs
@@ -82,11 +81,11 @@ class LimeSurvey < ActiveRecord::Base
   end
 
   def parent_questions
-    @parent_questions ||= lime_groups.map{|group|group.parent_questions}.flatten
+    @parent_questions ||= lime_groups.map{ |group| group.parent_questions }.flatten
   end
 
   def lime_questions
-    @lime_questions ||= lime_groups.map{|lg|lg.lime_questions}.flatten
+    @lime_questions ||= lime_groups.map{ |lg| lg.lime_questions }.flatten
   end
 
   def completed_surveys_count
@@ -96,7 +95,7 @@ class LimeSurvey < ActiveRecord::Base
   def started_surveys_count
     return @started_surveys_count if defined? @started_surveys_count
     if lime_data.column_names.include?("startdate")
-      @started_surveys_count = dataset.count{|row|!row["startdate"].nil?}
+      @started_surveys_count = dataset.count{ |row| !row["startdate"].nil? }
     else
       @started_surveys_count = nil
     end
@@ -121,7 +120,7 @@ class LimeSurvey < ActiveRecord::Base
     end
     return @last_updated
   end
-  ##
+
   # Column Names Enumerator
   # TODO: This is broken, it does not return appropriate column_name when
   #       column has a suffix
@@ -137,7 +136,6 @@ class LimeSurvey < ActiveRecord::Base
     return @column_names
   end
 
-  ##
   # RailsAdmin label
   def title
     settings = lime_surveys_languagesettings.first
@@ -151,9 +149,9 @@ class LimeSurvey < ActiveRecord::Base
 
   def status_questions
     return @status_questions if defined? @status_questions
-    group = lime_groups.find{|group|group.group_name == CONFIG_GROUP_CODE}
+    group = lime_groups.find{ |group| group.group_name == CONFIG_GROUP_CODE }
     return [] if group.nil?
-    pquestion = group.parent_questions.find{|pquestion|
+    pquestion = group.parent_questions.find{ |pquestion|
       pquestion.title == QRESPONSE_STATUS_CODE
     }
     return [] if pquestion.nil?
@@ -170,7 +168,7 @@ class LimeSurvey < ActiveRecord::Base
   end
 
   def wipe_response_sets
-    lime_questions.each{|lq|lq.wipe_response_set}
+    lime_questions.each{ |lq| lq.wipe_response_set }
     return nil
   end
 
@@ -187,21 +185,21 @@ class LimeSurvey < ActiveRecord::Base
 
   ##
   # Instantiate a lime_stat object if one does not already exist
-  def lime_stats(opts={})
+  def lime_stats opts={}
     @lime_stats ||= ::LimeExt::LimeStat::LimeStat.new(self)
   end
 
   ##
   # Instantiate a lime_data object if one does not already exist
   def lime_data
-    raise "sid not set" if not(sid)
+    raise "sid not set" if not sid
     @lime_data ||= ::LimeExt::LimeData.new(self)
   end
 
   ##
   # Instantiate a lime_data object if one does not already exist
   def lime_tokens
-    raise "sid not set" if not(sid)
+    raise "sid not set" if not sid
     @lime_tokens ||= ::LimeExt::LimeTokens.new(self)
   end
 
@@ -210,8 +208,6 @@ class LimeSurvey < ActiveRecord::Base
   end
 
   def student_email_column
-    lime_data.column_names.select {|name|
-      name.include? "StudentEmail"}.first
+    lime_data.column_names.select{ |name| name.include? "StudentEmail" }.first
   end
 end
-

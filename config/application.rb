@@ -10,8 +10,6 @@ module EdnaConsole
   class Application < Rails::Application
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token
-    # Raise transaction errors
-    config.active_record.raise_in_transactional_callbacks = true
 
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/

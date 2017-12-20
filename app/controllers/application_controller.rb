@@ -1,15 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_filter :authenticate_user!
-  before_filter :dynamic_destroy, only: :update
+  before_action :authenticate_user!
+  before_action :dynamic_destroy, only: :update
   helper_method :auto_path
   before_action :store_current_location, unless: :devise_controller?
 
   rescue_from DeviseLdapAuthenticatable::LdapException do |exception|
     flash[:alert] = 'Unable to reach authentication server'
     respond_to do |format|
-      format.html { render 'errors/internal_server_error', :status=>500 }
-      format.js { render json: {message: 'Internal Server Error'}, status: 500}
+      format.html { render 'errors/internal_server_error', status: 500 }
+      format.js { render json: { message: 'Internal Server Error' }, status: 500 }
     end
   end
 
@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
     ActionController::UnknownController,
     ActionController::MethodNotAllowed do |exception|
       respond_to do |format|
-        format.html { render 'errors/file_not_found', :status=>404 }
-        format.js { render json: {message: 'File not found'}, status: 404}
+        format.html { render 'errors/file_not_found', status: 404 }
+        format.js { render json: { message: 'File not found' }, status: 404 }
       end
     end
 
@@ -29,8 +29,8 @@ class ApplicationController < ActionController::Base
         flash[:alert] = exception.message
       end
       respond_to do |format|
-        format.html { render 'errors/not_authorized', :status=>403, :layout=>'full_width_margins' }
-        format.js { render json: {message: 'Not Authorized'}, status: 403 }
+        format.html { render 'errors/not_authorized', status: 403, layout: 'full_width_margins' }
+        format.js { render json: { message: 'Not Authorized' }, status: 403 }
       end
     end
 
@@ -56,8 +56,8 @@ class ApplicationController < ActionController::Base
 
       begin
         respond_to do |format|
-          format.html {redirect_to opts[:to] }
-          format.json { render :json=>opts[:json], :status=>opts[:status] }
+          format.html { redirect_to opts[:to] }
+          format.json { render json: opts[:json], status: opts[:status] }
         end
       rescue => e
         redirect_to auto_path

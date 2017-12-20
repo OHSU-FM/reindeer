@@ -1,18 +1,10 @@
 class RoleAggregate < ActiveRecord::Base
   has_paper_trail
-  attr_accessible :lime_survey_sid, :agg_fieldname, :agg_label, :agg_title_fieldname,
-    :pk_fieldname, :pk_title_fieldname, :pk_label, :default_view, :managed_permissions
 
-  attr_reader :questions
-  attr_accessor :agg, :pk
-
-  ##
-  # Associations
-  belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:role_aggregate
+  belongs_to :lime_survey, primary_key: :sid, foreign_key: :lime_survey_sid,
+    inverse_of: :role_aggregate
   has_many :question_widgets
 
-  ##
-  # Validations
   validates_presence_of :default_view, :lime_survey_sid, :lime_survey
   validate :validates_table_existance
 
@@ -36,7 +28,8 @@ class RoleAggregate < ActiveRecord::Base
 
       field :lime_survey_sid, :enum do
         enum do
-          LimeSurvey.with_data_table.map{|ls|[ls.title, ls.sid]}.sort_by {|e| e[0] }
+          LimeSurvey.with_data_table.map{|ls| [ls.title, ls.sid] }
+            .sort_by {|e| e[0] }
         end
       end
       field :ready_for_use? do
@@ -67,9 +60,8 @@ class RoleAggregate < ActiveRecord::Base
   end
 
   def delete_dash_widgets
-    question_widgets.each{|qw| qw.dash_widget.destroy}
+    question_widgets.each{|qw| qw.dash_widget.destroy }
   end
-
 
   def validates_table_existance
     # Checks for existence of lime_survey table before saving
@@ -78,15 +70,13 @@ class RoleAggregate < ActiveRecord::Base
     end
   end
 
-  ###
-  ## Set default_view if not already set
+  # Set default_view if not already set
   def set_default_view
     if self[:default_view].to_s.empty?
       self[:default_view] = default_view_enum.first
     end
   end
 
-  ##
   # return a view type even if one is not set
   def default_view
     if self[:default_view].to_s.empty? || !default_view_enum.include?(self[:default_view])
@@ -95,13 +85,11 @@ class RoleAggregate < ActiveRecord::Base
     return self[:default_view]
   end
 
-  ##
   # Enumerator for different view types
   def default_view_enum
     DEFAULT_VIEWS
   end
 
-  ##
   # Aliases
   def lime_stats
     lime_survey.lime_stats
@@ -115,7 +103,6 @@ class RoleAggregate < ActiveRecord::Base
     lime_data.dataset
   end
 
-  ##
   # Array of questions and their associated Answers
   #   - We had to store it this way because we need to register the dataset with the answers
   #   - The objects are garbage collected and forgotten if we register on the fly
@@ -132,43 +119,33 @@ class RoleAggregate < ActiveRecord::Base
     return @qa_buffer
   end
 
-  ##
   # Alias for buffered questions
   def questions
-    @questions ||= qa_buffer.map{|qq|qq.first}
+    @questions ||= qa_buffer.map{|qq| qq.first }
   end
 
-  ##
   # Alias for buffered answers
   def answers
-    @answers ||= qa_buffer.map{|qq|qq.last}.flatten
+    @answers ||= qa_buffer.map{|qq| qq.last }.flatten
   end
 
-
-  ##
   # List all emails that are in dataset
   def pk_enum
     return [] unless pk_fieldname
     @pk_enum ||= valid_enum_options(pk_question, pk_title_question)
   end
 
-  ##
   # List all emails that are in dataset
   def agg_enum
     return [] unless agg_question
     @agg_enum ||= valid_enum_options(agg_question, agg_title_question)
   end
 
-  ##
-  # Val needs to be
-  #
-
-  ##
   # Generate an enum w/ options for the two questions
   # - Replace qtitle with qval if qtitle missing information
   def valid_enum_options qval, qtitle
-    ##
-    # Important: We are using the response_set so that the values are properly formatted
+    # Important: We are using the response_set so that
+    # the values are properly formatted
 
     return [] if qval.nil?
 
@@ -193,95 +170,84 @@ class RoleAggregate < ActiveRecord::Base
     result = title_data.zip(val_data)
     # Use only values that have a title and a value
     # Unique and sort then return
-    return result.select{|x,y|!(x.to_s.empty? || y.to_s.empty?)}.uniq.sort_by{|arr|arr.to_s}
+    return result.select{|x,y| !(x.to_s.empty? || y.to_s.empty?) }
+      .uniq.sort_by{|arr| arr.to_s }
   end
 
-  ##
   # Find question specified by fieldname
   def pk_question
     return nil unless pk_fieldname
     @pk_question = lime_survey.find_question :my_column_name, pk_fieldname
   end
 
-  ##
   # Find question specified by fieldname
   def pk_title_question
     return nil unless pk_title_fieldname
     @pk_title_question = lime_survey.find_question :my_column_name, pk_title_fieldname
   end
 
-  ##
   # Find question specified by fieldname
   def agg_question
     return nil unless agg_fieldname
     @agg_question = lime_survey.find_question :my_column_name, agg_fieldname
   end
 
-  ##
   # Find question specified by fieldname
   def agg_title_question
     return nil unless agg_title_fieldname
     @agg_title_question = lime_survey.find_question :my_column_name, agg_title_fieldname
   end
 
-  ##
   # Return an array of valid options for agg_fieldname attribute
   def agg_fieldname_enum
     return [] unless lime_survey
     return enum_column_names || []
   end
 
-  ##
   # Return an array of valid options for agg_title_fieldname attribute
   def agg_title_fieldname_enum
     return [] unless lime_survey
     return enum_column_names || []
   end
 
-  ##
   # Return an array of valid options for pk_fieldname attribute
   def pk_fieldname_enum
     return [] unless lime_survey
     return enum_column_names || []
   end
 
-  ##
   # Return an array of valid options for pk_title_fieldname_fieldname attribute
   def pk_title_fieldname_enum
     return [] unless lime_survey
     return enum_column_names || []
   end
 
-  ##
-  #   Use pk_label if defined or the code for pk_fieldname if not defined
+  # Use pk_label if defined or the code for pk_fieldname if not defined
   def get_pk_label
     return '' if pk_fieldname.to_s.empty?
     @get_pk_label ||= pk_label.to_s.empty? ? find_fieldname_str(pk_fieldname) : pk_label
   end
 
-  ##
-  #   Use agg_label if defined or the code for agg_fieldname if not defined
+  # Use agg_label if defined or the code for agg_fieldname if not defined
   def get_agg_label
     return '' if agg_fieldname.to_s.empty?
     @get_agg_label ||= agg_label.to_s.empty? ? find_fieldname_str(agg_fieldname) : agg_label
   end
 
-  ##
   # Convert column name to code name
   def find_fieldname_str fieldname
     enum_column_names.find{|key, val|val==fieldname}.first
   end
 
-  ##
   # RailsAdmin label
   def name
     lime_survey.nil? ? 'New' : lime_survey.group_and_title_name[1]
   end
 
   private
-  def enum_column_names
-    bad_cols = lime_survey.status_questions.map{|sq|sq.my_column_name}.to_set
-    lime_survey.column_names.select{|title, col_name|!bad_cols.include?(col_name)}
-  end
 
+  def enum_column_names
+    bad_cols = lime_survey.status_questions.map{|sq| sq.my_column_name }.to_set
+    lime_survey.column_names.select{|title, col_name| !bad_cols.include?(col_name) }
+  end
 end

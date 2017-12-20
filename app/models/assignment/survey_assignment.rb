@@ -1,6 +1,5 @@
 module Assignment
   class SurveyAssignment < ActiveRecord::Base
-    attr_accessor :gather_user_tokens
 
     belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:survey_assignments
     belongs_to :assignment_group
@@ -142,6 +141,13 @@ module Assignment
       key
     end
 
+    def gather_user_tokens
+      @gather_user_tokens
+    end
+
+    def gather_user_tokens= val
+      @gather_user_tokens = val
+    end
   end
 
 end

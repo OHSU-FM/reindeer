@@ -422,7 +422,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.integer "user_id"
     t.string  "ident",      limit: 255
     t.string  "ident_type", limit: 255
-    t.boolean "filter_all",             default: false
     t.boolean "use_email",              default: false
   end
 
@@ -459,7 +458,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string   "full_name",              limit: 255
     t.string   "username",               limit: 255
     t.datetime "locked_at"
-    t.boolean  "use_ldap"
     t.boolean  "is_ldap",                            default: false
     t.integer  "permission_group_id"
     t.integer  "cohort_id"

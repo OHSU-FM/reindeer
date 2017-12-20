@@ -4,5 +4,5 @@ require ::File.expand_path('../config/environment',  __FILE__)
 run EdnaConsole::Application
 
 if Rails.env.profile?
-    use Rack::RubyProf, :path => '/tmp/profile'
+  use Rack::RubyProf, :path => '/tmp/profile'
 end

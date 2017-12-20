@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :cohort do
     permission_group
     association :owner, factory: :coach

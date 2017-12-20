@@ -1,38 +1,35 @@
 class ErrorsController < ApplicationController
-  skip_before_filter :authenticate_user!
+  skip_before_action :authenticate_user!
 
   def file_not_found
     respond_to do |format|
-        format.html { render status: 404 }
+      format.html { render status: 404 }
     end
   rescue ActionController::UnknownFormat
-    render status: 404, text: "not found"
+    render status: 404, body: "not found"
   end
 
   def unprocessable
     respond_to do |format|
-        format.html { render status: 422 }
+      format.html { render status: 422 }
     end
   rescue ActionController::UnknownFormat
-    render status: 422, text: "not found"
-
+    render status: 422, body: "not found"
   end
 
   def internal_server_error
     respond_to do |format|
-        format.html { render status: 500 }
+      format.html { render status: 500 }
     end
   rescue ActionController::UnknownFormat
-    render status: 500, text: "internal server error"
-
+    render status: 500, body: "internal server error"
   end
 
   def not_authorized
     respond_to do |format|
-        format.html { render status: 403 }
+      format.html { render status: 403 }
     end
   rescue ActionController::UnknownFormat
-    render status: 403, text: "not authorized"
-
+    render status: 403, body: "not authorized"
   end
 end
