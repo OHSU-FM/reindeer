@@ -22,26 +22,13 @@
     "On Track"
   ]
 
-  ALLOWABLE_MEETING_STATUSES = [
-    "Scheduled",
-    "Completed",
-  ]
-
-  ALLOWABLE_TYPES = [
-    "Goal",
-    "Meeting"
-  ]
-
-  validates :tag, inclusion: { in: ALLOWABLE_GOAL_TAGS },
-    if: Proc.new{ |a| a.goal_type == 'Goal'}
-  validates :status, inclusion: { in: ALLOWABLE_GOAL_STATUSES },
-    if: Proc.new{ |a| a.goal_type == 'Goal'}
-  validates :goal_type, inclusion: { in: ALLOWABLE_TYPES }
+  validates :tag, inclusion: { in: ALLOWABLE_GOAL_TAGS }
+  validates :status, inclusion: { in: ALLOWABLE_GOAL_STATUSES }
 
   def get_no_comments (goal_id)
 
       commentable = Comment.where(commentable_id: goal_id)
-      if !commentable.empty? 
+      if !commentable.empty?
           return commentable.count.to_s
       else
           return ""
