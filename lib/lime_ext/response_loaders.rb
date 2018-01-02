@@ -103,7 +103,9 @@ module LimeExt::ResponseLoaders
       def qid; @qid; end
       def title; @title; end
       def status_questions= val; @status_questions = val; end
+      def status_question_names= val; @status_question_names = val; end
       def format_as= val; @format_as = val; end
+      def data_labels= val; @data_labels = val; end
 
       # Prevent gon/view from having access to question/role_aggregate
       def as_json(options=nil)

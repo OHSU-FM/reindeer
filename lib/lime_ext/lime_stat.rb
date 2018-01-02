@@ -22,8 +22,12 @@ module LimeExt::LimeStat
       end
     end
 
+    def qtype; @qtype; end
+    def qtype= val; @qtype = val; end
     def sub_stats; @sub_stats; end
     def descriptive_stats= val; @descriptive_stats = val; end
+    def categorical_stats; @categorical_stats; end
+    def categorical_stats= val; @categorical_stats = val; end
     def question; @question; end
 
     # Find category stat
@@ -119,10 +123,12 @@ module LimeExt::LimeStat
   class CategoricalStatistics
 
     def self.generate_titled_stats question, title, qtype, data, data_labels, error_labels
-      return {:title=>title, :categories=>self.generate_stats(question, qtype, data, data_labels, error_labels)}
+      return {
+        title: title,
+        categories: self.generate_stats(question, qtype, data, data_labels, error_labels)
+      }
     end
 
-    ##
     # Return array of categorical_statistics
     def self.generate_stats question, qtype, data, data_labels, error_labels
       results = []
@@ -134,7 +140,7 @@ module LimeExt::LimeStat
       end
 
       # Sort data labels
-      results = results.sort_by{|cstat|[cstat.code.to_f, cstat.code]}
+      results = results.sort_by{|cstat| [cstat.code.to_f, cstat.code] }
 
       # Continue stats generation
       error_labels.each do |code, val|
@@ -149,7 +155,6 @@ module LimeExt::LimeStat
       return results
     end
 
-    ##
     # Return statistics for a single category
     def initialize question, code, item_id, qtype, data, data_labels, error_labels
       data ||= []
@@ -172,10 +177,15 @@ module LimeExt::LimeStat
       @percent = 0 if @total == 0
     end
 
-    ##
+    def code; @code; end
+    def answer; @answer; end
+    def frequency; @frequency; end
+    def pk_frequency; @pk_frequency; end
+    def percent; @percent; end
+
     # Prevent gon/view from having access to data
     def as_json(options=nil)
-      super({:except => ['data', 'question', 'role_aggregate']}.merge(options || {}))
+      super({ except: ['data', 'question', 'role_aggregate'] }.merge(options || {}))
     end
 
     ##
@@ -186,13 +196,13 @@ module LimeExt::LimeStat
 
       # Get index of all values that are not equal to filter
       idx = []
-      data.each_with_index{|val, i|idx.push(i) if val == code}
+      data.each_with_index{|val, i| idx.push(i) if val == @code }
 
       # Bail if nothing was found
       return 0 unless idx
 
       # count unique values
-      values =  question.lime_data.responses_for(unique_fieldname).values_at(*idx)
+      values =  @question.lime_data.responses_for(unique_fieldname).values_at(*idx)
       return values.uniq.count{|val|val != ''}
     end
 
@@ -200,11 +210,9 @@ module LimeExt::LimeStat
 
   class TextStatistics
     def initialize data
-
     end
   end
 
-  ##
   # Return an array of graph objects for use in graphs
   class LimeStat
 
