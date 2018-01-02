@@ -273,7 +273,7 @@ module LimeExt::ResponseLoaders
       def data_labels
         return @data_labels if defined? @data_labels
         @data_labels = {}
-        lime_answers.each{|ans|@data_labels[ans.code] = ans.answer if scale_id == ans.scale_id}
+        lime_answers.each{|ans|@data_labels[ans.code] = ans.answer if @scale_id == ans.scale_id}
         return @data_labels
       end
     end
