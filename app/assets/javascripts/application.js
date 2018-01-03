@@ -47,5 +47,4 @@
 //= require select2
 //= require simplemde.min
 //= require nested_form_fields
-//= require goals.js
 //= require turbolinks
