@@ -305,11 +305,6 @@ GEM
     simple_form (3.5.0)
       actionpack (> 4, < 5.2)
       activemodel (> 4, < 5.2)
-    smart_listing (1.2.1)
-      coffee-rails
-      jquery-rails
-      kaminari (~> 0.17)
-      rails (>= 3.2)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -400,7 +395,6 @@ DEPENDENCIES
   select2-rails
   settingslogic
   simple_form
-  smart_listing
   stackprof
   statistics2
   thin
