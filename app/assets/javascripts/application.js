@@ -23,7 +23,6 @@
 //= require intro.js
 //= require modern-business/modern-business.js
 //= require cocoon
-//= require smart_listing
 //= require highcharts/highcharts.js
 //= require highcharts/highcharts-more.js
 //= require highcharts/highcharts-3d.js
