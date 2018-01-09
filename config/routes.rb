@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
 
+  get 'rooms/show'
+
   devise_for :users
 
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
+  mount ActionCable.server => "/cable"
+
+  resources :messages
 
   resources :dashboard, controller: :dashboard, as: :dashboards, except: [:new]
   get "dashboard/:id/widgets/:widget_id", to: "dashboard#show_widget",
@@ -34,7 +39,7 @@ Rails.application.routes.draw do
 
   get "ls_files/:sid/:row_id/:qid/:name", to: "ls_files#show", constraints: { name: /[^\/]+/ }, as: :lime_file
 
-  root to: "dashboard#index"
+  root to: "rooms#show"
 
   # Error routing
   get "errors/file_not_found"

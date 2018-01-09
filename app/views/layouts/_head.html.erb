@@ -12,6 +12,7 @@
     <%= javascript_include_tag "application" %>
     <%= content_for?(:head) ? yield(:head) : '' %>
     <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
     <%= include_gon if defined? gon && gon.present? %>
     <% base_url = defined?(main_app) ? main_app.root_path : app.root_path %>
     <script type="text/javascript">
@@ -20,4 +21,3 @@
       window.lime_url = "<%= Settings.lime_url %>"
     </script>
 </head>
-

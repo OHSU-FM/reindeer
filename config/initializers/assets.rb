@@ -27,4 +27,5 @@ Rails.application.config.assets.precompile += %w( print.css
     dataTables/*
     goals.css
     action_plan_items.css
+    rooms.css
     )

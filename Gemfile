@@ -116,7 +116,7 @@ end
 group :development do
   gem "rack-mini-profiler", require: false
   gem "webrick"
-  gem "thin"
+  gem "puma"
   gem "rails_layout"
   gem "awesome_print"
 

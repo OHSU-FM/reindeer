@@ -10,17 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926160232) do
+ActiveRecord::Schema.define(version: 20180108232825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "action_plan_items", force: :cascade do |t|
-    t.text     "description"
-    t.integer  "goal_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
 
   create_table "chart_series", force: :cascade do |t|
     t.integer  "chart_id"
@@ -121,17 +114,12 @@ ActiveRecord::Schema.define(version: 20170926160232) do
     t.text "version", null: false
   end
 
-  create_table "goals", force: :cascade do |t|
-    t.string   "title"
-    t.text     "description"
-    t.string   "tag"
-    t.string   "status"
-    t.date     "target_date"
+  create_table "messages", force: :cascade do |t|
+    t.text     "content"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "goal_type"
-    t.string   "location"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
   create_table "meta_attribute_entity_groups", force: :cascade do |t|

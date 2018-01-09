@@ -79,7 +79,6 @@ GEM
       activerecord (~> 5.0.0)
     concurrent-ruby (1.0.5)
     crass (1.0.3)
-    daemons (1.2.5)
     debug_inspector (0.0.3)
     descriptive-statistics (2.2.0)
     devise (4.3.0)
@@ -96,7 +95,6 @@ GEM
     erubis (2.7.0)
     et-orbi (1.0.8)
       tzinfo
-    eventmachine (1.2.5)
     exception_notification (4.2.2)
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
@@ -200,6 +198,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.0.1)
+    puma (3.11.0)
     rack (2.0.3)
     rack-mini-profiler (0.10.7)
       rack (>= 1.2.0)
@@ -315,10 +314,6 @@ GEM
     stackprof (0.2.11)
     statistics2 (0.54)
     temple (0.8.0)
-    thin (1.7.2)
-      daemons (~> 1.0, >= 1.0.9)
-      eventmachine (~> 1.0, >= 1.0.4)
-      rack (>= 1, < 3)
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
@@ -378,6 +373,7 @@ DEPENDENCIES
   paper_trail
   pg (~> 0.20)
   php-serialize
+  puma
   rack-mini-profiler
   rails (= 5.0.0.1)
   rails-controller-testing
@@ -397,7 +393,6 @@ DEPENDENCIES
   simple_form
   stackprof
   statistics2
-  thin
   turbolinks (~> 5.0, >= 5.0.1)
   twitter-bootstrap-rails
   uglifier
