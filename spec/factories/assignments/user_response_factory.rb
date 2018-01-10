@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user_response, class: Assignment::UserResponse do
     association :user_assignment
     title { Faker::Hacker.ingverb }

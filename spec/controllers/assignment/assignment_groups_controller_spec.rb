@@ -36,7 +36,7 @@ describe Assignment::AssignmentGroupsController do
           @c = create :cohort, :with_users, owner: @user
           @ag = create :assignment_group, cohort: @c
           sign_in @user
-          get :show, assignment_group_id: @ag.id
+          get :show, params: { assignment_group_id: @ag.id }
         end
 
         it "sets @assignment_group" do
@@ -81,7 +81,7 @@ describe Assignment::AssignmentGroupsController do
           @user = @c.users.first
           @ag = create :assignment_group, cohort: @c
           sign_in @user
-          get :show, assignment_group_id: @ag.id
+          get :show, params: { assignment_group_id: @ag.id }
         end
 
         it "sets @assignment_group" do
@@ -124,7 +124,7 @@ describe Assignment::AssignmentGroupsController do
           user = create :user
           c = create :cohort, :with_users, owner: user
           @ag = create :assignment_group, cohort: c
-          get :show, assignment_group_id: @ag.id
+          get :show, params: { assignment_group_id: @ag.id }
         end
 
         it { is_expected.to redirect_to new_user_session_path }
@@ -161,11 +161,14 @@ describe Assignment::AssignmentGroupsController do
     it "can update assignment_group" do
       sign_in admin
       ag = create :assignment_group, title: "title", desc_md: "desc"
-      put :update, assignment_group_id: ag.id,
+      put :update, params: {
+        assignment_group_id: ag.id,
         assignment_assignment_group: {
-                                   title: "different title",
-                                   desc_md: "different desc"
+          title: "different title",
+          desc_md: "different desc"
+        }
       }
+
       ag.reload
       expect(ag.title).to eq "different title"
       expect(ag.desc_md).to eq "different desc"
@@ -197,11 +200,14 @@ describe Assignment::AssignmentGroupsController do
     it "cannot update assignment_group" do
       sign_in coach
       ag = create :assignment_group, title: "title", desc_md: "desc"
-      put :update, assignment_group_id: ag.id,
+      put :update, params: {
+        assignment_group_id: ag.id,
         assignment_assignment_group: {
-                                   title: "different title",
-                                   desc_md: "different desc"
+          title: "different title",
+          desc_md: "different desc"
+        }
       }
+
       expect(ag).not_to receive(:update_attributes)
       ag.reload
       expect(ag.title).to eq "title"
@@ -228,8 +234,11 @@ describe Assignment::AssignmentGroupsController do
       ag = create :assignment_group, title: "title"
       sign_in student
 
-      put :update, assignment_group_id: ag,
+      put :update, params: { 
+        assignment_group_id: ag,
         assignment_assignment_group: { title: "a different title" }
+      }
+
       expect(ag.title).to eq "title"
     end
   end

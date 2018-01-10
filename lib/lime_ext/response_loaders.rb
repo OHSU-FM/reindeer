@@ -9,7 +9,7 @@ module LimeExt::ResponseLoaders
       end
       # if it responds to :data then we can assume it is a response_set
       if parent_set.data.first.respond_to? :data
-        return parent_set.data.find{|rs|rs.qid==question.qid}
+        return parent_set.data.find{|rs| rs.qid == question.qid }
       end
       # Nothing to return
       return nil
@@ -84,10 +84,6 @@ module LimeExt::ResponseLoaders
     # - We need a unified way to tell what the response_rate is
     # - Or the stats loaders can calculate it individually
     class ResponseSetBase
-      attr_accessor :title, :qid, :qtype, :data, :data_labels, :error_labels,
-        :scale_id, :question, :status_questions, :related_columns, :related_error_columns, :lime_answers,
-        :status_column_conversions, :status_question_names, :format_as, :data_column_name, :has_sq
-
       def has_sql; false end
 
       def initialize question, opts={}
@@ -102,7 +98,13 @@ module LimeExt::ResponseLoaders
         end
       end
 
-      ##
+      def question; @question; end
+      def qtype; @qtype; end
+      def qid; @qid; end
+      def title; @title; end
+      def status_questions= val; @status_questions = val; end
+      def format_as= val; @format_as = val; end
+
       # Prevent gon/view from having access to question/role_aggregate
       def as_json(options=nil)
         super({:except => ['question', 'status_questions', 'related_columns', 'related_data', 'lime_answers']}.merge(options || {}))
@@ -110,7 +112,7 @@ module LimeExt::ResponseLoaders
 
       def lime_answers
         return @lime_answers if defined? @lime_answers
-        @lime_answers = question.lime_answers
+        @lime_answers = @question.lime_answers
         return @lime_answers
       end
 
@@ -124,21 +126,21 @@ module LimeExt::ResponseLoaders
         #        - Each sub_question has one status_questions
         #
         return @status_questions if defined? @status_questions
-        @status_questions = question.lime_survey.status_questions.select{|q| status_question_names.include? q.question }
+        @status_questions = @question.lime_survey.status_questions.select{|q| status_question_names.include? q.question }
         return @status_questions
       end
 
       ##
       # Values to look for when gathering status questions
       def status_question_names
-        [question.title]
+        [@question.title]
       end
 
       ##
       # Find column_names related to this question
       def related_columns
         return @related_columns if defined? @related_columns
-        @related_columns = find_related_columns [question.my_column_name]
+        @related_columns = find_related_columns [@question.my_column_name]
       end
 
       def status_column_conversions
@@ -151,7 +153,7 @@ module LimeExt::ResponseLoaders
         return @related_error_columns if defined? @related_error_columns
         @related_error_columns = []
         if status_questions
-          @related_error_columns = find_related_columns status_questions.map{|sq|sq.my_column_name}
+          @related_error_columns = find_related_columns status_questions.map{|sq| sq.my_column_name }
         end
         return @related_error_columns
       end
@@ -161,7 +163,7 @@ module LimeExt::ResponseLoaders
       def find_related_columns col_names
         result = []
         col_names.each do |col_name|
-          result += question.lime_data.column_names.select{|val|val.start_with? col_name}
+          result += @question.lime_data.column_names.select{|val| val.start_with? col_name }
         end
         return result
       end
@@ -173,7 +175,7 @@ module LimeExt::ResponseLoaders
         return {} if col_names.empty?
         result = Hash[col_names.map{|col| [col, []] }]
         # push data from dataset
-        question.lime_survey.lime_data.dataset.each do |row|
+        @question.lime_survey.lime_data.dataset.each do |row|
           col_names.each do |col|
             result[col].push row[col]
           end
@@ -415,8 +417,6 @@ module LimeExt::ResponseLoaders
     end
 
     class ResponseSetMultComment < ResponseSetMult
-      attr_accessor :comments
-
       def comments
         return @comments if defined? @comments
         result = []

@@ -10,8 +10,6 @@ class PermissionGroup < ActiveRecord::Base
   accepts_nested_attributes_for :permission_ls_groups, allow_destroy: true,
     reject_if: :all_blank
   validates_associated :permission_ls_groups
-  attr_accessible :permission_ls_groups_attributes, allow_destroy: true
-  attr_accessible :title, :user_ids, :pinned_survey_group_titles
   validates :title, presence: true, uniqueness: true
 
   serialize :pinned_survey_group_titles, Array
@@ -95,7 +93,7 @@ class PermissionGroup < ActiveRecord::Base
 
       plg.permission_ls_group_filters.each do |plgk|
         next unless plgk.ident_type.present?
-        match = uex.where(:ident_type=>plgk.ident_type).first
+        match = uex.where(ident_type: plgk.ident_type).first
         if match.nil?
           result.delete ra
           details.push [ra,  "No User External matching: #{plgk.ident_type}"]
@@ -115,7 +113,7 @@ class PermissionGroup < ActiveRecord::Base
           details.push [ra, 'Ready']
         end
         !lime_data.empty?
-      rescue LsReportsHelper::AccessDenied=>e
+      rescue LsReportsHelper::AccessDenied => e
         details.push [ra, 'Access Denied Error']
         false
       end

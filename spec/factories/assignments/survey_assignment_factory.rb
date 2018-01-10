@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :survey_assignment, class: Assignment::SurveyAssignment do
     association :assignment_group, :with_full_template
     lime_survey { assignment_group.lime_surveys.first }

@@ -8,7 +8,7 @@ describe Assignment::UserResponsesController do
         @ua = create :user_assignment
         @ur = create :user_response, user_assignment: @ua
         sign_in @ua.user
-        get :show, id: @ur.id
+        get :show, params: { id: @ur.id }
       end
 
       it { expect(response).to be_success }
@@ -23,7 +23,7 @@ describe Assignment::UserResponsesController do
       before do
         @ua = build :user_assignment
         @ur = create :user_response, user_assignment: @ua
-        get :show, id: @ur.id
+        get :show, params: { id: @ur.id }
       end
 
       it { is_expected.to redirect_to new_user_session_path }
@@ -39,7 +39,7 @@ describe Assignment::UserResponsesController do
         @ua = create :user_assignment
         @ur = create :user_response, user_assignment: @ua, owner_status: nil
         sign_in @ua.user
-        xhr :get, :set_owner_status, user_response_id: @ur.id, status: "test"
+        get :set_owner_status, params: { user_response_id: @ur.id, status: "test" }, xhr: true
       end
 
       it { expect(response.status).to eq 200 }
@@ -52,7 +52,7 @@ describe Assignment::UserResponsesController do
         @ua = create :user_assignment
         @ur = create :user_response, user_assignment: @ua, owner_status: "hi!"
         sign_in @ua.user
-        xhr :get, :set_owner_status, user_response_id: @ur.id, status: "hi!"
+        get :set_owner_status, params: { user_response_id: @ur.id, status: "hi!" }, xhr: true
       end
 
       it { expect(response.status).to eq 200 }

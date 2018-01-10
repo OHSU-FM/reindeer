@@ -1,8 +1,6 @@
 module LimeExt
   class SyncTriggerParser
 
-    attr_accessor :sid_src, :sid_dest, :map_src, :map_dest, :cols
-
     def initialize tgname
       @tgname = tgname
     end
@@ -12,22 +10,22 @@ module LimeExt
       return nil unless @tgname.present?
       @tgname.split('_')[3]
     end
-    
+
     def sid_dest
       return nil unless @tgname.present?
       @tgname.split('_')[4]
     end
-    
+
     def map_src
       @map_src ||= map_parser[0] || nil
     end
-    
+
     def map_dest
       @map_dest ||= map_parser[1] || nil
     end
 
     def map_parser
-      
+
       line = src.lines.find{|ln|ln.include?('WHERE ')}
       return [nil, nil] unless line
       line.gsub(/NEW |"|;|WHERE /,'').split(' = ')
@@ -49,7 +47,7 @@ module LimeExt
     def src
       return '' unless @tgname.present?
       qarr = ["SELECT prosrc FROM pg_proc WHERE proname = ?", tg_base_name]
-      query = ActiveRecord::Base.send(:sanitize_sql_array, qarr) 
+      query = ActiveRecord::Base.send(:sanitize_sql_array, qarr)
       @src ||= ActiveRecord::Base.connection.execute(query)[0]['prosrc']
     end
 
