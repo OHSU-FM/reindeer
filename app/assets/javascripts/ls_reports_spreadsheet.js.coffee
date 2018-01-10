@@ -92,53 +92,39 @@ get_all_series_data = (series_data_hash, in_type) ->
         series_data.push series_data_hash[k]
   series_data
 
+get_all_series_data_allblocks = (series_data_hash, in_type) ->
+  series_data = []
+  for k of series_data_hash
+    if series_data_hash.hasOwnProperty(k)
+      if in_type =="student"
+        if k.includes('Comp1')
+          series_data.push {y: series_data_hash[k], color:'Salmon'}
+        else if k.includes('Comp2')
+          series_data.push {y: series_data_hash[k], color:'AquaMarine'}
+        else if k.includes('Comp3')
+          series_data.push {y: series_data_hash[k], color:'Plum'}
+        else if k.includes('Comp4')
+          series_data.push {y: series_data_hash[k], color:'Khaki'}
+        else if k.includes('Comp5')
+          series_data.push {y: series_data_hash[k], color:'LawngGreen'}    
+        else
+          console.log ('found else: ' + k)
+          series_data.push series_data_hash[k]
 
-create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc,comp_class_mean_hash, in_code, in_series_name) ->
-  date = new Date()
-  new_date = "As of Date: " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()
-  render_to_2 = graph_target
+      else
+        series_data.push series_data_hash[k]
+  series_data  
+
+get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category) ->
   show_legend_1 = true
-  show_legend_2 = true          #series_data_2 = "Null"
-
-  if in_code == 'all-comp'
-    series_data_1 = get_all_series_data(series_data_hash, "student")
-    series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
-    graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
-    graph_sub_title = "<b>% Complete - " + new_date + "</b>" 
-    series_data_1 = series_data_2
-    series_data_2 = "Null"
-    show_legend_2 = false          #series_data_2 = "Null"
-    series_data_name_1 = "Class Mean"
-    series_data_name_2 = ""
-  else if in_code == 'student'
-    series_data_1 = get_all_series_data(series_data_hash, "student")
-    series_data_1_nc = get_all_series_data_nc(series_data_hash_nc, "student")
-    series_data_2 = get_all_series_data(comp_class_mean_hash, "mean")
-    graph_title = new_date + " (" + in_series_name + ")"
-    graph_sub_title = "<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
-<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
-
-    series_data_name_1 = in_series_name
-    series_data_name_2 = "Class Mean"
-  else
-    series_data_1 = get_series_data(series_data_hash, in_code, "student")
-    series_data_1_nc = get_series_data_nc(series_data_hash_nc, in_code, "student")
-    series_data_2 = get_series_data(comp_class_mean_hash, in_code, "mean")
-    graph_title = "Domain: " + in_code + " (" + in_series_name + ")"
-    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
-    series_data_name_1 = in_series_name
-    series_data_name_2 = "Class Mean"
-
-  graph_type = "column"
-
-  #data: series_data_1
-
-
-  window.chart2 = Highcharts.chart($.extend(true, null, theme_light, {
+  show_legend_2 = true  
+  return {
     chart: renderTo: render_to_2
     title: text: graph_title
     subtitle: text: graph_sub_title
-    xAxis: categories: xAxis_category
+    xAxis: 
+      categories: xAxis_category
+
     colors: [
       '#aaeeee'
       '#d3d3d3'
@@ -232,9 +218,153 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
                      }
         }
     }]    
-    }))
+    }
+
+build_options = (in_data, in_mean_data, render_to_2, graph_title, graph_sub_title) ->
+  # in_data is in hash format
+
+  console.log("in_data['Comp1']: " + in_data["Comp1"])
+
+  seriesArr = []
+  #$.each in_data, (key, val) ->
+  #  console.log ("key: " + val.name)
+  #  console.log ('val: ' + val.data)
+    #if val.name.includes("Mean")
+    #  seriesArr.push {name: val.name, type: 'column', marker: {symbol: 'diamond'}, color: val.color, data: val.data}
+    #else
+  seriesArr.push {name: "Comp1", type: "column", pointWidth: 12,  data: in_data["Comp1"]}
+  seriesArr.push {name: "Clas Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data["Comp1"], color: "black"}
+    #return
+
+  #$.each in_mean_data, (key, val) ->
+  #  seriesArr.push {name: val.name, type: "column", pointWidth: 10, marker: {symbol: 'diamond'}, color: 'blue', data: val.data}
+  #  return
 
 
+  console.log ("seriesArr[0]: " + seriesArr[0].name)
+
+  show_legend_1 = true
+  show_legend_2 = true  
+
+  return {
+    chart: renderTo: render_to_2
+    title: text: graph_title
+    subtitle: text: graph_sub_title
+    xAxis: 
+      categories: ["FUND", "BLHD", "SBM", "CPR", "HODI", "NSF", "DEVH" ]
+      tickInterval: 1
+      labels:
+        enabled: true
+        formatter: ->
+           return this.value;
+    colors: [
+      '#aaeeee'
+      '#d3d3d3'
+      '#90ee7e'
+      '#7798BF'
+      '#aaeeee'
+      '#ff0066'
+      '#eeaaee'
+      '#55BF3B'
+      '#DF5353'
+      '#7798BF'
+      '#aaeeee'
+    ]
+    yAxis: [{
+            labels: {
+                format: '{value}%',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            min: 0
+            max: 100
+            title: {
+                text: 'Percent',
+                style: {
+                    color: Highcharts.getOptions().colors[2]
+                }
+            }
+        }, { 
+            title: {
+                text: '',
+                style: {
+                    color: Highcharts.getOptions().colors[3]
+                }
+            },
+            min: 0
+            max: 100
+            labels: {
+                format: '{value}%',
+                style: {
+                    color: Highcharts.getOptions().colors[4],
+                    display:'none'
+                }
+            },
+            opposite: true
+        }],
+    tooltip: {
+        shared: true
+    },
+    plotOptions: {
+        series: {
+          pointPadding: 0.2, 
+          groupPadding: 0.1
+        }
+    },
+    series: seriesArr
+  }
+
+create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc,comp_class_mean_hash, in_code, in_series_name) ->
+  date = new Date()
+  new_date = "As of Date: " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()
+  render_to_2 = graph_target
+  show_legend_1 = true
+  show_legend_2 = true          #series_data_2 = "Null"
+  graph_type = "column"
+
+  if in_code == 'all-comp'
+    series_data_1 = get_all_series_data(series_data_hash, "student")
+    series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
+    graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>" 
+    series_data_1 = series_data_2
+    series_data_2 = "Null"
+    show_legend_2 = false          #series_data_2 = "Null"
+    series_data_name_1 = "Class Mean"
+    series_data_name_2 = ""
+    options = get_options(series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category)
+    window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
+  else if in_code == 'student'
+    series_data_1 = get_all_series_data(series_data_hash, "student")
+    series_data_1_nc = get_all_series_data_nc(series_data_hash_nc, "student")
+    series_data_2 = get_all_series_data(comp_class_mean_hash, "mean")
+    graph_title = new_date + " (" + in_series_name + ")"
+    graph_sub_title = "<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
+<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
+
+    series_data_name_1 = in_series_name
+    series_data_name_2 = "Class Mean"
+    options = get_options(series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category)
+    window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
+  else if in_code == 'allblocks'
+    data = series_data_hash
+    mean_data = comp_class_mean_hash
+
+    graph_title = new_date + " (" + in_series_name + ")"
+    graph_sub_title = "<b>ALL BLOCK</b>"
+    options = build_options(data, mean_data, graph_target, graph_title, graph_sub_title)
+    window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
+  else
+    series_data_1 = get_series_data(series_data_hash, in_code, "student")
+    series_data_1_nc = get_series_data_nc(series_data_hash_nc, in_code, "student")
+    series_data_2 = get_series_data(comp_class_mean_hash, in_code, "mean")
+    graph_title = "Domain: " + in_code + " (" + in_series_name + ")"
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
+    series_data_name_1 = in_series_name
+    series_data_name_2 = "Class Mean"
+    options = get_options(series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category)
+    window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
 
 theme_dark =
       colors: [
@@ -724,6 +854,7 @@ $(document).ready ->
       # get current tab
       currentTab = $(e.target).text()
       @comp_code = currentTab.split("-")
+      console.log ("currentTab:" + currentTab)
       if Domain.includes(@comp_code[0])
         # Competency graph
         return unless gon?
@@ -748,7 +879,18 @@ $(document).ready ->
         @code = 'all-comp'
         @graph_target = "data-visualization-" + "all-comp"
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
+      else if currentTab.includes("FoM Block")
+        return unless gon?
 
+        @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
+        @series_data_2 = if gon.allblocks? then gon.allblocks else ''
+        @comp_class_mean = if gon.allblocks_class_mean? then gon.allblocks_class_mean else ''
+        @series_data_2_nc = ""
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = ["Comp1", "Comp2", "Comp3", "Comp4", "Comp5"]
+        @code = 'allblocks'
+        @graph_target = "data-visualization-" + "allblocks"
+        comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
       else if not currentTab.includes("EPA-Graph")
         return unless gon?
 

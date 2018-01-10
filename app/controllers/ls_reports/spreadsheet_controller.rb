@@ -2,7 +2,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   layout 'full_width'
   include LsReports::SpreadsheetHelper
   include LsReports::CompetencyHelper
-  include LsReports::AllblocksHelper
+  include LsReports::ClinicalphaseHelper
   ##
   # show lime_survey
   def show
@@ -45,12 +45,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
     if @pk != "_"
-      @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings)
+      @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings, @pk)
       @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
-
+      @usmle_data = hf_get_usmle(@lime_survey.lime_surveys_languagesettings)
+      @preceptorship = hf_get_preceptorship(@lime_survey.lime_surveys_languagesettings)
+      binding.pry
     end
-
-    
     #@all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")
 
     if hf_found_competency(@response_sets)
@@ -96,6 +96,16 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     gon.all_comp_codes = hf_all_comp_codes
     @comp_class_mean = hf_competency_class_mean(@rs_data_unfiltered)
     gon.comp_class_mean = @comp_class_mean
+
+    if @pk != "_"
+      #temp_array = hf_reformat_array(@allblocks) + hf_reformat_array2(@allblocks_class_mean)
+      gon.allblocks = @allblocks
+      gon.allblocks_class_mean = @allblocks_class_mean
+      binding.pry
+      #gon.allblocks_class_mean = hf_reformat_array2(@allblocks_class_mean)
+
+
+    end
 
   end
 end

@@ -26,19 +26,19 @@
  <div class="container-fluid">
 
     <ul id="MainTabs" class="nav nav-tabs">
-        <li class="bold-italic"><a data-toggle="tab" href="#fom">Foundations of Medicine</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#fom">FoM Block</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#preceptor">Preceptorship</a></li>   
+        <li class="bold-italic"><a data-toggle="tab" href="#scholarly">Scholarly Project</a></li>     
         <li class="bold-italic"><a data-toggle="tab" href="#transition">Transition Courses</a></li>
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">Shelf Exams</a></li>
-
-        <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean"%>
-            <li class="bold-italic"><a data-toggle="tab" href="#EPA">EPAs</a></li>
-        <% end %>
-
-        <li class="bold-italic"><a data-toggle="tab" href="#Competencies">Competencies</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>        
+        <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean"%>
+            <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
+        <% end %>
     </ul>
 
     <div class="tab-content">
@@ -77,9 +77,6 @@
                      <% end %>
                      <tr><%= render partial: 'all_blocks_data' %></tr>
                 </tbody>
-
-
-
               </table>
               
         </div>
@@ -101,6 +98,7 @@
               </table>
         </div>
          <div id="shelfexams" class="tab-pane fade">
+               <%= render partial: 'ls_reports/spreadsheet/usmle_data' %>
               <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
                 <tbody>
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
@@ -114,6 +112,7 @@
                           <% end %>
                         </tr>
                      <% end %>
+
                 </tbody>
               </table>
         </div>
@@ -136,7 +135,6 @@
                 </tbody>
               </table>
         </div>
-
 
         <div id="electives" class="tab-pane fade">
             <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
@@ -182,7 +180,11 @@
         <div  id="Competencies" class="tab-pane fade">
 
             <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">
-
+               <% overall_progress = 0 %>
+               <% @comp_domain_desc.each do |key, value| %>
+                    <% overall_progress = overall_progress + hf_average_domain(@comp_hash3, key) %>
+               <% end %>
+               <% overall_progress = overall_progress / 6 %>
                 <tr>
                     <td><span><b>All Domains</b>
                           <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-All">Chart
@@ -190,8 +192,16 @@
                              <%= render :partial=>'ls_reports/spreadsheet/modal_competency_graph' %>
                         </span>
                     </td>
-                    <td><b><i>Overall Competencies Progress </i></b>
+                    <td>
+                        <b><i>Overall Competencies Progress </i></b>
+                        <span>
+                            <div id="overall_progress" class = "progress" data-amount = "<%= overall_progress %>" >
+                                <div id="overall_progress_id" class="amount" style="width: <%= 100-overall_progress %>%"> </div>
+                            </div>
+                        </span>
+
                     </td>
+
                 </tr>
 
 
