@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180108232825) do
+ActiveRecord::Schema.define(version: 20180110180756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,9 +116,12 @@ ActiveRecord::Schema.define(version: 20180108232825) do
 
   create_table "messages", force: :cascade do |t|
     t.text     "content"
+    t.boolean  "archived",   default: false
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "room_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["room_id"], name: "index_messages_on_room_id", using: :btree
     t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
@@ -188,6 +191,12 @@ ActiveRecord::Schema.define(version: 20180108232825) do
     t.string   "agg_label",           limit: 255
     t.string   "agg_title_fieldname", limit: 255
     t.string   "default_view",        limit: 255
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string   "the_name_of_it"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "user_externals", force: :cascade do |t|

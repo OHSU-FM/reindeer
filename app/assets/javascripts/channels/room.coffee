@@ -1,4 +1,4 @@
-App.room = App.cable.subscriptions.create { channel: "RoomChannel", room: 'test' },
+App.room = App.cable.subscriptions.create { channel: "RoomChannel" },
   connected: ->
     # Called when the subscription is ready for use on the server
 
@@ -6,15 +6,42 @@ App.room = App.cable.subscriptions.create { channel: "RoomChannel", room: 'test'
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-    $('#messages').append data['message']
-    # easiest:
-    # alert(data['message'])
+    if data['message']
+      $('#messages').append data['message']
+    else if data['message_id']
+      @removeMessage data['message_id']
+    else
+      console.log data
 
-  speak: (message) ->
-    @perform 'speak', message: message
+  speak: (message, roomNumber) ->
+    @perform 'speak', message: message, roomNumber: roomNumber
+
+  # TODO if we want to archive
+  # archive: (messageId) ->
+  #   @perform 'archive', messageId: messageId
+
+  retract: (messageId) ->
+    @perform 'retract', messageId: messageId
+
+  removeMessage: (messageId) ->
+    $('#message-' + messageId).remove()
 
 $(document).on 'keypress', '[data-behavior~=room_speaker]', (e) ->
   if e.keyCode is 13 # enter/return
-    App.room.speak e.target.value
+    roomNumber = $("#room-identifier").data("room-number")
+    App.room.speak(e.target.value, roomNumber)
     e.target.value = ''
     e.preventDefault()
+
+# TODO archive
+# $(document).on 'click', '.archive-message', (e) ->
+#   messageId = $(e.currentTarget).data('message-id')
+#   App.room.archive(messageId)
+#   # need to disable the button until we hear back from the channel
+#   e.preventDefault()
+
+$(document).on 'click', '.delete-message', (e) ->
+  messageId = $(e.currentTarget).data('message-id')
+  App.room.retract(messageId)
+  # need to disable the button until we hear back from the channel
+  e.preventDefault()

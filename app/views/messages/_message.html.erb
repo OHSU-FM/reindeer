@@ -1,3 +1,8 @@
-<div class="message">
-  <p><b><%= message.user.username %></b> <%= message.content %> <%= link_to "delete", message_path(message), method: :delete, class: "btn btn-primary" %></p>
+<div class="message" id="message-<%= message.id %>">
+  <p>
+    <b><%= message.user.username %></b>
+    <%= message.content %>
+    <!-- <%= link_to "archive", '#', class: "btn btn-primary archive-message", data: { message_id: message.id } %> -->
+    <%= link_to "delete", '#', class: "btn btn-primary delete-message", data: { message_id: message.id } %>
+  </p>
 </div>

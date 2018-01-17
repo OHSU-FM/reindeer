@@ -1,7 +1,9 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
 class RoomChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "room_channel"
+    current_user.rooms.each do |room|
+      stream_from "room_channel_#{room.id}"
+    end
   end
 
   def unsubscribed
@@ -9,10 +11,27 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def speak data
-    # sent right back to the front end:
-    # ActionCable.server.broadcast "room_channel", message: data["message"]
+    Message.create! content: data['message'], user: current_user, room_id: data['roomNumber']
+  end
 
-    # or, if/when we want to save these to the db,
-    Message.create! content: data['message'], user: current_user
+  # TODO archive
+  # def archive data
+  #   @message = Message.find_by(id: data['messageId'])
+  #
+  #   if @message.nil?
+  #     # TODO tell the client we couldn't find it
+  #   end
+  #
+  #   @message.destroy
+  # end
+
+  def retract data
+    @message = Message.find_by(id: data['messageId'])
+
+    if @message.nil?
+      # TODO tell the client we couldn't find it
+    end
+
+    @message.destroy
   end
 end

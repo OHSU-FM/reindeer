@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
   has_many :messages, dependent: :destroy
+  has_many :rooms, -> { distinct }, through: :messages
 
   has_one :dashboard, dependent: :destroy
 
