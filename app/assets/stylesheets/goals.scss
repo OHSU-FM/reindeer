@@ -1,0 +1,70 @@
+html,body{
+  height:100%;
+}
+
+.container-flex {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 800px;
+  margin: 0;
+  padding: 0;
+  flex-flow: row;
+}
+
+.container-flex #cs-goals-nav {
+  flex-shrink: 0;
+  overflow-x: hidden;
+  background-color: darkgray;
+  width: 55px;
+  transition: width 0.4s ease-in;
+  &.open {
+    width: 250px;
+    transition: width 0.4s ease-out;
+  }
+}
+
+.container-flex #cs-goals-main {
+  flex: 3 1 auto;
+  order: 2;
+  transition: width 0.7s ease-out;
+  background-color: lightcoral;
+}
+
+.container-flex #cs-goals-detail {
+  flex-shrink: 0;
+  overflow-x: hidden;
+  background-color: slategray;
+  transition: width 0.4s ease-out;
+  &:not(.show-goal-detail) {
+    display: none;
+    transition: width 0.4s ease-out;
+  }
+  &.show-goal-detail {
+    flex: 1 6 auto;
+    order: 3;
+    transition: width 0.2s ease-in;
+  }
+}
+
+@media all and (max-width: 640px) {
+  .container-flex {
+    flex-direction: column;
+  }
+
+  .container-flex #cs-goals-main,
+  .container-flex #cs-goals-detail {
+    order: 0;
+  }
+  .container-flex #cs-goals-nav {
+    flex: 0 1 auto;
+    order: 0;
+    transition: height 0.7s ease-out;
+    &:not(.open) {
+      // display: none;
+    }
+  }
+  .container-flex #cs-goals-main > ul > li {
+    margin-top: 10px;
+  }
+}

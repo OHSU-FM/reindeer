@@ -6,6 +6,36 @@ RSpec.describe User, type: :model do
     Redis.current.flushdb
   end
 
+  fdescribe 'coaching system' do
+    it 'has readers for the various coaching system roles' do
+      ['coach', 'student', 'dean'].each do |type|
+        user = create :user, coaching_type: type
+
+        expect(user.send("#{type}?")).to be_truthy
+      end
+    end
+
+    it "#cohort returns cohort user belongs to" do
+      c = create :cohort, :with_users
+      user = c.users.first
+      expect(user.cohort).to eq c
+    end
+
+    it "#cohorts returns list of cohorts user owns" do
+      user = build :user
+      c = create :cohort, owner: user
+      c2 = create :cohort
+      expect(user.cohorts).to eq [c]
+      expect(user.cohorts).not_to include c2
+    end
+
+    it "#cohorts returns list of all cohorts as admin" do
+      admin = build :admin
+      c = create :cohort
+      expect(admin.cohorts).to include c
+    end
+  end
+
   it "has a factory" do
     expect(build :user).to be_valid
   end
@@ -104,24 +134,9 @@ RSpec.describe User, type: :model do
       expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
     end
 
-    it "#cohort returns cohort user belongs to" do
-      c = create :cohort, :with_users
-      user = c.users.first
-      expect(user.cohort).to eq c
-    end
-
-    it "#cohorts returns list of cohorts user owns" do
-      user = build :user
-      c = create :cohort, owner: user
-      c2 = create :cohort
-      expect(user.cohorts).to eq [c]
-      expect(user.cohorts).not_to include c2
-    end
-
-    it "#cohorts returns list of all cohorts as admin" do
-      admin = build :admin
-      c = create :cohort
-      expect(admin.cohorts).to include c
+    it "#to_slug" do
+      u = create :user, email: 'test@test.org'
+      expect(u.to_slug).to eq 'test@test.org'
     end
 
     it "#display_name" do

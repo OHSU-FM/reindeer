@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  namespace :coaching do
+    resources :students, param: :slug
+  end
+
+  resources :coaching, only: [:index]
   resources :rooms, only: [:show, :index]
 
   devise_for :users

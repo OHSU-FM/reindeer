@@ -21,35 +21,24 @@ FactoryBot.define do
     end
 
     trait :coach do
-      transient do
-        coach_pg { PermissionGroup.find_by(title: 'Coach') || create(:coach_permission_group) }
-      end
-
       can_dashboard true
       can_lime true
-      permission_group { coach_pg }
+      permission_group
+
+      after :create do |c|
+        create :cohort, owner: c
+      end
     end
 
     trait :student do
-      transient do
-        student_pg { PermissionGroup.find_by(title: 'Student') || create(:student_permission_group) }
-      end
-
       can_dashboard true
       participant true
-      permission_group { student_pg }
+      permission_group
     end
 
     trait :with_uex do
       after(:build) do |usr|
         usr.user_externals << build(:user_external, user: usr)
-      end
-    end
-
-    trait :with_assignment_group do
-      after(:build) do |usr|
-        c = create :cohort, owner: usr
-        usr.assignment_groups << FactoryBot.build(:assignment_group, cohort: c)
       end
     end
 

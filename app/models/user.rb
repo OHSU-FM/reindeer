@@ -63,8 +63,7 @@ class User < ActiveRecord::Base
 
     # Role permissions
     admin: 25,
-    superadmin: 50
-  }
+    superadmin: 50 }
 
   ROLES.each{|role, i|
     # setter
@@ -103,6 +102,15 @@ class User < ActiveRecord::Base
       self.roles.include? role
     end
   }
+
+  COACHING_ROLES = ['dean', 'coach', 'student']
+
+  # define "#{role}?" style getters for coaching system
+  COACHING_ROLES.each do |role|
+    define_method("#{role}?") do
+      coaching_type == role
+    end
+  end
 
   def roles_enum
     ROLES.keys
@@ -330,7 +338,7 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    username.to_s
+    email.to_s
   end
 
   def pinned_survey_groups
