@@ -1,4 +1,75 @@
-<p id="notice"><%= notice %></p>
+<div id="cs-goals-nav">
+  <%= render partial: "cohorts_select" %>
+</div>
 
-<%= link_to 'Edit', edit_goal_path(@goal) %> |
-<%= link_to 'Back', goals_path %>
+<div id="cs-goals-main">
+
+  <% if current_user.coach_or_higher? %>
+    <div id="cs-student-select">
+      <%= render partial: "student_select" %>
+    </div>
+  <% end %>
+
+  <h3>here are some goals</h3>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item active">
+      <a class="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="true">Goals</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false">Meetings</a>
+    </li>
+  </ul>
+
+  <div class="tab-content" style="height: 80%;">
+    <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
+      <div class="new-goal">
+        <button class="btn btn-default">(TODO) Add new goal</button>
+      </div>
+
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Date Added</th>
+            <th scope="col">Goal</th>
+            <th scope="col">Competency Tag</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @goals.each do |g| %>
+            <%= render partial: "goal_row", locals: { goal: g } %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-pane fade" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Date/Time</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Location</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>meetings go here</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="general-comments">
+      general comments go here
+    </div>
+  </div>
+</div>
+
+<div id="cs-goals-detail">
+  <h3>detail</h3>
+  <p id="hide-detail">hide this</p>
+</div>

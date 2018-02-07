@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :permission_ls_groups, through: :permission_group
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
+  has_many :goals, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :rooms, -> { distinct }, through: :messages
 
@@ -103,17 +104,26 @@ class User < ActiveRecord::Base
     end
   }
 
-  COACHING_ROLES = ['dean', 'coach', 'student']
-
-  # define "#{role}?" style getters for coaching system
-  COACHING_ROLES.each do |role|
-    define_method("#{role}?") do
-      coaching_type == role
-    end
-  end
-
   def roles_enum
     ROLES.keys
+  end
+
+  COACHING_ROLES = {
+    'dean': 30,
+    'coach': 20,
+    'student': 10
+  }
+
+  # define "#{role}?" style getters for coaching system
+  COACHING_ROLES.each do |role, val|
+    define_method("#{role.to_s}?") do
+      coaching_type == role.to_s
+    end
+
+    define_method("#{role.to_s}_or_higher?") do
+      return true if admin_or_higher?
+      COACHING_ROLES[coaching_type.to_sym] >= val
+    end
   end
 
   def title
@@ -338,7 +348,7 @@ class User < ActiveRecord::Base
   end
 
   def to_param
-    email.to_s
+    username.to_s
   end
 
   def pinned_survey_groups

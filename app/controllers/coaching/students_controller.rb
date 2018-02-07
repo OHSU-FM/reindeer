@@ -1,20 +1,11 @@
 module Coaching
   class StudentsController < ApplicationController
     layout 'coaching_layout'
-    before_action :set_goal, only: [:show, :edit, :update, :destroy]
-
-    # GET /coaching/students
-    # only accessible by coach and above
-    def index
-      # @goals = goals for first student
-      # redirect_to show(cohorts.first.users.first)
-    end
+    before_action :authenticate_user!
+    before_action :set_resources, only: [:show, :edit, :update, :destroy]
 
     # GET /coaching/students/{student_email}
     def show
-      # @student User.find_by_email(params[:email])
-      # @goals = @student.goals
-      # @new_goal = Goal.new(user: @student)
     end
 
     # GET /goals/new
@@ -57,8 +48,13 @@ module Coaching
 
     private
       # Use callbacks to share common setup or constraints between actions.
-      def set_goal
-        @goal = Goal.find(params[:id])
+      def set_resources
+        @student = User.find_by_username(params[:slug])
+        @goals = @student.goals
+        @new_goal = Goal.new(user: @student)
+
+        @cohorts = current_user.cohorts if current_user.coach_or_higher?
+        @students = @cohorts.first.users if current_user.coach_or_higher?
       end
 
       # Only allow a trusted parameter "white list" through.

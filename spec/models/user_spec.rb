@@ -15,6 +15,28 @@ RSpec.describe User, type: :model do
       end
     end
 
+    it 'has {role}_or_higher? methods that return booleans' do
+      user = create :user, coaching_type: 'student'
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_falsey
+      expect(user.dean_or_higher?).to be_falsey
+
+      user = create :user, coaching_type: 'coach'
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_truthy
+      expect(user.dean_or_higher?).to be_falsey
+
+      user = create :user, coaching_type: 'dean'
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_truthy
+      expect(user.dean_or_higher?).to be_truthy
+
+      user = create :admin, coaching_type: nil
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_truthy
+      expect(user.dean_or_higher?).to be_truthy
+    end
+
     it "#cohort returns cohort user belongs to" do
       c = create :cohort, :with_users
       user = c.users.first
@@ -134,9 +156,9 @@ RSpec.describe User, type: :model do
       expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
     end
 
-    it "#to_slug" do
-      u = create :user, email: 'test@test.org'
-      expect(u.to_slug).to eq 'test@test.org'
+    fit "#to_param" do
+      u = create :user, username: 'test'
+      expect(u.to_param).to eq 'test'
     end
 
     it "#display_name" do

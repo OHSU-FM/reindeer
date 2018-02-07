@@ -21,19 +21,19 @@ FactoryBot.define do
     end
 
     trait :coach do
-      can_dashboard true
-      can_lime true
-      permission_group
+      coaching_type 'coach'
 
-      after :create do |c|
-        create :cohort, owner: c
+      transient do
+        cohorts_count 2
+      end
+
+      after :build do |c, evaluator|
+        create_list(:cohort, evaluator.cohorts_count, :with_users, owner: c)
       end
     end
 
-    trait :student do
-      can_dashboard true
-      participant true
-      permission_group
+    factory :student do
+      coaching_type 'student'
     end
 
     trait :with_uex do
@@ -50,7 +50,6 @@ FactoryBot.define do
     factory :superadmin, traits: [:superadmin]
     factory :admin, traits: [:admin]
     factory :coach, traits: [:coach, :with_uex]
-    factory :student, traits: [:student]
     factory :user_w_externals, traits: [:with_uex]
   end
 end

@@ -1,0 +1,10 @@
+<ul class="nav nav-pills nav-stacked">
+  <li id="cs-sidebar-toggle"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></li>
+  <% if current_user.coach_or_higher? %>
+    <% @cohorts.each do |cohort| %>
+      <li class=<%= "active" if hf_active_cohort? cohort, @student %>><a href="#"><%= cohort.title %></a></li>
+    <% end %>
+  <% end %>
+
+  some text about how to use the system
+</ul>

@@ -1,0 +1,5 @@
+<select id="student-select">
+  <% @students.each do |student| %>
+    <option value=<%= student.login %>><%= student.display_name %></option>
+  <% end %>
+</select>

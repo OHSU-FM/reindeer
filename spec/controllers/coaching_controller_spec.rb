@@ -13,7 +13,7 @@ RSpec.describe CoachingController, type: :controller do
 
       it "redirects to coaching::students#show w current_user" do
         get :index
-        expect(response).to redirect_to "/coaching/students/#{student.email}"
+        expect(response).to redirect_to "/coaching/students/#{student.username}"
       end
     end
 
@@ -24,7 +24,7 @@ RSpec.describe CoachingController, type: :controller do
 
       it "redirects to coaching::students#show w the first student" do
         get :index
-        expect(response).to redirect_to "/coaching/students/#{student.email}"
+        expect(response).to redirect_to "/coaching/students/#{student.username}"
       end
     end
 
@@ -35,9 +35,35 @@ RSpec.describe CoachingController, type: :controller do
         create :goal, user: student
       end
 
-      it "redirects to coaching::students#show w the first student" do
+      it "redirects to coaching::students#show w the most recently submitted goal" do
         get :index
-        expect(response).to redirect_to "/coaching/students/#{student.email}"
+        expect(response).to redirect_to "/coaching/students/#{student.username}"
+      end
+    end
+
+    context "when admin is logged in" do
+      let(:admin) { create :admin, coaching_type: nil }
+      before(:each) do
+        login_user admin
+        create :goal, user: student
+      end
+
+      it "redirects to coaching::students#show w the most recently submitted goal" do
+        get :index
+        expect(response).to redirect_to "/coaching/students/#{student.username}"
+      end
+    end
+
+    context "when non coaching user is logged in" do
+      let(:user) { create :user, coaching_type: nil }
+      before(:each) do
+        login_user user
+        create :goal, user: student
+      end
+
+      it "redirects to root" do
+        get :index
+        expect(response).to redirect_to root_path
       end
     end
 
