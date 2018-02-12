@@ -1,0 +1,33 @@
+<table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+    <% @preceptor_view.each do |p| %>
+      <tr>
+          <% p.each do |key, val| %>
+              <% if ["Preceptor Name", "Submit Date", "Grade", "Term", "Comment"].include? key %>
+                  <td><b><%= key.nil? ? "Comments" : key %> </b></td>
+                  <% val.each do |d| %>
+                      <td><%= d %> </td>
+                  <% end %>
+              <% end %>
+          <% end %>
+      </tr>
+    <% end %>
+</table>
+<table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+    <tr>
+      <td>
+          <div id="data-visualization-1" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
+      </td>
+      <td>
+          <div id="data-visualization-2" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+          <div id="data-visualization-3" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
+      </td>
+      <td>
+          <div id="data-visualization-4" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
+      </td>
+
+    </tr>
+</table>
