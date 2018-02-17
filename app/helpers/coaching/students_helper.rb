@@ -7,4 +7,14 @@ module Coaching::StudentsHelper
   def hf_active_cohort? cohort, student
     student.cohort == cohort
   end
+
+  def hf_competency_tags_for_select
+    [
+      ["Patient Care (PC)", "pc"],
+      ["Practice Based Learning & Improvement (PBLI)", "pbli"],
+      ["Medical Knowledge (MK)", "mk"],
+      ["Sysetms Based Practice (SBP)", "sbp"],
+      ["Professionalism (P)", "p"]
+    ]
+  end
 end

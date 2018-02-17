@@ -1,0 +1,27 @@
+<%= form_for [:coaching, Goal.new], remote: true do |f| %>
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :competency_tag %>
+    <%= f.select :competency_tag, options_for_select(hf_competency_tags_for_select) %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :target_date %>
+    <%= f.date_field :target_date %>
+  </div>
+
+  <%= f.hidden_field :user_id, value: @student.id %>
+
+  <div class="form-group">
+    <%= f.submit "Save", class: 'btn btn-primary' %>
+  </div>
+<% end %>

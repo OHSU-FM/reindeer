@@ -3,4 +3,7 @@
   <td><%= goal.name %></td>
   <td><%= goal.competency_tag %></td>
   <td><%= goal.status %></td>
+  <% if current_user.admin_or_higher? %>
+    <td><%= link_to "delete", coaching_goal_path(goal), method: :delete, class: "btn btn-default" %></td>
+  <% end %>
 </tr>
