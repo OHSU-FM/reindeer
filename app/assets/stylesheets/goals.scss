@@ -1,6 +1,9 @@
-html,body{
-  height: 100%;
-}
+$dusty:    #96858F;
+$lavendar: #6D7993;
+$overcast: #9099A2;
+$paper:    #D5D5D5;
+
+html,body { height: 100%; }
 
 .container-flex {
   display: flex;
@@ -15,12 +18,50 @@ html,body{
 .container-flex #cs-goals-nav {
   flex-shrink: 0;
   overflow-x: hidden;
-  background-color: darkgray;
+  background-color: $lavendar;
   width: 55px;
   transition: width 0.4s ease-in;
+
   &.open {
     width: 250px;
     transition: width 0.4s ease-out;
+
+    #cs-sidebar-toggle {
+      text-align: right;
+      font-size: 20px;
+    }
+
+    .system-explanation { max-width: 100%; }
+  }
+
+  ul > li > a {
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+  }
+
+  #cs-sidebar-toggle {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-back: 5px;
+  }
+
+  // text in left nav should truncate when nav is collapsed
+  .flex-child {
+    min-width: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .system-explanation {
+    font-size: 14px;
+    padding-left: 15px;
+    padding-right: 10px;
   }
 }
 
@@ -28,45 +69,90 @@ html,body{
   flex: 3 1 auto;
   order: 2;
   transition: width 0.7s ease-out;
-  background-color: lightcoral;
+  background-color: $paper;
+
+  .goals-header { padding-left: 10px; }
+
+  #cs-student-select {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+
+    #student-select { width: 45%; }
+  }
 }
 
 .container-flex #cs-goals-detail {
   flex-shrink: 0;
   overflow-x: hidden;
-  background-color: slategray;
-  transition: width 0.4s ease-out;
+  background-color: $overcast;
+
   &:not(.show-goal-detail) {
-    display: none;
-    transition: width 0.4s ease-out;
+    flex: 0 6 auto;
+    order: 3;
+    width: 0px;
+    transition: width 0.3s ease-out;
+
+    // don't wrap text during transition out
+    min-width: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
+
   &.show-goal-detail {
     flex: 1 6 auto;
     order: 3;
-    transition: width 0.2s ease-in;
+    width: 355px;
+    transition: width 0.3s ease-in;
+    -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+    -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+    box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  }
+
+  div.detail-header {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+
+    h3 { color: $paper; }
+  }
+
+  div.detail-section {
+    display: inline;
+
+    h4 {
+      color: $paper;
+      background-color: $dusty;
+      padding-left: 20px;
+      padding-right: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    div {
+      font-size: 16px;
+      padding-left: 25px;
+      padding-right: 10px;
+    }
   }
 }
 
 @media all and (max-width: 640px) {
-  .container-flex {
-    flex-direction: column;
-  }
+  .container-flex { flex-direction: column; }
 
   .container-flex #cs-goals-main,
   .container-flex #cs-goals-detail {
     order: 0;
   }
+
   .container-flex #cs-goals-nav {
     flex: 0 1 auto;
     order: 0;
     transition: height 0.7s ease-out;
-    &:not(.open) {
-      // display: none;
-    }
   }
-  .container-flex #cs-goals-main > ul > li {
-    margin-top: 10px;
-  }
+
+  .container-flex #cs-goals-main > ul > li { margin-top: 10px; }
 }
 
 .new-goal {
@@ -76,6 +162,8 @@ html,body{
   margin-right: 5px;
 }
 
-.title-inline {
-  display: inline;
+.title-inline { display: inline; }
+
+.goal-tabs {
+  padding-left: 10px;
 }

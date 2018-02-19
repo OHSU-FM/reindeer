@@ -1,10 +1,23 @@
-<ul class="nav nav-pills nav-stacked">
-  <li id="cs-sidebar-toggle"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></li>
-  <% if current_user.coach_or_higher? %>
-    <% @cohorts.each do |cohort| %>
-      <li class=<%= "active" if hf_active_cohort? cohort, @student %>><a href="#"><%= cohort.title %></a></li>
-    <% end %>
-  <% end %>
+<div class="flex-child">
+  <div id="cs-sidebar-toggle"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></div>
+</div>
 
-  some text about how to use the system
-</ul>
+<div class="flex-child">
+  <ul class="nav nav-pills nav-stacked">
+    <% if current_user.coach_or_higher? %>
+      <% @cohorts.each do |cohort| %>
+        <li class=<%= "active" if hf_active_cohort? cohort, @student %>><%= link_to cohort.title, coaching_student_path(cohort.users.first) %></li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+
+<div class="flex-child">
+  <div class="system-explanation">
+    <p>some text about how to use the system</p>
+    <p>some text about how to use the system</p>
+    <p>some text about how to use the system</p>
+    <p>some text about how to use the system</p>
+    <p>some text about how to use the system</p>
+  </div>
+</div>

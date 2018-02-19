@@ -53,7 +53,7 @@ module Coaching
         @goals = @student.goals
 
         @cohorts = current_user.cohorts if current_user.coach_or_higher?
-        @students = @cohorts.first.users if current_user.coach_or_higher?
+        @students = @student.cohort.users if current_user.coach_or_higher?
       end
 
       # Only allow a trusted parameter "white list" through.

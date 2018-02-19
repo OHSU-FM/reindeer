@@ -2,7 +2,11 @@ Rails.application.routes.draw do
 
   namespace :coaching do
     resources :students, param: :slug, except: [:index]
-    resources :goals
+    resources :goals do
+      member do
+        get 'show_detail'
+      end
+    end
   end
 
   resources :coaching, only: [:index]

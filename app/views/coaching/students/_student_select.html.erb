@@ -1,5 +1,5 @@
-<select id="student-select">
+<select id="student-select" onchange="window.location=this.value">
   <% @students.each do |student| %>
-    <option value=<%= student.login %>><%= student.display_name %></option>
+    <option value=<%= student.login %> <%= "selected='selected'" if student == @student %>><%= student.display_name %></option>
   <% end %>
 </select>

@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
     Redis.current.flushdb
   end
 
-  fdescribe 'coaching system' do
+  describe 'coaching system' do
     it 'has readers for the various coaching system roles' do
       ['coach', 'student', 'dean'].each do |type|
         user = create :user, coaching_type: type
@@ -156,7 +156,7 @@ RSpec.describe User, type: :model do
       expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
     end
 
-    fit "#to_param" do
+    it "#to_param" do
       u = create :user, username: 'test'
       expect(u.to_param).to eq 'test'
     end

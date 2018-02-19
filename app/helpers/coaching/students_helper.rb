@@ -8,6 +8,7 @@ module Coaching::StudentsHelper
     student.cohort == cohort
   end
 
+  # returns the competency_tag hash with human readable version for translation
   def hf_competency_tags_for_select
     [
       ["Patient Care (PC)", "pc"],

@@ -1,9 +1,7 @@
-<tr id="show-detail">
+<tr class="show-detail" id="goalId-<%= goal.id %>">
   <td><%= goal.created_at.strftime("%m/%d") %></td>
   <td><%= goal.name %></td>
   <td><%= goal.competency_tag %></td>
   <td><%= goal.status %></td>
-  <% if current_user.admin_or_higher? %>
-    <td><%= link_to "delete", coaching_goal_path(goal), method: :delete, class: "btn btn-default" %></td>
-  <% end %>
+  <td><%= link_to 'Details', show_detail_coaching_goal_path(goal), remote: true, class: "btn btn-default" %></td>
 </tr>

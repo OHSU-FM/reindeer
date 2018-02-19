@@ -1,0 +1,28 @@
+<div class="detail-header">
+  <h3 class="title-inline"><%= goal.name %></h3>
+  <% if current_user.admin_or_higher? %>
+    <p><%= link_to "Delete", coaching_goal_path(goal), method: :delete, remote: true, class: "btn btn-default" %></p>
+  <% end %>
+  <button type="button" class="close" aria-label="Close" id="hide-detail">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="detail-section">
+  <h4>Goal Details</h4>
+  <div><i>Status: </i><%= goal.status %></div>
+  <div><i>Competency Tag: </i><%= goal.competency_tag %></div>
+  <div><i>Target Date: </i><%= goal.target_date.strftime("%m/%d") %></div>
+</div>
+
+<div class="detail-section">
+  <h4>Description</h4>
+  <div><%= goal.description %></div>
+</div>
+
+<div class="detail-section">
+  <h4>Comments</h4>
+  <div class="goal-comments">
+    they go here
+  </div>
+</div>

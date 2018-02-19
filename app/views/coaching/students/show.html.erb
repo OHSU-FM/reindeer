@@ -8,10 +8,12 @@
     <div id="cs-student-select">
       <%= render partial: "student_select" %>
     </div>
+    <hr>
   <% end %>
 
-  <h3>here are some goals</h3>
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <h3 class="goals-header">here are some goals</h3>
+
+  <ul class="nav nav-tabs goal-tabs" role="tablist">
     <li class="nav-item active">
       <a class="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="true">Goals</a>
     </li>
@@ -69,10 +71,7 @@
   </div>
 </div>
 
-<div id="cs-goals-detail">
-  <h3>detail</h3>
-  <p id="hide-detail">hide this</p>
-</div>
+<div id="cs-goals-detail"></div>
 
 <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
   <%= render "coaching/goals/new_modal" %>
