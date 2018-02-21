@@ -1,0 +1,7 @@
+<tr class="show-detail" id="meetingId-<%= meeting.id %>">
+  <td><%= meeting.created_at.strftime("%m/%d") %></td>
+  <td><%= meeting.subject %></td>
+  <td><%= meeting.location %></td>
+  <td><%= meeting.status %></td>
+  <td><%= link_to 'Details', show_detail_coaching_meeting_path(meeting), remote: true, class: "btn btn-default" %></td>
+</tr>

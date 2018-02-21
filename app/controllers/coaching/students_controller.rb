@@ -51,6 +51,7 @@ module Coaching
       def set_resources
         @student = User.find_by_username(params[:slug])
         @goals = @student.goals
+        @meetings = @student.meetings
 
         @cohorts = current_user.cohorts if current_user.coach_or_higher?
         @students = @student.cohort.users if current_user.coach_or_higher?

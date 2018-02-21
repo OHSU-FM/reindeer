@@ -24,45 +24,19 @@
 
   <div class="tab-content" style="height: 80%;">
     <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
-      <div class="new-goal">
+      <div class="new-button-holder">
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal">Add new goal</button>
       </div>
 
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Date Added</th>
-            <th scope="col">Goal</th>
-            <th scope="col">Competency Tag</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-
-        <tbody id="goals-table">
-          <% @goals.each do |g| %>
-            <%= render partial: "coaching/goals/goal_row", locals: { goal: g } %>
-          <% end %>
-        </tbody>
-      </table>
+      <%= render partial: "goals_table" %>
     </div>
 
     <div class="tab-pane fade" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th scope="col">Date/Time</th>
-            <th scope="col">Subject</th>
-            <th scope="col">Location</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
+      <div class="new-button-holder">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newMeetingModal">Add new meeting</button>
+      </div>
 
-        <tbody id="meetings-table">
-          <tr>
-            <td>meetings go here</td>
-          </tr>
-        </tbody>
-      </table>
+      <%= render partial: "meetings_table" %>
     </div>
 
     <div class="general-comments">
@@ -71,8 +45,11 @@
   </div>
 </div>
 
-<div id="cs-goals-detail"></div>
+<div id="cs-detail"></div>
 
 <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
   <%= render "coaching/goals/new_modal" %>
+</div>
+<div class="modal fade" id="newMeetingModal" tabindex="-1" role="dialog" aria-labelledby="newMeetingModalLabel" aria-hidden="true">
+  <%= render "coaching/meetings/new_modal" %>
 </div>

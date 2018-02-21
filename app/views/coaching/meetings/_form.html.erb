@@ -1,0 +1,27 @@
+<%= form_for Coaching::Meeting.new, remote: true do |f| %>
+  <div class="form-group">
+    <%= f.label :subject %>
+    <%= f.text_field :subject, required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :location %>
+    <%= f.text_field :location %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :notes %>
+    <%= f.text_area :notes %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :date %>
+    <%= f.date_field :date, required: true %>
+  </div>
+
+  <%= f.hidden_field :user_id, value: @student.id %>
+
+  <div class="form-group">
+    <%= f.submit "Save", class: 'btn btn-primary' %>
+  </div>
+<% end %>

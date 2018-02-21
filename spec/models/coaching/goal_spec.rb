@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Goal, type: :model do
+RSpec.describe Coaching::Goal, type: :model do
   describe "validations:" do
     it "requires a user" do
       expect(build(:goal, user: nil)).not_to be_valid
@@ -23,7 +23,7 @@ RSpec.describe Goal, type: :model do
     end
 
     it "requires a valid competency_tag" do
-      Goal::VALID_COMPETENCY_TAGS.each do |tag|
+      Coaching::Goal::VALID_COMPETENCY_TAGS.each do |tag|
         expect(build(:goal, competency_tag: tag)).to be_valid
       end
       expect(build(:goal, competency_tag: 'some other tag')).not_to be_valid
@@ -34,7 +34,7 @@ RSpec.describe Goal, type: :model do
     end
 
     it "requires a valid status" do
-      Goal::VALID_STATUSES.each do |status|
+      Coaching::Goal::VALID_STATUSES.each do |status|
         expect(build(:goal, status: status)).to be_valid
       end
       expect(build(:goal, competency_tag: 'some other tag')).not_to be_valid

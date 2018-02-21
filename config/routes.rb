@@ -7,6 +7,12 @@ Rails.application.routes.draw do
         get 'show_detail'
       end
     end
+
+    resources :meetings do
+      member do
+        get 'show_detail'
+      end
+    end
   end
 
   resources :coaching, only: [:index]

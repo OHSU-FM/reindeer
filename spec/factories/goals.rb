@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :goal do
+  factory :goal, class: Coaching::Goal do
     name { Faker::Lorem.word }
     user
     target_date Date.tomorrow

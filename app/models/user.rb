@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
   has_many :permission_ls_groups, through: :permission_group
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
-  has_many :goals, dependent: :destroy
+  has_many :goals, class_name: 'Coaching::Goal', dependent: :destroy
+  has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :rooms, -> { distinct }, through: :messages
 

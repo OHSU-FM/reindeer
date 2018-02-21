@@ -23,6 +23,10 @@ RSpec.describe Coaching::StudentsController, type: :controller do
         expect(assigns[:goals]).to eq student.goals
       end
 
+      it "assigns @meetings to current_user.meetings" do
+        expect(assigns[:meetings]).to eq student.meetings
+      end
+
       it "doesn't assign @cohorts" do
         expect(assigns[:cohorts]).to eq nil
       end
@@ -53,6 +57,10 @@ RSpec.describe Coaching::StudentsController, type: :controller do
 
       it "assigns @goals to first_student.goals" do
         expect(assigns[:goals]).to eq first_student.goals
+      end
+
+      it "assigns @meetings to first_student.meetings" do
+        expect(assigns[:meetings]).to eq first_student.meetings
       end
 
       it "assigns the coach's cohorts to @cohorts" do

@@ -2,8 +2,8 @@ $(document).on 'click', '#cs-sidebar-toggle', (e) ->
   $('#cs-goals-nav').toggleClass('open')
 
 $(document).on 'click', '#hide-detail', (e) ->
-  $detail = $('#cs-goals-detail')
-  $detail.removeClass('show-goal-detail')
+  $detail = $('#cs-detail')
+  $detail.removeClass('show-detail')
 
 $(document).ready ->
   $("#student-select").select2()

@@ -1,4 +1,4 @@
-<%= form_for [:coaching, Goal.new], remote: true do |f| %>
+<%= form_for Coaching::Goal.new, remote: true do |f| %>
   <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, required: true %>

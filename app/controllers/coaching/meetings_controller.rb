@@ -1,20 +1,20 @@
 module Coaching
-  class GoalsController < ApplicationController
+  class MeetingsController < ApplicationController
 
     def create
-      @goal = Goal.create goal_params
+      @meeting = Meeting.create meeting_params
 
       respond_to do |format|
-        if @goal.save
+        if @meeting.save
           format.js { render action: 'show', status: :created }
         else
-          format.js { render json: { error: @goal.errors }, status: :unprocessable_entity }
+          format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
         end
       end
     end
 
     def show_detail
-      @goal = Goal.find(params[:id])
+      @meeting = Meeting.find(params[:id])
 
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
@@ -22,24 +22,24 @@ module Coaching
     end
 
     def destroy
-      @goal = Goal.find params[:id]
+      @meeting = Meeting.find params[:id]
 
       redirect_to coaching_students_path && return unless current_user.admin_or_higher?
 
       respond_to do |format|
-        if @goal.destroy
+        if @meeting.destroy
           format.js { render action: 'destroy', status: :ok }
         else
-          format.js { render json: @goal.errors, status: :unprocessable_entity }
+          format.js { render json: @meeting.errors, status: :unprocessable_entity }
         end
       end
     end
 
     private
 
-    def goal_params
-      params.require(:coaching_goal)
-      .permit(:name, :description, :competency_tag, :target_date, :status, :user_id)
+    def meeting_params
+      params.require(:coaching_meeting)
+      .permit(:subject, :notes, :location, :date, :status, :user_id)
     end
   end
 end

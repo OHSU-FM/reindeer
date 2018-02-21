@@ -70,6 +70,9 @@ html,body { height: 100%; }
   order: 2;
   transition: width 0.7s ease-out;
   background-color: $paper;
+  -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
 
   .goals-header { padding-left: 10px; }
 
@@ -82,12 +85,12 @@ html,body { height: 100%; }
   }
 }
 
-.container-flex #cs-goals-detail {
+.container-flex #cs-detail {
   flex-shrink: 0;
   overflow-x: hidden;
   background-color: $overcast;
 
-  &:not(.show-goal-detail) {
+  &:not(.show-detail) {
     flex: 0 6 auto;
     order: 3;
     width: 0px;
@@ -100,7 +103,7 @@ html,body { height: 100%; }
     text-overflow: ellipsis;
   }
 
-  &.show-goal-detail {
+  &.show-detail {
     flex: 1 6 auto;
     order: 3;
     width: 355px;
@@ -142,7 +145,7 @@ html,body { height: 100%; }
   .container-flex { flex-direction: column; }
 
   .container-flex #cs-goals-main,
-  .container-flex #cs-goals-detail {
+  .container-flex #cs-detail {
     order: 0;
   }
 
@@ -155,7 +158,7 @@ html,body { height: 100%; }
   .container-flex #cs-goals-main > ul > li { margin-top: 10px; }
 }
 
-.new-goal {
+.new-button-holder {
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;

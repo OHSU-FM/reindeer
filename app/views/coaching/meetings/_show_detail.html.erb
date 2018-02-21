@@ -1,0 +1,28 @@
+<div class="detail-header">
+  <h3 class="title-inline"><%= meeting.subject %></h3>
+  <% if current_user.admin_or_higher? %>
+    <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
+  <% end %>
+  <button type="button" class="close" aria-label="Close" id="hide-detail">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="detail-section">
+  <h4>Meeting Details</h4>
+  <div><i>Status: </i><%= meeting.subject %></div>
+  <div><i>Location: </i><%= meeting.location %></div>
+  <div><i>Date: </i><%= meeting.date.strftime("%m/%d") %></div>
+</div>
+
+<div class="detail-section">
+  <h4>Notes</h4>
+  <div><%= meeting.notes %></div>
+</div>
+
+<div class="detail-section">
+  <h4>Comments</h4>
+  <div class="meeting-comments">
+    they go here
+  </div>
+</div>

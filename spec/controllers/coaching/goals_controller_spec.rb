@@ -14,7 +14,7 @@ RSpec.describe Coaching::GoalsController, type: :controller do
       it "deletes the goal" do
         expect {
           delete :destroy, xhr: true, params: { id: goal.id }
-        }.to change(Goal, :count).by(-1)
+        }.to change(Coaching::Goal, :count).by(-1)
       end
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Coaching::GoalsController, type: :controller do
       it "doesn't delete the goal" do
         expect {
           delete :destroy, xhr: true, params: { id: goal.id }
-        }.to change(Goal, :count).by(0)
+        }.to change(Coaching::Goal, :count).by(0)
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe Coaching::GoalsController, type: :controller do
       it "doesn't delete the goal" do
         expect {
           delete :destroy, xhr: true, params: { id: goal.id }
-        }.to change(Goal, :count).by(0)
+        }.to change(Coaching::Goal, :count).by(0)
       end
     end
   end

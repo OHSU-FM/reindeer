@@ -1,0 +1,16 @@
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Date Added</th>
+      <th scope="col">Goal</th>
+      <th scope="col">Competency Tag</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+
+  <tbody id="goals-table">
+    <% @goals.each do |g| %>
+      <%= render partial: "coaching/goals/goal_row", locals: { goal: g } %>
+    <% end %>
+  </tbody>
+</table>
