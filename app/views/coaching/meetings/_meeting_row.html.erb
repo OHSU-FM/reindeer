@@ -1,4 +1,4 @@
-<tr class="show-detail" id="meetingId-<%= meeting.id %>">
+<tr class="show-detail clickable-row <%= "active" if defined? active_row %>"" id="meetingId-<%= meeting.id %>">
   <td><%= meeting.created_at.strftime("%m/%d") %></td>
   <td><%= meeting.subject %></td>
   <td><%= meeting.location %></td>

@@ -11,6 +11,7 @@ class Coaching::Meeting < ApplicationRecord
   private
 
   def set_default_values
+    return unless status.nil?
     update(status: "Scheduled")
   end
 end

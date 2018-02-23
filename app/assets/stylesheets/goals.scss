@@ -170,3 +170,17 @@ html,body { height: 100%; }
 .goal-tabs {
   padding-left: 10px;
 }
+
+.spinner-holder {
+  position: relative;
+
+  img {
+    display: block;
+    margin: auto;
+    margin-top: 50%;
+  }
+}
+
+.grayed-out {
+  opacity: 0.7;
+}

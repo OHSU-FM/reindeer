@@ -45,7 +45,11 @@
   </div>
 </div>
 
-<div id="cs-detail"></div>
+<div id="cs-detail">
+  <div class="spinner-holder">
+    <%= image_tag 'spinner.gif' %>
+  </div>
+</div>
 
 <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
   <%= render "coaching/goals/new_modal" %>

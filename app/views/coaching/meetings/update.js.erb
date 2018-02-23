@@ -1,0 +1,3 @@
+$('div#cs-detail *').prop("disabled", false); // re enable all children
+$('div#cs-detail').removeClass('grayed-out');
+$("tr#meetingId-<%= @meeting.id %>").replaceWith("<%= j render partial: 'meeting_row', locals: { meeting: @meeting, active_row: true } %>")

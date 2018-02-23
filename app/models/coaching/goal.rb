@@ -13,6 +13,7 @@ class Coaching::Goal < ApplicationRecord
   private
 
   def set_default_values
+    return unless status.nil?
     update(status: "Not Started")
   end
 end

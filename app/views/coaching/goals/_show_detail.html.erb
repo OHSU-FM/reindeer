@@ -1,7 +1,10 @@
+<div id="detail-message">
+</div>
+
 <div class="detail-header">
   <h3 class="title-inline"><%= goal.name %></h3>
   <% if current_user.admin_or_higher? %>
-    <p><%= link_to "Delete", coaching_goal_path(goal), method: :delete, remote: true, class: "btn btn-default" %></p>
+    <%= link_to "Delete", coaching_goal_path(goal), method: :delete, remote: true, class: "btn btn-default" %>
   <% end %>
   <button type="button" class="close" aria-label="Close" id="hide-detail">
     <span aria-hidden="true">&times;</span>
@@ -10,7 +13,7 @@
 
 <div class="detail-section">
   <h4>Goal Details</h4>
-  <div><i>Status: </i><%= goal.status %></div>
+  <div><i>Status: </i><%= select_tag "status", options_for_select(["Not Started", "Needs Work", "On Track", "Completed"], goal.status), class: "status-picker", data: { goalId: goal.id } %></div>
   <div><i>Competency Tag: </i><%= goal.competency_tag %></div>
   <div><i>Target Date: </i><%= goal.target_date.strftime("%m/%d") %></div>
 </div>
