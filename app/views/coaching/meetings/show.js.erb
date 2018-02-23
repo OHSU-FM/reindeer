@@ -1,2 +1,3 @@
 $('#meetings-table').append("<%= j render partial: 'meeting_row', locals: { meeting: @meeting }%>")
 $('#newMeetingModal').modal_success()
+$('.modal-body').html("<%= j render partial: 'coaching/meetings/form', locals: { student: @meeting.user } %>")

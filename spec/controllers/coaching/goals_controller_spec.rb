@@ -44,7 +44,6 @@ RSpec.describe Coaching::GoalsController, type: :controller do
 
         fit "updates the status" do
           put :update, xhr: true, params: params
-          byebug
           goal.reload
           expect(goal.status).to eq "On Track"
         end

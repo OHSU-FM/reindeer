@@ -5,6 +5,7 @@ class Coaching::Goal < ApplicationRecord
   belongs_to :user, required: true
 
   validates_presence_of :name, :target_date, :competency_tag, :status
+  validates_length_of :name, maximum: 50
   validates :competency_tag, inclusion: { in: VALID_COMPETENCY_TAGS }
   validates :status, inclusion: { in: VALID_STATUSES }
 

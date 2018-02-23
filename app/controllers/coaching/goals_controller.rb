@@ -2,7 +2,7 @@ module Coaching
   class GoalsController < ApplicationController
 
     def create
-      @goal = Goal.create goal_params
+      @goal = Goal.new goal_params
 
       respond_to do |format|
         if @goal.save

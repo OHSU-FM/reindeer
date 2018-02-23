@@ -83,6 +83,15 @@ html,body { height: 100%; }
 
     #student-select { width: 45%; }
   }
+
+  .main-table {
+    margin-left: 10px;
+    margin-right: 10px;
+
+    td {
+      vertical-align: middle;
+    }
+  }
 }
 
 .container-flex #cs-detail {
@@ -161,7 +170,7 @@ html,body { height: 100%; }
 .new-button-holder {
   margin-top: 5px;
   margin-bottom: 5px;
-  margin-left: 5px;
+  margin-left: 10px;
   margin-right: 5px;
 }
 

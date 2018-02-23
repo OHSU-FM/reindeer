@@ -46,7 +46,6 @@ show_detail_message = (type, message) ->
 
 $.fn.modal_success = () ->
   this.modal('hide')
-  this.find('form input[type="text"]').val('')
   this.clear_previous_errors()
 
 $.fn.clear_previous_errors = () ->
