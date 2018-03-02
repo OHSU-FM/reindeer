@@ -4,17 +4,19 @@ class Coaching::Goal < ApplicationRecord
 
   belongs_to :user, required: true
 
-  validates_presence_of :name, :target_date, :competency_tag, :status
+  validates_presence_of :name, :target_date, :competency_tag, :g_status
   validates_length_of :name, maximum: 50
   validates :competency_tag, inclusion: { in: VALID_COMPETENCY_TAGS }
-  validates :status, inclusion: { in: VALID_STATUSES }
+  validates :g_status, inclusion: { in: VALID_STATUSES }
 
   after_initialize :set_default_values
+
+  paginates_per 10
 
   private
 
   def set_default_values
-    return unless status.nil?
-    update(status: "Not Started")
+    return unless g_status.nil?
+    self.update(g_status: "Not Started")
   end
 end

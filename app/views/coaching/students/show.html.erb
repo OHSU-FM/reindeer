@@ -1,5 +1,9 @@
 <div id="cs-goals-nav">
-  <%= render partial: "cohorts_select" %>
+  <% if current_user.dean_or_higher? %>
+    <%= render partial: "coaches_select" %>
+  <% elsif %>
+    <%= render partial: "cohorts_select" %>
+  <% end %>
 </div>
 
 <div id="cs-goals-main">
@@ -11,7 +15,7 @@
     <hr>
   <% end %>
 
-  <h3 class="goals-header">here are some goals</h3>
+  <h3 class="goals-header">Coaching System</h3>
 
   <ul class="nav nav-tabs goal-tabs" role="tablist">
     <li class="nav-item active">

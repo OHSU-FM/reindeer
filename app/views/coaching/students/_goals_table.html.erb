@@ -1,10 +1,10 @@
 <table class="table table-hover main-table">
   <thead>
     <tr>
-      <th scope="col">Date Added</th>
-      <th scope="col">Goal</th>
-      <th scope="col">Competency Tag</th>
-      <th scope="col">Status</th>
+      <th><%= hf_sort_link "created_at", "Added On" %></th>
+      <th><%= hf_sort_link "name", "Goal" %></th>
+      <th><%= hf_sort_link "competency_tag" %></th>
+      <th><%= hf_sort_link "g_status", "Status" %></th>
     </tr>
   </thead>
 
@@ -14,3 +14,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @goals %>

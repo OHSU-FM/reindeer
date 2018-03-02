@@ -368,6 +368,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   json
+  kaminari
   lograge
   nested_form_fields
   paper_trail

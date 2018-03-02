@@ -52,6 +52,9 @@ gem "bootstrap-sass"
 gem "sass"#, "~> 3.2.13"
 gem "select2-rails"
 
+# pagination
+gem 'kaminari'
+
 ##############################
 # UI: Charts
 ##############################
