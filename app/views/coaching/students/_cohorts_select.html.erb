@@ -4,9 +4,11 @@
 
 <div class="flex-child">
   <ul class="nav nav-pills nav-stacked">
-    <% if current_user.coach_or_higher? %>
+    <% if current_user.coach? %>
       <% @cohorts.each do |cohort| %>
-        <li class=<%= "active" if hf_active_cohort? cohort, @student %>><%= link_to cohort.title, coaching_student_path(cohort.users.first) %></li>
+        <li class=<%= "active" if hf_active_cohort? cohort, @student %>>
+          <%= link_to cohort.title, coaching_student_path(cohort.recent_active_user) %>
+        </li>
       <% end %>
     <% end %>
   </ul>

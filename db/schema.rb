@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301153335) do
+ActiveRecord::Schema.define(version: 20180302223338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 20180301153335) do
   create_table "goals", force: :cascade do |t|
     t.string   "name",           null: false
     t.text     "description"
-    t.string   "status"
+    t.string   "g_status"
     t.string   "competency_tag"
     t.datetime "target_date"
     t.integer  "user_id",        null: false
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 20180301153335) do
     t.string   "subject"
     t.datetime "date"
     t.string   "location"
-    t.string   "status"
+    t.string   "m_status"
     t.text     "notes"
     t.integer  "user_id"
     t.datetime "created_at", null: false
@@ -309,11 +309,17 @@ ActiveRecord::Schema.define(version: 20180301153335) do
   end
 
   create_table "rooms", force: :cascade do |t|
+<<<<<<< HEAD
     t.string   "the_name_of_it"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "discussable_id"
     t.string   "discussable_type"
+=======
+    t.string   "identifier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+>>>>>>> bf8544710a61546d48ea39176ab4c7e61ea29a0e
   end
 
   create_table "user_externals", force: :cascade do |t|

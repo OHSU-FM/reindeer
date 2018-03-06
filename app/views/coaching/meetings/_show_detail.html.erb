@@ -10,7 +10,7 @@
 
 <div class="detail-section">
   <h4>Meeting Details</h4>
-  <div><i>Status: </i><%= meeting.subject %></div>
+  <div><i>Status: </i><%= select_tag "status", options_for_select(["Scheduled", "Passed", "Skipped", "Rescheduled"], meeting.status), class: "status-picker", data: { meetingId: meeting.id } %></div>
   <div><i>Location: </i><%= meeting.location %></div>
   <div><i>Date: </i><%= meeting.date.strftime("%m/%d") %></div>
 </div>

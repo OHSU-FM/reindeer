@@ -1,7 +1,7 @@
 <%= form_for Coaching::Goal.new, remote: true do |f| %>
   <div class="form-group">
     <%= f.label :name %>
-    <%= f.text_field :name, required: true %>
+    <%= f.text_field :name, maxlength: 50, required: true %>
   </div>
 
   <div class="form-group">
@@ -23,7 +23,7 @@
     <%= f.date_field :target_date, required: true %>
   </div>
 
-  <%= f.hidden_field :user_id, value: @student.id %>
+  <%= f.hidden_field :user_id, value: student.id %>
 
   <div class="form-group">
     <%= f.submit "Save", class: 'btn btn-primary' %>

@@ -1,2 +1,3 @@
-$('#goals-table').append("<%= j render partial: 'goal_row', locals: { goal: @goal }%>")
+$('#goals-table').append("<%= j render partial: 'goal_row', locals: { goal: @goal } %>")
 $('#newGoalModal').modal_success()
+$('.modal-body').html("<%= j render partial: 'coaching/goals/form', locals: { student: @goal.user } %>")

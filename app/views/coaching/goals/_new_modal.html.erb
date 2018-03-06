@@ -7,7 +7,7 @@
       </button>
     </div>
     <div class="modal-body">
-      <%= render "coaching/goals/form" %>
+      <%= render partial: "coaching/goals/form", locals: { student: @student } %>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

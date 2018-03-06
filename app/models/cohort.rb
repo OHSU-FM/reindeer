@@ -4,7 +4,6 @@ class Cohort < ActiveRecord::Base
   belongs_to :permission_group
 
   has_many :users
-  has_many :comment_threads, as: :threadable
 
   validates_presence_of :permission_group
   validates_presence_of :owner
@@ -44,13 +43,6 @@ class Cohort < ActiveRecord::Base
     end
   end
 
-  def comment_thread_for user_id
-    CommentThread.find_or_create_by(first_user: owner,
-                                    second_user: User.find(user_id),
-                                    threadable: self
-                                   )
-  end
-
   # TODO: #possible_users should always include #users (at minimum)
   def possible_users
     @possible_users ||= permission_group.present? ? permission_group.users : []
@@ -58,6 +50,15 @@ class Cohort < ActiveRecord::Base
 
   def user_ids_enum
     @user_ids_enum ||= possible_users.map{|u| [u.title, u.id] }
+  end
+
+  def recent_active_user
+    if users.includes(:goals).select{|u| !u.goals.empty? }.empty?
+      users.first
+    else
+      users.includes(:goals).select{|u| !u.goals.empty? }
+        .sort_by{|u| u.goals.first.created_at }.first
+    end
   end
 
   protected

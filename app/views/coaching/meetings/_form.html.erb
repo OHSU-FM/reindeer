@@ -19,7 +19,7 @@
     <%= f.date_field :date, required: true %>
   </div>
 
-  <%= f.hidden_field :user_id, value: @student.id %>
+  <%= f.hidden_field :user_id, value: student.id %>
 
   <div class="form-group">
     <%= f.submit "Save", class: 'btn btn-primary' %>

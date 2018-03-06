@@ -9,9 +9,12 @@ class Coaching::Meeting < ApplicationRecord
 
   after_initialize :set_default_values
 
+  paginates_per 10
+
   private
 
   def set_default_values
-    update(status: "Scheduled")
+    return unless m_status.nil?
+    update(m_status: "Scheduled")
   end
 end

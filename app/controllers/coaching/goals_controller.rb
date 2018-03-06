@@ -2,7 +2,7 @@ module Coaching
   class GoalsController < ApplicationController
 
     def create
-      @goal = Goal.create goal_params
+      @goal = Goal.new goal_params
 
       respond_to do |format|
         if @goal.save
@@ -14,10 +14,23 @@ module Coaching
     end
 
     def show_detail
-      @goal = Goal.find(params[:id])
+      @goal = Goal.find params[:id]
 
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
+      end
+    end
+
+    # this is dirty and manual because we're not using link_to in the view :(
+    def update
+      @goal = Goal.find params[:id]
+
+      respond_to do |format|
+        if @goal.update_attributes(goal_update_params)
+          format.js { render action: 'update', status: :ok }
+        else
+          format.js { render json: { error: @goal.errors }, status: :unprocessable_entity }
+        end
       end
     end
 
@@ -40,6 +53,10 @@ module Coaching
     def goal_params
       params.require(:coaching_goal)
       .permit(:name, :description, :competency_tag, :target_date, :status, :user_id)
+    end
+
+    def goal_update_params
+      params.permit(:id, :status)
     end
   end
 end

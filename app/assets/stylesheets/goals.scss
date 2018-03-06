@@ -25,6 +25,8 @@ html,body { height: 100%; }
   &.open {
     width: 250px;
     transition: width 0.4s ease-out;
+    padding: 0 15px 0 0;
+    margin: 0px 0px 15px 0px;
 
     #cs-sidebar-toggle {
       text-align: right;
@@ -34,10 +36,15 @@ html,body { height: 100%; }
     .system-explanation { max-width: 100%; }
   }
 
-  ul > li > a {
-    font-size: 16px;
+  ul > li > a,
+  .student-with-goals {
+    font-size: 14px;
     color: white;
     text-decoration: none;
+  }
+
+  .list-group.list-group-root > .list-group > .list-group-item {
+    padding-left: 20px;
   }
 
   #cs-sidebar-toggle {
@@ -82,6 +89,16 @@ html,body { height: 100%; }
     padding-top: 10px;
 
     #student-select { width: 45%; }
+  }
+
+  .main-table {
+    margin-left: 10px;
+    margin-right: 10px;
+    max-width: 98%;
+
+    td {
+      vertical-align: middle;
+    }
   }
 }
 
@@ -161,7 +178,7 @@ html,body { height: 100%; }
 .new-button-holder {
   margin-top: 5px;
   margin-bottom: 5px;
-  margin-left: 5px;
+  margin-left: 10px;
   margin-right: 5px;
 }
 
@@ -169,4 +186,18 @@ html,body { height: 100%; }
 
 .goal-tabs {
   padding-left: 10px;
+}
+
+.spinner-holder {
+  position: relative;
+
+  img {
+    display: block;
+    margin: auto;
+    margin-top: 50%;
+  }
+}
+
+.grayed-out {
+  opacity: 0.7;
 }

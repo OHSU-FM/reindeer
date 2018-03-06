@@ -49,15 +49,12 @@ describe Cohort do
 
       expect(c.user_ids_enum).to eq [[u.title, u.id]]
     end
-  end
 
-  describe "comment_threads" do
-    it "should exist between each user and the owner" do
-      owner = create :coach
-      c = create :cohort, :with_users, owner: owner
-      c.users.each do |u|
-        expect(c.comment_thread_for(u.id)).to be_instance_of CommentThread
-      end
+    it "#recent_active_user returns the most recent active user" do
+      c = build :cohort, :with_users
+      create :goal, user: c.users.second
+
+      expect(c.recent_active_user).to eq c.users.second
     end
   end
 end
