@@ -53,6 +53,7 @@ class MessagesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def message_params
+      binding.pry
       params.fetch(:message, {})
     end
 end

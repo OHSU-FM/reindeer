@@ -3,6 +3,7 @@ class Coaching::Goal < ApplicationRecord
   VALID_STATUSES = ["Not Started", "Needs Work", "On Track", "Completed"]
 
   belongs_to :user, required: true
+  has_one :room, as: :discussable
 
   validates_presence_of :name, :target_date, :competency_tag, :status
   validates :competency_tag, inclusion: { in: VALID_COMPETENCY_TAGS }

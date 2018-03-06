@@ -6,6 +6,7 @@ module Coaching
 
     # GET /coaching/students/{student_email}
     def show
+      @messages = Message.where(room_id: @room.id)
     end
 
     # GET /goals/new
@@ -54,7 +55,16 @@ module Coaching
         @meetings = @student.meetings
 
         @cohorts = current_user.cohorts if current_user.coach_or_higher?
+
+
         @students = @student.cohort.users if current_user.coach_or_higher?
+
+
+
+        @messages = Message.where(user_id: current_user.id)
+
+        @room = Room.find(@messages.first.room_id)
+
       end
 
       # Only allow a trusted parameter "white list" through.

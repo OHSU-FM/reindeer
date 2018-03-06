@@ -9,8 +9,10 @@
   </thead>
 
   <tbody id="goals-table">
-    <% @goals.each do |g| %>
-      <%= render partial: "coaching/goals/goal_row", locals: { goal: g } %>
+    <% if !@goals.nil? %>
+      <% @goals.each do |g| %>
+        <%= render partial: "coaching/goals/goal_row", locals: { goal: g } %>
+      <% end %>
     <% end %>
   </tbody>
 </table>

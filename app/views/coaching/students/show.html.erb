@@ -40,7 +40,28 @@
     </div>
 
     <div class="general-comments">
-      general comments go here
+      <h1 id='room-identifier' data-room-number=<%= "#{@room.id}" %>>chat</h1>
+
+      <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+          <div id="messages">
+            <% @messages.each do |message| %>
+              UserID: <%= message.user_id %> --
+              <%= message.content %> <br/>
+            <% end %>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+          <form style="width: 100%">
+            <input type="text" data-behavior="room_speaker"
+            style="width: 100%" placeholder="type in here">
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -48,8 +69,8 @@
 <div id="cs-detail"></div>
 
 <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
-  <%= render "coaching/goals/new_modal" %>
+  <%= render partial: "coaching/goals/new_modal" %>
 </div>
 <div class="modal fade" id="newMeetingModal" tabindex="-1" role="dialog" aria-labelledby="newMeetingModalLabel" aria-hidden="true">
-  <%= render "coaching/meetings/new_modal" %>
+  <%= render partial: "coaching/meetings/new_modal" %>
 </div>

@@ -18,10 +18,11 @@ class User < ActiveRecord::Base
   has_many :permission_ls_groups, through: :permission_group
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
+
   has_many :goals, class_name: 'Coaching::Goal', dependent: :destroy
   has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_many :rooms, -> { distinct }, through: :messages
+  has_one :room, as: :discussable
 
   has_one :dashboard, dependent: :destroy
 
@@ -123,6 +124,7 @@ class User < ActiveRecord::Base
 
     define_method("#{role.to_s}_or_higher?") do
       return true if admin_or_higher?
+      coaching_type = role.to_s
       COACHING_ROLES[coaching_type.to_sym] >= val
     end
   end

@@ -56,4 +56,6 @@ Rails.application.configure do
    #   #Bullet.rollbar = true
    #   Bullet.add_footer = true
    # end
+  config.action_cable.disable_request_forgery_protection = true
+
 end

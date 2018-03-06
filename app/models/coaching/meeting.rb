@@ -3,6 +3,7 @@ class Coaching::Meeting < ApplicationRecord
 
   belongs_to :user, required: true
 
+  has_one :room, as: :discussable
   validates_presence_of :subject, :date, :status, :location
   validates :status, inclusion: { in: VALID_STATUSES }
 
