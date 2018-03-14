@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
     dependent: :destroy
   has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_many :rooms, -> { distinct }, through: :messages
+  has_one :room, as: :discussable
 
   has_one :dashboard, dependent: :destroy
 
@@ -38,6 +38,8 @@ class User < ActiveRecord::Base
   }
 
   validate :ldap_cannot_update_password
+
+  after_initialize :set_default_values
 
   def ldap_cannot_update_password
     if is_ldap? && encrypted_password_changed?
@@ -124,6 +126,7 @@ class User < ActiveRecord::Base
 
     define_method("#{role.to_s}_or_higher?") do
       return true if admin_or_higher?
+      coaching_type = role.to_s
       COACHING_ROLES[coaching_type.to_sym] >= val
     end
   end
@@ -365,5 +368,12 @@ class User < ActiveRecord::Base
     return @cohorts if defined? @cohorts
     @cohorts ||= admin_or_higher? ? Cohort.all : Cohort.where(owner: self)
     return @cohorts
+  end
+
+  private
+
+  def set_default_values
+    return unless room.nil?
+    Room.create(discussable: self, identifier: "student_room_#{self.id}")
   end
 end

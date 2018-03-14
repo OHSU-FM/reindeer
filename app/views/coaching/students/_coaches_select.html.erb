@@ -4,16 +4,18 @@
 
 <div class="flex-child">
   <ul class="list-group list-group-root">
-    <% @coaches.each do |coach| %>
-      <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.display_name %></a>
+    <% if !@coaches.nil? %>
+      <% @coaches.each do |coach| %>
+        <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.display_name %></a>
 
-      <div class="list-group collapse" id="<%= coach.username %>">
-        <% coach.cohorts.map(&:users).flatten.each do |student| %>
-          <div class="list-group-item student-with-goals">
-            <%= link_to "#{student.display_name}: #{pluralize(student.goals.count, 'goal')}", coaching_student_path(student) %>
-          </div>
-        <% end %>
-      </div>
+        <div class="list-group collapse" id="<%= coach.username %>">
+          <% coach.cohorts.map(&:users).flatten.each do |student| %>
+            <div class="list-group-item student-with-goals">
+              <%= link_to "#{student.display_name}: #{pluralize(student.goals.count, 'goal')}", coaching_student_path(student) %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </ul>
 </div>

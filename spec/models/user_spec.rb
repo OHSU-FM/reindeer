@@ -56,6 +56,14 @@ RSpec.describe User, type: :model do
       c = create :cohort
       expect(admin.cohorts).to include c
     end
+
+    describe "#room" do
+      it "creates one if one doesn't exist" do
+        student = create :student, room: nil
+        student.reload
+        expect(User.find(student.id).room).to be_a Room
+      end
+    end
   end
 
   it "has a factory" do

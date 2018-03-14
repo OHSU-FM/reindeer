@@ -1,17 +1,21 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
 class RoomChannel < ApplicationCable::Channel
+
   def subscribed
-    current_user.rooms.each do |room|
-      stream_from "room_channel_#{room.id}"
+    if !params[:room_id].nil?
+      stream_from "room_channel_#{params[:room_id]}"
     end
   end
 
   def unsubscribed
+      stop_all_streams
     # Any cleanup needed when channel is unsubscribed
   end
 
   def speak data
-    Message.create! content: data['message'], user: current_user, room_id: data['roomNumber']
+    if data['message'] != ""
+      Message.create! content: data['message'], user: current_user, room_id: data['roomNumber']
+     end
   end
 
   # TODO archive

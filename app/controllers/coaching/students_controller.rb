@@ -1,5 +1,6 @@
 module Coaching
   class StudentsController < ApplicationController
+
     layout 'coaching_layout'
     before_action :authenticate_user!
     before_action :set_resources, only: [:show]
@@ -8,6 +9,7 @@ module Coaching
 
     # GET /coaching/students/{student_username}
     def show
+
     end
 
     def search_goals
@@ -32,14 +34,20 @@ module Coaching
         @student = User.find_by_username(params[:slug])
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
         @meetings = @student.meetings
+        @messages = @student.room.messages
+        @room_id = @student.room.id
+
 
         if current_user.coach?
           @cohorts = current_user.cohorts
           @students = @student.cohort.users
+          #@coaches = @cohorts.map(&:owner).uniq!
         elsif current_user.dean_or_higher?
           @cohorts = Cohort.includes(:users).includes(:owner).all
           @coaches = @cohorts.map(&:owner).uniq!
           @students = @cohorts.map(&:users).flatten
+        else
+
         end
       end
 

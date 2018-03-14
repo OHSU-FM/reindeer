@@ -56,4 +56,8 @@ Rails.application.configure do
    #   #Bullet.rollbar = true
    #   Bullet.add_footer = true
    # end
+  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
+  config.action_cable.url = "ws://localhost:3000/cable"
+
 end

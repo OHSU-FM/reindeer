@@ -28,4 +28,6 @@ Rails.application.config.assets.precompile += %w( print.css
     goals.css
     action_plan_items.css
     rooms.css
+    coaching_students.css
+    cable.js
     )
