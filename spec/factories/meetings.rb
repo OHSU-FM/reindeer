@@ -4,7 +4,7 @@ FactoryBot.define do
     subject "MyString"
     date Date.tomorrow
     location "MyString"
-    status "Scheduled"
+    m_status "Scheduled"
     notes "MyText"
   end
 end

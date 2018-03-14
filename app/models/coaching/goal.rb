@@ -13,6 +13,10 @@ class Coaching::Goal < ApplicationRecord
 
   paginates_per 10
 
+  def self.search term
+    self.where("name like ? OR description like ?", "%#{term}%", "%#{term}%")
+  end
+
   private
 
   def set_default_values

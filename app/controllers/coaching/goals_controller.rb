@@ -37,7 +37,7 @@ module Coaching
     def destroy
       @goal = Goal.find params[:id]
 
-      redirect_to coaching_students_path && return unless current_user.admin_or_higher?
+      redirect_to coaching_index_path && return unless current_user.admin_or_higher?
 
       respond_to do |format|
         if @goal.destroy
@@ -56,7 +56,7 @@ module Coaching
     end
 
     def goal_update_params
-      params.permit(:id, :status)
+      params.permit(:id, :g_status)
     end
   end
 end

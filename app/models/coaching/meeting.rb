@@ -10,6 +10,10 @@ class Coaching::Meeting < ApplicationRecord
 
   paginates_per 10
 
+  def self.search term
+    self.where("subject like ? OR notes like ?", "%#{term}%", "%#{term}%")
+  end
+
   private
 
   def set_default_values

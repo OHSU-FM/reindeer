@@ -35,6 +35,34 @@ RSpec.describe Coaching::StudentsController, type: :controller do
         expect(assigns[:students]).to eq nil
       end
     end
+
+    describe "POST #search_goals" do
+      let(:goal) { create :goal, user: student, name: 'test' }
+
+      it 'assigns @goals to [goal] if term is included in name or desc' do
+        post :search_goals, xhr: true, params: { slug: student.to_param, goal_search: 'test' }
+        expect(assigns[:goals]).to include goal
+      end
+
+      it "doesn't assign @goals to [goal] if term isn't included in name or desc" do
+        post :search_goals, xhr: true, params: { slug: student.to_param, goal_search: 'foo' }
+        expect(assigns[:goals]).not_to include goal
+      end
+    end
+
+    describe "POST #search_meetings" do
+      let!(:meeting) { create :meeting, user: student, subject: 'test' }
+
+      it 'assigns @meetings to [meeting] if term is included in subject or notes' do
+        post :search_meetings, xhr: true, params: { slug: student.to_param, meeting_search: 'test' }
+        expect(assigns[:meetings]).to include meeting
+      end
+
+      it "doesn't assign @meetings to [meeting] if term isn't included in subject or notes" do
+        post :search_meetings, xhr: true, params: { slug: student.to_param, meeting_search: 'foo' }
+        expect(assigns[:meetings]).not_to include meeting
+      end
+    end
   end
 
   context "as a coach" do

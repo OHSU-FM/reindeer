@@ -9,8 +9,6 @@
   </thead>
 
   <tbody id="meetings-table">
-    <% @meetings.each do |m| %>
-      <%= render partial: "coaching/meetings/meeting_row", locals: { meeting: m } %>
-    <% end %>
+    <%= render partial: "meetings_table_loop", locals: { meetings: @meetings } %>
   </tbody>
 </table>

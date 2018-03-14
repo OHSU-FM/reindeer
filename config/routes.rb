@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
 
   namespace :coaching do
-    resources :students, param: :slug, only: [:show]
+    resources :students, param: :slug, only: [:show] do
+      member do
+        post 'search_goals'
+        post 'search_meetings'
+      end
+    end
+
     resources :goals do
       member do
         get 'show_detail'

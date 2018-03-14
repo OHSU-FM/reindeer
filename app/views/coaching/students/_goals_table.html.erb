@@ -9,9 +9,7 @@
   </thead>
 
   <tbody id="goals-table">
-    <% @goals.each do |g| %>
-      <%= render partial: "coaching/goals/goal_row", locals: { goal: g } %>
-    <% end %>
+    <%= render partial: "goals_table_loop", locals: { goals: @goals } %>
   </tbody>
 </table>
 

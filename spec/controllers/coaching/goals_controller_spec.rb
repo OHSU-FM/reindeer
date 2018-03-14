@@ -21,11 +21,11 @@ RSpec.describe Coaching::GoalsController, type: :controller do
       end
 
       context "invalid params" do
-        let(:params) { goal.attributes.merge("status" => "some_value") }
+        let(:params) { goal.attributes.merge("g_status" => "some_value") }
 
         it "doesn't update the status" do
           put :update, xhr: true, params: params
-          expect(goal.status).to eq "Not Started"
+          expect(goal.g_status).to eq "Not Started"
         end
 
         it "responds with 422" do
@@ -35,17 +35,17 @@ RSpec.describe Coaching::GoalsController, type: :controller do
       end
 
       context "valid params" do
-        let(:params) { { id: goal.to_param, status: "On Track" } }
+        let(:params) { { id: goal.to_param, g_status: "On Track" } }
 
         it "is successful" do
           put :update, xhr: true, params: params
           expect(response).to be_successful
         end
 
-        fit "updates the status" do
+        it "updates the status" do
           put :update, xhr: true, params: params
           goal.reload
-          expect(goal.status).to eq "On Track"
+          expect(goal.g_status).to eq "On Track"
         end
       end
     end

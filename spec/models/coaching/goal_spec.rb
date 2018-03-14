@@ -29,19 +29,29 @@ RSpec.describe Coaching::Goal, type: :model do
       expect(build(:goal, competency_tag: 'some other tag')).not_to be_valid
     end
 
-    it "requires a status" do
-      expect(build(:goal, status: nil)).not_to be_valid
+    it "requires a g_status" do
+      expect(build(:goal, g_status: nil)).not_to be_valid
     end
 
-    it "requires a valid status" do
+    it "requires a valid g_status" do
       Coaching::Goal::VALID_STATUSES.each do |status|
-        expect(build(:goal, status: status)).to be_valid
+        expect(build(:goal, g_status: status)).to be_valid
       end
       expect(build(:goal, competency_tag: 'some other tag')).not_to be_valid
     end
   end
 
-  it "initializes with not started status" do
-    expect(create(:goal).status).to eq "Not Started"
+  it "initializes with not started g_status" do
+    expect(create(:goal).g_status).to eq "Not Started"
+  end
+
+  describe "methods" do
+    it "#search returns goals belonging to the user that match the terms" do
+      g = create :goal, user: (create :student), name: "i belong to student"
+      student = g.user
+      another_users_goal = create :goal, description: 'i belong to someone else'
+      expect(student.goals.search('belong')).to include g
+      expect(student.goals.search('belong')).not_to include another_users_goal
+    end
   end
 end
