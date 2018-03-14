@@ -27,6 +27,7 @@ module Coaching
 
       respond_to do |format|
         if @goal.update_attributes(goal_update_params)
+          byebug
           format.js { render action: 'update', status: :ok }
         else
           format.js { render json: { error: @goal.errors }, status: :unprocessable_entity }
@@ -52,11 +53,11 @@ module Coaching
 
     def goal_params
       params.require(:coaching_goal)
-      .permit(:name, :description, :competency_tag, :target_date, :status, :user_id)
+      .permit(:name, :description, :competency_tag, :target_date, :g_status, :user_id)
     end
 
     def goal_update_params
-      params.permit(:id, :status)
+      params.permit(:id, :g_status)
     end
   end
 end

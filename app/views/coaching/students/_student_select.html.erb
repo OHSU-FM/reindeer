@@ -1,5 +1,7 @@
 <select id="student-select" onchange="window.location=this.value">
-  <% @students.each do |student| %>
-    <option value=<%= student.login %> <%= "selected='selected'" if student == @student %>><%= student.display_name %></option>
+  <% if !@students.nil? %>
+      <% @students.each do |student| %>
+        <option value=<%= student.login %> <%= "selected='selected'" if student == @student %>><%= student.display_name %></option>
+      <% end %>
   <% end %>
 </select>

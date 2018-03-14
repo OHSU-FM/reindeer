@@ -3,7 +3,7 @@
 <div class="rooms">
   <% @rooms.each do |room| %>
     <div class="room">
-      <%= link_to room.the_name_of_it, room_path(room), class: "btn btn-primary" %>
+      <%= link_to room.identifier, room_path(room), class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>

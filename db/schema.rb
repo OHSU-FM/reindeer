@@ -309,17 +309,11 @@ ActiveRecord::Schema.define(version: 20180302223338) do
   end
 
   create_table "rooms", force: :cascade do |t|
-<<<<<<< HEAD
-    t.string   "the_name_of_it"
+    t.string   "identifier"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "discussable_id"
     t.string   "discussable_type"
-=======
-    t.string   "identifier"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
->>>>>>> bf8544710a61546d48ea39176ab4c7e61ea29a0e
   end
 
   create_table "user_externals", force: :cascade do |t|
