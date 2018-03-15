@@ -84,6 +84,12 @@ module LimeExt::ResponseLoaders
     # - We need a unified way to tell what the response_rate is
     # - Or the stats loaders can calculate it individually
     class ResponseSetBase
+
+      attr_accessor :title, :qid, :qtype, :data, :data_labels, :error_labels,
+        :scale_id, :question, :status_questions, :related_columns, :related_error_columns, :lime_answers,
+        :status_column_conversions, :status_question_names, :format_as, :data_column_name, :has_sq
+
+
       def has_sql; false end
 
       def initialize question, opts={}
@@ -273,7 +279,7 @@ module LimeExt::ResponseLoaders
       def data_labels
         return @data_labels if defined? @data_labels
         @data_labels = {}
-        lime_answers.each{|ans|@data_labels[ans.code] = ans.answer if scale_id == ans.scale_id}
+        lime_answers.each{|ans|@data_labels[ans.code] = ans.answer if @scale_id == ans.scale_id}
         return @data_labels
       end
     end
@@ -417,6 +423,8 @@ module LimeExt::ResponseLoaders
     end
 
     class ResponseSetMultComment < ResponseSetMult
+      attr_accessor :comments
+
       def comments
         return @comments if defined? @comments
         result = []

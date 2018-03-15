@@ -1,6 +1,29 @@
 module LimeExt::LimeStat
 
   class QuestionStat
+        attr_accessor :response_count,  # The number of valid responses
+            # % of responses received
+            :response_rate,
+            # Statistics related to lime_answers
+            :categorical_stats,
+            # Numerical Stats
+            :descriptive_stats,
+            #
+            :text_stats,
+            # The number of unique aggregates present in valid responses
+            :agg_count,
+            # The number of unique pks present in valid responses
+            :pk_count,
+            # Question qid
+            :qid,
+            # Question qtype
+            :qtype,
+            :title,
+            :q_text,
+            :sub_stats,
+            :question, 
+            :response_set
+
 
     def initialize response_set, opts = {}
       @response_set = response_set
@@ -77,6 +100,10 @@ module LimeExt::LimeStat
   end
 
   class DescriptiveStatistics
+        attr_reader :confidence_level, :mean, :median, :standard_deviation,
+                        :sum, :range, :n, :standard_deviation, :standard_error, :alpha, :crit_p, 
+                                    :df, :crit_v, :margin_of_error, :confidence_interval
+
 
     def initialize data, opts={}
       return if data.empty?
@@ -117,6 +144,22 @@ module LimeExt::LimeStat
   end
 
   class CategoricalStatistics
+
+        attr_reader :code,
+            :qtype,
+            :answer,
+            :frequency,
+            :pk_frequency,
+            :agg_frequency,
+            :percent,
+            :is_err,
+            :total,
+            :question,
+            :item_id,
+            :error_labels,
+            :data_labels
+
+
 
     def self.generate_titled_stats question, title, qtype, data, data_labels, error_labels
       return {:title=>title, :categories=>self.generate_stats(question, qtype, data, data_labels, error_labels)}
@@ -207,6 +250,8 @@ module LimeExt::LimeStat
   ##
   # Return an array of graph objects for use in graphs
   class LimeStat
+
+    attr_accessor :lime_survey
 
     def initialize lime_survey
       @lime_survey = lime_survey

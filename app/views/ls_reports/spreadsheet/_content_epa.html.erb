@@ -42,7 +42,6 @@
     </ul>
 
     <div class="tab-content">
-
         <div id="core" class="tab-pane active fade in">
           <table style="width: 100%;" class="table table-condensed table-striped ls_reports_filter spreadsheet-body">
             <tbody>
@@ -59,6 +58,23 @@
                  <% end %>
             </tbody>
           </table>
+        </div>
+        <div id="scholarly" class="tab-pane fade">
+            <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+                <tbody>
+                     <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
+                     <% @rs_data.each do |x| %>
+                        <tr>
+                          <% if x["CourseName"].include? "SCHI" %>
+                             <td class="italic"> <%= x["CourseName"] %>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
+                             </td>
+                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
+                          <% end %>
+                        </tr>
+                     <% end %>
+                </tbody>            
+            </table>
         </div>
 
          <div id="fom" class="tab-pane fade">
@@ -80,6 +96,11 @@
               </table>
               
         </div>
+
+        <div id="preceptor" class="tab-pane fade">
+          <%= render partial: 'preceptorship_data'%>
+        </div>
+
         <div id="transition" class="tab-pane fade">
             <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
                 <tbody>
@@ -99,8 +120,12 @@
         </div>
          <div id="shelfexams" class="tab-pane fade">
                <%= render partial: 'ls_reports/spreadsheet/usmle_data' %>
-              <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+              <table style="width: 100%;" class="table table-condensed table-striped table-hover spreadsheet-body">
                 <tbody>
+                     <tr>
+                        <th><h3>NBME/MedU Clinical Subject Exams (Shelf Exams)</h3></th>
+                        <th colspan="8"></th>
+                     </tr>
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
@@ -142,7 +167,7 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM" and !x["CourseName"].include? "703" %>
+                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM" and !x["CourseName"].include? "703" and !x["CourseName"].include? "SCHI" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -203,7 +228,6 @@
                     </td>
 
                 </tr>
-
 
                 <% @comp_domain_desc.each do |key, value| %>
                   <tr>

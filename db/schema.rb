@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -33,10 +32,9 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.integer  "cohort_id"
+    t.index ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
+    t.index ["cohort_id"], name: "index_assignment_groups_on_cohort_id", using: :btree
   end
-
-  add_index "assignment_groups", ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
-  add_index "assignment_groups", ["cohort_id"], name: "index_assignment_groups_on_cohort_id", using: :btree
 
   create_table "chart_series", force: :cascade do |t|
     t.integer  "chart_id"
@@ -47,9 +45,8 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.text     "question_options_filter"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["chart_id"], name: "index_chart_series_on_chart_id", using: :btree
   end
-
-  add_index "chart_series", ["chart_id"], name: "index_chart_series_on_chart_id", using: :btree
 
   create_table "charts", force: :cascade do |t|
     t.integer  "user_id"
@@ -61,9 +58,8 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.text     "rows"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["user_id"], name: "index_charts_on_user_id", using: :btree
   end
-
-  add_index "charts", ["user_id"], name: "index_charts_on_user_id", using: :btree
 
   create_table "cohorts", force: :cascade do |t|
     t.integer  "user_id"
@@ -71,10 +67,9 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string   "title"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.index ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
+    t.index ["user_id"], name: "index_cohorts_on_user_id", using: :btree
   end
-
-  add_index "cohorts", ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
-  add_index "cohorts", ["user_id"], name: "index_cohorts_on_user_id", using: :btree
 
   create_table "comment_threads", force: :cascade do |t|
     t.string   "threadable_type"
@@ -93,10 +88,9 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.integer  "user_id",          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
+    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
-
-  add_index "comments", ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "compentencies", force: :cascade do |t|
     t.string   "student_name"
@@ -120,16 +114,10 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.boolean "resizeable", default: true
   end
 
-  create_table "critical_values", id: false, force: :cascade do |t|
-    t.integer "df",                   null: false
-    t.decimal "t",                    null: false
-    t.decimal "alpha", default: 0.05, null: false
-  end
-
-  create_table "critical_values", id: false, force: :cascade do |t|
-    t.integer "df",                   null: false
-    t.decimal "t",                    null: false
-    t.decimal "alpha", default: 0.05, null: false
+  create_table "critical_values", primary_key: ["alpha", "df"], force: :cascade do |t|
+    t.integer "df",                     null: false
+    t.decimal "t",                      null: false
+    t.decimal "alpha", default: "0.05", null: false
   end
 
   create_table "dashboard_widgets", force: :cascade do |t|
@@ -146,9 +134,8 @@ ActiveRecord::Schema.define(version: 20170331215323) do
   create_table "dashboards", force: :cascade do |t|
     t.integer "user_id"
     t.text    "theme"
+    t.index ["user_id"], name: "index_dashboards_on_user_id", using: :btree
   end
-
-  add_index "dashboards", ["user_id"], name: "index_dashboards_on_user_id", using: :btree
 
   create_table "data_migrations", force: :cascade do |t|
     t.text "version", null: false
@@ -164,25 +151,8 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.boolean "visible",                                            default: true
     t.integer "reference_year"
     t.string  "entity_type_fk",                         limit: 255
+    t.index ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
   end
-
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-
-  create_table "meta_attribute_entities", force: :cascade do |t|
-    t.text    "entity_type",                                                       null: false
-    t.text    "meta_attribute_entity_group_group_name",                            null: false
-    t.integer "edition"
-    t.integer "version"
-    t.date    "start_date"
-    t.date    "stop_date"
-    t.boolean "visible",                                            default: true
-    t.integer "reference_year"
-    t.string  "entity_type_fk",                         limit: 255
-  end
-
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
-  add_index "meta_attribute_entities", ["entity_type"], name: "ix_meta_attribute_entities", unique: true, using: :btree
 
   create_table "meta_attribute_entity_groups", force: :cascade do |t|
     t.text    "group_name",                                 null: false
@@ -211,38 +181,24 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.text    "short_name"
   end
 
-  create_table "meta_attribute_questions", force: :cascade do |t|
-    t.text    "meta_attribute_entity_entity_type",                null: false
-    t.text    "category"
-    t.text    "attribute_name"
-    t.text    "description"
-    t.text    "original_text"
-    t.text    "data_type"
-    t.text    "options_hash"
-    t.boolean "continuous"
-    t.boolean "optional"
-    t.boolean "visible",                           default: true
-    t.text    "short_name"
-  end
-
-  create_table "meta_attribute_statistics", primary_key: "meta_attribute_statistic_id", force: :cascade do |t|
+  create_table "meta_attribute_statistics", primary_key: "meta_attribute_statistic_id", id: :bigint, force: :cascade do |t|
     t.string  "subset_id"
     t.string  "entity_schema"
     t.string  "entity_name"
-    t.integer "attribute_index",       limit: 8
+    t.bigint  "attribute_index"
     t.string  "attribute_name"
     t.string  "attribute_description"
     t.string  "attribute_data_type"
     t.decimal "count"
     t.decimal "n"
-    t.decimal "n_percent",                       precision: 5, scale: 2
+    t.decimal "n_percent",             precision: 5, scale: 2
     t.decimal "mean"
     t.decimal "stddev"
     t.decimal "min"
     t.decimal "max"
     t.decimal "subset_count"
     t.decimal "subset_n"
-    t.decimal "subset_n_percent",                precision: 5, scale: 2
+    t.decimal "subset_n_percent",      precision: 5, scale: 2
     t.decimal "subset_mean"
     t.decimal "subset_stddev"
     t.decimal "subset_min"
@@ -251,46 +207,12 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.decimal "ci_upper"
     t.decimal "subset_ci_lower"
     t.decimal "subset_ci_upper"
-    t.boolean "is_continuous",                                           default: false, null: false
+    t.boolean "is_continuous",                                 default: false, null: false
+    t.index ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
   end
 
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-
-  create_table "meta_attribute_statistics", primary_key: "meta_attribute_statistic_id", force: :cascade do |t|
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.integer "attribute_index",       limit: 8
-    t.string  "attribute_name"
-    t.string  "attribute_description"
-    t.string  "attribute_data_type"
-    t.decimal "count"
-    t.decimal "n"
-    t.decimal "n_percent",                       precision: 5, scale: 2
-    t.decimal "mean"
-    t.decimal "stddev"
-    t.decimal "min"
-    t.decimal "max"
-    t.decimal "subset_count"
-    t.decimal "subset_n"
-    t.decimal "subset_n_percent",                precision: 5, scale: 2
-    t.decimal "subset_mean"
-    t.decimal "subset_stddev"
-    t.decimal "subset_min"
-    t.decimal "subset_max"
-    t.decimal "ci_lower"
-    t.decimal "ci_upper"
-    t.decimal "subset_ci_lower"
-    t.decimal "subset_ci_upper"
-    t.boolean "is_continuous",                                           default: false, null: false
-  end
-
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-  add_index "meta_attribute_statistics", ["subset_id", "entity_schema", "entity_name", "attribute_name"], name: "ix_meta_attribute_statistics", unique: true, using: :btree
-
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
+  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", id: :bigint, force: :cascade do |t|
+    t.bigint  "meta_attribute_statistic_id"
     t.string  "subset_id"
     t.string  "entity_schema"
     t.string  "entity_name"
@@ -299,15 +221,12 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string  "value_description"
     t.decimal "count"
     t.decimal "subset_count"
+    t.index ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
+    t.index ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
   end
 
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
+  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", id: :bigint, force: :cascade do |t|
+    t.bigint  "meta_attribute_statistic_id"
     t.string  "subset_id"
     t.string  "entity_schema"
     t.string  "entity_name"
@@ -316,29 +235,9 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string  "value_description"
     t.decimal "count"
     t.decimal "subset_count"
+    t.index ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
+    t.index ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
   end
-
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-
-  create_table "meta_attribute_values", primary_key: "meta_attribute_value_id", force: :cascade do |t|
-    t.integer "meta_attribute_statistic_id", limit: 8
-    t.string  "subset_id"
-    t.string  "entity_schema"
-    t.string  "entity_name"
-    t.string  "attribute_name"
-    t.decimal "value"
-    t.string  "value_description"
-    t.decimal "count"
-    t.decimal "subset_count"
-  end
-
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id", using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
-  add_index "meta_attribute_values", ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true, using: :btree
 
   create_table "permission_groups", force: :cascade do |t|
     t.text     "title",                      null: false
@@ -355,9 +254,8 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.boolean  "filter_all",             default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["permission_ls_group_id", "lime_question_qid"], name: "uniq_qid_by_group", unique: true, using: :btree
   end
-
-  add_index "permission_ls_group_filters", ["permission_ls_group_id", "lime_question_qid"], name: "uniq_qid_by_group", unique: true, using: :btree
 
   create_table "permission_ls_groups", force: :cascade do |t|
     t.integer  "lime_survey_sid",                     null: false
@@ -367,9 +265,8 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.boolean  "view_all",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true, using: :btree
   end
-
-  add_index "permission_ls_groups", ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true, using: :btree
 
   create_table "question_widgets", force: :cascade do |t|
     t.integer  "role_aggregate_id"
@@ -404,10 +301,9 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assignment_group_id"
+    t.index ["assignment_group_id"], name: "index_survey_assignments_on_assignment_group_id", using: :btree
+    t.index ["lime_survey_sid"], name: "index_survey_assignments_on_lime_survey_sid", using: :btree
   end
-
-  add_index "survey_assignments", ["assignment_group_id"], name: "index_survey_assignments_on_assignment_group_id", using: :btree
-  add_index "survey_assignments", ["lime_survey_sid"], name: "index_survey_assignments_on_lime_survey_sid", using: :btree
 
   create_table "user_assignments", force: :cascade do |t|
     t.integer  "user_id",              null: false
@@ -462,11 +358,10 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.integer  "permission_group_id"
     t.integer  "cohort_id"
     t.string   "ls_list_state",                      default: "dirty"
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
   end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "version_notes", force: :cascade do |t|
     t.text     "note"
@@ -483,15 +378,12 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.datetime "created_at"
     t.text     "object_changes"
     t.integer  "version_note_id"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
+    t.index ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
   end
-
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
-  add_index "versions", ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
 
   add_foreign_key "assignment_groups", "assignment_group_templates"
   add_foreign_key "cohorts", "users"
-  add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "survey_assignments", "assignment_groups"
-  add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
   add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
 end

@@ -8,3 +8,8 @@ class Settings < Settingslogic
     'goals'
   end
 end
+
+class Threshold < Settingslogic
+    source "#{Rails.root}/config/threshold.yml"
+    namespace Rails.env
+end

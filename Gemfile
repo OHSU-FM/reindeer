@@ -8,7 +8,6 @@ gem 'rails', '5.0.0.1'
 gem "rdoc"
 
 # Database
-gem "pg"
 gem "composite_primary_keys"
 gem "redis", "~>3.2"
 
@@ -89,12 +88,14 @@ gem "statistics2"
 ##############################
 
 group :test, :development do
+  gem 'pg', '~>0.21' 
   gem "rspec-rails"
   gem "capybara"
   gem "rails-perftest"
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
+  gem 'pry'
 end
 
 group :test, :development do
@@ -106,6 +107,7 @@ group :test, :development do
     gem "better_errors"
     gem "stackprof"
     gem "ruby-prof"
+    gem "pry"
   end
 end
 
@@ -117,8 +119,6 @@ end
 # To use debugger
 group :development do
   gem "rack-mini-profiler", require: false
-  gem "webrick"
-  gem "thin"
   gem "rails_layout"
   gem "awesome_print"
 
@@ -134,3 +134,4 @@ end
 
 gem 'rufus-scheduler'
 gem 'whenever', :require => false
+gem 'execjs'

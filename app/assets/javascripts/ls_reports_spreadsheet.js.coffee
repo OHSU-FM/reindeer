@@ -92,28 +92,34 @@ get_all_series_data = (series_data_hash, in_type) ->
         series_data.push series_data_hash[k]
   series_data
 
-get_all_series_data_allblocks = (series_data_hash, in_type) ->
-  series_data = []
-  for k of series_data_hash
-    if series_data_hash.hasOwnProperty(k)
-      if in_type =="student"
-        if k.includes('Comp1')
-          series_data.push {y: series_data_hash[k], color:'Salmon'}
-        else if k.includes('Comp2')
-          series_data.push {y: series_data_hash[k], color:'AquaMarine'}
-        else if k.includes('Comp3')
-          series_data.push {y: series_data_hash[k], color:'Plum'}
-        else if k.includes('Comp4')
-          series_data.push {y: series_data_hash[k], color:'Khaki'}
-        else if k.includes('Comp5')
-          series_data.push {y: series_data_hash[k], color:'LawngGreen'}    
-        else
-          console.log ('found else: ' + k)
-          series_data.push series_data_hash[k]
+get_allblocks_color = (k) ->
+  if k.includes('Comp1')
+    return 'Salmon'
+  else if k.includes('Comp2')
+    return 'AquaMarine'
+  else if k.includes('Comp3')
+    return 'Plum'
+  else if k.includes('Comp4')
+    return 'Khaki'
+  else if k.includes('Comp5')
+    return 'LawnGreen'  
+  else
+    console.log ('found else: ' + k)
 
-      else
-        series_data.push series_data_hash[k]
-  series_data  
+get_desc = (k) ->
+  if k.includes('Comp1')
+    return 'Component 1 - Weekly Tests/Quizzes'
+  else if k.includes('Comp2')
+    return 'Component 2 - Skills Assessments'
+  else if k.includes('Comp3')
+    return 'Component 3 - OHSU Final Block Exam'
+  else if k.includes('Comp4')
+    return 'Component 4 - NBME Exam'
+  else if k.includes('Comp5')
+    return 'Component 5 - Final Skills Exam'  
+  else
+    console.log ('found else: ' + k)
+
 
 get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category) ->
   show_legend_1 = true
@@ -220,28 +226,117 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
     }]    
     }
 
-build_options = (in_data, in_mean_data, render_to_2, graph_title, graph_sub_title) ->
-  # in_data is in hash format
+get_desc2 = (in_data) ->
+  $.each in_data, (key, val) ->
+    console.log "key: " + key + " ---> val: " + val
+    if key == "Term"
+      return val
 
-  console.log("in_data['Comp1']: " + in_data["Comp1"])
+normalize = (val) ->
+  for i of val
+    if val[i] == '888'
+      val[i] = 0
+    else if val[i] == '999'
+      val[i] = 0
+    else
+      val[i] = val[i] * 25
+
+  return val
+
+
+build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2, graph_title, graph_sub_title) ->
+  seriesArr = []
+  console.log "in_data: " + in_data
+
+  arry_categories = in_categories
+
+  console.log "arry_categories: " + arry_categories
+  for item of in_data
+    $.each in_data[item], (key, val) ->
+      #console.log "key: " + key + " ---> val: " + val
+      seriesArr.push {name: key, type: "bar", pointWidth: 12,  data: normalize(val)}
+      #seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
+
+  show_legend_1 = true
+  show_legend_2 = true  
+
+  return {
+    chart: renderTo: render_to_2
+    title: text: graph_title
+    subtitle: text: graph_sub_title
+    xAxis: 
+      categories: arry_categories
+      tickInterval: 1
+      labels:
+        enabled: true
+        formatter: ->
+           return this.value;
+    colors: [
+      '#aaeeee'
+      '#d3d3d3'
+      '#90ee7e'
+      '#7798BF'
+      '#aaeeee'
+      '#ff0066'
+      '#eeaaee'
+      '#55BF3B'
+      '#DF5353'
+      '#7798BF'
+      '#aaeeee'
+    ]
+    yAxis: [{
+            labels: {
+                format: '{value}%',
+                style: {
+                    color: Highcharts.getOptions().colors[1]
+                }
+            },
+            min: 0
+            max: 100
+            title: {
+                text: 'Percent',
+                style: {
+                    color: Highcharts.getOptions().colors[2]
+                }
+            }
+        }, { 
+            title: {
+                text: '',
+                style: {
+                    color: Highcharts.getOptions().colors[3]
+                }
+            },
+            min: 0
+            max: 100
+            labels: {
+                format: '{value}%',
+                style: {
+                    color: Highcharts.getOptions().colors[4],
+                    display:'none'
+                }
+            },
+            opposite: true
+        }],
+    tooltip: {
+        shared: true
+    },
+    plotOptions: {
+        series: {
+          pointPadding: 0.2, 
+          groupPadding: 0.1
+        } 
+    },
+    series: seriesArr
+  }
+
+build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub_title) ->
 
   seriesArr = []
-  #$.each in_data, (key, val) ->
-  #  console.log ("key: " + val.name)
-  #  console.log ('val: ' + val.data)
-    #if val.name.includes("Mean")
-    #  seriesArr.push {name: val.name, type: 'column', marker: {symbol: 'diamond'}, color: val.color, data: val.data}
-    #else
-  seriesArr.push {name: "Comp1", type: "column", pointWidth: 12,  data: in_data["Comp1"]}
-  seriesArr.push {name: "Clas Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data["Comp1"], color: "black"}
-    #return
 
-  #$.each in_mean_data, (key, val) ->
-  #  seriesArr.push {name: val.name, type: "column", pointWidth: 10, marker: {symbol: 'diamond'}, color: 'blue', data: val.data}
-  #  return
+  console.log ("build_options -> in_data: " + in_data)
 
-
-  console.log ("seriesArr[0]: " + seriesArr[0].name)
+  seriesArr.push {name: get_desc(idx), type: "column", pointWidth: 12,  data: in_data, color: get_allblocks_color(idx)}
+  seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
 
   show_legend_1 = true
   show_legend_2 = true  
@@ -348,13 +443,35 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     options = get_options(series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category)
     window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
   else if in_code == 'allblocks'
-    data = series_data_hash
-    mean_data = comp_class_mean_hash
+    #data = series_data_hash
+    #mean_data = comp_class_mean_hash
 
     graph_title = new_date + " (" + in_series_name + ")"
     graph_sub_title = "<b>ALL BLOCK</b>"
-    options = build_options(data, mean_data, graph_target, graph_title, graph_sub_title)
-    window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
+    i = 0
+    window.chart2 = []
+    $.each series_data_hash, (key, val) ->
+      console.log ("key: " + key)
+      console.log ('val: ' + val)
+      data = val
+      mean_data = comp_class_mean_hash[key]
+      graph_target = "data-visualization-" + key
+      options = build_options(key, data, mean_data, graph_target, graph_title, graph_sub_title)
+      window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
+      i = i + 1
+  else if in_code == 'preceptorship'
+    graph_title = new_date + " (" + in_series_name + ")"
+    graph_sub_title = "<b>Preceptorship Evaluations</b>"
+    mean_data = ''
+    i = 1
+    window.chart3 = []
+    categories = series_data_hash[0][3]["Term"]
+    while i <= 4
+        data = series_data_hash[i]
+        graph_target = "data-visualization-" + i
+        options = build_options_precept(i, data, mean_data, categories, graph_target, graph_title, graph_sub_title)
+        window.chart3[i] = Highcharts.chart($.extend(true, null, theme_light, options))
+        i = i + 1
   else
     series_data_1 = get_series_data(series_data_hash, in_code, "student")
     series_data_1_nc = get_series_data_nc(series_data_hash_nc, in_code, "student")
@@ -889,8 +1006,20 @@ $(document).ready ->
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = ["Comp1", "Comp2", "Comp3", "Comp4", "Comp5"]
         @code = 'allblocks'
-        @graph_target = "data-visualization-" + "allblocks"
+        @graph_target = ""
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
+
+      else if currentTab.includes("Preceptorship")
+        return unless gon?
+
+        @series_data_2 = if gon.preceptorship? then gon.preceptorship else ''
+        @precept_class_mean = if gon.preceptorship_class_mean? then gon.preceptorship_class_mean else ''
+        @series_data_2_nc = ""
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = ""
+        @code = 'preceptorship'
+        @graph_target = ""
+        precept_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @precept_class_mean, @code, @series_name)
       else if not currentTab.includes("EPA-Graph")
         return unless gon?
 
