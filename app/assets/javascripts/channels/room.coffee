@@ -40,7 +40,6 @@ $(document).ready ->
         console.log data
 
     speak: (message, roomNumber) ->
-      console.log "roomNumber " + roomNumber
       @perform 'speak', message: message, roomNumber: roomNumber
 
     # TODO if we want to archive
