@@ -54,14 +54,15 @@
       <%= render partial: "meetings_table" %>
     </div>
 
+
+
     <div class="general-comments">
       <h1 id="room-identifier" data-room-number=<%= "#{@room_id}" %>>chat</h1>
       <div class="col-md-8 col-md-offset-2">
         <div class="row">
           <div id="messages">
             <% @messages.each do |message| %>
-              UserID: <%= message.user_id %>
-              <%= message.content %>  --> <%= message.created_at %> <br/>
+              <%= render partial: "/messages/message", locals: {message: message} %>
             <% end %>
           </div>
         </div>
@@ -70,18 +71,21 @@
 
         <div class="row">
           <form style="width: 100%">
-            <div id="general-room" data-room-id=<%= "#{@room_id}" %>> </div>
               <input type="text" data-behavior="room_speaker"
               style="width: 100%" placeholder="type in here">
-            </div>
           </form>
         </div>
       </div>
-
     </div>
+
   </div>
 </div>
 
+<div id="cs-detail">
+  <div class="spinner-holder">
+    <%= image_tag 'spinner.gif' %>
+  </div>
+</div>
 
 
 <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
