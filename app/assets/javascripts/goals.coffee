@@ -39,6 +39,26 @@ $(document).on 'change', '.status-picker', (e) ->
     show_detail_message 'error', "Sorry, something's gone wrong..."
   )
 
+$(document).on 'click', '#goal_complete', (e) ->
+  goalTable = $('.goals-table')
+  completed = e.target.value
+  uname = window.location.pathname.split("/").slice(-1)[0]
+  xhr = $.ajax({
+    url: "/coaching/students/" + uname + "/completed_goals"
+    method: "POST",
+    data: { completed_goal: e.target.checked },
+    beforeSend: (xhr) ->
+      xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+      $('tbody#goals-table *').prop("disabled", true) # disable all children
+      $(e.target).closest('div.tab-content').addClass('grayed-out')
+  }).done((d) ->
+    show_detail_message 'success', "Successfully updated status"
+  ).fail((request) ->
+    $('tbody#goals-table *').prop("disabled", false); # re enable all children
+    $('div.tab-content').removeClass('grayed-out')
+    show_detail_message 'error', "Sorry, something's gone wrong..."
+  )
+
 show_detail_message = (type, message) ->
   $("#detail-message").show()
   $("#detail-message").html "<div id='flash-#{type}'>#{message}</div>"

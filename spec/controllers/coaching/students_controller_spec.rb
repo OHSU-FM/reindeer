@@ -63,6 +63,22 @@ RSpec.describe Coaching::StudentsController, type: :controller do
         expect(assigns[:meetings]).not_to include meeting
       end
     end
+
+    describe "POST #completed_goals" do
+      let!(:completed_goal) { create :goal, user: student, g_status: 'Completed', name: "i'm completed!" }
+      let!(:uncompleted_goal) { create :goal, user: student, name: "i'm not completed :/" }
+
+      it 'assigns @goals to [completed_goal] if completed_goal is true' do
+        post :completed_goals, xhr: true, params: { slug: student.to_param, completed_goal: 'true' }
+        expect(assigns[:goals]).to include completed_goal
+        expect(assigns[:goals]).not_to include uncompleted_goal
+      end
+
+      it "assigns @goals to all the goals if completed_goal is false" do
+        post :completed_goals, xhr: true, params: { slug: student.to_param, completed_goal: 'false' }
+        expect(assigns[:goals]).to eq student.goals
+      end
+    end
   end
 
   context "as a coach" do

@@ -1,15 +1,14 @@
 module Coaching
   class StudentsController < ApplicationController
-
     layout 'coaching_layout'
     before_action :authenticate_user!
+    authorize_resource only: :show
     before_action :set_resources, only: [:show]
 
     helper_method :sort_column, :sort_direction
 
     # GET /coaching/students/{student_username}
     def show
-
     end
 
     def search_goals
@@ -17,6 +16,18 @@ module Coaching
 
       respond_to do |format|
         format.js { render action: 'search_goals', status: 200 }
+      end
+    end
+
+    def completed_goals
+      if params[:completed_goal].present? && params[:completed_goal] == "true"
+        @goals = User.find_by_username(params[:slug]).goals.completed
+      else
+        @goals = User.find_by_username(params[:slug]).goals
+      end
+
+      respond_to do |format|
+        format.js { render action: 'completed_goals', status: 200 }
       end
     end
 
@@ -32,22 +43,22 @@ module Coaching
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
         @student = User.find_by_username(params[:slug])
+
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
         @meetings = @student.meetings
         @messages = @student.room.messages
         @room_id = @student.room.id
 
-
-        if current_user.coach?
+        if current_user.student? && @student != current_user
+          redirect_to root_path and return
+        elsif current_user.coach?
           @cohorts = current_user.cohorts
+          (redirect_to coaching_index_path and return) unless @cohorts.include? @student.cohort
           @students = @student.cohort.users
-          #@coaches = @cohorts.map(&:owner).uniq!
         elsif current_user.dean_or_higher?
           @cohorts = Cohort.includes(:users).includes(:owner).all
           @coaches = @cohorts.map(&:owner).uniq!
           @students = @cohorts.map(&:users).flatten
-        else
-
         end
       end
 

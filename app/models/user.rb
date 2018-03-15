@@ -126,7 +126,6 @@ class User < ActiveRecord::Base
 
     define_method("#{role.to_s}_or_higher?") do
       return true if admin_or_higher?
-      coaching_type = role.to_s
       COACHING_ROLES[coaching_type.to_sym] >= val
     end
   end

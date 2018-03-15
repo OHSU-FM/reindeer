@@ -12,10 +12,16 @@ class Coaching::Goal < ApplicationRecord
 
   after_initialize :set_default_values
 
+  scope :completed, -> { where(g_status: "Completed") }
+
   paginates_per 10
 
   def self.search term
     self.where("name like ? OR description like ?", "%#{term}%", "%#{term}%")
+  end
+
+  def self.completed_for_user bool
+    bool ? self.where(g_status: "Completed") : self.where
   end
 
   private

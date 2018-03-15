@@ -37,7 +37,7 @@ module Coaching
     def destroy
       @meeting = Meeting.find params[:id]
 
-      redirect_to coaching_students_path && return unless current_user.admin_or_higher?
+      redirect_to coaching_index_path && return unless current_user.admin_or_higher?
 
       respond_to do |format|
         if @meeting.destroy

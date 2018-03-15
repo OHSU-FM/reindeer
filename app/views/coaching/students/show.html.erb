@@ -1,10 +1,17 @@
-
 <div id="cs-goals-nav">
+  <div class="flex-child">
+    <div id="cs-sidebar-toggle"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></div>
+  </div>
+
   <% if current_user.coach? %>
     <%= render partial: "cohorts_select" %>
-  <% elsif current_user.admin_or_higher? %>
+  <% elsif current_user.dean_or_higher? %>
     <%= render partial: "coaches_select" %>
   <% end %>
+
+  <div class="flex-child">
+    <%= render partial: "system_explanation" %>
+  </div>
 </div>
 
 <div id="cs-goals-main">
@@ -31,6 +38,12 @@
     <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
       <div class="table-controls">
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal">Add new goal</button>
+
+        <%= form_tag completed_goals_coaching_student_path(@student), method: :post, remote: true, name: "goal_checkbox", class: "complete-checkbox" do %>
+          <label for="goal_complete">Status</label>
+          <%= check_box "goal", "complete", {}, "yes", "no" %>
+          <label for="goal_complete">Completed?</label>
+        <% end %>
 
         <%= form_tag search_goals_coaching_student_path(@student), method: :post, remote: true, class: "search-bar" do %>
           <%= text_field_tag :goal_search, params[:goal_search], placeholder: "Search" %>

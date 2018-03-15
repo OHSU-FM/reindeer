@@ -1,31 +1,15 @@
 <div class="flex-child">
-  <div id="cs-sidebar-toggle"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></div>
-</div>
-
-<div class="flex-child">
   <ul class="list-group list-group-root">
-    <% if !@coaches.nil? %>
-      <% @coaches.each do |coach| %>
-        <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.display_name %></a>
+    <% @coaches.each do |coach| %>
+      <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.display_name %></a>
 
-        <div class="list-group collapse" id="<%= coach.username %>">
-          <% coach.cohorts.map(&:users).flatten.each do |student| %>
-            <div class="list-group-item student-with-goals">
-              <%= link_to "#{student.display_name}: #{pluralize(student.goals.count, 'goal')}", coaching_student_path(student) %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+      <div class="list-group collapse" id="<%= coach.username %>">
+        <% coach.cohorts.map(&:users).flatten.each do |student| %>
+          <div class="list-group-item student-with-goals">
+            <%= link_to "#{student.display_name}: #{pluralize(student.goals.count, 'goal')}", coaching_student_path(student) %>
+          </div>
+        <% end %>
+      </div>
     <% end %>
   </ul>
-</div>
-
-<div class="flex-child">
-  <div class="system-explanation">
-    <p>some text about how to use the system</p>
-    <p>some text about how to use the system</p>
-    <p>some text about how to use the system</p>
-    <p>some text about how to use the system</p>
-    <p>some text about how to use the system</p>
-  </div>
 </div>

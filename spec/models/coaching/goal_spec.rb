@@ -53,5 +53,15 @@ RSpec.describe Coaching::Goal, type: :model do
       expect(student.goals.search('belong')).to include g
       expect(student.goals.search('belong')).not_to include another_users_goal
     end
+
+    it "#completed_for_user returns goals belonging to the user that are completed" do
+      g = create :goal, user: (create :student), name: "i belong to student"
+      student = g.user
+      c_g = create :goal, user: student, g_status: 'Completed', name: "i'm completed"
+      another_users_goal = create :goal, description: 'i belong to someone else'
+      expect(student.goals.completed).to include c_g
+      expect(student.goals.completed).not_to include g
+      expect(student.goals.completed).not_to include another_users_goal
+    end
   end
 end
