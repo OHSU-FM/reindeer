@@ -8,26 +8,15 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-      stop_all_streams
+    stop_all_streams
     # Any cleanup needed when channel is unsubscribed
   end
 
   def speak data
     if data['message'] != ""
       Message.create! content: data['message'], user: current_user, room_id: data['roomNumber']
-     end
+    end
   end
-
-  # TODO archive
-  # def archive data
-  #   @message = Message.find_by(id: data['messageId'])
-  #
-  #   if @message.nil?
-  #     # TODO tell the client we couldn't find it
-  #   end
-  #
-  #   @message.destroy
-  # end
 
   def retract data
     @message = Message.find_by(id: data['messageId'])

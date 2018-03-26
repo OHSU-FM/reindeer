@@ -17,83 +17,80 @@ class ApplicationController < ActionController::Base
     ActionController::RoutingError,
     ActionController::UnknownController,
     ActionController::MethodNotAllowed do |exception|
+    respond_to do |format|
+      format.html { render 'errors/file_not_found', status: 404 }
+      format.js { render json: { message: 'File not found' }, status: 404 }
+    end
+  end
+
+  # https://github.com/ryanb/cancan/#3-handle-unauthorized-access
+  rescue_from CanCan::AccessDenied do |exception|
+    unless params[:controller] == 'dashboard' && params[:action] == 'index'
+      flash[:alert] = exception.message
+    end
+    respond_to do |format|
+      format.html { render 'errors/not_authorized', status: 403, layout: 'full_width_margins' }
+      format.js { render json: { message: 'Not Authorized' }, status: 403 }
+    end
+  end
+
+  private
+
+  def store_current_location
+    store_location_for(:user, request.url)
+  end
+
+  # Default Devise redirect does not work with RAILS_RELATIVE_URL_ROOT
+  # Manually setting redirect path here
+  # http://blog.patrickespake.com/devise-redirect-to-a-specific-path-after-destroy-the-session/
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path
+  end
+
+  # simple redirect on bad request
+  def simple_redirect opts={}
+    opts[:to] ||= :back
+    opts[:json] ||= flash
+    opts[:status] ||= :ok
+
+    begin
       respond_to do |format|
-        format.html { render 'errors/file_not_found', status: 404 }
-        format.js { render json: { message: 'File not found' }, status: 404 }
+        format.html { redirect_to opts[:to] }
+        format.json { render json: opts[:json], status: opts[:status] }
       end
+    rescue => e
+      redirect_to auto_path
     end
+  end
 
-    # https://github.com/ryanb/cancan/#3-handle-unauthorized-access
-    rescue_from CanCan::AccessDenied do |exception|
-      unless params[:controller] == 'dashboard' && params[:action] == 'index'
-        flash[:alert] = exception.message
-      end
-      respond_to do |format|
-        format.html { render 'errors/not_authorized', status: 403, layout: 'full_width_margins' }
-        format.js { render json: { message: 'Not Authorized' }, status: 403 }
-      end
+  def auto_path
+    respond_to do |format|
+      return main_app.dashboards_path if can?(:crud, Dashboard)
+      return main_app.reports_path if can?(:read, :reports)
+      return main_app.stats_path if can?(:read, :stats)
+      return main_app.charts_path if can?(:crud, Chart)
+      return main_app.user_path(current_user) if current_user.present?
+      return main_app.page_path('no_permissions')
     end
+  end
 
+  def after_sign_in_path_for(resource)
+    stored_location_for(:user) || auto_path
+  end
 
-    private
-
-    def store_current_location
-      store_location_for(:user, request.url)
+  def simple_respond opts=nil
+    opts ||= params
+    respond_to do |format|
+      layout = !(opts[:layout].to_s == 'false')
+      format.html { render layout: layout } # show
     end
+  end
 
-    # Default Devise redirect does not work with RAILS_RELATIVE_URL_ROOT
-    # Manually setting redirect path here
-    # http://blog.patrickespake.com/devise-redirect-to-a-specific-path-after-destroy-the-session/
-    def after_sign_out_path_for(resource_or_scope)
-      new_user_session_path
+  # Process updates as destroy if _destroy is specified
+  def dynamic_destroy
+    if params[:_destroy] == '1'
+      destroy
+      return
     end
-
-    # simple redirect on bad request
-    def simple_redirect opts={}
-      opts[:to] ||= :back
-      opts[:json] ||= flash
-      opts[:status] ||= :ok
-
-      begin
-        respond_to do |format|
-          format.html { redirect_to opts[:to] }
-          format.json { render json: opts[:json], status: opts[:status] }
-        end
-      rescue => e
-        redirect_to auto_path
-      end
-    end
-
-    def auto_path
-      respond_to do |format|
-        return main_app.dashboards_path if can?(:crud, Dashboard)
-        return main_app.reports_path if can?(:read, :reports)
-        return main_app.stats_path if can?(:read, :stats)
-        return main_app.charts_path if can?(:crud, Chart)
-        return main_app.user_path(current_user) if current_user.present?
-        return main_app.page_path('no_permissions')
-      end
-    end
-
-    def after_sign_in_path_for(resource)
-      stored_location_for(:user) || auto_path
-    end
-
-    def simple_respond opts=nil
-      opts ||= params
-      respond_to do |format|
-        layout = !(opts[:layout].to_s == 'false')
-        format.html { render layout: layout } # show
-      end
-    end
-
-    ##
-    # Process updates as destroy if _destroy is specified
-    def dynamic_destroy
-      if params[:_destroy] == '1'
-        destroy
-        return
-      end
-    end
-
+  end
 end

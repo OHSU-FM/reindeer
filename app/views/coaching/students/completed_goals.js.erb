@@ -1,3 +1,4 @@
 $('tbody#goals-table *').prop("disabled", false); // re enable all children
 $('div.tab-content').removeClass('grayed-out');
+$('#cs-detail').removeClass('show-detail');
 $('#goals-table').html("<%= j render partial: 'coaching/students/goals_table_loop', locals: { goals: @goals } %>");

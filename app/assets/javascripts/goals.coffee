@@ -16,17 +16,19 @@ $ ->
 
 $(document).on 'change', '.status-picker', (e) ->
   detailDiv = $(e.target).closest('div.show-detail')
+  newStatus = e.target.value
   if $(e.target).attr('data-goalId')
     objectId = $(e.target).attr('data-goalId')
     controller = "goals"
+    data = { g_status: newStatus }
   else
     objectId = $(e.target).attr('data-meetingId')
     controller = "meetings"
-  new_status = e.target.value
+    data = { m_status: newStatus }
   xhr = $.ajax({
     url: "/coaching/" + controller + "/" + objectId
     method: "PUT",
-    data: { status: new_status },
+    data: data,
     beforeSend: (xhr) ->
       xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
       $('div#cs-detail *').prop("disabled", true) # disable all children
@@ -43,6 +45,7 @@ $(document).on 'click', '#goal_complete', (e) ->
   goalTable = $('.goals-table')
   completed = e.target.value
   uname = window.location.pathname.split("/").slice(-1)[0]
+  $('input[name=goal_search').val('')
   xhr = $.ajax({
     url: "/coaching/students/" + uname + "/completed_goals"
     method: "POST",
@@ -58,6 +61,9 @@ $(document).on 'click', '#goal_complete', (e) ->
     $('div.tab-content').removeClass('grayed-out')
     show_detail_message 'error', "Sorry, something's gone wrong..."
   )
+
+$(document).on 'click', 'input[name=goal-search-btn]', (e) ->
+  $('#goal_complete').prop('checked', false)
 
 show_detail_message = (type, message) ->
   $("#detail-message").show()

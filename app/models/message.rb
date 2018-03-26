@@ -4,7 +4,7 @@ class Message < ApplicationRecord
 
   validates_presence_of :room
 
-  after_create_commit { MessageBroadcastJob.perform_later self }
+  after_create_commit { MessageBroadcastJob.perform_later self, user }
   after_commit :do_retract_job, on: [:destroy] # TODO add check for archive on update
 
   private

@@ -1,3 +1,5 @@
+// this is so poorly organized. i am deeply sorry.
+
 $dusty:    #96858F;
 $lavendar: #6D7993;
 $overcast: #9099A2;
@@ -13,7 +15,11 @@ $paper:    #D5D5D5;
   width: 100%;
   min-height: 800px;
   padding: 0;
-  flex-flow: row;
+  justify-content: space-between;
+}
+
+.horizontal {
+  flex-direction: row;
 }
 
 .container-flex > #cs-goals-nav {
@@ -85,6 +91,19 @@ $paper:    #D5D5D5;
 
   .goals-header { padding-left: 10px; }
 
+  .table-container {
+    max-height: calc(100% - 435px);
+    overflow-y: auto;
+  }
+
+  .pagination-holder { text-align: center; }
+
+  .pagination-holder > .pagination {
+    margin-top: 15px;
+    margin-bottom: 0px;
+    display: inline-block;
+  }
+
   #cs-student-select {
     padding-left: 10px;
     padding-right: 10px;
@@ -94,13 +113,40 @@ $paper:    #D5D5D5;
   }
 
   .main-table {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 0px 10px 0px 10px;
     max-width: 98%;
 
     > td {
       vertical-align: middle;
     }
+  }
+
+  > .general-comments {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    max-height: 300px;
+  }
+
+  > .general-comments > .chat-wrapper {
+    position: relative;
+    max-height: 300px;
+  }
+
+  > .general-comments > .chat-wrapper > #general-messages {
+    overflow-y: auto;
+    max-height: 250px;
+    position: fixed;
+    bottom: 39px;
+    width: 100%;
+    padding: 0px 65px 10px 10px;
+  }
+
+  > .general-comments > .chat-wrapper > .room-speaker {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 5px 65px 10px 10px;
   }
 }
 

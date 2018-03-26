@@ -2,7 +2,8 @@
   <p>
     <b><%= message.user.username %></b>
     <%= message.content %>
-    <!-- <%= link_to "archive", '#', class: "btn btn-primary archive-message", data: { message_id: message.id } %> -->
-    <%= link_to "delete", '#', class: "btn btn-primary delete-message", data: { message_id: message.id } %>
+    <% if current_user.admin_or_higher? %>
+      <%= link_to "delete", '#', class: "btn btn-primary delete-message", data: { message_id: message.id } %>
+    <% end %>
   </p>
 </div>
