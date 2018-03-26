@@ -22,7 +22,7 @@ module LsReports::ClinicalphaseHelper
      qq = grp_questions.select {|q| q.title = title}
      #{}"851468X295X3975StudentEmail"
      return "#{qq[0].sid}X#{qq[0].gid}X#{qq[0].qid}#{title}"
-  end 
+  end
 
   def hf_format_data in_data
     comp = {"FUND"=> [], "BLHD" => [], "SBM" => [], "CARE" => [], "CPR" => [], "HODI" => [], "NSF" => [], "DEVH" => []}
@@ -50,14 +50,14 @@ module LsReports::ClinicalphaseHelper
             comp["NSF"].push v
         elsif k.include? "DEVH"
             comp["DEVH"].push v
-        
-        end 
+
+        end
       end
     end
     comp.reject! { |k, v| v.empty?}
 
     return comp
-  end 
+  end
 
   def get_dataset(in_survey, category, dataset)
     temp_data = in_survey.first.surveyls_title.split(":")
@@ -105,7 +105,7 @@ module LsReports::ClinicalphaseHelper
     rr = get_dataset(in_survey, "Foundation of Medicine", "All Blocks (Graph View)")
     role = RoleAggregate.find_by(lime_survey_sid: rr.surveyls_survey_id)
     fm_data = role.lime_survey.lime_stats.load_data
-              #role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data 
+              #role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
 
     class_mean = {}
     fm_data.each do |r_data|
@@ -127,13 +127,12 @@ module LsReports::ClinicalphaseHelper
   def get_data data
     temp_hash = {}
     submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.second  # return the actual date
-    responses = d
-ata.select {|k,v| k.include? "SBP"}
+    responses = data.select {|k,v| k.include? "SBP"}
     temp_data = responses.map {|k,v| v}
     temp_hash = {submit_date => temp_data}
     return temp_hash
 
-  end 
+  end
 
   def format_precept_data in_data
     r_array = []
@@ -141,14 +140,14 @@ ata.select {|k,v| k.include? "SBP"}
       r_array.push get_data(data)
     end
     return r_array
-  end 
+  end
 
   def load_precept_data(in_q, in_d)
     temp_array = []
     i = 0
     in_q.each do |k|
       temp_hash = {}
-      temp_hash = {k => in_d[i]} 
+      temp_hash = {k => in_d[i]}
       temp_array.push temp_hash
       i = i + 1
     end
@@ -161,7 +160,7 @@ ata.select {|k,v| k.include? "SBP"}
        return in_data.map {|d| d["#{question.sid}X#{question.gid}X#{question.qid}#{sub_question.title}"]}
     else
        return in_data.map {|d| d["#{question.sid}X#{question.gid}X#{question.qid}"]}
-    end 
+    end
   end
 
   def hf_get_preceptorship(in_survey, pk)
@@ -185,8 +184,8 @@ ata.select {|k,v| k.include? "SBP"}
           if !lgroup.group_name.include? "Preceptor Info"
               q_question = pquestion.sub_questions.map {|q|  q.question + " (#{q.title})" }
           else
-              q_question = pquestion.sub_questions.map {|q|  q.question} 
-          end 
+              q_question = pquestion.sub_questions.map {|q|  q.question}
+          end
 
           if !pquestion.sub_questions.empty?
             pquestion.sub_questions.each do |sq|
@@ -214,7 +213,7 @@ ata.select {|k,v| k.include? "SBP"}
   def hf_reformat_array in_data
     binding.pry
     r_array = []
-    i = 0 
+    i = 0
     in_data.each do |key, val|
       my_hash = {}
       my_hash = {:key => i, :name => key, :data => val, :color => GRAPH_COLOR[i]}
@@ -247,9 +246,9 @@ ata.select {|k,v| k.include? "SBP"}
         elsif key.include? "CS01"
           temp_key = "Step 2 Clinical Skill Exam Score" + " (" + hf_get_threshold("STEP2CS") + ")"
         elsif key.include? "CS02"
-          temp_key = "Step 2 Clinical Skill Exam Date" 
-        else 
-          temp_key = nil       
+          temp_key = "Step 2 Clinical Skill Exam Date"
+        else
+          temp_key = nil
         end
 
         if !temp_key.nil?
@@ -257,7 +256,7 @@ ata.select {|k,v| k.include? "SBP"}
           usmle.push tmp_hash
         end
       end
-    end 
+    end
     return usmle
 
   end
@@ -269,7 +268,7 @@ ata.select {|k,v| k.include? "SBP"}
         return "FAMP"
       when "770B"
         return "IMED"
-      when  "770C" 
+      when  "770C"
         return "NEUR"
       when "770D"
         return "OBGY"
@@ -287,11 +286,13 @@ ata.select {|k,v| k.include? "SBP"}
   def hf_get_threshold (in_course_name)
     course_code = in_course_name.gsub(/"|\[|\]/, '').split(" ").first
 
-    if course_code.include? "STEP"
+    if course_code.include? "STE
+
+P"
       thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
       return thres_score.nil? ? "" : "Threshold: #{thres_score.to_s}"
     end
-    if course_code == "INTS" 
+    if course_code == "INTS"
        course_code = get_proper_code(in_course_name)
     end
     # remove "[ ]" brackets
@@ -304,16 +305,16 @@ ata.select {|k,v| k.include? "SBP"}
       elsif @student_year == "Med20"
               thres_score = Threshold.Med20.select {|s| s == course_code}.flatten.second
       elsif @student_year == "Med21"
-              thres_score = Threshold.Med21.select {|s| s == course_code}.flatten.second   
+              thres_score = Threshold.Med21.select {|s| s == course_code}.flatten.second
       elsif @student_year == "Med22"
-              thres_score = Threshold.Med22.select {|s| s == course_code}.flatten.second       
-      end 
+              thres_score = Threshold.Med22.select {|s| s == course_code}.flatten.second
+      end
     else
       thres_score = nil
-    end 
+    end
     return thres_score.nil? ? "" : "(Threshold: #{thres_score.to_s}) /"
 
-  end 
+  end
 
   def hf_get_usmle in_survey
     #SA:Med18:National Board Licensing Exams:USMLE Exams
@@ -327,6 +328,6 @@ ata.select {|k,v| k.include? "SBP"}
         student_usmle = usmle_data.select {|rec| rec["#{col_name}"] == @pk}
         return format_usmle(student_usmle)
     end
-  end 
+  end
 
 end

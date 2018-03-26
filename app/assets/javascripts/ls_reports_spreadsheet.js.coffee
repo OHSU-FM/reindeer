@@ -102,7 +102,7 @@ get_allblocks_color = (k) ->
   else if k.includes('Comp4')
     return 'Khaki'
   else if k.includes('Comp5')
-    return 'LawnGreen'  
+    return 'LawnGreen'
   else
     console.log ('found else: ' + k)
 
@@ -116,19 +116,19 @@ get_desc = (k) ->
   else if k.includes('Comp4')
     return 'Component 4 - NBME Exam'
   else if k.includes('Comp5')
-    return 'Component 5 - Final Skills Exam'  
+    return 'Component 5 - Final Skills Exam'
   else
     console.log ('found else: ' + k)
 
 
 get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category) ->
   show_legend_1 = true
-  show_legend_2 = true  
+  show_legend_2 = true
   return {
     chart: renderTo: render_to_2
     title: text: graph_title
     subtitle: text: graph_sub_title
-    xAxis: 
+    xAxis:
       categories: xAxis_category
 
     colors: [
@@ -159,7 +159,7 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
                     color: Highcharts.getOptions().colors[1]
                 }
             }
-        }, { 
+        }, {
             title: {
                 text: '',
                 style: {
@@ -182,7 +182,7 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
     },
     plotOptions: {
         series: {
-          pointPadding: 0, 
+          pointPadding: 0,
           groupPadding: 0
         }
     },
@@ -199,11 +199,11 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
         data: series_data_1_nc,
         tooltip: {
           valueSuffix: '%'
-          formatter: ->       
+          formatter: ->
               return '<b>'+ this.x +'</b>' + '<br/><span style="color:'+ this.point.series.color +'"> ' + this.point.series.name + ': ' + this.y+'%</span>';
 
-        } 
-               
+        }
+
     }, {
         type: 'scatter'
         color: 'black'
@@ -223,7 +223,7 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
                       font: '10px Helvetica'
                      }
         }
-    }]    
+    }]
     }
 
 get_desc2 = (in_data) ->
@@ -239,32 +239,65 @@ normalize = (val) ->
     else if val[i] == '999'
       val[i] = 0
     else
-      val[i] = val[i] * 25
+      val[i] = val[i] * 1
 
   return val
+
+reformat_in_data = (in_data) ->
+  new_array = []
+  sm_array = []
+  i = 0
+  console.log ("in_data Length: ") + in_data.length
+  while (i < 3)
+    sm_array = []
+    j = 0
+    while (j < 4)
+      console.log ("in_data: j=" + j + "-> "  + in_data[j][i])
+      sm_array.push in_data[j][i]
+      j = j + 1
+    new_array.push sm_array
+    i = i + 1
+  console.log ("new_array: " + new_array)
+  return new_array
 
 
 build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2, graph_title, graph_sub_title) ->
   seriesArr = []
   console.log "in_data: " + in_data
+  series_names = in_categories #contains preceptorship terms
 
-  arry_categories = in_categories
+  arry_categories = []
+  #arry_categories = in_categories
 
-  console.log "arry_categories: " + arry_categories
+  temp_array = []
+  new_array = []
   for item of in_data
-    $.each in_data[item], (key, val) ->
-      #console.log "key: " + key + " ---> val: " + val
-      seriesArr.push {name: key, type: "bar", pointWidth: 12,  data: normalize(val)}
+    $.each in_data[item], (key, value) ->
+      arry_categories.push key
+      temp_array.push value
+  console.log "temp_array: " + temp_array
+  new_array = reformat_in_data(temp_array)
+
+  console.log "--> " + "new_array length: " + new_array.length
+
+  i = 0
+  while (i < new_array.length)
+    console.log "new_array[i]: " + i + " --> " + new_array[i]
+    seriesArr.push {name: series_names[i], type: "bar", pointWidth: 24,  data: normalize(new_array[i])}
+    i = i + 1
+
+      # the line of code below works well but not quite what we want
+      ##seriesArr.push {name: key, type: "bar", pointWidth: 24,  data: normalize(normalize(val))}
       #seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
 
   show_legend_1 = true
-  show_legend_2 = true  
+  show_legend_2 = true
 
   return {
     chart: renderTo: render_to_2
     title: text: graph_title
     subtitle: text: graph_sub_title
-    xAxis: 
+    xAxis:
       categories: arry_categories
       tickInterval: 1
       labels:
@@ -286,20 +319,20 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
     ]
     yAxis: [{
             labels: {
-                format: '{value}%',
+                format: '{value}',
                 style: {
                     color: Highcharts.getOptions().colors[1]
                 }
             },
             min: 0
-            max: 100
+            max: 16
             title: {
-                text: 'Percent',
+                text: 'Beginning -> Expending Effort -> Threshold -> Ready'
                 style: {
                     color: Highcharts.getOptions().colors[2]
                 }
             }
-        }, { 
+        }, {
             title: {
                 text: '',
                 style: {
@@ -307,9 +340,9 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
                 }
             },
             min: 0
-            max: 100
+            max: 16
             labels: {
-                format: '{value}%',
+                format: '{value}',
                 style: {
                     color: Highcharts.getOptions().colors[4],
                     display:'none'
@@ -322,9 +355,22 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
     },
     plotOptions: {
         series: {
-          pointPadding: 0.2, 
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            formatter: ->
+              switch this.y
+                when 1 then return "Beginning=" + this.y
+                when 2 then return "Effort=" + this.y
+                when 3 then return "Threshold=" + this.y
+                when 4 then return "Ready=" + this.y
+                when 0 then return "Not Able to Assess=" + this.y
+                else
+                  return this.y;
+            },
+          pointPadding: 0.2,
           groupPadding: 0.1
-        } 
+        }
     },
     series: seriesArr
   }
@@ -339,13 +385,13 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
   seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
 
   show_legend_1 = true
-  show_legend_2 = true  
+  show_legend_2 = true
 
   return {
     chart: renderTo: render_to_2
     title: text: graph_title
     subtitle: text: graph_sub_title
-    xAxis: 
+    xAxis:
       categories: ["FUND", "BLHD", "SBM", "CPR", "HODI", "NSF", "DEVH" ]
       tickInterval: 1
       labels:
@@ -380,7 +426,7 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
                     color: Highcharts.getOptions().colors[2]
                 }
             }
-        }, { 
+        }, {
             title: {
                 text: '',
                 style: {
@@ -403,7 +449,7 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
     },
     plotOptions: {
         series: {
-          pointPadding: 0.2, 
+          pointPadding: 0.2,
           groupPadding: 0.1
         }
     },
@@ -422,7 +468,7 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     series_data_1 = get_all_series_data(series_data_hash, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
     graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
-    graph_sub_title = "<b>% Complete - " + new_date + "</b>" 
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
     series_data_1 = series_data_2
     series_data_2 = "Null"
     show_legend_2 = false          #series_data_2 = "Null"
@@ -469,6 +515,12 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     while i <= 4
         data = series_data_hash[i]
         graph_target = "data-visualization-" + i
+        #categories = []
+        #for item of data
+        #  $.each data[item], (key, val) ->
+        #    console.log "key : " + key + " val: " + val
+        #    categories.push key
+
         options = build_options_precept(i, data, mean_data, categories, graph_target, graph_title, graph_sub_title)
         window.chart3[i] = Highcharts.chart($.extend(true, null, theme_light, options))
         i = i + 1
@@ -651,7 +703,6 @@ theme_light =
 $(document).ready ->
 
     return unless gon?
-
 
     # Load the fonts
     Highcharts.createElement 'link', {

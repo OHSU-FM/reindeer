@@ -45,10 +45,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
 
-    if @pk == "_" 
+    if @pk == "_"
       if current_user.permission_group.title.include? "Students"
         @pk = current_user.email
-        get_all_blocks_data       
+        get_all_blocks_data
       end
     else
       get_all_blocks_data
@@ -109,5 +109,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     gon.allblocks = @allblocks
     gon.allblocks_class_mean = @allblocks_class_mean
     gon.preceptorship = @preceptorship
+
   end
 end
