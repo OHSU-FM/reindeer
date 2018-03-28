@@ -1,5 +1,6 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :lime_surveys_languagesetting do
-    surveyls_title "test:test"
+    lime_survey
+    surveyls_title "test_group:test_title"
   end
 end

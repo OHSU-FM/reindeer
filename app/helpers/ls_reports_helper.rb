@@ -63,11 +63,11 @@ module LsReportsHelper
   }.stringify_keys!
 
   # sorts ls titles available to user
-  def hf_generate_menu_hash role_aggregates
+  def hf_generate_menu_hash lime_surveys
     nested_hash = Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
 
-    filtered_titles = role_aggregates.map{|ra|
-      ra.lime_survey.lime_surveys_languagesettings[0].surveyls_title
+    filtered_titles = lime_surveys.map{|s|
+      s.lime_surveys_languagesettings[0].surveyls_title
     }.select{|title|
       MENU_HEADERS.keys.include? title.split(":").first
     }.sort
@@ -76,7 +76,8 @@ module LsReportsHelper
       level1, level2, level3, val = title.split(":")
       nested_hash[level1][level2][level3] = val
     end
-    nested_hash
+    nested_hash.merge!({"C"=>{}}) unless nested_hash.has_key?("C")
+    return nested_hash
   end
 
   def hf_translate_header abbrev
@@ -109,17 +110,32 @@ module LsReportsHelper
     end
   end
 
+  # merge hash with default select text so that dd doesn't default to a cohort.
+  # without this, select2 will always default to the first cohort in the list,
+  # which blocks the user from selecting the default selection. option w value
+  # == -1 is manually selected when select2 is called from the js on the option
+  # hash
   def hf_assignment_groups_select_hash ags
     outh = Hash.new{ |h,k| h[k] = [] }
     ags.each do |ag|
       outh[ag.owner.display_name] << [ag.title, ag.id]
+    end
+    {"" => [["Select a Cohort...",-1]]}.merge(outh)
+  end
+
+  def hf_report_filter_hash cohorts
+    outh = Hash.new{ |h,k| h[k] = [] }
+    cohorts.each do |c|
+      c.users.each do |user|
+        outh[c.permission_group.title] << [ user.display_name, url_for(ls_reports_path(pk_filter: "#{user.email}")) ]
+      end
+      outh[c.permission_group.title].sort_by!{|e| e.first.split(" ").last}
     end
     outh
   end
 
   # TODO: Move to ls_files_helper.rb
   class FileAccessRequest
-    attr_reader :fm, :col_id, :row_id
 
     def initialize fm, col_id, row_id
       @fm = fm
@@ -139,8 +155,6 @@ module LsReportsHelper
 
   # Move to lib/lime_ext?
   class FilterManager
-    attr_reader :hide_pk, :hide_agg, :lime_survey, :lime_survey_unfiltered, :pk, :agg, :pk_enum, :agg_enum, :params, :user,
-      :filters_equal, :series_name, :unfiltered_series_name
 
     def initialize user, sid, opts={}
       @user = user
@@ -156,6 +170,14 @@ module LsReportsHelper
       Rails.logger.info lime_survey.lime_data.query
       Rails.logger.info lime_survey_unfiltered.lime_data.query
     end
+
+    def user; @user; end
+    def agg; @agg; end
+    def hide_agg; @hide_agg; end
+    def pk; @pk; end
+    def hide_pk; @hide_pk; end
+    def series_name; @series_name; end
+    def unfiltered_series_name; @unfiltered_series_name; end
 
     def its_important_to_check_ids
       raise "Identical Survey Object ids" if lime_survey.object_id == lime_survey_unfiltered.object_id
@@ -196,16 +218,15 @@ module LsReportsHelper
     ##
     # Load LimeSurvey and associations
     def get_lime_survey sid
-      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(:lime_survey_sid=>sid).pluck(:updated_at).first.to_i}"
+      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
       result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
         # Load resource and pre-load associations
         LimeSurvey.includes(:role_aggregate,
-                            :lime_groups=>[
-                              :lime_questions=>[
-                                :lime_answers,
-                                :lime_question_attributes
+                            lime_groups: [
+                              lime_questions: [
+                                :lime_answers
                               ]
-        ]).where(:sid=>sid.to_i).first
+        ]).where(sid: sid.to_i).first
       end
       raise ActiveRecord::RecordNotFound unless result
 
@@ -260,15 +281,14 @@ module LsReportsHelper
 
       unless @ability.can? :read_unfiltered, lime_survey
         # Filters for comparison
-        plg = user.permission_group.permission_ls_groups.where(:lime_survey_sid=>lime_survey.sid).first
+        plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
         raise "Permissions Error: User cannot access this survey" unless plg.present?
-        uexts = user.user_externals
         plg.permission_ls_group_filters.each do |plgk|
           fieldname = plgk.lime_question.my_column_name
           if plgk.restricted_val.present?
             filter_val = plgk.restricted_val
           else
-            uex = plgk.user_externals.where(:user_id=>@user.id).first
+            uex = plgk.user_externals.where(user_id: @user.id).first
             raise 'Permissions Error: UserExternal is missing' unless uex.present?
             filter_val = uex.filter_val
           end
@@ -306,7 +326,7 @@ module LsReportsHelper
       unless @hide_pk
         @pk = add_param_filter lime_survey, :pk, role_aggregate.pk_fieldname
         # default to last val if only one pk option
-        @pk.nil? ? @pk = @pk_enum.last : @pk
+        @pk.nil? ? @pk = @pk_enum.first[1] : @pk
       end
     end
 
@@ -370,7 +390,6 @@ module LsReportsHelper
   # Virtual Groups: Split lime groups into groups with
   # at most 10 parent questions each.
   class VirtualGroup
-    attr_reader :group
     @questions = []
 
     ##

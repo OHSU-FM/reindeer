@@ -9,11 +9,12 @@ describe "user_assignment _deep_rows" do
     user.save!
     ag = create :assignment_group, cohort: c
     ua = create :user_assignment
-    ur = create :user_response, :with_comments, user_assignment: ua
-    ur2 = create :user_response, user_assignment: ua
+    date = Time.now
+    ur = create :user_response, :with_comments, user_assignment: ua, submitdate: date
+    ur2 = create :user_response, user_assignment: ua, submitdate: date
     sign_in user
 
-    visit assignment_user_assignment_path(ua)
+    visit assignment_user_assignment_path(ua, date: date)
     expect(page).to have_link("", href: assignment_user_response_comments_path(ur))
     expect(page).not_to have_link("", href: assignment_user_response_comments_path(ur2))
   end

@@ -49,7 +49,6 @@ WidgetLoader.load = (charts, dash_widget) ->
             return
         unless widget.content?
             return
-        console.log ('dash_widget.graph_type: ' + dash_widget.graph_type)
         # Grab target
         $target = $('#role-chart-widget_' + dash_widget.widget_id)
         content = widget.content
@@ -63,7 +62,8 @@ WidgetLoader.load_question_widget = (dash_widget, widget, $target, content) ->
             console.log('HTML Widget')
             widget.content.html
         else
-            window.LsReport.Graph.load($target, dash_widget.widget.graph_type, content.stats, content.stats_u, content.series_name, content.unfiltered_series_name, content.filters_equal, content.widget_title)
+            console.log ('widget.graph_type: ' + widget.graph_type)
+            window.LsReport.Graph.load($target, widget.graph_type, content.stats, content.stats_u, content.series_name, content.unfiltered_series_name, content.filters_equal, content.widget_title)
 
 
 ##

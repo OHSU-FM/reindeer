@@ -1,79 +1,77 @@
 <!-- Modal blank for iframe links -->
-<%= render :partial=>'shared/modal_blank'%>
+<%= render partial: 'shared/modal_blank' %>
 
 <div id="ls_reports_nav">
-    <div id="container"></div>
-    <ul class="list-inline">
-        <li>
-            <ul class="breadcrumb">
-                <li><%= link_to 'Reports', ls_reports_path %></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <%= @lime_survey.title %> <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <% hf_role_aggregate_groups(@user.role_aggregates).each do |group_name, role_aggregates| %>
-                            <li><span><%= group_name.nil? ? 'Reports' : group_name %></span></li>
-                            <li class="divider"></li>
-                            <% role_aggregates.each do |title, ra|%>
-                            <li>
-                                <%= link_to title,
-                                        polymorphic_path([ra.default_view, :ls_report] ,:sid=>ra.lime_survey_sid, :pk=>(@pk.nil? ? "_" : @pk)),
-                                        :class=>"modal-click", 'data-target'=>'#modal-report' %>
-                            </li>
-                            <% end %>
-                        <% end %>
-                        <% #raise hell!  %>
-                    </ul>
+  <div id="container"></div>
+  <ul class="list-inline">
+    <li>
+      <ul class="breadcrumb">
+        <li><%= link_to 'Reports', ls_reports_path %></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <%= @lime_survey.title %> <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <% hf_role_aggregate_groups(@user.role_aggregates).each do |group_name, role_aggregates| %>
+              <li><span><%= group_name.nil? ? 'Reports' : group_name %></span></li>
+              <li class="divider"></li>
+              <% role_aggregates.each do |title, ra| %>
+                <li>
+                  <%= link_to title,
+                    polymorphic_path([ra.default_view, :ls_report], sid: ra.lime_survey_sid, pk: (@pk.nil? ? "_" : @pk)),
+                    class: "modal-click", 'data-target' => '#modal-report' %>
                 </li>
-            </ul>
+              <% end %>
+            <% end %>
+          </ul>
         </li>
-        <li class="pull-right">
-            <div id="header" class="hidden-print">
-                <!-- Extra Options -->
-                <div class="pull-right">
-                    <b>View Options</b>
-                    <br />
-                    <ul style="line-height: 2em; font-size: 1em;" class="list-inline">
-                        <li>
-                            <button type="button" class="btn btn-xs btn-primary" onclick="window.print();">Print</button>
-                        </li>
-                        <% if can?(:access, :lime_server) && can?(:read_data, @lime_survey) %>
-                        <li>
-                            <a id="export-dataset" href="<%= Settings.lime_url%>/index.php/admin/export/sa/exportresults/surveyid/<%=@sid%>"
-                                class="btn btn-xs btn-default" target="_blank">Export</a>
-                        </li>
-                        <% end %>
-                    </ul>
-                </div>
-                <% unless @hide_pk %>
-                <!-- Residency Program Selector -->
-                <div class="pull-right pad-right">
-                    <b><%= @role_aggregate.pk_label %></b>
-                    <br/>
-                    <select id="pk_selector" class="select_a_link form-control input-sm">
-                        <% @pk_enum.each do |key, val|%>
-                            <option value="<%= polymorphic_path([@view_type, :ls_report],:pk=>val, :agg=>@agg)%>"
-                                <%= @pk==val ? 'selected="selected"' : '' %>><%= key%></option>
-                        <% end %>
-                    </select>
-                </div>
-                <% end %>
-                <% unless @hide_agg %>
-                <!-- Data Set Selector -->
-                <div class="pull-right pad-right">
-                    <b><%= @role_aggregate.agg_label %></b>
-                    <br/>
-                    <select id="agg_selector" class="select_a_link form-control input-sm">
-                        <% @agg_enum.each do |key, val|%>
-                            <option value="<%= polymorphic_path([@view_type, :ls_report], :agg=>val, :pk=>(@pk.nil? ? (val == '' ? '' : '_') : '_'))%>"
-                                <%= @agg==val ? 'selected="selected"' : '' %>><%= key%></option>
-                        <% end %>
-                    </select>
-                </div>
-                <% end %>
-            </div>
-        </li>
-    </ul>
+      </ul>
+    </li>
+    <li class="pull-right">
+      <div id="header" class="hidden-print">
+        <!-- Extra Options -->
+        <div class="pull-right">
+          <b>View Options</b>
+          <br />
+          <ul style="line-height: 2em; font-size: 1em;" class="list-inline">
+            <li>
+              <button type="button" class="btn btn-xs btn-primary" onclick="window.print();">Print</button>
+            </li>
+            <% if can?(:access, :lime_server) && can?(:read_data, @lime_survey) %>
+              <li>
+                <a id="export-dataset" href="<%= Settings.lime_url %>/index.php/admin/export/sa/exportresults/surveyid/<%= @sid %>"
+                  class="btn btn-xs btn-default" target="_blank">Export</a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <% unless @hide_pk %>
+          <!-- Residency Program Selector -->
+          <div class="pull-right pad-right">
+            <b><%= @role_aggregate.pk_label %></b>
+            <br/>
+            <select id="pk_selector" name="pk_selector" class="select_a_link form-control input-sm">
+              <% @pk_enum.each do |key, val|%>
+                <option value="<%= polymorphic_path([@view_type, :ls_report], pk: val, agg: @agg)%>"
+                  <%= @pk == val ? 'selected="selected"' : '' %>><%= key %></option>
+              <% end %>
+            </select>
+          </div>
+        <% end %>
+        <% unless @hide_agg %>
+          <!-- Data Set Selector -->
+          <div class="pull-right pad-right">
+            <b><%= @role_aggregate.agg_label %></b>
+            <br/>
+            <select id="agg_selector" class="select_a_link form-control input-sm">
+              <% @agg_enum.each do |key, val|%>
+                <option value="<%= polymorphic_path([@view_type, :ls_report], agg: val, pk: (@pk.nil? ? (val == '' ? '' : '_') : '_'))%>"
+                  <%= @agg == val ? 'selected="selected"' : '' %>><%= key %></option>
+              <% end %>
+            </select>
+          </div>
+        <% end %>
+      </div>
+    </li>
+  </ul>
 </div>
-

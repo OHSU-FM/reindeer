@@ -2,7 +2,7 @@
     <% fid = '#' + f.options[:html][:id] %>
 
     <h2>
-      <span><%= @assignment_groups.count > 4 ? "#{@assignment_group.owner.display_name} - " : "" %><%= @assignment_group.title %></span>
+      <span><%= @assignment_group.title %></span>
       <button type='button'
           class='btn btn-link <%= :hidden unless can?(:edit, @assignment_group) %>'
           data-show="<%= fid %>_title"

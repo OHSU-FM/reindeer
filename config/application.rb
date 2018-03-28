@@ -10,8 +10,6 @@ module EdnaConsole
   class Application < Rails::Application
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token
-    # Raise transaction errors
-    config.active_record.raise_in_transactional_callbacks = true
 
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
@@ -56,6 +54,7 @@ module EdnaConsole
 
     # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true
+    config.active_support.whitelist_attributes = true
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,

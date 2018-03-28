@@ -1,24 +1,18 @@
 module LimeExt
-    mattr_accessor :table_prefix
-    mattr_accessor :schema
+  @@table_prefix = 'lime'
+  if Rails.env == "test"
+    @@schema = 'transform'
+  else
+    @@schema = 'public'
+  end
 
-    @@table_prefix = 'lime'
-    if Rails.env == "test"
-      @@schema = 'transform'
-    else
-      @@schema = 'public'
-    end
+  def self.table_prefix
+    @@table_prefix
+  end
 
-    class Application < Rails::Application
-
-        config.after_initialize do
-            # make sure all models have been loaded
-            #Rails.application.eager_load!
-
-            # Add extensions to some models
-        end
-
-    end
+  def self.schema
+    @@schema
+  end
 end
 
 require 'lime_ext/lime_survey_group'
@@ -31,4 +25,3 @@ require 'lime_ext/models/lime_tokens'
 require 'lime_ext/models/lime_data'
 require 'lime_ext/models/sync_trigger.rb'
 require 'lime_ext/sync_trigger_parser.rb'
-require 'lime_ext/lime_survey_parser.rb'

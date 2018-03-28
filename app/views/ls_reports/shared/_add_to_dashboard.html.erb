@@ -1,21 +1,20 @@
-        <% question_widget = QuestionWidget.new %>
-        <% question_widget.build_dash_widget %>
-        <%= form_for question_widget, :format=>:json, :remote=>true  do |f| %>
-            <%= f.hidden_field :view_type, :value=>@view_type %>
-            <%= f.hidden_field :user_id, :value=>@user.id %>
-            <%= f.hidden_field :role_aggregate_id, :value=>@role_aggregate.id %>
-            <%= f.hidden_field :agg, :value=>@agg %>
-            <%= f.hidden_field :pk, :value=>@pk %>
-            <%= f.hidden_field :graph_type, :value=>graph_type %>
-            <%= f.hidden_field :lime_question_qid, :value=>question.qid %>
-            <% if user_has_widget?(@user, question, @pk, @agg, @view_type, graph_type) %>
-                <%= f.button :class=>"submit-add-to-Dashboard btn btn-default", :disabled=>:disabled do %>
-                    Added to Dashboard
-                <% end %>
-            <% else %>
-                <%= f.button nil, :class=>'btn btn-primary' do %>
-                    Add to Dashboard
-                <% end %>
-            <% end %>
-        <% end %>
+<% question_widget = QuestionWidget.new %>
+<%= form_for question_widget, format: :json, remote: true  do |f| %>
+  <%= f.hidden_field :view_type, value: @view_type %>
+  <%= f.hidden_field :user_id, value: @user.id %>
+  <%= f.hidden_field :role_aggregate_id, value: @role_aggregate.id %>
+  <%= f.hidden_field :agg, value: @agg %>
+  <%= f.hidden_field :pk, value: @pk %>
+  <%= f.hidden_field :graph_type, value: graph_type %>
+  <%= f.hidden_field :lime_question_qid, value: question.qid %>
+  <% if user_has_widget?(@user, question, @pk, @agg, @view_type, graph_type) %>
+    <%= f.button class: "submit-add-to-Dashboard btn btn-default", disabled: :disabled do %>
+      Added to Dashboard
+    <% end %>
+  <% else %>
+    <%= f.button nil, class: "btn btn-primary" do %>
+      Add to Dashboard
+    <% end %>
+  <% end %>
+<% end %>
 

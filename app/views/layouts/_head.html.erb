@@ -10,7 +10,6 @@
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Edna" %>">
     <%= stylesheet_link_tag "application", controller_full_name, :media=>"all" %>
     <%= javascript_include_tag "application" %>
-
     <%= content_for?(:head) ? yield(:head) : '' %>
     <%= csrf_meta_tags %>
     <%= include_gon if defined? gon && gon.present? %>

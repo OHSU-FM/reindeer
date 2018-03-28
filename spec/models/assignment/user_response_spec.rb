@@ -3,7 +3,7 @@ require "spec_helper"
 describe Assignment::UserResponse do
 
   it "has a factory" do
-    expect(FactoryGirl.create(:user_response)).to be_valid
+    expect(FactoryBot.create(:user_response)).to be_valid
   end
 
   it "requires a user_assignment" do
@@ -23,6 +23,11 @@ describe Assignment::UserResponse do
     it "#has_comments?" do
       expect((create :user_response, :with_comments).has_comments?).to be true
       expect((create :user_response).has_comments?).to be false
+    end
+
+    it "#has_user_comments?" do
+      expect((create :user_response, :with_comments).has_user_comments?).to be true
+      expect((create :user_response, :with_sys_comment).has_user_comments?).to be false
     end
   end
 end

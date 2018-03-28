@@ -42,11 +42,11 @@ class Assignment::AssignmentGroupTemplatesController < ApplicationController
   protected
 
   def create_params
-    params.require(:assignment_assignment_group_template).permit!
+    params.require(:assignment_assignment_group_template).permit(:title, :desc_md)
   end
 
   def update_params
-    params.require(:assignment_assignment_group_template).permit!
+    params.require(:assignment_assignment_group_template).permit(:title, :desc_md, :sids, :active)
   end
 
   def index_location

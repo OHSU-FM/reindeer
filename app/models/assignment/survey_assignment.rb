@@ -1,23 +1,15 @@
-##
-# the link between a survey
 module Assignment
   class SurveyAssignment < ActiveRecord::Base
-    attr_accessible :lime_survey_sid, :assignment_group_id,
-      :title, :gather_user_tokens, :user_assignments_attributes, :as_inline
-    attr_accessor :gather_user_tokens
 
     belongs_to :lime_survey, :primary_key=>:sid, :foreign_key=>:lime_survey_sid, :inverse_of=>:survey_assignments
-
     belongs_to :assignment_group
+
     has_many :user_assignments, :inverse_of=>:survey_assignment, :dependent=>:delete_all
 
-    validates :assignment_group,
-      presence: true
-
+    validates :assignment_group, presence: true
     validates :lime_survey,
       presence: true,
       if: Proc.new { |f| f.assignment_group.present? }
-
     validates :title,
       presence: true,
       if: Proc.new {|f| f.lime_survey_sid.present?}
@@ -96,29 +88,29 @@ module Assignment
           end
         end
         # Remove all old assignments
-        user_assignments.delete_all
+        user_assignments.each{|ua| ua.destroy }
 
         unless lime_survey_sid
           errors.add(:lime_survey_sid, 'No lime survey selected')
           return
         end
 
-        #
         tid_emails = lime_survey.lime_tokens.pluck :tid, :email
         unless tid_emails
           errors.add(:gather_user_tokens, 'No tokens to add')
           return
         end
 
-        emails = tid_emails.map{|tid, email| email}
-        users = User.where(['email in (?)', emails])
-        tid_emails.each do |tid, email|
-          user = users.find{|uu|uu.email == email}
+        ag_emails = assignment_group.users.map{|u| u.email}
+        filtered_tids = tid_emails.select{|tid, email| ag_emails.include? email}
+        filtered_tids.each do |tid, email|
+          user = User.find_by(email: email)
           next if user.nil?
           ua = user_assignments.build
           ua.lime_token_tid = tid
           ua.user_id = user.id
           ua.save!
+          ua.user_responses
         end
 
         if !comment_hash.nil? && !comment_hash.empty?
@@ -149,6 +141,13 @@ module Assignment
       key
     end
 
+    def gather_user_tokens
+      @gather_user_tokens
+    end
+
+    def gather_user_tokens= val
+      @gather_user_tokens = val
+    end
   end
 
 end

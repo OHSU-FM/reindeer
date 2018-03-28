@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :assignment_group, class: Assignment::AssignmentGroup do
     title { Faker::Lorem.sentence }
     desc_md { Faker::Lorem.paragraph }

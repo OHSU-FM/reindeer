@@ -2,7 +2,7 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
   layout "full_width_height_margins"
   respond_to :html
   authorize_resource
-  before_filter :load_resource, only: [:show, :edit, :update, :destroy]
+  before_action :load_resource, only: [:show, :edit, :update, :destroy]
 
   def index
     @assignment_groups = current_user.active_assignment_groups
@@ -13,11 +13,17 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
 
   def show
     @assignment_group = Assignment::AssignmentGroup.find(params[:assignment_group_id])
+    if current_ability.can? :comment_on, @assignment_group
+      @new_ag_comment = Comment.new(commentable: @assignment_group,
+                                    user: current_user)
+    end
+
     @assignment_groups = if current_user.active_assignment_groups.count >= 1
                            current_user.active_assignment_groups
                          else
                            nil
                          end
+
     unless params[:user_id]
       params[:user_id] = if @assignment_group.user_ids.include? current_user.id
         current_user.id
@@ -26,8 +32,10 @@ class Assignment::AssignmentGroupsController < Assignment::AssignmentBaseControl
       end
     end
     @user = User.find(params[:user_id])
+
     @service = Assignment::UserAssignmentsIndexService.new @assignment_group, params
-    @new_comment = Comment.new(commentable: @assignment_group, user: current_user)
+    @thread = @assignment_group.cohort.comment_thread_for(@user.id)
+    @new_thread_comment = Comment.new(commentable: @thread, user: current_user)
   end
 
   def new

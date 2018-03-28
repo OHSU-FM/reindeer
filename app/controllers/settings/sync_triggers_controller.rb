@@ -1,6 +1,6 @@
 class Settings::SyncTriggersController < ApplicationController
   layout 'full_width'
-  before_filter :authorize_access
+  before_action :authorize_access
 
   def index
     @triggers = LimeExt::SyncTrigger.all
@@ -13,7 +13,6 @@ class Settings::SyncTriggersController < ApplicationController
   end
 
   def new
-    #binding.pry
     @trigger = LimeExt::SyncTrigger.new(build_trigger_params)
     @ready_post = @trigger.valid?
     @method = @ready_post ? :post : :get
@@ -59,7 +58,7 @@ class Settings::SyncTriggersController < ApplicationController
     if result.include?(:cols_vals) || result.include?(:cols_keys)
       # Remove keys and vals
       keys = result.delete(:cols_keys) || []
-      vals = result.delete(:cols_vals) || keys.count.times.map{nil}
+      vals = result.delete(:cols_vals) || keys.count.times.map{ nil }
       # Combine keys and vals back in to hash
       result[:cols] = Hash[keys.zip(vals)]
       result[:cols].delete nil
@@ -67,6 +66,4 @@ class Settings::SyncTriggersController < ApplicationController
     end
     result
   end
-
 end
-

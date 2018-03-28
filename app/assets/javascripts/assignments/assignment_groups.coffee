@@ -1,5 +1,3 @@
-@Assignments.AssignmentGroup = {}
-
 $.fn.modal.Constructor::enforceFocus = ->
 
 $ ->
@@ -10,10 +8,11 @@ $ ->
   $(".needs-select2").select2({
     width: "100%",
     matcher: optGroupMatcher
-  });
+  })
+    .val('-1').trigger('change')
 
 $ ->
-  $(".assignment-group-select").bind "change", ->
+  $(".collection-select").bind "change", ->
     url = $(this).val()
     if url
       window.location.replace url

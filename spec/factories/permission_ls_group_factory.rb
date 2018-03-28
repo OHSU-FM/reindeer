@@ -1,18 +1,16 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :pls_group, class: PermissionLsGroup do
-    permission_group { PermissionGroup.first || create(:coach_permission_group) }
+    association :permission_group, :with_users
+    lime_survey :full
     enabled true
 
-    before(:create) do |plsg|
-      if RoleAggregate.first.nil?
-        create(:role_aggregate)
-      end
-      ls = LimeSurvey.find_by(sid: 12345)
-      plsg.lime_survey = ls
-    end
-
     after(:build) do |plsg|
-      plsg.permission_ls_group_filters << build_list(:plg_filter, 1, permission_ls_group: plsg)
+      g = plsg.lime_survey.lime_groups.first
+      q = g.lime_questions.max_by{|lq| lq.qid}; q.title = "TestQuestion"; q.save!
+      plsg.permission_ls_group_filters << build_list(:plg_filter,
+                                                     1,
+                                                     lime_question: q,
+                                                     permission_ls_group: plsg)
     end
   end
 end

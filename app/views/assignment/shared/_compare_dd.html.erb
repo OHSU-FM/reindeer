@@ -3,16 +3,18 @@
     <%= hf_user_assignment_button_text(local_assigns).html_safe %>
   </button>
   <ul class="dropdown-menu">
-    <% obj = @user_response || @user_assignment %>
-    <% hf_user_assignment_cycle_hash(obj).each do |k, v| %>
-      <% unless obj.group_and_title.first == k %>
-        <li class="dropdown-header"><%= k %></li>
-      <% end %>
-      <% v.each do |title, comp_obj| %>
-        <% unless comp_obj == obj || comp_obj.survey_type != obj.survey_type %>
-          <li><%= link_to title, assignment_user_assignment_fetch_compare_path(user_assignment_id: comp_obj.id), remote: true, class: "ua-compare" %></li>
-        <% end %>
-      <% end %>
+    <% iter = hf_user_assignment_cycle_hash(@user_response || @user_assignment) %>
+    <% if iter.each do |date, urs| %>
+      <% next if date == @date %>
+      <li>
+        <%= link_to date.to_date.to_s(:long),
+          assignment_user_assignment_fetch_compare_path(user_assignment_id: @user_assignment.id, date: date),
+          remote: true,
+          class: "ua-compare"
+          %>
+      </li>
+    <% end.empty? || iter.keys.count == 1 %>
+      <li class="text-align:center;">Nothing to compare to!</li>
     <% end %>
   </ul>
 </div>

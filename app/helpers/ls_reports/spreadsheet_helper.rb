@@ -29,14 +29,73 @@ module LsReports::SpreadsheetHelper
     end 
 
     def hf_transpose_response_sets response_sets
+
         result = []
+        temp_data = []
         response_sets.each do |dt|
-            result.push dt.data
+            temp_data.push dt.data
         end
-        return result.transpose
+        temp_data = temp_data.transpose
+
+        temp_hash = {}
+        title_array = hf_transpose_titles response_sets
+        temp_data.each do |x|
+            temp_hash = Hash[title_array.zip(x)]
+            result.push temp_hash
+        end
+        return result
+
     end
 
+    def hf_transpose_titles response_sets
+        result = []
+        response_sets.each do |rs|
+        case rs.title
+            when "PPPD01"
+              result.push "PPPD1"
+            when "PPPD02"
+              result.push "PPPD2"
+            when "PPPD03"
+              result.push "PPPD3"
+            when "PPPD04"
+              result.push "PPPD4"
+            when "PPPD05"
+              result.push "PPPD5"
+            when "PPPD06"
+              result.push "PPPD6"
+            when "PPPD07"
+              result.push "PPPD7"
+            when "PPPD08"
+              result.push "PPPD8"
+            when "PPPD09"
+              result.push "PPPD9"
+            else
+              result.push rs.title
+            end
 
 
+        end
+        return result
+    end 
+
+    def hf_transpose_questions response_sets
+        result = {} 
+        response_sets.each do |rs|
+            pquestion = rs.question
+            result[rs.title] =  pquestion.question
+        end
+
+        return result
+
+    end
+
+    def hf_found_competency response_sets
+
+        response_sets.each do |rs|
+            if rs.title.include? "ICS1"
+                return true 
+            end
+        end
+        return false
+    end 
 end
-

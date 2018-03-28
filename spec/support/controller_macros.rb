@@ -1,7 +1,7 @@
 module ControllerMacros
 
   def login(user_type, *args )
-    user = FactoryGirl.create(user_type, *args)
+    user = FactoryBot.create(user_type, *args)
     login_user(user)
   end
 

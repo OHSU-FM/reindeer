@@ -4,6 +4,7 @@ class Cohort < ActiveRecord::Base
   belongs_to :permission_group
 
   has_many :users
+  has_many :comment_threads, as: :threadable
 
   validates_presence_of :permission_group
   validates_presence_of :owner
@@ -16,6 +17,7 @@ class Cohort < ActiveRecord::Base
     weight -5
 
     list do
+      sort_by :owner
       field :id do
         read_only true
       end
@@ -42,9 +44,15 @@ class Cohort < ActiveRecord::Base
     end
   end
 
-
   def assignment_groups
     Assignment::AssignmentGroup.where(cohort: self)
+  end
+
+  def comment_thread_for user_id
+    CommentThread.find_or_create_by(first_user: owner,
+                                    second_user: User.find(user_id),
+                                    threadable: self
+                                   )
   end
 
   # TODO: #possible_users should always include #users (at minimum)

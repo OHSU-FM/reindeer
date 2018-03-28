@@ -1,0 +1,37 @@
+<script src="https://highcharts.github.io/pattern-fill/pattern-fill-v2.js"></script>
+<table style="width: 100%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+  <tr><th >Blocks</th>
+      <th class="centered-cell">FUND <br > Student / Class Mean</th>
+      <th class="centered-cell">BLHD <br > Student / Class Mean</th>
+      <th class="centered-cell">SBM <br > Student / Class Mean</th>
+      <th class="centered-cell">CARE <br > Student / Class Mean</th>
+      <th class="centered-cell">HODI <br > Student / Class Mean</th>   
+      <th class="centered-cell">NSF <br > Student / Class Mean</th>   
+      <th class="centered-cell">DEVH <br > Student / Class Mean</th>   
+
+  </tr>
+  <% class_mean = @allblocks_class_mean %>
+  <% i = 0 %>
+  <% @allblocks.each do |k, v| %>
+    <tr>
+        <td><%= k %></td>
+        <% v.each do |item| %>
+            <td class="centered-cell">
+
+                <font color="green"><%= "%3.2f" % item.to_s.to_d.truncate(2).to_s %> </font>
+                <%= " / " %>
+                <% if class_mean["#{k}"][i].nil? %>
+                    <font color="blue"> 0.00 </font>
+                <% else %>
+                  <font color="blue"> <%= "%3.2f" % class_mean["#{k}"][i].to_d.truncate(2).to_s %> </font>
+                <% end %>
+                <% i = i + 1 %>
+            </td>
+        <% end %>
+    </tr>
+    <% i = 0 %>
+  <% end %>
+  <tr>
+    <div id="data-visualization-allblocks" style="max-width: 500px; height: 300px; margin: 0 auto"></div>
+  </tr>
+</table>

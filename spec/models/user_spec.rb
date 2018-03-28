@@ -2,6 +2,10 @@ require "spec_helper"
 
 describe User do
 
+  after :each do
+    Redis.current.flushdb
+  end
+
   it "has a factory" do
     expect(build :user).to be_valid
   end
@@ -34,7 +38,72 @@ describe User do
     end
   end
 
+  describe "states" do
+    it "requires a ls_list_state" do
+      user = build :user, ls_list_state: nil
+      expect(user).not_to be_valid
+    end
+
+    it "initializes with a dirty ls_list_state" do
+      user = create :user
+      expect(user.has_dirty_ls_list?).to be_truthy
+    end
+
+    it "are either clean or dirty" do
+      user = create :user
+      user.clean_ls_list
+      expect(user.has_clean_ls_list?).to be_truthy
+      user.dirty_ls_list
+      expect(user.has_dirty_ls_list?).to be_truthy
+      expect(build :user, ls_list_state: "lol").not_to be_valid
+    end
+
+    it "becomes dirty when surveys are saved" do
+      l = create :lime_survey, :with_plsg
+      user = l.permission_ls_groups.first.permission_group.users.first
+      user.ls_list_state = "clean"; user.save!
+      l.save!
+      expect(user.has_dirty_ls_list?).to be_truthy
+    end
+
+    it "becomes dirty after new lime_survey is added to #permission_group" do
+      pg = create :permission_group, :with_users
+      pg.users.first.lime_surveys
+      expect(pg.users.first.has_clean_ls_list?).to be_truthy
+      l = create :lime_survey, :with_plsg
+      q = l.find_question :title, "TestQuestion"
+      l.role_aggregate.agg_title_fieldname = q.my_column_name; l.role_aggregate.save!
+      l.role_aggregate.pk_title_fieldname = q.my_column_name; l.role_aggregate.save!
+      pg.permission_ls_groups = l.permission_ls_groups; pg.save!
+      expect(pg.users.first.has_dirty_ls_list?).to be_truthy
+    end
+
+    it "doesn't receive #role_aggregates with clean ls_list_state" do
+      l = create :lime_survey, :with_plsg
+      user = create :user, ls_list_state: "clean"
+      Redis.current.sadd("user:#{user.id}:ls_p_list", l.sid)
+      expect(user).not_to receive(:role_aggregates)
+      user.lime_surveys
+    end
+  end
+
   describe "methods:" do
+    it "#lime_surveys lists lime_surveys user has access to" do
+      ra = create :role_aggregate, :ready
+      a = create :admin
+
+      expect(a.lime_surveys.count).to eq 1
+    end
+
+    it "#lime_surveys_most_recent returns most recent lime_surveys" do
+      a = create :admin
+      s1 = create :lime_survey, :with_languagesettings, :full, opts: {"response": {"submitdate": '2016-08-08'}}
+      s2 = create :lime_survey, :with_languagesettings, :full
+      ra1 = create :role_aggregate, :ready, lime_survey: s1
+      ra2 = create :role_aggregate, :ready, lime_survey: s2
+      expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
+    end
+
     it "#cohort returns cohort user belongs to" do
       c = create :cohort, :with_users
       user = c.users.first
@@ -44,12 +113,15 @@ describe User do
     it "#cohorts returns list of cohorts user owns" do
       user = build :user
       c = create :cohort, owner: user
+      c2 = create :cohort
       expect(user.cohorts).to eq [c]
+      expect(user.cohorts).not_to include c2
+    end
 
-      user = build :user
-      c = create :cohort, owner: user
-      c2 = create :cohort, owner: user
-      expect(user.cohorts).to eq [c, c2]
+    it "#cohorts returns list of all cohorts as admin" do
+      admin = build :admin
+      c = create :cohort
+      expect(admin.cohorts).to include c
     end
 
     it "#active_assignment_groups returns ags user owns that have users" do
@@ -104,5 +176,4 @@ describe User do
       expect(ua.user.unstatused_user_responses_count).to eq 1
     end
   end
-
 end

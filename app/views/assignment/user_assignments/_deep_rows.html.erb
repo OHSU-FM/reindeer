@@ -1,8 +1,16 @@
+<% if @date.present? %>
+  <% date ||= @date; ident = date.to_time.to_s(:number) %>
+  <% iter = user_assignment.ur_categories_by date # from ua#fetch_compare %>
+<% else %>
+  <% ident = "" %>
+  <% iter = user_assignment.ur_categories_by user_assignment.ur_dates.first # from ua#index %>
+<% end %>
+
 <div class="panel-group" id="accordian" role="tablist" aria-multiselectable="true">
-<% ua.ur_categories.each do |category, responses| %>
+<% iter.each do |category, responses| %>
   <div class="panel panel-default">
-    <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(' ') + ua.id.to_s %>" aria-expanded="true" aria-controls="collapse<%= category.delete(' ') %>">
-      <div class="panel-heading" role="tab" id="heading<% category.delete(' ') %>">
+    <a class="panel-title" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= category.delete(" ") + ident %>" aria-expanded="true" aria-controls="collapse<%= category.delete(" ") + ident %>">
+      <div class="panel-heading" role="tab" id="heading<% category.delete(" ") %>">
         <div class="row">
           <% if hf_show_ur_status? responses, current_user %>
             <div class="col-md-6">
@@ -20,7 +28,7 @@
             </div>
           <% end %>
           <div class="col-md-2">
-            <% if responses.collect{|r| r.has_comments?}.any? %>
+            <% if responses.any?{|r| r.has_user_comments? } %>
               <i class='fa fa fa-comments-o'></i>
             <% end %>
           </div>
@@ -28,7 +36,7 @@
       </div>
     </a>
   </div>
-  <div id="collapse<%= category.delete(' ') + ua.id.to_s %>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(' ') + ua.id.to_s %>">
+  <div id="collapse<%= category.delete(" ") + ident %>" class="panel-collapse collapse" role="tabpanel" aria-labeledby="heading<%= category.delete(" ") + ident %>">
     <ul class="list-group">
       <% responses.each do |ur| %>
       <li class="list-group-item">

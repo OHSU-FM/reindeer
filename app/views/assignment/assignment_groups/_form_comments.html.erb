@@ -2,9 +2,9 @@
 <div class="assignment-group-comments comments-block">
   <%= render partial: 'comments/comments', locals: {commentable: @assignment_group} %>
 </div>
-<%= render partial: 'comments/form', locals: {commentable: @assignment_group} %>
+<%= render partial: 'comments/form', locals: {commentable: @assignment_group, new_c: @new_ag_comment} %>
 <% if can? :comment_on, @assignment_group %>
   <p class="comment-info">
-    Only you can post here-- you can use this space to relay information to all the students you coach
+    Only you can post here-- anything you enter will be visible to all the students you coach
   </p>
 <% end %>

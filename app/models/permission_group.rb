@@ -1,14 +1,15 @@
 class PermissionGroup < ActiveRecord::Base
-  has_many :users, :inverse_of=>:permission_group
-  has_many :permission_ls_groups, :inverse_of=>:permission_group, :dependent=>:destroy
-  has_many :lime_surveys, :through=>:permission_ls_groups
-  has_many :role_aggregates, :through=>:lime_surveys
+  has_many :users, inverse_of: :permission_group
+  has_many :permission_ls_groups,
+    inverse_of: :permission_group,
+    dependent: :destroy,
+    after_add: :dirty_user_ls_lists
+  has_many :lime_surveys, through: :permission_ls_groups
+  has_many :role_aggregates, through: :lime_surveys
 
-  accepts_nested_attributes_for :permission_ls_groups, :allow_destroy=>true,
-    :reject_if=>:all_blank
+  accepts_nested_attributes_for :permission_ls_groups, allow_destroy: true,
+    reject_if: :all_blank
   validates_associated :permission_ls_groups
-  attr_accessible :permission_ls_groups_attributes, :allow_destroy=>true
-  attr_accessible :title, :user_ids, :pinned_survey_group_titles
   validates :title, presence: true, uniqueness: true
 
   serialize :pinned_survey_group_titles, Array
@@ -31,6 +32,10 @@ class PermissionGroup < ActiveRecord::Base
         help "Survey groups that are pinned to the users nav bar"
       end
     end
+  end
+
+  def dirty_user_ls_lists plsg
+    users.each {|u| u.dirty_ls_list }
   end
 
   ##
@@ -88,7 +93,7 @@ class PermissionGroup < ActiveRecord::Base
 
       plg.permission_ls_group_filters.each do |plgk|
         next unless plgk.ident_type.present?
-        match = uex.where(:ident_type=>plgk.ident_type).first
+        match = uex.where(ident_type: plgk.ident_type).first
         if match.nil?
           result.delete ra
           details.push [ra,  "No User External matching: #{plgk.ident_type}"]
@@ -98,7 +103,7 @@ class PermissionGroup < ActiveRecord::Base
     end
 
     # Remove RA where user has nothing to see in the dataset ie does not have records in the dataset
-    result = result.select  do |ra|
+    result = result.select do |ra|
       begin
         fm = LsReportsHelper::FilterManager.new user, ra.lime_survey_sid
         lime_data = fm.lime_survey.lime_data
@@ -108,7 +113,7 @@ class PermissionGroup < ActiveRecord::Base
           details.push [ra, 'Ready']
         end
         !lime_data.empty?
-      rescue LsReportsHelper::AccessDenied=>e
+      rescue LsReportsHelper::AccessDenied => e
         details.push [ra, 'Access Denied Error']
         false
       end

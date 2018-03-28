@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     full_name { Faker::Name.name }
     username { Faker::Internet.user_name("#{full_name}") }
@@ -49,7 +49,7 @@ FactoryGirl.define do
     trait :with_assignment_group do
       after(:build) do |usr|
         c = create :cohort, owner: usr
-        usr.assignment_groups << FactoryGirl.build(:assignment_group, cohort: c)
+        usr.assignment_groups << FactoryBot.build(:assignment_group, cohort: c)
       end
     end
 
@@ -62,5 +62,6 @@ FactoryGirl.define do
     factory :admin, traits: [:admin]
     factory :coach, traits: [:coach, :with_uex, :with_assignment_group]
     factory :student, traits: [:student]
+    factory :user_w_externals, traits: [:with_uex]
   end
 end

@@ -18,7 +18,7 @@ This project is ready to share, but requires a little work to get everything sta
 
  - *Spreadsheets*: View collected data in a row and column format
  - *Reports*: Statistics and charts related to collected data
- - *Chart builde*r: Create custom charts and graphs out of collected data
+ - *Chart builder*: Create custom charts and graphs out of collected data
 
 **Assignments**
 
@@ -63,13 +63,15 @@ sudo apt-get install ruby
 
 4. **Download and install [LimeSurvey](https://www.limesurvey.org/en/#download)**
 
-5. **Configure reindeer yml files**
+5. **Download and install [Redis](http://redis.io/topics/quickstart)**
+
+6. **Configure reindeer yml files**
 There are several yml.example files in the config directory. These files need to be copied and have the .example extension removed. Look inside of each file and make the appropriate changes for your needs.
 
-6. **Configure reindeer database.yml**
+7. **Configure reindeer database.yml**
 Project Reindeer is a companion application to LimeSurvey and because of this it requires a shared database with limeSurvey to function. Be sure to copy the database information that was entered into LimeSurvey and use it when you are modifying the ./config/database.yml file in reindeer.
 
-7. **Setup database**
+8. **Setup database**
 ```bash
 # From the base directory
 
@@ -87,7 +89,7 @@ user.username = 'admin'
 user.email = 'user@example.com'
 user.save!
 ```
-9. **Start rails**
+10. **Start rails**
 ```bash
 rails s
 ```

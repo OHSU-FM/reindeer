@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :lime_survey do
     sequence(:sid) { |n| n + 12345}
     owner_id 1
@@ -14,32 +14,48 @@ FactoryGirl.define do
     allowregister 'Y'
     allowsave 'Y'
 
-    trait(:with_tables) do
+    trait :with_tables do
       active 'Y'
       after(:create) do |survey|
         create_min_survey(survey.sid)
       end
     end
 
-    trait(:with_response) do
+    trait :with_response do
       after(:create) do |survey|
         create_min_response(survey.sid)
       end
     end
 
-    trait(:full) do
+    trait :full do
+      transient do
+        opts {{}}
+      end
+
       active "Y"
-      after(:create) do |survey|
-        lg = create :lime_group, group_name: "SurveyData", sid: survey.sid
-        lqs = create_list(:lime_question, 4, gid: lg.gid, sid: survey.sid).map {|lq| lq.qid }
+      after(:create) do |survey, evaluator|
+        lg = create :lime_group, group_name: "SurveyData", lime_survey: survey
+        lqs = create_list(:lime_question, 4, lime_group: lg).map {|lq| lq.qid }
         create_min_survey(survey.sid, lg.gid, lqs)
-        create_min_response(survey.sid, lg.gid, lqs)
+        create_min_response(survey.sid, lg.gid, lqs, evaluator.opts)
       end
     end
 
-    trait(:with_languagesettings) do
+    trait :with_languagesettings do
       after(:create) do |survey|
-        survey.lime_surveys_languagesettings << FactoryGirl.build(:lime_surveys_languagesetting)
+        survey.lime_surveys_languagesettings << FactoryBot.build(:lime_surveys_languagesetting)
+      end
+    end
+
+    trait :with_plsg do
+      full
+      with_languagesettings
+
+      after(:create) do |survey|
+        create :role_aggregate, :ready, lime_survey: survey
+        plsg = create :pls_group, lime_survey: survey
+        survey.permission_ls_groups << plsg
+        survey.save!
       end
     end
 
@@ -100,7 +116,7 @@ def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
       CACHE 1;
 
   --
-  -- Name: lime_survey_#{sid}; Type: TABLE; Schema: public;
+  -- Name: lime_survey_#{sid}; Type: TABLE; Schema: #{LimeExt.schema};
   --
 
   CREATE TABLE #{LimeExt.table_prefix}_survey_#{sid} (
@@ -124,7 +140,7 @@ def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
       CACHE 1;
 
   --
-  -- Name: lime_tokens_#{sid}; Type: TABLE; Schema: public; Owner: sa; Tablespace:
+  -- Name: lime_tokens_#{sid}; Type: TABLE; Schema: #{LimeExt.schema}; Owner: sa; Tablespace:
   --
 
   CREATE TABLE #{LimeExt.table_prefix}_tokens_#{sid} (
@@ -151,14 +167,14 @@ def create_min_survey sid=12345, gid=123, lqs=[6036, 6037, 6068, 6039]
 
 
   --
-  -- Name: #{LimeExt.table_prefix}_tokens_#{sid}_pkey; Type: CONSTRAINT; Schema: public; Owner: sa; Tablespace:
+  -- Name: #{LimeExt.table_prefix}_tokens_#{sid}_pkey; Type: CONSTRAINT; Schema: #{LimeExt.schema}; Owner: sa; Tablespace:
   --
 
   ALTER TABLE ONLY #{LimeExt.table_prefix}_tokens_#{sid}
     ADD CONSTRAINT #{LimeExt.table_prefix}_tokens_#{sid}_pkey PRIMARY KEY (tid);
 
   --
-  -- Name: idx_token_token_#{sid}_18071; Type: INDEX; Schema: public; Owner: sa; Tablespace:
+  -- Name: idx_token_token_#{sid}_18071; Type: INDEX; Schema: #{LimeExt.schema}; Owner: sa; Tablespace:
   --
 
   CREATE INDEX idx_token_token_#{sid}_18071 ON #{LimeExt.table_prefix}_tokens_#{sid} USING btree (token);

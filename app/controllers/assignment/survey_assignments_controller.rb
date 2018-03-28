@@ -44,11 +44,11 @@ module Assignment
     protected
 
     def create_params
-      params.require(:assignment_assignment_group_template).permit!
+      params.require(:assignment_assignment_group_template).permit(:assignment_group_id, :lime_survey_sid, :title)
     end
 
     def update_params
-      params.require(:assignment_assignment_group_template).permit!
+      params.require(:assignment_assignment_group_template).permit(:assignment_group_id, :lime_survey_sid, :title)
     end
 
     def index_location

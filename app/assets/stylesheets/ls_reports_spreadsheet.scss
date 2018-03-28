@@ -1,0 +1,194 @@
+@import 'ls_reports_graph';
+
+.modal {
+    overflow: hidden;
+}
+
+.modal-dialog {
+  width: 60%;
+  margin: auto;
+}
+
+.spreadsheet-body {
+        background-color: #F2FFF2;
+    }
+
+.align-right {
+    text-align: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.modal-text-align-center {
+    text-align: center;
+}
+.centered-cell {
+  text-align: center;
+}
+
+.blue-italic {
+    font-weight: regular;
+    font-style: italic;
+    color: blue;
+    text-align: center;
+}
+
+.bold-italic {
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+.italic {
+    font-style: italic;
+}
+
+.table {
+    border-collapse:separate;
+    border:solid black 1px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius: 5px;
+}
+
+th {
+    background-color: #FFFFF2;
+    border-top: none;
+}
+
+td:first-child {
+     border-left: none;
+}
+
+.modal-body {
+    max-height: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.modal-dialog > div {
+    width: 1100px;
+}
+
+
+a {
+    cursor:pointer;
+}
+
+
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: 12px;
+    text-align: center;
+    top: 10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    -moz-box-shadow: 1px 1px 3px #000;
+    -webkit-box-shadow: 1px 1px 3px #000;
+    box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #00d9ff; }
+
+.borderless {
+    border: none;
+}
+
+.progress {
+  position: relative;
+  height: 31px;
+  background: rgb(255, 0, 0);
+  background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+  background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+}
+
+.comp-progress {
+  position: relative;
+  height: 25px;
+  background: rgb(255, 0, 0);
+  background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+  background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+}
+
+.amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: all 0.8s;
+  background: #E8FDD5;
+  width: 0;
+}
+
+.comp-amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: all 0.8s;
+  background: #E8FDD5;
+  width: 0;
+}
+
+.progress:before {
+  content: attr(data-amount)"% Complete";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  text-align: center;
+  line-height: 31px;
+}
+
+.comp-progress:before {
+  content: attr(comp-data-amount)"% Complete";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  text-align: center;
+  line-height: 31px;
+}
+
+
+/* tab color */
+.nav-tabs>li>a {
+  background-color: #555; 
+  border-color: #777777;
+  color:#fff;
+}
+
+/* active tab color */
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+  color: #fff;
+  background-color: #666;
+  border: 1px solid #888888;
+}
+
+/* hover tab color */
+.nav-tabs>li>a:hover {
+  border-color: #000000;
+  background-color: #111111;
+}

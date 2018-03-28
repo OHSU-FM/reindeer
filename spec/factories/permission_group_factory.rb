@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :permission_group do
     title { Faker::Lorem.sentence }
@@ -18,7 +18,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |pg, evaluator|
-        create_list(:user, evaluator.users_count, permission_group: pg)
+        create_list(:user_w_externals, evaluator.users_count, permission_group: pg)
       end
     end
 
