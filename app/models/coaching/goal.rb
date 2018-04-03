@@ -10,7 +10,7 @@ class Coaching::Goal < ApplicationRecord
   validates :competency_tag, inclusion: { in: VALID_COMPETENCY_TAGS }
   validates :g_status, inclusion: { in: VALID_STATUSES }
 
-  after_initialize :set_default_values
+  after_initialize :set_default_values, :set_default_values_for_room
 
   scope :completed, -> { where(g_status: "Completed") }
 
@@ -30,4 +30,12 @@ class Coaching::Goal < ApplicationRecord
     return unless g_status.nil?
     self.update(g_status: "Not Started")
   end
+
+  def set_default_values_for_room
+    return unless room.nil?
+    if !self.nil?
+      Room.create(discussable: self, identifier: "goal_room_#{self.id}")
+    end
+  end
+
 end

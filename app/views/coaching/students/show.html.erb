@@ -25,36 +25,29 @@
 
   <h3 class="goals-header">Coaching Documentation System</h3>
 
-  <div class="table-container">
-    <ul class="nav nav-tabs goal-tabs" role="tablist">
-      <li class="nav-item active">
-        <a class="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="true">Goals</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false">Meetings</a>
-      </li>
-    </ul>
+  <ul class="nav nav-tabs goal-tabs" role="tablist">
+    <li class="nav-item active">
+      <a class="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="true">Goals</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false">Meetings</a>
+    </li>
+  </ul>
 
-    <div class="tab-content">
-      <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
-        <div class="table-controls">
-          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal">Add new goal</button>
+  <div class="tab-content" style="height: 50%;">
+    <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
+      <div class="table-controls">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal">Add new goal</button>
 
-          <%= form_tag completed_goals_coaching_student_path(@student), method: :post, remote: true, name: "goal_checkbox", class: "complete-checkbox" do %>
-            <label for="goal_complete">Status</label>
-            <%= check_box "goal", "complete", {}, "yes", "no" %>
-            <label for="goal_complete">Completed?</label>
-          <% end %>
-
-          <%= form_tag search_goals_coaching_student_path(@student), method: :post, remote: true, class: "search-bar" do %>
-            <%= text_field_tag :goal_search, params[:goal_search], placeholder: "Search" %>
-            <%= submit_tag "Search", name: 'goal-search-btn' %>
-          <% end %>
-        </div>
+        <%= form_tag completed_goals_coaching_student_path(@student), method: :post, remote: true, name: "goal_checkbox", class: "complete-checkbox" do %>
+          <label for="goal_complete">Status</label>
+          <%= check_box "goal", "complete", {}, "yes", "no" %>
+          <label for="goal_complete">Completed?</label>
+        <% end %>
 
         <%= render partial: "goals_table" %>
       </div>
-
+    </div>
       <div class="tab-pane fade" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">
         <div class="table-controls">
           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newMeetingModal">Add new meeting</button>
@@ -67,12 +60,12 @@
 
         <%= render partial: "meetings_table" %>
       </div>
-    </div>
+
   </div>
 
   <div class="general-comments" id="room-identifier" data-room-number=<%= "#{@room_id}" %>>
     <div class="chat-wrapper">
-      <div id="general-messages">
+      <div class="general-messages" id="room-id-<%= "#{@room_id}" %>">
         <% @messages.each do |message| %>
           <%= render partial: "messages/message", locals: { message: message } %>
         <% end %>
@@ -80,7 +73,7 @@
 
       <% unless current_user.dean? %>
         <div class="room-speaker">
-          <input type="text" data-behavior="room_speaker" style="width: 100%" placeholder="type in here">
+          <input type="text" data-behavior="room_speaker" data-room-number=<%= "#{@room_id}" %> style="width: 40%" placeholder="type in here">
         </div>
       <% end %>
     </div>

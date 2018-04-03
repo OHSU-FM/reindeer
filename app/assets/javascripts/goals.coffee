@@ -1,3 +1,4 @@
+
 $(document).on 'click', '#cs-sidebar-toggle', (e) ->
   $('#cs-goals-nav').toggleClass('open')
 
@@ -8,11 +9,13 @@ $(document).on 'click', '#hide-detail', (e) ->
 $(document).on 'click', '.nav-item', (e) ->
   $('#cs-detail').removeClass('show-detail')
 
+
 $ ->
   $("#student-select").select2()
   $('.show-detail-button').on 'click', () ->
     $('#cs-detail').addClass('show-detail')
     $('#loading-spinner').show()
+
 
 $(document).on 'change', '.status-picker', (e) ->
   detailDiv = $(e.target).closest('div.show-detail')

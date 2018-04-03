@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
     define_method(role) do
       self.roles.include? role
     end
-  }
+ }
 
   def roles_enum
     ROLES.keys
@@ -372,7 +372,10 @@ class User < ActiveRecord::Base
   private
 
   def set_default_values
+    #byebug
     return unless room.nil?
-    Room.create(discussable: self, identifier: "student_room_#{self.id}")
+    if !self.nil?
+      Room.create(discussable: self, identifier: "student_room_#{self.id}")
+    end
   end
 end

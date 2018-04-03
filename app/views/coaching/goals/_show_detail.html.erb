@@ -25,6 +25,27 @@
 <div class="detail-section">
   <h4>Comments</h4>
   <div class="goal-comments">
-    they go here
+      <h1 id="room-identifier-goal" data-room-number=<%= "#{goal.room.id}" %>>chat</h1>
+
+      <div class="col-md-8 col-md-offset-2">
+        <div class="row">
+          <div id="room-id-<%= "#{goal.room.id}" %>">
+              <% goal.room.messages.each do |message| %>
+                <%= render partial: "/messages/message", locals: {message: message} %>
+            <% end %>
+
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+          <form style="width: 100%">
+              <input id="goal_comment_room" type="text" data-behavior="room_speaker_goal"
+              style="width: 100%" placeholder="type in here">
+          </form>
+        </div>
+      </div>
+
   </div>
 </div>

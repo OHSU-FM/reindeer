@@ -76,6 +76,7 @@ $paper:    #D5D5D5;
     font-size: 14px;
     padding-left: 15px;
     padding-right: 10px;
+    white-space: initial;
   }
 }
 
@@ -133,13 +134,14 @@ $paper:    #D5D5D5;
     max-height: 300px;
   }
 
-  > .general-comments > .chat-wrapper > #general-messages {
-    overflow-y: auto;
+  > .general-comments > .chat-wrapper > .general-messages {
+    overflow-y: scroll;
     max-height: 250px;
     position: fixed;
     bottom: 39px;
-    width: 100%;
+    width: 40%;
     padding: 0px 65px 10px 10px;
+    background-color: lightblue;
   }
 
   > .general-comments > .chat-wrapper > .room-speaker {

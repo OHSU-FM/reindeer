@@ -7,7 +7,7 @@ class Coaching::Meeting < ApplicationRecord
   validates_presence_of :subject, :date, :m_status, :location
   validates :m_status, inclusion: { in: VALID_STATUSES }
 
-  after_initialize :set_default_values
+  after_initialize :set_default_values, :set_default_values_for_meeting
 
   paginates_per 6
 
@@ -20,5 +20,10 @@ class Coaching::Meeting < ApplicationRecord
   def set_default_values
     return unless m_status.nil?
     update(m_status: "Scheduled")
+  end
+
+  def set_default_values_for_meeting
+    return unless room.nil?
+    Room.create(discussable: self, identifier: "meeting_room_#{self.id}")
   end
 end
