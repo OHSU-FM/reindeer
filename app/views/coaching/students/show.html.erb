@@ -45,6 +45,11 @@
           <label for="goal_complete">Completed?</label>
         <% end %>
 
+        <%= form_tag search_goals_coaching_student_path(@student), method: :post, remote: true, class: "search-bar" do %>
+          <%= text_field_tag :goal_search, params[:goal_search], placeholder: "Search" %>
+          <%= submit_tag "Search", name: 'goal-search-btn' %>
+        <% end %>
+
         <%= render partial: "goals_table" %>
       </div>
     </div>

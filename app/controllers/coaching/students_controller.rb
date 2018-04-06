@@ -21,9 +21,9 @@ module Coaching
 
     def completed_goals
       if params[:completed_goal].present? && params[:completed_goal] == "true"
-        @goals = User.find_by_username(params[:slug]).goals.completed
+        @goals = User.find_by_username(params[:slug]).goals.completed.page(params[:page])
       else
-        @goals = User.find_by_username(params[:slug]).goals
+        @goals = User.find_by_username(params[:slug]).goals.page(params[:page])
       end
 
       respond_to do |format|

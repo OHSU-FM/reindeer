@@ -372,7 +372,6 @@ class User < ActiveRecord::Base
   private
 
   def set_default_values
-    #byebug
     return unless room.nil?
     if !self.nil?
       Room.create(discussable: self, identifier: "student_room_#{self.id}")
