@@ -45,10 +45,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
 
-    if @pk == "_" 
+    if @pk == "_"
       if current_user.permission_group.title.include? "Students"
         @pk = current_user.email
-        get_all_blocks_data       
+        get_all_blocks_data
       end
     else
       get_all_blocks_data
@@ -66,7 +66,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
   def get_all_blocks_data
     @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings, @pk)
-    @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
+    if !@allblocks.empty?
+      @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
+    end
+
     @usmle_data = hf_get_usmle(@lime_survey.lime_surveys_languagesettings)
     @preceptorship = hf_get_preceptorship(@lime_survey.lime_surveys_languagesettings, @pk)
     @preceptor_view = @preceptorship.flatten
@@ -106,8 +109,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_class_mean = hf_competency_class_mean(@rs_data_unfiltered)
     gon.comp_class_mean = @comp_class_mean
 
+
     gon.allblocks = @allblocks
     gon.allblocks_class_mean = @allblocks_class_mean
+
     gon.preceptorship = @preceptorship
+
+
   end
 end

@@ -10,30 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170331215323) do
+ActiveRecord::Schema.define(version: 20180315182106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "assignment_comments", force: :cascade do |t|
+    t.integer  "user_assignment_id"
+    t.integer  "user_id"
+    t.text     "slug"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "assignment_group_id"
+    t.index ["assignment_group_id"], name: "index_assignment_comments_on_assignment_group_id", using: :btree
+    t.index ["user_assignment_id"], name: "index_assignment_comments_on_user_assignment_id", using: :btree
+    t.index ["user_id"], name: "index_assignment_comments_on_user_id", using: :btree
+  end
+
   create_table "assignment_group_templates", force: :cascade do |t|
+    t.integer  "permission_group_id"
     t.string   "title"
+    t.text     "permission_group_ids"
     t.text     "sids"
     t.text     "desc_md"
-    t.boolean  "active",     default: true
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.boolean  "active",               default: true
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["permission_group_id"], name: "index_assignment_group_templates_on_permission_group_id", using: :btree
   end
 
   create_table "assignment_groups", force: :cascade do |t|
+    t.integer  "user_id"
     t.integer  "assignment_group_template_id"
     t.string   "title"
     t.integer  "status"
     t.text     "desc_md"
+    t.text     "user_ids"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "cohort_id"
     t.index ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id", using: :btree
-    t.index ["cohort_id"], name: "index_assignment_groups_on_cohort_id", using: :btree
+    t.index ["user_id"], name: "index_assignment_groups_on_user_id", using: :btree
   end
 
   create_table "chart_series", force: :cascade do |t|
@@ -69,27 +85,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.datetime "updated_at",          null: false
     t.index ["permission_group_id"], name: "index_cohorts_on_permission_group_id", using: :btree
     t.index ["user_id"], name: "index_cohorts_on_user_id", using: :btree
-  end
-
-  create_table "comment_threads", force: :cascade do |t|
-    t.string   "threadable_type"
-    t.integer  "threadable_id"
-    t.integer  "first_user_id",   null: false
-    t.integer  "second_user_id",  null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
-
-  create_table "comments", force: :cascade do |t|
-    t.integer  "commentable_id"
-    t.string   "commentable_type"
-    t.text     "body"
-    t.string   "flagged_as"
-    t.integer  "user_id",          null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type", using: :btree
-    t.index ["user_id"], name: "index_comments_on_user_id", using: :btree
   end
 
   create_table "compentencies", force: :cascade do |t|
@@ -139,6 +134,41 @@ ActiveRecord::Schema.define(version: 20170331215323) do
 
   create_table "data_migrations", force: :cascade do |t|
     t.text "version", null: false
+  end
+
+  create_table "goals", force: :cascade do |t|
+    t.string   "name",           null: false
+    t.text     "description"
+    t.string   "g_status"
+    t.string   "competency_tag"
+    t.datetime "target_date"
+    t.integer  "user_id",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["user_id"], name: "index_goals_on_user_id", using: :btree
+  end
+
+  create_table "meetings", force: :cascade do |t|
+    t.string   "subject"
+    t.datetime "date"
+    t.string   "location"
+    t.string   "m_status"
+    t.text     "notes"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_meetings_on_user_id", using: :btree
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text     "content"
+    t.boolean  "archived",   default: false
+    t.integer  "user_id"
+    t.integer  "room_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.index ["room_id"], name: "index_messages_on_room_id", using: :btree
+    t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
   create_table "meta_attribute_entities", force: :cascade do |t|
@@ -294,14 +324,20 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string   "default_view",        limit: 255
   end
 
+  create_table "rooms", force: :cascade do |t|
+    t.string   "identifier"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "discussable_id"
+    t.string   "discussable_type"
+  end
+
   create_table "survey_assignments", force: :cascade do |t|
-    t.boolean  "as_inline",           default: false
+    t.boolean  "as_inline",       default: false
     t.string   "title"
-    t.integer  "lime_survey_sid",                     null: false
+    t.integer  "lime_survey_sid",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "assignment_group_id"
-    t.index ["assignment_group_id"], name: "index_survey_assignments_on_assignment_group_id", using: :btree
     t.index ["lime_survey_sid"], name: "index_survey_assignments_on_lime_survey_sid", using: :btree
   end
 
@@ -319,21 +355,6 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.string  "ident",      limit: 255
     t.string  "ident_type", limit: 255
     t.boolean "use_email",              default: false
-  end
-
-  create_table "user_responses", force: :cascade do |t|
-    t.string   "resp_type"
-    t.string   "title"
-    t.string   "category"
-    t.string   "status",             default: "0"
-    t.text     "content"
-    t.integer  "user_assignment_id"
-    t.string   "completion_target"
-    t.string   "status_explanation"
-    t.string   "owner_status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "submitdate"
   end
 
   create_table "users", force: :cascade do |t|
@@ -358,6 +379,7 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.integer  "permission_group_id"
     t.integer  "cohort_id"
     t.string   "ls_list_state",                      default: "dirty"
+    t.string   "coaching_type"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
     t.index ["username"], name: "index_users_on_username", unique: true, using: :btree
@@ -382,8 +404,13 @@ ActiveRecord::Schema.define(version: 20170331215323) do
     t.index ["version_note_id"], name: "index_versions_on_version_note_id", using: :btree
   end
 
+  add_foreign_key "assignment_comments", "assignment_groups"
+  add_foreign_key "assignment_comments", "user_assignments"
+  add_foreign_key "assignment_comments", "users"
   add_foreign_key "assignment_groups", "assignment_group_templates"
+  add_foreign_key "assignment_groups", "users"
   add_foreign_key "cohorts", "users"
-  add_foreign_key "survey_assignments", "assignment_groups"
+  add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
+  add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
   add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
 end
