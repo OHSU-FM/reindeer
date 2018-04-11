@@ -1113,7 +1113,7 @@ $(document).ready ->
         @code = 'all-comp'
         @graph_target = "data-visualization-" + "all-comp"
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
-      else if currentTab.includes("FoM Block")
+      else if currentTab.includes("FoM Blocks")
         return unless gon?
 
         @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''

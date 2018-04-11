@@ -11,7 +11,8 @@ module LsReports::ClinicalphaseHelper
                             '2' => "Effort",
                             '3' => "Threshold",
                             '4' => "Ready",
-                            '888' => "N/A"
+                            '888' => "Missing",
+                            '' => "Missing"
 
   }
 
@@ -181,6 +182,7 @@ module LsReports::ClinicalphaseHelper
 
   def get_data data
     temp_hash = {}
+
     submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.second  # return the actual date
     responses = data.select {|k,v| k.include? "SBP"}
     temp_data = responses.map {|k,v| v}
@@ -367,7 +369,7 @@ P"
     else
       thres_score = nil
     end
-    return thres_score.nil? ? "" : "(Threshold: #{thres_score.to_s}) /"
+    return thres_score.nil? ? "" : "(Passing Threshold: #{thres_score.to_s}) /"
 
   end
 
