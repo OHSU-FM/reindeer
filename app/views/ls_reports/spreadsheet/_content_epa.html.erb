@@ -27,15 +27,15 @@
 
     <ul id="MainTabs" class="nav nav-tabs">
         <li class="bold-italic"><a data-toggle="tab" href="#fom">FoM Block</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#preceptor">Preceptorship</a></li>   
-        <li class="bold-italic"><a data-toggle="tab" href="#scholarly">Scholarly Project</a></li>     
+        <li class="bold-italic"><a data-toggle="tab" href="#preceptor">Preceptorship</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#scholarly">Scholarly Project</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#transition">Transition Courses</a></li>
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>        
+        <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
         <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean"%>
             <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
         <% end %>
@@ -73,7 +73,7 @@
                           <% end %>
                         </tr>
                      <% end %>
-                </tbody>            
+                </tbody>
             </table>
         </div>
 
@@ -94,7 +94,7 @@
                      <tr><%= render partial: 'all_blocks_data' %></tr>
                 </tbody>
               </table>
-              
+
         </div>
 
         <div id="preceptor" class="tab-pane fade">
@@ -107,7 +107,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "TRAN 703" %>
+                          <% if x["CourseName"].include? "TRAN 703" or x["CourseName"].include? "TRAN 704"  %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -149,7 +149,7 @@
                      <% @rs_data.each do |x| %>
                         <tr>
                           <% if x["CourseName"].include? "INTS 771" or x["CourseName"].include? "INTS 772" or x["CourseName"].include? "INTS 773" or x["CourseName"].include? "INTS 774"%>
-                         
+
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>

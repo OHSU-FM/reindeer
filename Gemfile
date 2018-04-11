@@ -88,13 +88,14 @@ gem "statistics2"
 ##############################
 
 group :test, :development do
-  gem 'pg', '~>0.20.0' 
+  gem 'pg', '~>0.21' 
   gem "rspec-rails"
   gem "capybara"
   gem "rails-perftest"
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
+  gem 'pry'
 end
 
 group :test, :development do

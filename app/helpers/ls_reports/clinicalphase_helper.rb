@@ -1,6 +1,20 @@
 module LsReports::ClinicalphaseHelper
   include LsReportsHelper
 
+  PRECEPTOR_COMP_DEF = { "Beginning" => "<b>Beginning</b>: Performs the attribute inconsistently; improvement is needed, or does not yet perform.",
+                           "Effort" => "<b>Expending Effort</b>: Clearly trying to perform tasks.  Performs some aspects of the attribute consistently, but others aspects may not yet be skillful, complete, or accurate; the student demonstrates the attribute on some occasions.",
+                           "Threshold" => "<b>Teetering at the Threshold</b>: Almost clerkship ready.  Performs most aspets of the attribute consistently; the student successfully demonstrates this attribute on the majority of occasions. ",
+                           "Ready" => "<b>Ready for Clerkship</b>: Performs the attribute proficiently and reliably; the student consistently demonstrates this attribute."
+  }
+
+  DECODE_PRECEPTOR_COMP = { '1' => "Beginning",
+                            '2' => "Effort",
+                            '3' => "Threshold",
+                            '4' => "Ready",
+                            '888' => "N/A"
+
+  }
+
   BLOCKS = {  'FUND' => "Fundamentals",
               'BLHD' => "Blood & Host Defence",
               'SBM'  => "Skin, Bones & Musculature",
@@ -11,7 +25,45 @@ module LsReports::ClinicalphaseHelper
               "DEVH" => "Developing Human"
 
   }
+
+  COMP = { "SBP" => "Systems-Based Practice",
+           "PBLI" => "Practice-Based Learning & Improvement",
+           "PROF" => "Professionalism",
+           "ICS" => "Interpersonal & Communication Skills",
+           "PPPD" => "Professionalism and Personal & Professional Development",
+           "SBPIC" => "Systems‐Based Practice and Interprofessional Collaboration"
+  }
+
   GRAPH_COLOR = ["#8100ba", "#ff79c2", "#b52e2b", "#6cffb1", "#ff0066", "#fff631", "#6f9090"]
+
+
+  def hf_decode_preceptor_comp(in_code)
+      return DECODE_PRECEPTOR_COMP[in_code]
+  end
+
+  def hf_decode_comp(in_str)
+    if in_str.include? "SBP1"
+      return COMP["SBP"]
+    elsif in_str.include? "PBL1"
+      return COMP["PBLI"]
+    elsif in_str.include? "PBLI"
+      return COMP["PBLI"]
+    elsif in_str.include? "PROF1"
+      return COMP["PROF"]
+    elsif in_str.include? "ICS1"
+      return COMP["ICS"]
+    elsif in_str.include? "PPPD"
+      return COMP["PPPD"]
+    elsif in_str.include? "SBPIC"
+      return COMP["SBPIC"]
+    else
+      return "Invalid Preceptorship Competency Code"
+    end
+  end
+
+  def hf_precetor_comp_def(in_code)
+    return PRECEPTOR_COMP_DEF[in_code]
+  end
 
 
   def hf_desc(in_code)
@@ -75,6 +127,9 @@ module LsReports::ClinicalphaseHelper
   def hf_get_all_blocks(in_survey, pk)
     comp = {}
     rr = get_dataset(in_survey, "Foundation of Medicine", "All Blocks (Graph View)")
+    if rr.nil?
+      return comp  ## return empty hash array
+    end
     limegroups = rr.lime_survey.lime_groups
     lq = limegroups.first.lime_questions
     col_name = get_col_name(lq, "StudentEmail")

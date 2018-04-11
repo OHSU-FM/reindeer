@@ -247,25 +247,77 @@ reformat_in_data = (in_data) ->
   new_array = []
   sm_array = []
   i = 0
-  console.log ("in_data Length: ") + in_data.length
   while (i < 3)
     sm_array = []
     j = 0
     while (j < 4)
-      console.log ("in_data: j=" + j + "-> "  + in_data[j][i])
+      #console.log ("in_data: j=" + j + "-> "  + in_data[j][i])
       sm_array.push in_data[j][i]
       j = j + 1
     new_array.push sm_array
     i = i + 1
-  console.log ("new_array: " + new_array)
   return new_array
+
+generate_table = (target_idx, in_term, in_categories, in_array, graph_title, graph_sub_title) ->
+
+  console.log "graph_title: " + graph_title
+  console.log "graph_sub_title: " + graph_sub_title
+
+
+  $("#table-visualization-" + target_idx).remove
+  $("#table-visualization-" + target_idx).html ""
+  table = $("#table-visualization-" + target_idx)
+  row = "<tr><td colspan='3'style='text-align:center'>" + graph_title + "<br/>" + graph_sub_title+ "</td></tr>"
+  table.append(row)
+  col = ""
+  col = "<td>" + "<b>Competency</b>" + "</td>"
+  i = 0
+  columnCount = in_term.length
+  while i < columnCount
+    col = col +  "<td style='width:130px; text-align:center; '><b>" + in_term[i] + "</b></td>"
+    i++
+  content = "<tr style='height: 10px'>" + col + "</tr>"
+  table.append(content)
+
+  i = 0
+  while i < in_array.length
+    j = 0
+    col = ""
+    content = ""
+    col = "<td>" + in_categories[i] + "</td>"
+    while j < columnCount
+      href_tip = '<a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_precetor_comp_codes(' + in_array[i][j] + ')%>" >' + in_array[i][j] + '</a></span>'
+      col = col + "<td style='text-align:center; vertical-align:middle; border-width:thin; border-color:black'>" + in_array[i][j] + "</td>"
+      j++
+    content = "<tr>" + col + "</tr>"
+    table.append(content)
+    i++
+
+
+  $ ->
+    $('#table-visualization-' + target_idx + ' td').each ->
+      if $(this).text() == '1'
+        $(this).text("Beginning")
+        $(this).css 'background-color', 'lightyellow'
+      if $(this).text() == '2'
+        $(this).text("Effort")
+        $(this).css 'background-color', 'pink'
+      else if $(this).text() == '3'
+            $(this).text("Threshold")
+            $(this).css 'background-color', 'lightblue'
+      else  if $(this).text() == '4'
+            $(this).text("Ready")
+            $(this).css 'background-color', 'lightgreen'
+      else  if $(this).text() == '888'
+            $(this).text("N/A")
+            $(this).css 'background-color', 'lightpurple'
+      return
+    return
 
 
 build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2, graph_title, graph_sub_title) ->
   seriesArr = []
-  console.log "in_data: " + in_data
   series_names = in_categories #contains preceptorship terms
-
   arry_categories = []
   #arry_categories = in_categories
 
@@ -275,15 +327,17 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
     $.each in_data[item], (key, value) ->
       arry_categories.push key
       temp_array.push value
-  console.log "temp_array: " + temp_array
-  new_array = reformat_in_data(temp_array)
+  new_array = temp_array   #reformat_in_data(temp_array)
 
-  console.log "--> " + "new_array length: " + new_array.length
+ # shut it down and do it in the view
+  ##generate_table(idx, in_categories, arry_categories, new_array, graph_title, graph_sub_title)
+
 
   i = 0
+  j = new_array.length-1
   while (i < new_array.length)
-    console.log "new_array[i]: " + i + " --> " + new_array[i]
-    seriesArr.push {name: series_names[i], type: "bar", pointWidth: 24,  data: normalize(new_array[i])}
+    seriesArr.push {name: series_names[j], type: "bar", pointWidth: 24,  data: normalize(new_array[j])}
+    j = j - 1
     i = i + 1
 
       # the line of code below works well but not quite what we want
@@ -302,6 +356,7 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
       tickInterval: 1
       labels:
         enabled: true
+        style: color: 'black'
         formatter: ->
            return this.value;
     colors: [
@@ -327,9 +382,15 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
             min: 0
             max: 16
             title: {
-                text: 'Beginning -> Expending Effort -> Threshold -> Ready'
+                align: 'left',
+                floating: true,
+                useHTML: true;
+                text: '<p><b>Beginning</b>: Performs the attribute inconsistently; improvement is needed, or does not yet perform. </P>
+                <p><b>Expending Effort</b>: Clearly trying to perform tasks.  Performs some aspects of the attribute consistently, but others aspects may not yet be skillful, complete, <br />or accurate; the student demonstrates the attribute on some occasions.</p>
+                <p><b>Teetering at the Threshold</b>: Almost clerkship ready.  Performs most aspets of the attribute consistently; the student successfully demonstrates this attribute on the <br />majority of occasions. </p>
+                <p><b>Ready for Clerkship</b>: Performs the attribute proficiently and reliably; the student consistently demonstrates this attribute. </p>'
                 style: {
-                    color: Highcharts.getOptions().colors[2]
+                    color: 'purple'
                 }
             }
         }, {
@@ -352,6 +413,9 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
         }],
     tooltip: {
         shared: true
+    },
+    legend: {
+        reversed: true
     },
     plotOptions: {
         series: {
@@ -514,7 +578,8 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     categories = series_data_hash[0][3]["Term"]
     while i <= 4
         data = series_data_hash[i]
-        graph_target = "data-visualization-" + i
+        graph_target = "table-visualization-" + i
+        # commented out for now as Patty has decided to use table to display the graphs. 4/5/2018
         #categories = []
         #for item of data
         #  $.each data[item], (key, val) ->
@@ -522,7 +587,8 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
         #    categories.push key
 
         options = build_options_precept(i, data, mean_data, categories, graph_target, graph_title, graph_sub_title)
-        window.chart3[i] = Highcharts.chart($.extend(true, null, theme_light, options))
+
+        #window.chart3[i] = Highcharts.chart($.extend(true, null, theme_light, options))
         i = i + 1
   else
     series_data_1 = get_series_data(series_data_hash, in_code, "student")
