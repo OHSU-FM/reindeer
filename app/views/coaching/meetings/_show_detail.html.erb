@@ -24,7 +24,7 @@
   <h4>Comments</h4>
   <div class="meeting-comments">
          <h1 id="room-identifier-meeting" data-room-number=<%= "#{meeting.room.id}" %>>chat</h1>
-          <div class="col-md-8 col-md-offset-2">
+
             <div class="row">
               <div id="room-id-<%= "#{meeting.room.id}" %>">
                   <% meeting.room.messages.each do |message| %>
@@ -39,9 +39,9 @@
             <div class="row">
               <form style="width: 100%">
                   <input type="text" id="meeting_comment_room" data-behavior="room_speaker_meeting"
-                  style="width: 100%" placeholder="type in here">
+                    style="width: 100%" placeholder="type in here">
               </form>
             </div>
-          </div>
+
   </div>
 </div>

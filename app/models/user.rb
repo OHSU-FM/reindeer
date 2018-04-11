@@ -373,7 +373,7 @@ class User < ActiveRecord::Base
 
   def set_default_values
     return unless room.nil?
-    if !self.nil?
+    if !self.id.nil?
       Room.create(discussable: self, identifier: "student_room_#{self.id}")
     end
   end

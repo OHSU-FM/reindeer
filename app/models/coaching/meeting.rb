@@ -24,6 +24,8 @@ class Coaching::Meeting < ApplicationRecord
 
   def set_default_values_for_meeting
     return unless room.nil?
-    Room.create(discussable: self, identifier: "meeting_room_#{self.id}")
+    if !self.id.nil?
+      Room.create(discussable: self, identifier: "meeting_room_#{self.id}")
+    end
   end
 end

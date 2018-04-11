@@ -33,7 +33,7 @@ class Coaching::Goal < ApplicationRecord
 
   def set_default_values_for_room
     return unless room.nil?
-    if !self.nil?
+    if !self.id.nil?
       Room.create(discussable: self, identifier: "goal_room_#{self.id}")
     end
   end
