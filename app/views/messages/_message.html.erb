@@ -1,7 +1,7 @@
 <div class="message" id="message-<%= message.id %>">
   <p>
     <b><%= message.user.username %></b>
-    <%= message.content %>
+    <%= message.content %> - <%= message.created_at.strftime("%m/%d/%Y - %H:%M:%S %p") %>
     <% if current_user.admin_or_higher? %>
       <%= link_to "delete", '#', class: "btn btn-primary delete-message", data: { message_id: message.id } %>
     <% end %>

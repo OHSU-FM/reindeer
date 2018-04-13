@@ -127,15 +127,17 @@ $paper:    #D5D5D5;
     bottom: 0px;
     width: 100%;
     max-height: 300px;
+    padding-left: 24px;
   }
 
   > .general-comments > .chat-wrapper {
     position: relative;
-    max-height: 300px;
+    max-height: 350px;
+
   }
 
   > .general-comments > .chat-wrapper > .general-messages {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 250px;
     position: fixed;
     bottom: 39px;

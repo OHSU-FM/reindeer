@@ -13,6 +13,7 @@ window.cableCreate = (room_id) ->
 
       if data['message']
         $('#room-id-' + room_id).append data['message']
+        data['message'] = ""
       else if data['message_id']
         @removeMessage data['message_id']
       else

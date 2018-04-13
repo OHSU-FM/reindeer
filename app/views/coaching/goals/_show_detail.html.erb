@@ -29,7 +29,7 @@
 
         <div class="row">
           <div id="room-id-<%= "#{goal.room.id}" %>">
-              <% goal.room.messages.each do |message| %>
+              <% goal.room.messages.sort.each do |message| %>
                 <%= render partial: "/messages/message", locals: {message: message} %>
             <% end %>
 
