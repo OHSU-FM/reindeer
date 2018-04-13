@@ -183,13 +183,16 @@ module LsReports::ClinicalphaseHelper
   def get_data data
     temp_hash = {}
 
-    submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.second  # return the actual date
+    submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.secon
+    d  # return the actual date
     responses = data.select {|k,v| k.include? "SBP"}
     temp_data = responses.map {|k,v| v}
+
     temp_hash = {submit_date => temp_data}
     return temp_hash
 
   end
+
 
   def format_precept_data in_data
     r_array = []
@@ -210,6 +213,7 @@ module LsReports::ClinicalphaseHelper
     end
     return temp_array
   end
+
 
   def get_student_precept(in_data, question, sub_question)
     #locate the hash pair and return the value
@@ -296,13 +300,13 @@ module LsReports::ClinicalphaseHelper
           temp_key = "Step 1 USMLE Exam Date"
         elsif key.include? "CK01"
           temp_key = "Step 2 Clinical Knowledge Exam (Pass/Fail)"
-        elsif key.include? "CK02"
+        elsif ["Step2Exam", "CK02"].include? key
           temp_key = "Step 2 Clinical Knowledge Exam Score" + " (" + hf_get_threshold("STEP2CK") + ")"
-        elsif key.include? "CK03"
+        elsif ["Step2ExamDt", "CK03"].include? key
           temp_key = "Step 2 Clinical Knowledge Exam Date"
-        elsif key.include? "CS01"
+        elsif ["Step2ExamCS", "CS01"].include? key
           temp_key = "Step 2 Clinical Skill Exam Score" + " (" + hf_get_threshold("STEP2CS") + ")"
-        elsif key.include? "CS02"
+        elsif ["Step2ExamCSDT", "CS02"].include? key
           temp_key = "Step 2 Clinical Skill Exam Date"
         else
           temp_key = nil
@@ -343,9 +347,7 @@ module LsReports::ClinicalphaseHelper
   def hf_get_threshold (in_course_name)
     course_code = in_course_name.gsub(/"|\[|\]/, '').split(" ").first
 
-    if course_code.include? "STE
-
-P"
+    if course_code.include? "STEP"
       thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
       return thres_score.nil? ? "" : "Threshold: #{thres_score.to_s}"
     end
