@@ -11,11 +11,12 @@ module Coaching::StudentsHelper
   # returns the competency_tag hash with human readable version for translation
   def hf_competency_tags_for_select
     [
-      ["Patient Care (PC)", "pc"],
+      ["Interpersonal & Communication (ICS)", "ics"],
+      ["Patient Care & Procedures (PCP)", "pcp"],
       ["Practice Based Learning & Improvement (PBLI)", "pbli"],
       ["Medical Knowledge (MK)", "mk"],
-      ["Sysetms Based Practice (SBP)", "sbp"],
-      ["Professionalism (P)", "p"]
+      ["Sysetms Based Practice & Interprofessional Collaboration (SBPIC)", "sbpic"],
+      ["Professionalism and Personal & Professional Development (PPPD)", "pppd"]
     ]
   end
 
