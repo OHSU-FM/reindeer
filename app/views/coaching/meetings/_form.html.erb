@@ -1,27 +1,29 @@
-<%= form_for Coaching::Meeting.new, remote: true do |f| %>
+<%= form_for Coaching::Meeting.new, html: {class: "form-horizontal"}, remote: true do |f| %>
   <div class="form-group">
-    <%= f.label :subject %>
-    <%= f.text_field :subject, required: true %>
+    <%= f.label :subject, class: "control-label col-sm-2" %>
+    <%= f.text_field :subject, maxlength: 50, required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :location %>
-    <%= f.text_field :location %>
+    <%= f.label :location, class: "control-label col-sm-2" %>
+    <%= f.text_field :location, maxlength: 50 %>
   </div>
 
   <div class="form-group">
-    <%= f.label :notes %>
-    <%= f.text_area :notes %>
+    <%= f.label :notes, class: "control-label col-sm-2" %>
+    <%= f.text_area :notes, class: "col-sm-6" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :date %>
+    <%= f.label :date, class: "control-label col-sm-2" %>
     <%= f.date_field :date, required: true %>
   </div>
 
   <%= f.hidden_field :user_id, value: student.id %>
 
   <div class="form-group">
-    <%= f.submit "Save", class: 'btn btn-primary' %>
+    <div class="control-label col-sm-2">
+      <%= f.submit "Save", class: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>

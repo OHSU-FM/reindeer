@@ -6,8 +6,18 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
-      <%= render partial: "coaching/goals/form", locals: { student: @student } %>
+    <div class="modal-body row">
+      <div class="container col-sm-10">
+        <%= render partial: "coaching/goals/form", locals: { student: @student } %>
+      </div>
+      <div class="col-sm-2">
+          <p> I - Important </p>
+          <p> S - Specific </p>
+          <p> M - Measurable </p>
+          <p> A - Achievable</p>
+          <p> R - Realistic </p>
+          <p> T - Time-based </p>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
