@@ -136,6 +136,9 @@ module LsReports::ClinicalphaseHelper
     col_name = get_col_name(lq, "StudentEmail")
     comp_data = lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{col_name}"] == @pk}
+    if student_data.empty?
+       return {}  # missing in graph  view dataset
+    end
 
     limegroups.each do |grp|
         comp = {}
