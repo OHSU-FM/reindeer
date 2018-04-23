@@ -1,5 +1,5 @@
 class Coaching::Goal < ApplicationRecord
-  VALID_COMPETENCY_TAGS = ["pc", "pbli", "mk", "sbp", "p"]
+  VALID_COMPETENCY_TAGS = ["ics", "pcp", "pbli", "mk", "sbpic", "pppd"]
   VALID_STATUSES = ["Not Started", "Needs Work", "On Track", "Completed"]
 
   belongs_to :user, required: true

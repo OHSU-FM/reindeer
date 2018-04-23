@@ -46,7 +46,7 @@ module Coaching
 
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
         @meetings = @student.meetings
-        @messages = @student.room.messages
+        @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
 
         if current_user.student? && @student != current_user

@@ -7,9 +7,9 @@ window.cableCreate = (room_id) ->
       # Called when the subscription has been terminated by the server
 
     received: (data) ->
-      console.log( JSON.stringify(data, null, "-->    "))
-      console.log "messages: " + data['message']
-      console.log "room_id: " + room_id
+      #console.log( JSON.stringify(data, null, "-->    "))
+      #console.log "messages: " + data['message']
+      #console.log "room_id: " + room_id
 
       if data['message']
         $('#room-id-' + room_id).append data['message']
@@ -28,10 +28,6 @@ window.cableCreate = (room_id) ->
     removeMessage: (messageId) ->
       $('#message-' + messageId).remove()
 
-updateScroll = (room_id) ->
-  element = document.querySelector('#room-id-' + room_id)
-  element.scrollTop = element.scrollHeight - element.clientHeight
-  return
 
 $(document).on 'keypress', '[data-behavior~=room_speaker]', (e) ->
   if e.keyCode is 13 # enter/return
@@ -40,8 +36,9 @@ $(document).on 'keypress', '[data-behavior~=room_speaker]', (e) ->
     App.room.speak(msg, roomNumber)
     e.target.value = ''
     msg = ""
-    updateScroll(roomNumber)
     e.preventDefault()
+    $(".general-messages").scrollTop(1000)
+    console.log ("scrollHeight: " + $(".general-messages")[0].scrollHeight)
 
 $(document).on 'keypress', '[data-behavior~=room_speaker_goal]', (e) ->
   if e.keyCode is 13 # enter/return
@@ -70,18 +67,8 @@ $(document).on 'click', '.delete-message', (e) ->
   e.preventDefault()
 
 $(document).ready ->
-
   roomNumber = $("#room-identifier").data("room-number")
   window.cableCreate(roomNumber);
-
-
-  #$("#general_comment_room").focusin ->
-  #  $(this).css("border", "5px solid orange")
-  #  room_id = $("#room-identifier").data("room-number")
-    #alert ("general comment focusin: " + room_id)
-  #  cableCreate(room_id)
-  #  return
-
-
-
+  $(".general-messages").scrollTop($(".general-messages")[0].scrollHeight);
+  console.log "general-comments!"
   return
