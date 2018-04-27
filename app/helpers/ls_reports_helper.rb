@@ -54,7 +54,7 @@ module LsReportsHelper
   # needed for menu generation and translation
   MENU_HEADERS = {
                    "SA": "Student Assessment",
-                   "C": "Coaching",
+                   "C": "Coaching Feedbacks",
                    "EPA&C": "EPAs & Competencies",
                    "TE": "Teacher Evaluations",
                    "CE": "Course Evaluations",

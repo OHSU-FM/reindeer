@@ -49,6 +49,7 @@ module Coaching
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
 
+
         if current_user.student? && @student != current_user
           redirect_to root_path and return
         elsif current_user.coach?

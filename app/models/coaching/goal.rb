@@ -1,6 +1,6 @@
 class Coaching::Goal < ApplicationRecord
   VALID_COMPETENCY_TAGS = ["ics", "pcp", "pbli", "mk", "sbpic", "pppd"]
-  VALID_STATUSES = ["Not Started", "Needs Work", "On Track", "Completed"]
+  VALID_STATUSES = ["Not Started", "In Progress", "Needs Work", "On Track", "Completed"]
 
   belongs_to :user, required: true
   has_one :room, as: :discussable

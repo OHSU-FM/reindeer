@@ -8,7 +8,7 @@ window.cableCreate = (room_id) ->
 
     received: (data) ->
       #console.log( JSON.stringify(data, null, "-->    "))
-      #console.log "messages: " + data['message']
+      console.log "messages: " + data['message']
       #console.log "room_id: " + room_id
 
       if data['message']
@@ -30,14 +30,16 @@ window.cableCreate = (room_id) ->
 
 
 $(document).on 'keypress', '[data-behavior~=room_speaker]', (e) ->
+  $(".general-messages").scrollTop(10000)
   if e.keyCode is 13 # enter/return
     roomNumber = $("#room-identifier").data("room-number")
+    window.cableCreate(roomNumber)
     msg = e.target.value
     App.room.speak(msg, roomNumber)
     e.target.value = ''
     msg = ""
     e.preventDefault()
-    $(".general-messages").scrollTop(1000)
+    $(".general-messages").scrollTop(10000)
     console.log ("scrollHeight: " + $(".general-messages")[0].scrollHeight)
 
 $(document).on 'keypress', '[data-behavior~=room_speaker_goal]', (e) ->
@@ -68,7 +70,7 @@ $(document).on 'click', '.delete-message', (e) ->
 
 $(document).ready ->
   roomNumber = $("#room-identifier").data("room-number")
-  window.cableCreate(roomNumber);
-  $(".general-messages").scrollTop($(".general-messages")[0].scrollHeight);
-  console.log "general-comments!"
+  $(".general-messages").scrollTop(10000)
+  window.cableCreate(roomNumber)
+  console.log "room_id: " + roomNumber
   return
