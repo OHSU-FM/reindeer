@@ -2,7 +2,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   layout 'full_width'
   include LsReports::SpreadsheetHelper
   include LsReports::CompetencyHelper
-  include LsReports::AllblocksHelper
+  include LsReports::ClinicalphaseHelper
   ##
   # show lime_survey
   def show
@@ -44,15 +44,16 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
-    if @pk != "_"
-      @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings)
-      @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
 
+    if @pk == "_"
+      if current_user.permission_group.title.include? "Students"
+        @pk = current_user.email
+        get_all_blocks_data
+      end
+    else
+      get_all_blocks_data
     end
-
-    
     #@all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")
-
     if hf_found_competency(@response_sets)
       @rs_data.sort_by!{|obj| obj["SubmitDt"]}.reverse!
       export_to_gon
@@ -61,6 +62,17 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       @rs_data.sort_by!{|obj| obj["StartDt"]}
       render :show
     end
+  end
+
+  def get_all_blocks_data
+    @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings, @pk)
+    if !@allblocks.empty?
+      @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
+    end
+
+    @usmle_data = hf_get_usmle(@lime_survey.lime_surveys_languagesettings)
+    @preceptorship = hf_get_preceptorship(@lime_survey.lime_surveys_languagesettings, @pk)
+    @preceptor_view = @preceptorship.flatten
   end
 
 
@@ -96,6 +108,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     gon.all_comp_codes = hf_all_comp_codes
     @comp_class_mean = hf_competency_class_mean(@rs_data_unfiltered)
     gon.comp_class_mean = @comp_class_mean
+
+
+    gon.allblocks = @allblocks
+    gon.allblocks_class_mean = @allblocks_class_mean
+
+    gon.preceptorship = @preceptorship
 
   end
 end

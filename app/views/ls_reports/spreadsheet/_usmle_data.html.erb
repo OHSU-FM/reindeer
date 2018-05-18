@@ -1,0 +1,25 @@
+<table style="width: 30%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+  <tr><th><h3>USMLE Step Exams</h3></th><th></th></tr>
+  <tr>
+    <% @usmle_data.each do |data| %>
+      <% data.each do |key, val| %>
+        <tr>
+          <% if key.include? "Knowledge" %>
+            <td><font color="blue"><%= key %></font></td>
+            <td><font color="blue"><b><%= val %></b></font></td>
+          <% elsif  key.include? "USMLE" %>
+            <td><font color="#6f9090"><%= key %></font></td>
+            <td><font color="#6f9090"><b><%= val %></b></font></td>
+          <% elsif key.include? "Skill" %>
+            <td><font color="#b52e2b"><%= key %></font></td>
+            <td><font color="#b52e2b"><b><%= val %></b></font></td>        
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
+  </tr>
+ 
+  <tr>
+
+  </tr>
+</table>

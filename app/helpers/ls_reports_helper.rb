@@ -274,7 +274,7 @@ module LsReportsHelper
 
     ##
     # Add user lime permissions to lime_survey
-    def add_permission_group_filters
+    def add_permission_group_filters   
       unless @ability.can? :read, lime_survey
         raise LsReportsHelper::AccessDenied
       end

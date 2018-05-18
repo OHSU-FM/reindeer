@@ -6,6 +6,7 @@ source "https://rubygems.org"
 gem "bundler"
 gem 'rails', '5.0.0.1'
 gem "rdoc"
+gem 'pg', '~>0.21'
 
 # Database
 gem "pg", "~> 0.20"
@@ -96,6 +97,7 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
+  gem 'pry'
 end
 
 group :test, :development do
@@ -107,6 +109,7 @@ group :test, :development do
     gem "better_errors"
     gem "stackprof"
     gem "ruby-prof"
+    gem "pry"
   end
 end
 
