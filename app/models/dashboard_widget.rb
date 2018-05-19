@@ -1,5 +1,5 @@
 class DashboardWidget < ActiveRecord::Base
-  has_paper_trail
+  #has_paper_trail
 
   belongs_to :widget, polymorphic: true
   belongs_to :dashboard, inverse_of: :dashboard_widgets

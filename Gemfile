@@ -6,7 +6,7 @@ source "https://rubygems.org"
 gem "bundler"
 gem 'rails', '5.0.0.1'
 gem "rdoc"
-gem 'pg', '~>0.21'
+#gem 'pg', '~>0.21'
 
 # Database
 gem "pg", "~> 0.20"
