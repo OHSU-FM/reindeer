@@ -20,7 +20,7 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_files = true
+  #config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = :uglifier
@@ -28,7 +28,7 @@ Rails.application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = true
-
+  config.public_file_server.enabled = true
   # Generate digests for assets URLs.
   config.assets.digest = false
   config.assets.compress = false
@@ -89,4 +89,6 @@ Rails.application.configure do
           :exception_recipients => Settings.exception_notification.exception_recipients
       }
   end
+  config.action_cable.allowed_request_origins = ["https://redei-som.ohsu.edu"]
+  config.action_cable.url = "wss://redei-som.ohsu.edu/websocket" 
 end
