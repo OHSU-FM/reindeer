@@ -47,6 +47,6 @@
 //= require select2
 //= require simplemde.min
 //= require nested_form_fields
-//= require turbolinks
 //= require goals
 //= require cable
+//= reqiore turbolinks

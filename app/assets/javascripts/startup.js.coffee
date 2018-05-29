@@ -15,7 +15,9 @@ jQuery(document).ready ->
     # Show the modal "Page Loading" message if someone clicks on a modal-nav link
     $(document).on 'click', '.modal-click', ->
         $($(this).attr('data-target')).modal('show');
-        window.location.reload()
+        #$('#data-target').modal('show');
+        #window.location.reload()
+        console.log("document is on and clicked!");
         return
 
     $(document).on 'change', '.modal-change', ->

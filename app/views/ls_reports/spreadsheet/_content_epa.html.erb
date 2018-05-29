@@ -33,7 +33,7 @@
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams/CPX</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
         <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean"%>
@@ -95,6 +95,8 @@
                 </tbody>
               </table>
 
+              <%= render partial: 'preceptorship_data'%>
+
         </div>
 
         <div id="preceptor" class="tab-pane fade">
@@ -129,7 +131,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 770" %>
+                          <% if x["CourseName"].include? "INTS 770" or x["CourseName"].include? "CPX 702" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -210,7 +212,7 @@
                     <% overall_progress = overall_progress + hf_average_domain(@comp_hash3, key) %>
                <% end %>
                <% overall_progress = overall_progress / 6 %>
-                <tr>
+                <tr bgcolor="E5C5E8">
                     <td><span><b>All Domains</b>
                           <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-All">Chart
                           </button>

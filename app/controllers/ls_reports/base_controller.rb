@@ -67,6 +67,8 @@ class LsReports::BaseController < ApplicationController
     @unfiltered_label = @role_aggregate.get_pk_label.pluralize
     @filtered_label.pluralize if @fm.filters_equal
     @view_type = params[:view_type]
+
+
   end
 
   def export_to_gon
@@ -78,6 +80,8 @@ class LsReports::BaseController < ApplicationController
 
     gon.series_name = @fm.series_name
     gon.unfiltered_series_name = @fm.unfiltered_series_name
+
+
   end
 
   def will_view_raw_data?

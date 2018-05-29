@@ -48,7 +48,7 @@
         <% unless @hide_pk %>
           <!-- Residency Program Selector -->
           <div class="pull-right pad-right">
-            <b><%= @role_aggregate.pk_label %></b>
+            <b><%= @role_aggregate.pk_label %></b> <font color="red"><i>(please select a student below)</i></font>
             <br/>
             <select id="pk_selector" name="pk_selector" class="select_a_link form-control input-sm">
               <% @pk_enum.each do |key, val|%>
@@ -74,4 +74,4 @@
       </div>
     </li>
   </ul>
-</div>
+</iv>

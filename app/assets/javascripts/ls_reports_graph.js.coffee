@@ -458,6 +458,7 @@ window.LsReport.Graph.load = (target, graph_type, qstat, full_qstat, series_name
 
 $(document).ready ->
     return if $('body').attr('id') != 'ls_reports_graph'
+    console.log ("*** inside graph **")
     window.scroll_spy_init()
 
     window.charts = []

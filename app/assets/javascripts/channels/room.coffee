@@ -72,5 +72,5 @@ $(document).ready ->
   roomNumber = $("#room-identifier").data("room-number")
   $(".general-messages").scrollTop(10000)
   window.cableCreate(roomNumber)
-  console.log "room_id: " + roomNumber
+  #:wconsole.log "room_id: " + roomNumber
   return
