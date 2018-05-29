@@ -7,9 +7,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   # show lime_survey
   def show
     load_data
-
-    byebug
-
     cols = show_params[:cols].is_a?(Array) ? show_params[:cols] : []
     cols.map{|v|v.to_i}
     if @fm.not_found?
