@@ -379,6 +379,7 @@ module LsReportsHelper
   ##
   # Does this user have a widget for this pk, agg and question?
   def user_has_widget? user, question, pk, agg, view_type, graph_type
+
     !user.question_widgets.find{|qw|
       qw.lime_question_qid == question.qid &&
         qw.agg=agg.to_s && qw.pk==pk.to_s &&

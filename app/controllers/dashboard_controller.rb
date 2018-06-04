@@ -38,8 +38,9 @@ class DashboardController < ApplicationController
     @dash.assign_attributes(dashboard_params)
     authorize! :create, @dash
 
+
     respond_to do |format|
-      if @dash.save
+      if @dash.save!
         format.html{ redirect_to dashboard_path(@dash) }
         format.json{ render json: { dash: @dash }, status: :ok }
       else

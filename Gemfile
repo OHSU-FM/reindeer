@@ -140,3 +140,4 @@ gem 'rufus-scheduler'
 gem 'whenever', require: false
 gem 'nested_form_fields'
 gem 'turbolinks', '~> 5.0', '>= 5.0.1'
+gem 'rails-ujs', '~> 0.1.0'

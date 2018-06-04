@@ -49,13 +49,16 @@ $(document).ready ->
 
   ##
   # Mark question widget as submitted
-  $(document).on 'click', '.new_question_widget button[type="submit"]', (event) ->
-    event.preventDefault();
-    $(this).trigger("submit.rails");
-    return
+  # $(document).on 'click', '.new_question_widget button[type="submit"]', (event) ->
+  #   console.log "Add Question to Dashboard!"
+  #   event.preventDefault();
+  #   #nativeFormElement = $('.new_question_widget button[type="submit"]')[0]
+  #   #Rails.fire(nativeFormElement, 'submit')
+  #   $(this).submit;    trigger("submit.rails");
+  #   return
 
-  ##
-  # Mark question widget as successfully added on ajax success
+  #
+  #Mark question widget as successfully added on ajax success
   $(document).on 'ajax:before', '.new_question_widget', (event) ->
     $(this).find('button').
           removeClass('btn-primary').addClass('btn-default').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i>Adding to Dashboard...')
@@ -65,7 +68,7 @@ $(document).ready ->
   # Mark question widget as successfully added on ajax success
   $(document).on 'ajax:success', '.new_question_widget', (event, xhr, status) ->
     $(this).find('button').
-        removeClass('btn-primary').addClass('btn-success').prop('disabled', true).html(xhr.message)
+        removeClass('btn-primary').addClass('btn-success').prop('disabled', true).html("Added to Dashboard")
     return
 
   ##
