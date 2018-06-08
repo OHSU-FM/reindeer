@@ -439,13 +439,24 @@ build_options_precept = (idx, in_data, in_mean_data, in_categories, render_to_2,
     series: seriesArr
   }
 
+check_series_data = (in_data) ->
+  data_array = []
+  i = 0
+  while i < in_data.length
+    if in_data[i] < 70
+      data_array.push {y: in_data[i], color: '#FFA500'}
+    else
+      data_array.push in_data[i]
+    i++
+  return data_array
+
 build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub_title) ->
 
   seriesArr = []
 
   console.log ("build_options -> in_data: " + in_data)
 
-  seriesArr.push {name: get_desc(idx), type: "column", pointWidth: 12,  data: in_data, color: get_allblocks_color(idx)}
+  seriesArr.push {name: get_desc(idx), type: "column", pointWidth: 12,  data: check_series_data(in_data), color: get_allblocks_color(idx)}
   seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
 
   show_legend_1 = true

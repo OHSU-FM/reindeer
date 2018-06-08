@@ -15,7 +15,7 @@ module Coaching::StudentsHelper
       ["Patient Care & Procedures (PCP)", "pcp"],
       ["Practice Based Learning & Improvement (PBLI)", "pbli"],
       ["Medical Knowledge (MK)", "mk"],
-      ["Sysetms Based Practice & Interprofessional Collaboration (SBPIC)", "sbpic"],
+      ["Systems Based Practice & Interprofessional Collaboration (SBPIC)", "sbpic"],
       ["Professionalism and Personal & Professional Development (PPPD)", "pppd"]
     ]
   end

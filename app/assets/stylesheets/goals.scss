@@ -30,7 +30,7 @@ $paper:    #D5D5D5;
   transition: width 0.4s ease-in;
 
   &.open {
-    width: 250px;
+    width: 350px;
     transition: width 0.4s ease-out;
     padding: 0 15px 0 0;
     margin: 0px 0px 15px 0px;
@@ -116,7 +116,7 @@ $paper:    #D5D5D5;
   .main-table {
     margin: 0px 10px 0px 10px;
     max-width: 98%;
-
+    padding: 35px 70px 50px 90px;
     > td {
       vertical-align: middle;
     }
@@ -179,7 +179,7 @@ $paper:    #D5D5D5;
   &.show-detail {
     flex: 1 6 auto;
     order: 3;
-    width: 355px;
+    width: 555px;
     transition: width 0.3s ease-in;
     -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
     -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
@@ -267,4 +267,7 @@ $paper:    #D5D5D5;
 
 .grayed-out {
   opacity: 0.7;
+}
+.h4-general-comments {
+  padding: 25px 30px 30px 29px;
 }
