@@ -130,6 +130,13 @@ $paper:    #D5D5D5;
     padding-left: 24px;
   }
 
+ .h4-general-comments {
+    font-size: medium;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-bottom: 5px;
+  }
+
   > .general-comments > .chat-wrapper {
     position: relative;
     max-height: 350px;
@@ -138,7 +145,7 @@ $paper:    #D5D5D5;
 
   > .general-comments > .chat-wrapper > .general-messages {
     overflow-y: auto;
-    max-height: 150px;
+    max-height: 180px;
     position: fixed;
     bottom: 39px;
     width: 40%;
@@ -154,7 +161,7 @@ $paper:    #D5D5D5;
     position: fixed;
     bottom: 0px;
     width: 100%;
-    padding: 5px 65px 10px 10px;
+    padding: 5px 65px 10px 0px;
   }
 }
 
@@ -267,7 +274,4 @@ $paper:    #D5D5D5;
 
 .grayed-out {
   opacity: 0.7;
-}
-.h4-general-comments {
-  padding: 25px 30px 30px 29px;
 }
