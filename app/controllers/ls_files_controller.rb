@@ -38,6 +38,7 @@ class LsFilesController < ApplicationController
         end
 
         # Send the file
-        send_file fpath, :filename=>f_inf['name'], :type => 'application/octet-stream', :disposition=>:attachment, :x_sendfile=>true
+        # Commented out the following code as REDEI doesn't do file upload just yet
+        #send_file fpath, :filename=>f_inf['name'], :type => 'application/octet-stream', :disposition=>:attachment, :x_sendfile=>true
     end
 end

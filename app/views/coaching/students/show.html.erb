@@ -68,16 +68,13 @@
 
   </div>
 
-  <div class="w3-container">
-    <div class="h4-general-comments">General Comments</div>
 
-  </div>
   <div class="general-comments" id="room-identifier" data-room-number=<%= "#{@room_id}" %>>
-
+    <div class="w3-container">
+      <div class="h4-general-comments">General Comments</div>
+    </div>
     <div class="chat-wrapper">
-
       <div class="general-messages" id="room-id-<%= "#{@room_id}" %>">
-
         <% @messages.each do |message| %>
           <%= render partial: "messages/message", locals: { message: message } %>
         <% end %>

@@ -42,9 +42,11 @@ module Coaching
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
-        @student = User.find_by_username(params[:slug])
+        #@student = User.find_by_username(params[:slug])
+        @student = User.where("username = ?", params[:slug]).first
 
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
+
         @meetings = @student.meetings
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
