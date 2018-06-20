@@ -301,19 +301,21 @@ module LsReports::ClinicalphaseHelper
           temp_key = "Step 1 USMLE Exam Score" + " (" + hf_get_threshold("STEP1") + ")"
         elsif key.include? "Step1ExamDT"
           temp_key = "Step 1 USMLE Exam Date"
-        elsif key.include? "CK01"
+        elsif (key.include? "CKPassFail") or (key.include? "CK01")
           temp_key = "Step 2 Clinical Knowledge Exam (Pass/Fail)"
-        elsif ["Step2Exam", "CK02"].include? key
+        elsif (key.include? "CKExam") or (key.include? "CK02")
           temp_key = "Step 2 Clinical Knowledge Exam Score" + " (" + hf_get_threshold("STEP2CK") + ")"
-        elsif ["Step2ExamDt", "CK03"].include? key
+        elsif (key.include? "CKDT") or (key.include? "CK03")
           temp_key = "Step 2 Clinical Knowledge Exam Date"
-        elsif ["Step2ExamCS", "CS01"].include? key
+        elsif (key.include? "CSExam") or (key.include? "CS01")
           temp_key = "Step 2 Clinical Skill Exam Score" + " (" + hf_get_threshold("STEP2CS") + ")"
-        elsif ["Step2ExamCSDT", "CS02"].include? key
+        elsif (key.include? "CSDT") or (key.include? "CS02")
           temp_key = "Step 2 Clinical Skill Exam Date"
         else
           temp_key = nil
         end
+
+
 
         if !temp_key.nil?
           tmp_hash = {"#{temp_key}" => val}
@@ -351,7 +353,13 @@ module LsReports::ClinicalphaseHelper
     course_code = in_course_name.gsub(/"|\[|\]/, '').split(" ").first
 
     if course_code.include? "STEP"
-      thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
+      if  @student_year == "Med18"
+         thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med19"
+         thres_score = Threshold.Med19.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med20"
+         thres_score = Threshold.Med20.select {|s| s == course_code}.flatten.second
+      end
       return thres_score.nil? ? "" : "Threshold: #{thres_score.to_s}"
     end
     if course_code == "INTS"
