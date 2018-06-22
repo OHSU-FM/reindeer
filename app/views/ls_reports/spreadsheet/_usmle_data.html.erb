@@ -1,24 +1,34 @@
-<table style="width: 30%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+<table style="width: 40%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
   <tr><th><h3>USMLE Step Exams</h3></th><th></th></tr>
   <tr>
-    <% @usmle_data.each do |data| %>
-      <% data.each do |key, val| %>
+    <th></th>
+    <th>1st Attempt</th>
+    <th>2nd Attempt</th>
+  </tr>
+  <tr>
+    <% @usmle_data.each do |key, val| %>
         <tr>
           <% if key.include? "Knowledge" %>
             <td><font color="blue"><%= key %></font></td>
-            <td><font color="blue"><b><%= val %></b></font></td>
+              <% val.each do |v| %>
+               <td><font color="blue"><b><%= v %></b></font></td>
+              <% end %>
           <% elsif  key.include? "USMLE" %>
             <td><font color="#6f9090"><%= key %></font></td>
-            <td><font color="#6f9090"><b><%= val %></b></font></td>
+               <% val.each do |v| %>
+                 <td><font color="#6f9090"><b><%= v %></b></font></td>
+               <% end %>
           <% elsif key.include? "Skill" %>
             <td><font color="#b52e2b"><%= key %></font></td>
-            <td><font color="#b52e2b"><b><%= val %></b></font></td>        
+              <% val.each do |v| %>
+                 <td><font color="#b52e2b"><b><%= v %></b></font></td>
+              <% end %>
           <% end %>
         </tr>
-      <% end %>
+
     <% end %>
   </tr>
- 
+
   <tr>
 
   </tr>

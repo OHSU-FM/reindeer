@@ -295,27 +295,25 @@ module LsReports::ClinicalphaseHelper
       data.each do |key, val|
         tmp_hash = {}
         temp_key = nil
-        if key.include? "Step1PassFail"
+        if (key.include? "Step1PassFail") or (key.include? "RetestPF")
           temp_key = 'Step 1 USMLE Exam (Pass/Fail)'
-        elsif key.include? "Step1ExamScore"
+        elsif (key.include? "Step1ExamScore") or (key.include? "RetestExamScore")
           temp_key = "Step 1 USMLE Exam Score" + " (" + hf_get_threshold("STEP1") + ")"
-        elsif key.include? "Step1ExamDT"
+        elsif (key.include? "Step1ExamDT") or (key.include? "RetestExamDt")
           temp_key = "Step 1 USMLE Exam Date"
-        elsif (key.include? "CKPassFail") or (key.include? "CK01")
+        elsif (key.include? "CKPassFail") or (key.include? "CK01") or (key.include? "CKPFRetest")
           temp_key = "Step 2 Clinical Knowledge Exam (Pass/Fail)"
-        elsif (key.include? "CKExam") or (key.include? "CK02")
+        elsif (key.include? "CKExam") or (key.include? "CK02") or (key.include? "CKExamRetest")
           temp_key = "Step 2 Clinical Knowledge Exam Score" + " (" + hf_get_threshold("STEP2CK") + ")"
-        elsif (key.include? "CKDT") or (key.include? "CK03")
+        elsif (key.include? "CKDT") or (key.include? "CK03") or (key.include? "CKDTRetest")
           temp_key = "Step 2 Clinical Knowledge Exam Date"
-        elsif (key.include? "CSExam") or (key.include? "CS01")
+        elsif (key.include? "CSExam") or (key.include? "CS01") or (key.include? "CSExamRetest")
           temp_key = "Step 2 Clinical Skill Exam Score" + " (" + hf_get_threshold("STEP2CS") + ")"
-        elsif (key.include? "CSDT") or (key.include? "CS02")
+        elsif (key.include? "CSDT") or (key.include? "CS02") or (key.include? "CSDTRetest")
           temp_key = "Step 2 Clinical Skill Exam Date"
         else
           temp_key = nil
         end
-
-
 
         if !temp_key.nil?
           tmp_hash = {"#{temp_key}" => val}
@@ -323,6 +321,9 @@ module LsReports::ClinicalphaseHelper
         end
       end
     end
+    # remove duplicate hash-key in usmle save the values in array format
+    usmle = usmle.each_with_object({}) { |el, h| el.each { |k, v| h[k].nil? ? h[k] = v : h[k] = (Array.new([h[k]]) << v).flatten } }
+
     return usmle
 
   end
