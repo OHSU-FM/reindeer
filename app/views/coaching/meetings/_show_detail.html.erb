@@ -10,18 +10,18 @@
 
 <div class="detail-section">
   <h4>Meeting Details</h4>
-  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Passed", "Skipped", "Rescheduled"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
-  <div><i>Location: </i><%= meeting.location %></div>
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
+  <div><i>Contact Type: </i><%= meeting.location %></div>
   <div><i>Date: </i><%= meeting.date.strftime("%m/%d") %></div>
 </div>
 
 <div class="detail-section">
-  <h4>Notes</h4>
+  <h4>Meeting Summary</h4>
   <div><%= meeting.notes %></div>
 </div>
 
 <div class="detail-section">
-  <h4>Comments/Chat</h4>
+  <h4>Meeting Documentation</h4>
   <div class="meeting-comments">
          <h1 id="room-identifier-meeting" data-room-number=<%= "#{meeting.room.id}" %>></h1>
 

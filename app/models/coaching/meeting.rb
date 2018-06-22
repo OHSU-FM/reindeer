@@ -1,5 +1,5 @@
 class Coaching::Meeting < ApplicationRecord
-  VALID_STATUSES = ["Scheduled", "Passed", "Skipped", "Rescheduled"]
+  VALID_STATUSES = ["Scheduled", "Completed", "No Show", "Rescheduled"]
 
   belongs_to :user, required: true
 
