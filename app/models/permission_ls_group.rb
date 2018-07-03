@@ -43,7 +43,7 @@ class PermissionLsGroup < ActiveRecord::Base
 
     edit do
       field :ready_for_use?, :boolean do
-        read_only true
+       read_only true
       end
 
       field :permission_group do

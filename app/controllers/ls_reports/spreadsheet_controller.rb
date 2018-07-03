@@ -113,7 +113,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     gon.allblocks = @allblocks
     gon.allblocks_class_mean = @allblocks_class_mean
 
-    gon.preceptorship = @preceptorship
+    #gon.preceptorship = @preceptorship
+    #preceptorship data is not sent over to coffeescripts to process.
 
 
   end

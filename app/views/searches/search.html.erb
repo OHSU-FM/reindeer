@@ -1,0 +1,36 @@
+
+<h3>Search Result</h3>
+  <% if !@results.nil? %>
+    <table class="table table-hover main-table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Student Email </th>
+          <th>Permission Group</th>
+          <th>Coaching Type</th>
+          <th>DataSets</th>
+        </tr>
+      </thead>
+
+      <% @results.each do |result| %>
+        <tr>
+          <td> <%= result.full_name %></td>
+          <td> <%= result.email %></td>
+          <td> <%= result.permission_group.title %></td>
+          <td> <%= result.coaching_type %></td>
+          <td>
+            <% hf_datasets(result).each do |dataset| %>
+               <% sid = dataset.split(":").first %>
+               <% @pk = result.email %>
+               <%= link_to dataset, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
+                  :class=>"modal-click", 'data-target'=>'#modal-dataset' %> <br>
+
+
+            <% end %>
+          </td>
+
+        </tr>
+      <% end %>
+    </table>
+
+  <% end %>
