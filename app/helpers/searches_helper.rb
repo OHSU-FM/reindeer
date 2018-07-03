@@ -7,7 +7,7 @@ module SearchesHelper
         survey = s.lime_survey.title
         sid = s.lime_survey.sid
         if survey.include? "Foundation" or survey.include? "Core Clinical/Electives"
-           survey_array.push sid.to_s + ":" + survey.split(":").last
+           survey_array.push sid.to_s + "~" + survey
         end
       end
       return survey_array

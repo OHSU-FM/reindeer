@@ -8,6 +8,7 @@
           <th>Student Email </th>
           <th>Permission Group</th>
           <th>Coaching Type</th>
+          <th>Cohort</th>
           <th>DataSets</th>
         </tr>
       </thead>
@@ -18,13 +19,17 @@
           <td> <%= result.email %></td>
           <td> <%= result.permission_group.title %></td>
           <td> <%= result.coaching_type %></td>
+          <% if result.coaching_type == 'student' %>
+             <td> <%= result.cohort ? result.cohort.title : "Not Available"%></td>
+          <% else %>
+              <td> N/A </td>
+          <% end %>
           <td>
             <% hf_datasets(result).each do |dataset| %>
-               <% sid = dataset.split(":").first %>
+               <% sid = dataset.split("~").first %>
                <% @pk = result.email %>
-               <%= link_to dataset, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
+               <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
                   :class=>"modal-click", 'data-target'=>'#modal-dataset' %> <br>
-
 
             <% end %>
           </td>
