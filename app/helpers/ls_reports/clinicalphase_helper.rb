@@ -133,9 +133,11 @@ module LsReports::ClinicalphaseHelper
     end
     limegroups = rr.lime_survey.lime_groups
     lq = limegroups.first.lime_questions
-    col_name = get_col_name(lq, "StudentEmail")
+    student_email_col = rr.lime_survey.student_email_column
+
+    #col_name = get_col_name(lq, "StudentEmail")
     comp_data = lq.first.dataset
-    student_data = comp_data.select {|rec| rec["#{col_name}"] == @pk}
+    student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     if student_data.empty?
        return {}  # missing in graph  view dataset
     end
@@ -232,9 +234,10 @@ module LsReports::ClinicalphaseHelper
 
     limegroups = rr.lime_survey.lime_groups
     lq = limegroups.first.lime_questions
-    col_name = get_col_name(lq, "StudentEmail")
+    student_email_col = rr.lime_survey.student_email_column
+    #col_name = get_col_name(lq, "StudentEmail")
     comp_data = lq.first.dataset
-    student_data = comp_data.select {|rec| rec["#{col_name}"] == @pk}
+    student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     student_data = student_data.sort_by {|d| d["id"]}
 
     precept_hash = []
@@ -291,9 +294,11 @@ module LsReports::ClinicalphaseHelper
 
   def format_usmle(in_data)
     usmle = []
+    data_array = []
     in_data.each do |data|
       data.each do |key, val|
         tmp_hash = {}
+        data_array = []
         temp_key = nil
         if (key.include? "Step1PassFail") or (key.include? "RetestPF")
           temp_key = 'Step 1 USMLE Exam (Pass/Fail)'
@@ -316,7 +321,8 @@ module LsReports::ClinicalphaseHelper
         end
 
         if !temp_key.nil?
-          tmp_hash = {"#{temp_key}" => val}
+          data_array.push val
+          tmp_hash = {"#{temp_key}" => data_array}
           usmle.push tmp_hash
         end
       end
