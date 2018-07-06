@@ -13,12 +13,15 @@ module SearchesHelper
   def hf_datasets (result)
     survey_array = []
     if result.coaching_type == 'student'
+      
       surveygrps = result.permission_group.permission_ls_groups
       surveygrps = surveygrps.sort_by(&:updated_at)
       surveygrps.each do |s|
         survey = s.lime_survey.title
         sid = s.lime_survey.sid
-        if survey.include? "Graph View" or survey.include? "Remediation" or survey.include? "Core Clinical/Electives"
+        if current_user.superadmin? and !probe_dataset(s.lime_survey).empty?
+          survey_array.push sid.to_s + "~" + survey
+        elsif survey.include? "Graph View" or survey.include? "Remediation" or survey.include? "Core Clinical/Electives"
            if !probe_dataset(s.lime_survey).empty?
               survey_array.push sid.to_s + "~" + survey
            end

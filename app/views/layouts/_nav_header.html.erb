@@ -30,7 +30,8 @@
             </span>
             <div class="input-group-btn">
               <span>
-                <%= button_tag " SEARCH", :class => 'btn btn-info glyphicon glyphicon-search',:name => nil%>
+                <%= button_tag " SEARCH", :class => 'btn btn-info glyphicon glyphicon-search',:name => nil,
+                    'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> SEARCHING...".html_safe %>
               </span>
             </div>
           </div>
