@@ -100,7 +100,7 @@ get_allblocks_color = (k) ->
   else if k.includes('Comp3')
     return 'Plum'
   else if k.includes('Comp4')
-    return 'Khaki'
+    return '#4d88ff'   
   else if k.includes('Comp5')
     return 'LawnGreen'
   else

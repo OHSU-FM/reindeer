@@ -132,11 +132,11 @@ module LsReports::ClinicalphaseHelper
       return comp  ## return empty hash array
     end
     limegroups = rr.lime_survey.lime_groups
-    lq = limegroups.first.lime_questions
+    #lq = limegroups.first.lime_questions
     student_email_col = rr.lime_survey.student_email_column
 
     #col_name = get_col_name(lq, "StudentEmail")
-    comp_data = lq.first.dataset
+    comp_data = rr.lime_survey.dataset   #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     if student_data.empty?
        return {}  # missing in graph  view dataset
@@ -233,10 +233,10 @@ module LsReports::ClinicalphaseHelper
     rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
 
     limegroups = rr.lime_survey.lime_groups
-    lq = limegroups.first.lime_questions
+    #lq = limegroups.first.lime_questions
     student_email_col = rr.lime_survey.student_email_column
     #col_name = get_col_name(lq, "StudentEmail")
-    comp_data = lq.first.dataset
+    comp_data = rr.lime_survey.dataset  #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     student_data = student_data.sort_by {|d| d["id"]}
 

@@ -1,17 +1,22 @@
 class SearchesController < ApplicationController
   layout 'full_width_margins'
   def search
-
     if params[:search].blank?
       redirect_to(root_path, alert: "Empty field!") and return
     elsif current_user.coaching_type == 'coach'
         coach_search
-    elsif
+    elsif !params[:search].downcase.include? "med18"
       @parameter = params[:search].downcase + "%"
       @results = User.all.where("lower(full_name) LIKE :search", search: @parameter)
+    else
+      @med18_comp = Competency.all
+      @report_type = "Med18-Comp"
+
 
     end
   end
+
+  private
 
   def coach_search
     @results = []

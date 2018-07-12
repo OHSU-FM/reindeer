@@ -6,14 +6,12 @@ module SearchesHelper
     comp_data = lime_survey.lime_groups.first.lime_questions.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     return student_data
-
   end
-
 
   def hf_datasets (result)
     survey_array = []
     if result.coaching_type == 'student'
-      
+
       surveygrps = result.permission_group.permission_ls_groups
       surveygrps = surveygrps.sort_by(&:updated_at)
       surveygrps.each do |s|
