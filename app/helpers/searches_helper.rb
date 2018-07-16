@@ -38,4 +38,17 @@ module SearchesHelper
       return "graph"
     end
   end
+
+  def hf_dataset_sid in_param
+     in_param.gsub!('*', '')
+      clinical_survey = LimeSurveysLanguagesetting.where("lower(surveyls_title) LIKE :in_param",
+        in_param: 'sa:' + in_param.downcase + ':clinical phase:core clinical%')
+      return clinical_survey.first.surveyls_survey_id
+
+  end
+
+  def hf_student_year(in_code)
+    return "20" + in_code.downcase.split('med').second
+  end
+
 end

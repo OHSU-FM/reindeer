@@ -1,6 +1,6 @@
 
 
-<% if @report_type == "Med18-Comp"  %>
+<% if @class_mean_exist  %>
   <table class="table table-hover main-table">
       <thead>
         <tr>
@@ -16,10 +16,10 @@
           <th>SBPIC</th>
         </tr>
       </thead>
-    <% @med18_comp.each do |comp| %>
+    <% @class_comp.each do |comp| %>
       <tr>
         <td>
-          <%= link_to comp.student_name, polymorphic_path(['spreadsheet', :ls_report], sid: '917581', pk: comp.email),
+          <%= link_to comp.student_name, polymorphic_path(['spreadsheet', :ls_report], sid: @clinical_sid, pk: comp.email),
            :class=>"modal-click", 'data-target'=>'#modal-dataset' %> <br>
         </td>
         <td><%= comp.email %></td>

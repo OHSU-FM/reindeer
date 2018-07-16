@@ -1,17 +1,25 @@
 class SearchesController < ApplicationController
+  include SearchesHelper
+
   layout 'full_width_margins'
   def search
     if params[:search].blank?
-      redirect_to(root_path, alert: "Empty field!") and return
+      redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
     elsif current_user.coaching_type == 'coach'
         coach_search
-    elsif !params[:search].downcase.include? "med18"
+    elsif !params[:search].downcase.include? "*med"
       @parameter = params[:search].downcase + "%"
-      @results = User.all.where("lower(full_name) LIKE :search", search: @parameter)
+      @results = User.where("lower(full_name) LIKE :search", search: @parameter)
     else
-      @med18_comp = Competency.all
-      @report_type = "Med18-Comp"
+      @student_year = hf_student_year(params[:search])
+      @class_comp = Competency.where(student_year: @student_year)
 
+      if @class_comp.empty?
+        redirect_to(root_path, alert: "No records found for #{params[:search]}") 
+      else
+        @class_mean_exist = true
+        @clinical_sid = hf_dataset_sid(params[:search])
+      end
 
     end
   end
