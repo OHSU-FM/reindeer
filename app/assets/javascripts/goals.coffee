@@ -82,3 +82,13 @@ $.fn.clear_previous_errors = () ->
     $('.help-block', $(this)).html('')
     $(this).removeClass('has-error')
   return
+
+$(document).ready ->
+  $('a[data-toggle="tab"]').on 'show.bs.tab', (e) ->
+    localStorage.setItem 'activeTab', $(e.target).attr('href')
+    return
+  activeTab = localStorage.getItem('activeTab')
+  if activeTab
+    console.log ("activeTab: " + activeTab)
+    $('#myTab a[href="' + activeTab + '"]').tab 'show'
+  return

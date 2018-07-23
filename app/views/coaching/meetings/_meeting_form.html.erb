@@ -1,4 +1,4 @@
-<%= form_for Coaching::Meeting.new, html: {class: "form-horizontal"}, remote: true do |f| %>
+<%= form_for Coaching::Meeting.new, html: {class: "form-horizontal", id: "MeetingForm"}, remote: true do |f| %>
   <div class="form-group">
     <%= f.label :subject, class: "control-label col-sm-2" %>
     <%= f.text_field :subject, maxlength: 50, required: true %>

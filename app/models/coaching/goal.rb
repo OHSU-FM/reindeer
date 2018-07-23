@@ -1,4 +1,6 @@
 class Coaching::Goal < ApplicationRecord
+  has_paper_trail
+
   VALID_COMPETENCY_TAGS = ["ics", "pcp", "pbli", "mk", "sbpic", "pppd"]
   VALID_STATUSES = ["Not Started", "Needs Work", "On Track", "Completed"]
 
