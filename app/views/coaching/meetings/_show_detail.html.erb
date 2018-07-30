@@ -27,7 +27,7 @@
 
             <div class="row">
               <div id="room-id-<%= "#{meeting.room.id}" %>">
-                  <% meeting.room.messages.each do |message| %>
+                  <% meeting.room.messages.sort_by(&:created_at).each do |message| %>
                     <%= render partial: "/messages/message", locals: {message: message} %>
                 <% end %>
 

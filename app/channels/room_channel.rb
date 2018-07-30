@@ -1,5 +1,6 @@
 # Be sure to restart your server when you modify this file. Action Cable runs in a loop that does not support auto reloading.
 class RoomChannel < ApplicationCable::Channel
+include Coaching::MeetingsHelper
 
   def subscribed
     if !params[:room_id].nil?
@@ -15,6 +16,7 @@ class RoomChannel < ApplicationCable::Channel
   def speak data
     if data['message'] != ""
       Message.create! content: data['message'], user: current_user, room_id: data['roomNumber']
+      hf_send_email(current_user, data)
     end
   end
 

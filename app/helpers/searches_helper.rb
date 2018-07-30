@@ -19,8 +19,10 @@ module SearchesHelper
         sid = s.lime_survey.sid
         if current_user.superadmin? and !probe_dataset(s.lime_survey).empty?
           survey_array.push sid.to_s + "~" + survey
-        elsif survey.include? "Graph View" or survey.include? "Remediation" or survey.include? "Core Clinical/Electives"
-           if !probe_dataset(s.lime_survey).empty?
+        #elsif survey.include? "Graph View" or survey.include? "Remediation" or survey.include? "Core Clinical/Electives"
+
+        else
+          if !probe_dataset(s.lime_survey).empty?
               survey_array.push sid.to_s + "~" + survey
            end
         end

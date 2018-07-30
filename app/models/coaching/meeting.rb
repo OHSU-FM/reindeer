@@ -17,6 +17,7 @@ class Coaching::Meeting < ApplicationRecord
     self.where("subject like ? OR notes like ?", "%#{term}%", "%#{term}%")
   end
 
+
   private
 
   def set_default_values

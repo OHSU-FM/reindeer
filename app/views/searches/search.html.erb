@@ -49,9 +49,15 @@
         <td><%= '%2.0f' % comp.pppd %></td>
         <td><%= '%2.0f' % comp.sbpic %></td>
       </tr>
-
     <% end %>
+
   </table>
+  <div class="pagination-holder"
+    <% unless @class_comp.nil? %>
+      <%= paginate @class_comp %>
+      <%= page_entries_info @class_comp %>
+    <% end %>
+  </div>
 <% else %>
   <h3>Search Result</h3>
     <% if !@results.nil? %>
@@ -93,4 +99,6 @@
       </table>
     <% end %>
 <% end %>
+
+
   <%= render :partial=>'shared/modal_spinner2', :locals=>{:modal_id=>'modal-dataset', :message=>'Loading Dataset'}%>

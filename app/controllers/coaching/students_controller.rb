@@ -44,6 +44,7 @@ module Coaching
       def set_resources
         #@student = User.find_by_username(params[:slug])
         @student = User.where("username = ?", params[:slug]).first
+        @@student_g = @student
 
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
 
