@@ -7,7 +7,17 @@ module Coaching::MeetingsHelper
     discussable_id = Room.find(data['roomNumber']).discussable_id
     to_email = User.find(Coaching::Meeting.find(discussable_id).user_id).email
 
-   byebug
+    options = { :address          => "smtp.ohsu.edu",
+            :port                 => 25,
+            :domain               => 'redei-som.ohsu.edu',
+            :authentication       => 'plain',
+            :enable_starttls_auto => true  }
+
+
+
+    Mail.defaults do
+      delivery_method :smtp, options
+    end
 
     mail = Mail.new do
       mail.from = sender
@@ -16,11 +26,7 @@ module Coaching::MeetingsHelper
       mail.body = "THIS IS A TEST!"
     end
 
-
-
    mail.deliver!
-
-
 
   end
 

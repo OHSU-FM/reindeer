@@ -20,24 +20,32 @@ class SearchesController < ApplicationController
         @class_mean_exist = true
         @clinical_sid = hf_dataset_sid(params[:search])
       end
-
     end
-
-
   end
 
   private
+
+  def load_all_students cohorts
+    cohorts.each do |cohort|
+        cohort.users.each do |user|
+          @results.push user
+        end
+      end
+  end
 
   def coach_search
     @results = []
     @parameter = params[:search].downcase
     cohorts = current_user.cohorts
-    cohorts.each do |cohort|
-      cohort.users.each do |user|
-        if @parameter == "*"
-          @results.push user
-        elsif user.full_name.downcase.include? @parameter
-          @results.push user
+    if @parameter == "*"
+      load_all_students(cohorts)
+    else
+      cohorts.each do |cohort|
+        # Looking for med18, med19, etc in the title
+        if cohort.title.downcase.include? @parameter
+          cohort.users.each do |user|
+            @results.push user
+          end
         end
       end
     end
