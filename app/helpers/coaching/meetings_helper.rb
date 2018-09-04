@@ -26,7 +26,7 @@ module Coaching::MeetingsHelper
       mail.body = "THIS IS A TEST!"
     end
 
-   mail.deliver!
+   #mail.deliver!
 
   end
 
