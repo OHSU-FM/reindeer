@@ -2,7 +2,7 @@ class Coaching::Goal < ApplicationRecord
   has_paper_trail
 
   VALID_COMPETENCY_TAGS = ["ics", "pcp", "pbli", "mk", "sbpic", "pppd"]
-  VALID_STATUSES = ["Not Started", "Needs Work", "On Track", "Completed"]
+  VALID_STATUSES = ["Not Started", "Needs Work", "On Track", "Completed", "Update Goal Desc"]
 
   belongs_to :user, required: true
   has_one :room, as: :discussable

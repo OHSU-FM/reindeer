@@ -56,7 +56,7 @@ module Coaching
     end
 
     def goal_update_params
-      params.permit(:id, :g_status)
+      params.permit(:id, :g_status, :description )
     end
   end
 end

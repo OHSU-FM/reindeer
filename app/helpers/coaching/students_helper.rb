@@ -45,5 +45,13 @@ module Coaching::StudentsHelper
     link_to "#{title} <span class='#{icon}'></span>".html_safe, { column: column, direction: direction }
   end
 
+  def hf_get_label (current_user)
+    if  current_user.coaching_type == 'student'
+      return "Coach: #{current_user.cohort.title}"
+    else
+      return "Student: #{@student.full_name}"
+    end
+  end
+
 
 end
