@@ -1,12 +1,15 @@
 <div class="flex-child">
   <ul class="list-group list-group-root">
+    <% @coaches.sort_by!{|obj| obj["full_name"]} %>
     <% @coaches.each do |coach| %>
-      <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.display_name %></a>
+      <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.full_name %></a>
 
       <div class="list-group collapse" id="<%= coach.username %>">
-        <% coach.cohorts.map(&:users).flatten.each do |student| %>
+        <% coach.cohorts.map(&:users).flatten.sort_by{|u| [u.permission_group_id, u.full_name]}.each do |student| %>
           <div class="list-group-item student-with-goals">
-            <%= link_to "#{student.display_name}: #{pluralize(student.goals.count, 'goal')}", coaching_student_path(student) %>
+            <%= link_to "#{student.full_name}: #{pluralize(student.goals.count, 'goal')},
+                  #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
+                  coaching_student_path(student) %>
           </div>
         <% end %>
       </div>

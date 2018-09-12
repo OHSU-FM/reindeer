@@ -53,5 +53,21 @@ module Coaching::StudentsHelper
     end
   end
 
+  def hf_get_cohort student
+    if student.permission_group.title.include? "Med18"
+      return "MD18"
+    elsif student.permission_group.title.include? "Med19"
+      return "MD19"
+    elsif student.permission_group.title.include? "Med20"
+      return "MD20"
+    elsif student.permission_group.title.include? "Med21"
+      return "MD21"
+    elsif student.permission_group.title.include? "Med22"
+      return "MD22"
+    elsif student.permission_group.title.include? "Med23"
+      return "MD23"
+    end
+  end
+
 
 end
