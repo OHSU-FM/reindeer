@@ -279,9 +279,11 @@
                             <span><h4><p><font color="green">&emsp;Overall Progress</font></p></h4>
                             </span>
                             <span>
-                                <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
+                                <!-- Commented the progress graph out by Tracy request on 9/25/2018-->
+                                <!--<div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
                                   <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
                                 </div>
+                               -->
                             </span>
                         </td>
                     </tr>
@@ -304,11 +306,14 @@
                                     </font></h4>
                                 </span>
                                 <span>
-                                    <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
+                                    <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
+                                    <!--<div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
                                       <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
-                                    </div>
+                                      </div>
+                                    -->
                                 </span>
-                                <!--<%= hf_display_epa_detail(epa) %> -->
+                                <!--<%= hf_display_epa_detail(epa) %>
+                                -->
                             </td>
                         </tr>
                     <% end %>
