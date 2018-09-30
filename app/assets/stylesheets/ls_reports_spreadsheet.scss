@@ -223,3 +223,20 @@ div.precept-header {
   color: "#0d0d0d";
   background-color: "lightgray";
 }
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.column {
+  float: left;
+  padding: 10px;
+
+}
+.left {
+  width: 40%;
+}
+
+.right {
+  width: 60%;
+}

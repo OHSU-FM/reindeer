@@ -49,7 +49,7 @@ module LsReportsHelper
 
   def hf_group_title(title)
     title.include?(":") ? title.split(":").last(2).join(" - ") : title
-  end
+ a end
 
   # needed for menu generation and translation
   MENU_HEADERS = {

@@ -407,4 +407,95 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
+  def get_cpx_data student_cpx, key1, key2, data1, data2
+    data = []
+    if data2 == "Total Test"
+      key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key1}
+      val1 = student_cpx.map{|k| k[key[0]]}.first
+      key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key2}
+      val2 = student_cpx.map{|k| k[key[0]]}.first
+      total_score = val1.to_i + val2.to_i
+      data.push ""
+      data1 = total_score.to_s + data1
+      data.push data1
+      if total_score.to_i >= 204
+        data.push "P"
+      else
+        data.push "NP"
+      end
+      temp_hash = {}
+      temp_hash = {data2 => data}
+      return temp_hash
+    elsif data2 == "Attachment"
+          filecount_key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key1}
+          filecount = student_cpx.map{|k| k[filecount_key[0]]}.first  ## no. of attachment
+          rec_id = student_cpx.map{|k| k["id"]}.first  ## for the selected student
+          sid = filecount_key.first.split("X").first
+          q_id = filecount_key.first.split("X").last.split("_").first #split the string of ["961225X1049X12532_filecount"]
+          file_key = filecount_key.first.split("_").first
+          file_info = student_cpx.map{|k| k[file_key]}.first
+          file_name = JSON(file_info).first["name"]
+          temp_hash = {}
+          data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '">' + file_name + '</a>'
+          temp_hash = { data2 => data }
+          return temp_hash
+
+    end
+#<a href="/ls_files/961225/1/12532/Ager,%20Emily%20CPX%20Performance.pdf">Ager, Emily CPX Performance.pdf</a>
+
+    key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key1}
+    val = student_cpx.map{|k| k[key[0]]}.first
+    data.push val
+    key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key2}
+    val = student_cpx.map{|k| k[key[0]]}.first
+    data.push val.split(".").first
+    data.push data1
+    temp_hash = {}
+    temp_hash = {data2 => data}
+    return temp_hash
+
+  end
+
+  def format_cpx student_cpx
+    cpx = []
+    cpx.push get_cpx_data(student_cpx, "CIS6", "ICS5", "/292", "Total Test")
+    cpx.push get_cpx_data(student_cpx, "SEP1", "ICS5", "106/152", "Integrated Clinical Encounter (ICE)")
+    cpx.push get_cpx_data(student_cpx, "SEP1", "CIS6", "98/140", "Communication & Interpersonal Skills (CIS)")
+    cpx.push get_cpx_data(student_cpx, "SEP1", "SEP2", "P/NP", "Spoken English Proficiency (SEP)")
+    cpx.push get_cpx_data(student_cpx, "PEE1", "PEE2", "P/NP", "Post Encounter Exercises")
+    cpx.push get_cpx_data(student_cpx, "filecount", "", "", "Attachment")
+    return cpx
+  end
+
+  def hf_get_cpx in_survey
+    #SA:Med18:National Board Licensing Exams:USMLE Exams
+    rr = get_dataset(in_survey, "Clinical Phase", "Clinical Performance Exam (CPX)")
+    student_cpx = {}
+    student_data = []
+    limegroups = rr.lime_survey.lime_groups
+    limegroups.each do |grp|
+        lq = grp.lime_questions
+        col_name = get_col_name(lq, "StudentEmail")
+        if !col_name.nil?
+          cpx_data = lq.first.dataset
+          student_cpx = cpx_data.select {|rec| rec["#{col_name}"] == @pk}
+          student_data = format_cpx(student_cpx)
+          return student_data
+
+        end
+    end
+
+    #limegroups.each do |grp|
+    #  lq = grp.lime_questions
+    #  byebug
+    #  if lq.first.type == "|"  ## fileupload question
+    #    temp_hash = {}
+    #    temp_hash = {"Attachment" => lq}
+    #    byebug
+        #return student_data.push temp_hash
+    #  end
+    #end
+
+  end
+
 end

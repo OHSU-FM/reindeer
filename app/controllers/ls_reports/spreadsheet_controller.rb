@@ -70,6 +70,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
     end
 
+    @cpx_data = hf_get_cpx(@lime_survey.lime_surveys_languagesettings)
     @usmle_data = hf_get_usmle(@lime_survey.lime_surveys_languagesettings)
     @preceptorship = hf_get_preceptorship(@lime_survey.lime_surveys_languagesettings, @pk)
     @preceptor_view = @preceptorship.flatten

@@ -88,9 +88,13 @@
             <td>
               <% hf_datasets(result).each do |dataset| %>
                  <% sid = dataset.split("~").first %>
-                 <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
-                    :class=>"modal-click", 'data-target'=>'#modal-dataset' %> <br>
-
+                 <% if dataset.split("~").last.include? "Core Clinical/Electives" %>
+                     <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
+                        class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %> <br>
+                <% else %>
+                      <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
+                         class: "modal-click", 'data-target': '#modal-dataset' %> <br>                
+                <% end %>
               <% end %>
             </td>
 
