@@ -403,6 +403,9 @@ module LsReports::ClinicalphaseHelper
         col_name = get_col_name(lq, "StudentEmail")
         usmle_data = lq.first.dataset
         student_usmle = usmle_data.select {|rec| rec["#{col_name}"] == @pk}
+        if student_usmle.empty?
+          return {}
+        end
         return format_usmle(student_usmle)
     end
   end
@@ -416,7 +419,7 @@ module LsReports::ClinicalphaseHelper
       val2 = student_cpx.map{|k| k[key[0]]}.first
       total_score = val1.to_i + val2.to_i
       data.push ""
-      data1 = total_score.to_s + data1
+      data1 = "<b>" + total_score.to_s + "</b>" + data1
       data.push data1
       if total_score.to_i >= 204
         data.push "P"
@@ -437,8 +440,11 @@ module LsReports::ClinicalphaseHelper
           file_name = JSON(file_info).first["name"]
           temp_hash = {}
           data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '">' + file_name + '</a>'
+          data.push "" # filler for cols
+          data.push ""
           temp_hash = { data2 => data }
           return temp_hash
+
 
     end
 #<a href="/ls_files/961225/1/12532/Ager,%20Emily%20CPX%20Performance.pdf">Ager, Emily CPX Performance.pdf</a>
@@ -448,7 +454,14 @@ module LsReports::ClinicalphaseHelper
     data.push val
     key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key2}
     val = student_cpx.map{|k| k[key[0]]}.first
-    data.push val.split(".").first
+    if key2 == "ICS5"
+      data.push "<b>" + val.split(".").first + "</b>"+ "/152"
+    elsif key2 == "CIS6"
+      data.push "<b>" + val.split(".").first + "</b>"+ "/140"
+    else
+      data.push "<b>" + val + "</b>"
+    end
+
     data.push data1
     temp_hash = {}
     temp_hash = {data2 => data}
@@ -470,6 +483,9 @@ module LsReports::ClinicalphaseHelper
   def hf_get_cpx in_survey
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "Clinical Phase", "Clinical Performance Exam (CPX)")
+    if rr.nil?
+      return {}
+    end
     student_cpx = {}
     student_data = []
     limegroups = rr.lime_survey.lime_groups
@@ -479,6 +495,9 @@ module LsReports::ClinicalphaseHelper
         if !col_name.nil?
           cpx_data = lq.first.dataset
           student_cpx = cpx_data.select {|rec| rec["#{col_name}"] == @pk}
+          if student_cpx.empty?
+             return {}
+          end
           student_data = format_cpx(student_cpx)
           return student_data
 

@@ -49,7 +49,7 @@ module LsReportsHelper
 
   def hf_group_title(title)
     title.include?(":") ? title.split(":").last(2).join(" - ") : title
- a end
+  end
 
   # needed for menu generation and translation
   MENU_HEADERS = {
@@ -274,7 +274,7 @@ module LsReportsHelper
 
     ##
     # Add user lime permissions to lime_survey
-    def add_permission_group_filters   
+    def add_permission_group_filters
       unless @ability.can? :read, lime_survey
         raise LsReportsHelper::AccessDenied
       end

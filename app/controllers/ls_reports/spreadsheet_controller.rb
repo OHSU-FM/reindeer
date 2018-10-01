@@ -65,14 +65,15 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   end
 
   def get_all_blocks_data
-    @allblocks = hf_get_all_blocks(@lime_survey.lime_surveys_languagesettings, @pk)
+    surveys = @lime_survey.lime_surveys_languagesettings
+    @allblocks = hf_get_all_blocks(surveys, @pk)
     if !@allblocks.empty?
-      @allblocks_class_mean = hf_get_all_blocks_class_mean(@lime_survey.lime_surveys_languagesettings)
+      @allblocks_class_mean = hf_get_all_blocks_class_mean(surveys)
     end
 
-    @cpx_data = hf_get_cpx(@lime_survey.lime_surveys_languagesettings)
-    @usmle_data = hf_get_usmle(@lime_survey.lime_surveys_languagesettings)
-    @preceptorship = hf_get_preceptorship(@lime_survey.lime_surveys_languagesettings, @pk)
+    @cpx_data = hf_get_cpx(surveys)
+    @usmle_data = hf_get_usmle(surveys)
+    @preceptorship = hf_get_preceptorship(surveys, @pk)
     @preceptor_view = @preceptorship.flatten
   end
 
