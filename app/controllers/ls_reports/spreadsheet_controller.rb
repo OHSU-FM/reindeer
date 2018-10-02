@@ -73,6 +73,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     @cpx_data = hf_get_cpx(surveys)
     @usmle_data = hf_get_usmle(surveys)
+    @shelf_attachments = hf_get_shelf_attachments(surveys)
     @preceptorship = hf_get_preceptorship(surveys, @pk)
     @preceptor_view = @preceptorship.flatten
   end

@@ -121,7 +121,7 @@
               </table>
         </div>
          <div id="shelfexams" class="tab-pane fade">
-               <%= render partial: 'ls_reports/spreadsheet/usmle_data' %>
+              <%= render partial: 'ls_reports/spreadsheet/usmle_data' %>
               <table style="width: 100%;" class="table table-condensed table-striped table-hover spreadsheet-body">
                 <tbody>
                      <tr>
@@ -139,9 +139,10 @@
                           <% end %>
                         </tr>
                      <% end %>
-
                 </tbody>
               </table>
+           <%= render partial: 'ls_reports/spreadsheet/shelf_attachments' %>
+
         </div>
 
         <div id="intersessions" class="tab-pane fade">

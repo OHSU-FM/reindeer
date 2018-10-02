@@ -442,6 +442,7 @@ module LsReports::ClinicalphaseHelper
           data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '">' + file_name + '</a>'
           data.push "" # filler for cols
           data.push ""
+
           temp_hash = { data2 => data }
           return temp_hash
 
@@ -503,17 +504,54 @@ module LsReports::ClinicalphaseHelper
 
         end
     end
+  end
 
-    #limegroups.each do |grp|
-    #  lq = grp.lime_questions
-    #  byebug
-    #  if lq.first.type == "|"  ## fileupload question
-    #    temp_hash = {}
-    #    temp_hash = {"Attachment" => lq}
-    #    byebug
-        #return student_data.push temp_hash
-    #  end
-    #end
+
+ def load_attachments student_attach
+   attach_array = []
+   filecount_key = student_attach.map{|k| k.keys}.first.select {|k| k.include? "filecount"}
+   filecount = student_attach.map{|k| k[filecount_key[0]]}.first  ## no. of attachment
+   if filecount.to_s != ""
+     rec_id = student_attach.map{|k| k["id"]}.first  ## for the selected student
+     sid = filecount_key.first.split("X").first
+     q_id = filecount_key.first.split("X").last.split("_").first #split the string of ["961225X1049X12532_filecount"]
+     file_key = filecount_key.first.split("_").first
+     file_info = student_attach.map{|k| k[file_key]}.first
+     attachments = JSON(file_info)
+     attachments.each do |attach|
+       ls_file = '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + attach["name"] + '">' + attach["name"] + '</a>'
+       attach_array.push ls_file
+     end
+     return attach_array
+   else
+     return []
+   end
+ end
+
+
+  def hf_get_shelf_attachments in_survey
+    rr = get_dataset(in_survey, "Clinical Phase", "Shelf Exam Score Reports")
+    if rr.nil?
+      return {}
+    end
+    shelf_attachments = []
+    limegroups = rr.lime_survey.lime_groups
+    limegroups.each do |grp|
+        lq = grp.lime_questions
+        col_name = get_col_name(lq, "StudentEmail")
+        if !col_name.nil?
+          student_data = lq.first.dataset
+          student_attach = student_data.select {|rec| rec["#{col_name}"] == @pk}
+          if student_attach.empty?
+             return []
+          end
+          shelf_attachments = load_attachments(student_attach)
+          return shelf_attachments
+
+        end
+    end
+
+
 
   end
 
