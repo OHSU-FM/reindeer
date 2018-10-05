@@ -2,7 +2,7 @@
             <td><%= x["EndDt"] %></td>
             <td><%= x["SubmitDt"] %></td>
             <td><%= x["Eval"] %> </td>
-            <td><%=  hf_get_threshold(x["CourseName"]) + x["FinalGrade"]%></td>
+            <td><%=  hf_get_threshold(x["CourseName"]) + hf_parse_grade(x["FinalGrade"]) %></td>
             <td><%= x["ProfConcerns"] %></td>
             <td><%= x["CommProfConcerns"] %></td>
             <td><%= x["MSPE"] %></td>

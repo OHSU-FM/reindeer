@@ -25,8 +25,8 @@ module LsReports::SpreadsheetHelper
                 end
             end
         end
-        return result        
-    end 
+        return result
+    end
 
     def hf_transpose_response_sets response_sets
 
@@ -76,10 +76,10 @@ module LsReports::SpreadsheetHelper
 
         end
         return result
-    end 
+    end
 
     def hf_transpose_questions response_sets
-        result = {} 
+        result = {}
         response_sets.each do |rs|
             pquestion = rs.question
             result[rs.title] =  pquestion.question
@@ -93,9 +93,33 @@ module LsReports::SpreadsheetHelper
 
         response_sets.each do |rs|
             if rs.title.include? "ICS1"
-                return true 
+                return true
             end
         end
         return false
-    end 
+    end
+
+   def hf_parse_grade json_str
+     begin
+       arry = JSON.parse(json_str)
+       return arry["Grade"]
+     rescue
+       return json_str
+     end
+   end
+
+   def hf_check_display_json json_str
+     begin
+       arry = JSON.parse(json_str)
+       long_str = ""
+       long_str += "<table>"
+       arry.each do |key, value|
+         long_str += "<tr><td>#{key}</td><td>#{value}</td><tr>"
+       end
+       long_str += "</table>"
+       return long_str
+     rescue
+       return json_str
+     end
+   end
 end

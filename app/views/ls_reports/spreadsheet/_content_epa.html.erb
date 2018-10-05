@@ -198,7 +198,7 @@
                         <td><%= x["EndDt"] %></td>
                         <td><%= x["SubmitDt"] %></td>
                         <td><%= x["Eval"] %> </td>
-                        <td><%= x["FinalGrade"] %></td>
+                        <td><%= hf_parse_grade(x["FinalGrade"]) %></td>
                     </tr>
                  <% end %>
                 </tbody>
