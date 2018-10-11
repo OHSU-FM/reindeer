@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  helper :all
+
   before_action :authenticate_user!
   before_action :dynamic_destroy, only: :update
   helper_method :auto_path
@@ -16,7 +18,6 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, ActionController::BadRequest,
     ActionController::RoutingError,
-    ActionController::UnknownController,
     ActionController::MethodNotAllowed do |exception|
     respond_to do |format|
       format.html { render 'errors/file_not_found', status: 404 }

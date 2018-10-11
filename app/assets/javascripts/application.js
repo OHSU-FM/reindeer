@@ -10,21 +10,23 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require rails-ujs
+//= require jquery3
+//= require jquery_ujs
 //= require jquery.min.js
 //= require jquery-ui
+//= require rails-ujs
+//= require popper
+//= require bootstrap-sprockets
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
-//= require bootstrap
 //= require bootstrap-notify.js
 //= require notify.js
 //= require intro.js
-//= require modern-business/modern-business.js
+// require modern-business/modern-business.js
 //= require cocoon
-//= require highcharts/highcharts.js
-//= require highcharts/highcharts-more.js
+//= require highcharts
+//= require highcharts/highcharts-more
 //= require highcharts/highcharts-3d.js
 //= require startup.js
 //= require scrollspy.js
@@ -39,8 +41,6 @@
 //= require ls_reports_graph.js
 //= require ls_reports_spreadsheet.js
 //= require sync_triggers.js
-//= require dataTables/dataTables.js
-//= require dataTables/extensions/TableTools/js/dataTables.tableTools.js
 //= require sessions.js
 //= require animations.js
 //= require form-utils.js
@@ -50,3 +50,4 @@
 //= require goals
 //= require cable
 //= reqiore turbolinks
+//= require datatables

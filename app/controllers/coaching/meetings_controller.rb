@@ -1,6 +1,8 @@
 module Coaching
   class MeetingsController < ApplicationController
 
+    helper  :all
+
     def create
       @meeting = Meeting.create meeting_params
 

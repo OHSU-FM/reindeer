@@ -669,6 +669,8 @@ class @Dashboard.Gui
 $(document).ready ->
     return if $('body').attr('id') != 'dashboard'
 
+    $(".navbar-form").prop('disabled', true);
+    console.log ("Inside Dasboard!")
     # Debug ability, add variables to global namespace
     window.dashboards = []
     window.charts = [];

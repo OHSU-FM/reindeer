@@ -17,6 +17,7 @@ Rails.application.configure do
   # Show full error reports and enable caching for reports controller
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = ENV['RAILS_CACHE'].to_s == '1'
+  config.action_controller.include_all_helpers = false
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
