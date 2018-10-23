@@ -1,4 +1,4 @@
-class ExtendMetaAttributes < ActiveRecord::Migration
+class ExtendMetaAttributes < ActiveRecord::Migration[4.2]
   def change
 
     create_table :meta_attribute_entities do |t|

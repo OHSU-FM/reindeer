@@ -16,7 +16,6 @@ This project is ready to share, but requires a little work to get everything sta
 
 **Data exploration**
 
- - *Spreadsheets*: View collected data in a row and column format
  - *Reports*: Statistics and charts related to collected data
  - *Chart builder*: Create custom charts and graphs out of collected data
 
@@ -93,4 +92,3 @@ user.save!
 ```bash
 rails s
 ```
-

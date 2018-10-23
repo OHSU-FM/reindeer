@@ -11,20 +11,6 @@ admin:
         pick users allowed to use template
         give title
         enabled / disabled
-coach:
-    group:
-        pick surveys from template list to create
-        pick any users to assign a survey
-        alter title, description
-        enable / disable
-        order surveys
-
-    survey:
-        alter description
-        create user_assignments for users in user_list
-
-    user_assignment:
-        make and respond to comments
 
 student:
     user_assignment:
@@ -56,5 +42,3 @@ student:
 
     - Versioned datasets
         - When updating via reindeer-etl in the web interface have an option to automatically version the dataset
-
-

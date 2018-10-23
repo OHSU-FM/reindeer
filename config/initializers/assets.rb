@@ -18,7 +18,6 @@ Rails.application.config.assets.precompile += %w( print.css
     reports.css   reports.js
     charts.css    charts.js
     dashboard.css dashboard.js
-    ls_reports_spreadsheet.css
     devise_sessions.css
     users.css users.js
     settings_sync_triggers.css
@@ -27,8 +26,5 @@ Rails.application.config.assets.precompile += %w( print.css
     dataTables/*
     goals.css
     action_plan_items.css
-    rooms.css
-    coaching_students.css
     cable.js
-    searches.css
     )

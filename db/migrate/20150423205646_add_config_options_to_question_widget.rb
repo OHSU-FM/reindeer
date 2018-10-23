@@ -1,4 +1,4 @@
-class AddConfigOptionsToQuestionWidget < ActiveRecord::Migration
+class AddConfigOptionsToQuestionWidget < ActiveRecord::Migration[4.2]
   def up
       ActiveRecord::Base.transaction do
           add_column :question_widgets, :view_type, :string 

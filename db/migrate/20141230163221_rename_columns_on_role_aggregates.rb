@@ -1,4 +1,4 @@
-class RenameColumnsOnRoleAggregates < ActiveRecord::Migration
+class RenameColumnsOnRoleAggregates < ActiveRecord::Migration[4.2]
     ##
     # Add fields to role_aggregates project
     def change

@@ -1,4 +1,4 @@
-class CreateUserExternals < ActiveRecord::Migration
+class CreateUserExternals < ActiveRecord::Migration[4.2]
   def change
     create_table :user_externals do |t|
         t.references :user, :null => false 

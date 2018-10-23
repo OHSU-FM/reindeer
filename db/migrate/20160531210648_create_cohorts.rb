@@ -1,4 +1,4 @@
-class CreateCohorts < ActiveRecord::Migration
+class CreateCohorts < ActiveRecord::Migration[4.2]
   def up
     create_table :cohorts do |t|
       t.references :user, index: true, foreign_key: true
@@ -7,18 +7,7 @@ class CreateCohorts < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-
-    change_table :assignment_groups do |t|
-      t.remove :user_id
-      t.remove :user_ids
-      t.references :cohort, index: true
-    end
-
-    change_table :assignment_group_templates do |t|
-      t.remove :permission_group_ids
-      t.remove :permission_group_id
-    end
-
+  
     change_table :users do |t|
       t.belongs_to :cohort
     end
@@ -26,17 +15,6 @@ class CreateCohorts < ActiveRecord::Migration
 
   def down
     drop_table :cohorts
-
-    change_table :assignment_groups do |t|
-      t.references :user, index: true, foreign_key: true
-      t.text :user_ids
-      t.remove :cohort_id
-    end
-
-    change_table :assignment_group_templates do |t|
-      t.references :permission_group, index: true
-      t.text :permission_group_ids
-    end
 
     change_table :users do |t|
       t.remove :cohort_id

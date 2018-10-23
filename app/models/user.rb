@@ -18,15 +18,8 @@ class User < ActiveRecord::Base
   has_many :permission_ls_groups, through: :permission_group
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
-  has_many :goals, -> { order 'created_at DESC' }, class_name: 'Coaching::Goal',
-    dependent: :destroy
-  has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
-  has_many :messages, dependent: :destroy
-  has_one :room, as: :discussable
 
   has_one :dashboard, dependent: :destroy
-
-  has_one :competency, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -40,8 +33,6 @@ class User < ActiveRecord::Base
   }
 
   validate :ldap_cannot_update_password
-
-  after_initialize :set_default_values
 
   def ldap_cannot_update_password
     if is_ldap? && encrypted_password_changed?
@@ -65,7 +56,6 @@ class User < ActiveRecord::Base
     can_chart: 1,
     can_lime: 1,
     can_lime_all: 1,
-    can_view_spreadsheet: 1,
     can_create_assignment_group: 1,
 
     # Role permissions
@@ -112,24 +102,6 @@ class User < ActiveRecord::Base
 
   def roles_enum
     ROLES.keys
-  end
-
-  COACHING_ROLES = {
-    'dean': 30,
-    'coach': 20,
-    'student': 10
-  }
-
-  # define "#{role}?" style getters for coaching system
-  COACHING_ROLES.each do |role, val|
-    define_method("#{role.to_s}?") do
-      coaching_type == role.to_s
-    end
-
-    define_method("#{role.to_s}_or_higher?") do
-      return true if admin_or_higher?
-      COACHING_ROLES[coaching_type.to_sym] >= val
-    end
   end
 
   def title
@@ -290,7 +262,7 @@ class User < ActiveRecord::Base
         :user_externals, :current_sign_in_at, :sign_in_count, :permission_ls_groups,
         :reset_password_sent_at, :dashboard, :charts, :remember_created_at,
         :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip,
-        :participant, :can_stats, :can_reports, :can_lime, :can_view_spreadsheet, :can_lime_all
+        :participant, :can_stats, :can_reports, :can_lime, :can_lime_all
     end
 
     exclude_fields [:roles]
@@ -304,7 +276,7 @@ class User < ActiveRecord::Base
       @role_aggregates = RoleAggregate.includes(:lime_survey=>[
         :lime_surveys_languagesettings,
         :lime_groups=>[:lime_questions]
-      ]).select{|ra|ra.ready_for_use?}
+      ])
     else
       @role_aggregates = permission_group.present? ? permission_group.role_aggregates_for(self) : []
     end
@@ -369,14 +341,5 @@ class User < ActiveRecord::Base
     return @cohorts if defined? @cohorts
     @cohorts ||= admin_or_higher? ? Cohort.all : Cohort.where(owner: self)
     return @cohorts
-  end
-
-  private
-
-  def set_default_values
-    return unless room.nil?
-    if !self.id.nil?
-      Room.create(discussable: self, identifier: "student_room_#{self.id}")
-    end
   end
 end

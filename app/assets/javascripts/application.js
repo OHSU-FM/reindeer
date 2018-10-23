@@ -37,7 +37,6 @@
 //= require ls_reports.js
 //= require ls_reports_filter.js
 //= require ls_reports_graph.js
-//= require ls_reports_spreadsheet.js
 //= require sync_triggers.js
 //= require dataTables/dataTables.js
 //= require dataTables/extensions/TableTools/js/dataTables.tableTools.js
@@ -47,6 +46,5 @@
 //= require select2
 //= require simplemde.min
 //= require nested_form_fields
-//= require goals
 //= require cable
 //= reqiore turbolinks

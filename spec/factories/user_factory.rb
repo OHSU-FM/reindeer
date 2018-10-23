@@ -20,22 +20,6 @@ FactoryBot.define do
       admin true
     end
 
-    trait :coach do
-      coaching_type 'coach'
-
-      transient do
-        cohorts_count 2
-      end
-
-      after :build do |c, evaluator|
-        create_list(:cohort, evaluator.cohorts_count, :with_users, owner: c)
-      end
-    end
-
-    factory :student do
-      coaching_type 'student'
-    end
-
     trait :with_uex do
       after(:build) do |usr|
         usr.user_externals << build(:user_external, user: usr)
@@ -49,7 +33,6 @@ FactoryBot.define do
     factory :no_permissions_user, traits: [:with_no_permissions]
     factory :superadmin, traits: [:superadmin]
     factory :admin, traits: [:admin]
-    factory :coach, traits: [:coach, :with_uex]
     factory :user_w_externals, traits: [:with_uex]
   end
 end

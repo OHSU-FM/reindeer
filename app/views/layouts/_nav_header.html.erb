@@ -19,22 +19,6 @@
         <% end %>
       <% end %>
     </div>
-    <% if current_user.coaching_type != 'student' %>
-          <%= form_tag(search_searches_path, method: "get", class: 'navbar-form navbar-left') do %>
-            <div class="input-group">
-                <span>
-                  <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "Student Last-Name"%>
-                </span>
-              <div class="input-group-btn">
-                <span>
-                  <%= button_tag " SEARCH", class: 'btn btn-info glyphicon glyphicon-search', html: {autocomplete: 'off'},
-                      'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> SEARCHING...".html_safe %>
-                </span>
-              </div>
-            </div>
-          <% end %>
-      <% end %>
-
 
     <div id="nav-links" class="collapse navbar-collapse">
       <ul class="nav navbar-nav pull-right">
@@ -43,31 +27,7 @@
         <% end %>
 
         <% if can? :list, LimeSurvey %>
-          <%= nav_link_to("Coaching Documentation System", coaching_index_path)  %>
-          <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>
-          <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
-            <div class="btn-group btn navbar-btn ">
-              <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %><span class="caret"></span></button>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <% first_level.each do |first_level_item, second_level| %>
-                <% if first_level.keys.count > 1 %>
-                <li class="dropdown-submenu">
-                  <a tabindex="-1" href="#"><%= first_level_item %></a>
-                  <ul class="dropdown-menu">
-                    <% end %>
-                    <% second_level.each do |sub_menu_item, s| %>
-                    <%= nav_link_to(sub_menu_item, main_app.ls_reports_path(group_filter: "#{top_link}:#{first_level_item}:#{sub_menu_item}")) %>
-                    <% end %>
-                    <% if first_level.keys.count > 1 %>
-                  </ul>
-                </li>
-                <% end %>
-                <% end %>
-              </ul>
-            </div>
-          </li>
-        <% end %>
-        <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
+          <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
         <% end %>
 
         <% if current_user.present? %>

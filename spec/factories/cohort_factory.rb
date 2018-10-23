@@ -1,7 +1,6 @@
 FactoryBot.define do
   factory :cohort do
     permission_group
-    association :owner, factory: :coach
 
     trait :with_users do
       transient do

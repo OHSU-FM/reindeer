@@ -1,7 +1,5 @@
 class LimeQuestion < ActiveRecord::Base
 
-  include LsReports::CompetencyHelper
-
   class LimeQuestionAttributes < ActiveRecord::Base
     self.table_name = "lime_question_attributes"
     alias_attribute :xattribute, :attribute

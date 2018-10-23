@@ -16,11 +16,6 @@ class Ability
       other_users_permissions user
     end
 
-    # coaching system abilities
-    if ["coach", "student", "dean"].include? user.coaching_type
-      self.send("#{user.coaching_type}_permissions", user)
-    end
-
     # Do not allow people to:
     # - alter the flow of time
     # - change the course of known history
@@ -107,7 +102,6 @@ class Ability
       end
     end
 
-    # If a user is allowed to view a given survey and they can 'view_spreadsheet' then allow them to view it
     can :read_raw_data, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
         has_ls = user.role_aggregates.map{|ra| ra.lime_survey_sid }.include? lime_survey.sid
@@ -125,35 +119,5 @@ class Ability
     if user.lime_user
       can :access, :lime_server
     end
-  end
-
-  def student_permissions user
-    can :read, Student
-    can :create, Coaching::Goal
-    can :create, Coaching::Meeting
-    can :modify, Coaching::Goal do |goal|
-      goal.user == user
-    end
-    can :modify, Coaching::Meeting do |m|
-      m.user == user
-    end
-  end
-
-  def coach_permissions user
-    can :read, Student
-    can :create, Coaching::Goal
-    can :create, Coaching::Meeting
-    can :modify, Coaching::Goal do |goal|
-      user.cohorts.include? goal.user.cohort
-    end
-    can :modify, Coaching::Meeting do |m|
-      user.cohorts.include? m.user.cohort
-    end
-  end
-
-  def dean_permissions user
-    can :read, Student
-    can :read, Coaching::Goal
-    can :read, Coaching::Meeting
   end
 end

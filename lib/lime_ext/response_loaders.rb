@@ -526,14 +526,14 @@ module LimeExt::ResponseLoaders
 
     ## array with multiple text (2-dimensional array)
     #
-    class ResponseSetArrMultText < ResponseSetGeneric
+    class ResponseSetArrMultText < ResponseSetGenericParent
 
       def data_labels
         return {}
       end
 
       def data
-        #return @data if defined? @data
+        # return @data if defined? @data
         @data = []
         question.sub_questions.each do |sub_question|
           @data.push ResponseSetGeneric.new sub_question,

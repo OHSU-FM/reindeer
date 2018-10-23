@@ -1,4 +1,4 @@
-class AlterQuestionWidget < ActiveRecord::Migration
+class AlterQuestionWidget < ActiveRecord::Migration[4.2]
 
   def up
     # Add title to widgets

@@ -1,4 +1,4 @@
-class CreateDashboard < ActiveRecord::Migration
+class CreateDashboard < ActiveRecord::Migration[4.2]
   def change
     create_table :dashboards do |t|
         t.references :user

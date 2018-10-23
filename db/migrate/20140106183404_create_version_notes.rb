@@ -1,4 +1,4 @@
-class CreateVersionNotes < ActiveRecord::Migration
+class CreateVersionNotes < ActiveRecord::Migration[4.2]
   def change
     create_table :version_notes do |t|
       t.text :note      

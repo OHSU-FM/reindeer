@@ -53,13 +53,6 @@ module LsReportsHelper
 
   # needed for menu generation and translation
   MENU_HEADERS = {
-                   "SA": "Student Assessment",
-                   "C": "Coaching Feedback",
-                   "EPA&C": "EPAs & Competencies",
-                   "TE": "Teacher Evaluations",
-                   "CE": "Course Evaluations",
-                   "P/LSE": "Preceptor/Learning Setting Evaluation",
-                   "O": "Other"
   }.stringify_keys!
 
   # sorts ls titles available to user
@@ -274,7 +267,7 @@ module LsReportsHelper
 
     ##
     # Add user lime permissions to lime_survey
-    def add_permission_group_filters   
+    def add_permission_group_filters
       unless @ability.can? :read, lime_survey
         raise LsReportsHelper::AccessDenied
       end

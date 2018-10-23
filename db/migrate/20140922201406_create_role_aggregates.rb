@@ -1,4 +1,4 @@
-class CreateRoleAggregates < ActiveRecord::Migration
+class CreateRoleAggregates < ActiveRecord::Migration[4.2]
   def change
     create_table :role_aggregates do |t|
       t.string :email_fieldname

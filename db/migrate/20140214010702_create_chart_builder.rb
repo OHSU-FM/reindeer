@@ -1,4 +1,4 @@
-class CreateChartBuilder < ActiveRecord::Migration
+class CreateChartBuilder < ActiveRecord::Migration[4.2]
   def up
     
     # 

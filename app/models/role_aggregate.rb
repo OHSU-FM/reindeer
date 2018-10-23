@@ -11,7 +11,7 @@ class RoleAggregate < ActiveRecord::Base
   before_validation :set_default_view
   before_destroy :delete_dash_widgets
 
-  DEFAULT_VIEWS = ['graph', 'filter', 'spreadsheet']
+  DEFAULT_VIEWS = ['graph', 'filter']
 
   def data_table_exists?
     lime_data.table_exists?
@@ -153,7 +153,7 @@ class RoleAggregate < ActiveRecord::Base
     # will not be accounted for
     qval_rs = LimeExt::ResponseLoaders.responses_for qval
     return [] if (qval_rs.nil? || qval_rs.data.blank?)
-    qtitle_rs = LimeExt::ResponseLoaders.responses_for qtitle
+    qtitle_rs = LimeExt::ResponseLoaders.responses_for qtitle if qtitle
 
     # Swap out qtitle if missing information
     if qtitle.nil? || qtitle_rs.nil? || qtitle_rs.data.empty?

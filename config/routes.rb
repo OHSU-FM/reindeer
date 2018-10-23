@@ -1,43 +1,8 @@
 Rails.application.routes.draw do
-  namespace :coaching do
-    resources :students, param: :slug, only: [:show] do
-      member do
-        post 'search_goals'
-        post 'completed_goals'
-        post 'search_meetings'
-      end
-    end
-
-    resources :goals do
-      member do
-        get 'show_detail'
-      end
-    end
-
-    resources :meetings do
-      member do
-        get 'show_detail'
-      end
-    end
-  end
-
-  #resources :searches, param: :search, only: [:index] do
-  #  member do
-  #    get 'search'
-  #  end
-  #end
-
-  get '/search' => 'searches#search', as: 'search_searches'
-
-  resources :coaching, only: [:index]
-  resources :rooms, only: [:show, :index]
-
   devise_for :users
 
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
   mount ActionCable.server => "/cable"
-
-  resources :messages
 
   resources :dashboard, controller: :dashboard, as: :dashboards, except: [:new]
   get "dashboard/:id/widgets/:widget_id", to: "dashboard#show_widget",
@@ -54,10 +19,6 @@ Rails.application.routes.draw do
     member do
       get "graph(/:pk(/:agg))", action: :show, as: :graph, controller: "ls_reports/graph",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :graph
-    end
-    member do
-      get "spreadsheet(/:pk(/:agg))", action: :show, as: :spreadsheet, controller: "ls_reports/spreadsheet",
-        constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :spreadsheet
     end
     member do
       get "partial/:view_type/:gid(/:pk(/:agg))", to: "ls_reports/base#show_part", as: :part_of,

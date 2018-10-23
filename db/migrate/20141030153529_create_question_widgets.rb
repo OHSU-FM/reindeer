@@ -1,4 +1,4 @@
-class CreateQuestionWidgets < ActiveRecord::Migration
+class CreateQuestionWidgets < ActiveRecord::Migration[4.2]
   def change
     create_table :question_widgets do |t|
         t.integer :role_aggregate_id

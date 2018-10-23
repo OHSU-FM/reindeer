@@ -6,66 +6,6 @@ RSpec.describe User, type: :model do
     Redis.current.flushdb
   end
 
-  describe 'coaching system' do
-    it 'has readers for the various coaching system roles' do
-      ['coach', 'student', 'dean'].each do |type|
-        user = create :user, coaching_type: type
-
-        expect(user.send("#{type}?")).to be_truthy
-      end
-    end
-
-    it 'has {role}_or_higher? methods that return booleans' do
-      user = create :user, coaching_type: 'student'
-      expect(user.student_or_higher?).to be_truthy
-      expect(user.coach_or_higher?).to be_falsey
-      expect(user.dean_or_higher?).to be_falsey
-
-      user = create :user, coaching_type: 'coach'
-      expect(user.student_or_higher?).to be_truthy
-      expect(user.coach_or_higher?).to be_truthy
-      expect(user.dean_or_higher?).to be_falsey
-
-      user = create :user, coaching_type: 'dean'
-      expect(user.student_or_higher?).to be_truthy
-      expect(user.coach_or_higher?).to be_truthy
-      expect(user.dean_or_higher?).to be_truthy
-
-      user = create :admin, coaching_type: nil
-      expect(user.student_or_higher?).to be_truthy
-      expect(user.coach_or_higher?).to be_truthy
-      expect(user.dean_or_higher?).to be_truthy
-    end
-
-    it "#cohort returns cohort user belongs to" do
-      c = create :cohort, :with_users
-      user = c.users.first
-      expect(user.cohort).to eq c
-    end
-
-    it "#cohorts returns list of cohorts user owns" do
-      user = build :user
-      c = create :cohort, owner: user
-      c2 = create :cohort
-      expect(user.cohorts).to eq [c]
-      expect(user.cohorts).not_to include c2
-    end
-
-    it "#cohorts returns list of all cohorts as admin" do
-      admin = build :admin
-      c = create :cohort
-      expect(admin.cohorts).to include c
-    end
-
-    describe "#room" do
-      it "creates one if one doesn't exist" do
-        student = create :student, room: nil
-        student.reload
-        expect(User.find(student.id).room).to be_a Room
-      end
-    end
-  end
-
   it "has a factory" do
     expect(build :user).to be_valid
   end
