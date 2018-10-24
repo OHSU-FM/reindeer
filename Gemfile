@@ -4,14 +4,16 @@ source "https://rubygems.org"
 # Main
 ##############################
 gem "bundler"
-gem 'rails', '5.0.0.1'
+gem 'rails', '~> 5.2'
 gem "rdoc"
-#gem 'pg', '~>0.21'
+gem 'whenever', require: false
+gem 'nested_form_fields'
+gem 'turbolinks', '~> 5.0', '>= 5.0.1'
 
 # Database
-gem "pg", "~> 0.20"
-gem "composite_primary_keys"
-gem "redis", "~>3.2"
+gem "pg"
+gem 'composite_primary_keys', '~> 11.0'
+gem "redis"
 
 # Record Versioning
 gem "paper_trail"
@@ -37,20 +39,14 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-
-gem "sass-rails"
+gem 'sassc-rails'
 gem "coffee-rails"
 gem "uglifier"
-
 gem "jquery-rails"
 gem "jquery-ui-rails"
 
 # CSS / js
 gem "bootstrap-sass"
-# Random bug:
-# Error encountered while saving cache (".....") can't dump anonymous class
-# http://stackoverflow.com/questions/22276991/heroku-error-encountered-while-saving-cache
-gem "sass"#, "~> 3.2.13"
 gem "select2-rails"
 
 # pagination
@@ -97,20 +93,11 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
-  gem 'pry'
-end
-
-group :test, :development do
-  if RUBY_VERSION =~ /^1.9.3/
-    # Better error messages in development
-    gem "better_errors", "~> 1.1"
-  elsif RUBY_VERSION =~ /^2./
-    gem "byebug"
-    gem "better_errors"
-    gem "stackprof"
-    gem "ruby-prof"
-    gem "pry"
-  end
+  gem "byebug"
+  gem "better_errors"
+  gem "stackprof"
+  gem "ruby-prof"
+  gem "pry"
 end
 
 group :production do
@@ -129,15 +116,8 @@ group :development do
   # Interactive debugging from the web
   gem "binding_of_caller"
   gem "redcarpet"
-  gem "twitter-bootstrap-rails"
+  gem 'twitter-bootstrap-rails'
 
   # guard
   gem "guard"
-  gem "guard-rspec"
 end
-
-gem 'rufus-scheduler'
-gem 'whenever', require: false
-gem 'nested_form_fields'
-gem 'turbolinks', '~> 5.0', '>= 5.0.1'
-gem 'rails-ujs', '~> 0.1.0'
