@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :artifacts
   namespace :coaching do
     resources :students, param: :slug, only: [:show] do
       member do

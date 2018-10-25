@@ -31,4 +31,5 @@ Rails.application.config.assets.precompile += %w( print.css
     coaching_students.css
     cable.js
     searches.css
+    artifacts.css
     )

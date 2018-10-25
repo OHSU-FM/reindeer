@@ -1,0 +1,39 @@
+<h1>Artifacts</h1>
+
+<table class="responsive nowrap table table-hover" id="dttb-artifacts" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  <thead>
+    <tr>
+      <th data-data="tittle">Tittle</th>
+      <th data-data="content">Content</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+    </tr>
+  </thead>
+  <% @artifacts.each do |artifact| %>
+    <tr>
+      <td><%= artifact.tittle %></td>
+      <td><%= artifact.content %> </td>
+      <td><%= artifact.user_id.to_s %></td>
+      <td><table class="responsive nowrap table table-hover" id="dttb-artifacts" data-sort="true">
+        <% if artifact.documents.attached? %>
+          <% artifact.documents.each do |document| %>
+            <tr>
+              <td> <%= document.filename %> </td>
+              <td>
+                <%= link_to 'View', url_for(document) %>
+                /
+                <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+
+      </td></table>
+    </tr>
+  <% end %>
+
+</table>
+
+<br>
+
+<%= link_to 'New Artifact', new_artifact_path %>

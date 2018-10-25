@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Tittle:</strong>
+  <%= @artifact.tittle %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @artifact.content %>
+</p>
+
+
+<%= link_to 'Edit', edit_artifact_path(@artifact) %> |
+<%= link_to 'Back', artifacts_path %>
