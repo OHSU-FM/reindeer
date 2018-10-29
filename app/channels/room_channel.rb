@@ -16,7 +16,7 @@ include Coaching::MeetingsHelper
   def speak data
     if data['message'] != ""
       Message.create! content: data['message'], user: current_user, room_id: data['roomNumber']
-      hf_send_email(current_user, data)
+      #hf_send_email(current_user, data)
     end
   end
 

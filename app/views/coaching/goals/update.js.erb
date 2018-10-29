@@ -4,7 +4,6 @@ $("tr#goalId-<%= @goal.id %>").replaceWith("<%= j render partial: 'goal_row', lo
 roomNumber = $("#room-identifier-goal").data("room-number")
 msg = "<%= @goal.g_status %>" + " Status Updated "
 $("#goal_comment_room").val(msg)
-console.log ("updated msg: " + msg)
 e = jQuery.Event("keypress");
 e.which = 13 //choose the one you want
 e.keyCode = 13

@@ -9,7 +9,6 @@ $(document).on 'click', '#hide-detail', (e) ->
 $(document).on 'click', '.nav-item', (e) ->
   $('#cs-detail').removeClass('show-detail')
 
-
 $ ->
   $("#student-select").select2()
   $('.show-detail-button').on 'click', () ->
@@ -21,16 +20,16 @@ $(document).on 'change', '.status-picker', (e) ->
   detailDiv = $(e.target).closest('div.show-detail')
   newStatus = e.target.value
   updatedDesc = $('.updateDesc').val()
-  console.log("updatedDesc --> " + updatedDesc)
+  updatedNotes = $('.updateNotes').val()
   if $(e.target).attr('data-goalId')
     objectId = $(e.target).attr('data-goalId')
     controller = "goals"
     data = { g_status: newStatus, description:  updatedDesc}
-    console.log ("data: " + data)
   else
     objectId = $(e.target).attr('data-meetingId')
     controller = "meetings"
-    data = { m_status: newStatus }
+    data = { m_status: newStatus, notes: updatedNotes }
+
   xhr = $.ajax({
     url: "/coaching/" + controller + "/" + objectId
     method: "PUT",

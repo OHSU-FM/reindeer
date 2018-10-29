@@ -68,7 +68,6 @@
 
   </div>
 
-
   <div class="general-comments" id="room-identifier" data-room-number=<%= "#{@room_id}" %>>
     <div class="w3-container">
       <div class="h4-general-comments">General Comments</div>
@@ -82,7 +81,7 @@
 
       <% unless current_user.dean? %>
         <div class="room-speaker">
-          <input type="text" data-behavior="room_speaker" data-room-number=<%= "#{@room_id}" %> style="width: 40%" placeholder="General Comments - type in here">
+          <input type="text" data-behavior="room_speaker" data-room-number=<%= "#{@room_id}" %> style="width: 40%" placeholder="General Comments - type in here & press RETURN to save..">
         </div>
       <% end %>
     </div>

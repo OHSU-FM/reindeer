@@ -10,14 +10,16 @@
 
 <div class="detail-section">
   <h4>Meeting Details</h4>
-  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
   <div><i>Contact Type: </i><%= meeting.location %></div>
   <div><i>Date: </i><%= meeting.date.strftime("%m/%d") %></div>
 </div>
 
 <div class="detail-section">
-  <h4>Meeting Summary</h4>
-  <div><%= meeting.notes %></div>
+  <h4>Meeting Summary</h4><i><font color="#4c0946"> * To update Meeting Summary, please click on Status field to select 'Update Meeting Summary'.</font><i>
+  <div>
+    <%= text_area_tag :notes, meeting.notes, class: "updateNotes", rows: 5, style: 'width:100%' %>
+  </div>
 </div>
 
 <div class="detail-section">
@@ -39,7 +41,7 @@
             <div class="row">
               <form style="width: 100%">
                   <input type="text" id="meeting_comment_room" data-behavior="room_speaker_meeting"
-                    style="width: 100%" placeholder="Meeting Comment - type in here">
+                    style="width: 100%" placeholder="Meeting Comment - type in here & press RETURN to save...">
               </form>
             </div>
 
