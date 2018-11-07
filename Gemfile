@@ -38,7 +38,7 @@ gem "lograge"
 # JavaScript and CSS
 ##############################
 
-gem "sass-rails"
+gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
 
@@ -46,7 +46,7 @@ gem "jquery-rails"
 gem "jquery-ui-rails"
 
 # CSS / js
-gem "bootstrap-sass"
+gem "bootstrap-sass", '~> 3.3.7'
 # Random bug:
 # Error encountered while saving cache (".....") can't dump anonymous class
 # http://stackoverflow.com/questions/22276991/heroku-error-encountered-while-saving-cache

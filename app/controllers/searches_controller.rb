@@ -1,7 +1,7 @@
 class SearchesController < ApplicationController
   include SearchesHelper
+  layout 'full_width_height_margins'
 
-  layout 'full_width_margins'
   def search
     if params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
@@ -21,6 +21,9 @@ class SearchesController < ApplicationController
         @clinical_sid = hf_dataset_sid(params[:search])
       end
     end
+    # respond_to do |format|
+    #   format.js { render partial: 'search-results'}
+    # end
   end
 
   private

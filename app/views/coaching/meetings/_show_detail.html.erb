@@ -12,7 +12,7 @@
   <h4>Meeting Details</h4>
   <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
   <div><i>Contact Type: </i><%= meeting.location %></div>
-  <div><i>Date: </i><%= meeting.date.strftime("%m/%d") %></div>
+  <div><i>Date: </i><%= meeting.date.strftime("%m/%d/%Y") %></div>
 </div>
 
 <div class="detail-section">

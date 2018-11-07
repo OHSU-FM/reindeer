@@ -14,7 +14,7 @@
   <h4>Goal Details</h4>
   <div><i>Status: </i><%= select_tag "g_status", options_for_select(["Not Started", "Needs Work", "On Track", "Completed", "Update Goal Desc"], goal.g_status), class: "status-picker", data: { goalId: goal.id } %></div>
   <div><i>Competency Tag: </i><%= hf_tag_to_human goal.competency_tag %></div>
-  <div><i>Target Date: </i><%= goal.target_date.strftime("%m/%d") %></div>
+  <div><i>Target Date: </i><%= goal.target_date.strftime("%m/%d/%Y") %></div>
 </div>
 
 <div class="detail-section">

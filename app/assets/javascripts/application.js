@@ -50,3 +50,4 @@
 //= require goals
 //= require cable
 //= reqiore turbolinks
+//= require searches.js

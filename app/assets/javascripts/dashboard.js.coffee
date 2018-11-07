@@ -373,6 +373,7 @@ class @Dashboard.Gui
             klass.remove_deleted_widgets()
             klass.replace_created_widgets(xhr)
             klass.replace_stale_widgets(xhr)
+
             return;
 
         @node.on 'ajax:error', (event, xhr, status) ->
@@ -389,6 +390,10 @@ class @Dashboard.Gui
         @node.on 'ajax:complete', (event, xhr, status) ->
             console.log('form ajax complete')
             klass.enable_all_inputs()
+            # Retaching the saved element
+            $("#SearchPlaceHolder").append(window.SearchElement)
+            $("#SearchInputForm").fadeIn()
+            console.log ("Enabled Input Search Form after a Dashboard had been deleted!")
             return;
 
         # a widget will be removed from the form
@@ -400,6 +405,8 @@ class @Dashboard.Gui
         # a widget has been removed from the form
         @node.on 'cocoon:after-remove', (evt, element) ->
             console.log('cocoon:after-remove')
+            # save the detached element
+            window.SearchElement = $("#SearchInputForm").detach()
             klass.update_and_submit()
             return;
 
@@ -668,6 +675,7 @@ class @Dashboard.Gui
 
 $(document).ready ->
     return if $('body').attr('id') != 'dashboard'
+
 
     # Debug ability, add variables to global namespace
     window.dashboards = []
