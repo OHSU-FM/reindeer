@@ -1,7 +1,7 @@
 class SearchesController < ApplicationController
   include SearchesHelper
+  layout 'full_width_height_margins'
 
-  layout 'full_width_margins'
   def search
 
     if params[:search].blank?
@@ -22,6 +22,9 @@ class SearchesController < ApplicationController
         @clinical_sid = hf_dataset_sid(params[:search])
       end
     end
+    # respond_to do |format|
+    #   format.js { render partial: 'search-results'}
+    # end
   end
 
   private

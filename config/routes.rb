@@ -27,11 +27,11 @@ Rails.application.routes.draw do
     end
   end
 
-  #resources :searches, param: :search, only: [:index] do
-  #  member do
-  #    get 'search'
-  #  end
-  #end
+  # resources :searches, param: :search, only: [:index] do
+  #   member do
+  #     get 'search'
+  #   end
+  # end
 
   get '/search' => 'searches#search', as: 'search_searches'
 

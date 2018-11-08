@@ -1,5 +1,5 @@
 <tr class="show-detail clickable-row <%= "active" if defined? active_row %>" id="goalId-<%= goal.id %>">
-  <td><%= goal.created_at.strftime("%m/%d") %></td>
+  <td><%= goal.created_at.strftime("%m/%d/%Y") %></td>
   <td><%= goal.name %></td>
   <td><%= hf_tag_to_human goal.competency_tag %></td>
   <td><%= goal.g_status %></td>

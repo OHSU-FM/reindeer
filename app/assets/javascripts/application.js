@@ -51,3 +51,4 @@
 //= require cable
 //= reqiore turbolinks
 //= require datatables
+//= require searches.js

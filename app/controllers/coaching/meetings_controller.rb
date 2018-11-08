@@ -58,7 +58,7 @@ module Coaching
     end
 
     def meeting_update_params
-      params.permit(:id, :m_status)
+      params.permit(:id, :m_status, :notes)
     end
   end
 end
