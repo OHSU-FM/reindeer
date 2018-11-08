@@ -5,7 +5,6 @@ class ArtifactsController < ApplicationController
 
   # GET /artifacts
   def index
-
     @artifacts = Artifact.where(user_id: current_user.id)
   end
 
@@ -26,7 +25,6 @@ class ArtifactsController < ApplicationController
   def create
     @artifact = Artifact.new(artifact_params)
     @artifact.user_id = current_user.id
-byebug
     if @artifact.save
       redirect_to @artifact, notice: 'Artifact was successfully created.'
     else
@@ -47,6 +45,14 @@ byebug
   def destroy
     @artifact.destroy
     redirect_to artifacts_url, notice: 'Artifact was successfully destroyed.'
+  end
+
+  def delete_document_attachment
+    @artifact_document = ActiveStorage::Blob.find_signed(params[:id])
+    @artifact = Artifact.find(@artifact_document.attachments.first.record_id)
+    @artifact_document.attachments.first.purge
+     redirect_to artifacts_url
+
   end
 
   private

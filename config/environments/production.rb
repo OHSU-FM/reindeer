@@ -90,6 +90,6 @@ Rails.application.configure do
           :exception_recipients => Settings.exception_notification.exception_recipients
       }
   end
-  config.action_cable.allowed_request_origins = ["https://redei-som.ohsu.edu"]
-  config.action_cable.url = "wss://redei-som.ohsu.edu/websocket" 
+  config.action_cable.allowed_request_origins = ["https://redei.ohsu.edu"]
+  config.action_cable.url = "wss://redei.ohsu.edu/websocket" 
 end
