@@ -3,4 +3,9 @@ class Artifact < ApplicationRecord
   has_many_attached :documents
   # Note that implicit association has a plural form in this case
   scope :with_eager_loaded_images, -> { eager_load(images_attachments: :blob) }
+
+  def move_files_to_users (artifact)
+    byebug
+
+  end
 end

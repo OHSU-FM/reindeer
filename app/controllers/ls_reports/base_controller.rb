@@ -68,7 +68,6 @@ class LsReports::BaseController < ApplicationController
     @filtered_label.pluralize if @fm.filters_equal
     @view_type = params[:view_type]
 
-
   end
 
   def export_to_gon
@@ -80,7 +79,6 @@ class LsReports::BaseController < ApplicationController
 
     gon.series_name = @fm.series_name
     gon.unfiltered_series_name = @fm.unfiltered_series_name
-
 
   end
 

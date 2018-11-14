@@ -3,8 +3,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
      member do
        delete :delete_document_attachment
+       get 'move_files'
      end
-  end 
+  end
   namespace :coaching do
     resources :students, param: :slug, only: [:show] do
       member do

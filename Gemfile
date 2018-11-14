@@ -148,3 +148,4 @@ gem "highcharts-rails"
 # dataTables
 gem 'jquery-datatables'
 #========================
+gem "csv_hasher"

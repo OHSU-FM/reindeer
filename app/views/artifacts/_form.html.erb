@@ -2,8 +2,12 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :tittle %>
-    <%= f.input :content %>
+    <%= f.select :title,
+      options_for_select(["FoM", "NBME", "Shelf Exam", "EPA 1", "EPA 2"]),
+      { include_blank: "---" },
+      required: true
+    %>
+    <%= f.input :content, :label => "Sub-Category" %>
   </div>
 
   <div class="field">

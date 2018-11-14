@@ -46,7 +46,13 @@ class SearchesController < ApplicationController
     else
       cohorts.each do |cohort|
         # Looking for med18, med19, etc in the title
-        if cohort.title.downcase.include? @parameter
+        if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
+          cohort.users.each do |user|
+            if user.full_name.downcase.include? @parameter
+                @results.push user
+            end
+          end
+        elsif cohort.title.downcase.include? @parameter
           cohort.users.each do |user|
             @results.push user
           end

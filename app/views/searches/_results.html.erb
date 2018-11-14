@@ -28,6 +28,7 @@
               <td> N/A </td>
           <% end %>
           <td>
+            <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
             <% hf_datasets(result).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>
