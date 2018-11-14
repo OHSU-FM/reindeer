@@ -7,7 +7,8 @@
             <div  class="parent-question panel panel-default">
               <% if !pquestion.question.include? "TOKEN" %>
                 <div class="panel-heading">
-                  <h4><%= strip_tags(pquestion.question).html_safe %></h4>
+                  <% @group_question = pquestion.question%>
+                  <h4><%= strip_tags(@group_question).html_safe %></h4>
                 </div>
               <% end %>
 
