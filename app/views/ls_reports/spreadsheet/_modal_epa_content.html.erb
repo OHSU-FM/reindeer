@@ -1,6 +1,8 @@
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+
 <%= include_gon %>
 <div id="EPA<%= i %>" class="modal fade" role="dialog" data-modal-index="1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="width:1250px;">
         <div class="modal-content">
              <div class="modal-header">
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
@@ -15,7 +17,8 @@
                     <li><a data-toggle="tab" href="#EPADetail<%= i %>" id="tab-2-epa-<%= i %>">EPA Details</a></li>
                     <li><a data-toggle="tab" href="#CourseDetail<%= i %>" id="tab-3-epa-<%= i %>" >Course Details</a></li>
                     <li><a data-toggle="tab" href="#Artifacts<%= i %>" id="tab-3-epa-<%= i %>" >Artifacts</a></li>
-                    <li><a data-toggle="tab" href="#AdHocEPA<%= i %>" id="tab-3-epa-<%= i %>" >Ad Hoc EPA</a></li>
+                    <li><a data-toggle="tab" href="#AdHocEPA<%= i %>" id="tab-4-epa-<%= i %>" >Ad Hoc EPA</a></li>
+                    <li><a data-toggle="tab" href="#AdHocAllEPAs<%= i %>" id="tab-5-epa-<%= i %>" >Ad Hoc ALL EPAs</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -100,12 +103,24 @@
                         </div>
                     </div>
                     <div id="Artifacts<%= i %>" class="tab-pane fade in">
-                        <h4> Scholarly Project data, pertinent research papers, etc - Coming Soon! </h4>
-                    </div>
-                    <div id="AdHocEPA<%= i %>" class="tab-pane fade in">
-                        <h4> Ad Hoc EPA datai from Qualtrics - Stay tuned! </h4>
+                      <%= render partial: 'artifacts/detail_artifacts' %>
                     </div>
 
+                    <div id="AdHocEPA<%= i %>" class="tab-pane fade in">
+                            <br />
+                            <div id="data-visualization-EPA<%= i %>" style="width: 800px; height: 400px; margin: 0 auto"></div>
+                            <br />
+                          <%= render partial: 'epas/detail_adhoc_epas', locals: {idx_epa: i} %>
+                    </div>
+                    <div id="AdHocAllEPAs<%= i %>" class="tab-pane fade in">
+                            <br />
+                            <div id="data-visualization-AdHocAllEPAs" style="width: 1000px; height: 800px; margin: 0 auto"></div>
+                            <br />
+                            <br />
+                            <div id="data-visualization-AdHocAllEPACount" style="width: 1000px; height: 500px; margin: 0 auto"></div>
+                            <br />
+
+                    </div>
             </div>
 
             <div class="modal-footer">

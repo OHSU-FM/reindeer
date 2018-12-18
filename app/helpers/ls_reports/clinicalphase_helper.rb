@@ -37,6 +37,9 @@ module LsReports::ClinicalphaseHelper
 
   GRAPH_COLOR = ["#8100ba", "#ff79c2", "#b52e2b", "#6cffb1", "#ff0066", "#fff631", "#6f9090"]
 
+  class LimeTable < ActiveRecord::Base
+  end
+
 
   def hf_decode_preceptor_comp(in_code)
       return DECODE_PRECEPTOR_COMP[in_code]
@@ -348,6 +351,7 @@ module LsReports::ClinicalphaseHelper
       when "770E"
         return "PEDI"
       when "770F"
+
         return "PSYC"
       when "770G"
         return "SURG"
@@ -445,8 +449,6 @@ module LsReports::ClinicalphaseHelper
 
           temp_hash = { data2 => data }
           return temp_hash
-
-
     end
 #<a href="/ls_files/961225/1/12532/Ager,%20Emily%20CPX%20Performance.pdf">Ager, Emily CPX Performance.pdf</a>
 
@@ -506,7 +508,6 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
-
  def load_attachments student_attach
    attach_array = []
    filecount_key = student_attach.map{|k| k.keys}.first.select {|k| k.include? "filecount"}
@@ -526,8 +527,7 @@ module LsReports::ClinicalphaseHelper
    else
      return []
    end
- end
-
+  end
 
   def hf_get_shelf_attachments in_survey
     rr = get_dataset(in_survey, "Clinical Phase", "Shelf Exam Score Reports")
@@ -547,12 +547,18 @@ module LsReports::ClinicalphaseHelper
           end
           shelf_attachments = load_attachments(student_attach)
           return shelf_attachments
-
         end
     end
-
-
-
   end
+
+  def hf_get_artifacts (pk)
+    selected_user = User.find_by(email: pk)
+    if selected_user.nil?
+      return nil
+    else
+      return Artifact.where(user_id: selected_user.id)
+    end
+  end
+
 
 end

@@ -144,6 +144,8 @@ gem 'turbolinks', '~> 5.0', '>= 5.0.1'
 gem 'rails-ujs', '~> 0.1.0'
 # highchart 
 gem "highcharts-rails"
+gem 'chartkick'
+gem 'groupdate'
 #=======================
 # dataTables
 gem 'jquery-datatables'

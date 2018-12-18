@@ -1,0 +1,31 @@
+<table class="table borderless table-condensed modal-text-align-center table-striped table-hover">
+  <thead>
+    <tr>
+      <th>SubmitDate</th>
+      <th>ClinicalDiscipline</th>
+      <th>ClinicalSetting</th>
+      <th>ClincialAssessor</th>
+      <th>AssessorName</th>
+      <th>TimesWithSupervisor</th>
+      <th>Involvment</th>
+      <th>MoreIndependent</th>
+      <th>EncounterComplex</th>
+    </tr>
+  </thead>
+  <% @epas.each do |e| %>
+    <tr>
+      <% if e.epa.include? idx_epa.to_s %>
+        <td><%= e.submit_date.strftime("%F") %></td>
+        <td><%= e.clinical_discipline %></td>
+        <td><%= e.clinical_setting %></td>
+        <td><%= e.clinical_assessor %></td>
+        <td><%= e.assessor_name %></td>
+        <td><%= e.no_of_times_with_super %></td>
+        <td><%= e.involvement %></td>
+        <td><%= e.more_independent %></td>
+        <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
+      <% end %>
+    </tr>
+  <% end %>
+
+</table>
