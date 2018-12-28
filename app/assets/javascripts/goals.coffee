@@ -98,7 +98,7 @@ $(document).ready ->
     jQuery ($) ->
       #on document.ready
       $('#coaching_goal_target_date').datepicker()
-      $('#coaching_meeting_date').datepicker()
+      $('#coaching_meeting_date').datepicker()ZZ
       return
 
 
