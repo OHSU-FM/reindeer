@@ -32,7 +32,8 @@ class ArtifactsController < ApplicationController
     if @artifact.save
       redirect_to @artifact, notice: 'Artifact was successfully created.'
     else
-      render :new
+      redirect_to @artifact, notice: 'Error Invalid File Type - only allowed PDF, JPEG, JPG & PNG!'
+
     end
   end
 
@@ -72,12 +73,12 @@ class ArtifactsController < ApplicationController
 
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
         full_name = document.filename.to_s.split(" ").first.gsub("_", ", ")
+        byebug
         @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
           temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title)
           temp_artifact.documents.attach(ActiveStorage::Blob.find(document.blob_id))
           document.destroy # remove it from the artifact
-          byebug
         end
 
       end

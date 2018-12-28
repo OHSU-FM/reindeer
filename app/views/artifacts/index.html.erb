@@ -1,48 +1,46 @@
-<h3>Artifacts</h3>
 
-<table class="responsive nowrap table table-hover" id="dttb-artifacts" data-sort="true" data-source="<%= url_for(format: :json)%>">
 
-    <tr>
-      <td>Tittle</th>
-      <th>Content</th>
-      <th>UserID</th>
-    </tr>
 
-  <% @artifacts.each do |artifact| %>
-    <tr>
-      <td><%= artifact.title %></td>
-      <td><%= artifact.content %> </td>
-      <td><%= artifact.user_id.to_s %></td>
-      <td><%= link_to 'Edit', edit_artifact_path(artifact) %>
-        /
-        <%= link_to 'Destroy Artifact', artifact, method: :delete, data: { confirm: 'Are you sure?' } %>
-        <% if current_user.coaching_type == 'admin' %>
+  <h4> All documents <%= link_to 'Upload Documents', new_artifact_path, class: "btn btn-primary" %> </h4>
+
+
+  <table class="responsive nowrap table table-hover" id="dttb-artifacts" data-sort="true" data-source="<%= url_for(format: :json)%>">
+      <tr>
+        <td>Tittle</th>
+        <th>Content</th>
+        <th>UserID</th>
+      </tr>
+
+    <% @artifacts.each do |artifact| %>
+      <tr>
+        <td><%= artifact.title %></td>
+        <td><%= artifact.content %> </td>
+        <td><%= artifact.user_id.to_s %></td>
+        <td><%= link_to 'Edit', edit_artifact_path(artifact) %>
           /
-          <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
-        <% end %>
-      </td>
-      <td><table class="responsive nowrap table table-hover" id="dttb-artifacts" data-sort="true">
-        <% if artifact.documents.attached? %>
-          <% artifact.documents.each do |document| %>
-            <tr>
-              <td> <%= document.filename %> </td>
-              <td>
-                <%= link_to 'View', url_for(document), target: :_blank  %>
-                /
-                <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
-                /
-                <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
-              </td>
-            </tr>
+          <%= link_to 'Destroy Artifact', artifact, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% if current_user.coaching_type == 'admin' %>
+            /
+            <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
           <% end %>
-        <% end %>
+        </td>
+        <td><table class="responsive nowrap table table-hover" id="dttb-artifacts" data-sort="true">
+          <% if artifact.documents.attached? %>
+            <% artifact.documents.each do |document| %>
+              <tr>
+                <td> <%= document.filename %> </td>
+                <td>
+                  <%= link_to 'View', url_for(document), target: :_blank  %>
+                  /
+                  <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                  /
+                  <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
 
-      </td></table>
-    </tr>
-  <% end %>
-
-</table>
-
-<br>
-
-<%= link_to 'New Artifact', new_artifact_path %>
+        </td></table>
+      </tr>
+    <% end %>
+  </table>

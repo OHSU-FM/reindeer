@@ -103,7 +103,9 @@
                         </div>
                     </div>
                     <div id="Artifacts<%= i %>" class="tab-pane fade in">
-                      <%= render partial: 'artifacts/detail_artifacts' %>
+                        <div id="ArtifactsDoc<%= i %>">
+                            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: i} %>
+                        </div>
                     </div>
 
                     <div id="AdHocEPA<%= i %>" class="tab-pane fade in">

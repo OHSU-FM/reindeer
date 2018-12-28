@@ -67,3 +67,4 @@
 //= require datatables
 //= require searches.js
 //= require epa_graphs.js
+//= require artifacts

@@ -36,9 +36,8 @@
         <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams/CPX</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
-        <% if !current_user.permission_group.nil? and (current_user.permission_group.title == "Dean" or current_user.permission_group.title == 'Entrustment Group') %>
-            <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
-        <% end %>
+        <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
+
     </ul>
 
     <div class="tab-content">

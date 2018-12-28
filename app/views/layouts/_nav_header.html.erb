@@ -47,7 +47,7 @@
 
         <% if can? :list, LimeSurvey %>
           <% if ['student', 'admin'].include? current_user.coaching_type %>
-            <%= nav_link_to("Artifacts", artifacts_path)  %>
+            <%= nav_link_to("Upload Documents", artifacts_path, target: '_blank')  %>
           <% end %>
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>

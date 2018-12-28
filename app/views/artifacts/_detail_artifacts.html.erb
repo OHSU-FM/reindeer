@@ -8,27 +8,31 @@
       <td>Artifacts</td>
     </tr>
   </thead>
-  <% @artifacts_student.each do |artifact| %>
-    <tr>
-      <td><%= artifact.title %></td>
-      <td><%= artifact.content %> </td>
-      <td><%= artifact.user_id.to_s %></td>
-      <td><table class="responsive table table-hover">
-        <% if artifact.documents.attached? %>
-          <% artifact.documents.each do |document| %>
-            <tr>
-              <td> <%= document.filename %> </td>
-              <td>
-                <%= link_to 'View', url_for(document), target: :_blank %>
-                /
-                <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
+  <% epa = "EPA#{idx_epa}" %>
+  <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa } %>
+  <% selected_artifacts.each do |artifact| %>
 
-      </td></table>
-    </tr>
+      <tr>
+        <td><%= artifact.title %></td>
+        <td><%= artifact.content %> </td>
+        <td><%= artifact.user_id.to_s %></td>
+        <td><table class="responsive table table-hover">
+          <% if artifact.documents.attached? %>
+            <% artifact.documents.each do |document| %>
+              <tr>
+                <td> <%= document.filename %> </td>
+                <td>
+                  <%= link_to 'View', url_for(document), target: :_blank %>
+                  /
+                  <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+
+        </td></table>
+      </tr>
+
   <% end %>
 
 </table>
