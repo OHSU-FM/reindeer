@@ -90,19 +90,13 @@ $(document).on 'click', '#goal-submit', (e) ->
   console.log('targetDate: ' + targetDate)
 
 $(document).ready ->
-
-  datefield = document.createElement('input')
-  datefield.setAttribute 'type', 'date'
-  if datefield.type != 'date'
-    #if browser doesn't support input type="date", load files for jQuery UI Date Picker
-    document.write '<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n'
-    document.write '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>\n'
-    document.write '<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>\n'
-    #if browser doesn't support input type="date", initialize date picker widget:
-    jQuery ($) ->
-      #on document.ready
-      $('#birthday').datepicker()
-      return
+  ua = window.navigator.userAgent;
+  is_ie = /MSIE|Trident/.test(ua);
+  if ( is_ie )
+    $("#coaching_goal_target_date").attr("placeholder", "YYYY/MM/DD")
+    $("#coaching_meeting_date").attr("placeholder", "YYYY/MM/DD")
+    $("#coaching_goal_target_date").attr('title', 'For IE browser, please use date formate YYYY/MM/DD.')
+    $("#coaching_meeting_date").attr('title', 'For IE Browser, pelase use date format YYYY/MM/DDD.')
 
   $('a[data-toggle="tab"]').on 'show.bs.tab', (e) ->
     localStorage.setItem 'activeTab', $(e.target).attr('href')
