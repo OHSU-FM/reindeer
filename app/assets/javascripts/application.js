@@ -49,5 +49,5 @@
 //= require nested_form_fields
 //= require goals
 //= require cable
-//= reqiore turbolinks
+//= require turbolinks
 //= require searches.js
