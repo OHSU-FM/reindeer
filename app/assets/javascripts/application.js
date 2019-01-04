@@ -63,8 +63,8 @@
 //= require nested_form_fields
 //= require goals
 //= require cable
-//= require turbolinks
 //= require datatables
 //= require searches.js
 //= require epa_graphs.js
 //= require artifacts
+//= require turbolinks

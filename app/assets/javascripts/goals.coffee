@@ -96,7 +96,7 @@ $(document).ready ->
     $("#coaching_goal_target_date").attr("placeholder", "YYYY/MM/DD")
     $("#coaching_meeting_date").attr("placeholder", "YYYY/MM/DD")
     $("#coaching_goal_target_date").attr('title', 'For IE browser, please use date formate YYYY/MM/DD.')
-    $("#coaching_meeting_date").attr('title', 'For IE Browser, pelase use date format YYYY/MM/DDD.')
+    $("#coaching_meeting_date").attr('title', 'For IE Browser, pelase use date format YYYY/MM/DD.')
 
   $('a[data-toggle="tab"]').on 'show.bs.tab', (e) ->
     localStorage.setItem 'activeTab', $(e.target).attr('href')
