@@ -315,7 +315,7 @@ class LsGraphCategories extends LsGraphBase
         return ca
 
     full_data: ->
-        qstat = @full_qstat
+        qstat = @full_qstatshow_par
         return (Number(cat.percent.toFixed(2)) for cat in qstat.categorical_stats)
 
     category_labels: ->
@@ -474,7 +474,7 @@ $(document).ready ->
         full_qstat = gon.full_qstats[idx]
         $target = $('#chart-visualization-' + full_qstat.qid)
         chart = window.LsReport.Graph.load($target, @chart_type, qstat, full_qstat, series_name, unfiltered_series_name, filters_equal)
-        window.charts.push chart
+
 
     $('body').scrollspy('refresh');
 
