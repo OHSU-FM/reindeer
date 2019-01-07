@@ -50,10 +50,6 @@
 //= require stats.js
 //= require users.js
 //= require dashboard.js
-//= require ls_reports.js
-//= require ls_reports_filter.js
-//= require ls_reports_graph.js
-//= require ls_reports_spreadsheet.js
 //= require sync_triggers.js
 //= require sessions.js
 //= require animations.js
@@ -64,7 +60,12 @@
 //= require goals
 //= require cable
 //= require datatables
-//= require searches.js
-//= require epa_graphs.js
 //= require artifacts
-//= require turbolinks
+//= require epa_graphs.js
+//= require ls_reports.js
+//= require ls_reports_filter.js
+//= require ls_reports_graph.js
+//= require ls_reports_spreadsheet.js
+//= require searches.js
+// turbolinks is commented out..
+// require turbolinks

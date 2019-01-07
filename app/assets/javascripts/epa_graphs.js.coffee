@@ -267,6 +267,9 @@ $(document).ready ->
     #   console.log("userID:" + userId)
 
     return unless gon?
+    #console.log ("after gon: " + JSON.stringify(gon.epa_adhoc))
+    if gon.epa_adhoc == undefined
+      return
     @epa_adhoc_series_data = if gon.epa_adhoc? then gon.epa_adhoc else ''
     @epa_evaluators_series_data = if gon.epa_evaluators? then gon.epa_evaluators else ''
     @unique_evalutors = if gon.unique_evaluators? then gon.unique_evalutors else ''

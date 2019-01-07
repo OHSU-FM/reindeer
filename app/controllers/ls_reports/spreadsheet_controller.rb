@@ -36,7 +36,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
     @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
 
-
     @comp_hash2 = hf_load_all_competencies(@rs_data, "2")
     @comp_hash1 = hf_load_all_competencies(@rs_data, "1")
     @comp_hash0 = hf_load_all_competencies(@rs_data, "0")
@@ -125,7 +124,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     gon.epa_evaluators = @epa_evaluators
     gon.unique_evaluators = @unique_evaluators
     gon.selected_dates = @selected_dates
-
 
     #gon.preceptorship = @preceptorship
     #preceptorship data is not sent over to coffeescripts to process.
