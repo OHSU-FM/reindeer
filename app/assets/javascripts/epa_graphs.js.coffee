@@ -113,7 +113,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
           seriesArr = []
           category = []
           i = 1;
-          graph_title = "All Ad Hoc EPAs " + " - " + graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
+          graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
           graph_type = 'spline'
           yAxis_params = yAxis_types
           console.log("yAxis_params: " + JSON.stringify(yAxis_types))
@@ -282,7 +282,7 @@ $(document).ready ->
         i++
         graph_target = "data-visualization-EPA" + i
         console.log ("graph_target: " + graph_target)
-        graph_title = "Clinical Supervisor Involvement"
+        graph_title = "Work Based Assessment"
         graph_sub_title = "Student: Abdala, Pedro"
         options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates)
         window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
@@ -290,13 +290,13 @@ $(document).ready ->
 
     #==== Display all Ad Hoc graphs
     graph_target = "data-visualization-AdHocAllEPAs"
-    graph_title = "Clinical Supervisor Involvement"
+    graph_title = "All Work Based Assessments"
     graph_sub_title = "Student: Abdala, Pedro"
     options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates)
     window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
 
     graph_target = "data-visualization-AdHocAllEPACount"
-    graph_title = "Number of Observations Per EPA"
+    graph_title = "Number of Observations Per WBA"
     graph_sub_title = "Student: Abdala, Pedro"
     options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data )
     window.chart4 = Highcharts.chart($.extend(true, null, theme_light, options))
