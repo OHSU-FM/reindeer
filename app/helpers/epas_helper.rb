@@ -5,7 +5,7 @@ module EpasHelper
     #epa_hash = {"EPA1" => [], "EPA2" => [], "EPA3" => [], "EPA4" => [], "EPA4" => [], "EPA4" => [], "EPA5" => [], "EPA6" => []}
     json_object = results.to_json
     hash_object = JSON.parse(json_object)
-    for i in 1..6 do
+    for i in 1..13 do
       selected_data = hash_object.select {|e| e if e["epa"] == "EPA#{i}"}
       selected_data = selected_data.sort_by {|s| s["submit_date"]}
       if !selected_data.nil?
@@ -32,7 +32,7 @@ module EpasHelper
     hash_object = JSON.parse(json_object)
     sorted_data = hash_object.sort_by {|e| [e["assessor_name"], e["submit_date"]]}
     i = 1
-    while i <= 6
+    while i <= 13 # 13 EPAs
       epa = "EPA" + i.to_s
       assessor_array = []
       unique_evaluators.each do |u|
@@ -54,7 +54,7 @@ module EpasHelper
     if !epas.empty?
       epa_hash = reformatted_data(epas)
       epa_evaluators, unique_evaluators, selected_dates = epas_by_evaluators(epas)
-      return epas, epa_hash, epa_evaluators, unique_evaluators, selected_dates
+      return epas, epa_hash, epa_evaluators, unique_evaluators, selected_dates, selected_user.full_name
     else
       return [], {}, [], [], []
     end

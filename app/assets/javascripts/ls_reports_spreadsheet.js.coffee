@@ -533,13 +533,15 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
     series: seriesArr
   }
 
-create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc,comp_class_mean_hash, in_code, in_series_name) ->
+create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc, comp_class_mean_hash, in_code, in_series_name) ->
   date = new Date()
   new_date = "As of Date: " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()
   render_to_2 = graph_target
   show_legend_1 = true
   show_legend_2 = true          #series_data_2 = "Null"
   graph_type = "column"
+
+  console.log("render_to_2: " + graph_target)
 
   if in_code == 'all-comp'
     series_data_1 = get_all_series_data(series_data_hash, "student")

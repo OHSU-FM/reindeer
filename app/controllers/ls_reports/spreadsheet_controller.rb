@@ -78,8 +78,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @preceptorship = hf_get_preceptorship(surveys, @pk)
     @preceptor_view = @preceptorship.flatten
     @artifacts_student = hf_get_artifacts(@pk)
-    #@epa_adhoc, @epa_headers = hf_get_epa_adhoc(surveys)
-    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates = hf_get_epas(@pk)
+    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
+
 
   end
 
@@ -120,10 +120,14 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     gon.allblocks = @allblocks
     gon.allblocks_class_mean = @allblocks_class_mean
-    gon.epa_adhoc = @epa_hash #@epa_adhoc
-    gon.epa_evaluators = @epa_evaluators
-    gon.unique_evaluators = @unique_evaluators
-    gon.selected_dates = @selected_dates
+
+    if @pk != "_"
+      gon.epa_adhoc = @epa_hash #@epa_adhoc
+      gon.epa_evaluators = @epa_evaluators
+      gon.unique_evaluators = @unique_evaluators
+      gon.selected_dates = @selected_dates
+      gon.selected_student = @selected_student
+    end
 
     #gon.preceptorship = @preceptorship
     #preceptorship data is not sent over to coffeescripts to process.

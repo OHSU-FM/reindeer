@@ -45,6 +45,9 @@ get_epa_color = (k) ->
 prepare_series_data = (in_data) ->
 
   series_data = []
+  if in_data == undefined
+    return []
+
   len = in_data.length
   i = 0
   while i < len
@@ -61,8 +64,9 @@ prepare_series_data = (in_data) ->
 get_drilldown = (epa_evaluators) ->
 
   drilldown_series = []
+  if epa_evaluators == undefined
+    return drilldown_series
   #this format --> [["Mejicano, George",3],["Bumsted, Tracy",4],["Bigioli, Frances",5]]
-  #console.log ("epa_evaluators: " + JSON.stringify(epa_evaluators))
   len = epa_evaluators.length
   i = 0
   while i < len
@@ -116,8 +120,8 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
           graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
           graph_type = 'spline'
           yAxis_params = yAxis_types
-          console.log("yAxis_params: " + JSON.stringify(yAxis_types))
-          while i <= 6
+          #console.log("yAxis_params: " + JSON.stringify(yAxis_types))
+          while i <= 13  # 13 epas
             name = "EPA" + i
             temp_array = in_data[i]
             seriesArr.push {name: name, data: prepare_series_data(temp_array), color: get_epa_color(i)}
@@ -131,7 +135,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
       type: graph_type
       plotBackgroundImage: ''
     title: text: graph_title
-    subtitle: text: graph_sub_title
+    subtitle: text: "<b>" + graph_sub_title + "</b>"
 
     rangeSelector:
         buttons: [{
@@ -199,6 +203,9 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
 #======================================================================================================
 build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, epa_evaluators) ->
 
+  if in_data == undefined
+    return
+
   if build_type = 'GroupCounts'
     seriesArr = []
     drilldownSeriesArr = []
@@ -207,7 +214,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
     graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
     graph_type = 'column'
     yAxis_params = yAxis_types
-    while i <= 6
+    while i <= 13  # 13 epas
       name = "EPA" + i
       temp_array = in_data[i]
       seriesArr.push {name: name, data: [{name: name, y: temp_array.length, drilldown: name}], color: get_epa_color(i)}
@@ -217,8 +224,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
       i++
 
     #console.log("series_data: " + JSON.stringify(seriesArr))
-    #console.log("drilldown data: " + JSON.stringify(drilldownSeriesArr))
-    drilldowns_series = [["Mejicano, George",3],["Bumsted, Tracy",4],["Bigioli, Frances",5]]
+    #drilldowns_series = [["Mejicano, George",3],["Bumsted, Tracy",4],["Bigioli, Frances",5]]
 
   return {
     #global: useUTC: false
@@ -267,13 +273,15 @@ $(document).ready ->
     #   console.log("userID:" + userId)
 
     return unless gon?
-    #console.log ("after gon: " + JSON.stringify(gon.epa_adhoc))
-    if gon.epa_adhoc == undefined
+
+    console.log ("after gon: " + JSON.stringify(gon.epa_adhoc))
+    if gon.epa_adhoc == undefined or jQuery.isEmptyObject(gon.epa_adhoc)
       return
     @epa_adhoc_series_data = if gon.epa_adhoc? then gon.epa_adhoc else ''
     @epa_evaluators_series_data = if gon.epa_evaluators? then gon.epa_evaluators else ''
     @unique_evalutors = if gon.unique_evaluators? then gon.unique_evalutors else ''
     @selected_dates = if gon.selected_dates? then gon.selected_dates else ''
+    @selected_student = if gon.selected_student? then gon.selected_student else ''
 
     window.chart2 = []
     i = 0
@@ -283,7 +291,7 @@ $(document).ready ->
         graph_target = "data-visualization-EPA" + i
         console.log ("graph_target: " + graph_target)
         graph_title = "Work Based Assessment"
-        graph_sub_title = "Student: Abdala, Pedro"
+        graph_sub_title = @selected_student
         options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates)
         window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
         #window.chart2[i] = Highcharts.chart(options)
@@ -291,12 +299,12 @@ $(document).ready ->
     #==== Display all Ad Hoc graphs
     graph_target = "data-visualization-AdHocAllEPAs"
     graph_title = "All Work Based Assessments"
-    graph_sub_title = "Student: Abdala, Pedro"
+    graph_sub_title = @selected_student
     options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates)
     window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
 
     graph_target = "data-visualization-AdHocAllEPACount"
     graph_title = "Number of Observations Per WBA"
-    graph_sub_title = "Student: Abdala, Pedro"
+    graph_sub_title = @selected_student
     options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data )
     window.chart4 = Highcharts.chart($.extend(true, null, theme_light, options))
