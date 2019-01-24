@@ -280,10 +280,12 @@
                             </span>
                             <span>
                                 <!-- Commented the progress graph out by Tracy request on 9/25/2018-->
-                                <!--<div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
-                                  <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
-                                </div>
-                               -->
+                                <% if !current_user.permission_group.nil? and current_user.permission_group.title.include? "Med19" %>
+                                  <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
+                                    <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
+                                  </div>
+                                <% end %>
+
                             </span>
                         </td>
                     </tr>
@@ -307,10 +309,11 @@
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
-                                    <!--<div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
-                                      <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
+                                    <% if !current_user.permission_group.nil? and current_user.permission_group.title.include? "Med19" %>
+                                      <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
+                                        <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
                                       </div>
-                                    -->
+                                    <% end %>
                                 </span>
                                 <!--<%= hf_display_epa_detail(epa) %>
                                 -->

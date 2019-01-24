@@ -465,7 +465,9 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
   show_legend_2 = true
 
   return {
-    chart: renderTo: render_to_2
+    chart:
+      renderTo: render_to_2
+      plotBackgroundImage: ''
     title: text: graph_title
     subtitle: text: graph_sub_title
     xAxis:

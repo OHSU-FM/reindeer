@@ -16,8 +16,10 @@
                     <li class="active"><a data-toggle="tab" href="#EPASummary<%= i %>" id="tab-1-epa-<%= i %>">QA Summary</a></li>
                     <li><a data-toggle="tab" href="#EPADetail<%= i %>" id="tab-2-epa-<%= i %>">QA Details</a></li>
                     <li><a data-toggle="tab" href="#CourseDetail<%= i %>" id="tab-3-epa-<%= i %>" >Course Details</a></li>
-                    <li><a data-toggle="tab" href="#Artifacts<%= i %>" id="tab-3-epa-<%= i %>" >WBA Artifacts</a></li>
-                    <li><a data-toggle="tab" href="#AdHocEPA<%= i %>" id="tab-4-epa-<%= i %>" >WBA</a></li>
+                    <% if !current_user.permission_group.nil? and !current_user.permission_group.title.include? "Med19" %>
+                      <li><a data-toggle="tab" href="#Artifacts<%= i %>" id="tab-3-epa-<%= i %>" >WBA Artifacts</a></li>
+                      <li><a data-toggle="tab" href="#AdHocEPA<%= i %>" id="tab-4-epa-<%= i %>" >WBA</a></li>
+                    <% end %>
                 </ul>
 
                 <div class="tab-content">
