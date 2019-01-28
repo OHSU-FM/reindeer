@@ -45,6 +45,11 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
+    if @pk != "_"
+      @student_cohort = User.find_by(email: @pk).permission_group.title
+    else
+      @student_cohort = current_user.permission_group.title
+    end
 
     if @pk == "_"
       if current_user.permission_group.title.include? "Students"

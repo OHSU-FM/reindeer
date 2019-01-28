@@ -276,11 +276,11 @@
                             </span>
                         </td>
                         <td>
-                            <span><h4><p><font color="green">&emsp;Overall Progress</font></p></h4>
+                            <span><h4><p><font color="green">&emsp;Qualified Assessorts/Work Based Assessments Overall Progress</font></p></h4>
                             </span>
                             <span>
                                 <!-- Commented the progress graph out by Tracy request on 9/25/2018-->
-                                <% if !current_user.permission_group.nil? and current_user.permission_group.title.include? "Med19" %>
+                                <% if !current_user.permission_group.nil? and @student_cohort.include? "Med19" %>
                                   <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
                                     <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
                                   </div>
@@ -309,7 +309,7 @@
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
-                                    <% if !current_user.permission_group.nil? and current_user.permission_group.title.include? "Med19" %>
+                                    <% if !current_user.permission_group.nil? and @student_cohort.include? "Med19" %>
                                       <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
                                         <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
                                       </div>
