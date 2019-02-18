@@ -58,7 +58,7 @@ module LsReports::ClinicalphaseHelper
     elsif in_str.include? "SBPIC"
       return COMP["SBPIC"]
     else
-      return "Invalid Preceptorship Competency Code"
+      return "Invalid Preceptorship Competency Code : " + in_str
     end
   end
 
@@ -240,6 +240,7 @@ module LsReports::ClinicalphaseHelper
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     student_data = student_data.sort_by {|d| d["id"]}
 
+
     precept_hash = []
 
     limegroups.each do |lgroup|
@@ -253,7 +254,7 @@ module LsReports::ClinicalphaseHelper
           else
               q_question = pquestion.sub_questions.map {|q|  q.question}
           end
-
+          temp_comp = []
           if !pquestion.sub_questions.empty?
             pquestion.sub_questions.each do |sq|
               temp_comp.push get_student_precept(student_data, pquestion, sq)
@@ -273,6 +274,7 @@ module LsReports::ClinicalphaseHelper
       end
     end
 
+  
     return precept_hash
 
   end
@@ -397,6 +399,9 @@ module LsReports::ClinicalphaseHelper
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "National Board Licensing Exams", "USMLE Exams")
     student_usmle = {}
+    if rr.nil?
+      return student_usmle
+    end
     limegroups = rr.lime_survey.lime_groups
     limegroups.each do |grp|
         lq = grp.lime_questions
