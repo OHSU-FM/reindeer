@@ -257,6 +257,7 @@ module LsReports::ClinicalphaseHelper
               q_question = pquestion.sub_questions.map {|q|  q.question}
           end
 
+          temp_comp = []
           if !pquestion.sub_questions.empty?
             pquestion.sub_questions.each do |sq|
               temp_comp.push get_student_precept(student_data, pquestion, sq)
@@ -401,6 +402,9 @@ module LsReports::ClinicalphaseHelper
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "National Board Licensing Exams", "USMLE Exams")
     student_usmle = {}
+    if rr.nil?
+      return {}
+    end
     limegroups = rr.lime_survey.lime_groups
     limegroups.each do |grp|
         lq = grp.lime_questions
