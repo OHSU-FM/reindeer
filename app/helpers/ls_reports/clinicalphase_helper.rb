@@ -448,7 +448,6 @@ module LsReports::ClinicalphaseHelper
           file_name = JSON(file_info).first["name"]
           temp_hash = {}
           data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '"' + ' target="_blank"' + '>' + file_name + '</a>'
-          byebug
           data.push "" # filler for cols
           data.push ""
 
