@@ -524,7 +524,7 @@ module LsReports::ClinicalphaseHelper
      file_info = student_attach.map{|k| k[file_key]}.first
      attachments = JSON(file_info)
      attachments.each do |attach|
-       ls_file = '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + attach["name"] + '">' + attach["name"] + '</a>'
+       ls_file = '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + attach["name"] + '"' + ' target="_blank"' + '>' + attach["name"] + '</a>'
        attach_array.push ls_file
      end
      return attach_array

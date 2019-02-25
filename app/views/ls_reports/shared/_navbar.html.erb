@@ -36,12 +36,6 @@
             <li>
               <button type="button" class="btn btn-xs btn-primary" onclick="window.print();">Print</button>
             </li>
-            <% if can?(:access, :lime_server) && can?(:read_data, @lime_survey) %>
-              <li>
-                <a id="export-dataset" href="<%= Settings.lime_url %>/index.php/admin/export/sa/exportresults/surveyid/<%= @sid %>"
-                  class="btn btn-xs btn-default" target="_blank">Export</a>
-              </li>
-            <% end %>
           </ul>
         </div>
         <% unless @hide_pk %>

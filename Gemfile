@@ -97,7 +97,6 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
-  gem 'pry'
 end
 
 group :test, :development do
