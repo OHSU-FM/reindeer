@@ -15,28 +15,29 @@ class LsReports::BaseController < ApplicationController
     render :show
   end
 
-  def show_part
-    @view_type = params[:view_type].to_s
-    unless RoleAggregate::DEFAULT_VIEWS.include?(@view_type)
-      raise ActionController::RoutingError.new('Unknown view type')
-    end
-    load_data
-    @gid = params[:gid]
-    @group = @virtual_groups.find{|group| group.gid.to_s == @gid.to_s }
-    @qcounter = 0
-    @virtual_groups.each do |lg|
-      break if lg.gid == @gid
-      @qcounter += lg.parent_questions.count
-    end
-    @question_stats = Rails.cache.fetch(cache_key_for_group(@group), expires_in: 24.hours) do
-      @group.parent_questions.map{|pq|pq.stats}
-    end
-
-    respond_to do |format|
-      format.html { render template: 'ls_reports/shared/show_part.html' }
-      format.json { render 'ls_reports/shared/show_part.json' }
-    end
-  end
+# THIS PART IS COMMENTED OUT ON 1/5/2019 AS IT'S NOT NECESSARY - SELECTING FROM ALL TABLES 
+  # def show_part
+  #   @view_type = params[:view_type].to_s
+  #   unless RoleAggregate::DEFAULT_VIEWS.include?(@view_type)
+  #     raise ActionController::RoutingError.new('Unknown view type')
+  #   end
+  #   load_data
+  #   @gid = params[:gid]
+  #   @group = @virtual_groups.find{|group| group.gid.to_s == @gid.to_s }
+  #   @qcounter = 0
+  #   @virtual_groups.each do |lg|
+  #     break if lg.gid == @gid
+  #     @qcounter += lg.parent_questions.count
+  #   end
+  #   @question_stats = Rails.cache.fetch(cache_key_for_group(@group), expires_in: 24.hours) do
+  #     @group.parent_questions.map{|pq|pq.stats}
+  #   end
+  #
+  #   respond_to do |format|
+  #     format.html { render template: 'ls_reports/shared/show_part.html' }
+  #     format.json { render 'ls_reports/shared/show_part.json' }
+  #   end
+  # end
 
   private
 
@@ -81,7 +82,6 @@ class LsReports::BaseController < ApplicationController
 
     gon.series_name = @fm.series_name
     gon.unfiltered_series_name = @fm.unfiltered_series_name
-
 
   end
 

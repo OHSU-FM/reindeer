@@ -10,22 +10,38 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require rails-ujs
+//= require jquery3
 //= require jquery.min.js
 //= require jquery-ui
+//= require rails-ujs
+//= require popper
+//= require bootstrap-sprockets
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
-//= require bootstrap
 //= require bootstrap-notify.js
 //= require notify.js
 //= require intro.js
-//= require modern-business/modern-business.js
+// require modern-business/modern-business.js
 //= require cocoon
-//= require highcharts/highcharts.js
-//= require highcharts/highcharts-more.js
+//= require Chart.bundle
+//= require chartkick
+//= require highcharts
+//= require highcharts/highcharts-more
 //= require highcharts/highcharts-3d.js
+//= require highcharts/modules/annotations
+//= require highcharts/modules/data
+//= require highcharts/modules/stock
+//= require highcharts/modules/drilldown
+//= require highcharts/modules/exporting
+//= require highcharts/modules/funnel
+//= require highcharts/modules/heatmap
+//= require highcharts/modules/no-data-to-display
+//= require highcharts/themes/dark-blue
+//= require highcharts/themes/dark-green
+//= require highcharts/themes/gray
+//= require highcharts/themes/grid
+//= require highcharts/themes/skies
 //= require startup.js
 //= require scrollspy.js
 //= require typeahead.bundle.js
@@ -34,11 +50,7 @@
 //= require stats.js
 //= require users.js
 //= require dashboard.js
-//= require ls_reports.js
-//= require ls_reports_filter.js
 //= require sync_triggers.js
-//= require dataTables/dataTables.js
-//= require dataTables/extensions/TableTools/js/dataTables.tableTools.js
 //= require sessions.js
 //= require animations.js
 //= require form-utils.js
@@ -47,8 +59,13 @@
 //= require nested_form_fields
 //= require goals
 //= require cable
+//= require datatables
+//= require artifacts
+//= require epa_graphs.js
+//= require ls_reports.js
+//= require ls_reports_filter.js
+//= require ls_reports_graph.js
+//= require ls_reports_spreadsheet.js
 //= require searches.js
-//= require ls_reports_graph.js
-//= require ls_reports_spreadsheet.js
-//= require ls_reports_graph.js
-//= require ls_reports_spreadsheet.js
+// turbolinks is commented out..
+// require turbolinks

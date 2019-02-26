@@ -3,6 +3,7 @@ class SearchesController < ApplicationController
   layout 'full_width_height_margins'
 
   def search
+
     if params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
     elsif current_user.coaching_type == 'coach'
@@ -37,26 +38,26 @@ class SearchesController < ApplicationController
   end
 
   def coach_search
-     @results = []
-     @parameter = params[:search].downcase
-     cohorts = current_user.cohorts
-     if @parameter == "*"
-       load_all_students(cohorts)
-     else
-       cohorts.each do |cohort|
-         # Looking for med18, med19, etc in the title
-         if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
-           cohort.users.each do |user|
-             if user.full_name.downcase.include? @parameter
-                 @results.push user
-             end
-           end
-         elsif cohort.title.downcase.include? @parameter
-           cohort.users.each do |user|
-             @results.push user
-           end
-         end
-       end
-     end
-   end
+    @results = []
+    @parameter = params[:search].downcase
+    cohorts = current_user.cohorts
+    if @parameter == "*"
+      load_all_students(cohorts)
+    else
+      cohorts.each do |cohort|
+        # Looking for med18, med19, etc in the title
+        if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
+          cohort.users.each do |user|
+            if user.full_name.downcase.include? @parameter
+                @results.push user
+            end
+          end
+        elsif cohort.title.downcase.include? @parameter
+          cohort.users.each do |user|
+            @results.push user
+          end
+        end
+      end
+    end
+  end
 end

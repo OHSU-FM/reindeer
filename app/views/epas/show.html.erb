@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Submit date:</strong>
+  <%= @epa.submit_date %>
+</p>
+
+<p>
+  <strong>Student assessed:</strong>
+  <%= @epa.student_assessed %>
+</p>
+
+<p>
+  <strong>Epa:</strong>
+  <%= @epa.epa %>
+</p>
+
+<p>
+  <strong>Clinical discipline:</strong>
+  <%= @epa.clinical_discipline %>
+</p>
+
+<p>
+  <strong>Clinical setting:</strong>
+  <%= @epa.clinical_setting %>
+</p>
+
+<p>
+  <strong>Clincial assessor:</strong>
+  <%= @epa.clincial_assessor %>
+</p>
+
+<%= link_to 'Edit', edit_epa_path(@epa) %> |
+<%= link_to 'Back', epas_path %>

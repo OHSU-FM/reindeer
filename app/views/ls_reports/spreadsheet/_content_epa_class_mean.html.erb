@@ -3,9 +3,10 @@
 
     <ul id="GraphTabs" class="nav nav-tabs">
       <li class="active bold-italic"><a data-toggle="tab" href="#competency-graph">Competency-Graph</a></li>
-      <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean" %>
+      <!-- commented this out on 1/22/2019 %>
+     <!--  <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean" %> -->
          <li class="bold-italic"><a data-toggle="tab" href="#epa-graph">EPA-Graph</a></li>
-      <% end %>
+      <!-- <% end %> -->
 
     </ul>
     <div class="tab-content">
@@ -23,5 +24,3 @@
 
   </div>
 </body>
-
-

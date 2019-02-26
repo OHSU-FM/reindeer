@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :epas
+  resources :artifacts do
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+     member do
+       delete :delete_document_attachment
+       get 'move_files'
+     end
+  end
   namespace :coaching do
     resources :students, param: :slug, only: [:show] do
       member do
@@ -83,5 +91,5 @@ Rails.application.routes.draw do
 
   get "pages/*id", to: "high_voltage/pages#show", as: :page, format: false
 
-  match "*any", via: :all, to: "errors#file_not_found"
+  #match "*any", via: :all, to: "errors#file_not_found"
 end

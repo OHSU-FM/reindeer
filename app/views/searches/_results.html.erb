@@ -20,14 +20,15 @@
         <tr>
           <td> <%= result.full_name %></td>
           <td> <%= result.email %></td>
-          <td> <%= result.permission_group.title %></td>
-          <td> <%= result.coaching_type %></td>
+          <td> <%= result.permission_group.title.to_s %></td>
+          <td> <%= result.coaching_type.to_s %></td>
           <% if result.coaching_type == 'student' %>
              <td> <%= result.cohort ? result.cohort.title : "Not Available"%></td>
           <% else %>
               <td> N/A </td>
           <% end %>
           <td>
+            <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
             <% hf_datasets(result).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>

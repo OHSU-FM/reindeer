@@ -28,7 +28,7 @@
                     <span>
                       <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "Student Last-Name"%>
                     </span>
-                  <div class="input-group-btn">
+                 <div class="input-group-btn">
                     <span>
                       <%= button_tag " SEARCH", class: 'button btn btn-info fa fa-search', style: 'font-size:15px', html: {autocomplete: 'off'},
                           'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> SEARCHING...".html_safe %>
@@ -46,6 +46,9 @@
         <% end %>
 
         <% if can? :list, LimeSurvey %>
+          <% if ['student', 'admin'].include? current_user.coaching_type %>
+            <%= nav_link_to("Upload Documents", artifacts_path, target: '_blank')  %>
+          <% end %>
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>
           <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>

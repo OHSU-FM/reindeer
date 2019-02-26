@@ -1,0 +1,4 @@
+module ArtifactsHelper
+
+
+end

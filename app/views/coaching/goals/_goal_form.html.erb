@@ -22,14 +22,14 @@
 
   <div class="form-group">
     <%= f.label "Target Completion Date", class: "control-label col-sm-2" %>
-    <%= f.date_field :target_date, required: true %>
+    <%= f.date_field :target_date, required: true, id: 'target-date' %>
   </div>
 
   <%= f.hidden_field :user_id, value: student.id %>
 
   <div class="form-group">
     <div class="control-label col-sm-2">
-      <%= f.submit "Save", class: 'btn btn-primary' %>
+      <%= f.submit "Save", class: 'btn btn-primary', id: 'goal-submit' %>
     </div>
   </div>
 <% end %>

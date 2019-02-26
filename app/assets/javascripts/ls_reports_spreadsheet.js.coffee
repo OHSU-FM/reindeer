@@ -100,7 +100,7 @@ get_allblocks_color = (k) ->
   else if k.includes('Comp3')
     return 'Plum'
   else if k.includes('Comp4')
-    return '#4d88ff'   
+    return '#4d88ff'
   else if k.includes('Comp5')
     return 'LawnGreen'
   else
@@ -125,7 +125,9 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
   show_legend_1 = true
   show_legend_2 = true
   return {
-    chart: renderTo: render_to_2
+    chart:
+      renderTo: render_to_2
+      plotBackgroundImage: ''
     title: text: graph_title
     subtitle: text: graph_sub_title
     xAxis:
@@ -463,7 +465,9 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
   show_legend_2 = true
 
   return {
-    chart: renderTo: render_to_2
+    chart:
+      renderTo: render_to_2
+      plotBackgroundImage: ''
     title: text: graph_title
     subtitle: text: graph_sub_title
     xAxis:
@@ -531,13 +535,15 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
     series: seriesArr
   }
 
-create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc,comp_class_mean_hash, in_code, in_series_name) ->
+create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc, comp_class_mean_hash, in_code, in_series_name) ->
   date = new Date()
   new_date = "As of Date: " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()
   render_to_2 = graph_target
   show_legend_1 = true
   show_legend_2 = true          #series_data_2 = "Null"
   graph_type = "column"
+
+  console.log("render_to_2: " + graph_target)
 
   if in_code == 'all-comp'
     series_data_1 = get_all_series_data(series_data_hash, "student")
@@ -630,22 +636,8 @@ theme_dark =
         '#a32a00'
       ]
       chart:
-        backgroundColor:
-          linearGradient:
-            x1: 0
-            y1: 0
-            x2: 1
-            y2: 1
-          stops: [
-            [
-              0
-              '#2a2a2b'
-            ]
-            [
-              1
-              '#3e3e40'
-            ]
-          ]
+        plotBackgroundImage: ''
+        backgroundColor: '#6C6E6D'
         style: fontFamily: 'sans-serif'
         plotBorderColor: '#606063'
       title: style:
@@ -736,49 +728,45 @@ theme_dark =
       textColor: '#C0C0C0'
       contrastTextColor: '#F0F0F3'
       maskColor: 'rgba(255,255,255,0.3)'
-"<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
-<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
 
-theme_light =
-  colors: [
-    '#7cb5ec'
-    '#f7a35c'
-    '#90ee7e'
-    '#7798BF'
-    '#aaeeee'
-    '#ff0066'
-    '#eeaaee'
-    '#55BF3B'
-    '#DF5353'
-    '#7798BF'
-    '#aaeeee'
-  ]
-  chart:
-    backgroundColor: 'white'
-    style: fontFamily: 'sans-serif'
-  title: style:
-    fontSize: '16px'
-    fontWeight: 'bold'
-    textTransform: ''
-  tooltip:
-    borderWidth: 0
-    backgroundColor: 'rgba(219,219,216,0.8)'
-    shadow: false
-  legend: itemStyle:
-    fontWeight: 'bold'
-    fontSize: '13px'
-  xAxis:
-    gridLineWidth: null
-    labels: style: fontSize: '12px'
-  yAxis:
-    minorTickInterval: 'auto'
-    title: style: textTransform: 'uppercase'
-    labels: style: fontSize: '12px'
-  plotOptions: candlestick: lineColor: '#404048'
-  background2: '#F0F0EA'
+
+  theme_light =
+    colors: [
+      '#7cb5ec'
+      '#f7a35c'
+      '#90ee7e'
+      '#7798BF'
+      '#aaeeee'
+      '#ff0066'
+      '#eeaaee'
+      '#55BF3B'
+      '#DF5353'
+      '#7798BF'
+      '#aaeeee'
+    ]
+    chart:
+      backgroundColor: '#e8f4ea'
+      style: fontFamily: 'sans-serif'
+    title: style:
+      fontSize: '16px'
+      fontWeight: 'bold'
+      textTransform: ''
+    tooltip:
+      borderWidth: 0
+      backgroundColor: 'gray'
+      shadow: false
+    legend: itemStyle:
+      fontWeight: 'bold'
+      fontSize: '13px'
+    xAxis:
+      gridLineWidth: null
+      labels: style: fontSize: '12px'
+    yAxis:
+      minorTickInterval: 'auto'
+      title: style: textTransform: 'uppercase'
+      labels: style: fontSize: '12px'
 
 $(document).ready ->
-
     return unless gon?
 
     # Load the fonts
@@ -788,38 +776,6 @@ $(document).ready ->
       type: 'text/css'
     }, null, document.getElementsByTagName('head')[0]
 
-    $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
-    dom: '<"H"Tfr>t<"F"ip>',
-    tableTools: {aButtons: ["copy",
-                              {
-                                    "sExtends": "collection",
-                                    "sPdfOrientation": "landscape",
-                                    "sButtonText": 'Save <span class="caret" />',
-                                    "aButtons":    [ "csv", "xls" ]
-                                }], sSwfPath: window.BASE_URL+"assets/dataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf" }}  )
-
-    $.extend( true, $.fn.DataTable.TableTools.classes, {
-        "container": "btn-group",
-        "buttons": {
-                    "normal": "btn",
-                    "disabled": "btn disabled"
-                    },
-        "collection": {
-                        "container": "DTTT_dropdown dropdown-menu",
-                        "buttons": {
-                            "normal": "",
-                            "disabled": "disabled"
-                        }
-                      }
-        } );
-
-    $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
-        "collection": {
-                        "container": "ul",
-                        "button": "li",
-                        "liner": "a"
-                      }
-     } );
 
     $('[title]').each ->
         $(this).tooltip
@@ -974,10 +930,12 @@ $(document).ready ->
     #Save the HighChart Default Theme
     HCDefaults = $.extend(true, {}, Highcharts.getOptions(), {})
     if @series_data != ""
-      window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
+      window.chart = Highcharts.chart($.extend(true, null, HCDefaults, {
         chart:
           renderTo: window.render_to
+          plotBackgroundImage: ''
           polar: true
+          type: 'line'
         title: text: graph_title
         subtitle: text: ''
         xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']

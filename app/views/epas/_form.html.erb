@@ -1,0 +1,16 @@
+<%= simple_form_for(@epa) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :submit_date %>
+    <%= f.input :student_assessed %>
+    <%= f.input :epa %>
+    <%= f.input :clinical_discipline %>
+    <%= f.input :clinical_setting %>
+    <%= f.input :clincial_assessor %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

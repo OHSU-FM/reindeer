@@ -1,0 +1,15 @@
+// Place all the styles related to the Epas controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+.modal-dialog-centered .modal-content {
+  width: 100%;
+}

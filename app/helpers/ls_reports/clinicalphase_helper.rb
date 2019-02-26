@@ -37,6 +37,9 @@ module LsReports::ClinicalphaseHelper
 
   GRAPH_COLOR = ["#8100ba", "#ff79c2", "#b52e2b", "#6cffb1", "#ff0066", "#fff631", "#6f9090"]
 
+  class LimeTable < ActiveRecord::Base
+  end
+
 
   def hf_decode_preceptor_comp(in_code)
       return DECODE_PRECEPTOR_COMP[in_code]
@@ -254,6 +257,7 @@ module LsReports::ClinicalphaseHelper
           else
               q_question = pquestion.sub_questions.map {|q|  q.question}
           end
+
           temp_comp = []
           if !pquestion.sub_questions.empty?
             pquestion.sub_questions.each do |sq|
@@ -350,6 +354,7 @@ module LsReports::ClinicalphaseHelper
       when "770E"
         return "PEDI"
       when "770F"
+
         return "PSYC"
       when "770G"
         return "SURG"
@@ -400,7 +405,7 @@ module LsReports::ClinicalphaseHelper
     rr = get_dataset(in_survey, "National Board Licensing Exams", "USMLE Exams")
     student_usmle = {}
     if rr.nil?
-      return student_usmle
+      return {}
     end
     limegroups = rr.lime_survey.lime_groups
     limegroups.each do |grp|
@@ -444,14 +449,12 @@ module LsReports::ClinicalphaseHelper
           file_info = student_cpx.map{|k| k[file_key]}.first
           file_name = JSON(file_info).first["name"]
           temp_hash = {}
-          data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '">' + file_name + '</a>'
+          data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '"' + ' target="_blank"' + '>' + file_name + '</a>'
           data.push "" # filler for cols
           data.push ""
 
           temp_hash = { data2 => data }
           return temp_hash
-
-
     end
 #<a href="/ls_files/961225/1/12532/Ager,%20Emily%20CPX%20Performance.pdf">Ager, Emily CPX Performance.pdf</a>
 
@@ -511,7 +514,6 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
-
  def load_attachments student_attach
    attach_array = []
    filecount_key = student_attach.map{|k| k.keys}.first.select {|k| k.include? "filecount"}
@@ -524,15 +526,14 @@ module LsReports::ClinicalphaseHelper
      file_info = student_attach.map{|k| k[file_key]}.first
      attachments = JSON(file_info)
      attachments.each do |attach|
-       ls_file = '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + attach["name"] + '">' + attach["name"] + '</a>'
+       ls_file = '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + attach["name"] + '"' + ' target="_blank"' + '>' + attach["name"] + '</a>'
        attach_array.push ls_file
      end
      return attach_array
    else
      return []
    end
- end
-
+  end
 
   def hf_get_shelf_attachments in_survey
     rr = get_dataset(in_survey, "Clinical Phase", "Shelf Exam Score Reports")
@@ -552,12 +553,18 @@ module LsReports::ClinicalphaseHelper
           end
           shelf_attachments = load_attachments(student_attach)
           return shelf_attachments
-
         end
     end
-
-
-
   end
+
+  def hf_get_artifacts (pk)
+    selected_user = User.find_by(email: pk)
+    if selected_user.nil?
+      return nil
+    else
+      return Artifact.where(user_id: selected_user.id)
+    end
+  end
+
 
 end

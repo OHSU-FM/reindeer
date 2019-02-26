@@ -4,12 +4,12 @@ source "https://rubygems.org"
 # Main
 ##############################
 gem "bundler"
-gem 'rails', '5.0.0.1'
+gem 'rails', '~> 5.2'
 gem "rdoc"
 #gem 'pg', '~>0.21'
 
 # Database
-gem "pg", "~> 0.20"
+gem 'pg'
 gem "composite_primary_keys"
 gem "redis", "~>3.2"
 
@@ -37,16 +37,16 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-
+gem "popper_js", "~> 1.14.3"
+gem "bootstrap-sass", '~> 3.3.7'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-
+gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
 gem "jquery-rails"
-gem "jquery-ui-rails"
+#gem "jquery-ui-rails"
 
 # CSS / js
-gem "bootstrap-sass", '~> 3.3.7'
 # Random bug:
 # Error encountered while saving cache (".....") can't dump anonymous class
 # http://stackoverflow.com/questions/22276991/heroku-error-encountered-while-saving-cache
@@ -97,7 +97,6 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
-  gem 'pry'
 end
 
 group :test, :development do
@@ -135,9 +134,20 @@ group :development do
   gem "guard"
   gem "guard-rspec"
 end
-
+gem 'mini_racer'
+gem 'autoprefixer-rails'
 gem 'rufus-scheduler'
 gem 'whenever', require: false
 gem 'nested_form_fields'
 gem 'turbolinks', '~> 5.0', '>= 5.0.1'
 gem 'rails-ujs', '~> 0.1.0'
+# highchart 
+gem "highcharts-rails"
+gem 'chartkick'
+gem 'groupdate'
+#=======================
+# dataTables
+gem 'jquery-datatables'
+#========================
+gem "csv_hasher"
+gem 'activestorage-validator', '~> 0.1.0'

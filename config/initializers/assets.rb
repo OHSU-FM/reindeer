@@ -29,6 +29,10 @@ Rails.application.config.assets.precompile += %w( print.css
     action_plan_items.css
     rooms.css
     coaching_students.css
+    coaching.css
     cable.js
     searches.css
+    artifacts.css
+    epa_graphs.js
+    chartkick.js
     )

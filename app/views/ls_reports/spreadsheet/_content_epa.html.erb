@@ -36,9 +36,8 @@
         <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams/CPX</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
-        <% if !current_user.permission_group.nil? and (current_user.permission_group.title == "Dean" or current_user.permission_group.title == 'Entrustment Group') %>
-            <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
-        <% end %>
+        <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
+
     </ul>
 
     <div class="tab-content">
@@ -277,14 +276,16 @@
                             </span>
                         </td>
                         <td>
-                            <span><h4><p><font color="green">&emsp;Overall Progress</font></p></h4>
+                            <span><h4><p><font color="green">&emsp;Qualified Assessors/Work Based Assessments Overall Progress</font></p></h4>
                             </span>
                             <span>
                                 <!-- Commented the progress graph out by Tracy request on 9/25/2018-->
-                                <!--<div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
-                                  <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
-                                </div>
-                               -->
+                                <% if !current_user.permission_group.nil? and @student_cohort.include? "Med19" %>
+                                  <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
+                                    <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
+                                  </div>
+                                <% end %>
+
                             </span>
                         </td>
                     </tr>
@@ -308,10 +309,11 @@
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
-                                    <!--<div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
-                                      <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
+                                    <% if !current_user.permission_group.nil? and @student_cohort.include? "Med19" %>
+                                      <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
+                                        <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
                                       </div>
-                                    -->
+                                    <% end %>
                                 </span>
                                 <!--<%= hf_display_epa_detail(epa) %>
                                 -->

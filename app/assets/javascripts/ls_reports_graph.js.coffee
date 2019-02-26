@@ -62,6 +62,9 @@ Array::min=->
 
     return {
         chart: {
+            backgroundColor: "#e8eff9",
+            plotBackgroundColor: "#e8eff9",
+            plotBackgroundImage: null,
             type: chart_type,
             renderTo: graph.target,
             polar: polar,  # for spider chart,
@@ -73,15 +76,15 @@ Array::min=->
                 viewDistance: 25
             },
             #backgroundColor:'rgba(255, 255, 255, 0.4)'
-            backgroundColor: null,
+
             height: 380,
-            width: 490
+            width: 590
         },
 
         tooltip: {
-            shared: false,
+            shared: false
             positioner: -> {
-                 x: 60, y: 60
+                 x: 80, y: 80
             }
         }
 
@@ -147,17 +150,18 @@ Array::min=->
             },
             labels: {
                 formatter: ->
-                    if (this.value.length > 20)
-                        return this.value.substr(0,20) + "...";
-                    else
-                        return this.value;
+                    return this.value;
+                    # if (this.value.length > 20)
+                    #     return this.value.substr(0,20) + "...";
+                    # else
+                    #     return this.value;
 
 
                 style: {
                     color: '#222',
                     font: '12px Helvetica',
                     fontWeight: 'bold',
-                    textOverflow: 'ellipsis',
+                    textOverflow: null, #'ellipsis',
                     overflow: 'hidden'
                 },
                 enabled: true

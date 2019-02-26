@@ -28,6 +28,9 @@ class User < ActiveRecord::Base
 
   has_one :competency, dependent: :destroy
 
+  has_many :artifacts, dependent: :destroy
+  has_many :epas, dependent: :destroy
+
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
   validates_presence_of :username, uniqueness: { case_sensitive: false }

@@ -1,8 +1,10 @@
 class LsReports::SpreadsheetController < LsReports::BaseController
   layout 'full_width'
+  helper :all
   include LsReports::SpreadsheetHelper
   include LsReports::CompetencyHelper
   include LsReports::ClinicalphaseHelper
+  include EpasHelper
   ##
   # show lime_survey
   def show
@@ -34,7 +36,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
     @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
 
-
     @comp_hash2 = hf_load_all_competencies(@rs_data, "2")
     @comp_hash1 = hf_load_all_competencies(@rs_data, "1")
     @comp_hash0 = hf_load_all_competencies(@rs_data, "0")
@@ -44,6 +45,11 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
 
+    if @pk != "_"
+      @student_cohort = User.find_by(email: @pk).permission_group.title
+    else
+      @student_cohort = current_user.permission_group.title
+    end
 
     if @pk == "_"
       if current_user.permission_group.title.include? "Students"
@@ -76,6 +82,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @shelf_attachments = hf_get_shelf_attachments(surveys)
     @preceptorship = hf_get_preceptorship(surveys, @pk)
     @preceptor_view = @preceptorship.flatten
+    @artifacts_student = hf_get_artifacts(@pk)
+    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
+
+
   end
 
 
@@ -115,6 +125,14 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     gon.allblocks = @allblocks
     gon.allblocks_class_mean = @allblocks_class_mean
+
+    if @pk != "_"
+      gon.epa_adhoc = @epa_hash #@epa_adhoc
+      gon.epa_evaluators = @epa_evaluators
+      gon.unique_evaluators = @unique_evaluators
+      gon.selected_dates = @selected_dates
+      gon.selected_student = @selected_student
+    end
 
     #gon.preceptorship = @preceptorship
     #preceptorship data is not sent over to coffeescripts to process.
