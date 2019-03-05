@@ -191,8 +191,7 @@ module LsReports::ClinicalphaseHelper
   def get_data data
     temp_hash = {}
 
-    submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.secon
-    d  # return the actual date
+    submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.second  # return the actual date
     responses = data.select {|k,v| k.include? "SBP"}
     temp_data = responses.map {|k,v| v}
 
@@ -234,6 +233,9 @@ module LsReports::ClinicalphaseHelper
 
   def hf_get_preceptorship(in_survey, pk)
     rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+    if rr.nil?
+      return {}
+    end
 
     limegroups = rr.lime_survey.lime_groups
     #lq = limegroups.first.lime_questions
@@ -371,6 +373,10 @@ module LsReports::ClinicalphaseHelper
          thres_score = Threshold.Med19.select {|s| s == course_code}.flatten.second
       elsif @student_year == "Med20"
          thres_score = Threshold.Med20.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med21"
+          thres_score = Threshold.Med21.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med22"
+          thres_score = Threshold.Med22.select {|s| s == course_code}.flatten.second
       end
       return thres_score.nil? ? "" : "Threshold: #{thres_score.to_s}"
     end
