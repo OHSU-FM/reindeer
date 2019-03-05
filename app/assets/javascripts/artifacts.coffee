@@ -26,7 +26,13 @@ epa_codes = (category_code) ->
   else if category_code == 'Scholarly Project'
           cat_array = []
           cat_array.push {id: "Proposal", value: "Proposal"}
+          cat_array.push {id: "Poster", value: "Poster"}
           cat_array.push {id: "Capstone", value: "Capstone"}
+  else if category_code == "Progress Board"
+          cat_array = []
+          cat_array.push {id: "Progress Board Letter", value: "Progress Board Letter"}
+          cat_array.push {id: "Other", value: "Other"}
+
         else
           return []
 
@@ -42,3 +48,27 @@ $(document).ready ->
     $.each data, (key, entry) ->
       $('#artifact_content').append $('<option></option>').attr('value', entry.id).text(entry.value)
       return
+
+  #$(document).on 'change', '#permission_group_id select', ->
+  $('#permission_group_id').on 'change', (e) ->
+    permission_group_id = $(this).val()
+    console.log("permission_group_id: " + permission_group_id)
+    $.ajax
+      url: '/artifacts/new'
+      method: 'GET'
+      dataType: 'json'
+      data: permission_group_id: permission_group_id
+      error: (xhr, status, error) ->
+        console.error 'AJAX Error: ' + status + error
+        return
+      success: (response) ->
+        #console.log response
+        cohort_students = response['cohort_students']
+        $('#user_id').empty()
+        $('#user_id').append '<option>Select Student</option>'
+        i = 0
+        while i < cohort_students.length
+          $('#user_id').append '<option value="' + cohort_students[i]['id'] + '">' + cohort_students[i]['full_name'] + '</option>'
+          i++
+        return
+    return

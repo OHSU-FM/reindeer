@@ -8,7 +8,11 @@
       <td>Artifacts</td>
     </tr>
   </thead>
-  <% epa = "EPA#{idx_epa}" %>
+  <% if idx_epa == "Official Student Letters" %>
+    <% epa = "Progress Board Letter" %>
+  <% else %>
+    <% epa = "EPA#{idx_epa}" %>
+  <% end %>
   <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa } %>
   <% selected_artifacts.each do |artifact| %>
 

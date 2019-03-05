@@ -37,6 +37,7 @@
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#official_letters" style="background-color:#726A95" >Official Student Letters</a></li>
 
     </ul>
 
@@ -259,6 +260,12 @@
                 <% end %>
             </table>
 
+        </div>
+
+        <div id="official_letters" class="tab-pane fade">
+                        <div id="Progress Board">
+                            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+                        </div>
         </div>
 
         <div id="EPA" class="tab-pane fade">

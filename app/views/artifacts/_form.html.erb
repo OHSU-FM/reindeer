@@ -1,10 +1,24 @@
 <%= simple_form_for(@artifact) do |f| %>
   <%= f.error_notification %>
 
+  <% if !["student", "coach"].include? current_user.coaching_type %>
+      <div class="form-group">
+        <%= f.label :cohort, class: "col-sm-1 control-label"%>
+        <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
+            prompt: "Please Select Cohort" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :Student, class: "col-sm-1 control-label"%>
+        <%= select_tag :user_id, options_for_select(@cohort_students.collect{|s| [s.full_name, s.id]}, selected: params[:user_id]),
+            prompt: "Please Select a Student" %>
+      </div>
+  <% end %>
+
+
   <div class="form-group">
     <%= f.label :Category, class: "col-sm-1 control-label"%>
     <%= f.select :title,
-      options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project"]),
+      options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board"]),
       { include_blank: "---" },
       required: true
     %>

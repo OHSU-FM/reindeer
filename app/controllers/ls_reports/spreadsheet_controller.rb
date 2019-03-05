@@ -61,6 +61,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     end
     #@all_comp_hash3 = hf_load_all_competencies(@rs_data_unfiltered, "3")
     if hf_found_competency(@response_sets)
+
       @rs_data.sort_by!{|obj| obj["SubmitDt"]}.reverse!
       export_to_gon
       render :show_epa

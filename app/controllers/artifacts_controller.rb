@@ -19,6 +19,19 @@ class ArtifactsController < ApplicationController
   # GET /artifacts/new
   def new
     @artifact = Artifact.new
+    @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
+    @cohort_students = []
+    if params[:permission_group_id].present?
+      @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
+    end
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: {cohort_students: @cohort_students}
+        }
+      end
+    end
+
   end
 
   # GET /artifacts/1/edit
@@ -28,7 +41,12 @@ class ArtifactsController < ApplicationController
   # POST /artifacts
   def create
     @artifact = Artifact.new(artifact_params)
-    @artifact.user_id = current_user.id
+    if params[:user_id].present?
+      @artifact.user_id = params[:user_id].to_i
+    else
+      @artifact.user_id = current_user.id
+    end
+
     if @artifact.save
       redirect_to @artifact, notice: 'Artifact was successfully created.'
     else

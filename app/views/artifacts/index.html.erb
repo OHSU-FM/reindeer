@@ -33,8 +33,7 @@
                   <%= link_to 'View', url_for(document), target: :_blank  %>
                   /
                   <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
-                  /
-                  <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
+                  <!-- <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>  -->
                 </td>
               </tr>
             <% end %>
