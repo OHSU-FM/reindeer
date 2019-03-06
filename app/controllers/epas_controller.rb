@@ -6,7 +6,6 @@ class EpasController < ApplicationController
     if !@pk.nil?
       selected_user = User.where(email: @pk)
       @epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
-      byebug
     else
       @epas = Epa.where(user_id: current_user.id).order(:epa, :submit_date)
     end

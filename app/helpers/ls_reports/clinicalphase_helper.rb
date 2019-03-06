@@ -364,9 +364,9 @@ module LsReports::ClinicalphaseHelper
   end
 
   def hf_get_threshold (in_course_name)
-    course_code = in_course_name.gsub(/"|\[|\]/, '').split(" ").first
+    course_code = in_course_name.to_s.gsub(/"|\[|\]/, '').split(" ").first
 
-    if course_code.include? "STEP"
+    if course_code.to_s.include? "STEP"
       if  @student_year == "Med18"
          thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
       elsif @student_year == "Med19"
@@ -384,6 +384,10 @@ module LsReports::ClinicalphaseHelper
        course_code = get_proper_code(in_course_name)
     end
     # remove "[ ]" brackets
+    if in_course_name.nil?
+      thres_score = nil
+      return thres_score.nil? ? "" : "(Passing Threshold: #{thres_score.to_s}) /"
+    end
     course_number = in_course_name["770"]
     if course_number == "770"
       if @student_year == "Med18"
@@ -564,9 +568,11 @@ module LsReports::ClinicalphaseHelper
   def hf_get_artifacts (pk)
     selected_user = User.find_by(email: pk)
     if selected_user.nil?
-      return nil
+      return nil,0
     else
-      return Artifact.where(user_id: selected_user.id)
+      artifacts_student = Artifact.where(user_id: selected_user.id)
+      official_docs = artifacts_student.select{|a| a if a.content == "Progress Board Letter" }
+      return artifacts_student, official_docs.count
     end
   end
 

@@ -37,7 +37,7 @@
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#official_letters" style="background-color:#726A95" >Official Student Letters</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#official_letters" style="background-color:#726A95" >Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
 
     </ul>
 
@@ -48,7 +48,7 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if x["CourseName"].include? "730" or x["CourseName"].include? "731"%>
+                     <% if x["CourseName"].to_s.include? "730" or x["CourseName"].to_s.include? "731"%>
                              <td class="bold-italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -65,7 +65,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "SCHI" %>
+                          <% if x["CourseName"].to_s.include? "SCHI" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -83,7 +83,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "FoM" %>
+                          <% if x["CourseName"].to_s.include? "FoM" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -109,7 +109,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "TRAN 703" or x["CourseName"].include? "TRAN 704"  %>
+                          <% if x["CourseName"].to_s.include? "TRAN 703" or x["CourseName"].to_s.include? "TRAN 704"  %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -131,7 +131,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 770" or x["CourseName"].include? "CPX 702" %>
+                          <% if x["CourseName"].to_s.include? "INTS 770" or x["CourseName"].to_s.include? "CPX 702" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -151,7 +151,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 771" or x["CourseName"].include? "INTS 772" or x["CourseName"].include? "INTS 773" or x["CourseName"].include? "INTS 774"%>
+                          <% if x["CourseName"].to_s.include? "INTS 771" or x["CourseName"].to_s.include? "INTS 772" or x["CourseName"].to_s.include? "INTS 773" or x["CourseName"].to_s.include? "INTS 774"%>
 
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
@@ -170,7 +170,12 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM" and !x["CourseName"].include? "703" and !x["CourseName"].include? "SCHI" %>
+                     <% if !x["CourseName"].to_s.include? "730" and
+                           !x["CourseName"].to_s.include? "731" and
+                           !x["CourseName"].to_s.include? "INTS" and
+                           !x["CourseName"].to_s.include? "FoM" and
+                           !x["CourseName"].to_s.include? "703" and
+                           !x["CourseName"].to_s.include? "SCHI" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -263,9 +268,9 @@
         </div>
 
         <div id="official_letters" class="tab-pane fade">
-                        <div id="Progress Board">
-                            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
-                        </div>
+            <div id="Progress Board">
+                <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+            </div>
         </div>
 
         <div id="EPA" class="tab-pane fade">

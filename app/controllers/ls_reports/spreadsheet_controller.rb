@@ -83,7 +83,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @shelf_attachments = hf_get_shelf_attachments(surveys)
     @preceptorship = hf_get_preceptorship(surveys, @pk)
     @preceptor_view = @preceptorship.flatten
-    @artifacts_student = hf_get_artifacts(@pk)
+    @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
 
 
