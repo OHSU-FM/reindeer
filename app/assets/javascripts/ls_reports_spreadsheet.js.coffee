@@ -452,7 +452,7 @@ check_series_data = (in_data) ->
     i++
   return data_array
 
-build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub_title) ->
+build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub_title, category) ->
 
   seriesArr = []
 
@@ -471,7 +471,7 @@ build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub
     title: text: graph_title
     subtitle: text: graph_sub_title
     xAxis:
-      categories: ["FUND", "BLHD", "SBM", "CPR", "HODI", "NSF", "DEVH" ]
+      categories: category
       tickInterval: 1
       labels:
         enabled: true
@@ -577,13 +577,18 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     graph_sub_title = "<b>ALL BLOCK</b>"
     i = 0
     window.chart2 = []
+    category1 = ["FUND", "BLHD", "SBM", "CPR", "HODI", "NSF", "DEVH" ]
+    category2 = ["FUND-HSS", "FUND-BSS", "BLHD-HSS", "BLHD-BSS", "SBM-HSS", "SBM-BSS", "CPR-HSS", "CPR-BSS",  "HODI-HSS", "HODI-BSS", "NSF-HSS", "NSF-BSS", "DEVH-HSS" , "DEVH-BSS"]
     $.each series_data_hash, (key, val) ->
       console.log ("key: " + key)
       console.log ('val: ' + val)
       data = val
       mean_data = comp_class_mean_hash[key]
       graph_target = "data-visualization-" + key
-      options = build_options(key, data, mean_data, graph_target, graph_title, graph_sub_title)
+      if key == "Comp2" or key == "Comp5"
+        options = build_options(key, data, mean_data, graph_target, graph_title, graph_sub_title, category2)
+      else
+        options = build_options(key, data, mean_data, graph_target, graph_title, graph_sub_title, category1)
       window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
       i = i + 1
   else if in_code == 'preceptorship'

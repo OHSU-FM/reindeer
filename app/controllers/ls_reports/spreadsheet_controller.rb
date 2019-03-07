@@ -50,6 +50,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     else
       @student_cohort = current_user.permission_group.title
     end
+    @cohort_year = @student_cohort.split(" ").first
 
     if @pk == "_"
       if current_user.permission_group.title.include? "Students"

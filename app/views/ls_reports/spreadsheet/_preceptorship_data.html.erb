@@ -1,4 +1,4 @@
-<% if @preceptorship.empty? %>
+<% if !@preceptorship.empty? %>
     <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
         <% @preceptor_view.each do |p| %>
           <tr>
@@ -25,9 +25,9 @@
               <div class="col-sm-4" id="table-visualization-<%= i %>" ></div>
                 <table style="background-color:#f2f2f2">
                   <body>
-                    <% if !["Professional Concerns Comments", "MSPE Comments", "Comment/Feedback"].include? @preceptorship[i][0].to_s.flatten.first %>
+                    <% if !["Professional Concerns Comments", "MSPE Comments", "Comment/Feedback"].include? @preceptorship[i][0].flatten.first %>
                         <tr><td colspan='3' style="text-align:center"><h4>Preceptorship Evaluations</h4></td></tr>
-                        <tr><td style="text-align:right;"><b>Competency: <i><%= hf_decode_comp(@preceptorship[i][0].to_s.flatten.first) %></i></b></td>
+                        <tr><td style="text-align:right;"><b>Competency: <i><%= hf_decode_comp(@preceptorship[i][0].flatten.first) %></i></b></td>
                           <% @preceptorship[0][3]["Term"].each do |term| %>
                             <td style='width:130px; text-align:center'><b><%= term %></b></td>
                           <% end %>

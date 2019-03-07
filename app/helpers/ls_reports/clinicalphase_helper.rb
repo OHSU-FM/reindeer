@@ -570,9 +570,13 @@ module LsReports::ClinicalphaseHelper
     if selected_user.nil?
       return nil,0
     else
+      no_docs = 0
       artifacts_student = Artifact.where(user_id: selected_user.id)
-      official_docs = artifacts_student.select{|a| a if a.content == "Progress Board Letter" }
-      return artifacts_student, official_docs.count
+      official_docs = artifacts_student.select{|a| a.title == "Progress Board"}
+      official_docs.each do |doc|
+        no_docs = no_docs + doc.documents.count
+      end
+      return artifacts_student, no_docs
     end
   end
 
