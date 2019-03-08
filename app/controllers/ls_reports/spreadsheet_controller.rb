@@ -4,6 +4,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::SpreadsheetHelper
   include LsReports::CompetencyHelper
   include LsReports::ClinicalphaseHelper
+  include LsReports::CslevalHelper
   include EpasHelper
   ##
   # show lime_survey
@@ -73,19 +74,20 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   end
 
   def get_all_blocks_data
-    surveys = @lime_survey.lime_surveys_languagesettings
-    @allblocks = hf_get_all_blocks(surveys, @pk)
+    survey = @lime_survey.lime_surveys_languagesettings
+    @allblocks = hf_get_all_blocks(survey, @pk)
     if !@allblocks.empty?
-      @allblocks_class_mean = hf_get_all_blocks_class_mean(surveys)
+      @allblocks_class_mean = hf_get_all_blocks_class_mean(survey)
     end
 
-    @cpx_data = hf_get_cpx(surveys)
-    @usmle_data = hf_get_usmle(surveys)
-    @shelf_attachments = hf_get_shelf_attachments(surveys)
-    @preceptorship = hf_get_preceptorship(surveys, @pk)
+    @cpx_data = hf_get_cpx(survey)
+    @usmle_data = hf_get_usmle(survey)
+    @shelf_attachments = hf_get_shelf_attachments(survey)
+    @preceptorship = hf_get_preceptorship(survey, @pk)
     @preceptor_view = @preceptorship.flatten
     @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
+    @csl_evals = hf_get_csl_evals(survey, @pk)
 
 
   end

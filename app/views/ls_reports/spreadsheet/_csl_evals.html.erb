@@ -1,0 +1,7 @@
+<% if !@csl_evals.empty? %>
+    <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+      <tr><%= @csl_evals[0].first.flatten.second %></tr>
+    </table>
+<% else %>
+  <h4> No CSL Narrative Feedbacks! </h4>
+<% end %>

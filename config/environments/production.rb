@@ -92,4 +92,5 @@ Rails.application.configure do
   end
   config.action_cable.allowed_request_origins = ["https://redei.ohsu.edu"]
   config.action_cable.url = "wss://redei.ohsu.edu/websocket" 
+  config.active_storage.service = :production
 end

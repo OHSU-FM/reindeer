@@ -580,5 +580,4 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
-
 end
