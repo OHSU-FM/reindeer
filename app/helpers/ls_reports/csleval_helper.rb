@@ -1,6 +1,18 @@
 module LsReports::CslevalHelper
   include LsReportsHelper
 
+  DECODE_CSL_EVAL = { '1' => "Rarely demonstrates this behavior",
+                      '2' => "Occasionally demonstrates this behavior",
+                      '3' => "Often demonstrates this behavior",
+                      '4' => "Consistently demonstrates this behavior",
+                      '5' => "Unable to answer",
+                      '888' => "Missing",
+                      '' => "Missing"}
+
+  def decode_csl_eval (incode)
+    return DECODE_CSL_EVAL[incode]
+  end
+
   def get_student_csl(in_data, question, sub_question)
     #locate the hash pair and return the value
     if !sub_question.nil?
@@ -29,7 +41,8 @@ module LsReports::CslevalHelper
 
       small_array = []
       temp_hash = {}
-      temp_hash = {"csl_survey" => "#{survey.surveyls_title}"}
+      survey_title = survey.surveyls_title.split(":").last
+      temp_hash = {"csl_survey" => ["#{survey_title}"]}
       small_array.push temp_hash
 
        limegroups.each do |grp|
@@ -41,9 +54,14 @@ module LsReports::CslevalHelper
 
            elsif pquestion.title.include? "SpecificComp"
               pquestion.sub_questions.each do |sub_q|
-                temp_data = get_student_csl(student_data, pquestion, sub_q)
-                temp_hash = {sub_q.question => temp_data}
+                eval_codes = get_student_csl(student_data, pquestion, sub_q)
+                code_array = []
+                eval_codes.each do |ecode|
+                  code_array.push decode_csl_eval(ecode)
+                end
+                temp_hash = {sub_q.question => code_array}
                 small_array.push temp_hash
+
               end
             elsif  pquestion.title.include? "Comments"
               temp_data = get_student_csl(student_data, pquestion, nil)

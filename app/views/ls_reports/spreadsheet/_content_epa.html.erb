@@ -1,26 +1,39 @@
+<div class="row" >
+  <div class="column left" >
+    <table class="table table-condensed spreadsheet-body">
+        <tr>
+            <td class="align-right"><%= @rs_questions["StudentID"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentID"] %></td>
+        </tr>
+        <tr>
+            <td class="align-right"><%= @rs_questions["StudentName"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentName"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["StudentEmail"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentEmail"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["CoachName"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["CoachName"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
+         </tr>
+     </table>
+  </div>
+  <div class = "columnn right" >
+    <table class="table table-condensed">
+      <tr><td> <a href="#Preceptorship">Preceptorship Information </a> <td></tr>
+        <% @csl_evals.each do |eval| %>
+          <tr> <td><%= eval.first["csl_survey"].first %> </td></tr>
+        <% end %>
 
-<table style="width: 30%;" class="table table-condensed  spreadsheet-body">
-    <tr>
-        <td class="align-right"><%= @rs_questions["StudentID"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentID"] %></td>
-    </tr>
-    <tr>
-        <td class="align-right"><%= @rs_questions["StudentName"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentName"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["StudentEmail"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentEmail"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["CoachName"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["CoachName"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
-     </tr>
- </table>
+    </table>
+  </div>
+
+</div>
 
 <body>
  <div class="container-fluid">
@@ -94,14 +107,14 @@
                      <tr><%= render partial: 'all_blocks_data' %></tr>
                 </tbody>
               </table>
-              <div class="precept-header">Preceptorship Information </div>
+              <div class="precept-header" id="Preceptorship">Preceptorship Information </div>
               <%= render partial: 'preceptorship_data'%>
               <div id="csl_evaluation">All CSL Narrative Evaluations </div>
               <%= render partial: 'csl_evals' %>
 
         </div>
 
-        <div id="preceptor" class="tab-pane fade">
+        <div id="preceptor" name="Preceptorship" class="tab-pane fade">
           <%= render partial: 'preceptorship_data'%>
         </div>
 
