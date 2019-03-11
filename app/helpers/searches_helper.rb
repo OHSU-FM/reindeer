@@ -15,7 +15,6 @@ module SearchesHelper
         temp_array.push data
       end
     end
-    byebug
     return temp_array
   end
 
