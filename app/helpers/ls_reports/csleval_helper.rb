@@ -1,12 +1,12 @@
 module LsReports::CslevalHelper
   include LsReportsHelper
 
-  DECODE_CSL_EVAL = { '1' => "Rarely demonstrates this behavior",
-                      '2' => "Occasionally demonstrates this behavior",
-                      '3' => "Often demonstrates this behavior",
-                      '4' => "Consistently demonstrates this behavior",
-                      '5' => "Unable to answer",
-                      '888' => "Missing",
+  DECODE_CSL_EVAL = { '1' => '<font color="red">Rarely demonstrates this behavior</font>',
+                      '2' => '<font color="#f46242">Occasionally demonstrates this behavior</font>',
+                      '3' => '<font color="#55e529">Often demonstrates this behavior</font>',
+                      '4' => '<font color="green">Consistently demonstrates this behavior</font>',
+                      '5' => '<font color="blue">Unable to answer</font>',
+                      '888' => '<font color="blue">Missing</font>',
                       '' => "Missing"}
 
   def decode_csl_eval (incode)
@@ -20,6 +20,29 @@ module LsReports::CslevalHelper
     else
        return in_data.map {|d| d["#{question.sid}X#{question.gid}X#{question.qid}"]}
     end
+  end
+
+  def reshuffle_data(hash_array)
+    new_array = []
+    temp_hash = {}
+    temp_hash = hash_array.select {|k,v| k.to_s.include? "csl_survey"}
+    new_array.push temp_hash.first
+    temp_hash = hash_array.select {|k,v| k.include? "CSLInstructor"}
+    new_array.push temp_hash.first
+    temp_hash = hash_array.select {|k,v| k.include? "SelectedStudent"}
+    new_array.push temp_hash.first
+    temp_hash = hash_array.select {|k,v| k.include? "Narrative Feedbacks"}
+    new_array.push temp_hash.first
+
+    hash_array.each do |data|
+      data.each do |key, val|
+        if !["csl_survey","CSLInstructor","SelectedStudent", "Narrative Feedbacks"].include? key
+          temp_hash = {key => val}
+          new_array.push temp_hash
+        end
+      end
+    end
+    return new_array
   end
 
 
@@ -65,7 +88,7 @@ module LsReports::CslevalHelper
               end
             elsif  pquestion.title.include? "Comments"
               temp_data = get_student_csl(student_data, pquestion, nil)
-              temp_hash = {pquestion.title => temp_data}
+              temp_hash = {"Narrative Feedbacks" => temp_data}
               small_array.push temp_hash
             end
           end
@@ -73,7 +96,8 @@ module LsReports::CslevalHelper
 
       end
 
-      big_array.push small_array
+      fixed_hash = reshuffle_data(small_array)
+      big_array.push fixed_hash
     end
     return big_array  #contains all csl datasets
   end

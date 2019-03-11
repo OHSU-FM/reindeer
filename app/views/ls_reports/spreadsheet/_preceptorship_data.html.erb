@@ -1,5 +1,5 @@
 <% if !@preceptorship.empty? %>
-    <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+    <table style="width: 80%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center">
         <% @preceptor_view.each do |p| %>
           <tr>
               <% p.each do |key, val| %>
@@ -13,7 +13,7 @@
           </tr>
         <% end %>
     </table>
-    <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body noBorder">
+    <table style="width: 80%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body noBorder center">
       <% if @preceptorship.count == 8 %>
         <% hash_count = 7 %>
       <% else %>

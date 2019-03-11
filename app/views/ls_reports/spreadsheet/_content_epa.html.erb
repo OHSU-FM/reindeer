@@ -23,12 +23,10 @@
          </tr>
      </table>
   </div>
-  <div class = "columnn right" >
-    <table class="table table-condensed">
-      <tr><td> <a href="#Preceptorship">Preceptorship Information </a> <td></tr>
-        <% @csl_evals.each do |eval| %>
-          <tr> <td><%= eval.first["csl_survey"].first %> </td></tr>
-        <% end %>
+  <div class="column right" >
+    <table  style="width: 30%;"class="table table-condensed spreadsheet-body">
+      <tr><td> <a href="#Preceptorship">Preceptorship Information</a> <td></tr>
+      <tr> <td><a href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
 
     </table>
   </div>
@@ -109,9 +107,8 @@
               </table>
               <div class="precept-header" id="Preceptorship">Preceptorship Information </div>
               <%= render partial: 'preceptorship_data'%>
-              <div id="csl_evaluation">All CSL Narrative Evaluations </div>
+              <div id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
               <%= render partial: 'csl_evals' %>
-
         </div>
 
         <div id="preceptor" name="Preceptorship" class="tab-pane fade">
