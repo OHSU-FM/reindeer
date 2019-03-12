@@ -111,7 +111,7 @@ module LsReports::CslevalHelper
               end
             elsif  pquestion.title.include? "Comments"
               temp_data = get_student_csl(student_data, pquestion, nil)
-              temp_hash = {"Narrative Feedbacks" => temp_data}
+              temp_hash = {"Narrative Feedback" => temp_data}
               small_array.push temp_hash
             end
           end
