@@ -31,7 +31,7 @@ module LsReports::CslevalHelper
     new_array.push temp_hash.first
     temp_hash = hash_array.select {|k,v| k.include? "SelectedStudent"}
     new_array.push temp_hash.first
-    temp_hash = hash_array.select {|k,v| k.include? "Narrative Feedbacks"}
+    temp_hash = hash_array.select {|k,v| k.include? "Narrative Feedback"}
     new_array.push temp_hash.first
 
     hash_array.each do |data|
