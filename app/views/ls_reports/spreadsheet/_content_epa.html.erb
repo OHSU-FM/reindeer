@@ -26,8 +26,9 @@
   <div class="column right" >
     <table  style="width: 30%;"class="table table-condensed spreadsheet-body">
       <tr><td> <a href="#Preceptorship">Preceptorship Information</a> <td></tr>
-      <tr> <td><a href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
-
+      <% if !@csl_evals.empty? %>
+        <tr> <td><a href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
+      <% end %>
     </table>
   </div>
 
