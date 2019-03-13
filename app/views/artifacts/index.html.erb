@@ -16,9 +16,12 @@
         <td><%= artifact.title %></td>
         <td><%= artifact.content %> </td>
         <td><%= artifact.user_id.to_s %></td>
-        <td><%= link_to 'Edit', edit_artifact_path(artifact) %>
-          /
-          <%= link_to 'Destroy Artifact', artifact, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <td>
+          <% if current_user.coaching_type != 'student' or !artifact.content.to_s.include? "Progress Board" %>
+            <%= link_to 'Edit', edit_artifact_path(artifact) %>
+            /
+            <%= link_to 'Destroy Artifact', artifact, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
           <% if current_user.coaching_type == 'admin' %>
             /
             <%= link_to 'Move files', move_files_artifact_path(artifact)  %>

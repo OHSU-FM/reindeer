@@ -8,6 +8,16 @@ module SearchesHelper
     return student_data
   end
 
+  def get_csl_data (in_array)
+    temp_array = []
+    in_array.each do |data|
+      if data.include? "CSL Narrative"
+        temp_array.push data
+      end
+    end
+    return temp_array
+  end
+
   def hf_datasets (result)
     survey_array = []
     if result.coaching_type == 'student'
@@ -27,6 +37,11 @@ module SearchesHelper
            end
         end
       end
+      #store surveys in session variable
+      session[:search] ||= []
+      session[:search] = nil
+      session[:search] = get_csl_data(survey_array)
+
       return survey_array
      else
       return ["Not Applicable"]

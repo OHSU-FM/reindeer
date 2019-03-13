@@ -5,7 +5,7 @@
       <td>Tittle</td>
       <td>Content</td>
       <td>UserID</td>
-      <td>Artifacts</td>
+      <td>Artifacts/Documents</td>
     </tr>
   </thead>
   <% if idx_epa == "Official Student Letters" %>
@@ -14,8 +14,8 @@
     <% epa = "EPA#{idx_epa}" %>
   <% end %>
   <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa } %>
-  <% selected_artifacts.each do |artifact| %>
 
+  <% selected_artifacts.each do |artifact| %>
       <tr>
         <td><%= artifact.title %></td>
         <td><%= artifact.content %> </td>

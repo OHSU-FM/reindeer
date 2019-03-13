@@ -191,8 +191,7 @@ module LsReports::ClinicalphaseHelper
   def get_data data
     temp_hash = {}
 
-    submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.secon
-    d  # return the actual date
+    submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.second  # return the actual date
     responses = data.select {|k,v| k.include? "SBP"}
     temp_data = responses.map {|k,v| v}
 
@@ -234,6 +233,9 @@ module LsReports::ClinicalphaseHelper
 
   def hf_get_preceptorship(in_survey, pk)
     rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+    if rr.nil?
+      return {}
+    end
 
     limegroups = rr.lime_survey.lime_groups
     #lq = limegroups.first.lime_questions
@@ -364,15 +366,19 @@ module LsReports::ClinicalphaseHelper
   end
 
   def hf_get_threshold (in_course_name)
-    course_code = in_course_name.gsub(/"|\[|\]/, '').split(" ").first
+    course_code = in_course_name.to_s.gsub(/"|\[|\]/, '').split(" ").first
 
-    if course_code.include? "STEP"
+    if course_code.to_s.include? "STEP"
       if  @student_year == "Med18"
          thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
       elsif @student_year == "Med19"
          thres_score = Threshold.Med19.select {|s| s == course_code}.flatten.second
       elsif @student_year == "Med20"
          thres_score = Threshold.Med20.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med21"
+          thres_score = Threshold.Med21.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med22"
+          thres_score = Threshold.Med22.select {|s| s == course_code}.flatten.second
       end
       return thres_score.nil? ? "" : "Threshold: #{thres_score.to_s}"
     end
@@ -380,6 +386,10 @@ module LsReports::ClinicalphaseHelper
        course_code = get_proper_code(in_course_name)
     end
     # remove "[ ]" brackets
+    if in_course_name.nil?
+      thres_score = nil
+      return thres_score.nil? ? "" : "(Passing Threshold: #{thres_score.to_s}) /"
+    end
     course_number = in_course_name["770"]
     if course_number == "770"
       if @student_year == "Med18"
@@ -560,11 +570,16 @@ module LsReports::ClinicalphaseHelper
   def hf_get_artifacts (pk)
     selected_user = User.find_by(email: pk)
     if selected_user.nil?
-      return nil
+      return nil,0
     else
-      return Artifact.where(user_id: selected_user.id)
+      no_docs = 0
+      artifacts_student = Artifact.where(user_id: selected_user.id)
+      official_docs = artifacts_student.select{|a| a.title == "Progress Board"}
+      official_docs.each do |doc|
+        no_docs = no_docs + doc.documents.count
+      end
+      return artifacts_student, no_docs
     end
   end
-
 
 end

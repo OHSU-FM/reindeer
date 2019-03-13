@@ -91,7 +91,6 @@ class ArtifactsController < ApplicationController
 
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
         full_name = document.filename.to_s.split(" ").first.gsub("_", ", ")
-        byebug
         @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
           temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title)

@@ -1,26 +1,38 @@
+<div class="row" >
+  <div class="column left" >
+    <table class="table table-condensed spreadsheet-body">
+        <tr>
+            <td class="align-right"><%= @rs_questions["StudentID"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentID"] %></td>
+        </tr>
+        <tr>
+            <td class="align-right"><%= @rs_questions["StudentName"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentName"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["StudentEmail"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentEmail"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["CoachName"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["CoachName"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
+         </tr>
+     </table>
+  </div>
+  <div class="column right" >
+    <table  style="width: 30%;"class="table table-condensed spreadsheet-body">
+      <tr><td> <a href="#Preceptorship">Preceptorship Information</a> <td></tr>
+      <% if !@csl_evals.empty? %>
+        <tr> <td><a href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
+      <% end %>
+    </table>
+  </div>
 
-<table style="width: 30%;" class="table table-condensed  spreadsheet-body">
-    <tr>
-        <td class="align-right"><%= @rs_questions["StudentID"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentID"] %></td>
-    </tr>
-    <tr>
-        <td class="align-right"><%= @rs_questions["StudentName"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentName"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["StudentEmail"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentEmail"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["CoachName"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["CoachName"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
-     </tr>
- </table>
+</div>
 
 <body>
  <div class="container-fluid">
@@ -37,7 +49,7 @@
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#official_letters" style="background-color:#726A95" >Official Student Letters</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#official_letters" style="background-color:#726A95" >Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
 
     </ul>
 
@@ -48,7 +60,7 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if x["CourseName"].include? "730" or x["CourseName"].include? "731"%>
+                     <% if x["CourseName"].to_s.include? "730" or x["CourseName"].to_s.include? "731"%>
                              <td class="bold-italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -65,7 +77,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "SCHI" %>
+                          <% if x["CourseName"].to_s.include? "SCHI" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -83,7 +95,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "FoM" %>
+                          <% if x["CourseName"].to_s.include? "FoM" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -94,12 +106,13 @@
                      <tr><%= render partial: 'all_blocks_data' %></tr>
                 </tbody>
               </table>
-              <div class="precept-header">Preceptorship Information </div>
+              <div class="precept-header" id="Preceptorship">Preceptorship Information </div>
               <%= render partial: 'preceptorship_data'%>
-
+              <div id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
+              <%= render partial: 'csl_evals' %>
         </div>
 
-        <div id="preceptor" class="tab-pane fade">
+        <div id="preceptor" name="Preceptorship" class="tab-pane fade">
           <%= render partial: 'preceptorship_data'%>
         </div>
 
@@ -109,7 +122,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "TRAN 703" or x["CourseName"].include? "TRAN 704"  %>
+                          <% if x["CourseName"].to_s.include? "TRAN 703" or x["CourseName"].to_s.include? "TRAN 704"  %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -131,7 +144,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 770" or x["CourseName"].include? "CPX 702" %>
+                          <% if x["CourseName"].to_s.include? "INTS 770" or x["CourseName"].to_s.include? "CPX 702" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -151,7 +164,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 771" or x["CourseName"].include? "INTS 772" or x["CourseName"].include? "INTS 773" or x["CourseName"].include? "INTS 774"%>
+                          <% if x["CourseName"].to_s.include? "INTS 771" or x["CourseName"].to_s.include? "INTS 772" or x["CourseName"].to_s.include? "INTS 773" or x["CourseName"].to_s.include? "INTS 774"%>
 
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
@@ -170,7 +183,12 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM" and !x["CourseName"].include? "703" and !x["CourseName"].include? "SCHI" %>
+                     <% if !x["CourseName"].to_s.include? "730" and
+                           !x["CourseName"].to_s.include? "731" and
+                           !x["CourseName"].to_s.include? "INTS" and
+                           !x["CourseName"].to_s.include? "FoM" and
+                           !x["CourseName"].to_s.include? "703" and
+                           !x["CourseName"].to_s.include? "SCHI" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -263,9 +281,9 @@
         </div>
 
         <div id="official_letters" class="tab-pane fade">
-                        <div id="Progress Board">
-                            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
-                        </div>
+            <div id="Progress Board">
+                <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+            </div>
         </div>
 
         <div id="EPA" class="tab-pane fade">

@@ -98,7 +98,7 @@
 
                     <div id="DetailCompetency<%= x["CourseID"] %>" class="tab-pane fade">
                          <table class="table borderless table-condensed table-striped ">
-                            <% if x["CourseName"].include? "FoM" %>
+                            <% if x["CourseName"].to_s.include? "FoM" %>
                                 <tr><td></td>
                                     <td><b> ** You have earned enstrustable status for the following competencies in the Foundations of Medicine curriculum. </b></td>
                                 </tr>
@@ -112,7 +112,7 @@
                                                </td>
 
                                                 <% tmp_comment = v.split("^") %>
-                                                <% if x["CourseName"].include? "FoM" %>
+                                                <% if x["CourseName"].to_s.include? "FoM" %>
                                                       <% tmp_comment_fom = tmp_comment[0].split("~") %>
                                                       <td><%= tmp_comment_fom[1] %></td>
                                                 <% else %>
