@@ -26,8 +26,9 @@ epa_codes = (category_code) ->
   else if category_code == 'Scholarly Project'
           cat_array = []
           cat_array.push {id: "Proposal", value: "Proposal"}
-          cat_array.push {id: "Poster", value: "Poster"}
           cat_array.push {id: "Capstone", value: "Capstone"}
+          cat_array.push {id: "Final Report", value: "Final Report"}
+          cat_array.push {id: "Other", value: "Other"}
   else if category_code == "Progress Board"
           cat_array = []
           cat_array.push {id: "Progress Board Letter", value: "Progress Board Letter"}
