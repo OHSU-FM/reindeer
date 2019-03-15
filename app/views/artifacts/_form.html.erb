@@ -17,11 +17,19 @@
 
   <div class="form-group">
     <%= f.label :Category, class: "col-sm-1 control-label"%>
-    <%= f.select :title,
-      options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board"]),
-      { include_blank: "---" },
-      required: true
-    %>
+    <% if ["student"].include? current_user.coaching_type %>
+      <%= f.select :title,
+        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project"]),
+        { include_blank: "---" },
+        required: true
+      %>
+    <% else %>
+      <%= f.select :title,
+        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board"]),
+        { include_blank: "---" },
+        required: true
+      %>
+    <% end %>
   </div>
   <div class="form-group">
     <%= f.label "Sub-category", class: "col-sm-1 control-label"%>

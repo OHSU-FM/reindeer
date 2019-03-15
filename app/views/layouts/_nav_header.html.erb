@@ -46,7 +46,7 @@
         <% end %>
 
         <% if can? :list, LimeSurvey %>
-          <% if ['student', 'admin'].include? current_user.coaching_type %>
+          <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
             <%= nav_link_to("Upload Documents", artifacts_path, target: '_blank')  %>
           <% end %>
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>

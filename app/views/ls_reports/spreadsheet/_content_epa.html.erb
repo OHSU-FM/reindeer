@@ -321,7 +321,6 @@
                                 <span>
                                     <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#EPA<%= i.to_s %>">Detail
                                     </button>
-
                                     <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content', :locals=>{:i=>i, :epa=>epa, :epa_desc=>epa_desc["EPA#{i}"], :assessors=> hf_assessors} %>
                                 </span>
                             </td>
