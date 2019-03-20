@@ -1,0 +1,21 @@
+<%= simple_form_for(@epa_master) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :user_id,:input_html => {value: @selected_user_id} %>
+    <%= f.input :epa %> Eg EPA1, EPA2...
+    <%= f.input :review_date1 %>
+    <%= f.input :review_date2 %>
+    <%= f.input :review_date3 %>
+    <%= f.input :reviewed_by1 %>
+    <%= f.input :reviewed_by2 %>
+    <%= f.input :reviewed_by3 %>
+    <%= f.input :status1 %>
+    <%= f.input :status2 %>
+    <%= f.input :status3 %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

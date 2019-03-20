@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_150033) do
+ActiveRecord::Schema.define(version: 2019_03_18_145146) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -212,6 +213,24 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
 
   create_table "data_migrations", id: :serial, force: :cascade do |t|
     t.text "version", null: false
+  end
+
+  create_table "epa_masters", force: :cascade do |t|
+    t.string "epa"
+    t.datetime "review_date1"
+    t.datetime "review_date2"
+    t.datetime "review_date3"
+    t.string "reviewed_by1"
+    t.string "reviewed_by2"
+    t.string "reviewed_by3"
+    t.string "status1"
+    t.string "status2"
+    t.string "status3"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "epa"], name: "by_user_epas", unique: true
+    t.index ["user_id"], name: "index_epa_masters_on_user_id"
   end
 
   create_table "epas", force: :cascade do |t|
@@ -510,6 +529,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
   add_foreign_key "assignment_groups", "assignment_group_templates"
   add_foreign_key "assignment_groups", "users"
   add_foreign_key "cohorts", "users"
+  add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade

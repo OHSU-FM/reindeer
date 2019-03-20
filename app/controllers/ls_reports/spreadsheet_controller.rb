@@ -6,6 +6,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::ClinicalphaseHelper
   include LsReports::CslevalHelper
   include EpasHelper
+  include EpaMastersHelper
   ##
   # show lime_survey
   def show
@@ -48,8 +49,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     if @pk != "_"
       @student_cohort = User.find_by(email: @pk).permission_group.title
+      @selected_user_id = User.find_by(email: @pk).id
     else
       @student_cohort = current_user.permission_group.title
+      @selected_user_id = current_user.id
     end
     @cohort_year = @student_cohort.split(" ").first
 
@@ -88,6 +91,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(survey, @pk)
+
+    @epa_badges = hf_get_epa_master_badges(@selected_user_id)
 
 
   end

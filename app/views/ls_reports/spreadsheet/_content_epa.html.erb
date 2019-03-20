@@ -329,7 +329,17 @@
                                 <span>
                                     <h4><font color="purple">
                                         <%= epa_desc["EPA#{i}"] %>
-                                    </font></h4>
+                                        </font>
+
+
+                                    <% if @epa_badges[i-1]["EPA#{i}"].include? "Not" %>
+                                          <font color="red"> [<%=  @epa_badges[i-1]["EPA#{i}"]  %>] </font>
+                                    <% else %>
+                                         <%= image_tag ("epa/EPA#{i}.png"), size: "100x80" %>
+                                    <% end %>
+
+                                    </h4>
+
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->

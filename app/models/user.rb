@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
 
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
+  has_many :epa_masters, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -142,10 +143,10 @@ class User < ActiveRecord::Base
   def display_name name=full_name
     comma_re = /^\s*(\w{1,20} *[^,]*)+,\s+(\w{1,20}\s*)+$/ # last, first
     if name.nil?
-      username
+      username  belongs_to :user
     elsif comma_re === name
       name.split(", ").reverse.join(" ")
-    else
+    else  belongs_to :user
       name
     end
   end
