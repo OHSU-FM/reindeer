@@ -36,7 +36,7 @@ module LsReports::CslevalHelper
 
     hash_array.each do |data|
       data.each do |key, val|
-        if !["csl_survey","CSLInstructor","SelectedStudent", "Narrative Feedbacks"].include? key
+        if !["csl_survey","CSLInstructor","SelectedStudent", "Narrative Feedback"].include? key
           temp_hash = {key => val}
           new_array.push temp_hash
         end
