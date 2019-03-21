@@ -3,8 +3,10 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters
   def index
-    @selected_user = User.find_by(email: params[:email])
-    @selected_user_id = @selected_user.id
+    if params[:email].present?
+      @selected_user = User.find_by(email: params[:email])
+      @selected_user_id = @selected_user.id
+    end 
     @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
     if @epa_masters.empty?
       create_epas @selected_user_id
@@ -55,7 +57,9 @@ class EpaMastersController < ApplicationController
   # PATCH/PUT /epa_masters/1
   def update
     if @epa_master.update(epa_master_params)
-      redirect_to @epa_master, notice: 'Epa master was successfully updated.'
+      #redirect_to @epa_master, notice: 'Epa master was successfully updated.'
+      @selected_user_id = @epa_master.user_id
+      index
     else
       render :edit
     end

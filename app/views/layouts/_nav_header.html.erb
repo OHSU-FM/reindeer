@@ -46,8 +46,10 @@
         <% end %>
 
         <% if can? :list, LimeSurvey %>
-         <%= nav_link_to("EPA Awards", epa_masters_path(email: @pk), target: '_blank')  %>
-
+          <% if ['admin', 'dean'].include? current_user.coaching_type %>
+            <%= nav_link_to("EPA Awards", epa_masters_path(email: @pk), target: '_blank')  %>
+          <% end %>
+          
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
             <%= nav_link_to("Upload Documents", artifacts_path, target: '_blank')  %>
           <% end %>
