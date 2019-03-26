@@ -6,11 +6,17 @@
         <div class="modal-content">
              <div class="modal-header">
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
-                     <h3 class="modal-title modal-text-align-center"><font color="tomato"> EPA<%= i %> - <%= epa_desc %> </font></h3>
+                     <h3 class="modal-title modal-text-align-center"><font color="tomato"> EPA<%= i %> - <%= epa_desc %> </font><br />
+                       <% if @epa_badges[i-1]["EPA#{i}"].include? "Not" %>
+                             <font color="red"> [<%=  @epa_badges[i-1]["EPA#{i}"]  %>] </font>
+                       <% else %>
+                          <%= image_tag ("epa/EPA#{i}.png"), size: "100x80" %>
+                            Date: <%= @review_date[i-1]["EPA#{i}"] %>
+                       <% end %>
+                      </h3>
              </div>
 
              <div class="modal-body">
-
               <div class="container-fluid">
                 <ul class="nav nav-tabs" id="MyTabs">
                     <li class="active"><a data-toggle="tab" href="#EPASummary<%= i %>" id="tab-1-epa-<%= i %>">QA Summary</a></li>

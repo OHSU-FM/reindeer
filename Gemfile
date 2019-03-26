@@ -37,6 +37,7 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
+gem "jbuilder"
 gem "popper_js", "~> 1.14.3"
 gem "bootstrap-sass", '~> 3.3.7'
 gem "sass-rails", '>= 3.2'

@@ -1,22 +1,33 @@
 class EpaMastersController < ApplicationController
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
 
-  # GET /epa_masters
-  def index
-    if params[:email].present?
-      @selected_user = User.find_by(email: params[:email])
-      @selected_user_id = @selected_user.id
-      @full_name = @selected_user.full_name
-    end
-    if params[:user_id].present?
-      @selected_user_id = params[:user_id]
-    end
+  def get_index
     @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
     if @epa_masters.empty?
       create_epas @selected_user_id
       @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
     end
     render :index
+  end
+
+  # GET /epa_masters
+  def index
+    if params[:email].present?
+      @selected_user = User.find_by(email: params[:email])
+      @selected_user_id = @selected_user.id
+      @full_name = @selected_user.full_name
+      get_index
+    elsif params[:user_id].present?
+      @selected_user_id = params[:user_id]
+      get_index
+    elsif params[:id].present?
+      @selected_user_id = @epa_master.user_id
+      get_index
+    else
+      flash[:notice] = '** You need to select a student first! ***'
+
+    end
+
   end
 
   # GET /epa_masters/1
@@ -46,6 +57,10 @@ class EpaMastersController < ApplicationController
     @epa_master = EpaMaster.find(params[:id])
     @selected_user_id = @epa_master.user_id
     @full_name = User.find(@epa_master.user_id).full_name
+    respond_to do |format|
+      format.html
+      format.js {render template: 'epa_masters/epa_master_modal.js.erb'}
+    end
 
   end
 
@@ -90,6 +105,7 @@ class EpaMastersController < ApplicationController
         :review_date2, :reviewed_by2a, :reviewed_by2b, :note2, :status2,
         :review_date3, :reviewed_by3a, :reviewed_by3b, :note3, :status3 )
     end
+
 
     def create_epas selected_user_id
       for i in 1..13 do

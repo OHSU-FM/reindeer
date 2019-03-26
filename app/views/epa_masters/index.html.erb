@@ -27,6 +27,7 @@
     </tr>
   </thead>
 
+  <% if !@epa_masters.nil? %>
     <% @epa_masters.each do |epa_master| %>
       <tr>
       <td><%= epa_master.user_id %></td>
@@ -52,15 +53,13 @@
       <% else %>
         <td></td>
       <% end %>
-      <td><%= link_to 'Edit', edit_epa_master_path(epa_master.id) %>
+      <td><%= link_to 'Edit', edit_epa_master_path(epa_master.id), remote: true %>
       </tr>
     <% end %>
+  <% else %>
+    <% flash[:notice] = '** You need to select a student first! ***' %>
+  <% end %>
 
 </table>
 
-<br>
-<% if @epa_masters.empty? %>
-  <%= link_to 'New Epa Master', new_epa_master_path(email: params[:email]) %>
-<% else %>
-  <%= link_to 'New Epa Master', new_epa_master_path(user_id: @epa_masters.first.user_id, action: "create" )%>
-<% end %>
+<div id="mymodal-epa-master"></div>

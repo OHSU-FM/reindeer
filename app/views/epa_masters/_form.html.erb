@@ -26,12 +26,12 @@
 
       <div class="form-group">
         <%= f.label 'Note1', class: "control-label col-sm-4" %>
-        <%= f.text_area :note1,  html5: true %>
+        <%= f.text_area :note1,  cols:25, rows: 5, html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Status1', class: "control-label col-sm-4" %>
-        <%= f.text_field :status1,  html5: true %>
+        <%= f.select :status1, ["No", "Not Ready", "Yes"], prompt: '--', html5: true %>
       </div>
   </div>
 
@@ -53,12 +53,12 @@
 
       <div class="form-group">
         <%= f.label 'Note2', class: "control-label col-sm-4" %>
-        <%= f.text_area :note2,  html5: true %>
+        <%= f.text_area :note2, cols:25, rows: 5, html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Status2', class: "control-label col-sm-4" %>
-        <%= f.text_field :status2,  html5: true %>
+        <%= f.select :status2, ["No", "Not Ready", "Yes"], prompt: '--',  html5: true %>
       </div>
   </div>
   <div class="col-xs-4">
@@ -79,17 +79,16 @@
 
       <div class="form-group">
         <%= f.label 'Note3', class: "control-label col-sm-4" %>
-        <%= f.text_area :note3,  html5: true %>
+        <%= f.text_area :note3, cols:25, rows: 5, html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Status3', class: "control-label col-sm-4" %>
-        <%= f.text_field :status3,  html5: true %>
+        <%= f.select :status3, ["No", "Not Ready", "Yes"], prompt: '--', html5: true %>
       </div>
 
       <div class="form-actions">
-        <%= link_to 'Cancel', epa_masters_path(user_id: @epa_master.user_id), {:class=>"btn btn-default"} %>
-        <%= f.button :submit %>
+        <%= f.submit "Save Changes", class: "btn-primary" %>
       </div>
 
   </div>
