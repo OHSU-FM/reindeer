@@ -1,6 +1,8 @@
 // Place all the styles related to the epa_masters controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.circular-image {
-  border-radius:  50%;
+.form-inline div { display: inline-block }
+
+.parent-class .form-horizontal .control-label {
+    text-align: left;
 }

@@ -6,7 +6,11 @@ class EpaMastersController < ApplicationController
     if params[:email].present?
       @selected_user = User.find_by(email: params[:email])
       @selected_user_id = @selected_user.id
-    end 
+      @full_name = @selected_user.full_name
+    end
+    if params[:user_id].present?
+      @selected_user_id = params[:user_id]
+    end
     @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
     if @epa_masters.empty?
       create_epas @selected_user_id
@@ -41,6 +45,8 @@ class EpaMastersController < ApplicationController
   def edit
     @epa_master = EpaMaster.find(params[:id])
     @selected_user_id = @epa_master.user_id
+    @full_name = User.find(@epa_master.user_id).full_name
+
   end
 
   # POST /epa_masters
@@ -79,8 +85,10 @@ class EpaMastersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def epa_master_params
-      params.require(:epa_master).permit(:user_id, :epa, :review_date1, :review_date2, :review_date3, :reviewed_by1, :reviewed_by2, :reviewed_by3,
-      :status1, :status2, :status3)
+      params.require(:epa_master).permit(:user_id, :epa,
+        :review_date1, :reviewed_by1a, :reviewed_by1b, :note1, :status1,
+        :review_date2, :reviewed_by2a, :reviewed_by2b, :note2, :status2,
+        :review_date3, :reviewed_by3a, :reviewed_by3b, :note3, :status3 )
     end
 
     def create_epas selected_user_id

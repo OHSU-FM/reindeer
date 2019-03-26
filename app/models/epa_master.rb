@@ -10,6 +10,4 @@ class EpaMaster < ApplicationRecord
        end
     end
 
-
-
 end

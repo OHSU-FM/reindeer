@@ -1,21 +1,96 @@
-<%= simple_form_for(@epa_master) do |f| %>
-  <%= f.error_notification %>
+<%= form_for @epa_master, html: {class: "form-horizontal"} do |f| %>
+  <div class="col-xs-4">
+    <div class="form-group">
+      <%= f.label "Student", class: "control-label col-sm-4" %>
+      <%= f.text_field :user_id, maxlength: 10, readonly: true, value: @selected_user_id %>
+    </div>
 
-  <div class="form-inputs">
-    <%= f.input :user_id,:input_html => {value: @selected_user_id} %>
-    <%= f.input :epa %> Eg EPA1, EPA2...
-    <%= f.input :review_date1 %>
-    <%= f.input :review_date2 %>
-    <%= f.input :review_date3 %>
-    <%= f.input :reviewed_by1 %>
-    <%= f.input :reviewed_by2 %>
-    <%= f.input :reviewed_by3 %>
-    <%= f.input :status1 %>
-    <%= f.input :status2 %>
-    <%= f.input :status3 %>
+    <div class="form-group">
+        <%= f.label "EPA", class: "control-label col-sm-4" %>
+        <%= f.text_field :epa, maxlength: 5, readonly: true %>
+    </div>
+      <div class="form-group">
+        <%= f.label 'Review Date1', class: "control-label col-sm-4" %>
+        <%= f.date_field :review_date1,  as: :date, html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by1a,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by1b,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Note1', class: "control-label col-sm-4" %>
+        <%= f.text_area :note1,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Status1', class: "control-label col-sm-4" %>
+        <%= f.text_field :status1,  html5: true %>
+      </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="col-xs-4">
+      <div class="form-group">
+        <%= f.label 'Review Date2', class: "control-label col-sm-4" %>
+        <%= f.date_field :review_date2,  as: :date, html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by2a,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by2b,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Note2', class: "control-label col-sm-4" %>
+        <%= f.text_area :note2,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Status2', class: "control-label col-sm-4" %>
+        <%= f.text_field :status2,  html5: true %>
+      </div>
+  </div>
+  <div class="col-xs-4">
+      <div class="form-group">
+        <%= f.label 'Review Date3', class: "control-label col-sm-4" %>
+        <%= f.date_field :review_date3,  as: :date, html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by3a,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by3b,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Note3', class: "control-label col-sm-4" %>
+        <%= f.text_area :note3,  html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Status3', class: "control-label col-sm-4" %>
+        <%= f.text_field :status3,  html5: true %>
+      </div>
+
+      <div class="form-actions">
+        <%= link_to 'Cancel', epa_masters_path(user_id: @epa_master.user_id), {:class=>"btn btn-default"} %>
+        <%= f.button :submit %>
+      </div>
+
   </div>
 <% end %>

@@ -1,4 +1,4 @@
-<h1>Epa Masters</h1>
+<h3>Badging EPA - <%= @full_name %> </h3>
 
 <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
   <thead>
@@ -6,14 +6,23 @@
       <th data-data="user_id">User ID</th>
       <th data-data="epa">EPA</th>
       <th data-data="review_date1">Review date1</th>
-      <th data-data="review_date2">Review date2</th>
-      <th data-data="review_date3">Review date3</th>
-      <th data-data="reviewed_by1">Reviewed By1</th>
-      <th data-data="reviewed_by2">Reviewed By2</th>
-      <th data-data="reviewed_by3">Reviewed By3</th>
+      <th data-data="reviewed_by1a">Reviewed By1a</th>
+      <th data-data="reviewed_by1b">Reviewed By1b</th>
+      <th data-data="Note1">Note1</th>
       <th data-data="status1">Status1</th>
+
+      <th data-data="review_date2">Review date2</th>
+      <th data-data="reviewed_by2a">Reviewed By2a</th>
+      <th data-data="reviewed_by2b">Reviewed By2b</th>
+      <th data-data="Note2">Note2</th>
       <th data-data="status2">Status2</th>
+      <th data-data="review_date3">Review date3</th>
+      <th data-data="reviewed_by3a">Reviewed By3a</th>
+      <th data-data="reviewed_by3b">Reviewed By3b</th>
+      <th data-data="Note3">Note3</th>
       <th data-data="status3">Status3</th>
+      <th data-data="Badged">Badged</th>
+
       <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
     </tr>
   </thead>
@@ -22,15 +31,22 @@
       <tr>
       <td><%= epa_master.user_id %></td>
       <td><%= epa_master.epa %></td>
-      <td><%= epa_master.review_date1 %></td>
-      <td><%= epa_master.review_date2 %></td>
-      <td><%= epa_master.review_date3 %></td>
-      <td><%= epa_master.reviewed_by1 %></td>
-      <td><%= epa_master.reviewed_by2 %></td>
-      <td><%= epa_master.reviewed_by3 %></td>
+      <td><%= hf_format_date(epa_master.review_date1) %></td>
+      <td><%= epa_master.reviewed_by1a %></td>
+      <td><%= epa_master.reviewed_by1b %></td>
+      <td><%= epa_master.note1 %></td>
       <td><%= epa_master.status1 %></td>
+      <td><%= hf_format_date(epa_master.review_date2) %></td>
+      <td><%= epa_master.reviewed_by2a %></td>
+      <td><%= epa_master.reviewed_by2b %></td>
+      <td><%= epa_master.note2 %></td>
       <td><%= epa_master.status2 %></td>
+      <td><%= hf_format_date(epa_master.review_date3) %></td>
+      <td><%= epa_master.reviewed_by3a %></td>
+      <td><%= epa_master.reviewed_by3b %></td>
+      <td><%= epa_master.note3 %></td>
       <td><%= epa_master.status3 %></td>
+
       <% if epa_master.statuses? %>
         <td><%= image_tag ("epa/#{epa_master.epa}.png"), class: "img-responsive" %>
       <% else %>
@@ -39,7 +55,6 @@
       <td><%= link_to 'Edit', edit_epa_master_path(epa_master.id) %>
       </tr>
     <% end %>
-
 
 </table>
 
