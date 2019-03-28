@@ -146,7 +146,7 @@ class User < ActiveRecord::Base
       username  belongs_to :user
     elsif comma_re === name
       name.split(", ").reverse.join(" ")
-    else  belongs_to :user
+    else  
       name
     end
   end

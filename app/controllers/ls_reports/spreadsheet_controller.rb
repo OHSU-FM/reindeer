@@ -93,10 +93,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @csl_evals = hf_get_csl_evals(survey, @pk)
 
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
-
-
   end
-
 
   def will_view_raw_data?
     true

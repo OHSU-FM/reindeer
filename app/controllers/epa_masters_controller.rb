@@ -22,6 +22,7 @@ class EpaMastersController < ApplicationController
       get_index
     elsif params[:id].present?
       @selected_user_id = @epa_master.user_id
+      @full_name = User.find(@epa_master.user_id).full_name
       get_index
     else
       flash[:notice] = '** You need to select a student first! ***'

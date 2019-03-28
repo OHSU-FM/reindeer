@@ -48,13 +48,12 @@
         <% if can? :list, LimeSurvey %>
 
           <% if ['admin', 'dean'].include? current_user.coaching_type %>
-              <%= nav_link_to("EPA Awards", epa_masters_path(email: @pk), target: '_blank')  %>
+              <%= nav_link_to("Review EPAs", epa_masters_path(email: @pk), class: "link-to-text-color", target: '_blank')  %>
           <% end %>
 
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
             <%= nav_link_to("Upload Documents", artifacts_path, target: '_blank')  %>
           <% end %>
-
 
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>

@@ -169,7 +169,8 @@ module LsReports::ClinicalphaseHelper
     rr = get_dataset(in_survey, "Foundation of Medicine", "All Blocks (Graph View)")
     role = RoleAggregate.find_by(lime_survey_sid: rr.surveyls_survey_id)
     fm_data = role.lime_survey.lime_stats.load_data
-              #role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
+
+    #role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
 
     class_mean = {}
     fm_data.each do |r_data|
@@ -190,16 +191,12 @@ module LsReports::ClinicalphaseHelper
 
   def get_data data
     temp_hash = {}
-
     submit_date = data.select {|k,v| k.include? "SubmitDate"}.first.second  # return the actual date
     responses = data.select {|k,v| k.include? "SBP"}
     temp_data = responses.map {|k,v| v}
-
     temp_hash = {submit_date => temp_data}
     return temp_hash
-
   end
-
 
   def format_precept_data in_data
     r_array = []
@@ -220,7 +217,6 @@ module LsReports::ClinicalphaseHelper
     end
     return temp_array
   end
-
 
   def get_student_precept(in_data, question, sub_question)
     #locate the hash pair and return the value
@@ -244,7 +240,6 @@ module LsReports::ClinicalphaseHelper
     comp_data = rr.lime_survey.dataset  #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     student_data = student_data.sort_by {|d| d["id"]}
-
 
     precept_hash = []
 
@@ -280,9 +275,7 @@ module LsReports::ClinicalphaseHelper
       end
     end
 
-  
     return precept_hash
-
   end
 
   def hf_reformat_array in_data
@@ -298,7 +291,6 @@ module LsReports::ClinicalphaseHelper
     end
     return r_array
   end
-
 
   def format_usmle(in_data)
     usmle = []
@@ -337,9 +329,7 @@ module LsReports::ClinicalphaseHelper
     end
     # remove duplicate hash-key in usmle save the values in array format
     usmle = usmle.each_with_object({}) { |el, h| el.each { |k, v| h[k].nil? ? h[k] = v : h[k] = (Array.new([h[k]]) << v).flatten } }
-
     return usmle
-
   end
 
   def get_proper_code (course_name)

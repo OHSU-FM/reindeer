@@ -37,7 +37,7 @@ module EpaMastersHelper
         review_date = get_review_date(rec)
       else
         review_date = {rec.epa => ""}
-        badged = {rec.epa => "Not badged!"}
+        badged = {rec.epa => "Not badged"}
       end
       review_date_array.push review_date
       epa_badges.push badged
