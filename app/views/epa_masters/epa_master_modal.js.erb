@@ -39,15 +39,15 @@ function redisplayModal () {
 
 $('#submit').on('click',function()
 {
-    if (($('#epa_master_review_date1').val().length == 0) && ($('#epa_master_status1').val().length >= 0)) {
+    if (($('#epa_master_review_date1').val().length == 0) && ($('#epa_master_status1').val().length > 0)) {
         alert("Review Date1 can't be blank!");
         redisplayModal();
     }
-    if (($('#epa_master_review_date2').val().length == 0) && ($('#epa_master_status2').val().length >= 0)) {
+    if (($('#epa_master_review_date2').val().length == 0) && ($('#epa_master_status2').val().length > 0)) {
         alert("Review Date2 can't be blank!");
         redisplayModal();
     }
-    if (($('#epa_master_review_date3').val().length == 0) && ($('#epa_master_status3').val().length >= 0)) {
+    if (($('#epa_master_review_date3').val().length == 0) && ($('#epa_master_status3').val().length > 0)) {
         alert("Review Date3 can't be blank!");
         redisplayModal();
     }
