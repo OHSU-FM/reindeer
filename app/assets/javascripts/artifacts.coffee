@@ -33,6 +33,9 @@ epa_codes = (category_code) ->
           cat_array = []
           cat_array.push {id: "Progress Board Letter", value: "Progress Board Letter"}
           cat_array.push {id: "Other", value: "Other"}
+  else if category_code == "Other"
+          cat_array = []
+          cat_array.push {id: "Misc", value: "Misc"}
 
         else
           return []
