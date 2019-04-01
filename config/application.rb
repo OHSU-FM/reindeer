@@ -68,6 +68,7 @@ module EdnaConsole
 
     # Setup automatic code generator configuration
     # E.g. $ rails g model WhipperSnapper
+
     config.generators do |g|
       g.test_framework :rspec, spec: true, fixture: false
       g.integration_tool :rspec
