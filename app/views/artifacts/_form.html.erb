@@ -19,13 +19,13 @@
     <%= f.label :Category, class: "col-sm-1 control-label"%>
     <% if ["student"].include? current_user.coaching_type %>
       <%= f.select :title,
-        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project"]),
+        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Other"]),
         { include_blank: "---" },
         required: true
       %>
     <% else %>
       <%= f.select :title,
-        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board"]),
+        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board", "Other"]),
         { include_blank: "---" },
         required: true
       %>
