@@ -56,59 +56,34 @@
                             <br />
                         </div>
                         <div id="EPAStatus<%= i %>" class="tab-pane fade in">
-                          <% k = 0 %>
-                          <% while k < 12 %>
-                            <div class="row">
-                                <div class="column center">
-                                     <% if @epa_badges[k]["EPA#{k+1}"].include? "Not" %>
-                                           <font color="red"> [<%=  @epa_badges[k]["EPA#{k+1}"]  %>] </font>
-                                     <% else %>
-                                          <%= image_tag ("epa/EPA#{k+1}.png") %>
-                                     <% end %>
-                                </div>
-
-                                <% k = k + 1 %>
-                                <% if k == 13 %>
-                                  <% break %>
-                                <% end %>
-                                <div class="column center">
-                                     <% if @epa_badges[k]["EPA#{k+1}"].include? "Not" %>
-                                           <font color="red"> [<%=  @epa_badges[k]["EPA#{k+1}"]  %>] </font>
-                                     <% else %>
-                                          <%= image_tag ("epa/EPA#{k+1}.png") %>
-                                     <% end %>
-                                </div>
-
-                                <% k = k + 1 %>
-                                <% if k == 13 %>
-                                  <% break %>
-                                <% end %>
-                                <div class="column center">
-                                     <% if @epa_badges[k]["EPA#{k+1}"].include? "Not" %>
-                                           <font color="red"> [<%=  @epa_badges[k]["EPA#{k+1}"]  %>] </font>
-                                     <% else %>
-                                          <%= image_tag ("epa/EPA#{k+1}.png") %>
-                                     <% end %>
-                                </div>
-
-                              <% k = k + 1 %>
-                              <% if k == 13 %>
-                                <% break %>
-                              <% end %>
-
-                              <div class="column center">
-                                   <% if @epa_badges[k]["EPA#{k+1}"].include? "Not" %>
-                                         <font color="red"> [<%=  @epa_badges[k]["EPA#{k+1}"]  %>] </font>
-                                   <% else %>
-                                        <%= image_tag ("epa/EPA#{k+1}.png") %>
-                                   <% end %>
-                              </div>
-                            </div>
-
-                            <% k = k + 1 %>
-                          <% end %>
+                          <div class="container-fluid">
+                                <h3 style="text-align:left;"> No. of EPAs Badged: <%= 13 - (hf_count_not_badged (@epa_badges)) %></h3>
+                                <h3 style="text-align:left;"> No. of EPAs NOT Badged: <%= hf_count_not_badged (@epa_badges) %></h3>
+                                <div class="row">
+                                  <% for k in 1..5 %>
+                                       <div class="column center">
+                                         <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
+                                         <%= image_tag ("#{epa_badge}") %>
+                                       </div>
+                                 <% end %>
+                               </div>
+                               <div class="row">
+                                 <% for k in 6..10 %>
+                                       <div class="column center">
+                                         <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
+                                         <%= image_tag ("#{epa_badge}") %>
+                                       </div>
+                                 <% end %>
+                               </div>
+                               <div class="row">
+                                 <% for k in 11..13 %>
+                                       <div class="column center">
+                                         <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
+                                         <%= image_tag ("#{epa_badge}") %>
+                                       </div>
+                                 <% end %>
+                               </div>
                         </div>
-                    </div>
 
                 </div>
             </div>

@@ -330,13 +330,8 @@
                                     <h4><font color="purple">
                                         <%= epa_desc["EPA#{i}"] %>
                                         </font>
-
-                                    <% if @epa_badges[i-1]["EPA#{i}"].include? "Not" %>
-                                          <font color="red"> [<%=  @epa_badges[i-1]["EPA#{i}"]  %>] </font>
-                                    <% else %>
-                                         <%= image_tag ("epa/EPA#{i}.png"), size: "100x80" %>
-                                    <% end %>
-
+                                        <% epa_badge = @epa_badges[i-1]["EPA#{i}"] %>
+                                        <%= image_tag ("#{epa_badge}"), size: "80x80" %>
                                     </h4>
 
                                 </span>

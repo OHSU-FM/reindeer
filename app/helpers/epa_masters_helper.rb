@@ -37,7 +37,7 @@ module EpaMastersHelper
         review_date = get_review_date(rec)
       else
         review_date = {rec.epa => ""}
-        badged = {rec.epa => "Not badged"}
+        badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}
       end
       review_date_array.push review_date
       epa_badges.push badged
@@ -50,5 +50,10 @@ module EpaMastersHelper
     unless in_date.nil?
       in_date = in_date.strftime("%m/%d/%Y")
     end
+  end
+
+  def hf_count_not_badged (in_hash)
+    return in_hash.select{|k| k.first.second.include? "not" }.count
+
   end
 end
