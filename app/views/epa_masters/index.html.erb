@@ -1,5 +1,7 @@
+<% if can? :crud, Dashboard %>
+  <%= nav_link_to("Back to REDEI", main_app.root_path, class: "dashboard-link") %>
+<% end %>
 <h3>Badging EPA - <%= @full_name %> </h3>
-
 <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
   <thead>
     <tr>

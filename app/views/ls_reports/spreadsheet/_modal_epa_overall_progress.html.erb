@@ -1,6 +1,6 @@
 
 <div id="EPA<%= i %>" class="modal fade" role="dialog" data-modal-index="1">
-    <div class="modal-dialog modal-dialog-centered modal-lg" style="width:1450px;">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="width:1350px;">
         <div class="modal-content">
             <div class="modal-header">
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
@@ -63,7 +63,12 @@
                                   <% for k in 1..5 %>
                                        <div class="column center">
                                          <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
-                                         <%= image_tag ("#{epa_badge}") %>
+                                         <figure>
+                                            <%= image_tag ("#{epa_badge}") %>
+                                            <% if @review_date[k-1]["EPA#{k}"] != "" %>
+                                              <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
+                                            <% end %>
+                                         </figure>
                                        </div>
                                  <% end %>
                                </div>
@@ -71,7 +76,12 @@
                                  <% for k in 6..10 %>
                                        <div class="column center">
                                          <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
-                                         <%= image_tag ("#{epa_badge}") %>
+                                         <figure>
+                                            <%= image_tag ("#{epa_badge}") %>
+                                            <% if @review_date[k-1]["EPA#{k}"] != "" %>
+                                              <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
+                                            <% end %>
+                                         </figure>
                                        </div>
                                  <% end %>
                                </div>
@@ -79,7 +89,12 @@
                                  <% for k in 11..13 %>
                                        <div class="column center">
                                          <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
-                                         <%= image_tag ("#{epa_badge}") %>
+                                         <figure>
+                                            <%= image_tag ("#{epa_badge}") %>
+                                            <% if @review_date[k-1]["EPA#{k}"] != "" %>
+                                              <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
+                                            <% end %>
+                                         </figure>
                                        </div>
                                  <% end %>
                                </div>

@@ -9,7 +9,9 @@
                      <h3 class="modal-title modal-text-align-center"><font color="tomato"> EPA<%= i %> - <%= epa_desc %> </font><br />
                         <% epa_badge = @epa_badges[i-1]["EPA#{i}"] %>
                         <%= image_tag ("#{epa_badge}"), size: "80x80" %>
-                        Date: <%= @review_date[i-1]["EPA#{i}"] %>
+                        <% if @review_date[i-1]["EPA#{i}"] != "" %>
+                          Award Date: <%= @review_date[i-1]["EPA#{i}"] %>
+                        <% end %>
 
                       </h3>
              </div>
