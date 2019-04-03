@@ -54,6 +54,11 @@ module EpaMastersHelper
 
   def hf_count_not_badged (in_hash)
     return in_hash.select{|k| k.first.second.include? "not" }.count
+  end
 
+  def hf_get_entrustment_members
+    json ||= File.read("#{Rails.root}/public/entrustment_members.json")
+    entrustment_members = JSON.parse(json).values.flatten.sort
+    return entrustment_members
   end
 end

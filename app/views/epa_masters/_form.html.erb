@@ -11,12 +11,14 @@
 
       <div class="form-group">
         <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by1a,  html5: true %>
+        <%= f.select :reviewed_by1a, hf_get_entrustment_members, selected: @epa_master.reviewed_by1a, prompt: '--',
+            include_blank: "---", html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by1b,  html5: true %>
+        <%= f.select :reviewed_by1b, hf_get_entrustment_members, selected: @epa_master.reviewed_by1b, prompt: '--',
+            include_blank: "---", html5: true %>
       </div>
 
       <div class="form-group">
@@ -38,12 +40,14 @@
 
       <div class="form-group">
         <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by2a,  html5: true %>
+        <%= f.select :reviewed_by2a, hf_get_entrustment_members, selected: @epa_master.reviewed_by2a, prompt: '--',
+            include_blank: "---", html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by2b,  html5: true %>
+        <%= f.select :reviewed_by2b, hf_get_entrustment_members, selected: @epa_master.reviewed_by2a, prompt: '--',
+            include_blank: "---", html5: true %>
       </div>
 
       <div class="form-group">
@@ -64,12 +68,14 @@
 
       <div class="form-group">
         <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by3a,  html5: true %>
+        <%= f.select :reviewed_by3a, hf_get_entrustment_members, selected: @epa_master.reviewed_by3a, prompt: '--',
+            include_blank: "---", html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by3b,  html5: true %>
+        <%= f.select :reviewed_by3b, hf_get_entrustment_members, selected: @epa_master.reviewed_by3b, prompt: '--',
+            include_blank: "---", html5: true %>
       </div>
 
       <div class="form-group">

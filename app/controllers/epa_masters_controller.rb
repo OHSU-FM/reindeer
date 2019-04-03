@@ -12,6 +12,7 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters
   def index
+
     if params[:email].present?
       @selected_user = User.find_by(email: params[:email])
       @selected_user_id = @selected_user.id
