@@ -1,0 +1,11 @@
+<div class="column center">
+  <figure>
+    <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
+    <% if @review_date[k-1]["EPA#{k}"] != "" %>
+      <%= image_tag ("#{epa_badge}") %>
+      <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
+    <% else %>
+        <%= image_tag ("#{epa_badge}"), class: "opaque-image" %>
+    <% end %>
+  </figure>
+</div>

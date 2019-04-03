@@ -1,0 +1,7 @@
+  <% epa_badge = @epa_badges[i-1]["EPA#{i}"] %>
+  <% if @review_date[i-1]["EPA#{i}"] != "" %>
+      <%= image_tag ("#{epa_badge}"), size: "80x80" %>
+      Award Date: <%= @review_date[i-1]["EPA#{i}"] %>
+  <% else %>
+       <%= image_tag ("#{epa_badge}"), size: "80x80", class: "opaque-image" %>
+  <% end %>

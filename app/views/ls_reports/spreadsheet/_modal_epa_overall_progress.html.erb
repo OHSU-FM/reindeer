@@ -61,41 +61,17 @@
                                 <h3 style="text-align:left;"> No. of EPAs NOT Badged: <%= hf_count_not_badged (@epa_badges) %></h3>
                                 <div class="row">
                                   <% for k in 1..5 %>
-                                       <div class="column center">
-                                         <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
-                                         <figure>
-                                            <%= image_tag ("#{epa_badge}") %>
-                                            <% if @review_date[k-1]["EPA#{k}"] != "" %>
-                                              <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
-                                            <% end %>
-                                         </figure>
-                                       </div>
-                                 <% end %>
+                                    <%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {k: k} %>
+                                  <% end %>
                                </div>
                                <div class="row">
                                  <% for k in 6..10 %>
-                                       <div class="column center">
-                                         <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
-                                         <figure>
-                                            <%= image_tag ("#{epa_badge}") %>
-                                            <% if @review_date[k-1]["EPA#{k}"] != "" %>
-                                              <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
-                                            <% end %>
-                                         </figure>
-                                       </div>
+                                    <%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {k: k} %>
                                  <% end %>
                                </div>
                                <div class="row">
                                  <% for k in 11..13 %>
-                                       <div class="column center">
-                                         <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
-                                         <figure>
-                                            <%= image_tag ("#{epa_badge}") %>
-                                            <% if @review_date[k-1]["EPA#{k}"] != "" %>
-                                              <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
-                                            <% end %>
-                                         </figure>
-                                       </div>
+                                    <%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {k: k} %>
                                  <% end %>
                                </div>
                         </div>

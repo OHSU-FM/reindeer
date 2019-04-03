@@ -330,10 +330,8 @@
                                     <h4><font color="purple">
                                         <%= epa_desc["EPA#{i}"] %>
                                         </font>
-                                        <% epa_badge = @epa_badges[i-1]["EPA#{i}"] %>
-                                        <%= image_tag ("#{epa_badge}"), size: "80x80" %>
+                                        <%= render partial: 'ls_reports/spreadsheet/display_small_badge', locals: {i: i} %>
                                     </h4>
-
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
