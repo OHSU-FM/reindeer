@@ -32,12 +32,12 @@ module EpaMastersHelper
       selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id)
     end
     selected_recs.each do |rec|
+      badged = {rec.epa => "epa/#{rec.epa}.png"}
       if (rec.status1.to_s + rec.status2.to_s + rec.status3.to_s).include? "Yes"
-        badged = {rec.epa => "epa/#{rec.epa}.png"}
         review_date = get_review_date(rec)
       else
         review_date = {rec.epa => ""}
-        badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}
+        #badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}
       end
       review_date_array.push review_date
       epa_badges.push badged

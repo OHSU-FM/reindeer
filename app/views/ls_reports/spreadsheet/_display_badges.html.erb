@@ -1,11 +1,14 @@
-<div class="column center">
-  <figure>
+<% if lowIndex == 11 %>
+  <td></td>
+<% end %>
+<% for k in lowIndex..upperIndex %>
+  <td class="centered-cell">
     <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
     <% if @review_date[k-1]["EPA#{k}"] != "" %>
-      <%= image_tag ("#{epa_badge}") %>
-      <figcaption>Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </figcaption>
+      <%= image_tag ("#{epa_badge}") %> <br />
+      <span class="centered-cell">Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </span>
     <% else %>
-        <%= image_tag ("#{epa_badge}"), class: "opaque-image" %>
+        <%= image_tag ("#{epa_badge}"), class: "opaque-image", size: "200x240" %>
     <% end %>
-  </figure>
-</div>
+  </td>
+<% end %>

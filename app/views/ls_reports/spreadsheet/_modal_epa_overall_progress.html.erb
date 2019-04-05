@@ -12,7 +12,7 @@
                     <ul class="list-inline nav nav-tabs" id="MyOverallProgressTabs">
                         <li class="active"><a data-toggle="tab" href="#AdHocAllEPAs<%= i %>" id="tab-5-epa-<%= i %>" >WBA Summary Graph</a></li>
                         <li><a data-toggle="tab" href="#EPAGraph<%= i %>" id="tab-1-epa-<%= i %>">QA Summary Graph</a></li>
-                        <li><a data-toggle="tab" href="#EPAStatus<%= i %>" id="tab-2-EPAStatus-<%= i %>">EPA Status</a></li>
+                        <li><a data-toggle="tab" href="#EPAStatus<%= i %>" id="tab-2-EPAStatus-<%= i %>">EPA Badge Status</a></li>
                     </ul>
 
                     <div class="tab-content">
@@ -57,23 +57,12 @@
                         </div>
                         <div id="EPAStatus<%= i %>" class="tab-pane fade in">
                           <div class="container-fluid">
-                                <h3 style="text-align:left;"> No. of EPAs Badged: <%= 13 - (hf_count_not_badged (@epa_badges)) %></h3>
-                                <h3 style="text-align:left;"> No. of EPAs NOT Badged: <%= hf_count_not_badged (@epa_badges) %></h3>
-                                <div class="row">
-                                  <% for k in 1..5 %>
-                                    <%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {k: k} %>
-                                  <% end %>
-                               </div>
-                               <div class="row">
-                                 <% for k in 6..10 %>
-                                    <%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {k: k} %>
-                                 <% end %>
-                               </div>
-                               <div class="row">
-                                 <% for k in 11..13 %>
-                                    <%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {k: k} %>
-                                 <% end %>
-                               </div>
+                             <table>
+                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 1, upperIndex: 5} %> </tr>
+                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 6, upperIndex: 10} %> </tr>
+                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 11, upperIndex: 13} %> </tr>
+                             </table>
+
                         </div>
 
                 </div>
