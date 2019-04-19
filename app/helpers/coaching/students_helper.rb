@@ -48,6 +48,12 @@ module Coaching::StudentsHelper
   def hf_get_label (current_user)
     if  current_user.coaching_type == 'student'
       return "Coach: #{current_user.cohort.title}"
+    elsif current_user.coaching_type == 'admin' and params[:email].present?
+      @student = User.find_by("email = ?", params[:email])
+      return "Student: #{@student.full_name}"
+    elsif current_user.coaching_type == 'admin' and params[:slug].present?
+      @student = User.find_by("username = ?", params[:slug])
+      return "Student: #{@student.full_name}"
     else
       return "Student: #{@student.full_name}"
     end

@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  resources :epa_masters
+  resources :epa_reviews do
+    resources :epa_reviews
+  end
+  resources :epa_masters do
+    resources :epa_reveiws
+  end
+
   resources :epas
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

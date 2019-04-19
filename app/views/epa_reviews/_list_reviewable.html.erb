@@ -1,0 +1,33 @@
+<div class="modal-body row">
+  <table class="responsive nowrap table table-hover" id="dttb-list-reviewable">
+    <thead>
+      <tr>
+        <th data-data="ResponseID">Reponse ID</th>
+        <th data-data="epa">EPA</th>
+        <th data-data="Review_Date1">Review Date1</th>
+        <th data-data="Reviewed_By">Reviewed By</th>
+        <th data-data="Review Date2">Review Date2</th>
+        <th data-data="Reviewed_By">Reviewed By</th>
+        <th data-data="EgRecomm">EG Recommentation</th>
+        <th data-data="Comments">Comments</th>
+      </tr>
+    </thead>
+    <% @reviewable.epa_reviews.each do |review| %>
+
+        <% if !review.reviewed_by1.nil? %>
+           <tr>
+             <td><%= review.response_id %></td>
+             <td><%= review.epa %></td>
+             <td><%= review.review_date1 %></td>
+             <td><%= review.reviewed_by1 %></td>
+             <td><%= review.review_date2 %></td>
+             <td><%= review.reviewed_by2 %></td>
+             <td><%= "#{review.egm_recommendation}/#{review.badge}/#{review.insufficient_evidence}/#{review.deny}"%> </td>
+             <td><%= review.general_comments %></td>
+           </tr>
+        <% end %>
+
+    <% end %>
+  </table>
+  <hr>
+</div>

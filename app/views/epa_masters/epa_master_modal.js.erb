@@ -1,33 +1,16 @@
 $("#mymodal-epa-master").html("<%= j render "epa_master_modal" %>");
 $("#modal-epa-master").modal('show');
 console.log ("inside edit.js.erb");
-status1 = $('#epa_master_status1').val();
-if (status1 == "Yes") {
-  $('#epa_master_status1').css({ 'background': '#7df442' });
+status = $('#epa_master_status').val();
+if (status == "Badge") {
+  $('#epa_master_status').css({ 'background': '#7df442' });
   $('#epa_master_review_date1').css({ 'background': '#7df442' });
 }
 else {
-  $('#epa_master_status1').css({ 'background': '#ed9a78' });
-  $('#epa_master_review_date1').css({ 'background': '#ed9a78' });
+  $('#epa_master_status').css({ 'background': '#ed9a78' });
+  $('#epa_master_review_date').css({ 'background': '#ed9a78' });
 }
-status2 = $('#epa_master_status2').val();
-if (status2 == "Yes") {
-  $('#epa_master_status2').css({ 'background': '#7df442' });
-  $('#epa_master_review_date2').css({ 'background': '#7df442' });
-}
-else {
-  $('#epa_master_status2').css({ 'background': '#ed9a78' });
-  $('#epa_master_review_date2').css({ 'background': '#ed9a78' });
-}
-status3 = $('#epa_master_status3').val();
-if (status3 == "Yes") {
-  $('#epa_master_status3').css({ 'background': '#7df442' });
-  $('#epa_master_review_date3').css({ 'background': '#7df442' });
-}
-else {
-  $('#epa_master_status3').css({ 'background': '#ed9a78' });
-  $('#epa_master_review_date3').css({ 'background': '#ed9a78' });
-}
+
 
 review_date1 = $('#epa_master_review_date1').val().length;
 console.log ("review_date1: " + review_date1);
@@ -39,20 +22,9 @@ function redisplayModal () {
 
 $('#submit').on('click',function()
 {
-    if (($('#epa_master_review_date1').val().length == 0) && ($('#epa_master_status1').val().length > 0)) {
+    if (($('#epa_master_review_date1').val().length == 0) && ($('#epa_master_status').val().length > 0)) {
         alert("Review Date1 can't be blank!");
-        redisplayModal();
-    }
-    if (($('#epa_master_review_date2').val().length == 0) && ($('#epa_master_status2').val().length > 0)) {
-        alert("Review Date2 can't be blank!");
-        redisplayModal();
-    }
-    if (($('#epa_master_review_date3').val().length == 0) && ($('#epa_master_status3').val().length > 0)) {
-        alert("Review Date3 can't be blank!");
         redisplayModal();
     }
 
 });
-
-
-console.log ("status3: " + status3);

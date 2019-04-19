@@ -9,23 +9,12 @@ module EpaMastersHelper
     end
   end
 
-  def get_review_date (rec)
-    if rec.status3 == "Yes"
-      return {rec.epa => hf_format_date(rec.review_date3)}
-    elsif rec.status2 == "Yes"
-      return {rec.epa => hf_format_date(rec.review_date2)}
-    elsif rec.status1 == "Yes"
-      return {rec.epa => hf_format_date(rec.review_date1)}
-    else
-      return {rec.epa => ""}
-    end
-  end
 
   def hf_get_epa_master_badges(selected_user_id)
     epa_badges = []
-    review_date_array = []
+    status_date_array = []
     badged = {}
-    review_date = {}
+    status_date = {}
     selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id)
     if selected_recs.length < 13
       create_epa_masters (selected_user_id)
@@ -33,17 +22,17 @@ module EpaMastersHelper
     end
     selected_recs.each do |rec|
       badged = {rec.epa => "epa/#{rec.epa}.png"}
-      if (rec.status1.to_s + rec.status2.to_s + rec.status3.to_s).include? "Yes"
-        review_date = get_review_date(rec)
+      if (rec.status == "Badged")
+        status_date_date = rec.status_date
       else
-        review_date = {rec.epa => ""}
+        status_date = {rec.epa => ""}
         #badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}
       end
-      review_date_array.push review_date
+      status_date_array.push status_date
       epa_badges.push badged
     end
 
-    return epa_badges, review_date_array
+    return epa_badges, status_date_array
   end
 
   def hf_format_date (in_date)

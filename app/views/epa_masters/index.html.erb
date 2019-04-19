@@ -1,5 +1,5 @@
 <% if can? :crud, Dashboard %>
-  <%= nav_link_to("Back to REDEI", main_app.root_path, class: "dashboard-link") %>
+  <%= nav_link_to("Back Home", main_app.root_path, class: "dashboard-link") %>
 <% end %>
 <h3>Badging EPA - <%= @full_name %> </h3>
 <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
@@ -7,25 +7,12 @@
     <tr>
       <th data-data="user_id">User ID</th>
       <th data-data="epa">EPA</th>
-      <th data-data="review_date1">Review date1</th>
-      <th data-data="reviewed_by1a">EG Member1</th>
-      <th data-data="reviewed_by1b">EG Member2</th>
-      <th data-data="Note1">Note1</th>
-      <th data-data="status1">Status1</th>
-
-      <th data-data="review_date2">Review date2</th>
-      <th data-data="reviewed_by2a">EG Member1</th>
-      <th data-data="reviewed_by2b">EG Member2</th>
-      <th data-data="Note2">Note2</th>
-      <th data-data="status2">Status2</th>
-      <th data-data="review_date3">Review date3</th>
-      <th data-data="reviewed_by3a">EG Member1</th>
-      <th data-data="reviewed_by3b">EG Member2</th>
-      <th data-data="Note3">Note3</th>
-      <th data-data="status3">Status3</th>
+      <th data-data="status">Status</th>
+      <th data-data="status_date">Award Date</th>
+      <th data-data="expiration_date">Expiration Date</th>
       <th data-data="Badged">Badged</th>
+      <th data-data="Reviews">Reviews</th>
 
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
     </tr>
   </thead>
 
@@ -34,29 +21,30 @@
       <tr>
       <td><%= epa_master.user_id %></td>
       <td><%= epa_master.epa %></td>
-      <td><%= hf_format_date(epa_master.review_date1) %></td>
-      <td><%= epa_master.reviewed_by1a %></td>
-      <td><%= epa_master.reviewed_by1b %></td>
-      <td><%= epa_master.note1 %></td>
-      <td><%= epa_master.status1 %></td>
-      <td><%= hf_format_date(epa_master.review_date2) %></td>
-      <td><%= epa_master.reviewed_by2a %></td>
-      <td><%= epa_master.reviewed_by2b %></td>
-      <td><%= epa_master.note2 %></td>
-      <td><%= epa_master.status2 %></td>
-      <td><%= hf_format_date(epa_master.review_date3) %></td>
-      <td><%= epa_master.reviewed_by3a %></td>
-      <td><%= epa_master.reviewed_by3b %></td>
-      <td><%= epa_master.note3 %></td>
-      <td><%= epa_master.status3 %></td>
-
+      <td><%= epa_master.status %></td>
+      <td><%= hf_format_date(epa_master.status_date) %></td>
+      <td><%= hf_format_date(epa_master.expiration_date) %></td>
       <% if epa_master.statuses? %>
-        <td><%= image_tag ("epa/#{epa_master.epa}.png"), class: "img-responsive" %>
+        <td><%= image_tag ("epa/#{epa_master.epa}.png"), class: "img-responsive" %> </td>
       <% else %>
-        <td></td>
+        <td>Not Badge</td>
       <% end %>
-      <td><%= link_to 'Edit', edit_epa_master_path(epa_master.id), remote: true %>
+        <td>
+          <% epa_master.epa_reviews.each do |review| %>
+              <%= review.review_date1.strftime("%m-%d-%Y")  %> / <%= review.egm_recommendation %> / <%= review.reviewed_by1%>
+              <%= link_to 'Edit', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews',
+                  'data-target' => '#mymodal-epa-review'}  %>
+              <br />
+          <% end %>
+          <span>
+            <%= link_to 'New Review', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: 'new',
+                'data-target' => '#mymodal-epa-review'}  %>
+          </span>
+        </td>
+
       </tr>
+
+
     <% end %>
   <% else %>
     <% flash[:notice] = '** You need to select a student first! ***' %>
@@ -64,4 +52,6 @@
 
 </table>
 
+
+<div id="mymodal-epa-review"></div>
 <div id="mymodal-epa-master"></div>

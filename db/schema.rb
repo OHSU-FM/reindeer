@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_18_145146) do
+ActiveRecord::Schema.define(version: 2019_04_05_185541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -217,26 +217,35 @@ ActiveRecord::Schema.define(version: 2019_03_18_145146) do
 
   create_table "epa_masters", force: :cascade do |t|
     t.string "epa"
-    t.datetime "review_date1"
-    t.string "reviewed_by1a"
-    t.string "reviewed_by1b"
-    t.string "status1"
-    t.text "note1"
-    t.datetime "review_date2"
-    t.string "reviewed_by2a"
-    t.string "reviewed_by2b"
-    t.string "status2"
-    t.text "note2"
-    t.datetime "review_date3"
-    t.string "reviewed_by3a"
-    t.string "reviewed_by3b"
-    t.string "status3"
-    t.text "note3"
+    t.string "status"
+    t.datetime "status_date"
+    t.datetime "expiration_date"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id", "epa"], name: "by_user_epas", unique: true
     t.index ["user_id"], name: "index_epa_masters_on_user_id"
+  end
+
+  create_table "epa_reviews", force: :cascade do |t|
+    t.string "epa"
+    t.datetime "review_date1"
+    t.string "reviewed_by1"
+    t.datetime "review_date2"
+    t.string "reviewed_by2"
+    t.string "egm_recommendation"
+    t.string "badge"
+    t.string "insufficient_evidence"
+    t.string "deny"
+    t.text "general_comments"
+    t.string "response_id"
+    t.string "reviewable_type"
+    t.bigint "reviewable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epa", "id"], name: "by_epa_reviews", unique: true
+    t.index ["response_id"], name: "by_epa_reviews_response_id", unique: true
+    t.index ["reviewable_type", "reviewable_id"], name: "index_epa_reviews_on_reviewable_type_and_reviewable_id"
   end
 
   create_table "epas", force: :cascade do |t|

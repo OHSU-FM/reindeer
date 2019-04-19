@@ -36,4 +36,5 @@ Rails.application.config.assets.precompile += %w( print.css
     epa_graphs.js
     chartkick.js
     epa_masters.css
+    epa_reviews.css
     )
