@@ -5,7 +5,6 @@ class EpaReviewsController < ApplicationController
   # GET /epa_reviews.json
   def index
     @epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
-    byebug
   end
 
   # GET /epa_reviews/1
@@ -79,6 +78,12 @@ class EpaReviewsController < ApplicationController
       format.html { redirect_to epa_reviews_url, notice: 'Epa review was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def get_qualtrics
+    username = User.select(:username).find_by_id(params[:user_id]).username
+    @get_qualtrics_msg = EpaReview.get_qualtrics(username, params[:user_id])
+
   end
 
   private

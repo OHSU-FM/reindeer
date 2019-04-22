@@ -1,5 +1,6 @@
 class EpaMastersController < ApplicationController
-  before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_epa_master, only: [:show, :edit, :update]
 
   def get_index
     @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
@@ -98,10 +99,15 @@ class EpaMastersController < ApplicationController
     redirect_to epa_masters_url, notice: 'Epa master was successfully destroyed.'
   end
 
+  def get_by_user
+    @selected_user_id = params[:user_id]
+    get_index
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_master
-      @epa_master = EpaMaster.find(params[:id])
+      @selected_user_id = EpaMaster.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
