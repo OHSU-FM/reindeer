@@ -1,6 +1,7 @@
 
 
 <%= form_for Coaching::Goal.new,  html: {class: "form-horizontal", id: "GoalForm"}, remote: true do |f| %>
+
   <div class="form-group">
     <%= f.label "Goal", class: "control-label col-sm-2" %>
     <%= f.text_field :name, maxlength: 50, required: true %>

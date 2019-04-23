@@ -37,7 +37,7 @@
   <div class="tab-content" style="height: 50%;">
     <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
       <div class="table-controls">
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal">Add new goal</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal" id="newGoalButton">Add new goal</button>
 
         <%= form_tag completed_goals_coaching_student_path(@student), method: :post, remote: true, name: "goal_checkbox", class: "complete-checkbox" do %>
           <label for="goal_complete">Status</label>
@@ -55,7 +55,7 @@
     </div>
       <div class="tab-pane fade" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">
         <div class="table-controls">
-          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newMeetingModal">Add new meeting</button>
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newMeetingModal" id="newMeetingButton">Add new meeting</button>
 
           <%= form_tag search_meetings_coaching_student_path(@student), method: :post, remote: true, class: "search-bar" do %>
             <%= text_field_tag :meeting_search, params[:meeting_search], placeholder: "Search" %>
@@ -96,8 +96,8 @@
 
 
 <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
-  <%= render partial: "coaching/goals/new_modal" %>
+  <%= render partial: "coaching/goals/new_goal_modal" %>
 </div>
 <div class="modal fade" id="newMeetingModal" tabindex="-1" role="dialog" aria-labelledby="newMeetingModalLabel" aria-hidden="true">
-  <%= render partial: "coaching/meetings/new_modal" %>
+  <%= render partial: "coaching/meetings/new_meeting_modal" %>
 </div>

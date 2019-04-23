@@ -6,8 +6,11 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body">
-      <%= render partial: "coaching/meetings/meeting_form", locals: { student: @student } %>
+
+    <div class="modal-body row">
+      <div class="container col-sm-10">
+        <%= render partial: "coaching/meetings/meeting_form", locals: { student: @student } %>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

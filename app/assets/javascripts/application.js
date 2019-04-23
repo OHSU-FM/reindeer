@@ -67,5 +67,6 @@
 //= require ls_reports_graph.js
 //= require ls_reports_spreadsheet.js
 //= require searches.js
+//= require students.js
 // turbolinks is commented out..
 // require turbolinks
