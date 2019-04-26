@@ -1,7 +1,7 @@
 <div class="flex-child">
   <ul class="nav nav-pills nav-stacked">
     <% if current_user.coach? %>
-      <% @cohorts.sort.each do |cohort| %>
+      <% @cohorts.each do |cohort| %>
         <li class=<%= "active" if hf_active_cohort? cohort, @student %>>
           <%= link_to cohort.title, coaching_student_path(cohort.recent_active_user) %>
         </li>

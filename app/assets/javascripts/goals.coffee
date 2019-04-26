@@ -85,10 +85,6 @@ $.fn.clear_previous_errors = () ->
     $(this).removeClass('has-error')
   return
 
-$(document).on 'click', '#goal-submit', (e) ->
-  targetDate = $('#target-date').val()
-  console.log('targetDate: ' + targetDate)
-
 $(document).ready ->
   ua = window.navigator.userAgent;
   is_ie = /MSIE|Trident/.test(ua);

@@ -25,9 +25,9 @@
   </div>
   <div class="column right" >
     <table  style="width: 30%;"class="table table-condensed spreadsheet-body">
-      <tr><td> <a href="#Preceptorship">Preceptorship Information</a> <td></tr>
+      <tr><td> <a class="Precept-FoM" href="#Preceptorship-FoM">Preceptorship Evaluations</a> <td></tr>
       <% if !@csl_evals.empty? %>
-        <tr> <td><a href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
+        <tr> <td><a class="CSLEvals-FoM" href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
       <% end %>
     </table>
   </div>
@@ -38,7 +38,7 @@
  <div class="container-fluid">
 
     <ul id="MainTabs" class="nav nav-tabs">
-        <li class="bold-italic"><a data-toggle="tab" href="#fom">FoM Blocks</a></li>
+        <li id="FoMBlock" class="bold-italic"><a data-toggle="tab" href="#fom">FoM Blocks</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#preceptor">Preceptorship</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#scholarly">Scholarly Project</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#transition">Transition Courses</a></li>
@@ -106,11 +106,12 @@
                      <tr><%= render partial: 'all_blocks_data' %></tr>
                 </tbody>
               </table>
-              <div class="precept-header" id="Preceptorship">Preceptorship Information </div>
+              <div class="precept-header" >Preceptorship Information </div>
               <%= render partial: 'preceptorship_data'%>
-              <div id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
+              <div class="CSLEvals-FoM" id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
               <%= render partial: 'csl_evals' %>
         </div>
+
 
         <div id="preceptor" name="Preceptorship" class="tab-pane fade">
           <%= render partial: 'preceptorship_data'%>
@@ -335,11 +336,11 @@
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
-                                    <% if !current_user.permission_group.nil? and @student_cohort.include? "Med19" %>
+                                    <!-- Activated epa progress bar for all -->
                                       <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
                                         <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
                                       </div>
-                                    <% end %>
+
                                 </span>
                                 <!--<%= hf_display_epa_detail(epa) %>
                                 -->

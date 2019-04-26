@@ -1,5 +1,6 @@
 $('#goals-table').append("<%= j render partial: 'goal_row', locals: { goal: @goal } %>")
 $('#newGoalModal').modal_success()
+
 // has to do a browser reload , otherwise, it will display the meeting_form esp. added new meeting
-location.reload()
-$('.modal-body').html("<%= j render partial: 'coaching/goals/goal_form', locals: { student: @goal.user } %>")
+//location.reload()
+$('.modal-goal').html("<%= j render partial: 'coaching/goals/goal_form', locals: { student: @goal.user } %>")

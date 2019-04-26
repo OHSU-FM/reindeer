@@ -9,9 +9,16 @@
 #     console.log ("ajax call success!")
 #   ).on "ajax:error", (e, xhr, status, error) ->
 #     console.log ("Ajax error")
+myFunction = ->
+  console.log ("inside myFunction")
+  $("#MeetingForm")[0].reset()
+  return
+
 $(document).ready ->
   $('.button').click ->
       $('#SearchForm').attr('onsubmit','return true;')
       return
   $('#SearchForm').attr('onsubmit','return false;')
   console.log ("inside searches cofffeescript!")
+
+## Meeting Form

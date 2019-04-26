@@ -12,8 +12,7 @@ class LsReportsController < ApplicationController
     surveys = current_user.lime_surveys_by_most_recent
 
     # Group surveys by group title
-    @survey_groups = LimeExt::LimeSurveyGroup.classify(surveys,
-                                                       params)                         
+    @survey_groups = LimeExt::LimeSurveyGroup.classify(surveys, params)
     # collect role aggregates
     @role_aggregates = @survey_groups.role_aggregates
 
@@ -21,6 +20,6 @@ class LsReportsController < ApplicationController
     @survey_groups.sort_by{|group| group.title }
 
     @cohorts = current_user.cohorts
-    @recent = surveys.first(5)
+    #@recent = surveys.first(5)
   end
 end
