@@ -274,7 +274,7 @@ $(document).ready ->
 
     return unless gon?
 
-    console.log ("after gon: " + JSON.stringify(gon.epa_adhoc))
+    #console.log ("after gon: " + JSON.stringify(gon.epa_adhoc))
     if gon.epa_adhoc == undefined or jQuery.isEmptyObject(gon.epa_adhoc)
       return
     @epa_adhoc_series_data = if gon.epa_adhoc? then gon.epa_adhoc else ''

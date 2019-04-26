@@ -8,8 +8,3 @@ e = jQuery.Event("keypress");
 e.which = 13 //choose the one you want
 e.keyCode = 13
 $("#meeting_comment_room").trigger(e);
-
-$( document ).ajaxComplete(function() {
-  console.log ("Triggered ajaxComplete handler." );
-  $("#MeetingForm").remove();
-});

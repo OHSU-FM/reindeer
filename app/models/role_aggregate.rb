@@ -60,7 +60,9 @@ class RoleAggregate < ActiveRecord::Base
   end
 
   def delete_dash_widgets
-    question_widgets.each{|qw| qw.dash_widget.destroy }
+    if !question_widgets.nil?
+        question_widgets.each{|qw| qw.dash_widget.destroy if !qw.dash_widget.nil? }
+    end
   end
 
   def validates_table_existance

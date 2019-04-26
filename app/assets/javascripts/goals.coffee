@@ -15,10 +15,6 @@ $ ->
     $('#cs-detail').addClass('show-detail')
     $('#loading-spinner').show()
 
-myFunction = ->
-  console.log ("inside myFunction")
-  $("#MeetingForm")[0].reset()
-  return
 
 $(document).on 'change', '.status-picker', (e) ->
   detailDiv = $(e.target).closest('div.show-detail')
@@ -88,19 +84,6 @@ $.fn.clear_previous_errors = () ->
     $('.help-block', $(this)).html('')
     $(this).removeClass('has-error')
   return
-
-$(document).on 'click', '#goal-submit', (e) ->
-  targetDate = $('#target-date').val()
-  $.post $(this).attr('action'), $(this).serialize()
-  console.log('targetDate: ' + targetDate)
-
-$(document).on 'click', '#meeting-submit', (e) ->
-  console.log ("submitting meetingform!!!")
-  $.post $(this).attr('action'), $(this).serialize()
-
-
-
-
 
 $(document).ready ->
   ua = window.navigator.userAgent;

@@ -771,7 +771,29 @@ theme_dark =
       title: style: textTransform: 'uppercase'
       labels: style: fontSize: '12px'
 
+
 $(document).ready ->
+
+    $('.Precept-FoM').on 'click', ->
+      $('.nav-tabs a:first').tab('show')
+      setTimeout (->
+        #something you want delayed
+        document.getElementById("Preceptorship-FoM").scrollIntoView()
+        console.log ("scroll into View!!")
+        return
+      ), 2000
+      return
+
+    $('.CSLEvals-FoM').on 'click', ->
+      $('.nav-tabs a:first').tab('show')
+      setTimeout (->
+        #something you want delayed
+        document.getElementById("csl_evaluation").scrollIntoView()
+        console.log ("scroll into View!!")
+        return
+      ), 2000
+      return
+
     return unless gon?
 
     # Load the fonts

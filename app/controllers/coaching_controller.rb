@@ -11,7 +11,7 @@ class CoachingController < ApplicationController
         selected_student = User.find_by(email: email)
         redirect_to coaching_student_path selected_student
       else
-        student = current_user.cohorts.where("title not like ?", "%Med18%").first.users.first
+        student = current_user.cohorts.where("title not like ?", "%Med18%").order(title: :desc).first.users.first
         ## orig code --> current_user.cohorts.first.users.first
         redirect_to coaching_student_path(student)
       end
