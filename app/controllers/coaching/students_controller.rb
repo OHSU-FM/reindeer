@@ -64,6 +64,7 @@ module Coaching
 
         elsif current_user.dean_or_higher?
           @cohorts = Cohort.includes(:users).includes(:owner).all
+
           @coaches = @cohorts.map(&:owner).uniq!
           @students = @cohorts.map(&:users).flatten
         end
