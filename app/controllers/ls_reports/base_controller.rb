@@ -15,7 +15,7 @@ class LsReports::BaseController < ApplicationController
     render :show
   end
 
-# THIS PART IS COMMENTED OUT ON 1/5/2019 AS IT'S NOT NECESSARY - SELECTING FROM ALL TABLES 
+# THIS PART IS COMMENTED OUT ON 1/5/2019 AS IT'S NOT NECESSARY - SELECTING FROM ALL TABLES
   # def show_part
   #   @view_type = params[:view_type].to_s
   #   unless RoleAggregate::DEFAULT_VIEWS.include?(@view_type)
@@ -68,7 +68,6 @@ class LsReports::BaseController < ApplicationController
     @unfiltered_label = @role_aggregate.get_pk_label.pluralize
     @filtered_label.pluralize if @fm.filters_equal
     @view_type = params[:view_type]
-
 
   end
 
