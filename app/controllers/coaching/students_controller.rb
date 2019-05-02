@@ -57,14 +57,10 @@ module Coaching
           redirect_to root_path and return
         elsif current_user.coach?
           @cohorts = current_user.cohorts.where("title NOT LIKE ?", "%Med18%").order('title DESC')
-
           (redirect_to coaching_index_path and return) unless @cohorts.include? @student.cohort
           @students = @student.cohort.users
-
-
         elsif current_user.dean_or_higher?
           @cohorts = Cohort.includes(:users).includes(:owner).all
-
           @coaches = @cohorts.map(&:owner).uniq!
           @students = @cohorts.map(&:users).flatten
         end

@@ -261,7 +261,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
     series: seriesArr
     drilldown: {
             series: drilldownSeriesArr
-      }
+    }
   }
 
 #=======================================================================================================

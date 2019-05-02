@@ -169,7 +169,7 @@ module LsReports::CompetencyHelper
 
   COMP_CODES_CC = ["ICS1", "ICS2", "ICS4", "ICS5", "ICS6", "ICS7","ICS8",
                    "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD10", "PPPD11",
-                   "PBLI3", "PBLI6", "PBLI8","PCP1", 
+                   "PBLI3", "PBLI6", "PBLI8","PCP1",
                    "PCP2", "PCP3", "PCP4", "PCP5", "PCP6",
                    "SBPIC3"]
 
@@ -220,7 +220,7 @@ module LsReports::CompetencyHelper
     non_clinical_courses_arry = IO.readlines(pathFile)
     non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
     return non_clinical_courses_arry
-  end 
+  end
 
   def tag_non_clinical_course(in_course)
     course_code = in_course.split("]")
@@ -233,7 +233,7 @@ module LsReports::CompetencyHelper
     elsif in_course.include? "Non-Clinical Foundations of Medicine"
         in_course = "*" + in_course
     end
-    
+
     return in_course
   end
 
@@ -261,7 +261,7 @@ module LsReports::CompetencyHelper
   end
 
   def check_clinical_comp(in_course, in_level, in_comp_code)
-    course_code = in_course.split("]") 
+    course_code = in_course.split("]")
     course_code[0] = course_code[0].gsub("[", "")
     if @non_clinical_course_arry.include?(course_code[0]) and in_level == "3" and COMP_CODES_CC.include?(in_comp_code)
         #puts "in_course: " + course_code[0] + " in_comp_code: " + in_comp_code + " level: " + in_level
@@ -277,8 +277,8 @@ module LsReports::CompetencyHelper
   def hf_load_all_competencies_nc(rs_data, level)
     comp_hash = {}
     COMP_CODES.each do |comp|
-      comp_hash[comp] = 0      
-    end  
+      comp_hash[comp] = 0
+    end
 
     rs_data.each do |rec|
       COMP_CODES.each do |comp|
@@ -318,7 +318,7 @@ module LsReports::CompetencyHelper
     #binding.pry
     return comp_hash
   end
- 
+
   def hf_comp_courses(rs_data, level)
     competency_courses = {}
     COMP_CODES.each do |comp|
@@ -681,7 +681,11 @@ module LsReports::CompetencyHelper
       end
     end
     for i in 0..13
-      class_mean_epa[i] = (total_epa[i]/students_epa.count.to_f).round(0)
+      if !students_epa.empty?
+        class_mean_epa[i] = (total_epa[i]/students_epa.count.to_f).round(0)
+      else
+        class_mean_epa[i] = 0
+      end
     end
     return class_mean_epa
   end

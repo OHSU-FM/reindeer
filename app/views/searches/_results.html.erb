@@ -2,7 +2,6 @@
 <%= render 'layouts/nav_header' %>
 <h3>Search Result</h3>
   <% if !@results.nil? %>
-
     <table class="table table-hover main-table">
       <thead>
         <tr>
@@ -14,7 +13,7 @@
           <th>DataSets</th>
         </tr>
       </thead>
-
+      <% @temp_hash = {} %>
       <% @results.each do |result| %>
         <% @pk = result.email %>
         <tr>
@@ -28,12 +27,9 @@
               <td> N/A </td>
           <% end %>
           <td>
+            <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
+            <% hf_datasets(result, @temp_hash).each do |dataset| %>
 
-            <% if ['admin', 'dean'].include? current_user.coaching_type %>
-                <%= nav_link_to("Review EPAs", epa_masters_path(email: @pk), class: "link-to-text-color", target: '_blank')  %>
-            <% end %>
-            <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id), class: "link-to-text-color")  %>
-            <% hf_datasets(result).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>
                    <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
@@ -48,4 +44,6 @@
         </tr>
       <% end %>
     </table>
+    <% hf_write_hash(@temp_hash) %>
+
   <% end %>

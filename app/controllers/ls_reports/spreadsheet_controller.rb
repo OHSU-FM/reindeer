@@ -5,6 +5,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::CompetencyHelper
   include LsReports::ClinicalphaseHelper
   include LsReports::CslevalHelper
+  include SearchesHelper
   include EpasHelper
   include EpaMastersHelper
   ##
@@ -78,10 +79,27 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
   def get_all_blocks_data
     survey = @lime_survey.lime_surveys_languagesettings
-    @allblocks = hf_get_all_blocks(survey, @pk)
-    if !@allblocks.empty?
-      @allblocks_class_mean = hf_get_all_blocks_class_mean(survey)
+    if current_user.coaching_type == "student"
+      @allblocks = hf_get_all_blocks(survey, @pk)
+      if !@allblocks.empty?
+        @allblocks_class_mean = hf_get_all_blocks_class_mean(survey)
+      end
+
+    else
+      survey_hash = hf_read_tempfile  ## search json file need to be unique
+      if !survey_hash.nil?
+        allblocks_sid = hf_get_sid(survey_hash, @pk, "All Blocks")
+        preceptor_sid = hf_get_sid(survey_hash, @pk, "Preceptorship")
+        @allblocks = hf_get_all_blocks(allblocks_sid, @pk)
+        @allblocks_class_mean = hf_get_all_blocks_class_mean(allblocks_sid)
+      else
+        @allblocks = hf_get_all_blocks(survey, @pk)
+        if !@allblocks.empty?
+          @allblocks_class_mean = hf_get_all_blocks_class_mean(survey)
+        end
+      end
     end
+
 
     @cpx_data = hf_get_cpx(survey)
     @usmle_data = hf_get_usmle(survey)

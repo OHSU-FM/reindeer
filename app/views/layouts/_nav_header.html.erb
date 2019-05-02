@@ -55,6 +55,12 @@
             <%= nav_link_to("Upload Documents", artifacts_path, target: '_blank')  %>
           <% end %>
 
+          <% if current_user.coaching_type == "coach" and params[:slug].present? %>
+              <% temp_pk = params[:slug] + "@ohsu.edu" %>
+            <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: 388285, pk: temp_pk),
+               target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
+          <% end %>
+
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>
           <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
