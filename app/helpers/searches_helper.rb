@@ -18,7 +18,37 @@ module SearchesHelper
     return temp_array
   end
 
-  def hf_datasets (result)
+  def hf_read_tempfile
+     if File.file? (Rails.root + "tmp/#{current_user.login}_search.json")
+       json_obj = File.read(Rails.root + "tmp/#{current_user.login}_search.json")
+       survey_array = JSON.parse(json_obj)
+     else
+        return nil
+     end
+  end
+
+  def hf_write_hash(in_hash)
+    file_ptr = File.open(Rails.root + "tmp/#{current_user.login}_search.json", 'w')
+    file_ptr.write(in_hash.to_json)
+    file_ptr.close
+
+  end
+
+  def create_hash (survey_array, username, temp_hash)
+      survey_json = []
+      user_json = {}
+      survey_array.each do |s|
+         s_json = {
+           "sid" => s.split("~").first,
+           "survey" => s.split("~").last
+         }
+         survey_json << s_json
+      end
+      temp_hash["#{username}"] = survey_json
+      return temp_hash
+  end
+
+  def hf_datasets (result, temp_hash)
     survey_array = []
     if result.coaching_type == 'student'
 
@@ -41,6 +71,8 @@ module SearchesHelper
       session[:search] ||= []
       session[:search] = nil
       session[:search] = get_csl_data(survey_array)
+
+      temp_hash = create_hash(survey_array, result.login, temp_hash)
 
       return survey_array
      else

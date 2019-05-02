@@ -72,5 +72,6 @@ module EdnaConsole
       g.test_framework :rspec, spec: true, fixture: false
       g.integration_tool :rspec
     end
+
   end
 end

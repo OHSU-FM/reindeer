@@ -115,10 +115,18 @@ module LsReports::ClinicalphaseHelper
     return comp
   end
 
+  def hf_get_sid (in_hash, pk, in_str)
+    username = pk.split("@").first
+    selected_sid = in_hash["#{username}"].select{|s| s["survey"].include? in_str}.first["sid"]
+    return selected_sid
+  end
+
+
   def get_dataset(in_survey, category, dataset)
     temp_data = in_survey.first.surveyls_title.split(":")
     @student_year = temp_data.second
     return LimeSurveysLanguagesetting.find_by(surveyls_title: "SA:#{@student_year}:#{category}:#{dataset}")
+
   end
 
   def get_student_data(in_data, question, sub_question)
@@ -128,9 +136,15 @@ module LsReports::ClinicalphaseHelper
     return score
   end
 
-  def hf_get_all_blocks(in_survey, pk)
+  def hf_get_all_blocks(in_sid, pk)
+
+    if in_sid.instance_of? String
+      rr = RoleAggregate.find_by(lime_survey_sid: in_sid)
+    else
+      rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
+    end
     comp = {}
-    rr = get_dataset(in_survey, "Foundation of Medicine", "All Blocks (Graph View)")
+
     if rr.nil?
       return comp  ## return empty hash array
     end
@@ -162,12 +176,17 @@ module LsReports::ClinicalphaseHelper
     comp_data = nil
     lq = nil
     rr = nil
+
     return comp
   end
 
-  def hf_get_all_blocks_class_mean(in_survey)
-    rr = get_dataset(in_survey, "Foundation of Medicine", "All Blocks (Graph View)")
-    role = RoleAggregate.find_by(lime_survey_sid: rr.surveyls_survey_id)
+  def hf_get_all_blocks_class_mean(survey_sid)
+
+    if survey_sid.instance_of? String
+       role = RoleAggregate.find_by(lime_survey_sid: survey_sid)
+    else
+       role = get_dataset(survey_sid, "Foundation of Medicine", "All Blocks (Graph View)")
+    end
     fm_data = role.lime_survey.lime_stats.load_data
               #role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
 

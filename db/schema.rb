@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_150033) do
+ActiveRecord::Schema.define(version: 2019_04_05_185541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,43 +43,6 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.index ["user_id"], name: "index_artifacts_on_user_id"
-  end
-
-  create_table "assignment_comments", id: :serial, force: :cascade do |t|
-    t.integer "user_assignment_id"
-    t.integer "user_id"
-    t.text "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "assignment_group_id"
-    t.index ["assignment_group_id"], name: "index_assignment_comments_on_assignment_group_id"
-    t.index ["user_assignment_id"], name: "index_assignment_comments_on_user_assignment_id"
-    t.index ["user_id"], name: "index_assignment_comments_on_user_id"
-  end
-
-  create_table "assignment_group_templates", id: :serial, force: :cascade do |t|
-    t.integer "permission_group_id"
-    t.string "title"
-    t.text "permission_group_ids"
-    t.text "sids"
-    t.text "desc_md"
-    t.boolean "active", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["permission_group_id"], name: "index_assignment_group_templates_on_permission_group_id"
-  end
-
-  create_table "assignment_groups", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "assignment_group_template_id"
-    t.string "title"
-    t.integer "status"
-    t.text "desc_md"
-    t.text "user_ids"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["assignment_group_template_id"], name: "index_assignment_groups_on_assignment_group_template_id"
-    t.index ["user_id"], name: "index_assignment_groups_on_user_id"
   end
 
   create_table "chart_series", id: :serial, force: :cascade do |t|
@@ -115,6 +78,19 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
     t.datetime "updated_at", null: false
     t.index ["permission_group_id"], name: "index_cohorts_on_permission_group_id"
     t.index ["user_id"], name: "index_cohorts_on_user_id"
+  end
+
+  create_table "compentencies", id: :serial, force: :cascade do |t|
+    t.string "student_name"
+    t.string "evaluator"
+    t.string "rotation_date"
+    t.string "service"
+    t.integer "answer"
+    t.string "compentency_code"
+    t.string "block_name"
+    t.string "question"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "competencies", id: :serial, force: :cascade do |t|
@@ -212,6 +188,39 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
 
   create_table "data_migrations", id: :serial, force: :cascade do |t|
     t.text "version", null: false
+  end
+
+  create_table "epa_masters", force: :cascade do |t|
+    t.string "epa"
+    t.string "status"
+    t.datetime "status_date"
+    t.datetime "expiration_date"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "epa"], name: "by_user_epas", unique: true
+    t.index ["user_id"], name: "index_epa_masters_on_user_id"
+  end
+
+  create_table "epa_reviews", force: :cascade do |t|
+    t.string "epa"
+    t.datetime "review_date1"
+    t.string "reviewed_by1"
+    t.datetime "review_date2"
+    t.string "reviewed_by2"
+    t.string "egm_recommendation"
+    t.string "badge"
+    t.string "insufficient_evidence"
+    t.string "deny"
+    t.text "general_comments"
+    t.string "response_id"
+    t.string "reviewable_type"
+    t.bigint "reviewable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["epa", "id"], name: "by_epa_reviews", unique: true
+    t.index ["response_id"], name: "by_epa_reviews_response_id", unique: true
+    t.index ["reviewable_type", "reviewable_id"], name: "index_epa_reviews_on_reviewable_type_and_reviewable_id"
   end
 
   create_table "epas", force: :cascade do |t|
@@ -431,24 +440,6 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
     t.string "discussable_type"
   end
 
-  create_table "survey_assignments", id: :serial, force: :cascade do |t|
-    t.boolean "as_inline", default: false
-    t.string "title"
-    t.integer "lime_survey_sid", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["lime_survey_sid"], name: "index_survey_assignments_on_lime_survey_sid"
-  end
-
-  create_table "user_assignments", id: :serial, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "survey_assignment_id", null: false
-    t.integer "lime_token_tid"
-    t.datetime "started_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "user_externals", id: :serial, force: :cascade do |t|
     t.integer "user_id"
     t.string "ident", limit: 255
@@ -504,14 +495,8 @@ ActiveRecord::Schema.define(version: 2019_01_16_150033) do
   end
 
   add_foreign_key "artifacts", "users"
-  add_foreign_key "assignment_comments", "assignment_groups"
-  add_foreign_key "assignment_comments", "user_assignments"
-  add_foreign_key "assignment_comments", "users"
-  add_foreign_key "assignment_groups", "assignment_group_templates"
-  add_foreign_key "assignment_groups", "users"
   add_foreign_key "cohorts", "users"
+  add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
-  add_foreign_key "survey_assignments", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", on_delete: :cascade
-  add_foreign_key "user_assignments", "survey_assignments", on_delete: :cascade
 end

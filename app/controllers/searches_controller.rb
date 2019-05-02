@@ -22,7 +22,6 @@ class SearchesController < ApplicationController
         @clinical_sid = hf_dataset_sid(params[:search])
       end
     end
-
     # respond_to do |format|
     #   format.js { render partial: 'search-results'}
     # end
