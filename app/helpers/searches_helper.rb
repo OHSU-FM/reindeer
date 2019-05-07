@@ -52,8 +52,9 @@ module SearchesHelper
     survey_array = []
     if result.coaching_type == 'student'
 
-      surveygrps = result.permission_group.permission_ls_groups
-      surveygrps = surveygrps.sort_by(&:updated_at)
+      surveygrps = PermissionLsGroup.where(permission_group_id: result.permission_group_id).order(:updated_at) #result.permission_group.permission_ls_groups
+      #surveygrps = surveygrps.sort_by(&:updated_at)
+
       surveygrps.each do |s|
         survey = s.lime_survey.title
         sid = s.lime_survey.sid

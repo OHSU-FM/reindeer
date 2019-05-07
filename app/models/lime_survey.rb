@@ -135,7 +135,6 @@ class LimeSurvey < ActiveRecord::Base
     end
     return @column_names
   end
-
   # RailsAdmin label
   def title
     settings = lime_surveys_languagesettings.first
@@ -159,11 +158,21 @@ class LimeSurvey < ActiveRecord::Base
   end
 
   def find_question key, val
-    lime_groups.each do |group|
+
+    groups = lime_groups.includes(:lime_questions)
+    groups.each do |group|
       group.lime_questions.each do |question|
         return question if question.send(key) == val
       end
     end
+
+    # lime_groups.each do |group|
+    #   byebug
+    #   group.lime_questions.each do |question|
+    #     byebug
+    #     return question if question.send(key) == val
+    #   end
+    # end
     return nil
   end
 

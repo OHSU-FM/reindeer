@@ -78,39 +78,51 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   end
 
   def get_all_blocks_data
-    survey = @lime_survey.lime_surveys_languagesettings
+    @survey = @lime_survey.lime_surveys_languagesettings
     if current_user.coaching_type == "student"
-      @allblocks = hf_get_all_blocks(survey, @pk)
-      if !@allblocks.empty?
-        @allblocks_class_mean = hf_get_all_blocks_class_mean(survey)
-      end
+      get_all_blocks
 
     else
       survey_hash = hf_read_tempfile  ## search json file need to be unique
       if !survey_hash.nil?
         allblocks_sid = hf_get_sid(survey_hash, @pk, "All Blocks")
         preceptor_sid = hf_get_sid(survey_hash, @pk, "Preceptorship")
-        @allblocks = hf_get_all_blocks(allblocks_sid, @pk)
-        @allblocks_class_mean = hf_get_all_blocks_class_mean(allblocks_sid)
-      else
-        @allblocks = hf_get_all_blocks(survey, @pk)
-        if !@allblocks.empty?
-          @allblocks_class_mean = hf_get_all_blocks_class_mean(survey)
+        if !preceptor_sid.nil?
+          @preceptorship = hf_get_preceptorship(preceptor_sid, @pk)
+        else
+          @preceptorship = hf_get_preceptorship(@survey, @pk)
         end
+        if !allblocks_sid.nil?
+          @allblocks = hf_get_all_blocks(allblocks_sid, @pk)
+          @allblocks_class_mean = hf_get_all_blocks_class_mean(allblocks_sid)
+        else
+          get_all_blocks
+        end
+      else
+        get_all_blocks
       end
     end
 
 
-    @cpx_data = hf_get_cpx(survey)
-    @usmle_data = hf_get_usmle(survey)
-    @shelf_attachments = hf_get_shelf_attachments(survey)
-    @preceptorship = hf_get_preceptorship(survey, @pk)
+    @cpx_data = hf_get_cpx(@survey)
+    @usmle_data = hf_get_usmle(@survey)
+    @shelf_attachments = hf_get_shelf_attachments(@survey)
+
     @preceptor_view = @preceptorship.flatten
     @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
-    @csl_evals = hf_get_csl_evals(survey, @pk)
+    @csl_evals = hf_get_csl_evals(@survey, @pk)
 
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
+  end
+
+  def get_all_blocks
+    @allblocks = hf_get_all_blocks(@survey, @pk)
+    if !@allblocks.empty?
+      @allblocks_class_mean = hf_get_all_blocks_class_mean(@survey)
+    end
+    @preceptorship = hf_get_preceptorship(@survey, @pk)
+
   end
 
   def will_view_raw_data?
