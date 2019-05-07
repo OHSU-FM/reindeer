@@ -117,8 +117,12 @@ module LsReports::ClinicalphaseHelper
 
   def hf_get_sid (in_hash, pk, in_str)
     username = pk.split("@").first
-    selected_sid = in_hash["#{username}"].select{|s| s["survey"].include? in_str}.first["sid"]
-    return selected_sid
+    if !in_hash["#{username}"].nil?
+      selected_sid = in_hash["#{username}"].select{|s| s["survey"].include? in_str}.first["sid"]
+      return selected_sid
+    else
+      return nil
+    end
   end
 
 
@@ -251,7 +255,12 @@ module LsReports::ClinicalphaseHelper
   end
 
   def hf_get_preceptorship(in_survey, pk)
-    rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+    if in_survey.instance_of? String 
+       rr = RoleAggregate.find_by(lime_survey_sid: in_survey)
+    else
+       rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+    end
+    #rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
     if rr.nil?
       return {}
     end

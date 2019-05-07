@@ -44,20 +44,30 @@ class SearchesController < ApplicationController
     if @parameter == "*"
       load_all_students(cohorts)
     else
-      cohorts.each do |cohort|
-        # Looking for med18, med19, etc in the title
         if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
-          cohort.users.each do |user|
-            if user.full_name.downcase.include? @parameter
-                @results.push user
-            end
-          end
-        elsif cohort.title.downcase.include? @parameter
-          cohort.users.each do |user|
+          user = User.find_by("full_name LIKE ?",  "#{@parameter.capitalize}%")
+          @results.push user if !user.nil?
+        else
+          cohort = cohorts.select{|c| c.title.downcase.include? @parameter}
+          cohort.first.users.each do |user|
             @results.push user
           end
-        end
+      end
+
+      #cohorts.each do |cohort|
+        # Looking for med18, med19, etc in the title
+        # if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
+        #   cohort.users.each do |user|
+        #     if user.full_name.downcase.include? @parameter
+        #         @results.push user
+        #     end
+        #   end
+        # elsif cohort.title.downcase.include? @parameter
+        #   cohort.users.each do |user|
+        #     @results.push user
+        #   end
+        #end
       end
     end
-  end
+
 end

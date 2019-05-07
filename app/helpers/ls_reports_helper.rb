@@ -66,7 +66,9 @@ module LsReportsHelper
   def hf_generate_menu_hash lime_surveys
     nested_hash = Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
 
-    filtered_titles = lime_surveys.map{|s|
+    surveys = lime_surveys.includes(:lime_surveys_languagesettings)
+
+    filtered_titles = surveys.map{|s|
       s.lime_surveys_languagesettings[0].surveyls_title
     }.select{|title|
       MENU_HEADERS.keys.include? title.split(":").first
