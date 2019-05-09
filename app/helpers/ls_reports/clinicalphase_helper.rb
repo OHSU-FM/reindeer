@@ -255,7 +255,7 @@ module LsReports::ClinicalphaseHelper
   end
 
   def hf_get_preceptorship(in_survey, pk)
-    if in_survey.instance_of? String 
+    if in_survey.instance_of? String
        rr = RoleAggregate.find_by(lime_survey_sid: in_survey)
     else
        rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
@@ -600,7 +600,7 @@ module LsReports::ClinicalphaseHelper
     else
       no_docs = 0
       artifacts_student = Artifact.where(user_id: selected_user.id)
-      official_docs = artifacts_student.select{|a| a.title == "Progress Board"}
+      official_docs = artifacts_student.select{|a| a.title == "Progress Board" or a.title == "Other"}
       official_docs.each do |doc|
         no_docs = no_docs + doc.documents.count
       end

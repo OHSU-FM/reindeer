@@ -54,6 +54,10 @@ module SearchesHelper
 
       surveygrps = PermissionLsGroup.where(permission_group_id: result.permission_group_id).order(:updated_at) #result.permission_group.permission_ls_groups
       #surveygrps = surveygrps.sort_by(&:updated_at)
+      if !result.prev_permission_group_id.nil?
+        prev_surveygrps = PermissionLsGroup.where(permission_group_id: result.prev_permission_group_id).order(:updated_at)
+        surveygrps = (surveygrps + prev_surveygrps)
+      end
 
       surveygrps.each do |s|
         survey = s.lime_survey.title
@@ -73,7 +77,10 @@ module SearchesHelper
       session[:search] = nil
       session[:search] = get_csl_data(survey_array)
 
+      survey_array = survey_array.uniq
+
       temp_hash = create_hash(survey_array, result.login, temp_hash)
+
 
       return survey_array
      else

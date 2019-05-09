@@ -87,7 +87,13 @@ class Ability
       # If we are missing user_externals etc... you will still receive a true on can? :read
       # But will throw an error on the view (handled in dashboard/ ls_reports:index etc..)
       if user.permission_group_id.present?
-        plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+        #plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+        plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+        if plg.nil?
+          if user.prev_permission_group_id.present?
+            plg = PermissionLsGroup.where(permission_group_id: user.prev_permission_group_id, lime_survey_sid: lime_survey.sid).first
+          end
+        end
         plg.present? && plg.ready_for_use?
       else
         false
@@ -96,8 +102,16 @@ class Ability
 
     can :read_unfiltered, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
-        if user.lime_surveys.include? lime_survey
-          plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+
+          # if user.lime_surveys.include? lime_survey
+          #   plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+          #   (plg.present? && plg.ready_for_use? && plg.view_all) ? true : false
+          # else
+          #   byebug
+          #   false
+          # end
+        plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+        if plg.present?
           (plg.present? && plg.ready_for_use? && plg.view_all) ? true : false
         else
           false
@@ -110,12 +124,26 @@ class Ability
     # If a user is allowed to view a given survey and they can 'view_spreadsheet' then allow them to view it
     can :read_raw_data, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
-        has_ls = user.role_aggregates.map{|ra| ra.lime_survey_sid }.include? lime_survey.sid
+        #has_ls = user.role_aggregates.map{|ra| ra.lime_survey_sid }.include? lime_survey.sid
+
         if user.lime_surveys.include? lime_survey
           plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+          if plg.nil?
+            if user.prev_permission_group_id.present?
+              plg = PermissionLsGroup.where(permission_group_id: user.prev_permission_group_id, lime_survey_sid: lime_survey.sid).first
+            end
+          end
           (plg.present? && plg.ready_for_use? && plg.view_raw) ? true : false
         else
+          # dean level
           false
+          # byebug
+          #  plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+          #  if plg.present?
+          #    (plg.present? && plg.ready_for_use? && plg.view_raw) ? true : false
+          #  else
+          #     false
+          #  end
         end
       else
         false
