@@ -118,8 +118,13 @@ module LsReports::ClinicalphaseHelper
   def hf_get_sid (in_hash, pk, in_str)
     username = pk.split("@").first
     if !in_hash["#{username}"].nil?
-      selected_sid = in_hash["#{username}"].select{|s| s["survey"].include? in_str}.first["sid"]
-      return selected_sid
+      selected_hash = in_hash["#{username}"].select{|s| s["survey"].include? in_str}
+      if !selected_hash.empty?
+          selected_sid = selected_hash.first["sid"]
+          return selected_sid
+       else
+         return nil
+       end
     else
       return nil
     end
