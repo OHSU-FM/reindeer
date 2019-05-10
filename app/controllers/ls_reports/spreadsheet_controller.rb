@@ -86,18 +86,19 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       survey_hash = hf_read_tempfile  ## search json file need to be unique
       if !survey_hash.nil?
         allblocks_sid = hf_get_sid(survey_hash, @pk, "All Blocks")
-        preceptor_sid = hf_get_sid(survey_hash, @pk, "Preceptorship")
-        if !preceptor_sid.nil?
-          @preceptorship = hf_get_preceptorship(preceptor_sid, @pk)
-        else
-          @preceptorship = hf_get_preceptorship(@survey, @pk)
-        end
         if !allblocks_sid.nil?
           @allblocks = hf_get_all_blocks(allblocks_sid, @pk)
           @allblocks_class_mean = hf_get_all_blocks_class_mean(allblocks_sid)
         else
           get_all_blocks
         end
+        preceptor_sid = hf_get_sid(survey_hash, @pk, "Preceptorship")
+        if !preceptor_sid.nil?
+          @preceptorship = hf_get_preceptorship(preceptor_sid, @pk)
+        else
+          @preceptorship = hf_get_preceptorship(@survey, @pk)
+        end
+
       else
         get_all_blocks
       end

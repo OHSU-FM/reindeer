@@ -66,9 +66,7 @@ module LsReportsHelper
   def hf_generate_menu_hash lime_surveys
     nested_hash = Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
 
-    surveys = lime_surveys.includes(:lime_surveys_languagesettings)
-
-    filtered_titles = surveys.map{|s|
+    filtered_titles = lime_surveys.map{|s|
       s.lime_surveys_languagesettings[0].surveyls_title
     }.select{|title|
       MENU_HEADERS.keys.include? title.split(":").first
@@ -284,6 +282,12 @@ module LsReportsHelper
       unless @ability.can? :read_unfiltered, lime_survey
         # Filters for comparison
         plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+        if plg.nil? and user.prev_permission_group_id.present?
+          plg = PermissionLsGroup.where(permission_group_id: user.prev_permission_group_id, lime_survey_sid: lime_survey.sid).first
+        else
+          # Dean's level
+          plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+        end
         raise "Permissions Error: User cannot access this survey" unless plg.present?
         plg.permission_ls_group_filters.each do |plgk|
           fieldname = plgk.lime_question.my_column_name

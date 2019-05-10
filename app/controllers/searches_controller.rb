@@ -4,7 +4,10 @@ class SearchesController < ApplicationController
 
   def search
 
-    if params[:search].blank?
+    if current_user.coaching_type == "student"
+      @results = []
+      @results.push current_user
+    elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
     elsif current_user.coaching_type == 'coach'
         coach_search

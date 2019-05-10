@@ -62,30 +62,13 @@
           <% end %>
 
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
-          <% hf_generate_menu_hash(current_user.lime_surveys).each do |top_link, first_level| %>
-          <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
-            <div class="btn-group btn navbar-btn ">
-              <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %><span class="caret"></span></button>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <% first_level.each do |first_level_item, second_level| %>
-                <% if first_level.keys.count > 1 %>
-                <li class="dropdown-submenu">
-                  <a tabindex="-1" href="#"><%= first_level_item %></a>
-                  <ul class="dropdown-menu">
-                    <% end %>
-                    <% second_level.each do |sub_menu_item, s| %>
-                    <%= nav_link_to(sub_menu_item, main_app.ls_reports_path(group_filter: "#{top_link}:#{first_level_item}:#{sub_menu_item}")) %>
-                    <% end %>
-                    <% if first_level.keys.count > 1 %>
-                  </ul>
-                </li>
-                <% end %>
-                <% end %>
-              </ul>
-            </div>
-          </li>
-        <% end %>
-        <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
+          <% if current_user.coaching_type == 'student' and !current_user.prev_permission_group_id.nil? %>
+             <%= nav_link_to "Your Datasets", search_searches_path(current_user) %>
+          <% else %>
+             <%= render partial: "layouts/dropdown_menu_for_students" %>
+          <% end %>
+
+          <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
         <% end %>
 
         <% if current_user.present? %>
@@ -122,7 +105,6 @@
     </div>
   </div>
 </div>
-
 
 <%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_reports', message: 'Loading Report' }%>
 <%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_stats', message: 'Loading Data Set' }%>
