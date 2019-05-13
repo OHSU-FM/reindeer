@@ -57,7 +57,7 @@
 
           <% if current_user.coaching_type == "coach" and params[:slug].present? %>
               <% temp_pk = params[:slug] + "@ohsu.edu" %>
-            <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: 388285, pk: temp_pk),
+            <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: hf_get_clinical_phase_sid(temp_pk), pk: temp_pk),
                target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
           <% end %>
 
