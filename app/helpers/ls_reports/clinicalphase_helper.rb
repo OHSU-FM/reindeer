@@ -130,6 +130,20 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
+  def hf_get_clinical_phase_sid(pk)
+
+      permission_group_id = User.where(email: pk).first.permission_group_id
+      surveys = PermissionLsGroup.where(permission_group_id: permission_group_id)
+
+      surveys.each do |survey|
+        temp_survey = LimeSurveysLanguagesetting.where(surveyls_survey_id: survey.lime_survey_sid).first
+        if temp_survey.surveyls_title.include? "Core Clinical"
+          return temp_survey.surveyls_survey_id
+        end
+      end
+      return nil
+  end
+
 
   def get_dataset(in_survey, category, dataset)
     temp_data = in_survey.first.surveyls_title.split(":")
