@@ -1,58 +1,45 @@
-<% if can? :crud, Dashboard %>
-  <%= nav_link_to("Back Home", main_app.root_path, class: "dashboard-link") %>
-  <%= link_to 'Load Qualtrics Data', user_id: @epa_masters.first.user_id, controller: 'epa_reviews', action: 'get_qualtrics', target: "_blank" %>
-<% end %>
-<h3>Badging EPA - <%= @full_name %> </h3>
-<table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
-  <thead>
-    <tr>
-      <th data-data="user_id">User ID</th>
-      <th data-data="epa">EPA</th>
-      <th data-data="status">Status</th>
-      <th data-data="status_date">Award Date</th>
-      <th data-data="expiration_date">Expiration Date</th>
-      <th data-data="Badged">Badged</th>
-      <th data-data="Reviews">Reviews</th>
 
-    </tr>
-  </thead>
+<div id="container-fluid">
+    <% if can? :crud, Dashboard %>
+        <div class="panel panel-default">
+          <div class="panel-body">
 
-  <% if !@epa_masters.nil? %>
-    <% @epa_masters.each do |epa_master| %>
-      <tr>
-      <td><%= epa_master.user_id %></td>
-      <td><%= epa_master.epa %></td>
-      <td><%= epa_master.status %></td>
-      <td><%= hf_format_date(epa_master.status_date) %></td>
-      <td><%= hf_format_date(epa_master.expiration_date) %></td>
-      <% if epa_master.statuses? %>
-        <td><%= image_tag ("epa/#{epa_master.epa}.png"), class: "img-responsive" %> </td>
-      <% else %>
-        <td>Not Badge</td>
-      <% end %>
-        <td>
-          <% epa_master.epa_reviews.each do |review| %>
-              <%= review.review_date1.strftime("%m-%d-%Y")  %> / <%= review.egm_recommendation %> / <%= review.reviewed_by1%>
-              <%= link_to 'Edit', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews',
-                  'data-target' => '#mymodal-epa-review'}  %>
-              <br />
-          <% end %>
-          <span>
-            <%= link_to 'New Review', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: 'new',
-                'data-target' => '#mymodal-epa-review'}  %>
-          </span>
-        </td>
+                <span class="float-right">
+                  <%= link_to("Back Home", main_app.root_path, class: "dashboard-link") %> &nbsp;&nbsp;
+                </span>
+                <span class="float-right">
+                  <% user_id = (@epa_masters.nil?) ? nil : @epa_masters.first.user_id %>
+                  <% btn_text = '<button  type="button" class="btn btn-success btn-md" data-loading-text="<i class=\'fa fa-spinner fa-spin \'></i>Calling API.." >Load Qualtrics Data</button>' %>
+                  <%= link_to btn_text.html_safe, controller: 'epa_reviews', action: 'get_qualtrics', user_id: user_id, remote: true, 'data-target' => '#mymodal-load-qualtrics' %>
+                </span>
 
-      </tr>
+                  <span class="float-right">
+                  <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
+                      prompt: "Please Select Cohort to EXPORT..",
+                      id: 'cohort_dropdown_menu',
+                      data: {remote: true,
+                             url: '/epa_masters/export_data',
+                             method: 'get'
+                           }
+                    %>
+                  </span>
 
 
+                <span class="float-right">
+                   <%= form_tag(epa_masters_path, method: "get", remote: true, style: "float: right; display: block") do %>
+                     <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
+                     <%= submit_tag "Search" %>
+                   <% end %>
+                 </span>
+          </div>
+        </div>
     <% end %>
-  <% else %>
-    <% flash[:notice] = '** You need to select a student first! ***' %>
-  <% end %>
+    <div id=main2-epa-masters %>
+      <%= render partial: 'epa_masters_table' %>
+    </div>
 
-</table>
-
-
-<div id="mymodal-epa-review"></div>
-<div id="mymodal-epa-master"></div>
+    <div id="main-epa-masters"> </div>
+    <div id="mymodal-epa-review"></div>
+    <div id="mymodal-epa-master"></div>
+    <div id="mymodal-load-qualtrics"></div>
+</div>

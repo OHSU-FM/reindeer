@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   end
 
   get '/epa_reviews/get_qualtrics/:user_id', to: "epa_reviews#get_qualtrics"
+  get '/epa_reviews/get_qualtrics/', to: "epa_reviews#get_qualtrics"
+
+  get '/epa_masters/export_data/', to: "epa_masters#export_data"
   get '/epa_masters/get_by_user/:user_id', to: "epa_masters#get_by_user"
 
   resources :epa_masters do

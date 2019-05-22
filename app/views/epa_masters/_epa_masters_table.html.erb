@@ -1,0 +1,47 @@
+<div class="containter-fluid"
+    <div class="row">
+       <div class="col-lg-10"
+            <% if !@epa_masters.nil? %>
+              <div id="epa-masters-table">
+                <h3>Badging EPAs - <%= @full_name %> </h3>
+                <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
+                  <thead>
+                    <tr>
+                      <th data-data="user_id">User ID</th>
+                      <th data-data="epa">EPA</th>
+                      <th data-data="status">Status</th>
+                      <th data-data="status_date">Award Date</th>
+                      <th data-data="expiration_date">Expiration Date</th>
+                      <th data-data="Badged">Badged</th>
+                      <th data-data="Reviews">Reviews</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <%= render partial: "epa_masters_table_loop", locals: { epa_masters: @epa_masters } %>
+                  </tbody>
+                </table>
+              </div>
+            <% end %>
+        </div>
+        <div class="col-lg-2">
+          <% if !@users.nil? %>
+              <% if @users.count > 1 %>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                            <i><b>Search Result: </b></i>
+                            <% @users.each do |u| %>
+                               <%= u.full_name %><br />
+                            <% end %>
+                    </div>
+                  </div
+              <% elsif @users.empty? %>
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                     <i><b>Not Found in Users Table!</b></i>
+                  </div>
+                </div
+              <% end %>
+          <% end %>
+        </div>
+    </div>
+</div>

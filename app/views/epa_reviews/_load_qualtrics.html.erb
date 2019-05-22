@@ -1,0 +1,6 @@
+<h3> Get_Qualtrics </h3>
+<% @get_qualtrics_msg.each do |msg| %>
+  <%= msg %> <br />
+<% end %>
+
+<%= link_to("Go Back EPA Review", user_id: params[:user_id], controller: 'epa_masters', action: 'get_by_user')  %>

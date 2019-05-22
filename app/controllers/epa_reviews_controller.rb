@@ -1,5 +1,6 @@
 class EpaReviewsController < ApplicationController
   before_action :find_reviewable
+  helper :all
 
   # GET /epa_reviews
   # GET /epa_reviews.json
@@ -16,7 +17,9 @@ class EpaReviewsController < ApplicationController
   # GET /epa_reviews/new
   def new
     @epa_review = @reviewable.epa_reviews.new
-    @epa_review.epa = EpaMaster.find_by_id(params[:epa_master_id]).epa
+    @epa_master = EpaMaster.find_by_id(params[:epa_master_id])
+    @user_id = @epa_master.user_id
+    @epa_review.epa = @epa_master.epa
     @epa_review_epa = @epa_review.epa
     @epa_review.response_id = SecureRandom.alphanumeric(12)
 
@@ -44,6 +47,7 @@ class EpaReviewsController < ApplicationController
 
     respond_to do |format|
       if @epa_review.save
+        hf_check_for_auto_badging(@user_id)
         format.html { redirect_to @epa_review, notice: 'Epa review was successfully created.' }
         format.json { render :show, status: :created, location: @epa_review }
       else
@@ -56,10 +60,10 @@ class EpaReviewsController < ApplicationController
   # PATCH/PUT /epa_reviews/1
   # PATCH/PUT /epa_reviews/1.json
   def update
-
         @epa_review = EpaReview.find(params[:id])
         respond_to do |format|
           if @epa_review.update(epa_review_params)
+            hf_check_for_auto_badging(@user_id)
             format.html { redirect_to @epa_review, notice: 'Epa review was successfully updated.' }
             format.json { render :show, status: :ok, location: @epa_review }
           else
@@ -81,8 +85,17 @@ class EpaReviewsController < ApplicationController
   end
 
   def get_qualtrics
-    username = User.select(:username).find_by_id(params[:user_id]).username
-    @get_qualtrics_msg = EpaReview.get_qualtrics(username, params[:user_id])
+    if params[:user_id].present?
+      username = User.select(:username).find_by_id(params[:user_id]).username
+      @get_qualtrics_msg = EpaReview.api_qualtrics(username, params[:user_id])
+
+      respond_to do |format|
+        format.html
+        format.js {render template: 'epa_reviews/load_qualtrics_modal.js.erb'}
+      end
+    else
+      render :index
+    end
 
   end
 

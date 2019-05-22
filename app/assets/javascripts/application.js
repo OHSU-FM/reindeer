@@ -68,5 +68,7 @@
 //= require ls_reports_spreadsheet.js
 //= require searches.js
 //= require students.js
+//= require epa_masters.js
+//= require epa_reviews.js
 // turbolinks is commented out..
 // require turbolinks

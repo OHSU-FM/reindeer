@@ -1,5 +1,23 @@
 module EpaMastersHelper
 
+  def hf_student_groups
+    student_groups ||=  PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
+    return student_groups 
+  end
+
+  def hf_check_for_auto_badging user_id
+    epa_masters = EpaMaster.where(user_id: user_id).order(:epa)
+    epa_masters.each do |epa_master|
+      if epa_master.status.nil?
+        epa_reviews_badge_cnt = EpaReview.where(epa: epa_master.epa, reviewable_id: epa_master.id, egm_recommendation: 'Badge' ).count
+        if epa_reviews_badge_cnt >= 2
+          epa_master.update(status: 'Badge', status_date: Time.now, expiration_date: DateTime.now.next_year(3).to_time)
+        end
+      end
+    end
+  end
+
+
   def create_epa_masters (selected_user_id)
     for i in 1..13 do
       EpaMaster.where(user_id: selected_user_id, epa: "EPA#{i}").first_or_create do |epa|
