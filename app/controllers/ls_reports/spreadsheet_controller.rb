@@ -101,7 +101,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       end
     end
 
-
     @cpx_data = hf_get_cpx(@survey)
     @usmle_data = hf_get_usmle(@survey)
     @shelf_attachments = hf_get_shelf_attachments(@survey)
