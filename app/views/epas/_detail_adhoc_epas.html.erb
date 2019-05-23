@@ -5,7 +5,7 @@
       <th>ClinicalDiscipline</th>
       <th>ClinicalSetting</th>
       <th>ClincialAssessor</th>
-      <th>AssessorName</th>
+      <th>AssessorName</th>s
       <th>TimesWithSupervisor</th>
       <th>Involvment</th>
       <th>MoreIndependent</th>
@@ -14,7 +14,7 @@
   </thead>
   <% @epas.each do |e| %>
     <tr>
-      <% if e.epa.include? idx_epa.to_s %>
+      <% if e.epa == "EPA#{idx_epa}" %>
         <td><%= e.submit_date.strftime("%F") %></td>
         <td><%= e.clinical_discipline %></td>
         <td><%= e.clinical_setting %></td>
