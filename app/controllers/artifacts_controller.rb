@@ -6,6 +6,7 @@ class ArtifactsController < ApplicationController
   # GET /artifacts
   def index
     if !params[:user_id].nil?
+      @user_id = params[:user_id]
       @artifacts = Artifact.where(user_id: params[:user_id])
     else
       @artifacts = Artifact.where(user_id: current_user.id)
@@ -72,9 +73,9 @@ class ArtifactsController < ApplicationController
 
   def delete_document_attachment
     @artifact_document = ActiveStorage::Blob.find_signed(params[:id])
-    @artifact = Artifact.find(@artifact_document.attachments.first.record_id)
+    #@artifact = Artifact.find(@artifact_document.attachments.first.record_id)
     @artifact_document.attachments.first.purge
-     redirect_to artifacts_url
+    redirect_to artifacts_url, notice: 'Document was successfully purged!'
 
   end
 
@@ -88,13 +89,20 @@ class ArtifactsController < ApplicationController
     def move_file_to_user(artifact)
 
       artifact.documents.each do |document|
-
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
-        full_name = document.filename.to_s.split(" ").first.gsub("_", ", ")
+        filename = document.filename.to_s.gsub(" ", "_")
+        temp_str = filename.split("_")
+        full_name = temp_str.first.capitalize + ", " + temp_str.second.capitalize
         @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
-          temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title)
-          temp_artifact.documents.attach(ActiveStorage::Blob.find(document.blob_id))
+          temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title) do |a|
+            a.content = artifact.content
+            a.title = artifact.title
+            a.documents.attach(ActiveStorage::Blob.find(document.blob_id))
+          end
+          if !temp_artifact.documents.exists?(blob_id: document.blob_id)
+             temp_artifact.documents.attach(ActiveStorage::Blob.find(document.blob_id))
+          end
           document.destroy # remove it from the artifact
         end
 
