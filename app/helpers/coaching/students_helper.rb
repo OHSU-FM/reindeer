@@ -33,6 +33,7 @@ module Coaching::StudentsHelper
       ["Board Studying"],
       ["Rotation Scheduling"],
       ["Remediation"],
+      ["MSPE"],
       ["Other"]
 
     ]
