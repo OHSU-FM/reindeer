@@ -1,7 +1,5 @@
 class EpaReviewsController < ApplicationController
   before_action :find_reviewable
-  helper :all
-
   # GET /epa_reviews
   # GET /epa_reviews.json
   def index
@@ -21,7 +19,6 @@ class EpaReviewsController < ApplicationController
     @user_id = @epa_master.user_id
     @epa_review.epa = @epa_master.epa
     @epa_review_epa = @epa_review.epa
-    @epa_review.response_id = SecureRandom.alphanumeric(12)
 
     respond_to do |format|
       format.html
@@ -47,7 +44,6 @@ class EpaReviewsController < ApplicationController
 
     respond_to do |format|
       if @epa_review.save
-        hf_check_for_auto_badging(@user_id)
         format.html { redirect_to @epa_review, notice: 'Epa review was successfully created.' }
         format.json { render :show, status: :created, location: @epa_review }
       else
@@ -55,6 +51,8 @@ class EpaReviewsController < ApplicationController
         format.json { render json: @epa_review.errors, status: :unprocessable_entity }
       end
     end
+    @user_id = EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.egm_recommendation )
+
   end
 
   # PATCH/PUT /epa_reviews/1
@@ -63,14 +61,15 @@ class EpaReviewsController < ApplicationController
         @epa_review = EpaReview.find(params[:id])
         respond_to do |format|
           if @epa_review.update(epa_review_params)
-            hf_check_for_auto_badging(@user_id)
-            format.html { redirect_to @epa_review, notice: 'Epa review was successfully updated.' }
+            format.html { redirect_to @epa_review, notice: 'Epa review was successfully updated.'}
             format.json { render :show, status: :ok, location: @epa_review }
           else
             format.html { render :edit }
             format.json { render json: @epa_review.errors, status: :unprocessable_entity }
           end
         end
+        EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.egm_recommendation )
+
 
   end
 
@@ -100,6 +99,7 @@ class EpaReviewsController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_review
       @epa_review = EpaReview.find(params[:id])
@@ -107,9 +107,9 @@ class EpaReviewsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def epa_review_params
-      params.require(:epa_review).permit(:epa, :review_date1, :review_date1, :reviewed_by1,
-      :review_date2, :reviewed_by2, :egm_recommendation, :badge, :insufficient_evidence, :deny, :general_comments,
-      :response_id, :reviewable_id, :reviewable_type)
+      params.require(:epa_review).permit(:epa, :review_date1, :reviewed_by1,
+      :egm_recommendation, :general_comments,
+       :reviewable_id, :reviewable_type)
     end
 
     def find_reviewable

@@ -6,15 +6,14 @@ class EpaReview < ApplicationRecord
     return temp_name.last + ", " + temp_name.first
   end
 
-  def self.check_for_auto_badging user_id
-    byebug
-    epa_masters = EpaMaster.where(user_id: user_id).order(:epa)
-    epa_masters.each do |epa_master|
-      epa_reviews_badge_cnt = EpaReview.where(epa: epa_master.epa, reviewable_id: epa_master.id, egm_recommendation: 'Badge' ).count
-      if epa_reviews_badge_cnt >= 2
-        epa_master.update(status: 'Badge', status_date: Time.now, expiration_date: DateTime.now.next_year(3).to_time)
-      end
+  def self.update_epa_master(reviewable_id, epa, egm_recommendation)
+
+    if egm_recommendation == "Badge"
+      EpaMaster.where(id: reviewable_id, epa: epa).update(status: 'Badge', status_date: Time.now, expiration_date: DateTime.now.next_year(3).to_time)
+    else
+      EpaMaster.where(id: reviewable_id, epa: epa).update(status: nil, status_date: nil, expiration_date: nil)
     end
+    return user_id = EpaMaster.where(id: reviewable_id).select(:user_id)
   end
 
   def self.create_epa_reviews(epa_reviews, user_id)

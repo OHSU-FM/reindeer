@@ -2,21 +2,8 @@ module EpaMastersHelper
 
   def hf_student_groups
     student_groups ||=  PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
-    return student_groups 
+    return student_groups
   end
-
-  def hf_check_for_auto_badging user_id
-    epa_masters = EpaMaster.where(user_id: user_id).order(:epa)
-    epa_masters.each do |epa_master|
-      if epa_master.status.nil?
-        epa_reviews_badge_cnt = EpaReview.where(epa: epa_master.epa, reviewable_id: epa_master.id, egm_recommendation: 'Badge' ).count
-        if epa_reviews_badge_cnt >= 2
-          epa_master.update(status: 'Badge', status_date: Time.now, expiration_date: DateTime.now.next_year(3).to_time)
-        end
-      end
-    end
-  end
-
 
   def create_epa_masters (selected_user_id)
     for i in 1..13 do
@@ -40,7 +27,7 @@ module EpaMastersHelper
     end
     selected_recs.each do |rec|
       badged = {rec.epa => "epa/#{rec.epa}.png"}
-      if (rec.status == "Badged")
+      if (rec.status == "Badge")
         status_date_date = rec.status_date
       else
         status_date = {rec.epa => ""}
@@ -54,8 +41,10 @@ module EpaMastersHelper
   end
 
   def hf_format_date (in_date)
-    unless in_date.nil?
+    if !in_date.nil?
       in_date = in_date.strftime("%m/%d/%Y")
+    else
+      return ""
     end
   end
 

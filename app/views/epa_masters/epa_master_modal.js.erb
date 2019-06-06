@@ -1,30 +1,3 @@
 $("#mymodal-epa-master").html("<%= j render "epa_master_modal" %>");
 $("#modal-epa-master").modal('show');
 console.log ("inside edit.js.erb");
-status = $('#epa_master_status').val();
-if (status == "Badge") {
-  $('#epa_master_status').css({ 'background': '#7df442' });
-  $('#epa_master_review_date1').css({ 'background': '#7df442' });
-}
-else {
-  $('#epa_master_status').css({ 'background': '#ed9a78' });
-  $('#epa_master_review_date').css({ 'background': '#ed9a78' });
-}
-
-
-review_date1 = $('#epa_master_review_date1').val().length;
-console.log ("review_date1: " + review_date1);
-
-function redisplayModal () {
-  $("#mymodal-epa-master").html("<%= j render "epa_master_modal" %>");
-  $("#modal-epa-master").modal('show');
-}
-
-$('#submit').on('click',function()
-{
-    if (($('#epa_master_review_date1').val().length == 0) && ($('#epa_master_status').val().length > 0)) {
-        alert("Review Date1 can't be blank!");
-        redisplayModal();
-    }
-
-});

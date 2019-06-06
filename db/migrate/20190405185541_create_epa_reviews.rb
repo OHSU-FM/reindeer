@@ -12,7 +12,7 @@ class CreateEpaReviews < ActiveRecord::Migration[5.2]
       t.string    :deny
       t.text      :general_comments
       t.string    :response_id
-      t.references :reviewable, polymorphic: true, index: true 
+      t.references :reviewable, polymorphic: true, index: true
       t.timestamps
     end
     add_index :epa_reviews, [:epa, :id], :unique => true, :name => 'by_epa_reviews'

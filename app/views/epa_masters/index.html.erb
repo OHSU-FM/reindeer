@@ -13,24 +13,43 @@
                   <%= link_to btn_text.html_safe, controller: 'epa_reviews', action: 'get_qualtrics', user_id: user_id, remote: true, 'data-target' => '#mymodal-load-qualtrics' %>
                 </span>
 
-                  <span class="float-right">
-                  <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
-                      prompt: "Please Select Cohort to EXPORT..",
-                      id: 'cohort_dropdown_menu',
-                      data: {remote: true,
-                             url: '/epa_masters/export_data',
-                             method: 'get'
-                           }
-                    %>
+                 <%= form_tag(epa_masters_path, method: 'get',  style: "float: right; display: block") do %>
+                     <span class="float-left">
+                     <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
+                         prompt: "Please Select Cohort to EXPORT.." %>
+                     </span>
+                     <span class="float-left">
+                       <%= select_tag :user_id, options_for_select(@cohort_students.collect{|s| [s.full_name, s.id]}, selected: params[:user_id]),
+                           prompt: "Please Select a Student" %>
+                     </span>
+                   <%= submit_tag "Go", name: 'form1[student]'%>
+                 <% end %>
+                 <span class="float-right">
+                    <%= form_tag(epa_masters_path,  action: 'search_student',  method: "get",  style: "float: right; display: block") do %>
+                      <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
+                      <%= submit_tag "Search", name: 'form2[search]'%>
+                    <% end %>
                   </span>
-
-
-                <span class="float-right">
-                   <%= form_tag(epa_masters_path, method: "get", remote: true, style: "float: right; display: block") do %>
-                     <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
-                     <%= submit_tag "Search" %>
-                   <% end %>
-                 </span>
+                  <span>
+                    <% if !@users.nil? %>
+                        <% if @users.count > 1 %>
+                            <div class="panel panel-default">
+                              <div class="panel-body">
+                                      <i><b>Search Result: </b></i><br />
+                                      <% @users.each do |u| %>
+                                         <%= u.full_name %><br />
+                                      <% end %>
+                              </div>
+                            </div
+                        <% elsif @users.empty? %>
+                          <div class="panel panel-default">
+                            <div class="panel-body">
+                               <i><b>Not Found in Users Table!</b></i>
+                            </div>
+                          </div
+                        <% end %>
+                    <% end %>
+                  </span>
           </div>
         </div>
     <% end %>

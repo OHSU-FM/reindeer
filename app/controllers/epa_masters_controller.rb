@@ -17,34 +17,71 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters
   def index
+
    @student_groups = hf_student_groups
+   @cohort_students = []
+   if params[:permission_group_id].present?
+     @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
+     if request.xhr?
+       respond_to do |format|
+         format.json {
+           render json: {cohort_students: @cohort_students}
+         }
+       end
+     end
+   end
+
    if params[:search]
      @selected_user = nil
      @users = User.where("full_name LIKE ? ", "%#{params[:search]}%")
      if !@users.empty?
        @epa_masters = @users.first.epa_masters.order(:id)
        @full_name = @users.first.full_name
-       hf_check_for_auto_badging(@users.first.id)
        if @epa_masters.empty?
          user_id = @users.first.id
          create_epas user_id
          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
        end
      end
-     respond_to do |format|
-       format.js { render partial: 'search-results'}
-     end
-   elsif params[:email].present?
+
+   elsif  params[:email].present?
       @selected_user = User.find_by(email: params[:email])
       @selected_user_id = @selected_user.id
       @full_name = @selected_user.full_name
       #@epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
       get_index
+    elsif params[:user_id].present?
+       @selected_user = User.find_by(id: params[:user_id])
+       @selected_user_id = @selected_user.id
+       @full_name = @selected_user.full_name
+       #@epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
+       get_index
+       # byebug
     elsif params[:id].present?
       @selected_user_id = @epa_master.user_id
       @full_name = User.find(@epa_master.user_id).full_name
       #@epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
       get_index
+    end
+  end
+
+  def search_student
+    if params[:search]
+      @selected_user = nil
+      @users = User.where("full_name LIKE ? ", "%#{params[:search]}%")
+      if !@users.empty?
+        @epa_masters = @users.first.epa_masters.order(:id)
+        @full_name = @users.first.full_name
+        if @epa_masters.empty?
+          user_id = @users.first.id
+          create_epas user_id
+          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
+        end
+      end
+      respond_to do |format|
+        byebug
+        format.js { render partial: 'search-results'}
+      end
     end
   end
 
@@ -111,8 +148,9 @@ class EpaMastersController < ApplicationController
   end
 
   def get_by_user
-    @student_groups = hf_student_groups
     @selected_user_id = params[:user_id]
+
+    byebug
     @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
     get_index
     if @epa_masters.empty?
@@ -135,7 +173,6 @@ class EpaMastersController < ApplicationController
   # POST /epa_masters
   def create
      @epa_master = EpaMaster.new(epa_master_params)
-
     if @epa_master.save
       redirect_to @epa_master, notice: 'Epa master was successfully created.'
     else
@@ -161,6 +198,14 @@ class EpaMastersController < ApplicationController
     redirect_to epa_masters_url, notice: 'Epa master was successfully destroyed.'
   end
 
+
+  def render_400
+    # Clear the previous response body to avoid a DoubleRenderError
+    # when redirecting or rendering another view
+    self.response_body = nil
+
+    render(nothing: true, status: 400)
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

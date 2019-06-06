@@ -3,7 +3,6 @@
 
     <%= f.hidden_field :reviewable_id %>
     <%= f.hidden_field :reviewable_type %>
-    <%= f.hidden_field :response_id %>
     <%= f.hidden_field :epa %>
 
   <div class="col-xs-8">
@@ -17,38 +16,14 @@
         <%= f.select :reviewed_by1, hf_get_entrustment_members, prompt: '--',
           html5: true %>
       </div>
-      <div class="form-group">
-        <%= f.label 'Review Date2', class: "control-label col-sm-6" %>
-        <%= f.date_field :review_date2,  as: :date, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-6" %>
-        <%= f.select :reviewed_by2, hf_get_entrustment_members, prompt: '--',
-          html5: true %>
-      </div>
 
       <div class="form-group">
         <%= f.label 'EG Recommentation', class: "control-label col-sm-6" %>
-        <%= f.select :egm_recommendation, ["Badge", "Insufficient Evidence", "Deny"], prompt: '--',
+        <%= f.select :egm_recommendation, ["Badge", "No Badge"], include_blank: '--',
            html5: true %>
       </div>
 
-      <div class="form-group">
-        <%= f.label 'Badge', class: "control-label col-sm-6" %>
-        <%= f.select :badge, ["Grounded Trust", "Presumptive Trust"], prompt: '--',
-           html5: true %>
-      </div>
 
-      <div class="form-group">
-        <%= f.label 'Insufficient Evidence', class: "control-label col-sm-6" %>
-        <%= f.select :insufficient_evidence, ["Conflicting Data", "Vague Data"], prompt: '--', html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Deny', class: "control-label col-sm-6" %>
-        <%= f.select :deny, ["Distrust", "Questioned Trust"], prompt: '--', html5: true %>
-      </div>
       <div class="form-group">
         <%= f.label 'Comments', class: "control-label col-sm-6" %>
         <%= f.text_area :general_comments, cols:30, rows: 5, html5: true %>

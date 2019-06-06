@@ -6,12 +6,16 @@ Rails.application.routes.draw do
   get '/epa_reviews/get_qualtrics/:user_id', to: "epa_reviews#get_qualtrics"
   get '/epa_reviews/get_qualtrics/', to: "epa_reviews#get_qualtrics"
 
-  get '/epa_masters/export_data/', to: "epa_masters#export_data"
-  get '/epa_masters/get_by_user/:user_id', to: "epa_masters#get_by_user"
-
   resources :epa_masters do
+    member do
+      post 'search_student'
+    end
     resources :epa_reveiws
   end
+  get '/epa_masters/export_data', to: "epa_masters#export_data"
+  get '/epa_masters/get_by_user/:user_id', to: "epa_masters#get_by_user", as: 'get_by_user'
+  #get '/epa_masters/search_student/', to: "epa_masters#search_student", as: 'search_student'
+
 
   resources :epas
   resources :artifacts do
