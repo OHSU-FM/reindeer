@@ -3,9 +3,9 @@ Rails.application.routes.draw do
     resources :epa_reviews
   end
 
-  get '/epa_reviews/get_qualtrics/:user_id', to: "epa_reviews#get_qualtrics"
+  #get '/epa_reviews/get_qualtrics/:user_id', to: "epa_reviews#get_qualtrics"
   get '/epa_reviews/get_qualtrics/', to: "epa_reviews#get_qualtrics"
-
+  post '/epa_reviews/get_qualtrics/', to: "epa_reviews#get_qualtrics", as: 'get_qualtrics'
   resources :epa_masters do
     member do
       post 'search_student'

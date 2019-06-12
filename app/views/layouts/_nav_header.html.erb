@@ -48,7 +48,7 @@
         <% if can? :list, LimeSurvey %>
 
           <% if ['admin', 'dean'].include? current_user.coaching_type %>
-              <%= nav_link_to("Review EPAs", epa_masters_path(email: @pk), class: "link-to-text-color", target: '_blank')  %>
+              <%= nav_link_to("Badging EPAs", epa_masters_path(email: @pk), class: "link-to-text-color", target: '_blank')  %>
           <% end %>
 
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>

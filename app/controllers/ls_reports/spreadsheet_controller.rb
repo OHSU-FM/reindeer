@@ -112,8 +112,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
-
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
+
   end
 
   def get_all_blocks

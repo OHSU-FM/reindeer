@@ -3,39 +3,42 @@
     <% if can? :crud, Dashboard %>
         <div class="panel panel-default">
           <div class="panel-body">
+            <div class="row">
 
-                <span class="float-right">
-                  <%= link_to("Back Home", main_app.root_path, class: "dashboard-link") %> &nbsp;&nbsp;
-                </span>
-                <span class="float-right">
-                  <% user_id = (@epa_masters.nil?) ? nil : @epa_masters.first.user_id %>
-                  <% btn_text = '<button  type="button" class="btn btn-success btn-md" data-loading-text="<i class=\'fa fa-spinner fa-spin \'></i>Calling API.." >Load Qualtrics Data</button>' %>
-                  <%= link_to btn_text.html_safe, controller: 'epa_reviews', action: 'get_qualtrics', user_id: user_id, remote: true, 'data-target' => '#mymodal-load-qualtrics' %>
+                <span class="float-left">
+                  <%= link_to("Back Home", main_app.root_path, class: "dashboard-link", style: "float: left; display: block") %>
+                <span class="float-left">
+                    <%= form_tag({controller: 'epa_reviews', action: 'get_qualtrics'}, {style: "float: left; display: block"}) do %>
+                    <%= submit_tag "Download Qualtrics", name: 'form[download]', class: "btn btn-primary", style: "margin:2px;" %>
+                    <% end %>
                 </span>
 
                  <%= form_tag(epa_masters_path, method: 'get',  style: "float: right; display: block") do %>
                      <span class="float-left">
                      <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
-                         prompt: "Please Select Cohort to EXPORT.." %>
+                         prompt: "Please Select Cohort" %>
                      </span>
                      <span class="float-left">
                        <%= select_tag :user_id, options_for_select(@cohort_students.collect{|s| [s.full_name, s.id]}, selected: params[:user_id]),
                            prompt: "Please Select a Student" %>
                      </span>
-                   <%= submit_tag "Go", name: 'form1[student]'%>
+                   <%= submit_tag "Go", name: 'form1[student]', class: "btn btn-success" %>
                  <% end %>
                  <span class="float-right">
                     <%= form_tag(epa_masters_path,  action: 'search_student',  method: "get",  style: "float: right; display: block") do %>
                       <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
-                      <%= submit_tag "Search", name: 'form2[search]'%>
+                      <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
                     <% end %>
                   </span>
                   <span>
                     <% if !@users.nil? %>
                         <% if @users.count > 1 %>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default", style="float: right; display: inline-block">
+                              <div class="panel-heading">
+                                  <h4 class="panel-title">Search Result </h4>
+                              </div>
                               <div class="panel-body">
-                                      <i><b>Search Result: </b></i><br />
+
                                       <% @users.each do |u| %>
                                          <%= u.full_name %><br />
                                       <% end %>
@@ -50,6 +53,7 @@
                         <% end %>
                     <% end %>
                   </span>
+            </div>
           </div>
         </div>
     <% end %>

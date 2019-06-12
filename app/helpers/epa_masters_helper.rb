@@ -28,7 +28,7 @@ module EpaMastersHelper
     selected_recs.each do |rec|
       badged = {rec.epa => "epa/#{rec.epa}.png"}
       if (rec.status == "Badge")
-        status_date_date = rec.status_date
+        status_date = {rec.epa => hf_format_date(rec.status_date)}
       else
         status_date = {rec.epa => ""}
         #badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}

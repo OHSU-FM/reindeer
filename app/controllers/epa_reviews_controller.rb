@@ -10,6 +10,7 @@ class EpaReviewsController < ApplicationController
   # GET /epa_reviews/1.json
   def show
      @epa_review = EpaReview.find(params[:id])
+
   end
 
   # GET /epa_reviews/new
@@ -70,7 +71,6 @@ class EpaReviewsController < ApplicationController
         end
         EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.egm_recommendation )
 
-
   end
 
   # DELETE /epa_reviews/1
@@ -84,18 +84,9 @@ class EpaReviewsController < ApplicationController
   end
 
   def get_qualtrics
-    if params[:user_id].present?
-      username = User.select(:username).find_by_id(params[:user_id]).username
-      @get_qualtrics_msg = EpaReview.api_qualtrics(username, params[:user_id])
-
-      respond_to do |format|
-        format.html
-        format.js {render template: 'epa_reviews/load_qualtrics_modal.js.erb'}
-      end
-    else
-      render :index
-    end
-
+    @get_qualtrics_msg = EpaReview.api_qualtrics
+    @file_name = "#{Rails.root}/public/epa_reviews/qualtrics_epa_reviews.txt"
+    send_file(@file_name, type: 'application/pdf/text/docx/doc', :disposition=>'download')
   end
 
   private

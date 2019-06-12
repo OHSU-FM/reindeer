@@ -16,29 +16,31 @@ class EpaReview < ApplicationRecord
     return user_id = EpaMaster.where(id: reviewable_id).select(:user_id)
   end
 
-  def self.create_epa_reviews(epa_reviews, user_id)
-    epa_reviews.each do |review|
-        epa = review["Q3"].split(":").first.gsub(" ", "")
-        reviewable_id = EpaMaster.select(:id).find_by(user_id: user_id, epa: epa).id
-        response_id = review["ResponseID"]
-        EpaReview.where(response_id: response_id).first_or_create do |rev|
-          rev.epa = review["Q3"].split(":").first.gsub(" ", "")
-          rev.review_date1 = review["StartDate"]
-          rev.reviewed_by1 = format_reviewer(review["Q2"])
-          rev.egm_recommendation = review["Q13"]
-          rev.badge = review["Q14"]
-          rev.insufficient_evidence = review["Q16"]
-          rev.deny = review["Q16"]
-          rev.general_comments = review["Q12"]
-          rev.response_id = response_id
-          rev.reviewable_id = reviewable_id
-          rev.reviewable_type = "EpaMaster"
-        end
+  def self.create_epa_reviews(epa_reviews)
+
+    dir = "#{Rails.root}/public/epa_reviews"
+    File.open(File.join(dir, 'qualtrics_epa_reviews.txt'), 'w') do |f|
+      epa_reviews.each do |review|
+            student = review["Q1"]
+            epa = review["Q3"].split(":").first.gsub(" ", "")
+            review_date1 = review["StartDate"]
+            reviewed_by1 = format_reviewer(review["Q2"])
+            egm_recommendation = review["Q13"]
+            badge = review["Q14"]
+            insufficient_evidence = review["Q16"]
+            deny = review["Q16"]
+            general_comments = review["Q12"]
+            response_id = review["ResponseID"]
+            f.puts response_id + "|" + student + "|" + epa + "|" + review_date1 + "|" + reviewed_by1 + "|" + egm_recommendation + "|" +
+                   badge + "|" + insufficient_evidence + "|" + deny + "|" + general_comments
+      end
+      f.close
     end
+
   end
 
-  def self.api_qualtrics(username, user_id)
-     system("python #{Rails.root}/public/epa_reviews/python_qualtrics_api.py")
+  def self.api_qualtrics
+     #system("python #{Rails.root}/public/epa_reviews/python_qualtrics_api.py")
      get_qualtrics_msg = []
 
      get_qualtrics_msg.push "Downloaded Qualtrics Responses.."
@@ -46,16 +48,14 @@ class EpaReview < ApplicationRecord
      json ||= File.read("#{Rails.root}/public/epa_reviews/epa_download.json")
      epa_reviews_hash = JSON.parse(json).values.flatten
      get_qualtrics_msg.push "Read JSON objects from file..."
-     epa_reviews = epa_reviews_hash.select {|r| r['Q1'].include? username }
+     # no filter & create text delimited file
+     # epa_reviews = epa_reviews_hash.select {|r| r['Q1'].include? username }
 
-     if epa_reviews.nil?
-        get_qualtrics_msg.push "Not able to locate student review..."
-     else
-        get_qualtrics_msg.push "Found student review..."
-        create_epa_reviews(epa_reviews, user_id)
-        check_for_auto_badging(user_id)
-        get_qualtrics_msg.push "EPA reviews are created..."
-     end
+    get_qualtrics_msg.push "Found student review..."
+    #user_id is not being used.
+    create_epa_reviews(epa_reviews_hash)
+    get_qualtrics_msg.push "EPA reviews are created..."
+
      return get_qualtrics_msg
   end
 
