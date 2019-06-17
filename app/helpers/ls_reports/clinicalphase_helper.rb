@@ -604,7 +604,7 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
-  def hf_get_artifacts (pk)
+  def hf_get_artifacts (pk, artifact_title)
     selected_user = User.find_by(email: pk)
     if selected_user.nil?
       return nil,0
@@ -615,7 +615,9 @@ module LsReports::ClinicalphaseHelper
       official_docs.each do |doc|
         no_docs = no_docs + doc.documents.count
       end
-      return artifacts_student, no_docs
+      shelf_artifacts = artifacts_student.select{|a| a.content == "Shelf Exams"}
+
+      return artifacts_student, no_docs, shelf_artifacts
     end
   end
 

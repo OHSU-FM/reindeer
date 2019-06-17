@@ -109,7 +109,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @shelf_attachments = hf_get_shelf_attachments(@survey)
 
     @preceptor_view = @preceptorship.flatten
-    @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
+    @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
