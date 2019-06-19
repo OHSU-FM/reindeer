@@ -6,7 +6,7 @@ class DashboardController < ApplicationController
       redirect_to auto_path
       return
     end
-
+    get_artifacts
     #@surveys = current_user.lime_surveys_by_most_recent(5)
     @dash = Dashboard.includes(:dashboard_widgets)
       .where(user_id: current_user.id).first_or_initialize
@@ -68,6 +68,17 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def get_artifacts
+    @artifacts = User.find(current_user.id).artifacts
+    @no_of_docs = 0
+    @artifacts.each do |artifact|
+      if artifact.documents.attached?
+           @no_of_docs += artifact.documents.count.to_s.to_i
+      end
+    end
+
+  end
 
   def do_gon
     gon.dashboard_widgets = @dash.dashboard_widgets

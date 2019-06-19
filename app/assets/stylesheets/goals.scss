@@ -47,7 +47,7 @@ $paper:    #D5D5D5;
   .student-with-goals {
     font-size: 14px;
     color: white;
-    text-decoration: none;
+    text-decoratfield_with_errors { display: inline }.ion: none;
   }
 
   .list-group.list-group-root > .list-group > .list-group-item {
@@ -193,7 +193,7 @@ $paper:    #D5D5D5;
     box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
   }
 
-  div.detail-header {
+  div.dfield_with_errors { display: inline }.etail-header {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
@@ -275,3 +275,6 @@ $paper:    #D5D5D5;
 .grayed-out {
   opacity: 0.7;
 }
+.field_with_errors {
+   display: inline
+ }

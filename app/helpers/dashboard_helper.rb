@@ -14,4 +14,12 @@ module DashboardHelper
       return 'widget-config'
     end
   end
+
+  def hf_badge(text, no_of_docs)
+    badge = content_tag :span, no_of_docs, class: 'badge badge-warning'
+    text = raw "#{text} #{badge}" if no_of_docs
+    return text
+
+  end
+
 end
