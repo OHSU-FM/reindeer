@@ -1,6 +1,6 @@
 <tr class="show-detail clickable-row <%= "active" if defined? active_row %>" id="meetingId-<%= meeting.id %>">
   <td><%= meeting.created_at.strftime("%m/%d/%Y") %></td>
-  <td><%= meeting.subject %></td>
+  <td><%= hf_format_subjects(meeting.subject) %></td>
   <td><%= meeting.location %></td>
   <td><%= meeting.m_status %></td>
   <td><%= meeting.date.strftime("%m/%d/%Y") %></td>
