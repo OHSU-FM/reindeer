@@ -39,11 +39,25 @@ class EpaReview < ApplicationRecord
 
   end
 
+  def self.create_log(get_qualtrics_msg)
+    File.open("#{Rails.root}/public/epa_reviews/get_qualtrics.log", "w+") do |f|
+      f.puts(get_qualtrics_msg)
+    end
+
+  end
+
   def self.api_qualtrics
-     #system("python #{Rails.root}/public/epa_reviews/python_qualtrics_api.py")
      get_qualtrics_msg = []
 
-     get_qualtrics_msg.push "Downloaded Qualtrics Responses.."
+     system("python #{Rails.root}/public/epa_reviews/python_qualtrics_api.py")
+     get_qualtrics_msg.push "Launched Python script.."
+     # need to rename the file to epa_download.json
+
+     file = Dir.glob("#{Rails.root}/public/epa_reviews/Entrustment*.json")
+     get_qualtrics_msg.push "Try to locate json file.."
+
+     File.rename(file.first, "#{Rails.root}/public/epa_reviews/epa_download.json")
+     get_qualtrics_msg.push "Try to rename file.."
 
      json ||= File.read("#{Rails.root}/public/epa_reviews/epa_download.json")
      epa_reviews_hash = JSON.parse(json).values.flatten
@@ -51,10 +65,11 @@ class EpaReview < ApplicationRecord
      # no filter & create text delimited file
      # epa_reviews = epa_reviews_hash.select {|r| r['Q1'].include? username }
 
-    get_qualtrics_msg.push "Found student review..."
     #user_id is not being used.
     create_epa_reviews(epa_reviews_hash)
     get_qualtrics_msg.push "EPA reviews are created..."
+
+    create_log(get_qualtrics_msg)
 
      return get_qualtrics_msg
   end

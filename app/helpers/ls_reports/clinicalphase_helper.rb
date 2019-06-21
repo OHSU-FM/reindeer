@@ -162,7 +162,7 @@ module LsReports::ClinicalphaseHelper
   def hf_get_all_blocks(in_sid, pk)
 
     if in_sid.instance_of? String
-      rr = RoleAggregate.find_by(lime_survey_sid: in_sid)
+      rr = LimeSurvey.find_by(sid: in_sid)
     else
       rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
     end
@@ -171,12 +171,12 @@ module LsReports::ClinicalphaseHelper
     if rr.nil?
       return comp  ## return empty hash array
     end
-    limegroups = rr.lime_survey.lime_groups
+    limegroups = rr.lime_groups
     #lq = limegroups.first.lime_questions
-    student_email_col = rr.lime_survey.student_email_column
+    student_email_col = rr.student_email_column
 
     #col_name = get_col_name(lq, "StudentEmail")
-    comp_data = rr.lime_survey.dataset   #lq.first.dataset
+    comp_data = rr.dataset   #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     if student_data.empty?
        return {}  # missing in graph  view dataset
@@ -271,7 +271,7 @@ module LsReports::ClinicalphaseHelper
 
   def hf_get_preceptorship(in_survey, pk)
     if in_survey.instance_of? String
-       rr = RoleAggregate.find_by(lime_survey_sid: in_survey)
+       rr = LimeSurvey.find_by(sid: in_survey)
     else
        rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
     end
@@ -280,11 +280,11 @@ module LsReports::ClinicalphaseHelper
       return {}
     end
 
-    limegroups = rr.lime_survey.lime_groups
+    limegroups = rr.lime_groups
     #lq = limegroups.first.lime_questions
-    student_email_col = rr.lime_survey.student_email_column
+    student_email_col = rr.student_email_column
     #col_name = get_col_name(lq, "StudentEmail")
-    comp_data = rr.lime_survey.dataset  #lq.first.dataset
+    comp_data = rr.dataset  #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     student_data = student_data.sort_by {|d| d["id"]}
 

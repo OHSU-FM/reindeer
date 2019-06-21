@@ -73,11 +73,11 @@ module LsReports::CslevalHelper
       sid = data.split("~").first
       survey_title = data.split("~").second
 
-      rr_survey = RoleAggregate.find_by(lime_survey_sid: sid)
+      rr_survey = LimeSurvey.find_by(sid: sid)
       #survey = LimeSurveysLanguagesetting.select(:surveyls_survey_id, :surveyls_title).where(surveyls_survey_id: sid)
-      limegroups = rr_survey.lime_survey.lime_groups
+      limegroups = rr_survey.lime_groups
       #lq = limegroups.first.lime_questions
-      student_email_col = rr_survey.lime_survey.student_email_column
+      student_email_col = rr_survey.student_email_column
       #col_name = get_col_name(lq, "StudentEmail")
       csl_data = rr_survey.dataset   #lime_survey.dataset  #lq.first.dataset
 
