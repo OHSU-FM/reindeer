@@ -7,6 +7,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::CslevalHelper
   include SearchesHelper
   include EpasHelper
+
   ##
   # show lime_survey
   def show
@@ -49,8 +50,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     if @pk != "_"
       @student_cohort = User.find_by(email: @pk).permission_group.title
+      @selected_user_id = User.find_by(email: @pk).id
     else
       @student_cohort = current_user.permission_group.title
+      @selected_user_id = current_user.id
     end
     @cohort_year = @student_cohort.split(" ").first
 
@@ -106,7 +109,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @shelf_attachments = hf_get_shelf_attachments(@survey)
 
     @preceptor_view = @preceptorship.flatten
-    @artifacts_student, @no_official_docs = hf_get_artifacts(@pk)
+    @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
 
