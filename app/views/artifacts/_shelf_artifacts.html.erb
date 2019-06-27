@@ -1,0 +1,13 @@
+<% @shelf_artifacts.each do |artifact| %>
+  <% artifact.documents.each do |document| %>
+    <tr>
+      <td><%= document.filename %></td>
+      <td>
+        <%= link_to 'View', url_for(document), target: :_blank %>
+        /
+        <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+      </td>
+    </tr>
+  <% end %>
+
+<% end %>
