@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
   has_many :epa_masters, dependent: :destroy
+  has_many :csl_evals, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -146,7 +147,7 @@ class User < ActiveRecord::Base
       username  belongs_to :user
     elsif comma_re === name
       name.split(", ").reverse.join(" ")
-    else  
+    else
       name
     end
   end

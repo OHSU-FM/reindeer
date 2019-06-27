@@ -9,6 +9,29 @@ module LsReports::CslevalHelper
                       '888' => '<font color="blue">Missing</font>',
                       '' => "Missing"}
 
+ DECODE_CSL_DEF = {
+                     'c1' => 'Attends regularly and is well prepared for sessions',
+                     'c2' => 'Explains reasoning processes clearly and effectively with regard to solving problems, basic mechanisms, concepts, etc.',
+                     'c3' => 'Demonstrates respect, compassion and empathy.',
+                     'c4' => 'Seeks to understand others views.',
+                     'c5' => 'Takes initiative and provides leadership.',
+                     'c6' => 'Shares information/resources',
+                     'c7' => 'Seeks appropriate responsibility. Identifies tasks and completes them efficiently and thoroughly.',
+                     'c8' => 'Seeks feedback from peers and instructors and puts it to good use.',
+                     'c9' => 'Small group behavior is appropriate.'
+
+ }
+
+ def decode_csl_def (incode)
+   return DECODE_CSL_DEF[incode]
+ end
+
+ def hf_new_csl_evals(pk)
+   csl_evals = User.find_by(email: pk).csl_evals
+   byebug
+ end
+
+
   def decode_csl_eval (incode)
     return DECODE_CSL_EVAL[incode]
   end

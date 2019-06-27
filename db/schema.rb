@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_18_213311) do
+ActiveRecord::Schema.define(version: 2019_06_26_152324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,6 +167,28 @@ ActiveRecord::Schema.define(version: 2019_06_18_213311) do
     t.integer "df", null: false
     t.decimal "t", null: false
     t.decimal "alpha", default: "0.05", null: false
+  end
+
+  create_table "csl_evals", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "csl_title"
+    t.date "submit_date"
+    t.string "cohorts"
+    t.string "instructor"
+    t.string "selected_student"
+    t.integer "c1"
+    t.integer "c2"
+    t.integer "c3"
+    t.integer "c4"
+    t.integer "c5"
+    t.integer "c6"
+    t.integer "c7"
+    t.integer "c8"
+    t.integer "c9"
+    t.text "feedback"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_csl_evals_on_user_id"
   end
 
   create_table "dashboard_widgets", id: :serial, force: :cascade do |t|
@@ -490,6 +512,7 @@ ActiveRecord::Schema.define(version: 2019_06_18_213311) do
 
   add_foreign_key "artifacts", "users"
   add_foreign_key "cohorts", "users"
+  add_foreign_key "csl_evals", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade

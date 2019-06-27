@@ -7,13 +7,13 @@
 
   <div class="col-xs-8">
       <div class="form-group">
-        <%= f.label 'Review Date1', class: "control-label col-sm-6" %>
-        <%= f.date_field :review_date1,  as: :date, html5: true %>
+        <%= f.label 'Recorded Date', class: "control-label col-sm-6" %>
+        <%= f.date_field :review_date1,  html5: true, value: Date.today  %>
       </div>
 
       <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-6" %>
-        <%= f.select :reviewed_by1, hf_get_entrustment_members, prompt: '--',
+        <%= f.label 'Recorded By', class: "control-label col-sm-6" %>
+        <%= f.text_field :reviewed_by1,  value: 'Bumsted, Tracy',
           html5: true %>
       </div>
 
