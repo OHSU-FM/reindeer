@@ -104,7 +104,8 @@ module LsReports::ClinicalphaseHelper
             comp["HODI"].push v
         elsif k.include? "NSF"
             comp["NSF"].push v
-        elsif k.include? "DEVH"
+        elsif k.inc
+          lude? "DEVH"
             comp["DEVH"].push v
 
         end
@@ -165,6 +166,7 @@ module LsReports::ClinicalphaseHelper
       rr = LimeSurvey.find_by(sid: in_sid)
     else
       rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
+      rr = rr.lime_survey
     end
     comp = {}
 
@@ -209,6 +211,7 @@ module LsReports::ClinicalphaseHelper
        role = LimeSurvey.find_by(sid: survey_sid)
     else
        role = get_dataset(survey_sid, "Foundation of Medicine", "All Blocks (Graph View)")
+       role = role.lime_survey
     end
     fm_data = role.lime_stats.load_data
 
@@ -274,6 +277,7 @@ module LsReports::ClinicalphaseHelper
        rr = LimeSurvey.find_by(sid: in_survey)
     else
        rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+       rr = rr.lime_survey
     end
     #rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
     if rr.nil?
