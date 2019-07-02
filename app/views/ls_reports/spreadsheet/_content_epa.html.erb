@@ -109,7 +109,11 @@
               <div class="precept-header" >Preceptorship Information </div>
               <%= render partial: 'preceptorship_data'%>
               <div class="CSLEvals-FoM" id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
-              <%= render partial: 'csl_evals' %>
+              <% if !@csl_evals2.nil? %>
+                <%= render partial: 'csl_evals2' %>
+              <% else %>
+                <%= render partial: 'csl_evals' %>
+              <% end %>
         </div>
 
 

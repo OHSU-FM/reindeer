@@ -26,9 +26,31 @@ module LsReports::CslevalHelper
    return DECODE_CSL_DEF[incode]
  end
 
+ def create_csl_hash(csl_evals, in_csl)
+   temp_array = []
+   csl_data = {}
+   my_hash = Hash.new {|h,k| h[k] = [] }
+   evals = csl_evals.select{|c| c.csl_title == in_csl}
+
+   evals.each do |e|
+      csl_data = {in_csl => e.attributes}
+      my_hash[in_csl].push e.attributes
+      temp_array.push csl_data
+   end
+
+   return my_hash
+
+ end
+
  def hf_new_csl_evals(pk)
-   csl_evals = User.find_by(email: pk).csl_evals
-   byebug
+   csl_evals = User.find_by(email: pk).csl_evals.select(:selected_student,:submit_date, :instructor, :feedback,
+                :c1, :c2, :c3, :c4, :c5, :c6, :c7, :c8, :c9, :csl_title).order(:submit_date)
+   csl_titles = csl_evals.map{|c| c.csl_title}.uniq
+   csl_array = []
+   csl_titles.each do |title|
+     csl_array.push create_csl_hash(csl_evals, title)
+   end
+   return csl_array
  end
 
 
@@ -79,7 +101,7 @@ module LsReports::CslevalHelper
 
   end
 
-
+    @csl_evals2 = hf_new_csl_evals(@pk)
   def hf_get_csl_evals(in_survey, pk)
     temp_data = in_survey.first.surveyls_title.split(":")
     @student_year = temp_data.second

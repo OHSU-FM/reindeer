@@ -1,4 +1,5 @@
 class DashboardWidgetsController < ApplicationController
+
     layout 'full_width'
 
     def show_widget
