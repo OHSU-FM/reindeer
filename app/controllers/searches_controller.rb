@@ -48,8 +48,10 @@ class SearchesController < ApplicationController
       load_all_students(cohorts)
     else
         if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
-          user = User.find_by("full_name LIKE ?",  "#{@parameter.capitalize}%")
-          @results.push user if !user.nil?
+          cohorts.each do |cohort|
+            user = User.find_by("cohort_id = ? and full_name LIKE ?",  "#{cohort.id}", "#{@parameter.capitalize}%")
+            @results.push user if !user.nil?
+          end
         else
           cohort = cohorts.select{|c| c.title.downcase.include? @parameter}
           cohort.first.users.each do |user|
