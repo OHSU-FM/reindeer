@@ -101,7 +101,7 @@ module LsReports::CslevalHelper
 
   end
 
-    @csl_evals2 = hf_new_csl_evals(@pk)
+
   def hf_get_csl_evals(in_survey, pk)
     temp_data = in_survey.first.surveyls_title.split(":")
     @student_year = temp_data.second

@@ -228,11 +228,13 @@ div.precept-header {
     display: table;
     clear: both;
 }
-.column {
+.column1 {
   float: left;
-  padding: 10px;
-
+  width: 50%;
+  padding: 20px;
+  height: 370px; /* Should be removed. Only for demonstration */
 }
+
 .left {
   width: 40%;
 }
@@ -270,8 +272,8 @@ div.precept-header {
 .column {
   float: left;
   width: 50%;
-  padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
+  padding: 22px;
+  height: 220px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */

@@ -1,7 +1,15 @@
   <% epa_badge = @epa_badges[i-1]["EPA#{i}"] %>
   <% if @review_date[i-1]["EPA#{i}"] != "" %>
-      <%= image_tag ("#{epa_badge}"), size: "80x80" %>
-      Award Date: <%= @review_date[i-1]["EPA#{i}"] %>
+       <% if @review_date[i-1]["EPA#{i}"].include? "No Badge" %>
+         <% temp_str = @review_date[i-1]["EPA#{i}"].split("|") %>
+         <%= image_tag ("#{epa_badge}"), size: "80x80", class: "opaque-image" %>
+         Status: <b><%= temp_str[0] %> </b> &nbsp;
+         Review Date: <b><%= temp_str[1] %> </b> &nbsp;
+         Comment: <b><%= temp_str[2] %> </b> &nbsp;
+       <% else %>
+         <%= image_tag ("#{epa_badge}"), size: "80x80" %>
+         Award Date: <%= @review_date[i-1]["EPA#{i}"] %>
+       <% end %>
   <% else %>
        <%= image_tag ("#{epa_badge}"), size: "80x80", class: "opaque-image" %>
   <% end %>

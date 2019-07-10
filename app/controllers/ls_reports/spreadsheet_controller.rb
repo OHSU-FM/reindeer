@@ -121,6 +121,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
 
+
   end
 
   def get_all_blocks

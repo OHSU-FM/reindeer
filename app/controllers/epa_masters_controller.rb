@@ -31,6 +31,7 @@ class EpaMastersController < ApplicationController
      end
    end
 
+
    if params[:search]
      @selected_user = nil
      @users = User.where("full_name LIKE ? ", "%#{params[:search]}%")
@@ -45,6 +46,7 @@ class EpaMastersController < ApplicationController
      end
 
    elsif  params[:email].present?
+     byebug
       @selected_user = User.find_by(email: params[:email])
       @selected_user_id = @selected_user.id
       @full_name = @selected_user.full_name

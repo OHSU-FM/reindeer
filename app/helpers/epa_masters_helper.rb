@@ -14,13 +14,22 @@ module EpaMastersHelper
     end
   end
 
+  def get_epa_reviews(epa_master)
+    reviews = epa_master.epa_reviews
+    status_str = ""
+    reviews.each do |review|
+      status_str = review.egm_recommendation + "|" + hf_format_date(review.review_date1) + "|" + review.general_comments
+    end
+    return status_str
+  end
 
   def hf_get_epa_master_badges(selected_user_id)
     epa_badges = []
     status_date_array = []
     badged = {}
     status_date = {}
-    selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id)
+    selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id).includes(:epa_reviews)
+
     if selected_recs.length < 13
       create_epa_masters (selected_user_id)
       selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id)
@@ -29,8 +38,10 @@ module EpaMastersHelper
       badged = {rec.epa => "epa/#{rec.epa}.png"}
       if (rec.status == "Badge")
         status_date = {rec.epa => hf_format_date(rec.status_date)}
+
       else
-        status_date = {rec.epa => ""}
+        status_date = {rec.epa => get_epa_reviews(rec)}
+
         #badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}
       end
       status_date_array.push status_date
