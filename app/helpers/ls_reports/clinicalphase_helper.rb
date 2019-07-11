@@ -163,22 +163,23 @@ module LsReports::ClinicalphaseHelper
   def hf_get_all_blocks(in_sid, pk)
 
     if in_sid.instance_of? String
-      rr = LimeSurvey.find_by(sid: in_sid)
+      rr = LimeSurvey.where(sid: in_sid).includes(:lime_groups)
+      limegroups = rr.first.lime_groups.includes(:lime_questions)  # used where clause instead of find_by
+      student_email_col = rr.first.student_email_column
+      comp_data = rr.first.dataset   #lq.first.dataset
     else
       rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
       rr = rr.lime_survey
+      limegroups = rr.lime_groups # used where clause instead of find_by
+      student_email_col = rr.student_email_column
+      comp_data = rr.dataset   #lq.first.dataset
     end
     comp = {}
 
     if rr.nil?
       return comp  ## return empty hash array
     end
-    limegroups = rr.lime_groups
-    #lq = limegroups.first.lime_questions
-    student_email_col = rr.student_email_column
 
-    #col_name = get_col_name(lq, "StudentEmail")
-    comp_data = rr.dataset   #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     if student_data.empty?
        return {}  # missing in graph  view dataset
@@ -274,21 +275,27 @@ module LsReports::ClinicalphaseHelper
 
   def hf_get_preceptorship(in_survey, pk)
     if in_survey.instance_of? String
-       rr = LimeSurvey.find_by(sid: in_survey)
+      rr = LimeSurvey.where(sid: in_survey).includes(:lime_groups)
+      limegroups = rr.first.lime_groups.includes(:lime_questions)  # used where clause instead of find_by
+      student_email_col = rr.first.student_email_column
+      comp_data = rr.first.dataset   #lq.first.dataset
     else
        rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
        rr = rr.lime_survey
+       limegroups = rr.lime_groups # used where clause instead of find_by
+       student_email_col = rr.student_email_column
+       comp_data = rr.dataset   #lq
     end
     #rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
     if rr.nil?
       return {}
     end
 
-    limegroups = rr.lime_groups
-    #lq = limegroups.first.lime_questions
-    student_email_col = rr.student_email_column
-    #col_name = get_col_name(lq, "StudentEmail")
-    comp_data = rr.dataset  #lq.first.dataset
+    # limegroups = rr.lime_groups
+    # #lq = limegroups.first.lime_questions
+    # student_email_col = rr.student_email_column
+    # #col_name = get_col_name(lq, "StudentEmail")
+    # comp_data = rr.dataset  #lq.first.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     student_data = student_data.sort_by {|d| d["id"]}
 
@@ -543,12 +550,15 @@ module LsReports::ClinicalphaseHelper
   def hf_get_cpx in_survey
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "Clinical Phase", "Clinical Performance Exam (CPX)")
+
     if rr.nil?
       return {}
     end
     student_cpx = {}
     student_data = []
-    limegroups = rr.lime_survey.lime_groups
+    #limegroups = rr.lime_survey.lime_groups
+
+    limegroups = rr.lime_survey.lime_groups # used where clause instead of find_by
     limegroups.each do |grp|
         lq = grp.lime_questions
         col_name = get_col_name(lq, "StudentEmail")
