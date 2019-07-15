@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :epa_reviews do
-    resources :epa_reviews
+  get 'wba_graphs/index'
+  resources :epas do
+    resources :epas
   end
 
   #get '/epa_reviews/get_qualtrics/:user_id', to: "epa_reviews#get_qualtrics"

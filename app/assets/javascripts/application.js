@@ -25,8 +25,6 @@
 //= require intro.js
 // require modern-business/modern-business.js
 //= require cocoon
-//= require Chart.bundle
-//= require chartkick
 //= require highcharts
 //= require highcharts/highcharts-more
 //= require highcharts/highcharts-3d.js

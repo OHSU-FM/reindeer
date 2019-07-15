@@ -54,7 +54,7 @@ prepare_series_data = (in_data) ->
     #console.log ("while loop: " + JSON.stringify(in_data[i]))
     tempDate = in_data[i].x
     modDate = Date.parse(tempDate) - (24*60*60*1000)  # minus a day
-    series_data[i] = {x: modDate, y: parseInt(in_data[i].y), evaluator: in_data[i].evaluator, discipline: in_data[i].discipline, setting: in_data[i].setting}
+    series_data[i] = {x: modDate, y: parseInt(in_data[i].y), evaluator: in_data[i].evaluator,  discipline: in_data[i].discipline, setting: in_data[i].setting, epa: in_data[i].epa}
     i++
   #console.log("series_data: " + JSON.stringify(series_data))
   return series_data
@@ -187,7 +187,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
         xDateFormat: '%Y-%m-%d'
         shared: false # this has to be false if we have extra data in series data
         formatter: ->
-                return 'Eval: ' + this.y + '<br>' + 'Date: ' + Highcharts.dateFormat('%Y-%m-%d', this.x) + '<br>' +
+                return this.point.epa + '<br>' +'Involv.: ' + this.y + '<br>' + 'Date: ' + Highcharts.dateFormat('%Y-%m-%d', this.x) + '<br>' +
                 'Discipline: ' + this.point.discipline + '<br>' + 'Setting: ' + this.point.setting + '<br>' + 'Evaluator: ' + this.point.evaluator
     }
     plotOptions: {

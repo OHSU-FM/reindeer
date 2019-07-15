@@ -17,6 +17,7 @@ Rails.application.config.assets.precompile += %w( print.css
     ls_reports_filter.css ls_reports_filter.css
     reports.css   reports.js
     charts.css    charts.js
+    Chart.bundle.js
     dashboard.css dashboard.js
     ls_reports_spreadsheet.css
     devise_sessions.css
@@ -39,4 +40,5 @@ Rails.application.config.assets.precompile += %w( print.css
     epa_reviews.css
     epa_master.js
     epa_reviews.js
+    wba_graphs.css
     )

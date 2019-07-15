@@ -74,7 +74,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.2)
       xpath (~> 3.2)
-    chartkick (3.0.2)
     chronic (0.10.2)
     cocoon (1.2.12)
     coderay (1.1.2)
@@ -130,8 +129,6 @@ GEM
       actionpack (>= 3.0)
       multi_json
       request_store (>= 1.0)
-    groupdate (4.1.1)
-      activesupport (>= 4.2)
     guard (2.15.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -149,6 +146,7 @@ GEM
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
+    hash-deep-merge (0.1.1)
     high_voltage (3.1.0)
     highcharts-rails (6.0.3)
       railties (>= 3.1)
@@ -177,6 +175,8 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
+    lazy_high_charts (1.5.8)
+      hash-deep-merge
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.8.0)
@@ -401,7 +401,6 @@ DEPENDENCIES
   byebug
   cancancan
   capybara
-  chartkick
   cocoon
   coffee-rails
   composite_primary_keys
@@ -413,7 +412,6 @@ DEPENDENCIES
   factory_bot_rails
   faker
   gon
-  groupdate
   guard
   guard-rspec
   high_voltage
@@ -424,6 +422,7 @@ DEPENDENCIES
   jquery-ui-rails (~> 6.0.1)
   json (~> 2.2.0)
   kaminari
+  lazy_high_charts
   lograge
   mini_racer
   nested_form_fields
