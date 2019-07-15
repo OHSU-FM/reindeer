@@ -34,5 +34,5 @@ Rails.application.config.assets.precompile += %w( print.css
     searches.css
     artifacts.css
     epa_graphs.js
-    chartkick.js
+    cds_reports.css
     )

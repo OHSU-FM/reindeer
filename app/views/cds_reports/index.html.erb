@@ -1,0 +1,36 @@
+<h1>CdsReports#index</h1>
+<p>CDS Reporting</p>
+<table class="responsive nowrap table table-hover" >
+  <tbody>
+
+      <% length = @cds[0].second.length %>
+      <tr>
+        <th>Subjects</th>
+        <th>Med22</th>
+        <th>Med21</th>
+        <th>Med20</th>
+        <th>Med21</</th>
+      </tr>
+      <tr>
+        <td>Totals</td>
+        <td><%= @cds.map{|k, v| v if k=="Med22"}.first.sum{|k,v| v} %></td>
+        <td><%= @cds.map{|k, v| v if k=="Med21"}.second.sum{|k,v| v} %></td>
+        <td><%= @cds.map{|k, v| v if k=="Med20"}.third.sum{|k,v| v} %></td>
+        <td><%= @cds.map{|k, v| v if k=="Med19"}[3].sum{|k,v| v} %></td>
+      </tr>
+       <% subjects = @cds[0].second.map{|k,v| k} %>
+        <% for v in 0..length do %>
+          <tr>
+              <% temp_sub = '"' + subjects[v].to_s + '"' %>
+              <% data_sum = @cds.map{|k,v| v[temp_sub]}.sum %>
+              <% if data_sum > 0 %>
+                  <td><%= subjects[v] %> </td>
+                  <% @cds.map{|k,v| v[temp_sub]}.each do |data| %>
+                    <td><%= data %> </td>
+                  <% end %>
+              <% end %>
+          </tr>
+        <% end %>
+
+  </tbody>
+</table>
