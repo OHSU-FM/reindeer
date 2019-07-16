@@ -1,0 +1,12 @@
+<% subjects = @coaches_not_met_past_2_months["Med22"].map{|k,v| k} %>
+ <% cohorts = hf_all_cohorts %>
+
+ <% for v in 0..subjects.length-1 do %>
+   <tr>
+      <% temp_sub = subjects[v] %>
+       <td><%= subjects[v] %> </td>
+       <% @coaches_not_met_past_2_months.map{|k,v| v[temp_sub]}.each do |data| %>
+         <td><%= data %> </td>
+       <% end %>
+   </tr>
+ <% end %>

@@ -11,8 +11,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <%= content_for?(:messages) ? yield(:messages) : render('shared/messages') %>
-                <%= javascript_include_tag "https://code.highcharts.com/highcharts.js", "chartkick" %>
-                <%= javascript_include_tag "application", "chartkick" %>
                 <%= yield %>
             </div>
         </div>
