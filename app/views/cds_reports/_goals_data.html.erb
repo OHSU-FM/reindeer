@@ -1,0 +1,25 @@
+<% cohorts_total = hf_get_cohort_students(@cohorts) %>
+<% goals_data = hf_total_active_goals(@cohorts) %>
+<% subjects = goals_data["Med22"].map{|k,v| k} %>
+<% cohorts = hf_all_cohorts.sort.reverse %>
+
+ <% for v in 0..subjects.length-1 do %>
+   <tr>
+      <% n = 0 %>
+      <% temp_sub = subjects[v] %>
+       <td><%= hf_goals_proper_label(subjects[v]).html_safe %> </td>
+
+       <% goals_data.map{|k,v| v[temp_sub]}.each do |data| %>
+           <% if temp_sub.include? "Ave no of active goals" or temp_sub.include? "Ave no of achieved goals" %>
+               <td><%= '%.2f' % data %></td>
+
+           <% else %>
+           <%= puts "n --> " + n.to_s %>
+               <td><%= '%.2f' % data %> : <%= '%.2f' % hf_comp_percent(data, cohorts_total, cohorts[n]) %>%</td>
+               <% n = n + 1 %>
+           <% end %>
+
+       <% end %>
+
+   </tr>
+ <% end %>

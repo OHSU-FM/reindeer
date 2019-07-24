@@ -1,39 +1,43 @@
-<h2>Coaching Activity Summary Report</h2>
-<%= form_tag(cds_reports_index_path, method: "get",  class: 'navbar-form navbar-left', id: 'CoachForm') do %>
+<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>
+
+<h3>Coaching Activity Summary Report for <b><%= @coach_name %></b></h3>
+<%= form_tag(cds_reports_path, method: "get",  class: 'navbar-form navbar-left', id: 'CoachForm') do %>
 
         Please Select <%= select_tag 'user_id', options_for_select(@coaches.collect{ |u| [u.full_name, u.id] }, params[:user_id]),
         html: {selected: true}, include_blank: "All", onchange: "this.form.submit();" %>
 
 <% end %>
-<% if !@cds.nil? %>
+
+ <% cds = hf_cds_reporting(@cohorts) %>
   <table class="responsive nowrap table table-hover" >
     <tbody>
-
-        <% length = @cds[0].second.length %>
+       <% cohorts_total = hf_get_cohort_students(@cohorts) %>
+        <% length = cds[0].second.length %>
         <tr bgcolor="F2DBD6">
-          <th>Coaching Activity</th>
+          <th width="20%">Coaching Activity</th>
           <% hf_all_cohorts.each do |cohort| %>
-            <th><%= cohort %><br />
-                (n=<%= hf_get_cohorts_total(@cohorts_total, cohort) %>)
+            <th width="15%"><%= cohort %><br />
+                (n=<%= hf_get_cohorts_total(cohorts_total, cohort) %>)
             </th>
           <% end %>
         </tr>
+        <%= render "cds_reports/goals_data" %>
         <%= render "cds_reports/past_data" %>
         <tr bgcolor="F2EAE9">
-          <td>Total No of Meetings</td>
+          <td>Total No of Meetings for <b><%= @coach_name %></b></td>
           <% for n in 0..hf_all_cohorts.length-1 %>
-            <% summ =  @cds.map{|k, v| v if k==hf_all_cohorts[n]}[n].sum{|k,v| v} %>
+            <% summ =  cds.map{|k, v| v if k==hf_all_cohorts[n]}[n].sum{|k,v| v} %>
             <td><%= summ %> </td>
           <% end %>
         </tr>
-         <% subjects = @cds[0].second.map{|k,v| k} %>
+         <% subjects = cds[0].second.map{|k,v| k} %>
           <% for v in 0..length do %>
             <tr>
                 <% temp_sub = '"' + subjects[v].to_s + '"' %>
-                <% data_sum = @cds.map{|k,v| v[temp_sub]}.sum %>
+                <% data_sum = cds.map{|k,v| v[temp_sub]}.sum %>
                 <% if data_sum > 0 %>
                     <td><%= subjects[v] %> </td>
-                    <% @cds.map{|k,v| v[temp_sub]}.each do |data| %>
+                    <% cds.map{|k,v| v[temp_sub]}.each do |data| %>
                       <td><%= data %> </td>
                     <% end %>
                 <% end %>
@@ -44,4 +48,3 @@
 
     </tbody>
   </table>
-<% end %>

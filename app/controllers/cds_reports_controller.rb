@@ -2,24 +2,24 @@ class CdsReportsController < ApplicationController
   layout 'full_width_margins'
   before_action :authenticate_user!
   before_action :set_resources
-  include CdsReportsHelper
 
   def index
-    @cohorts_total = hf_get_cohort_students
-    @past_data = hf_get_past_data
     if params[:user_id].present?
-      @coaches_not_met_past_2_months = hf_get_coaches_not_met_past_2_months(params[:user_id])
-      @cds = hf_cds_reporting(params[:user_id])
+      @coach_name = User.find(params[:user_id]).full_name
+      @cohorts  = Cohort.where(user_id: params[:user_id]).order('title ASC').includes(:users)
     else
-      @coaches_not_met_past_2_months = hf_get_coaches_not_met_past_2_months("All")
-      @cds = hf_cds_reporting('All')
+      @coach_name = "ALL"
+      @cohorts = Cohort.all.order('title ASC').includes(:users)
     end
 
   end
 
   private
   def set_resources
-        @coaches = User.where(coaching_type: 'coach').order('full_name ASC')
+    @coaches = User.where(coaching_type: 'coach').order('full_name ASC')
+    @cohorts = Cohort.all.order('title ASC').includes(:users)
+
   end
+
 
 end

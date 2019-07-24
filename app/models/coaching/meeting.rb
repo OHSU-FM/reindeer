@@ -22,7 +22,7 @@ class Coaching::Meeting < ApplicationRecord
 
   def set_default_values
     return unless m_status.nil?
-    update(m_status: "Scheduled")
+    update(m_status: "Completed")
   end
 
   def set_default_values_for_meeting

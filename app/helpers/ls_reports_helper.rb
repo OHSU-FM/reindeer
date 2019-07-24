@@ -63,11 +63,16 @@ module LsReportsHelper
   }.stringify_keys!
 
   # sorts ls titles available to user
-  def hf_generate_menu_hash lime_surveys
-    nested_hash = Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
+  def hf_generate_menu_hash lime_surveys_languagesettings
+    nested_hash ||= Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
+    # filtered_titles ||= lime_surveys.map{|s|
+    #   s.lime_surveys_languagesettings[0].surveyls_title
+    # }.select{|title|
+    #   MENU_HEADERS.keys.include? title.split(":").first
+    # }.sort
 
-    filtered_titles = lime_surveys.map{|s|
-      s.lime_surveys_languagesettings[0].surveyls_title
+    filtered_titles ||= lime_surveys_languagesettings.map{|s|
+      s.surveyls_title
     }.select{|title|
       MENU_HEADERS.keys.include? title.split(":").first
     }.sort

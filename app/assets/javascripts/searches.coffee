@@ -17,4 +17,5 @@ $(document).ready ->
   $('#SearchForm').attr('onsubmit','return false;')
   console.log ("inside searches cofffeescript!")
 
+
 ## Meeting Form

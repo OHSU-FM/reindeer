@@ -23,6 +23,18 @@ module Coaching
       end
     end
 
+    def edit
+      @meeting = Meeting.find params[:id]
+
+      respond_to do |format|
+        if @meeting.save
+          format.js { render action: 'show', status: :created }
+        else
+          format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
+        end
+      end
+    end
+
     # this is dirty and manual because we're not using link_to in the view :(
     def update
       @meeting = Meeting.find params[:id]
@@ -58,7 +70,7 @@ module Coaching
     end
 
     def meeting_update_params
-      params.permit(:id, :m_status, :notes)
+      params.permit(:id, :m_status, :notes, subject: [])
     end
   end
 end

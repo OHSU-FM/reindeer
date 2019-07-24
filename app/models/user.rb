@@ -231,7 +231,7 @@ class User < ActiveRecord::Base
     group :sign_in_details do
       active false
       [:current_sign_in_at, :sign_in_count, :reset_password_sent_at,
-       :remember_created_at, :last_sign_in_at, :current_sign_in_ip,
+       :remember_created_at, :last_sign_ilime_surveyn_at, :current_sign_in_ip,
        :last_sign_in_ip].each do |attr|
          field attr
        end
@@ -326,7 +326,13 @@ class User < ActiveRecord::Base
     return details.html_safe
   end
 
+  def lime_surveys_languagesettings
+    survey_titles ||= LimeSurveysLanguagesetting.select(:surveyls_title).distinct
+    return survey_titles
+  end
+
   def lime_surveys
+
     if has_dirty_ls_list? or admin_or_higher? or Redis.current.smembers("user:#{id}:ls_p_list").empty?
       ls_list = role_aggregates.map{|ra| ra.lime_survey }
       unless ls_list.empty?

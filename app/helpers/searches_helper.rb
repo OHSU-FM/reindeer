@@ -3,7 +3,8 @@ module SearchesHelper
   def probe_dataset(lime_survey)
     student_data = []
     student_email_col = lime_survey.student_email_column
-    comp_data = lime_survey.lime_groups.first.lime_questions.first.dataset
+    #comp_data = lime_survey.lime_groups.first.lime_questions.first.dataset
+    comp_data = lime_survey.dataset
     student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
     return student_data
   end

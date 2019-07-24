@@ -51,7 +51,8 @@
           <% end %>
 
           <% if !['student', 'coach'].include? current_user.coaching_type %>
-            <%= nav_link_to('CDS-Report', cds_reports_index_path, target: '_blank')  %>
+            <%= nav_link_to('CDS-Report', cds_reports_path, target: '_blank') %>
+
           <% end %>
 
           <% if current_user.coaching_type == "coach" and params[:slug].present? %>
@@ -66,8 +67,8 @@
           <% else %>
              <%= render partial: "layouts/dropdown_menu_for_students" %>
           <% end %>
-
           <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
+
         <% end %>
 
         <% if current_user.present? %>
@@ -104,6 +105,4 @@
     </div>
   </div>
 </div>
-
-<%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_reports', message: 'Loading Report' }%>
-<%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_stats', message: 'Loading Data Set' }%>
+<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>

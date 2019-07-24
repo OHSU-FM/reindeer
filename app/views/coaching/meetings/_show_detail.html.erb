@@ -1,6 +1,12 @@
 <div class="detail-header">
   <div class="detail-section">
-    <h4><font color="#4c0946">Subject(s): <%= hf_format_subjects(meeting.subject) %></font></h4>
+    <h4><font color="#4c0946">Subject(s)</font></h4>
+    <div>
+        <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
+          <%= b.check_box(checked: true, class: 'MyCheckBox') %>
+          <b> <%= b.text %> </b> <br />
+       <% end %>
+    </div>
     <% if current_user.admin_or_higher? %>
       <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
     <% end %>

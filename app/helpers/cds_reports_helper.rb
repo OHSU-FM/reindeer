@@ -1,9 +1,16 @@
 module CdsReportsHelper
 
   ALLCOHORTS = ["Med23", "Med22", "Med21", "Med20", "Med19"]
-  PROPER_LABELS = ["No & % of students who <b>met/talked</b> with their coach within the past 2 months",
-                  "No & % of students who <b>met/talked</b> with their coach within the past 6 months",
-                  "No & % of students <b>without coach interactions</b> over the past year"]
+  PROPER_LABELS = ["No & percent of students who <b>met/talked</b> with their coach within the past 2 months",
+                  "No & percent of students who <b>met/talked</b> with their coach within the past 6 months",
+                  "No & percent of students <b>without coach interactions</b> over the past year"]
+
+  GOALS_PROPER_LABELS = ["No & percent of students with <b>active goals</b>",
+                         "<b>Ave no of active goals</b> per student (only among those who have active goals)",
+                         "No & Percent of students with <b>achieved goals</b>",
+                         "<b>Ave no of achieved goals</b> per student (only among those who have achieved goals)"
+                        ]
+
 
   def hf_all_cohorts
     return ALLCOHORTS
@@ -13,6 +20,12 @@ module CdsReportsHelper
      PROPER_LABELS.each do |label|
         return label if label.include? in_str.downcase
       end
+   end
+
+   def hf_goals_proper_label in_str
+     GOALS_PROPER_LABELS.each do |label|
+       return label if label.include? in_str
+     end
    end
 
    def hf_comp_percent(summ, cohort_array, cohort_title)
@@ -26,6 +39,8 @@ module CdsReportsHelper
              percent = ((summ.to_f / val.to_f) * 100).round(0)
              return percent
            end
+         else
+           return 0
          end
        end
      end
@@ -39,33 +54,49 @@ module CdsReportsHelper
          end
        end
      end
+     return 0 ## not found in cohort_array
    end
 
-   def hf_get_cohort_students
-     cohorts_student = []
-     tot_students = {}
-      cohorts = PermissionGroup.where("title like ?", "%Students%").select{|g| g.title if !g.title.include? "Med18"}
-      cohorts = cohorts.compact.sort.reverse
-      cohorts.each do |cohort|
+  def hf_get_cohort_students(cohorts)
+   cohorts_student = []
+   students_hash = {}
+    if cohorts.count > 100
+     cohorts = PermissionGroup.where("title like ?", "%Students%").select{|g| g.title if !g.title.include? "Med18"}
+     cohorts = cohorts.compact.sort.reverse
+     tot_students = 0
+     cohorts.each do |cohort|
+       if !cohort.title.include?  'Med18'
+         tot_students = cohort.users.count
+         students_hash = {cohort.title => tot_students}
+         cohorts_student.push students_hash
+       end
+      end
+
+     return cohorts_student
+    end
+    tot_students = 0
+    cohorts.each do |cohort|
+      if !cohort.title.include?  'Med18'
+        temp_cohort = cohort.title.split(" - ").last
         tot_students = cohort.users.count
-        students_hash = {cohort.title => tot_students}
+        students_hash = {temp_cohort => tot_students}
         cohorts_student.push students_hash
       end
-      return cohorts_student
-   end
+    end
+    return cohorts_student
+  end
 
-  def hf_get_past_data
+  def hf_get_past_data(cohorts)
     past_data = Hash.new{ |h,k| h[k] = Hash.new 0 }
     ALLCOHORTS.each do |cohort|
         ["Past 2 Months", "Past 6 Months", "Past Year"].each do |item|
             past_data[cohort][item] = 0
         end
     end
-    cohorts = Cohort.all.order('title ASC').includes(:users)
     cohorts.each do |cohort|
       if !cohort.title.include?  'Med18'
         cohort.users.each do |user|
-          #if user.meetings.empty?
+          #if user.meetingAchieved Goalss.empty?
             temp_cohort = cohort.title.split(" - ").last
             past_data[temp_cohort]["Past 2 Months"] += user.meetings.where(created_at: 2.months.ago..Time.now).count
             past_data[temp_cohort]["Past 6 Months"] += user.meetings.where(created_at: 6.months.ago..Time.now).count
@@ -79,15 +110,8 @@ module CdsReportsHelper
     return past_data
   end
 
-  def hf_cds_reporting(user_id)
-    uniq_subjects  = Coaching::Meeting.distinct.pluck(:subject)
-
-    if user_id == 'All'
-      cohorts = Cohort.all.order('title ASC').includes(:users)
-    else
-      cohorts  = Cohort.where(user_id: user_id).order('title ASC').includes(:users)
-    end
-
+  def hf_cds_reporting(cohorts)
+    uniq_subjects ||= Coaching::Meeting.distinct.pluck(:subject)
 
     big_hash = Hash.new{ |h,k| h[k] = Hash.new 0 }
     ALLCOHORTS.each do |cohort|
@@ -97,12 +121,11 @@ module CdsReportsHelper
           end
         end
     end
-    #subject_hash = Hash.new 0
     cohorts.each do |cohort|
         cohort.users.each do |user|
             if !cohort.title.include?  'Med18'
               if !user.meetings.empty?
-                #puts "cohort: " + cohort.title + " --> " + user.full_name
+                #puts "cohort: " + cohort.title + " -->
                 #puts "subjects: " +  user.meetings.first.subject.map(&:inspect).join(',')
                 subject = user.meetings.first.subject.map(&:inspect).join(',')
                 if subject.to_s != ""
@@ -121,38 +144,99 @@ module CdsReportsHelper
     return big_hash
   end
 
-  def hf_get_coaches_not_met_past_2_months (user_id)
+  def hf_get_coaches_not_met_past_2_months (cohorts)
     coaches_have_not_met_2 = Hash.new{ |h,k| h[k] = Hash.new Array.new}
-    have_not_met_2 = []
+
     ALLCOHORTS.each do |cohort|
         ["Have Not Met Past 2 Months", "Have Not Met Past 6 Months", "Have Not Met Past Year"].each do |subject|
             coaches_have_not_met_2[cohort][subject] = []
         end
     end
-    have_not_met_2 = []
 
-    if user_id == 'All'
-      cohorts = Cohort.all.order('title ASC').includes(:users)
-    else
-      cohorts  = Cohort.where(user_id: user_id).order('title ASC').includes(:users)
-    end
     cohorts.each do |cohort|
       cohort.users.each do |user|
         if !cohort.title.include?  'Med18'
           temp_cohort = cohort.title.split(" - ").last
           if user.meetings.where(created_at: 2.months.ago..Time.now).count == 0
-            puts "cohort: " + cohort.title
             coaches_have_not_met_2[temp_cohort]["Have Not Met Past 2 Months"].push cohort.title + "/" + user.full_name
           end
+          if user.meetings.where(created_at: 6.months.ago..Time.now).count == 0
+            coaches_have_not_met_2[temp_cohort]["Have Not Met Past 6 Months"].push cohort.title + "/" + user.full_name
+          end
+          if user.meetings.where(created_at: 1.year.ago..Time.now).count == 0
+            coaches_have_not_met_2[temp_cohort]["Have Not Met Past Year"].push cohort.title + "/" + user.full_name
+          end
         end
-        # past_data[temp_cohort]["Past 6 Months"] += user.meetings.where(created_at: 6.months.ago..Time.now).count
-        # if user.meetings.where(created_at: 1.year.ago..Time.now).count == 0
-        #   past_data[temp_cohort]["Past Year"]     += 1
-        # end
       end
-
     end
+    return coaches_have_not_met_2
+  end
 
-    return coaches_have_not_met_2 
+  def hf_total_active_goals(cohorts)
+    goals_data = Hash.new{ |h,k| h[k] = Hash.new 0 }
+    ALLCOHORTS.each do |cohort|
+        ["active goals", "Ave no of active goals", "achieved goals", "Ave no of achieved goals"].each do |item|
+            goals_data[cohort][item] = 0
+        end
+    end
+    total_students_active = 0
+    total_students_achieved = 0
+    cohorts.each do |cohort|
+      if !cohort.title.include?  'Med18'
+        cohort.users.each do |user|
+          #if user.meetings.empty?
+            temp_cohort = cohort.title.split(" - ").last
+            goal_count = user.goals.count
+
+            if goal_count > 0
+
+              goals_data[temp_cohort]["active goals"] += 1
+              #temp storage to store the total_students_active goals
+              goals_data[temp_cohort]["Ave no of active goals"] += goal_count
+            end
+            achieved_goal_count = user.goals.where(g_status: 'Completed').count
+
+            if achieved_goal_count > 0
+
+              goals_data[temp_cohort]["achieved goals"] += 1
+              #temp storage to store the total students with achieved goals
+              goals_data[temp_cohort]["Ave no of achieved goals"] += achieved_goal_count
+            end
+          #end
+        end
+       end
+     end
+
+    ALLCOHORTS.each do |cohort|
+      total_students_active = goals_data[cohort]["active goals"]
+      total_students_achieved = goals_data[cohort]["achieved goals"]
+      goals_data[cohort]["Ave no of active goals"] = total_students_active == 0 ? 0 : goals_data[cohort]["Ave no of active goals"]/total_students_active.to_f
+      goals_data[cohort]["Ave no of achieved goals"] = total_students_achieved == 0 ? 0 : goals_data[cohort]["Ave no of achieved goals"]/total_students_achieved.to_f
+    end
+    return goals_data
+  end
+
+  def hf_parse_student(coach_array)
+    return [] if coach_array.empty?
+    student_array = []
+    coach_array.each do |student|
+      str = student.split("/").last  # get student
+      student_array.push str
+    end
+    student_array = student_array.sort
+    return student_array
+
+  end
+
+  def hf_parse_coach(coach_array)
+    return [] if coach_array.empty?
+    temp_array = []
+    coach_array.each do |coach|
+      str = coach.split("/").first  # get student
+      temp_array.push str
+    end
+    temp_array = temp_array.uniq.sort
+    return temp_array
+
   end
 end
