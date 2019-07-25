@@ -1,7 +1,7 @@
 class Coaching::Meeting < ApplicationRecord
   has_paper_trail
 
-  VALID_STATUSES = ["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary"]
+  VALID_STATUSES = ["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"]
 
   belongs_to :user, required: true
 

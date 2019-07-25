@@ -22,6 +22,7 @@ $(document).on 'change', '.status-picker', (e) ->
   updatedDesc = $('.updateDesc').val()
   updatedNotes = $('.updateNotes').val()
 
+  # checked_subjects is an array
   checked_subjects = do ->
     data_array = []
     $('.MyCheckBox:checked').each ->

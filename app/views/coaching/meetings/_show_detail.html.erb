@@ -1,6 +1,6 @@
 <div class="detail-header">
   <div class="detail-section">
-    <h4><font color="#4c0946">Subject(s)</font></h4>
+    <h4><font color="#4c0946">Meeting Subject(s)</font></h4>
     <div>
         <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
           <%= b.check_box(checked: true, class: 'MyCheckBox') %>
@@ -18,7 +18,7 @@
 
 <div class="detail-section">
   <h4>Meeting Details</h4>
-  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
   <div><i>Contact Type: </i><%= meeting.location %></div>
   <div><i>Date: </i><%= meeting.date.strftime("%m/%d/%Y") %></div>
 </div>

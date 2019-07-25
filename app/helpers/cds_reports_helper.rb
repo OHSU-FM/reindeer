@@ -29,21 +29,17 @@ module CdsReportsHelper
    end
 
    def hf_comp_percent(summ, cohort_array, cohort_title)
-     return 0 if cohort_title.nil?
+     return 0 if summ == 0
+
+     percent = 0.0
      cohort_array.each do |cohort|
        cohort.each do |key, val|
          if key.include? cohort_title
-           if val == 0
-             return 0
-           else
-             percent = ((summ.to_f / val.to_f) * 100).round(0)
-             return percent
-           end
-         else
-           return 0
+             percent = ((summ.to_f / val) * 100).round(0)
          end
        end
      end
+     return percent
    end
 
    def hf_get_cohorts_total(cohort_array, cohort_title)
@@ -114,6 +110,7 @@ module CdsReportsHelper
     uniq_subjects ||= Coaching::Meeting.distinct.pluck(:subject)
 
     big_hash = Hash.new{ |h,k| h[k] = Hash.new 0 }
+    coach_array = Hash.new 0
     ALLCOHORTS.each do |cohort|
         uniq_subjects.sort.each do |subject|
           if !subject.empty?
@@ -133,6 +130,9 @@ module CdsReportsHelper
                   #puts "cohort.title --> " + cohort.title
                   temp_cohort = cohort.title.split(" - ").last
                   big_hash[temp_cohort][subject] += 1
+                  meetings_count = user.meetings.count
+                  temp_coach = cohort.title.split(" - ").first
+                  coach_array[temp_coach] += meetings_count
                 end
               end
 
@@ -141,7 +141,9 @@ module CdsReportsHelper
         end
     end
     big_hash = big_hash.sort_by{|k, v| k}.reverse
-    return big_hash
+    coach_array = coach_array.sort_by{|k, v| v}.reverse
+
+    return big_hash, coach_array
   end
 
   def hf_get_coaches_not_met_past_2_months (cohorts)

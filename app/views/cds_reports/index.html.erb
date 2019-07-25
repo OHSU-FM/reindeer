@@ -1,14 +1,14 @@
-<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>
+
 
 <h3>Coaching Activity Summary Report for <b><%= @coach_name %></b></h3>
 <%= form_tag(cds_reports_path, method: "get",  class: 'navbar-form navbar-left', id: 'CoachForm') do %>
-
-        Please Select <%= select_tag 'user_id', options_for_select(@coaches.collect{ |u| [u.full_name, u.id] }, params[:user_id]),
-        html: {selected: true}, include_blank: "All", onchange: "this.form.submit();" %>
-
+  <b>Please Select a Coach</b> <%= select_tag 'user_id', options_for_select(@coaches.collect{ |u| [u.full_name, u.id] }, params[:user_id]),
+  html: {selected: true}, include_blank: "All", onchange: "this.form.submit();" %>
 <% end %>
-
- <% cds = hf_cds_reporting(@cohorts) %>
+<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>
+ <% cds, coach_array  = hf_cds_reporting(@cohorts) %>
+Most Active Coach is <b> <%= coach_array.first.first %> </b> and has <b><%= coach_array.first.last %></b> meetings. <br />
+Least Active Coach is <b> <%= coach_array.last.first %> </b> and has <b><%= coach_array.last.last %></b> meetings.
   <table class="responsive nowrap table table-hover" >
     <tbody>
        <% cohorts_total = hf_get_cohort_students(@cohorts) %>
