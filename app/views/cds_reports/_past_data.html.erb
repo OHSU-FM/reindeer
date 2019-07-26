@@ -1,0 +1,18 @@
+<% cohorts_total = hf_get_cohort_students(@cohorts) %>
+<% past_data = hf_get_past_data(@cohorts) %>
+<% subjects = past_data["Med22"].map{|k,v| k} %>
+<% cohorts = hf_all_cohorts %>
+
+ <% for v in 0..subjects.length-1 do %>
+   <tr>
+      <% n = 0 %>
+      <% temp_sub = subjects[v] %>
+       <td><%= hf_proper_label(subjects[v]).html_safe %> </td>
+       <% past_data_sub = past_data.map{|k,val| val[temp_sub]} %>
+       <% past_data_sub.each do |data| %>
+         <td><%= data %> : <%= hf_comp_percent(data, cohorts_total, cohorts[n]) %>%</td>
+         <% n = n + 1 %>
+       <% end %>
+
+   </tr>
+ <% end %>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'cds_reports', to: 'cds_reports#index'
   get 'wba_graphs/index'
   resources :epas do
     resources :epas

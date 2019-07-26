@@ -149,7 +149,7 @@ module LsReports::ClinicalphaseHelper
   def get_dataset(in_survey, category, dataset)
     temp_data = in_survey.first.surveyls_title.split(":")
     @student_year = temp_data.second
-    return LimeSurveysLanguagesetting.find_by(surveyls_title: "SA:#{@student_year}:#{category}:#{dataset}")
+    return LimeSurveysLanguagesetting.includes(:lime_groups).find_by(surveyls_title: "SA:#{@student_year}:#{category}:#{dataset}")
 
   end
 
@@ -169,7 +169,7 @@ module LsReports::ClinicalphaseHelper
       comp_data = rr.first.dataset   #lq.first.dataset
     else
       rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
-      rr = rr.lime_survey
+      #rr = rr.lime_survey
       limegroups = rr.lime_groups # used where clause instead of find_by
       student_email_col = rr.student_email_column
       comp_data = rr.dataset   #lq.first.dataset
@@ -281,7 +281,7 @@ module LsReports::ClinicalphaseHelper
       comp_data = rr.first.dataset   #lq.first.dataset
     else
        rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
-       rr = rr.lime_survey
+       #rr = rr.lime_survey
        limegroups = rr.lime_groups # used where clause instead of find_by
        student_email_col = rr.student_email_column
        comp_data = rr.dataset   #lq
@@ -465,7 +465,8 @@ module LsReports::ClinicalphaseHelper
     if rr.nil?
       return {}
     end
-    limegroups = rr.lime_survey.lime_groups
+    #limegroups = rr.lime_survey.lime_groups
+    limegroups = rr.lime_groups
     limegroups.each do |grp|
         lq = grp.lime_questions
         col_name = get_col_name(lq, "StudentEmail")
@@ -558,7 +559,8 @@ module LsReports::ClinicalphaseHelper
     student_data = []
     #limegroups = rr.lime_survey.lime_groups
 
-    limegroups = rr.lime_survey.lime_groups # used where clause instead of find_by
+    #limegroups = rr.lime_survey.lime_groups # used where clause instead of find_by
+    limegroups = rr.lime_groups # used where clause instead of find_by
     limegroups.each do |grp|
         lq = grp.lime_questions
         col_name = get_col_name(lq, "StudentEmail")
@@ -602,7 +604,8 @@ module LsReports::ClinicalphaseHelper
       return {}
     end
     shelf_attachments = []
-    limegroups = rr.lime_survey.lime_groups
+    #limegroups = rr.lime_survey.lime_groups
+    limegroups = rr.lime_groups
     limegroups.each do |grp|
         lq = grp.lime_questions
         col_name = get_col_name(lq, "StudentEmail")

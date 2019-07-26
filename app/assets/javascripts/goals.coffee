@@ -21,6 +21,18 @@ $(document).on 'change', '.status-picker', (e) ->
   newStatus = e.target.value
   updatedDesc = $('.updateDesc').val()
   updatedNotes = $('.updateNotes').val()
+
+  # checked_subjects is an array
+  checked_subjects = do ->
+    data_array = []
+    $('.MyCheckBox:checked').each ->
+      data_array.push $(this).val()
+      return
+    data_array
+
+
+  console.log("checked_subjects: " + checked_subjects)
+
   if $(e.target).attr('data-goalId')
     objectId = $(e.target).attr('data-goalId')
     controller = "goals"
@@ -28,7 +40,7 @@ $(document).on 'change', '.status-picker', (e) ->
   else
     objectId = $(e.target).attr('data-meetingId')
     controller = "meetings"
-    data = { m_status: newStatus, notes: updatedNotes }
+    data = { m_status: newStatus, notes: updatedNotes, subject: checked_subjects }
 
   xhr = $.ajax({
     url: "/coaching/" + controller + "/" + objectId

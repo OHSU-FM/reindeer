@@ -61,6 +61,7 @@ class LsReports::BaseController < ApplicationController
     @agg = fm.agg
     @pk = fm.pk
     @role_aggregate = @lime_survey.role_aggregate
+
     @hide_agg = fm.hide_agg
     @hide_pk = fm.hide_pk
     @virtual_groups = fm.virtual_groups

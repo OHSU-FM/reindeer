@@ -68,5 +68,6 @@
 //= require students.js
 //= require epa_masters.js
 //= require epa_reviews.js
+//= require cds_reports
 // turbolinks is commented out..
-// require turbolinks
+//= require turbolinks

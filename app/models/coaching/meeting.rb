@@ -1,7 +1,7 @@
 class Coaching::Meeting < ApplicationRecord
   has_paper_trail
 
-  VALID_STATUSES = ["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary"]
+  VALID_STATUSES = ["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"]
 
   belongs_to :user, required: true
 
@@ -22,7 +22,7 @@ class Coaching::Meeting < ApplicationRecord
 
   def set_default_values
     return unless m_status.nil?
-    update(m_status: "Scheduled")
+    update(m_status: "Completed")
   end
 
   def set_default_values_for_meeting

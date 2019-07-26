@@ -43,7 +43,7 @@ gem "bootstrap-sass", '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-gem 'jquery-ui-rails', '~> 6.0.1' 
+gem 'jquery-ui-rails', '~> 6.0.1'
 gem "jquery-rails"
 #gem "jquery-ui-rails"
 
@@ -142,7 +142,7 @@ gem 'whenever', require: false
 gem 'nested_form_fields'
 gem 'turbolinks', '~> 5.0', '>= 5.0.1'
 gem 'rails-ujs', '~> 0.1.0'
-# highchart 
+# highchart
 gem "highcharts-rails"
 gem "lazy_high_charts"
 #=======================

@@ -56,6 +56,11 @@
             <%= nav_link_to(hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank')  %>
           <% end %>
 
+          <% if !['student', 'coach'].include? current_user.coaching_type %>
+            <%= nav_link_to('CDS-Report', cds_reports_path) %>
+
+          <% end %>
+
           <% if current_user.coaching_type == "coach" and params[:slug].present? %>
               <% temp_pk = params[:slug] + "@ohsu.edu" %>
             <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: hf_get_clinical_phase_sid(temp_pk), pk: temp_pk),
@@ -68,8 +73,8 @@
           <% else %>
              <%= render partial: "layouts/dropdown_menu_for_students" %>
           <% end %>
-
           <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
+
         <% end %>
 
         <% if current_user.present? %>
@@ -106,6 +111,4 @@
     </div>
   </div>
 </div>
-
-<%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_reports', message: 'Loading Report' }%>
-<%= render partial: 'shared/modal_spinner', locals: { modal_id: 'modal_nav_stats', message: 'Loading Data Set' }%>
+<%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>
