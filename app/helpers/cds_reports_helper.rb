@@ -108,7 +108,6 @@ module CdsReportsHelper
 
   def hf_cds_reporting(cohorts)
     uniq_subjects ||= Coaching::Meeting.distinct.pluck(:subject)
-
     big_hash = Hash.new{ |h,k| h[k] = Hash.new 0 }
     coach_array = Hash.new 0
     ALLCOHORTS.each do |cohort|
@@ -129,10 +128,17 @@ module CdsReportsHelper
                   #subject_hash[subject] += 1
                   #puts "cohort.title --> " + cohort.title
                   temp_cohort = cohort.title.split(" - ").last
-                  big_hash[temp_cohort][subject] += 1
                   meetings_count = user.meetings.count
-                  temp_coach = cohort.title.split(" - ").first
-                  coach_array[temp_coach] += meetings_count
+                  big_hash[temp_cohort][subject] += meetings_count
+
+                  if @coach_all == "ALL"
+                    temp_coach = cohort.title.split(" - ").first # greb the coach name
+                    coach_array[temp_coach] += meetings_count
+                  else
+                    temp_coach = cohort.title.split(" - ").last # greb the cohort instead
+                    coach_array[temp_coach] += meetings_count
+                  end
+
                 end
               end
 

@@ -12,8 +12,6 @@
        <% past_data_sub.each do |data| %>
          <td><%= data %> : <%= hf_comp_percent(data, cohorts_total, cohorts[n]) %>%</td>
          <% n = n + 1 %>
-         <% puts "cohorts[n] : " + cohorts[n].to_s + " N --> " + n.to_s  %>
-
        <% end %>
 
    </tr>

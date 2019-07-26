@@ -51,7 +51,7 @@
           <% end %>
 
           <% if !['student', 'coach'].include? current_user.coaching_type %>
-            <%= nav_link_to('CDS-Report', cds_reports_path, target: '_blank') %>
+            <%= nav_link_to('CDS-Report', cds_reports_path) %>
 
           <% end %>
 

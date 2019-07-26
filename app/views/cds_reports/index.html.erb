@@ -7,8 +7,14 @@
 <% end %>
 <%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>
  <% cds, coach_array  = hf_cds_reporting(@cohorts) %>
-Most Active Coach is <b> <%= coach_array.first.first %> </b> and has <b><%= coach_array.first.last %></b> meetings. <br />
-Least Active Coach is <b> <%= coach_array.last.first %> </b> and has <b><%= coach_array.last.last %></b> meetings.
+ <% if @coach_name == "ALL" %>
+    <% temp_var = "Coach" %>
+ <% else %>
+    <% temp_var = "Cohort" %>
+ <% end %>
+
+Most Active <%= temp_var %> is <b> <%= coach_array.first.first %> </b> and has <b><%= coach_array.first.last %></b> meetings. <br />
+Least Active <%= temp_var %> is <b> <%= coach_array.last.first %> </b> and has <b><%= coach_array.last.last %></b> meetings.
   <table class="responsive nowrap table table-hover" >
     <tbody>
        <% cohorts_total = hf_get_cohort_students(@cohorts) %>

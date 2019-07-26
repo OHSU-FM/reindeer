@@ -14,7 +14,6 @@
                <td><%= '%.2f' % data %></td>
                <% n = n + 1 %>
            <% else %>
-           <%= puts "n --> " + n.to_s %>
                <td><%= '%.2f' % data %> : <%= hf_comp_percent(data, cohorts_total, cohorts[n]) %>%</td>
                <% n = n + 1 %>
            <% end %>
