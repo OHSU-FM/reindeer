@@ -112,13 +112,13 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @preceptor_view = @preceptorship.flatten
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
-    #@csl_evals = hf_get_csl_evals(@survey, @pk)
-    #@csl_evals = hf_new_csl_evals(@pk)  This is comment as it was not longer being used.
+
 
     #@csl_evals2 = hf_new_csl_evals(@pk)
-    #if @csl_eval2.nil?
+    @csl_feedbacks = hf_csl_feedbacks(@pk)
+    if @csl_feedbacks.nil?
        @csl_evals = hf_get_csl_evals(@survey, @pk)
-    #end
+    end
 
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
 

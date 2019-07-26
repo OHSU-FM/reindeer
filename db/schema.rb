@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_152324) do
+ActiveRecord::Schema.define(version: 2019_07_26_173251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -189,6 +189,42 @@ ActiveRecord::Schema.define(version: 2019_06_26_152324) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_csl_evals_on_user_id"
+  end
+
+  create_table "csl_feebacks", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "csl_title"
+    t.date "submit_date"
+    t.string "cohorts"
+    t.string "instructor"
+    t.string "selected_student"
+    t.string "c1"
+    t.string "c1_feedback"
+    t.string "c2"
+    t.string "c2_feedback"
+    t.text "feedback_strength"
+    t.text "feedback_improve"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_csl_feebacks_on_user_id"
+  end
+
+  create_table "csl_feedbacks", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "csl_title"
+    t.date "submit_date"
+    t.string "cohorts"
+    t.string "instructor"
+    t.string "selected_student"
+    t.string "c1"
+    t.string "c1_feedback"
+    t.string "c2"
+    t.string "c2_feedback"
+    t.text "feedback_strength"
+    t.text "feedback_improve"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_csl_feedbacks_on_user_id"
   end
 
   create_table "dashboard_widgets", id: :serial, force: :cascade do |t|
@@ -513,6 +549,8 @@ ActiveRecord::Schema.define(version: 2019_06_26_152324) do
   add_foreign_key "artifacts", "users"
   add_foreign_key "cohorts", "users"
   add_foreign_key "csl_evals", "users"
+  add_foreign_key "csl_feebacks", "users"
+  add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade

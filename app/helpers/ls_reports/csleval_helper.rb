@@ -22,6 +22,13 @@ module LsReports::CslevalHelper
 
  }
 
+def hf_csl_feedbacks (email)
+  csl_feedbacks = User.where(email: email).first.csl_feedbacks
+  return csl_feedbacks
+end
+
+
+
  def decode_csl_def (incode)
    return DECODE_CSL_DEF[incode]
  end

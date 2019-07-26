@@ -281,6 +281,9 @@ module LsReports::ClinicalphaseHelper
       comp_data = rr.first.dataset   #lq.first.dataset
     else
        rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+       if rr.nil?
+         return {}
+       end
        #rr = rr.lime_survey
        limegroups = rr.lime_groups # used where clause instead of find_by
        student_email_col = rr.student_email_column

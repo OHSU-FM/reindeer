@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   has_many :epas, dependent: :destroy
   has_many :epa_masters, dependent: :destroy
   has_many :csl_evals, dependent: :destroy
+  has_many :csl_feedbacks, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
