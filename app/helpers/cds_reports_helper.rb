@@ -34,8 +34,8 @@ module CdsReportsHelper
      percent = 0.0
      cohort_array.each do |cohort|
        cohort.each do |key, val|
-         if key.include? cohort_title
-             percent = ((summ.to_f / val) * 100).round(0)
+         if !cohort_title.nil? and key.include? cohort_title
+	   percent = ((summ.to_f / val) * 100).round(0)
          end
        end
      end
