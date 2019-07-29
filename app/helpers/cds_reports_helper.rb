@@ -94,8 +94,12 @@ module CdsReportsHelper
         cohort.users.each do |user|
           #if user.meetingAchieved Goalss.empty?
             temp_cohort = cohort.title.split(" - ").last
-            past_data[temp_cohort]["Past 2 Months"] += user.meetings.where(created_at: 2.months.ago..Time.now).count
-            past_data[temp_cohort]["Past 6 Months"] += user.meetings.where(created_at: 6.months.ago..Time.now).count
+            if user.meetings.where(created_at: 2.months.ago..Time.now).count > 0
+              past_data[temp_cohort]["Past 2 Months"] += 1
+            end
+            if user.meetings.where(created_at: 6.months.ago..Time.now).count > 0
+              past_data[temp_cohort]["Past 6 Months"] += 1
+            end
             if user.meetings.where(created_at: 1.year.ago..Time.now).count == 0
               past_data[temp_cohort]["Past Year"]     += 1
             end
