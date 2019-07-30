@@ -106,7 +106,7 @@ module LsReports::ClinicalphaseHelper
             comp["NSF"].push v
         elsif k.inc
           lude? "DEVH"
-            comp["DEVH"].push v
+            comp["DEVH"].push vbiryani chicken
 
         end
       end
@@ -169,7 +169,7 @@ module LsReports::ClinicalphaseHelper
       comp_data = rr.first.dataset   #lq.first.dataset
     else
       rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
-      #rr = rr.lime_survey
+      rr = rr.lime_survey
       limegroups = rr.lime_groups # used where clause instead of find_by
       student_email_col = rr.lime_survey.student_email_column
       comp_data = rr.lime_survey.dataset   #lq.first.dataset
@@ -284,7 +284,7 @@ module LsReports::ClinicalphaseHelper
        if rr.nil?
          return {}
        end
-       #rr = rr.lime_survey
+       rr = rr.lime_survey
        limegroups = rr.lime_groups # used where clause instead of find_by
        student_email_col = rr.lime_survey.student_email_column
        comp_data = rr.lime_survey.dataset   #lq

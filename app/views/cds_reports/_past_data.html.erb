@@ -10,8 +10,11 @@
        <td><%= hf_proper_label(subjects[v]).html_safe %> </td>
        <% past_data_sub = past_data.map{|k,val| val[temp_sub]} %>
        <% past_data_sub.each do |data| %>
-         <td><%= data %> : <%= hf_comp_percent(data, cohorts_total, cohorts[n]) %>%</td>
-         <% n = n + 1 %>
+           <% if !cohorts[n].nil? %>
+                <td><%= data %> : <%= hf_comp_percent(data, cohorts_total, cohorts[n]) %>%</td>
+                <% n = n + 1 %>
+           <% end %>
+
        <% end %>
 
    </tr>
