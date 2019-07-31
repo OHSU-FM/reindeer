@@ -1,6 +1,8 @@
 class WbaGraphsController < ApplicationController
   include WbaGraphsHelper
-  layout 'full_width'
+  layout 'full_width_csl'
+  before_action :authenticate_user!
+
 
   def index
 

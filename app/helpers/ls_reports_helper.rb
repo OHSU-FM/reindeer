@@ -52,13 +52,14 @@ module LsReportsHelper
   end
 
   # needed for menu generation and translation
+  # "EPA&C": "EPAs & Competencies",
+  # "TE": "Teacher Evaluations",
+  # "CE": "Course Evaluations",
+  # "P/LSE": "Preceptor/Learning Setting Evaluation",
+  # "C": "Coaching Feedback",
+
   MENU_HEADERS = {
                    "SA": "Student Assessment",
-                   "C": "Coaching Feedback",
-                   "EPA&C": "EPAs & Competencies",
-                   "TE": "Teacher Evaluations",
-                   "CE": "Course Evaluations",
-                   "P/LSE": "Preceptor/Learning Setting Evaluation",
                    "O": "Other"
   }.stringify_keys!
 
