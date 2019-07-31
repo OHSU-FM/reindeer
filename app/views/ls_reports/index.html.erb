@@ -29,22 +29,23 @@
     <% @survey_groups.sort_by{ |g| g.title }.each do |group|%>
 
       <% if group.title && !group.title.empty? %>
-        <tr>
-          <td colspan="5" style="text-align:left;">
-            <h3><i><%= hf_group_title(group.title).html_safe %></i></h3>
-          </td>
-        </tr>
-      <% end %>
-      <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date} %>
-      <% role_aggregates.each do |ra| %>
-        <tr>
-          <% if ra.name.include? "CSL" %>
-            <td style="padding-left:20px;"><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]),
-              :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
-          <% else %>
-            <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]),
-              :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
-          <% end %>
+      <tr>
+      <td colspan="5" style="text-align:left;">
+        <h3><i><%= hf_group_title(group.title).html_safe %></i></h3>
+      </td>
+    </tr>
+  <% end %>
+    <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date} %>
+    <% role_aggregates.each do |ra| %>
+      <tr>
+
+        <% if ra.name.include? "CSL" %>
+          <td style="padding-left:20px;"><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]), method: :get,
+            :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+        <% else %>
+          <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]), method: :get,
+            :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+        <% end %>
 
           <% full_acc = can?(:unfiltered_read, ra) %>
           <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
