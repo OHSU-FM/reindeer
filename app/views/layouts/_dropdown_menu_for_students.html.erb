@@ -1,4 +1,4 @@
-<% @menu_hash ||= hf_generate_menu_hash(current_user.lime_surveys_languagesettings) %>
+<% @menu_hash ||= hf_generate_menu_hash(current_user.lime_surveys) %>
 <% @menu_hash.each do |top_link, first_level| %>
   <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
     <div class="btn-group btn navbar-btn ">

@@ -51,31 +51,33 @@ module LsReportsHelper
     title.include?(":") ? title.split(":").last(2).join(" - ") : title
   end
 
+  # "C": "Coaching Feedback",
+  # "EPA&C": "EPAs & Competencies",
+  # "TE": "Teacher Evaluations",
+  # "CE": "Course Evaluations",
+  # "P/LSE": "Preceptor/Learning Setting Evaluation",
+
   # needed for menu generation and translation
   MENU_HEADERS = {
                    "SA": "Student Assessment",
                    "C": "Coaching Feedback",
-                   "EPA&C": "EPAs & Competencies",
-                   "TE": "Teacher Evaluations",
-                   "CE": "Course Evaluations",
-                   "P/LSE": "Preceptor/Learning Setting Evaluation",
                    "O": "Other"
   }.stringify_keys!
 
   # sorts ls titles available to user
-  def hf_generate_menu_hash lime_surveys_languagesettings
+  def hf_generate_menu_hash lime_surveys
     nested_hash ||= Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
-    # filtered_titles ||= lime_surveys.map{|s|
-    #   s.lime_surveys_languagesettings[0].surveyls_title
-    # }.select{|title|
-    #   MENU_HEADERS.keys.include? title.split(":").first
-    # }.sort
-
-    filtered_titles ||= lime_surveys_languagesettings.map{|s|
-      s.surveyls_title
+    filtered_titles ||= lime_surveys.map{|s|
+      s.lime_surveys_languagesettings[0].surveyls_title
     }.select{|title|
       MENU_HEADERS.keys.include? title.split(":").first
     }.sort
+
+    # filtered_titles ||= lime_surveys_languagesettings.map{|s|
+    #   s.surveyls_title
+    # }.select{|title|
+    #   MENU_HEADERS.keys.include? title.split(":").first
+    # }.sort
 
     filtered_titles.each do |title|
       level1, level2, level3, val = title.split(":")
