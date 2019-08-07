@@ -53,10 +53,15 @@
               ></i></td>
           <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
         </tr>
+        <% csl_title = hf_csl_feedbacks_title(ra.name, @csl_feedbacks_title) %>
+        <% if !csl_title.nil? %>
+            <tr>
+              <td style="padding-left:20px;"><%= link_to(csl_title, csl_feedbacks_index_path(cohort: "Med22", email: @pk, block: "HODI"), target: '_blank') %></td>
+            </tr>
+        <% end %>
+
       <% end %>
-          <tr>
-              <td><%= link_to("CSL Feedback", csl_feedbacks_index_path(cohort: "Med22", email: @pk, block: "HODI"), target: '_blank') %></td>
-          </tr>
+
     <% end %>
     </tbody>
   </table>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get '/csl_feedbacks/index'
+  get '/csl_feedbacks/get_csl_feedback'
   get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
   get 'cds_reports', to: 'cds_reports#index'
   get 'wba_graphs/index'

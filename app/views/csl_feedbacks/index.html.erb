@@ -2,13 +2,11 @@
 
 
 <%= form_tag(csl_feedbacks_index_path, method: "get",  class: 'navbar-form navbar-left', id: 'CslFeedbackForm') do %>
+
   <div class="form-group">
-    <b>Coach</b> <%= select_tag 'coach_id', options_for_select(@coaches.collect{ |u| [u.full_name, u.id] }, selected: params[:coach_id]) %>
-  </div>
-  <div class="form-group">
-    <b>Student</b> <%= select_tag 'student_id', options_for_select(@cohort_students.collect{ |u| [u.full_name, u.id] }, selected: params[:user_id]) %>
+    <b><%= params[:cohort] %>  Student</b> <%= select_tag 'student_id', options_for_select(@cohort_students.collect{ |u| [u.full_name, u.id] }, selected: params[:user_id]) %>
   </div>
 
 <% end %>
 
-  <%= render "csl_feedbacks" %>
+  <%= render partial: "csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>

@@ -115,10 +115,11 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
 
     #@csl_evals2 = hf_new_csl_evals(@pk)
+    # @csl_feedbacks = hf_csl_feedbacks(@pk)
+    # if @csl_feedbacks.nil?
+    @csl_evals = hf_get_csl_evals(@survey, @pk)
     @csl_feedbacks = hf_csl_feedbacks(@pk)
-    if @csl_feedbacks.nil?
-       @csl_evals = hf_get_csl_evals(@survey, @pk)
-    end
+    # end
 
     @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
 

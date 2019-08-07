@@ -81,7 +81,7 @@ class EpaMastersController < ApplicationController
         end
       end
       respond_to do |format|
-        byebug
+
         format.js { render partial: 'search-results'}
       end
     end
@@ -92,7 +92,7 @@ class EpaMastersController < ApplicationController
         EpaMaster.export_data_delimited(params[:permission_group_id])
         @file_name = Rails.root + "tmp/chungp_epas.txt"
         send_file(@file_name, filename: @file_name,  type: 'application/pdf/text/docx/doc', :disposition=>'inline', :target=>"_blank")
-        byebug
+
     end
   end
 
