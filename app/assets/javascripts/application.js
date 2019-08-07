@@ -71,4 +71,4 @@
 //= require cds_reports
 //= require csl_feedbacks
 // turbolinks is commented out..
-//= require turbolinks
+// require turbolinks

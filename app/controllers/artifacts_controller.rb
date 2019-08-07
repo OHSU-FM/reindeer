@@ -31,6 +31,10 @@ class ArtifactsController < ApplicationController
           render json: {cohort_students: @cohort_students}
         }
       end
+    else
+      respond_to do |format|
+        format.html
+      end
     end
 
   end
