@@ -68,4 +68,4 @@
 //= require students.js
 //= require cds_reports
 // turbolinks is commented out..
-//= require turbolinks
+// require turbolinks
