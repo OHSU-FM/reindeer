@@ -15,8 +15,10 @@ Rails.application.routes.draw do
     member do
       post 'search_student'
     end
-    resources :epa_reveiws
+    #resources :epa_reveiws
   end
+  resources :epa_reviews
+
   get '/epa_masters/export_data', to: "epa_masters#export_data"
   get '/epa_masters/get_by_user/:user_id', to: "epa_masters#get_by_user", as: 'get_by_user'
   #get '/epa_masters/search_student/', to: "epa_masters#search_student", as: 'search_student'

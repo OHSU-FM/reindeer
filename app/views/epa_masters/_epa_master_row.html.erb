@@ -21,13 +21,14 @@
         <% end %>
         <%= review.reviewed_by1 %> /
         <b><%= review.general_comments %></b>
-        <%= link_to 'Edit', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews',
+        <%= link_to 'Edit', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
             'data-target' => '#mymodal-epa-review', class: "btn btn-success btn-sm"}  %>
       </div>
       <br />
     <% end %>
     <span>
-      <%= link_to 'New Review', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: 'new', 'data-target' => '#mymodal-epa-review', class: "btn btn-primary btn-sm"}%>
+      <%= link_to 'New Review', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
+      'data-target' => '#mymodal-epa-review', class: "btn btn-primary btn-sm"}%>
     </span>
   </td>
 
