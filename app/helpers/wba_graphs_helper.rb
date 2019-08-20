@@ -51,14 +51,10 @@ module WbaGraphsHelper
     data_series = []
 
     if in_category =="EPA"
-      #temp_data =  Epa.select("involvement, epa,  count(*)").group("involvement, epa").order("involvement, epa")
-      #categories = temp_data.select{|t| t.involvement==4}.map{|t| t.epa}
       epa = get_epa_involvement
       categories = epa.keys
       data_series = epa.values.transpose
     elsif in_category == "Clinical Discipline"
-          #temp_data =  Epa.select("involvement, clinical_discipline, count(*)").group("involvement, clinical_discipline").order("involvement, clinical_discipline")
-          #categories = temp_data.select{|t| t.involvement==4}.map{|t| t.clinical_discipline}
           clinical_discipline = Epa.distinct.pluck(:clinical_discipline).sort
           clinical_discipline_hash = get_involvement(clinical_discipline, 'clinical_discipline')
           categories = clinical_discipline_hash.keys
@@ -76,6 +72,11 @@ module WbaGraphsHelper
           clinical_assessor_hash = get_involvement(clinical_assessor, 'clinical_assessor')
           categories = clinical_assessor_hash.keys
           data_series = clinical_assessor_hash.values.transpose
+          #User.find_by(username: 'graulty').epas.group(:clinical_assessor).count
+          # => {"Attending Faculty"=>12, "Resident or Fellow"=>29, "Other/Not listed"=>16}
+
+
+
 
     elsif in_category == "Top 10 Assessors"
           array_hash ||= Epa.select(:involvement).group(:assessor_name).count
