@@ -44,6 +44,45 @@ module WbaGraphsHelper
     end
     return epa
   end
+    #
+    # [
+    #     {name: categories[0], y: 486, color: '#63BBFF'},
+    #     {name: categories[1], y: 281, color: '#96EB79'},
+    #     {name: categories[2], y: 638, color: '#E363FF'}
+    #   ],
+
+
+  def random_color
+    return "#" + "#{SecureRandom.hex(3)}"
+  end
+
+  def get_4_random_colors
+    color_array = []
+    for j in 0..3
+      color_array.push "#" + "#{SecureRandom.hex(3)}"
+    end
+    return color_array
+  end
+
+  def prep_data(categories, data_series)
+    pie_data = []
+    mod_data_series = data_series.transpose
+    for i in 0..categories.length-1
+       hash_data = {}
+       hash_data.store(:name, categories[i])
+       if !data_series[i].nil?
+         hash_data.store(:y, mod_data_series[i].sum)
+       else
+        hash_data.store(:y, [0])
+       end
+       hash_data.store(:color, random_color)
+       pie_data.push hash_data
+
+     end
+
+     return pie_data
+
+  end
 
 
   def hf_series_data in_category
@@ -74,10 +113,6 @@ module WbaGraphsHelper
           data_series = clinical_assessor_hash.values.transpose
           #User.find_by(username: 'graulty').epas.group(:clinical_assessor).count
           # => {"Attending Faculty"=>12, "Resident or Fellow"=>29, "Other/Not listed"=>16}
-
-
-
-
     elsif in_category == "Top 10 Assessors"
           array_hash ||= Epa.select(:involvement).group(:assessor_name).count
           sorted = array_hash.sort_by{|k,v| v}.reverse
@@ -103,25 +138,53 @@ module WbaGraphsHelper
           # categories = temp_data.select{|t| t.involvement==4}.map{|t| t.assessor_name}
     end
 
+    # [
+    #       {name: categories[0], y: 486, color: '#63BBFF'},
+    #       {name: categories[1], y: 281, color: '#96EB79'},
+    #       {name: categories[2], y: 638, color: '#E363FF'}
+    #     ]
+
+
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" )
       f.xAxis(categories: categories)
-      f.series(name: "1 - I did it", yAxis: 0, data: data_series[0],
-                 drilldown: {
-                   name: 'Test',
-                   categories: ['A', 'B', 'C'],
-                   data: [10, 20, 30]
-                 }
-               )
+      f.series(name: "1 - I did it", yAxis: 0, data: data_series[0])
       f.series(name: "2 - I talked them through it", yAxis: 0, data: data_series[1])
       f.series(name: "3 - I directed them from time to time", yAxis: 0, data: data_series[2])
-      f.series(name: "4 - I was available just in case", yAxis: 0, data: data_series[3])
-      f.colors(["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"])
+      f.series(name: "4 - I was available just in case", yAxis: 0, data: data_series[3], drilldown: "IwasAvailable")
+      if in_category == "Clinical Assessor"
+        pie_data = prep_data(categories, data_series)
+        f.series(type: 'pie',
+                name: 'Total No of DataPoints',
+                data: pie_data,
+                center: [1000,100], size: 150, showInLegend: false
+        )
+      end
+
+      f.drilldown(
+        series: [{
+          id: "IwasAvailable",
+          data:[
+              ['A', 4],
+              ['B', 5],
+              ['C', 6]
+
+          ]
+        }]
+       )
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      f.colors(get_4_random_colors)
       f.yAxis [
          { tickInterval: 20,
            title: {text: "<b>No of Data Points</b>", margin: 20}
          }
       ]
+      f.plot_options(
+        series: {
+          cursor: 'pointer'
+
+        }
+      )
 
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
@@ -130,7 +193,9 @@ module WbaGraphsHelper
                 plotBackgroundImage: ''
               })
     end
-
+    puts "======================================================"
+    print chart.inspect
+    puts "======================================================="
     return chart
 
   end
