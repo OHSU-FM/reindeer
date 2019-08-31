@@ -193,9 +193,7 @@ module WbaGraphsHelper
                 plotBackgroundImage: ''
               })
     end
-    puts "======================================================"
-    print chart.inspect
-    puts "======================================================="
+
     return chart
 
   end
