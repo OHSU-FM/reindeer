@@ -2,7 +2,7 @@
 <table class="table borderless table-condensed modal-text-align-center table-striped table-hover">
   <thead>
     <tr>
-      <td>Tittle</td>
+      <td>Title</td>
       <td>Content</td>
       <td>UserID</td>
       <td>Artifacts/Documents</td>
@@ -13,7 +13,7 @@
   <% else %>
     <% epa = "EPA#{idx_epa}" %>
   <% end %>
-  <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa or a.content == 'Misc' } %>
+  <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa or a.content == 'Other' } %>
 
   <% selected_artifacts.each do |artifact| %>
       <tr>
