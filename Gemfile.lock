@@ -146,6 +146,7 @@ GEM
     haml (5.0.4)
       temple (>= 0.8.0)
       tilt
+    hash-deep-merge (0.1.1)
     high_voltage (3.1.0)
     highcharts-rails (6.0.3)
       railties (>= 3.1)
@@ -171,6 +172,8 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
+    lazy_high_charts (1.5.8)
+      hash-deep-merge
     less (2.6.0)
       commonjs (~> 0.2.7)
     less-rails (2.8.0)
@@ -412,6 +415,7 @@ DEPENDENCIES
   jquery-ui-rails (~> 5.0, >= 5.0.5)
   json
   kaminari
+  lazy_high_charts
   lograge
   mini_racer
   nested_form_fields

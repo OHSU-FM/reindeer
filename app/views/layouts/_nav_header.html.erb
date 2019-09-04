@@ -45,6 +45,10 @@
           <%= nav_link_to("Home", main_app.root_path, class: "dashboard-link") %>
         <% end %>
 
+        <% if ['admin', 'dean'].include? current_user.coaching_type %>
+            <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
+        <% end %>
+
         <% if can? :list, LimeSurvey %>
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
             <%= nav_link_to(hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank')  %>

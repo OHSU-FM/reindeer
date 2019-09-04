@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get 'cds_reports', to: 'cds_reports#index'
+  get 'wba_graphs/index', to: 'wba_graphs#index'
+  get 'wba_graphs/show', to: 'wba_graphs#show'
   resources :epas
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
