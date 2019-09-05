@@ -2,7 +2,7 @@
   <b>Please Select a Category</b> <%= select_tag 'category_id', options_for_select(hf_get_categories, selected: params[:category_id]),
   html: {selected: true}, include_blank: "---", onchange: "this.form.submit();" %>
 <% end %>
-<br />
+<br /><br />
 
 <div id="container-fluid" class="navbar-left">
   Assessor has the most 4s': <b><%= @most_fours[0] %> </b> (4s: <%= @most_fours[1] %>, total: <%= @total_count_fours %>)

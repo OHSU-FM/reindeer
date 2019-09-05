@@ -65,6 +65,7 @@ class LsReports::BaseController < ApplicationController
     @hide_agg = fm.hide_agg
     @hide_pk = fm.hide_pk
     @virtual_groups = fm.virtual_groups
+
     @filtered_label = @role_aggregate.get_pk_label
     @unfiltered_label = @role_aggregate.get_pk_label.pluralize
     @filtered_label.pluralize if @fm.filters_equal

@@ -91,7 +91,7 @@ module WbaGraphsHelper
        hash_data = {}
 
        if !data_series[i].nil?
-         hash_data.store(:name, categories[i] + " - " + mod_data_series[i].sum.to_s)
+         hash_data.store(:name, categories[i])
          hash_data.store(:y, mod_data_series[i].sum)
        else
        hash_data.store(:name, categories[i] + " - 0")
@@ -182,7 +182,14 @@ module WbaGraphsHelper
   def create_chart(data_series, in_category, categories)
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" )
-      f.xAxis(categories: categories)
+      f.xAxis(categories: categories,
+              labels: {
+                        style:  {
+                                    fontWeight: 'bold',
+                                    color: '#000000'
+                                }
+                      }
+      )
       f.series(name: "1 - I did it", yAxis: 0, data: data_series[0])
       f.series(name: "2 - I talked them through it", yAxis: 0, data: data_series[1])
       f.series(name: "3 - I directed them from time to time", yAxis: 0, data: data_series[2])
@@ -192,7 +199,7 @@ module WbaGraphsHelper
         f.series(type: 'pie',
                 name: 'Total No of DataPoints',
                 data: pie_data,
-                center: [1000,100], size: 150, showInLegend: false
+                center: [800,100], size: 150, showInLegend: false
         )
       end
 
@@ -209,12 +216,30 @@ module WbaGraphsHelper
        )
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
       f.colors(get_4_random_colors)
+
       f.yAxis [
          { tickInterval: 20,
            title: {text: "<b>No of Data Points</b>", margin: 20}
          }
       ]
       f.plot_options(
+
+        pie: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
+            }
+        },
+
+        column: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+
         series: {
           cursor: 'pointer'
 
