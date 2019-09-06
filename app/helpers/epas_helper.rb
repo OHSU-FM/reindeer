@@ -52,10 +52,10 @@ module EpasHelper
     #selected_user = User.find_by(email: email)
     #epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
     epas = User.select(:id, :full_name).where(email: email).first.epas.order(:epa, :submit_date)
-    total_wba_count = epas.count
-    selected_student = epas.first.student_assessed.split("-").first
 
     if !epas.empty?
+      total_wba_count = epas.count
+      selected_student = epas.first.student_assessed.split("-").first
       epa_hash = reformatted_data(epas)
       epa_evaluators, unique_evaluators, selected_dates = epas_by_evaluators(epas)
       return epas, epa_hash, epa_evaluators, unique_evaluators, selected_dates, selected_student, total_wba_count
