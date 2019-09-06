@@ -178,8 +178,8 @@ module LsReportsHelper
       add_permission_group_filters
       add_all_param_filters
       do_titles
-      Rails.logger.info lime_survey.lime_data.query
-      Rails.logger.info lime_survey_unfiltered.lime_data.query
+      #Rails.logger.info lime_survey.lime_data.query
+      #Rails.logger.info lime_survey_unfiltered.lime_data.query
     end
 
     def user; @user; end
@@ -229,8 +229,8 @@ module LsReportsHelper
     ##
     # Load LimeSurvey and associations
     def get_lime_survey sid
-      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
-      result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
+        cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
+        result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
         # Load resource and pre-load associations
         LimeSurvey.includes(:role_aggregate,
                             lime_groups: [

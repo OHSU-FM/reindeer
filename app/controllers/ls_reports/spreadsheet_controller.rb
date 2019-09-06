@@ -31,7 +31,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
     @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
 
-    @rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
+    #@rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
+    @rs_questions_unfiltered = @rs_questions
     @comp_domain_desc = hf_comp_domain_desc
 
     @non_clinical_course_arry = hf_get_non_clinical_courses
@@ -111,7 +112,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     @preceptor_view = @preceptorship.flatten
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
-    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
+    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
 
 
@@ -169,6 +170,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       gon.unique_evaluators = @unique_evaluators
       gon.selected_dates = @selected_dates
       gon.selected_student = @selected_student
+      gon.total_wba_count = @total_wba_count
     end
 
     #gon.preceptorship = @preceptorship

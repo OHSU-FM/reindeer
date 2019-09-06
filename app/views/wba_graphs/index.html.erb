@@ -1,12 +1,20 @@
-<%= form_tag(wba_graphs_index_path, method: "get", class: 'navbar-form navbar-left', id: 'wba_graph_form') do %>
-  <b>Please Select a Category</b> <%= select_tag 'category_id', options_for_select(hf_get_categories, selected: params[:category_id]),
-  html: {selected: true}, include_blank: "---", onchange: "this.form.submit();" %>
-<% end %>
-<br /><br />
 
-<div id="container-fluid" class="navbar-left">
-  Assessor has the most 4s': <b><%= @most_fours[0] %> </b> (4s: <%= @most_fours[1] %>, total: <%= @total_count_fours %>)
-  <br />
-  Assessor has the most 1s': <b><%= @most_ones[0] %> </b> (1s: <%= @most_ones[1] %>, total: <%= @total_count_ones %>)
-  <%= high_chart("wba_graph", @chart) %>
+
+<div class="center-div">
+
+  <%= form_tag(wba_graphs_index_path, method: "get", class: 'navbar-form navbar-left', id: 'wba_graph_form') do %>
+    <b>Please Select a Category</b> <%= select_tag 'category_id', options_for_select(hf_get_categories, selected: params[:category_id]),
+    html: {selected: true}, include_blank: "---", onchange: "this.form.submit();" %>
+  <% end %>
+  <br /><br />
+
+  <hr>
+
+    Assessor has the most 4s': <b><%= @most_fours[0] %> </b> (4s: <%= @most_fours[1] %>, total: <%= @total_count_fours %>)
+    <br />
+    Assessor has the most 1s': <b><%= @most_ones[0] %> </b> (1s: <%= @most_ones[1] %>, total: <%= @total_count_ones %>)
+    <div class="inner-div">
+     <%= high_chart("wba_graph", @chart) %>
+    </div>
+
 </div>

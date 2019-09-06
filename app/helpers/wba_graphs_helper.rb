@@ -23,7 +23,6 @@ module WbaGraphsHelper
     temp_hash = {}
     username = email.split("@").first
 
-
     in_category.each do |j|
         temp_involve = []
         (1..4).each do |k|
@@ -180,8 +179,18 @@ module WbaGraphsHelper
   end
 
   def create_chart(data_series, in_category, categories)
+
+  total_wba_count = 0
+
+   data_series.each do |data|
+     if !data.nil?
+        total_wba_count += data.sum
+      end
+   end
+
     chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" )
+      f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+      #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
       f.xAxis(categories: categories,
               labels: {
                         style:  {
