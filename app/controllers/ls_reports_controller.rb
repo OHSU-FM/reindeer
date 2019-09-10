@@ -1,5 +1,6 @@
 class LsReportsController < ApplicationController
   include LsReportsHelper
+  include ArtifactsHelper
   layout 'full_width_margins'
   respond_to :json, :html
 
@@ -21,5 +22,6 @@ class LsReportsController < ApplicationController
 
     @cohorts = current_user.cohorts
     #@recent = surveys.first(5)
+    
   end
 end

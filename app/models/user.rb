@@ -231,7 +231,7 @@ class User < ActiveRecord::Base
     group :sign_in_details do
       active false
       [:current_sign_in_at, :sign_in_count, :reset_password_sent_at,
-       :remember_created_at, :last_sign_ilime_surveyn_at, :current_sign_in_ip,
+       :remember_created_at, :last_sign_in_at, :current_sign_in_ip,
        :last_sign_in_ip].each do |attr|
          field attr
        end
@@ -287,7 +287,7 @@ class User < ActiveRecord::Base
     end
 
     list do
-      include_fields :id, :username, :email, :permission_group, :is_ldap, :can_dashboard, :can_chart,
+      include_fields :id, :username, :email, :permission_group,  :is_ldap, :can_dashboard, :can_chart,
         :admin, :superadmin
       exclude_fields :lime_user, :password, :password_confirmation, :explain_survey_access,
         :user_externals, :current_sign_in_at, :sign_in_count, :permission_ls_groups,

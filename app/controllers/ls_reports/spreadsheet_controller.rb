@@ -20,10 +20,14 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       redirect_to ls_reports_path
     end
 
+puts 'start time: ' + Time.now.strftime("%d/%m/%Y %H:%M:%S")          #=> "at 08:37AM"
+
     @lime_survey.wipe_response_sets
 
     @response_sets = hf_flatten_response_sets @lime_survey
     @rs_data = hf_transpose_response_sets @response_sets
+
+
 
     @rs_data.sort_by!{|obj| obj["StartDt"]}
     @rs_questions = hf_transpose_questions @response_sets
@@ -37,6 +41,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     @non_clinical_course_arry = hf_get_non_clinical_courses
 
+    puts "*** before ccomp_hash3 ********** "
+
+
+
     @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
     @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
 
@@ -48,6 +56,12 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level2 = hf_comp_courses(@rs_data, "2")
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
+
+
+    puts "*** before cpx, usmle, shelf_attachments, etc.. "
+
+    puts ' ****** end time: ' + Time.now.strftime("%d/%m/%Y %H:%M:%S")
+
 
     if @pk != "_"
       @student_cohort = User.find_by(email: @pk).permission_group.title
@@ -104,7 +118,6 @@ class LsReports::SpreadsheetController < LsReports::BaseController
         get_all_blocks
       end
     end
-
 
     @cpx_data = hf_get_cpx(@survey)
     @usmle_data = hf_get_usmle(@survey)

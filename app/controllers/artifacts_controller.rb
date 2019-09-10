@@ -94,9 +94,16 @@ class ArtifactsController < ApplicationController
 
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
-        filename = document.filename.to_s.gsub(" ", "_")
-        temp_str = filename.split("_")
-        full_name = temp_str.first.capitalize + ", " + temp_str.second.capitalize
+        temp_str = document.filename.to_s.split(" ")
+        if temp_str.first.include? "_"
+          full_name = temp_str.first.gsub("_", ", ")
+        else
+          full_name = temp_str.first + " " + temp_str.second.gsub("_", ", ")
+        end
+        #filename = document.filename.to_s.gsub("_", ", ")
+
+        #full_name = temp_str.first + ", " + temp_str.second
+
         @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
           temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title) do |a|
