@@ -1,12 +1,127 @@
 module WbaGraphsHelper
 
-  # series: [{
-  #   name: '1',
-  #   data: [13 set of data points]
-  # },{name: '2'
-  #    data: [13 set of data points]
-  # },{....}
-  # ]
+  include LsReports::CompetencyHelper
+  include LsReports::ClinicalphaseHelper
+
+  EPA_DESC={"EPA1" => "Gather Hx and Perform PE",
+            "EPA2" => "Prioritize DDx Following Clinical Encounter",
+            "EPA3" => "Recommend and Interpret Common Dx and Screening Tests",
+            "EPA4" => "Enter and Discuss Orders and Prescriptions",
+            "EPA5" => "Document a Clinical Encounter in Pt Record",
+            "EPA6" => "Provide Oral Presentation of a Clinical Encounter",
+            "EPA7" => "Form Clinical Questions/Retrieve Evidence to Advance Pt care",
+            "EPA8" => "Give or Receive a Pt Handover to Transition Care Responsibility",
+            "EPA9" => "Collaborate as a member of IPE team",
+            "EPA10" => "Recognize a Pt Requiring Urgent or Emergent Care and Initiate Evaluation and Management",
+            "EPA11" => "Obtain Informed Consent for Tests/Procedures",
+            "EPA12" => "Perform General Procedures of a Physician ",
+            "EPA13" => "Identify System Failures/Contribute to a Cxof Safety/Improvement"
+  }
+
+  class LimeTable < ActiveRecord::Base
+  end
+
+  def hf_epa_desc2(code)
+    return EPA_DESC[code]
+  end
+
+  def fix_key(in_key)
+    case in_key
+        when "PPPD01"
+          return "PPPD1"
+        when "PPPD02"
+          return "PPPD2"
+        when "PPPD03"
+          return "PPPD3"
+        when "PPPD04"
+          return "PPPD4"
+        when "PPPD05"
+          return "PPPD5"
+        when "PPPD06"
+          return "PPPD6"
+        when "PPPD07"
+          return "PPPD7"
+        when "PPPD08"
+          return "PPPD8"
+        when "PPPD09"
+          return "PPPD9"
+        else
+          return in_key
+
+    end
+  end
+
+  def surveygrps(permission_group_id)
+    surveys =  PermissionLsGroup.where(permission_group_id: permission_group_id).order(:updated_at)
+    temp_surveys = []
+    surveys.each do |survey|
+      if survey.lime_survey.title.include? "Core Clinical/Electives/Intersessions"
+        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+      elsif survey.lime_survey.title.include? "Preceptorship"
+        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+      elsif survey.lime_survey.title.include? "CSL Narrative Assessment"
+        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+      end
+    end
+    return temp_surveys
+    #LimeSurveysLanguagesetting.where(surveyls_survey_id: survey.lime_survey_sid).first
+  end
+
+  def get_data(sid, col_name, student_email)
+    results = []
+    ActiveRecord::Base.logger = nil
+    ActiveRecord::Base.transaction do
+      LimeTable.table_name = "lime_survey_#{sid}"
+      results = LimeTable.where("#{col_name}": student_email).order(:submitdate)
+      return results
+    end
+
+  end
+
+  def reformat_data (col_names, results)
+    return [] if results.empty?
+    rr = results.map(&:attributes)
+    clinical_data = []
+    rr.each do |rs|
+      hash_data = {}
+      rs.each do |key, val|
+        new_key = col_names.select{|k, v| v == key}
+        if !new_key.empty?
+            new_key = new_key.first.first ## want the readable column
+            #puts "#{new_key} --> " + val.to_s
+            hash_data.store(fix_key(new_key), val)
+         end
+
+      end
+      #byebug
+      clinical_data.push hash_data
+      #print "----------------------------------------------"
+    end
+    #byebug
+    return clinical_data
+  end
+
+  def hf_get_clinical_dataset(user, dataset_type)
+    student_email = user.first.email
+    surveys = surveygrps(user.first.permission_group_id)
+    sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}"}.first.split("|").first
+
+    rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
+    col_names = rr.first.column_names
+    email_col = Hash[col_names]["StudentEmail"]
+    results = get_data(sid_clinical, email_col, student_email)
+
+    desired_data = reformat_data(Hash[col_names], results)
+
+    if dataset_type.include? "CSL Narrative"
+      hash_data= {}
+      survey_title = surveys.select{|s| s if s.include? "#{dataset_type}"}.first.split("|").second
+      survey_title = survey_title.split(":").last
+      desired_data.first.store("BlockName", survey_title)
+
+    end
+    return desired_data
+  end
 
   def hf_get_categories
     [
@@ -17,6 +132,20 @@ module WbaGraphsHelper
       ["Top 10 Assessors"],
       ["Top 10 Student Assessed"],
     ]
+  end
+
+  def hf_get_wbas(user_id)
+    epa = {}
+    (1..13).each do |j|
+        temp_involve = []
+        (1..4).each do |k|
+           temp_data = Epa.where(epa: "EPA#{j}", involvement: k, user_id: user_id).count
+           temp_involve.push temp_data
+        end
+        epa["EPA#{j}"] = temp_involve
+    end
+
+    return epa
   end
 
   def get_involvement_student(in_category, col_name, email)
@@ -208,7 +337,7 @@ module WbaGraphsHelper
         f.series(type: 'pie',
                 name: 'Total No of DataPoints',
                 data: pie_data,
-                center: [800,100], size: 150, showInLegend: false
+                center: [920,80], size: 150, showInLegend: false
         )
       end
 

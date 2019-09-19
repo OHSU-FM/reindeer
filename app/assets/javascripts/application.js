@@ -67,5 +67,6 @@
 //= require searches.js
 //= require students.js
 //= require cds_reports
+//= require wba_graphs
 // turbolinks is commented out..
 // require turbolinks

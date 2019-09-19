@@ -1,0 +1,16 @@
+<div id="EntrustmentID">
+  <% if !@percent_complete.nil? %>
+
+            <h3><b>EPA Summary for <%= @user.first.full_name %></b></h3>
+
+        <hr>
+        <% i = 1 %>
+        <% @percent_complete.drop(1).each do |val| %>
+          <div class="row">
+              <%= render partial: 'qa_percent', locals: {epa_code: "EPA#{i}", epa_percent: val, wba: @wba["EPA#{i}"]} %>
+              <% i = i + 1 %>
+          </div>
+        <% end %>
+
+  <% end %>
+</div>
