@@ -1,8 +1,7 @@
 <div id="EntrustmentID">
   <% if !@percent_complete.nil? %>
-
-            <h3><b>EPA Summary for <%= @user.first.full_name %></b></h3>
-
+            <h3><b>EPA Final Summary for <%= @user.first.full_name %></b></h3>
+            <h5><b>(as of <%= @today_date %>, reviewed by <%= current_user.full_name %>)</b></h5>
         <hr>
         <% i = 1 %>
         <% @percent_complete.drop(1).each do |val| %>

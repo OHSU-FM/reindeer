@@ -38,8 +38,6 @@ class WbaGraphsController < ApplicationController
     @most_fours, @total_count_fours = most_fours
     @most_ones, @total_count_ones = most_ones
     #@med21_cohort = User.select(:email, :full_name).where(permission_group_id: 13).order(:full_name)
-
-
   end
 
   def get_entrustment_data
@@ -49,8 +47,9 @@ class WbaGraphsController < ApplicationController
       @percent_complete = hf_epa_class_mean(@clinical_data)
       @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
       @wba = hf_get_wbas(@user.first.id)
-      @csl_data = hf_get_clinical_dataset(@user, 'CSL Narrative Assessment')
-
+      @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
+      @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.first.email, "Progress Board")
+      @today_date = Time.new.strftime("%m/%d/%Y")
     end
     if request.xhr?
       respond_to do |format|

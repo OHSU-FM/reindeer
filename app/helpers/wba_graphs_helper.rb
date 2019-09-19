@@ -91,13 +91,9 @@ module WbaGraphsHelper
             #puts "#{new_key} --> " + val.to_s
             hash_data.store(fix_key(new_key), val)
          end
-
       end
-      #byebug
       clinical_data.push hash_data
-      #print "----------------------------------------------"
     end
-    #byebug
     return clinical_data
   end
 
@@ -105,22 +101,34 @@ module WbaGraphsHelper
     student_email = user.first.email
     surveys = surveygrps(user.first.permission_group_id)
     sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}"}.first.split("|").first
-
     rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
     col_names = rr.first.column_names
     email_col = Hash[col_names]["StudentEmail"]
     results = get_data(sid_clinical, email_col, student_email)
-
     desired_data = reformat_data(Hash[col_names], results)
 
-    if dataset_type.include? "CSL Narrative"
-      hash_data= {}
-      survey_title = surveys.select{|s| s if s.include? "#{dataset_type}"}.first.split("|").second
-      survey_title = survey_title.split(":").last
-      desired_data.first.store("BlockName", survey_title)
-
-    end
     return desired_data
+  end
+
+  def hf_get_csl_datasets(user, dataset_type)
+    student_email = user.first.email
+    surveys = surveygrps(user.first.permission_group_id)
+    csl_datasets = surveys.select{|s| s if s.include? "#{dataset_type}"} #.first.split("|").first
+    big_data = []
+    csl_datasets.each do |csl|
+        csl_sid = csl.split("|").first
+        csl_title = csl.split("|").last.split(":").last
+        rr = LimeSurvey.where(sid: csl_sid).includes(:lime_groups)
+        col_names = rr.first.column_names
+        email_col = Hash[col_names]["StudentEmail"]
+        results = get_data(csl_sid, email_col, student_email)
+        if !results.empty?
+          desired_data = reformat_data(Hash[col_names], results)
+          desired_data.first.store("BlockName", csl_title)
+          big_data.push desired_data
+        end
+    end
+    return big_data
   end
 
   def hf_get_categories

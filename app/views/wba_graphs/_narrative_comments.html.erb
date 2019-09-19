@@ -1,5 +1,5 @@
 
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
@@ -89,16 +89,68 @@
                       </tr>
                     </thead>
                     <% csl_data.each do |csl| %>
-                      <tr>
-                        <td><%= csl["BlockName"] %></td>
-                        <td><%= csl["CSLInstructor"].split(":").last %></td>
-                        <td><%= csl["SelectedStudent"] %></td>
-                        <td><%= csl["Comments"] %></td>
-                      </tr>
+                      <% csl.each do |data| %>
+                        <tr>
+                          <td><%= data["BlockName"] %></td>
+                          <td><%= data["CSLInstructor"].split(":").last %></td>
+                          <td><%= data["SelectedStudent"] %></td>
+                          <td><%= data["Comments"] %></td>
+                        </tr>
+                      <% end %>
                     <% end %>
                   </table>
                 </div>
                </div>
            </div>
        </div>
-    </div>
+
+       <div class="panel panel-default">
+           <div class="panel-heading" role="tab" id="headingFour">
+             <h4 class="panel-title">
+               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                 Official Documents <span class="badge badge-warning"><%= @no_official_docs %></span>
+               </a>
+             </h4>
+           </div>
+           <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+               <div class="panel-body"
+                 <div class="table-responsive-sm">
+                    <% if @no_official_docs == 0 %>
+                      <h5> No Official Documents Found  ! </h5>
+                    <% else %>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>UserID</th>
+                            <th>Artifacts/Documents</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" } %>
+
+                        <% selected_artifacts.each do |artifact| %>
+                            <tr>
+                              <td><%= artifact.title %></td>
+                              <td><%= artifact.content %> </td>
+                              <td><%= artifact.user_id.to_s %></td>
+                                <% if artifact.documents.attached? %>
+                                  <% artifact.documents.each do |document| %>
+                                      <td> <%= document.filename %> </td>
+                                      <td>
+                                        <%= link_to 'View', url_for(document), target: :_blank %>
+                                        /
+                                        <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                                      </td>
+                                  <% end %>
+                                <% end %>
+                            </tr>
+                        <% end %>
+                      </table>
+                    <% end %>
+                 </div>
+               </div>
+           </div>
+      </div>
+  </div>

@@ -1,9 +1,4 @@
 $(document).ready ->
-  toggleIcon = (e) ->
-    $(e.target).prev('.panel-heading').find('.more-less').toggleClass 'glyphicon-plus glyphicon-minus'
-    return
-  $('.panel-group').on('hidden.bs.collapse', toggleIcon);
-  $('.panel-group').on('shown.bs.collapse', toggleIcon);
 
   #$(document).on 'change', '#permission_group_id select', ->
   $('#user_id').on 'change', (e) ->
