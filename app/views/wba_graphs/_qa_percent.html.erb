@@ -21,19 +21,21 @@
 
 
 <!-- Modal -->
-<div id="CommentsModal">
-  <div class="modal fade" id="Comments" tabindex="-1" role="dialog" aria-labelledby="CommentsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" style="width:80%">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title text-center" id="CommentsLabel">Comments from Clinical Phase/Preceptors/CSL Evaluations</h4>
-        </div>
-        <div class="modal-body">
-          <%= render partial: "narrative_comments", locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data} %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="" onclick='' data-dismiss="modal">close</button>
+<div class="container">
+  <div id="CommentsModal">
+    <div class="modal fade" id="Comments" tabindex="-1" role="dialog" aria-labelledby="CommentsLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" style="width:80%">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title text-center" id="CommentsLabel">Comments from Clinical Phase/Preceptors/CSL Evaluations</h4>
+          </div>
+          <div class="modal-body">
+            <%= render partial: "narrative_comments", locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data} %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="" onclick='' data-dismiss="modal">close</button>
+          </div>
         </div>
       </div>
     </div>

@@ -103,7 +103,6 @@
                </div>
            </div>
        </div>
-
        <div class="panel panel-default">
            <div class="panel-heading" role="tab" id="headingFour">
              <h4 class="panel-title">
@@ -129,7 +128,6 @@
                           </tr>
                         </thead>
                         <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" } %>
-
                         <% selected_artifacts.each do |artifact| %>
                             <tr>
                               <td><%= artifact.title %></td>
