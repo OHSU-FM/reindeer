@@ -153,3 +153,5 @@ gem 'jquery-datatables'
 gem "csv_hasher"
 gem 'activestorage-validator', '~> 0.1.0'
 gem 'bullet', group: 'development'
+gem 'font-awesome-sass', '~> 4.4.0'
+gem "font-awesome-rails"
