@@ -127,7 +127,7 @@
                             <th>Actions</th>
                           </tr>
                         </thead>
-                        <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" or a.content == "Other" } %>
+                        <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" or a.content == "Misc" } %>
                         <% selected_artifacts.each do |artifact| %>
                             <tr>
                               <td><%= artifact.title %></td>
