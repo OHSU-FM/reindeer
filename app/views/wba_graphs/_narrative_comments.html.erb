@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           Clinical Phase Comments
               </a>
             </h4>
@@ -127,22 +127,27 @@
                             <th>Actions</th>
                           </tr>
                         </thead>
-                        <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" } %>
+                        <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" or a.content == "Other" } %>
                         <% selected_artifacts.each do |artifact| %>
                             <tr>
                               <td><%= artifact.title %></td>
                               <td><%= artifact.content %> </td>
                               <td><%= artifact.user_id.to_s %></td>
+                              <td><table class="responsive table table-hover">
                                 <% if artifact.documents.attached? %>
                                   <% artifact.documents.each do |document| %>
+                                    <tr>
                                       <td> <%= document.filename %> </td>
                                       <td>
                                         <%= link_to 'View', url_for(document), target: :_blank %>
                                         /
                                         <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
                                       </td>
+                                    </tr>
                                   <% end %>
                                 <% end %>
+                               </table>
+                              </td>
                             </tr>
                         <% end %>
                       </table>
