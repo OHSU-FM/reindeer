@@ -2,6 +2,7 @@ module WbaGraphsHelper
 
   include LsReports::CompetencyHelper
   include LsReports::ClinicalphaseHelper
+  include LsReports::SpreadsheetHelper
 
   EPA_DESC={"EPA1" => "Gather Hx and Perform PE",
             "EPA2" => "Prioritize DDx Following Clinical Encounter",

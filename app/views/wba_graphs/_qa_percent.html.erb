@@ -1,6 +1,6 @@
 
 
-  <b><%= epa_code %> - <%= hf_epa_desc2(epa_code) %></b>
+  <b><h4><%= epa_code %> - <%= hf_epa_desc2(epa_code) %></b></h4>
     <ul>
       <li>QA Completion bar: <b style="color:blue"><%= epa_percent %> %</b></li>
       <li>> or = 3 Narrative Comments: <b>Yes </b><!-- Button trigger modal -->
@@ -9,7 +9,10 @@
           </button>
     </li>
     </ul>
-    <%= render partial: "static_checkboxes" %>
+    <b>Notes</b><br>
+    <textarea rows="6" cols="80" placeholder="Please type notes or any comments on the EPA..">
+    </textarea>
+
     <h4>Total # of WBAs: <b style="color:blue"><%= wba.sum %></b>
       [4s: <b style="color:green"><%= wba[3] %></b>
        3s: <b style="color:orange"><%= wba[2] %></b>
