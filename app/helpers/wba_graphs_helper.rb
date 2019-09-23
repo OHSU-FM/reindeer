@@ -22,6 +22,21 @@ module WbaGraphsHelper
   class LimeTable < ActiveRecord::Base
   end
 
+  def hf_final_grade json_str
+    begin
+
+      arry = JSON.parse(json_str)
+      long_str = ""
+      arry.each do |key, value|
+        key = key.gsub(":", " - ")
+        long_str += "#{key}: #{value}</br>"
+      end
+      return long_str
+    rescue
+      return json_str
+    end
+  end
+
   def hf_epa_desc2(code)
     return EPA_DESC[code]
   end

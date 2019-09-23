@@ -25,7 +25,7 @@
                     <tr>
                       <td><%= cd["CourseName"] %></td>
                       <td><%= cd["Eval"] %></td>
-                      <td><%= hf_check_display_json(cd["FinalGrade"]).html_safe %></td>
+                      <td><%= hf_final_grade(cd["FinalGrade"]).html_safe %></td>
                       <td><%= cd["ProfConcerns"] %></td>
                       <td><%= cd["MSPE"] %></td>
                     </tr>

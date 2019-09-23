@@ -20,7 +20,7 @@ module LsReports::SpreadsheetHelper
                 if pquestion.response_set.data.first.respond_to? :data
                     # data is an array of sub question data
                     result += pquestion.response_set.data
-                  
+
                 else
                     result.push pquestion.response_set
                 end
