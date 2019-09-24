@@ -1,5 +1,8 @@
 $(document).ready ->
 
+  $(document).on 'click', '#comments-button', ->
+    $('a[href="#review_comments"]').click()
+    return
   #$(document).on 'change', '#permission_group_id select', ->
   $('#user_id').on 'change', (e) ->
     user_id = $(this).val()

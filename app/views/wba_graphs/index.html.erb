@@ -1,11 +1,12 @@
 <div class="container-fluid">
    <ul id="MainTabs" class="nav nav-tabs">
 
-       <li class="<%= 'active' if params[:action] == 'dean_wba' %>" sbold-italic"><a data-toggle="tab" href="#dean_wba" style="background-color:#E0BBE4">WBA Graphs</a></li>
+       <li class="<%= 'active' if params[:action] == 'dean_wba' %>" bold-italic"><a data-toggle="tab" href="#dean_wba" style="background-color:#E0BBE4">WBA Graphs</a></li>
        <li class="<%= 'active' if params[:action] == 'student_entrust' %>" bold-italic"><a data-toggle="tab" href="#student_entrust" style="background-color:#FEC8D8">EG Review</a></li>
+       <li class="bold-itlic"> <a data-toggle="tab" href="#review_comments" style="background-color:#DAF7A6">Comments/CSL Feedback</a></li>
 
    </ul>
-<div class="tab-content">
+  <div class="tab-content">
     <div id="dean_wba" class="tab-pane active fade in">
       <div class="center-div">
         <%= form_tag(wba_graphs_index_path, method: "get", class: 'navbar-form navbar-left', id: 'wba_graph_form') do %>
@@ -32,14 +33,20 @@
                 prompt: "Please Select Cohort" %>
             <b>Student</b> <%= select_tag :user_id, options_for_select(@cohort_students.collect{|s| [s.full_name, s.id]}, selected: params[:user_id]),
                 prompt: "Please Select a Student" %>
-            <button type="button" class="btn btn-xs btn-primary" onclick="window.print();">Print</button>
+            <button type="button" class="btn btn-md btn-success" onclick="window.print();">Print to File/PDF to Save Data</button>
           </div>
           <div class="container">
             <div id="entrustment">
                 <%= render partial: "get_entrustment_data" %>
             </div>
           </div>
+
         </div>
+      </div>
+      <div id="review_comments" class="tab-pane fade">
+        <% if !@clinical_data.nil? %>
+          <%= render partial: "narrative_comments", locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data} %>
+        <% end %>
       </div>
   </div>
 </div>
