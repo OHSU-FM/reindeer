@@ -76,6 +76,10 @@ class LsReports::BaseController < ApplicationController
   def export_to_gon
     gon.filters_equal = @fm.filters_equal
 
+    if controller_name == "Spreadsheet"
+      return
+    end
+
     # Data exports for javascript
     gon.qstats = @lime_survey.lime_stats.load_data
     gon.full_qstats = @lime_survey_unfiltered.lime_stats.load_data
