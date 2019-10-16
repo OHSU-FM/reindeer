@@ -2,12 +2,7 @@
 
   <h1>Reports</h1>
   <div class="row main">
-    <div class="col-md-12">
-      <%= select_tag "user",
-        grouped_options_for_select(hf_report_filter_hash(@cohorts), ls_reports_path(pk_filter: params[:pk_filter])),
-        include_blank: "All Students",
-        class: "needs-select2 collection-select" %>
-    </div>
+
   </div>
   <table class="table table-hover">
     <thead>
@@ -52,14 +47,22 @@
             :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
         <% end %>
 
-      <% full_acc = can?(:unfiltered_read, ra) %>
-      <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
-          data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
-          ></i></td>
-      <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
-    </tr>
-  <% end %>
-  <% end %>
+          <% full_acc = can?(:unfiltered_read, ra) %>
+          <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
+              data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
+              ></i></td>
+          <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
+        </tr>
+        <% csl_title = hf_csl_feedbacks_title(ra.name, @csl_feedbacks_title) %>
+        <% if !csl_title.nil? %>
+            <tr>
+              <td style="padding-left:20px;"><%= link_to(csl_title, csl_feedbacks_index_path(cohort: "Med22", email: @pk, block: "HODI"), target: '_blank') %></td>
+            </tr>
+        <% end %>
+
+      <% end %>
+
+    <% end %>
     </tbody>
   </table>
 </div>
