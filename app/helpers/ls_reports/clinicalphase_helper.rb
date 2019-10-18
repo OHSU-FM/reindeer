@@ -551,6 +551,13 @@ module LsReports::ClinicalphaseHelper
     return cpx
   end
 
+  def hf_get_new_cpx (email)
+    cpx = Cpx.find_by(email: email)
+    cpx_data = JSON.parse(cpx.cpx_data)
+    cpx_artifacts = Artifact.find_by(user_id: cpx.user_id, content: 'CPX')
+    return cpx_data, false, cpx_artifacts    # return false meant it found cpx data
+  end
+
   def hf_get_cpx in_survey
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "Clinical Phase", "Clinical Performance Exam (CPX)")

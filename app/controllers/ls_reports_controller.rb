@@ -22,6 +22,7 @@ class LsReportsController < ApplicationController
 
     @cohorts = current_user.cohorts
     #@recent = surveys.first(5)
+    @csl_feedbacks_title ||= CslFeedback.pluck(:csl_title).uniq
     
   end
 end

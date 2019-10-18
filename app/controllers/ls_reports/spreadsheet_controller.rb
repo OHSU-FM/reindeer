@@ -109,7 +109,10 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       end
     end
 
-    @cpx_data = hf_get_cpx(@survey)
+    @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
+    if @not_found_cpx
+      @cpx_data = hf_get_cpx(@survey)
+    end
     @usmle_data = hf_get_usmle(@survey)
     @shelf_attachments = hf_get_shelf_attachments(@survey)
 

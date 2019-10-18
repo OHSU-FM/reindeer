@@ -68,5 +68,6 @@
 //= require students.js
 //= require cds_reports
 //= require wba_graphs
+//= require csl_feedbacks
 // turbolinks is commented out..
 // require turbolinks

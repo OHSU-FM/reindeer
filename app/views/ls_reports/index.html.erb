@@ -32,6 +32,7 @@
       <tr>
       <td colspan="5" style="text-align:left;">
         <h3><i><%= hf_group_title(group.title).html_safe %></i></h3>
+        <% cohort_title = group.title.split(":").second %>
       </td>
     </tr>
   <% end %>
@@ -56,7 +57,7 @@
         <% csl_title = hf_csl_feedbacks_title(ra.name, @csl_feedbacks_title) %>
         <% if !csl_title.nil? %>
             <tr>
-              <td style="padding-left:20px;"><%= link_to(csl_title, csl_feedbacks_index_path(cohort: "Med22", email: @pk, block: "HODI"), target: '_blank') %></td>
+              <td style="padding-left:20px;"><%= link_to(csl_title, csl_feedbacks_index_path(cohort: cohort_title, email: @pk, block: "FUND"), target: '_blank') %></td>
             </tr>
         <% end %>
 
