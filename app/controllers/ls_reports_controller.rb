@@ -22,7 +22,10 @@ class LsReportsController < ApplicationController
 
     @cohorts = current_user.cohorts
     #@recent = surveys.first(5)
-    @csl_feedbacks_title ||= CslFeedback.pluck(:csl_title).uniq
-    
+    cohort = @survey_groups.first.title.split(":").second
+
+    @csl_feedbacks_title ||= CslFeedback.where("csl_title like ?", "%#{cohort}%").pluck(:csl_title).uniq
+
+
   end
 end
