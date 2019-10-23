@@ -120,6 +120,9 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
+    if @csl_evals.empty?
+      @csl_feedbacks = CslFeedback.where(user_id: @selected_user_id).order(:submit_date)
+    end
 
 
   end

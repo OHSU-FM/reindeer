@@ -10,7 +10,7 @@ module LsReportsHelper
       ra_title = ra_title + "/HODI"
     end
     ra_title = ra_title.split("-").last
-    puts "ra_title: " + ra_title
+    #puts "ra_title: " + ra_title
     csl_feedbacks_title.each do |csl|
       if (csl.include? ra_title) and (csl.include? "Mid-Term")
             title = "CSL Narrative Assessment Evaluation " + csl

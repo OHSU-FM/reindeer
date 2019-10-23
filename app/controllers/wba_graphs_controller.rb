@@ -48,6 +48,10 @@ class WbaGraphsController < ApplicationController
       @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
       @wba = hf_get_wbas(@user.first.id)
       @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
+      if @csl_data.empty?
+        @csl_feedbacks = CslFeedback.where(user_id: @user.first.id).order(:submit_date)
+        @csl_data = []
+      end
       @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.first.email, "Progress Board")
       @today_date = Time.new.strftime("%m/%d/%Y")
     end

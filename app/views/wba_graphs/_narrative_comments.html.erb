@@ -79,26 +79,30 @@
           <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
               <div class="panel-body"
                 <div class="table-responsive-sm">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">CSL Block Title</th>
-                        <th scope="col">CSL Instructor</th>
-                        <th scope="col">Student</th>
-                        <th scope="col">Feedback</th>
-                      </tr>
-                    </thead>
-                    <% csl_data.each do |csl| %>
-                      <% csl.each do |data| %>
-                        <tr>
-                          <td><%= data["BlockName"] %></td>
-                          <td><%= data["CSLInstructor"].split(":").last %></td>
-                          <td><%= data["SelectedStudent"] %></td>
-                          <td><%= data["Comments"] %></td>
-                        </tr>
-                      <% end %>
-                    <% end %>
-                  </table>
+                  <% if csl_data.empty? %>
+                    <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+                  <% else %>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">CSL Block Title</th>
+                            <th scope="col">CSL Instructor</th>
+                            <th scope="col">Student</th>
+                            <th scope="col">Feedback</th>
+                          </tr>
+                        </thead>
+                        <% csl_data.each do |csl| %>
+                          <% csl.each do |data| %>
+                            <tr>
+                              <td><%= data["BlockName"] %></td>
+                              <td><%= data["CSLInstructor"].split(":").last %></td>
+                              <td><%= data["SelectedStudent"] %></td>
+                              <td><%= data["Comments"] %></td>
+                            </tr>
+                          <% end %>
+                        <% end %>
+                      </table>
+                  <% end %>
                 </div>
                </div>
            </div>
