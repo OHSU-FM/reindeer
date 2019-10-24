@@ -5,6 +5,7 @@
         <%= link_to document.filename, url_for(document), target: :_blank %>
         /
         <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+        <br />
       </td>
     </tr>
   <% end %>
