@@ -3,7 +3,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
-              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           Clinical Experience Phase Course Comments
               </a>
             </h4>
@@ -25,7 +25,7 @@
                     <tr>
                       <td><%= cd["CourseName"] %></td>
                       <td><%= cd["Eval"] %></td>
-                      <td><%= hf_final_grade(cd["FinalGrade"]).html_safe %></td>
+                      <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
                       <td><%= cd["ProfConcerns"] %></td>
                       <td><%= cd["MSPE"] %></td>
                     </tr>

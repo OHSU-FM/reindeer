@@ -1,0 +1,58 @@
+<div class="container-fluid">
+   <ul id="MainTabs2" class="nav nav-tabs">
+
+       <li class="active bold-italic"><a data-toggle="tab" href="#competency" style="background-color:#E0BBE4">Competency</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPA</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#core" style="background-color:#FEC8D8">Core Courses</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#elective" style="background-color:#DAF7A6">Elective</a></li>
+
+   </ul>
+  <div class="tab-content">
+    <div id="competency" class="tab-pane active fade in">
+      <div class="center-div">
+        <div class="inner-div">
+          <% if !@chart.nil? %>
+            <br /> <br />
+            <%= high_chart("comp_graph", @chart) %>
+            <% else %>
+              <h4> No Competency/EPA data FOUND! </h4>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div id="epa" class="tab-pane active fade">
+      <div class="center-div">
+        <div class="inner-div">
+          <% if !@chart_epa.nil? %>
+            <br /> <br />
+            <%= high_chart("epa_graph", @chart_epa) %>
+          <% end %>
+          <%= high_chart("wba_graph", hf_series_data_student("Clinical Assessor", @pk)) %>
+          <% for i in 1..13 do %>
+            <%= render partial: 'epas/detail_adhoc_epas', locals: {idx_epa: i} %>
+          <% end %>
+          <%= render partial: "collapsible_epas" %>
+        </div>
+      </div>
+    </div>
+
+    <div id="core" class="tab-pane fade">
+      <div class="center-div">
+          <h4> Core Courses </h4>
+          <% if !@comp.nil? %>
+            <%= render partial: "core_courses" %>
+          <% else %>
+            <h4> No Core Courses data FOUND! </h4>
+          <% end %>
+        </div>
+      </div>
+      <div id="elective" class="tab-pane fade">
+        <h4> Electives </h4>
+        <% if !@comp.nil? %>
+          <%= render partial: "electives" %>
+        <% else %>
+          <h4> No Elective Courses data FOUND! </h4>
+        <% end %>
+      </div>
+  </div>
+</div>

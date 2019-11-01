@@ -296,6 +296,7 @@ module LsReports::CompetencyHelper
 
   end
 
+
   def hf_load_all_competencies(rs_data, level)
     comp_hash = {}
     COMP_CODES.each do |comp|

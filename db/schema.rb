@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_17_203010) do
+ActiveRecord::Schema.define(version: 2019_10_24_201236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,64 +93,73 @@ ActiveRecord::Schema.define(version: 2019_10_17_203010) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "competencies", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "competencies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "permission_group_id"
     t.string "student_uid"
-    t.string "student_name"
     t.string "email"
-    t.string "student_year"
-    t.decimal "ics", precision: 5, scale: 2
-    t.decimal "mk", precision: 5, scale: 2
-    t.decimal "pbli", precision: 5, scale: 2
-    t.decimal "pcp", precision: 5, scale: 2
-    t.decimal "pppd", precision: 5, scale: 2
-    t.decimal "sbpic", precision: 5, scale: 2
-    t.decimal "ics1", precision: 5, scale: 2
-    t.decimal "ics2", precision: 5, scale: 2
-    t.decimal "ics3", precision: 5, scale: 2
-    t.decimal "ics4", precision: 5, scale: 2
-    t.decimal "ics5", precision: 5, scale: 2
-    t.decimal "ics6", precision: 5, scale: 2
-    t.decimal "ics7", precision: 5, scale: 2
-    t.decimal "ics8", precision: 5, scale: 2
-    t.decimal "mk1", precision: 5, scale: 2
-    t.decimal "mk2", precision: 5, scale: 2
-    t.decimal "mk3", precision: 5, scale: 2
-    t.decimal "mk4", precision: 5, scale: 2
-    t.decimal "mk5", precision: 5, scale: 2
-    t.decimal "pbli1", precision: 5, scale: 2
-    t.decimal "pbli2", precision: 5, scale: 2
-    t.decimal "pbli3", precision: 5, scale: 2
-    t.decimal "pbli4", precision: 5, scale: 2
-    t.decimal "pbli5", precision: 5, scale: 2
-    t.decimal "pbli6", precision: 5, scale: 2
-    t.decimal "pbli7", precision: 5, scale: 2
-    t.decimal "pbli8", precision: 5, scale: 2
-    t.decimal "pcp1", precision: 5, scale: 2
-    t.decimal "pcp2", precision: 5, scale: 2
-    t.decimal "pcp3", precision: 5, scale: 2
-    t.decimal "pcp4", precision: 5, scale: 2
-    t.decimal "pcp5", precision: 5, scale: 2
-    t.decimal "pcp6", precision: 5, scale: 2
-    t.decimal "pppd1", precision: 5, scale: 2
-    t.decimal "pppd2", precision: 5, scale: 2
-    t.decimal "pppd3", precision: 5, scale: 2
-    t.decimal "pppd4", precision: 5, scale: 2
-    t.decimal "pppd5", precision: 5, scale: 2
-    t.decimal "pppd6", precision: 5, scale: 2
-    t.decimal "pppd7", precision: 5, scale: 2
-    t.decimal "pppd8", precision: 5, scale: 2
-    t.decimal "pppd9", precision: 5, scale: 2
-    t.decimal "pppd10", precision: 5, scale: 2
-    t.decimal "pppd11", precision: 5, scale: 2
-    t.decimal "sbpic1", precision: 5, scale: 2
-    t.decimal "sbpic2", precision: 5, scale: 2
-    t.decimal "sbpic3", precision: 5, scale: 2
-    t.decimal "sbpic4", precision: 5, scale: 2
-    t.decimal "sbpic5", precision: 5, scale: 2
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "ics8", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "mk4", limit: 2
+    t.integer "mk5", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pbli4", limit: 2
+    t.integer "pbli5", limit: 2
+    t.integer "pbli6", limit: 2
+    t.integer "pbli7", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pcp4", limit: 2
+    t.integer "pcp5", limit: 2
+    t.integer "pcp6", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd3", limit: 2
+    t.integer "pppd4", limit: 2
+    t.integer "pppd5", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd7", limit: 2
+    t.integer "pppd8", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "pppd10", limit: 2
+    t.integer "pppd11", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic3", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["student_uid"], name: "index_competencies_on_student_uid"
+    t.index ["permission_group_id"], name: "index_competencies_on_permission_group_id"
     t.index ["user_id"], name: "index_competencies_on_user_id"
   end
 
@@ -541,6 +550,8 @@ ActiveRecord::Schema.define(version: 2019_10_17_203010) do
 
   add_foreign_key "artifacts", "users"
   add_foreign_key "cohorts", "users"
+  add_foreign_key "competencies", "permission_groups"
+  add_foreign_key "competencies", "users"
   add_foreign_key "csl_evals", "users"
   add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "epa_masters", "users"

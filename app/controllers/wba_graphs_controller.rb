@@ -15,7 +15,7 @@ class WbaGraphsController < ApplicationController
     if params[:category_id].present?
       @chart = hf_series_data(params[:category_id])
     elsif params[:emai].present?
-        puts "it has emai: " + email
+        puts "it has email: " + email
     end
 
     @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)

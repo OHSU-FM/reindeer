@@ -109,4 +109,13 @@ module SearchesHelper
     return "20" + in_code.downcase.split('med').second
   end
 
+  def hf_competency_exists(user_id)
+    comp = Competency.find_by(user_id: user_id)
+    if comp.nil?
+        return false
+    else
+      return true
+    end
+  end
+
 end

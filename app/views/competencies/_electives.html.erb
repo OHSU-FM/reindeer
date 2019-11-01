@@ -1,0 +1,26 @@
+<div class="table-responsive-sm">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">CourseName</th>
+        <th scope="col">SubmitDt</th>
+        <th scope="col">Evaluator</th>
+        <th scope="col">FinalGrade</th>
+        <th scope="col">ProfConcern</th>
+        <th scope="col">MSPE</th>
+      </tr>
+    </thead>
+    <% @comp.each do |cd| %>
+      <% if !cd["course_name"].include? "730" and !cd["course_name"].include? "731" %>
+          <tr>
+            <td><%= cd["course_name"] %></td>
+            <td><%= cd["submit_date"] %></td>
+            <td><%= cd["eval"] %></td>
+            <td><%= cd['final_grade'] %></td>
+            <td><%= cd["prof_concerns"] %></td>
+            <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+          </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

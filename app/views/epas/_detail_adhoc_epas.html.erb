@@ -1,6 +1,8 @@
+
 <table class="table borderless table-condensed modal-text-align-center table-striped table-hover">
   <thead>
     <tr>
+      <th>EPA</th>
       <th>SubmitDate</th>
       <th>ClinicalDiscipline</th>
       <th>ClinicalSetting</th>
@@ -15,6 +17,7 @@
   <% @epas.each do |e| %>
     <tr>
       <% if e.epa == "EPA#{idx_epa}" %>
+        <td>EPA<%= idx_epa.to_s %></td>
         <td><%= e.submit_date.strftime("%F") %></td>
         <td><%= e.clinical_discipline %></td>
         <td><%= e.clinical_setting %></td>
@@ -27,5 +30,4 @@
       <% end %>
     </tr>
   <% end %>
-
 </table>

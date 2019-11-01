@@ -25,24 +25,18 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     @response_sets = hf_flatten_response_sets @lime_survey
     @rs_data = hf_transpose_response_sets @response_sets
-
-
-
     @rs_data.sort_by!{|obj| obj["StartDt"]}
     @rs_questions = hf_transpose_questions @response_sets
-
     @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
     @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
-
-    #@rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
     @rs_questions_unfiltered = @rs_questions
+
+
     @comp_domain_desc = hf_comp_domain_desc
-
     @non_clinical_course_arry = hf_get_non_clinical_courses
-
     @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
-    @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
 
+    @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
     @comp_hash2 = hf_load_all_competencies(@rs_data, "2")
     @comp_hash1 = hf_load_all_competencies(@rs_data, "1")
     @comp_hash0 = hf_load_all_competencies(@rs_data, "0")

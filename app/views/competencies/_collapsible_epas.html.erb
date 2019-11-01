@@ -1,0 +1,31 @@
+<H4>  Inside Collapsible Section </h4>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <% if !@student_epa.nil? %>
+    <% for i in 1..13 do %>
+      <% epa_code = "epa#{i}" %>
+      <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingEPA<%= i %>">
+              <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
+                  <div class="labels">
+                    <span>EPA<%= i %> Completion: <%= @student_epa[epa_code] %>%</span>
+
+                  </div>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="<%= @student_epa[epa_code] %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @student_epa[epa_code] %>%;">
+                    </div>
+                  </div>
+                </a>
+              </h4>
+          </div>
+          <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
+              <div class="panel-body">
+                  EPA --> <%= i %>
+              </div>
+          </div>
+      </div>
+    <% end %>
+  <% else %>
+    <h4> No EPA/Competencies Data FOUND! </h4>
+  <% end %>
+</div>

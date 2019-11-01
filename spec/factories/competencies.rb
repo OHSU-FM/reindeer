@@ -1,5 +1,7 @@
 FactoryBot.define do
-  #factory :competency do
-  #  user_id 1
-  #end
+  factory :competency do
+    user { nil }
+    student_uid { "MyString" }
+    email { "MyString" }
+  end
 end

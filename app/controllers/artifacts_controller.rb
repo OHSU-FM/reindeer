@@ -95,11 +95,13 @@ class ArtifactsController < ApplicationController
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
         temp_str = document.filename.to_s.split(" ")
-        if temp_str.first.include? "_"
-          full_name = temp_str.first.gsub("_", ", ")
+        temp_str2 = temp_str.first.split("_")
+        if temp_str2.count >= 2
+           full_name = temp_str2.first + ", " + temp_str2.second
         else
-          full_name = temp_str.first + " " + temp_str.second.gsub("_", ", ")
-        end
+           return
+         end
+      
         #filename = document.filename.to_s.gsub("_", ", ")
 
         #full_name = temp_str.first + ", " + temp_str.second

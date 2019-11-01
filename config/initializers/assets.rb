@@ -36,5 +36,6 @@ Rails.application.config.assets.precompile += %w( print.css
     epa_graphs.js
     cds_reports.css
     wba_graphs.css 
-    csl_feedbacks.css    
+    csl_feedbacks.css   
+    competencies.css 
    )

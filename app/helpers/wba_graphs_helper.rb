@@ -189,8 +189,6 @@ module WbaGraphsHelper
     return temp_hash
   end
 
-
-
   def get_involvement(in_category, col_name)
     temp_hash = {}
     in_category.each do |j|
