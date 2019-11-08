@@ -11,16 +11,14 @@
       </tr>
     </thead>
     <% @comp.each do |cd| %>
-
-      <% if cd["course_name"].include? "730" or cd["course_name"].include? "731" %>
+      <% if cd["course_name"].include? "770" %>
           <tr>
             <td><%= cd["course_name"] %></td>
             <td><%= cd["submit_date"] %></td>
             <td><%= cd["evaluator"] %></td>
             <td><%= cd['final_grade'] %></td>
             <td><%= cd["prof_concerns"] %></td>
-            <td><%= cd["mspe"].gsub("{cr}{newline}", "") %></td>
-
+            <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
           </tr>
       <% end %>
     <% end %>

@@ -28,7 +28,10 @@
           <% end %>
           <td>
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
-            <%= nav_link_to("Clinical Phase Dataset - TEST", competencies_path(user_id: result.id)) %>
+            <% if ['dean', 'admin'].include? current_user.coaching_type %>
+               <%= nav_link_to("Clinical Phase Dataset - TEST", competencies_path(user_id: result.id)) %>
+            <% end %>
+
             <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>

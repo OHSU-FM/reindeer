@@ -82,6 +82,33 @@ module CdsReportsHelper
     return cohorts_student
   end
 
+  def hf_get_past_due(past_due_mons, option, cohorts)
+    process_cohort = ["Med23", "Med22", "Med21", "Med20"]
+    past_due_hash = {}
+
+    process_cohort.each do |proc_cohort|
+      past_due_students = []
+      cohorts.each do |cohort|
+        if cohort.title.include? proc_cohort
+          cohort.users.each do |user|
+            if option == 'Meetings'
+              if user.meetings.where(created_at: "#{past_due_mons}.months.ago..Time.now").count == 0
+                past_due_students << user.full_name + "|" + cohort.title
+              end
+            elsif option == 'Goals'
+              if user.goals.where(created_at: "#{past_due_mons}.months.ago..Time.now").count == 0
+                past_due_students << user.full_name + "|" + cohort.title
+              end
+            end
+          end
+        end
+      end
+      past_due_hash[proc_cohort] = past_due_students.sort
+    end
+
+    return past_due_hash
+  end
+
   def hf_get_past_data(cohorts)
     past_data = Hash.new{ |h,k| h[k] = Hash.new 0 }
     ALLCOHORTS.each do |cohort|

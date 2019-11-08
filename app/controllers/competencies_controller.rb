@@ -3,7 +3,9 @@ class CompetenciesController < ApplicationController
   before_action :authenticate_user!
   include CompetenciesHelper
   include LsReports::CslevalHelper
+  include LsReports::ClinicalphaseHelper
   include EpasHelper
+  include WbaGraphsHelper
 
   def index
     @non_clinical_course_arry ||= hf_get_non_clinical_courses
@@ -15,6 +17,7 @@ class CompetenciesController < ApplicationController
     # end
 
     if current_user.coaching_type == "student"
+      @user = current_user
       full_name = current_user.full_name
       email = current_user.email
       permission_group_id = current_user.permission_group_id
@@ -26,14 +29,14 @@ class CompetenciesController < ApplicationController
 
     else
       if !(@comp = Competency.where(user_id: params[:user_id]).order(:submit_date)).empty?
-        byebug
-        @student_info = @comp.first.user
-        full_name = @student_info.full_name
-        email = @student_info.email
-        permission_group_id = @student_info.permission_group_id
+        @user = User.where(id: params[:user_id])
+        full_name = @user.first.full_name
+        email = @user.first.email
+        permission_group_id = @user.first.permission_group_id
         load_competencies(permission_group_id, full_name)
       else
-        email = User.find(params[:user_id]).email
+        @user = User.where(id: params[:user_id])
+        email = @user.first.email
         @comp = nil
       end
     end
@@ -42,14 +45,13 @@ class CompetenciesController < ApplicationController
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
-    # gon.epa_adhoc = @epa_hash #@epa_adhoc
-    # gon.epa_evaluators = @epa_evaluators
-    # gon.unique_evaluators = @unique_evaluators
-    # gon.selected_dates = @selected_dates
-    # gon.selected_student = @selected_student
-    # gon.total_wba_count = @total_wba_count
-
-
+     @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
+     @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
+     if @csl_data.empty?
+       @csl_feedbacks = CslFeedback.where(user_id: @user.first.id).order(:submit_date)
+       @csl_data = []
+     end
+     @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@user, 'All Blocks')
   end
 
   def load_competencies(permission_group_id, full_name)
@@ -60,18 +62,19 @@ class CompetenciesController < ApplicationController
     @comp_hash1 = hf_load_all_comp2(@comp, 1)
     @comp_hash0 = hf_load_all_comp2(@comp, 0)
 
-    @comp_data_clinical = hf_average_comp (@comp_hash3)
+
+    @comp_data_clinical = hf_average_comp2 (@comp_hash3)
     @comp_class_mean = Competency.load_class_mean(permission_group_id)
     if @comp_class_mean.nil?
       @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
-      @comp_class_mean = hf_competency_class_mean(@comp_unfiltered)
+      @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
       Competency.create_class_mean(@comp_class_mean, permission_group_id)
     end
 
     @chart = hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
 
-    @student_epa = hf_epa(@comp_data_clinical)
-    @epa_class_mean = hf_epa(@comp_class_mean)
+    @student_epa = hf_epa2(@comp_data_clinical)
+    @epa_class_mean = hf_epa2(@comp_class_mean)
     @chart_epa = hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
   end
 

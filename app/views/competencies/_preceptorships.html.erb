@@ -1,0 +1,20 @@
+<div class="table-responsive-sm">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Preceptor</th>
+        <th scope="col">SubmitDate</th>
+        <th scope="col">Grade</th>
+        <th scope="col">Comment</th>
+      </tr>
+    </thead>
+    <% @preceptorship_data.each do |pd| %>
+      <tr>
+        <td><%= pd["PreceptorName"] %></td>
+        <td><%= pd["SubmitDate"] %></td>
+        <td><%= pd["Grade"] %></td>
+        <td><%= pd["Comment"] %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

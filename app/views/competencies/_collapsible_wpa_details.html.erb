@@ -1,0 +1,47 @@
+
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+          <div class="panel panel-default">
+              <div class="panel-heading panel-heading-backgroud-color" role="tab" id="headingWPA">
+                  <h4 class="panel-title">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseWPA" aria-expanded="false" aria-controls="collapseWPA">
+                      WPA Details Data
+                    </a>
+                  </h4>
+              </div>
+              <div id="collapseWPA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingWPA">
+                  <div class="panel-body">
+                    <table class="table borderless table-condensed table-striped">
+                        <tr>
+                          <th>EPA</th>
+                          <th>SubmitDate</th>
+                          <th>ClinicalDiscipline</th>
+                          <th>ClinicalSetting</th>
+                          <th>ClincialAssessor</th>
+                          <th>AssessorName</th>s
+                          <th>TimesWithSupervisor</th>
+                          <th>Involvment</th>
+                          <th>Feedback</th>
+                          <th>EncounterComplex</th>
+                        </tr>
+                      <% @epas.each do |e| %>
+                        <tr>
+                            <td><%= e.epa %></td>
+                            <td><%= e.submit_date.strftime("%F") %></td>
+                            <td><%= e.clinical_discipline %></td>
+                            <td><%= e.clinical_setting %></td>
+                            <td><%= e.clinical_assessor %></td>
+                            <td><%= e.assessor_name %></td>
+                            <td><%= e.no_of_times_with_super %></td>
+                            <td><%= e.involvement %></td>
+                            <td><%= e.more_independent %></td>
+                            <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+              </div>
+          </div>
+
+
+    </div>

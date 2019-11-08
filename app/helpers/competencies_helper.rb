@@ -7,7 +7,7 @@ module CompetenciesHelper
                 "pppd1", "pppd2", "pppd3", "pppd4", "pppd5", "pppd6", "pppd7", "pppd8", "pppd9", "pppd10", "pppd11",
                 "sbpic1", "sbpic2", "sbpic3", "sbpic4", "sbpic5"]
 
-  ASSESSORS = {   "ics1" => 6, "ics2" => 3, "ics3" => 3, "ics4" => 3, "ics5" => 7, "ics6" => 3, "ics7" => 3, "ics8" => 3,
+  ASSESSORS2 = {  "ics1" => 6, "ics2" => 3, "ics3" => 3, "ics4" => 3, "ics5" => 7, "ics6" => 3, "ics7" => 3, "ics8" => 3,
                   "mk1" => 4, "mk2" => 6, "mk3" => 3, "mk4" => 3, "mk5" => 5,
                   "pbli1" => 8, "pbli2" => 4, "pbli3" => 3, "pbli4" => 4, "pbli5" => 3, "pbli6" => 3, "pbli7" => 3, "pbli8" => 3,
                   "pcp1" => 8, "pcp2" => 8, "pcp3" => 8, "pcp4" => 3, "pcp5" => 3, "pcp6" => 3,
@@ -70,7 +70,7 @@ module CompetenciesHelper
       return comp_hash
     end
 
-    def hf_average_comp (comp_hash3)
+    def hf_average_comp2 (comp_hash3)
       percent_complete_hash = {}
       COMP_CODES.each do |comp|
         percent_complete_hash[comp] = 0.0
@@ -79,7 +79,7 @@ module CompetenciesHelper
       percent_complete = 0.0
 
       comp_hash3.each do |index, value|
-        percent_complete = ((value.to_f/ASSESSORS[index])*100).round(0)
+        percent_complete = ((value.to_f/ASSESSORS2[index])*100).round(0)
         if percent_complete >= 100
           percent_complete_hash[index] = 100
         else
@@ -91,11 +91,11 @@ module CompetenciesHelper
       return percent_complete_hash
     end
 
-    def get_unique_student_id rs_data_unfiltered
+    def get_unique_student_id2 rs_data_unfiltered
       return rs_data_unfiltered.uniq{|e| e["student_uid"] }
     end
 
-    def get_courses(studentID, rs_data_unfiltered)
+    def get_courses2(studentID, rs_data_unfiltered)
       return rs_data_unfiltered.select {|c| c["student_uid"] == studentID }
     end
 
@@ -111,7 +111,7 @@ module CompetenciesHelper
 
     end
 
-    def hf_load_all_competencies(rs_data, level)
+    def hf_load_all_competencies2(rs_data, level)
       comp_hash = {}
       COMP_CODES.each do |comp|
         comp_hash[comp] = 0
@@ -134,15 +134,15 @@ module CompetenciesHelper
       return comp_hash
     end
 
-    def hf_competency_class_mean(rs_data_unfiltered)
+    def hf_competency_class_mean2(rs_data_unfiltered)
       courses = {}
       students_comp = {}
       temp_comp = []
-      uniq_students = get_unique_student_id(rs_data_unfiltered)
+      uniq_students = get_unique_student_id2(rs_data_unfiltered)
       uniq_students.each do |k, v|
-        rs_courses = get_courses(k["student_uid"], rs_data_unfiltered)
-        comp_hash3 = hf_load_all_competencies(rs_courses, 3)
-        ave_comp_per_student   = hf_average_comp(comp_hash3)
+        rs_courses = get_courses2(k["student_uid"], rs_data_unfiltered)
+        comp_hash3 = hf_load_all_competencies2(rs_courses, 3)
+        ave_comp_per_student   = hf_average_comp2(comp_hash3)
         students_comp[k["student_uid"]] = ave_comp_per_student
       end
 
@@ -188,7 +188,6 @@ module CompetenciesHelper
       else
         title = "Competency"
       end
-
 
           chart = LazyHighCharts::HighChart.new('graph') do |f|
             f.title(text: "<b>#{title} for " + "#{student_name}" + '</b>')
@@ -240,7 +239,7 @@ module CompetenciesHelper
           return chart
     end
 
-    def hf_epa(comp_data)
+    def hf_epa2(comp_data)
       epa = {}
       for i in 1..13
          epa_code = "epa" + i.to_s

@@ -11,7 +11,6 @@ class Competency < ApplicationRecord
     today_date = Date.today.to_s
     file_name = "#{Rails.root}/tmp/class_mean_#{permission_group_id}_#{today_date}.json"
     if File::exists?(file_name)
-      puts "found file..."
       file = File.read(file_name)
       return JSON.parse(file)
     else

@@ -77,6 +77,8 @@ module WbaGraphsHelper
         temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
       elsif survey.lime_survey.title.include? "CSL Narrative Assessment"
         temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
+      elsif survey.lime_survey.title.include? "All Blocks"
+        temp_surveys.push survey.lime_survey_sid.to_s + "|" + survey.lime_survey.title
       end
     end
     return temp_surveys
@@ -113,11 +115,62 @@ module WbaGraphsHelper
     return clinical_data
   end
 
+  def process_all_blocks(survey)
+    comp = {}
+    if survey.nil?
+      return comp  ## return empty hash array
+    end
+
+    limegroups = survey.first.lime_groups # used where clause instead of find_by
+    student_email_col = survey.first.student_email_column
+    comp_data = survey.first.dataset
+    student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
+    if student_data.empty?
+       return {}, {} # missing in graph  view dataset
+    end
+
+    limegroups.each do |grp|
+        comp = {}
+        grp.parent_questions.each do |pquestion|
+          if !pquestion.title.include? "PersonalData"
+            temp_comp = []
+            pquestion.sub_questions.each do |sq|
+              temp_comp.push get_student_data(student_data, pquestion, sq)
+            end
+            comp["#{pquestion.title}"] = temp_comp
+          end       #return format_usmle(student_usmle)
+
+        end
+    end
+    comp_data = nil
+
+    fm_data = survey.first.lime_stats.load_data
+
+    class_mean = {}
+    fm_data.each do |r_data|
+      temp_comp = []
+      sb = r_data.sub_stats
+      if !sb.empty?
+          sb.each do |s|
+              temp_comp.push s.descriptive_stats.mean.to_s.to_d.truncate(2).to_f
+          end
+          class_mean["#{r_data.question.title}"] = temp_comp
+      end
+    end
+    category_labels = fm_data[1].sub_stats.map{|d| d.q_text}
+    fm_data = nil
+    return comp, class_mean, category_labels
+  end
+
   def hf_get_clinical_dataset(user, dataset_type)
     student_email = user.first.email
     surveys = surveygrps(user.first.permission_group_id)
     sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}"}.first.split("|").first
     rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
+    if dataset_type == 'All Blocks'
+      desired_data = process_all_blocks(rr)
+      return desired_data
+    end
     col_names = rr.first.column_names
     email_col = Hash[col_names]["StudentEmail"]
     results = get_data(sid_clinical, email_col, student_email)
@@ -202,6 +255,24 @@ module WbaGraphsHelper
     return temp_hash
   end
 
+  def get_epa_involvement_by_student_assessed(user_id)
+    epa_student = Epa.where(user_id: user_id).group(:epa, :involvement).order(:epa).count
+    if epa_student.empty?
+       return nil
+    end
+    epa = {}
+    (1..13).each do |j|
+        temp_involve = []
+        (1..4).each do |k|
+           temp_epa = "EPA" + j.to_s
+           temp_data = epa_student[[temp_epa, k]]
+           temp_involve.push temp_data
+        end
+        epa["EPA#{j}"] = temp_involve
+    end
+    return epa
+  end
+
   def get_epa_involvement
     epa = {}
     (1..13).each do |j|
@@ -256,12 +327,24 @@ module WbaGraphsHelper
 
   end
 
-  def hf_series_data_student(in_category, student_email)
-    clinical_assessor = Epa.distinct.pluck(:clinical_assessor).sort
-    clinical_assessor_hash = get_involvement_student(clinical_assessor, 'clinical_assessor', student_email)
-    categories = clinical_assessor_hash.keys
-    data_series = clinical_assessor_hash.values.transpose
-    create_chart(data_series, in_category, categories)
+  def hf_series_data_student(in_category, params_id)  #params_id = could be email or user_id
+    if in_category == "EPA"
+      epas_hash = get_epa_involvement_by_student_assessed(params_id)
+      if !epas_hash.nil?
+        categories = epas_hash.keys
+        data_series = epas_hash.values.transpose
+        create_chart(data_series, in_category, categories)
+      end
+    elsif in_category == "Clinical Assessor"
+      clinical_assessor = Epa.distinct.pluck(:clinical_assessor).sort
+      clinical_assessor_hash = get_involvement_student(clinical_assessor, 'clinical_assessor', params_id)
+
+      if clinical_assessor_hash.values.sum.sum != 0
+        categories = clinical_assessor_hash.keys
+        data_series = clinical_assessor_hash.values.transpose
+        create_chart(data_series, in_category, categories)
+      end
+    end
   end
 
 
@@ -331,13 +414,13 @@ module WbaGraphsHelper
 
   def create_chart(data_series, in_category, categories)
 
-  total_wba_count = 0
+    total_wba_count = 0
 
-   data_series.each do |data|
-     if !data.nil?
-        total_wba_count += data.sum
-      end
-   end
+     data_series.each do |data|
+       if !data.nil?
+          total_wba_count += data.map{|i| i.to_i}.sum
+        end
+     end
 
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
@@ -405,7 +488,7 @@ module WbaGraphsHelper
 
         }
       )
-
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
