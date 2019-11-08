@@ -92,11 +92,11 @@ module CdsReportsHelper
         if cohort.title.include? proc_cohort
           cohort.users.each do |user|
             if option == 'Meetings'
-              if user.meetings.where(created_at: "#{past_due_mons}.months.ago..Time.now").count == 0
+              if user.meetings.where(created_at: "#{past_due_mons}".to_i.months.ago..Time.now).count == 0
                 past_due_students << user.full_name + "|" + cohort.title
               end
             elsif option == 'Goals'
-              if user.goals.where(created_at: "#{past_due_mons}.months.ago..Time.now").count == 0
+              if user.goals.where(created_at: "#{past_due_mons}".to_i.months.ago..Time.now).count == 0
                 past_due_students << user.full_name + "|" + cohort.title
               end
             end
