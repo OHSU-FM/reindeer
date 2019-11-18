@@ -2,13 +2,19 @@
    <ul id="MainTabs2" class="nav nav-tabs">
 
        <li class="bold-italic"><a data-toggle="tab" href="#fom" style="background-color:#97BC72">FoM Blocks</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#Preceptorship" style="background-color:#88B5AB">Preceptorship</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#scholarly" style="background-color:#88C7AB">Scholarly Project</a></li>
-       <li class="active bold-italic"><a data-toggle="tab" href="#competency" style="background-color:#E0BBE4">Competency</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPA/WBA</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#core" style="background-color:#FEC8D8">Core Courses</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#elective" style="background-color:#DAF7A6">Elective</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#Preceptorship" style="background-color:#28B5AB">Preceptorship</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#scholarly" style="background-color:#68C7AB">Scholarly Project</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#transition" style="background-color:#98C7AB">Transition Courses</a></li>
+       <li class="active bold-italic"><a data-toggle="tab" href="#core" style="background-color:#FEC8D8">Core Experiences</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#elective" style="background-color:#DAF7A6">Electives</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#intersessions" style="background-color:#AAG7A6">Intersessions</a></li>
        <li class="bold-italic"><a data-toggle="tab" href="#nbme" style="background-color:#FAF7A6">National Board Exams/CPX</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9">All Courses</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#competency" style="background-color:#E0BBE4">Competencies</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPAs/WBAs</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#official" style="background-color:#BEC8F8">Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
+
+
    </ul>
   <div class="tab-content">
     <div id="fom" class="tab-pane fade">
@@ -29,11 +35,49 @@
       <%= render partial: "preceptorships" %>
     </div>
 
-    <div id="scholarly" class="tab-pane active fade">
-      <h4> Coming Soon! </h4>
+    <div id="scholarly" class="tab-pane fade">
+      <%= render partial: "scholarly_project" %>
     </div>
 
-    <div id="competency" class="tab-pane active fade in">
+    <div id="transition" class="tab-pane fade">
+      <%= render partial: "transition" %>
+    </div>
+
+    <div id="core" class="tab-pane active fade in">
+      <div class="center-div">
+          <% if !@comp.nil? %>
+            <%= render partial: "core_courses" %>
+          <% else %>
+            <h4> No Core Courses data FOUND! </h4>
+          <% end %>
+        </div>
+    </div>
+
+    <div id="elective" class="tab-pane fade">
+      <% if !@comp.nil? %>
+        <%= render partial: "electives" %>
+      <% else %>
+        <h4> No Elective Courses data FOUND! </h4>
+      <% end %>
+    </div>
+
+    <div id="intersessions" class="tab-pane fade">
+      <%= render partial: "intersessions" %>
+    </div>
+
+    <div id="nbme" class="tab-pane fade">
+      <% if !@comp.nil? %>
+        <%= render partial: "nbme" %>
+      <% else %>
+        <h4> No NMBE/Shelf data FOUND! </h4>
+      <% end %>
+    </div>
+
+    <div id="all_clinical" class="tab-pane fade">
+      <%= render partial: "all_clinical" %>
+    </div>
+
+    <div id="competency" class="tab-pane fade">
       <div class="center-div">
         <div class="inner-div">
           <% if !@chart.nil? %>
@@ -45,7 +89,8 @@
         </div>
       </div>
     </div>
-    <div id="epa" class="tab-pane active fade">
+
+    <div id="epa" class="tab-pane fade">
       <div class="center-div">
         <div class="inner-div">
           <% if !@chart_epa.nil? %>
@@ -67,30 +112,11 @@
         </div>
       </div>
     </div>
-
-    <div id="core" class="tab-pane fade">
-      <div class="center-div">
-          <% if !@comp.nil? %>
-            <%= render partial: "core_courses" %>
-          <% else %>
-            <h4> No Core Courses data FOUND! </h4>
-          <% end %>
+    <div id="official" class="tab-pane fade">
+        <div id="Progress Board">
+            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
         </div>
-      </div>
-      <div id="elective" class="tab-pane fade">
-        <% if !@comp.nil? %>
-          <%= render partial: "electives" %>
-        <% else %>
-          <h4> No Elective Courses data FOUND! </h4>
-        <% end %>
-      </div>
+    </div>
 
-      <div id="nbme" class="tab-pane active fade">
-        <% if !@comp.nil? %>
-          <%= render partial: "nbme" %>
-        <% else %>
-          <h4> No NMBE/Shelf data FOUND! </h4>
-        <% end %>
-      </div>
   </div>
 </div>

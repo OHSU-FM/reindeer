@@ -30,6 +30,7 @@ class User < ActiveRecord::Base
   has_many :epas, dependent: :destroy
   has_many :competencies, dependent: :destroy
   has_one  :cpx, dependent: :destroy
+  has_many :usmle_exams, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 

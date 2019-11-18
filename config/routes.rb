@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :usmle_exams
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'
   get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
@@ -10,7 +11,11 @@ Rails.application.routes.draw do
   get 'wba_graphs/show', to: 'wba_graphs#show'
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
   resources :epas
-  resources :competencies
+  resources :competencies do
+    member do
+      get '/competencies/:user_id', to: 'competecies#index', as: 'competency'
+    end
+  end
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
      member do

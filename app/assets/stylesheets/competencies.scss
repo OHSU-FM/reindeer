@@ -83,3 +83,20 @@ background: -webkit-linear-gradient(left, #33156d 0%,#f282bc 100%); /* Chrome10-
 .panel-default > .panel-heading-backgroud-color {
    background-color: #AFECE7;
  }
+
+ .column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.tooltip-inner {
+    background-color:#1E28FF;
+    max-width: 450px; /* set this to your maximum fitting width */
+    width: inherit; /* will take up least amount of space */
+}

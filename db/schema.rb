@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_24_201236) do
+ActiveRecord::Schema.define(version: 2019_11_18_165851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -529,6 +529,18 @@ ActiveRecord::Schema.define(version: 2019_10_24_201236) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "usmle_exams", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "exam_type"
+    t.integer "no_attempts"
+    t.string "pass_fail"
+    t.integer "exam_score"
+    t.datetime "exam_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_usmle_exams_on_user_id"
+  end
+
   create_table "version_notes", id: :serial, force: :cascade do |t|
     t.text "note"
     t.datetime "created_at", null: false
@@ -557,4 +569,5 @@ ActiveRecord::Schema.define(version: 2019_10_24_201236) do
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
+  add_foreign_key "usmle_exams", "users"
 end

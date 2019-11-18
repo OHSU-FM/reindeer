@@ -1,0 +1,20 @@
+<h1>Usmle Exams</h1>
+
+<table class="responsive nowrap table table-hover" id="dttb-usmle_exams" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  <thead>
+    <tr>
+      <th data-data="user.references">User.references</th>
+      <th data-data="exam_type">Exam type</th>
+      <th data-data="no_attempts">No attempts</th>
+      <th data-data="pass_fail">Pass fail</th>
+      <th data-data="exam_score">Exam score</th>
+      <th data-data="exam_date">Exam date</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+    </tr>
+  </thead>
+
+</table>
+
+<br>
+
+<%= link_to 'New Usmle Exam', new_usmle_exam_path %>

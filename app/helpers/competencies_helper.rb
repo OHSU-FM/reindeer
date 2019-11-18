@@ -36,16 +36,42 @@ module CompetenciesHelper
            "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
    }
   #===================================================================================================================================================================
+  def hf_final_grade2 json_str
+    begin
+      arry = JSON.parse(json_str)
+      return arry["Grade"]
+    rescue
+      return json_str
+    end
+  end
 
-  def hf_get_non_clinical_courses
+
+  def hf_format_final_grade json_str
+    begin
+      arry = JSON.parse(json_str)
+      long_str = ""
+      long_str += "<table style='width:180px'>"
+      arry.each do |key, value|
+        key = key.split(": ").second
+        if key.nil?
+          key = "Grade"
+        end
+        long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td><tr>"
+      end
+      long_str += "</table>"
+      return long_str
+    rescue
+      return json_str
+    end
+  end
+
+  def hf_get_non_clinical_courses2
     non_clinical_courses_arry = []
     pathFile = File.join(Rails.root, 'tmp','non_clinical_courses.txt')
     non_clinical_courses_arry = IO.readlines(pathFile)
     non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
-
     return non_clinical_courses_arry
-  end
-
+   end
 
     def hf_load_all_comp2(rs_data, level)
       comp_hash = {}
@@ -65,7 +91,6 @@ module CompetenciesHelper
           end
         end
       end
-
       #binding.pry
       return comp_hash
     end
@@ -99,7 +124,7 @@ module CompetenciesHelper
       return rs_data_unfiltered.select {|c| c["student_uid"] == studentID }
     end
 
-    def check_clinical_comp(in_course, in_level, in_comp_code)
+    def check_clinical_comp2(in_course, in_level, in_comp_code)
       course_code = in_course.split("]")
       course_code[0] = course_code[0].gsub("[", "")
       if @non_clinical_course_arry.include?(course_code[0]) and in_level == "3" and COMP_CODES_CC.include?(in_comp_code)
@@ -108,7 +133,6 @@ module CompetenciesHelper
       else
           return true
       end
-
     end
 
     def hf_load_all_competencies2(rs_data, level)
@@ -120,7 +144,7 @@ module CompetenciesHelper
         COMP_CODES.each do |comp|
           if rec[comp].to_s != ""
             #temp_level = rec[comp].split("~")
-            if rec[comp] == level and check_clinical_comp(rec["course_name"], level, comp)
+            if rec[comp] == level and check_clinical_comp2(rec["course_name"], level, comp)
               comp_hash[comp] += 1
             elsif level == 3 and rec[comp].to_i > 3
               temp_val = rec[comp].to_f/3.0
@@ -129,7 +153,6 @@ module CompetenciesHelper
           end
         end
       end
-
       #binding.pry
       return comp_hash
     end
@@ -153,9 +176,7 @@ module CompetenciesHelper
       students_comp.each do |k,v|
         v.each do |key, val|
           temp_comp_hash[key] += val
-
         end
-
       end
       class_mean_comp_hash = {}
       temp_comp_hash.each do |k,v|
@@ -165,10 +186,21 @@ module CompetenciesHelper
         else
           class_mean_comp_hash[k] = class_mean
         end
-
       end
-
       return class_mean_comp_hash
+    end
+
+    def hf_epa2(comp_data)
+      epa = {}
+      for i in 1..13
+         epa_code = "epa" + i.to_s
+          temp_percent = 0
+          EPA[epa_code].each do |c|
+            temp_percent = temp_percent + comp_data[c]
+          end
+          epa[epa_code] = (temp_percent/EPA[epa_code].count.to_f).round(0)
+      end
+      return epa
     end
 
     def get_4_random_colors
@@ -185,20 +217,22 @@ module CompetenciesHelper
       categories = series2.keys.map{|c| c.upcase}
       if type == "EPA"
         title = "EPA"
+      elsif type.include? "FoM"
+        title = type
       else
         title = "Competency"
       end
 
           chart = LazyHighCharts::HighChart.new('graph') do |f|
-            f.title(text: "<b>#{title} for " + "#{student_name}" + '</b>')
+            f.title(text: "#{title} for " + "<i>#{student_name}" + '</i>'.html_safe)
             #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
             f.xAxis(categories: categories,
-                    labels: {
-                              style:  {
-                                          fontWeight: 'bold',
-                                          color: '#000000'
-                                      }
-                            }
+              labels: {
+                        style:  {
+                                    fontWeight: 'bold',
+                                    color: '#000000'
+                                }
+                      }
             )
             f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
             f.series(name: "Class Mean", yAxis: 0, data: data_series2)
@@ -239,21 +273,84 @@ module CompetenciesHelper
           return chart
     end
 
-    def hf_epa2(comp_data)
-      epa = {}
-      for i in 1..13
-         epa_code = "epa" + i.to_s
-          temp_percent = 0
-          EPA[epa_code].each do |c|
-            temp_percent = temp_percent + comp_data[c]
-          end
-          epa[epa_code] = (temp_percent/EPA[epa_code].count.to_f).round(0)
+   def check_series in_series
+     temp_arry = []
+     temp_data = {}
+     in_series.each do |val|
+       if val >= 70
+         temp_arry.push val
+       else
+         temp_data = {y: val, color: '#FF4B44'}
+         temp_arry.push temp_data
+       end
+     end
+     return temp_arry
+   end
+
+    def hf_create_chart_fom (type, series1, series2, student_name, series_color)
+      data_series1 = check_series(series1)
+      data_series2 = series2
+      categories = @category_labels
+      if type.include? "Comp2" or type.include? "Comp5"
+        categories = ["FUND-HSS", "FUND-BSS", "BLHD-HSS", "BLHD-BSS", "SBM-HSS", "SBM-BSS", "CPR-HSS", "CPR-BSS",  "HODI-HSS", "HODI-BSS", "NSF-HSS", "NSF-BSS", "DEVH-HSS" , "DEVH-BSS"]
+        data_series1 = check_series(series1)
+        data_series2 = series2
       end
 
-      return epa
+      title = type
 
 
+          chart = LazyHighCharts::HighChart.new('graph') do |f|
+            f.title(text: "<b>#{title}" + "<br/>" + "#{student_name}" + '</b>' )
+            #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+            f.xAxis(categories: categories,
+              labels: {
+                        style:  {
+                                    fontWeight: 'bold',
+                                    color: '#000000'
+                                }
+                      }
+            )
+            f.series(name: "#{student_name}", yAxis: 0, data: data_series1, color: series_color)
+            f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
+              color: 'black',
+              marker: { symbol: 'diamond' })
+            # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+            f.colors(get_4_random_colors)
 
+            f.yAxis [
+               { max: 100,
+                 min: 0,
+                 tickInterval: 50,
+                 title: {text: "<b>#{title} %", margin: 20}
+               }
+            ]
+            f.plot_options(
+
+              column: {
+                  dataLabels: {
+                      enabled: false,
+                      crop: false,
+                      overflow: 'none'
+                  }
+              },
+
+              series: {
+                cursor: 'pointer',
+                pointWidth: 15
+
+              }
+            )
+
+            f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+            f.chart({
+                      defaultSeriesType: "column",
+                      width: 580, height:300,
+                      plotBackgroundImage: ''
+                    })
+          end
+
+          return chart
     end
 
 end

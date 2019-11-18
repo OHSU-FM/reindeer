@@ -1,0 +1,20 @@
+  <h4>USMLE Step Exams</h4> <br />
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ExamType</th>
+        <th scope="col">Attempt</th>
+        <th scope="col">Pass/Fail</th>
+        <th scope="col">Score</th>
+        <th scope="col">Exam Date</th>
+      </tr>
+    </thead>
+    <% @usmle_exams.each do |exam| %>
+          <tr>
+            <td><%= exam.exam_type %></td>
+            <td><%= exam.no_attempts %></td>
+            <td><%= exam.pass_fail %></td>
+            <td><%= exam.exam_score %></td>
+            <td><%= exam.exam_date %></td>
+    <% end %>
+  </table>

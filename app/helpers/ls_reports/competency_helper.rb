@@ -272,7 +272,6 @@ module LsReports::CompetencyHelper
 
   end
 
-
   # nc means non-clinical courses
   def hf_load_all_competencies_nc(rs_data, level)
     comp_hash = {}
@@ -295,7 +294,6 @@ module LsReports::CompetencyHelper
     return comp_hash
 
   end
-
 
   def hf_load_all_competencies(rs_data, level)
     comp_hash = {}

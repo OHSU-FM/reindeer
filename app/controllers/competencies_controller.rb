@@ -8,6 +8,7 @@ class CompetenciesController < ApplicationController
   include WbaGraphsHelper
 
   def index
+
     @non_clinical_course_arry ||= hf_get_non_clinical_courses
 
     # if business = Business.where(:user_id => current_user.id).first
@@ -52,6 +53,14 @@ class CompetenciesController < ApplicationController
        @csl_data = []
      end
      @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@user, 'All Blocks')
+     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
+
+     @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
+     @usmle_exams = UsmleExam.where(user_id: @user.first.id).order(:exam_type, :no_attempts)
+     #if @not_found_cpx
+      # @cpx_data = hf_get_cpx(@survey)
+     #end
+
   end
 
   def load_competencies(permission_group_id, full_name)
@@ -62,8 +71,8 @@ class CompetenciesController < ApplicationController
     @comp_hash1 = hf_load_all_comp2(@comp, 1)
     @comp_hash0 = hf_load_all_comp2(@comp, 0)
 
-
     @comp_data_clinical = hf_average_comp2 (@comp_hash3)
+
     @comp_class_mean = Competency.load_class_mean(permission_group_id)
     if @comp_class_mean.nil?
       @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
@@ -76,6 +85,8 @@ class CompetenciesController < ApplicationController
     @student_epa = hf_epa2(@comp_data_clinical)
     @epa_class_mean = hf_epa2(@comp_class_mean)
     @chart_epa = hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
+
+
   end
 
 end

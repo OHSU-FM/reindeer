@@ -1,62 +1,61 @@
-<table  class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+<% if !@cpx_data_new.nil? %>
     <% cpx = @cpx_data_new %>
-    <tr><th style="text-align:right"><h4>Clinical Performance Exam (CPX)</h4></th><th></th><th></th></tr>
-    <tr>
-      <th style="text-align:right">Clinical Scenarios</th>
-      <th style="text-align:center">SP Checklist <br />(worth 66% of scenario)</th>
-      <th style="text-align:center">Post Encounter Exercises <br />(worth 34% of scenario)</th>
-      <th style="text-align:center">Total</th>
-    </tr>
-    <tr>
-      <td style="text-align:right">OB/GYN</td>
-      <td style="text-align:center"><%= cpx["ObgynActScoreSP"] %> / <%= cpx["ObgynMaxScoreSP"] %></td>
-      <td style="text-align:center"><%= cpx["ObgynActScorePE"] %> / <%= cpx["ObgynMaxScorePE"] %></td>
-      <td style="text-align:center"><%= cpx["ObgynTotal"] %>% </td>
-    </tr>
-    <tr>
-      <td style="text-align:right">Psychiatry</td>
-      <td style="text-align:center"><%= cpx["PsychActScoreSP"] %> / <%= cpx["PsychMaxScoreSP"] %></td>
-      <td style="text-align:center"><%= cpx["PsychActScorePE"] %> / <%= cpx["PsychMaxScorePE"] %></td>
-      <td style="text-align:center"><%= cpx["PsychTotal"] %>% </td>
-    </tr>
-    <tr>
-      <td style="text-align:right">Pediatric Medicine</td>
-      <td style="text-align:center"><%= cpx["PedsActScoreSP"] %> / <%= cpx["PedsMaxSP"] %></td>
-      <td style="text-align:center"><%= cpx["PedsActScorePE"] %> / <%= cpx["PedsMaxScorePE"] %></td>
-      <td style="text-align:center"><%= cpx["PedsTotal"] %>% </td>
-    </tr>
-    <tr>
-      <td style="text-align:right">Internal Medicine</td>
-      <td style="text-align:center"><%= cpx["ImActScoreSP"] %> / <%= cpx["ImMaxScoreSP"] %></td>
-      <td style="text-align:center"><%= cpx["ImActScorePE"] %> / <%= cpx["ImMaxScorePE"] %></td>
-      <td style="text-align:center"><%= cpx["ImTotal"] %>% </td>
-    </tr>
-    <tr>
-     <td style="text-align:right">Family Medicine</td>
-     <td style="text-align:center"><%= cpx["FamActScore"] %> / <%= cpx["FamMaxScore"] %></td>
-     <td style="text-align:center">N/A</td>
-     <td style="text-align:center"><%= cpx["FamTotal"] %>% </td>
-    </tr>
-    <tr>
-      <td style="text-align:right"><b>FINAL CPX GRADE</b></td>
-      <td></td>
-      <td></td>
-      <td style="text-align:center"><b><%= cpx["CPXTotal"] %>% - <%= cpx["CPX_Pass_NoPass"] %></b></td>
-    </tr>
+    <table  class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+        <tr><th style="text-align:right"><h4>Clinical Performance Exam (CPX)</h4></th><th></th><th></th></tr>
+        <tr>
+          <th style="text-align:right">Clinical Scenarios</th>
+          <th style="text-align:center">SP Checklist <br />(worth 66% of scenario)</th>
+          <th style="text-align:center">Post Encounter Exercises <br />(worth 34% of scenario)</th>
+          <th style="text-align:center">Total</th>
+        </tr>
+        <tr>
+          <td style="text-align:right">OB/GYN</td>
+          <td style="text-align:center"><%= cpx["ObgynActScoreSP"] %> / <%= cpx["ObgynMaxScoreSP"] %></td>
+          <td style="text-align:center"><%= cpx["ObgynActScorePE"] %> / <%= cpx["ObgynMaxScorePE"] %></td>
+          <td style="text-align:center"><%= cpx["ObgynTotal"] %>% </td>
+        </tr>
+        <tr>
+          <td style="text-align:right">Psychiatry</td>
+          <td style="text-align:center"><%= cpx["PsychActScoreSP"] %> / <%= cpx["PsychMaxScoreSP"] %></td>
+          <td style="text-align:center"><%= cpx["PsychActScorePE"] %> / <%= cpx["PsychMaxScorePE"] %></td>
+          <td style="text-align:center"><%= cpx["PsychTotal"] %>% </td>
+        </tr>
+        <tr>
+          <td style="text-align:right">Pediatric Medicine</td>
+          <td style="text-align:center"><%= cpx["PedsActScoreSP"] %> / <%= cpx["PedsMaxSP"] %></td>
+          <td style="text-align:center"><%= cpx["PedsActScorePE"] %> / <%= cpx["PedsMaxScorePE"] %></td>
+          <td style="text-align:center"><%= cpx["PedsTotal"] %>% </td>
+        </tr>
+        <tr>
+          <td style="text-align:right">Internal Medicine</td>
+          <td style="text-align:center"><%= cpx["ImActScoreSP"] %> / <%= cpx["ImMaxScoreSP"] %></td>
+          <td style="text-align:center"><%= cpx["ImActScorePE"] %> / <%= cpx["ImMaxScorePE"] %></td>
+          <td style="text-align:center"><%= cpx["ImTotal"] %>% </td>
+        </tr>
+        <tr>
+         <td style="text-align:right">Family Medicine</td>
+         <td style="text-align:center"><%= cpx["FamActScore"] %> / <%= cpx["FamMaxScore"] %></td>
+         <td style="text-align:center">N/A</td>
+         <td style="text-align:center"><%= cpx["FamTotal"] %>% </td>
+        </tr>
+        <tr>
+          <td style="text-align:right"><b>FINAL CPX GRADE</b></td>
+          <td></td>
+          <td></td>
+          <td style="text-align:center"><b><%= cpx["CPXTotal"] %>% - <%= cpx["CPX_Pass_NoPass"] %></b></td>
+        </tr>
 
-    <% if !@cpx_artifacts.nil? %>
-        <% @cpx_artifacts.documents.each do |document| %>
-          <tr>
-            <td>
-              <%= link_to document.filename, url_for(document), target: :_blank %>
-              /
-              <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
-            </td>
-            <td></td><td></td><td></td>
-          </tr>
-        <% end %>
-     <% end %>
-
-
-
-</table>
+        <% if !@cpx_artifacts.nil? %>
+            <% @cpx_artifacts.documents.each do |document| %>
+              <tr>
+                <td>
+                  <%= link_to document.filename, url_for(document), target: :_blank %>
+                  /
+                  <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                </td>
+                <td></td><td></td><td></td>
+              </tr>
+            <% end %>
+         <% end %>
+    </table>
+  <% end %>
