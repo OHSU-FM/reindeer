@@ -88,6 +88,10 @@ background: -webkit-linear-gradient(left, #33156d 0%,#f282bc 100%); /* Chrome10-
   float: left;
   width: 50%;
 }
+.column-fom {
+ float: left;
+ width: 33.33%;
+}
 
 /* Clear floats after the columns */
 .row:after {
@@ -99,4 +103,27 @@ background: -webkit-linear-gradient(left, #33156d 0%,#f282bc 100%); /* Chrome10-
     background-color:#1E28FF;
     max-width: 450px; /* set this to your maximum fitting width */
     width: inherit; /* will take up least amount of space */
+}
+
+.progress-semi-circle{
+  position: relative;
+  margin: 4px;
+  float:left;
+  text-align: center;
+}
+.barOverflow{ /* Wraps the rotating .bar */
+  position: relative;
+  overflow: hidden; /* Comment this line to understand the trick */
+  width: 90px; height: 45px; /* Half circle (overflow) */
+  margin-bottom: -14px; /* bring the numbers up */
+}
+.bar{
+  position: relative;
+  top: 0; left: 0;
+  width: 90px; height: 90px; /* full circle! */
+  border-radius: 80%;
+  box-sizing: border-box;
+  border: 10px solid #eee;     /* half gray, */
+  border-bottom-color: #0bf;  /* half azure */
+  border-right-color: #0bf;
 }

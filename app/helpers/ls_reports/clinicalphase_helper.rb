@@ -407,7 +407,6 @@ module LsReports::ClinicalphaseHelper
       when "770E"
         return "PEDI"
       when "770F"
-
         return "PSYC"
       when "770G"
         return "SURG"
@@ -555,7 +554,7 @@ module LsReports::ClinicalphaseHelper
     cpx = Cpx.find_by(email: email)
     if cpx.nil?
       return nil, true, nil
-    end 
+    end
     cpx_data = JSON.parse(cpx.cpx_data)
     cpx_artifacts = Artifact.find_by(user_id: cpx.user_id, content: 'CPX')
     return cpx_data, false, cpx_artifacts    # return false meant it found cpx data

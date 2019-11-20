@@ -4,6 +4,7 @@ class CompetenciesController < ApplicationController
   include CompetenciesHelper
   include LsReports::CslevalHelper
   include LsReports::ClinicalphaseHelper
+  include LsReports::CompetencyHelper
   include EpasHelper
   include WbaGraphsHelper
 
@@ -43,6 +44,7 @@ class CompetenciesController < ApplicationController
     end
 
     @pk = email
+    @student_year = @user.first.cohort.title.split(" - ").last
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
@@ -80,11 +82,11 @@ class CompetenciesController < ApplicationController
       Competency.create_class_mean(@comp_class_mean, permission_group_id)
     end
 
-    @chart = hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
+    @chart ||= hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
 
-    @student_epa = hf_epa2(@comp_data_clinical)
-    @epa_class_mean = hf_epa2(@comp_class_mean)
-    @chart_epa = hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
+    @student_epa ||= hf_epa2(@comp_data_clinical)
+    @epa_class_mean ||= hf_epa2(@comp_class_mean)
+    @chart_epa ||= hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
 
 
   end

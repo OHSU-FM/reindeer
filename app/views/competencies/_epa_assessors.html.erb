@@ -1,0 +1,38 @@
+<div id="EPASummary<%= i %>" class="tab-pane fade in active">
+     <table class="table borderless table-condensed table-striped table-hover">
+        <tr>
+            <th>Competency</th>
+            <!-- th style="text-align:center"># of Not Able To Assess<br />(Level 0)</th>  -->
+            <th style="text-align:center"># of Pre-Entrustables<br />(Level 1)</th>
+            <th style="text-align:center"># of Approaching Entrustables<br />(Level 2)</th>
+            <th style="text-align:center"># of Entrustables Achieved<br />(Level 3)</th>
+            <th style="text-align:center">Min # of Entrustables Required<br />by Assessors </th>
+            <th style="text-align:center"># of Entrustables Remaining</th>
+        </tr>
+         <% epa_level3 = hf_epa_level(@comp_hash3, i.to_s, "3") %>
+         <% epa_level2 = hf_epa_level(@comp_hash2, i.to_s, "2") %>
+         <% epa_level1 = hf_epa_level(@comp_hash1, i.to_s, "1") %>
+         <!-- % epa_level0 = hf_epa_level(@comp_hash0, i.to_s, "0") %>  -->
+
+         <% epa.each do |k, v| %>
+            <% rem = (v-assessors[k])*(-1) %>
+            <tr>
+               <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
+               <%= k %></a></span></td>
+
+                <!-- <td style="text-align:center"><font color="purple"> --> <!--%= epa_level0[k] == 0? "" : epa_level0[k] %></td> -->
+                <td style="text-align:center"><font color="red"><b><%= epa_level1[k] == 0? "" : epa_level1[k] %></b></font></td>
+                <td style="text-align:center"><font color="tomato"><%= epa_level2[k] == 0? "" : epa_level2[k]%></font></td>
+                <td style="text-align:center"><font color="green"> <%= v == 0? "" : v %></font></td>
+                <td style="text-align:center"><font color="blue"> <%= assessors[k] %></font></td>
+
+                <% if rem <=0 %>
+                   <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
+                <% else %>
+                    <td style="text-align:center"><font color="Orange"><%= rem %></font></td>
+                <% end %>
+            </tr>
+         <% end %>
+
+     </table>
+</div>

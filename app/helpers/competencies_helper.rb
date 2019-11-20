@@ -35,7 +35,31 @@ module CompetenciesHelper
            "epa12" => ["pcp6", "ics1", "ics5", "pppd3", "pppd4", "pppd6", "pppd7", "pppd9", "pppd10", "sbpic3"],
            "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
    }
+
+   EPA_DESC={"EPA1" => "Gather a history and perform a physical examination",
+             "EPA2" => "Prioritize a differential diagnosis following a clinical encounter",
+             "EPA3" => "Recommend and interpret common diagnostic and screening tests",
+             "EPA4" => "Enter and discuss orders and prescriptions",
+             "EPA5" => "Document a clinical encounter in the patient record",
+             "EPA6" => "Provide an oral presentation of a clinical encounter",
+             "EPA7" => "Form clinical questions and retrieve evidence to advance patient care",
+             "EPA8" => "Give or receive a patient handover to transition care responsibility",
+             "EPA9" => "Collaborate as a member of an interprofessional team",
+             "EPA10" => "Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
+             "EPA11" => "Obtain informed consent for tests and/or procedures",
+             "EPA12" => "Perform general procedures of a physician ",
+             "EPA13" => "Identify system failures and contribute to a culture of safety and improvement"
+   }
+
   #===================================================================================================================================================================
+  def hf_epa_asessors
+    return ASSESSORS2
+  end
+
+  def hf_get_epa_desc2 in_code
+    return EPA_DESC["#{in_code}"]
+  end
+
   def hf_final_grade2 json_str
     begin
       arry = JSON.parse(json_str)
@@ -190,6 +214,52 @@ module CompetenciesHelper
       return class_mean_comp_hash
     end
 
+    def hf_epa_level3_detail (rs_data, epa_id, level)
+      epa = {}
+      epa_code = "epa" + epa_id
+
+      EPA[epa_code].each do |c|
+        epa[c] = 0
+      end
+
+      rs_data.each do |rec|
+        EPA[epa_code].each do |comp|
+          if !rec[comp].nil?
+            if (rec[comp] == level.to_i)
+              epa[comp] += 1
+            elsif rec[comp].to_i > 3
+              temp_val = rec[comp].to_f/3.0
+              epa[comp] = epa[comp] + temp_val.round
+            end
+          end
+        end
+      end
+      return epa
+    end
+
+    def hf_epa_level(rs_data, epa_id, level)
+      epa = {}
+      epa_code = "epa" + epa_id
+
+      EPA[epa_code].each do |c|
+        epa[c] = 0
+      end
+
+      rs_data.each do |key, value|
+        EPA[epa_code].each do |comp|
+          if !value.nil?
+            if (value == level.to_i) and (key==comp)
+              epa[comp] += 1
+            elsif value.to_i > 3 and (key==comp)
+              temp_val = value.to_f/3.0
+              epa[comp] = epa[comp] + temp_val.round
+            end
+          end
+        end
+      end
+      return epa
+    end
+
     def hf_epa2(comp_data)
       epa = {}
       for i in 1..13
@@ -211,6 +281,39 @@ module CompetenciesHelper
       return color_array
     end
 
+
+    def domain_colors in_series
+      temp_arry = []
+      temp_data = {}
+
+      for i in 0..7 do  # ICS
+        temp_data = {y: in_series[i], color: '#BCD640'}
+        temp_arry.push temp_data
+      end
+      for i in 8..12 do  # MK
+        temp_data = {y: in_series[i], color: '#E09E51'}
+        temp_arry.push temp_data
+      end
+      for i in 13..20 do  # PBLI
+        temp_data = {y: in_series[i], color: '#C73293'}
+        temp_arry.push temp_data
+      end
+      for i in 21..26 do  # PCP
+        temp_data = {y: in_series[i], color: '#2C48DE'}
+        temp_arry.push temp_data
+      end
+      for i in 27..37 do  # PPPD
+        temp_data = {y: in_series[i], color: '#42D68D'}
+        temp_arry.push temp_data
+      end
+      for i in 38..42 do  # SBPIC
+        temp_data = {y: in_series[i], color: '#FF408F'}
+        temp_arry.push temp_data
+      end
+
+      return temp_arry
+    end
+
     def hf_create_chart (type, series1, series2, student_name)
       data_series1 = series1.values
       data_series2 = series2.values
@@ -220,6 +323,7 @@ module CompetenciesHelper
       elsif type.include? "FoM"
         title = type
       else
+        data_series1 = domain_colors(data_series1)
         title = "Competency"
       end
 
@@ -235,7 +339,13 @@ module CompetenciesHelper
                       }
             )
             f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
-            f.series(name: "Class Mean", yAxis: 0, data: data_series2)
+            if type != "EPA"
+              f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
+                color: 'black',
+                marker: { symbol: 'diamond' })
+            else
+              f.series(name: "Class Mean", yAxis: 0, color: 'gray', data: data_series2)
+            end
             # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
             f.colors(get_4_random_colors)
 
@@ -255,7 +365,13 @@ module CompetenciesHelper
                       overflow: 'none'
                   }
               },
-
+              scatter: {
+                  dataLabels: {
+                      enabled: true,
+                      crop: false,
+                      overflow: 'none'
+                  }
+              },
               series: {
                 cursor: 'pointer'
 
@@ -297,8 +413,7 @@ module CompetenciesHelper
         data_series2 = series2
       end
 
-      title = type
-
+        title = type
 
           chart = LazyHighCharts::HighChart.new('graph') do |f|
             f.title(text: "<b>#{title}" + "<br/>" + "#{student_name}" + '</b>' )

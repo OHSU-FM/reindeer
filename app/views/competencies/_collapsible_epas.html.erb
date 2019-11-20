@@ -1,14 +1,16 @@
-<H4>  Inside Collapsible Section </h4>
+<H4>Collapsible EPA Section </h4>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% if !@student_epa.nil? %>
+
     <% for i in 1..13 do %>
       <% epa_code = "epa#{i}" %>
+      <% epa = hf_epa_level3_detail(@comp, i.to_s, "3") %>
       <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingEPA<%= i %>">
               <h4 class="panel-title">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
-                    <span>EPA<%= i %> QA Completion: <%= @student_epa[epa_code] %>%</span>
+                    <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %> <b>(QA Completion: <%= @student_epa[epa_code] %>%)</b></span>
 
                   </div>
                   <div class="progress">
@@ -20,7 +22,7 @@
           </div>
           <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
               <div class="panel-body">
-                  EPA --> <%= i %>
+                  <%= render partial: "epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
               </div>
           </div>
       </div>
