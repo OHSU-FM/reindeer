@@ -4,7 +4,6 @@ class CompetenciesController < ApplicationController
   include CompetenciesHelper
   include LsReports::CslevalHelper
   include LsReports::ClinicalphaseHelper
-  include LsReports::CompetencyHelper
   include EpasHelper
   include WbaGraphsHelper
 

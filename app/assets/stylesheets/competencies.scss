@@ -80,6 +80,75 @@ background-color:#caf4dd !important
 .progress-bar {
 background: -webkit-linear-gradient(left, #33156d 0%,#f282bc 100%); /* Chrome10-25,Safari5.1-6 */
 }
+
+// .progress {
+//   position: relative;
+//   height: 31px;
+//   background: rgb(255, 0, 0);
+//   background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+//   background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+// }
+//
+// .comp-progress {
+//   position: relative;
+//   height: 25px;
+//   background: rgb(255, 0, 0);
+//   background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+//   background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+//   background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+// }
+//
+// .amount {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   height: 100%;
+//   transition: all 0.8s;
+//   background: #E8FDD5;
+//   width: 0;
+// }
+//
+// .comp-amount {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   height: 100%;
+//   transition: all 0.8s;
+//   background: #E8FDD5;
+//   width: 0;
+// }
+//
+// .progress:before {
+//   content: attr(data-amount)"% Complete";
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   z-index: 10;
+//   text-align: center;
+//   line-height: 31px;
+// }
+//
+// .comp-progress:before {
+//   content: attr(comp-data-amount)"% Complete";
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   z-index: 10;
+//   text-align: center;
+//   line-height: 31px;
+// }
+
 .panel-default > .panel-heading-backgroud-color {
    background-color: #AFECE7;
  }
@@ -103,27 +172,4 @@ background: -webkit-linear-gradient(left, #33156d 0%,#f282bc 100%); /* Chrome10-
     background-color:#1E28FF;
     max-width: 450px; /* set this to your maximum fitting width */
     width: inherit; /* will take up least amount of space */
-}
-
-.progress-semi-circle{
-  position: relative;
-  margin: 4px;
-  float:left;
-  text-align: center;
-}
-.barOverflow{ /* Wraps the rotating .bar */
-  position: relative;
-  overflow: hidden; /* Comment this line to understand the trick */
-  width: 90px; height: 45px; /* Half circle (overflow) */
-  margin-bottom: -14px; /* bring the numbers up */
-}
-.bar{
-  position: relative;
-  top: 0; left: 0;
-  width: 90px; height: 90px; /* full circle! */
-  border-radius: 80%;
-  box-sizing: border-box;
-  border: 10px solid #eee;     /* half gray, */
-  border-bottom-color: #0bf;  /* half azure */
-  border-right-color: #0bf;
 }

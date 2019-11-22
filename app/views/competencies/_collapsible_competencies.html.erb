@@ -1,0 +1,29 @@
+<H4>Collapsible Competencies Section </h4>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <% if !@student_epa.nil? %>
+    <% comp_domain = hf_comp_domain %>
+    <% comp_domain.each do |key, value| %>
+
+      <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="heading<%= key %>">
+              <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= key %>" aria-expanded="false" aria-controls="collapse<%= key %>">
+                  <div class="labels">
+                    <span><b><%= key %></b> - <i><%= hf_comp_domain_desc2(key) %></i></span>
+
+                  </div>
+
+                </a>
+              </h4>
+          </div>
+          <div id="collapse<%= key %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%= key %>">
+              <div class="panel-body">
+                  <%= render partial: "comp_assessors", locals: {:comp_domain => key, :comp_codes => value, :assessors => hf_epa_asessors } %>
+              </div>
+          </div>
+      </div>
+    <% end %>
+  <% else %>
+    <h4> No EPA/Competencies Data FOUND! </h4>
+  <% end %>
+</div>

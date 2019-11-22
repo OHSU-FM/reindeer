@@ -1,0 +1,52 @@
+<div id="CompDomain<%= comp_domain %>" class="tab-pane fade in active">
+     <table class="table borderless table-condensed table-striped table-hover">
+        <tr>
+            <th>Competency</th>
+            <!-- th style="text-align:center"># of Not Able To Assess<br />(Level 0)</th>  -->
+            <th style="text-align:center"># of Pre-Entrustables<br />(Level 1)</th>
+            <th style="text-align:center"># of Approaching Entrustables<br />(Level 2)</th>
+            <th style="text-align:center"># of Entrustables Achieved<br />(Level 3)</th>
+            <th style="text-align:center">Min # of Entrustables Required<br />by Assessors </th>
+            <th style="text-align:center"># of Entrustables Remaining</th>
+        </tr>
+
+         <!-- % epa_level0 = hf_epa_level(@comp_hash0, i.to_s, "0") %>  -->
+
+         <% @comp_hash3.each do |k, val| %>
+
+           <% comp_codes.map!(&:downcase) %>
+           <% if comp_codes.include? k %>
+              <% rem = (val-assessors[k])*(-1) %>
+              <tr>
+                 <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
+                 <%= k.upcase %></a></span></td>
+
+                  <!-- <td style="text-align:center"><font color="purple"> --> <!--%= epa_level0[k] == 0? "" : epa_level0[k] %></td> -->
+                  <td style="text-align:center"><font color="red"><b><%= @comp_hash1[k] == 0? "" : @comp_hash1[k] %></b></font></td>
+                  <td style="text-align:center"><font color="tomato"><%= @comp_hash2[k] == 0? "" : @comp_hash2[k]%></font></td>
+                  <td style="text-align:center"><font color="green"> <%= val == 0? "" : val %></font></td>
+                  <td style="text-align:center"><font color="blue"> <%= assessors[k] %></font></td>
+
+                  <% if rem <=0 %>
+                     <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
+                  <% else %>
+                      <td style="text-align:center"><font color="Orange"><%= rem %></font></td>
+                  <% end %>
+                  <% comp_ave = ((val/assessors[k].to_f)*100).round(0) %>
+                  <% comp_ave = comp_ave > 100? 100 : comp_ave %>
+
+                  <td width="30%">
+                      <span>
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" aria-valuenow="<%= comp_ave %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= comp_ave %>%;">
+                          </div><%= comp_ave %>%
+                        </div>
+                      </span>
+                  </td>
+
+              </tr>
+            <% end %>
+         <% end %>
+
+     </table>
+</div>

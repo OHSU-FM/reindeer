@@ -51,7 +51,33 @@ module CompetenciesHelper
              "EPA13" => "Identify system failures and contribute to a culture of safety and improvement"
    }
 
+   COMP_DOMAIN_DESC = {
+                       "ICS" => "Demonstrate interpersonal and communication skills that result in the effective exchange of information and collaboration with patients, their families, and health professionals.",
+                       "MK" => "Demonstrate knowledge of established and evolving biomedical, clinical, epidemiological, and social-behavioral sciences, as well as the application of this knowledge to patient care.",
+                       "PBLI" => "Demonstrate the ability to investigate and evaluate the care provided to patients, to appraise and assimilate scientific evidence, and to continuously improve patient care based on analysis of performance data, self-evaluation, and lifelong learning.",
+                       "PCP" => "Provide patient-centered care that is compassionate, appropriate, and effective for the treatment of health problems and the promotion of health.",
+                       "PPPD" => "Demonstrate a commitment to carrying out professional responsibilities, an adherence to ethical principles, and the qualities required to sustain lifelong personal and professional growth.",
+                       "SBPIC" => "Demonstrate an awareness of and responsiveness to the larger context and system of healthcare, as well as the ability to effectively call upon other resources in the system to provide optimal care, including engaging in interprofessional teams in a manner that optimizes safe, effective patient and population-centered care."
+   }
+
+   COMP_DOMAIN = {  "ics"  => ["ics1", "ics2", "ics3", "ics4", "ics5", "ics6", "ics7", "ics8"],
+                    "mk"   => ["mk1", "mk2", "mk3", "mk4", "mk5"],
+                    "pbli" => ["pbli1", "pbli2", "pbli3", "pbli4", "pbli5", "pbli6", "pbli7", "pbli8"],
+                    "pcp"  => ["pcp1", "pcp2", "pcp3", "pcp4", "pcp5", "pcp6"],
+                    "pppd" => ["pppd1", "pppd2", "pppd3", "pppd4", "pppd5", "pppd6", "pppd7", "pppd8", "pppd9", "pppd10", "pppd11"],
+                    "sbpic"=> ["sbpic1", "sbpic2", "sbpic3", "sbpic4", "sbpic5"]
+   }
+
+
   #===================================================================================================================================================================
+  def hf_comp_domain
+    return COMP_DOMAIN_DESC
+  end
+
+  def hf_comp_domain_desc2(code)
+    return COMP_DOMAIN_DESC["#{code}"]
+  end
+
   def hf_epa_asessors
     return ASSESSORS2
   end
@@ -124,9 +150,7 @@ module CompetenciesHelper
       COMP_CODES.each do |comp|
         percent_complete_hash[comp] = 0.0
       end
-
       percent_complete = 0.0
-
       comp_hash3.each do |index, value|
         percent_complete = ((value.to_f/ASSESSORS2[index])*100).round(0)
         if percent_complete >= 100
@@ -134,9 +158,7 @@ module CompetenciesHelper
         else
           percent_complete_hash[index] = percent_complete
         end
-
       end
-
       return percent_complete_hash
     end
 

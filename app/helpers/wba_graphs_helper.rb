@@ -164,8 +164,9 @@ module WbaGraphsHelper
 
   def hf_get_clinical_dataset(user, dataset_type)
     student_email = user.first.email
+    cohort_title = user.first.cohort.title.split(" - ").last
     surveys = surveygrps(user.first.permission_group_id)
-    sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}"}.first.split("|").first
+    sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? cohort_title}.first.split("|").first
     rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
     if dataset_type == 'All Blocks'
       desired_data = process_all_blocks(rr)

@@ -23,7 +23,7 @@
 
               </td>
               <td><%= cd["prof_concerns"] %></td>
-              <td><%= cd["mspe"].gsub("{cr}{newline}", "") %></td>
+              <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
 
             </tr>
         <% end %>

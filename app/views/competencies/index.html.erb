@@ -84,38 +84,10 @@
               <% if !@chart.nil? %>
                 <br /> <br />
                 <%= high_chart("comp_graph", @chart) %>
+                <%= render partial: "collapsible_competencies" %>
                 <% else %>
                   <h4> No Competency/EPA data FOUND! </h4>
               <% end %>
-            </div>
-          </div>
-          
-          <div class="center-div">
-            <div class="inner-div">
-              <div class="col-sm">
-                <div class="progress-semi-circle">
-                  <div class="barOverflow">
-                    <div class="bar"></div>
-                  </div>
-                  <span>80</span>%<br/>PPPD
-                </div>
-              </div>
-              <div class="col-sm">
-                <div class="progress-semi-circle">
-                  <div class="barOverflow">
-                    <div class="bar"></div>
-                  </div>
-                  <span>60</span>%<br/>PBLI
-                </div>
-              </div>
-              <div class="col-sm">
-                <div class="progress-semi-circle">
-                  <div class="barOverflow">
-                    <div class="bar"></div>
-                  </div>
-                  <span>40</span>%<br/>MK
-                </div>
-              </div>
             </div>
           </div>
 
