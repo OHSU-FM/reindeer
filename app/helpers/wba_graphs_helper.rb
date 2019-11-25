@@ -166,18 +166,28 @@ module WbaGraphsHelper
     student_email = user.first.email
     cohort_title = user.first.cohort.title.split(" - ").last
     surveys = surveygrps(user.first.permission_group_id)
-    sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? cohort_title}.first.split("|").first
-    rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
-    if dataset_type == 'All Blocks'
+    if surveys.nil?
+      return {}
+    end
+    if dataset_type == "All Blocks"
+      sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? cohort_title}.first.split("|").first
+      rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
       desired_data = process_all_blocks(rr)
       return desired_data
+    else
+      sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}"}
+      if !sid_clinical.empty?
+        sid_clinical = sid_clinical.first.split("|").first
+        rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
+        col_names = rr.first.column_names
+        email_col = Hash[col_names]["StudentEmail"]
+        results = get_data(sid_clinical, email_col, student_email)
+        desired_data = reformat_data(Hash[col_names], results)
+        return desired_data
+      else
+        return {}
+      end
     end
-    col_names = rr.first.column_names
-    email_col = Hash[col_names]["StudentEmail"]
-    results = get_data(sid_clinical, email_col, student_email)
-    desired_data = reformat_data(Hash[col_names], results)
-
-    return desired_data
   end
 
   def hf_get_csl_datasets(user, dataset_type)

@@ -95,6 +95,19 @@ module CompetenciesHelper
     end
   end
 
+  def hf_compute_domain_ave(comp_hash3, domain_comp_codes)
+       ave_comp = hf_average_comp2 (comp_hash3)
+       cnt = domain_comp_codes.count
+       ave = 0
+       total = 0
+       domain_comp_codes.map!(&:downcase)
+       domain_comp_codes.each do |code|
+         total += ave_comp[code]
+       end
+       ave = (total.to_f/cnt).round(0)
+       return ave
+  end
+
 
   def hf_format_final_grade json_str
     begin
@@ -232,7 +245,9 @@ module CompetenciesHelper
         else
           class_mean_comp_hash[k] = class_mean
         end
+
       end
+
       return class_mean_comp_hash
     end
 

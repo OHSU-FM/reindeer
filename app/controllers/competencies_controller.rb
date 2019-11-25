@@ -42,6 +42,7 @@ class CompetenciesController < ApplicationController
       end
     end
 
+
     @pk = email
     @student_year = @user.first.cohort.title.split(" - ").last
 

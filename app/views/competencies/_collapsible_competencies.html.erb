@@ -3,14 +3,19 @@
   <% if !@student_epa.nil? %>
     <% comp_domain = hf_comp_domain %>
     <% comp_domain.each do |key, value| %>
+    <% comp_domain_ave = hf_compute_domain_ave(@comp_hash3, value) %>
 
       <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="heading<%= key %>">
               <h4 class="panel-title">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= key %>" aria-expanded="false" aria-controls="collapse<%= key %>">
                   <div class="labels">
-                    <span><b><%= key %></b> - <i><%= hf_comp_domain_desc2(key) %></i></span>
-
+                    <span><b><%= key %></b> - <i><%= hf_comp_domain_desc2(key) %></i>
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="<%= comp_domain_ave %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= comp_domain_ave %>%;">
+                        </div><b><%= comp_domain_ave %>% Completed </b>
+                      </div>
+                    </span>
                   </div>
 
                 </a>
