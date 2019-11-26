@@ -19,18 +19,18 @@
               <% rem = (val-assessors[k])*(-1) %>
               <tr>
                  <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
-                 <%= k.upcase %></a></span></td>
+                 <b><%= k.upcase %></b></a></span></td>
 
                   <!-- <td style="text-align:center"><font color="purple"> --> <!--%= epa_level0[k] == 0? "" : epa_level0[k] %></td> -->
                   <td style="text-align:center"><font color="red"><b><%= @comp_hash1[k] == 0? "" : @comp_hash1[k] %></b></font></td>
-                  <td style="text-align:center"><font color="tomato"><%= @comp_hash2[k] == 0? "" : @comp_hash2[k]%></font></td>
-                  <td style="text-align:center"><font color="green"> <%= val == 0? "" : val %></font></td>
-                  <td style="text-align:center"><font color="blue"> <%= assessors[k] %></font></td>
+                  <td style="text-align:center"><font color="tomato"><b><%= @comp_hash2[k] == 0? "" : @comp_hash2[k]%><b></font></td>
+                  <td style="text-align:center"><font color="green"><b><%= val == 0? "" : val %><b></font></td>
+                  <td style="text-align:center"><font color="blue"><b><%= assessors[k] %><b></font></td>
 
                   <% if rem <=0 %>
                      <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
                   <% else %>
-                      <td style="text-align:center"><font color="Orange"><%= rem %></font></td>
+                      <td style="text-align:center"><font color="Orange"><b><%= rem %></font></b></td>
                   <% end %>
                   <% comp_ave = ((val/assessors[k].to_f)*100).round(0) %>
                   <% comp_ave = comp_ave > 100? 100 : comp_ave %>

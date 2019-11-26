@@ -13,9 +13,10 @@ Rails.application.routes.draw do
   resources :epas
   resources :competencies do
     member do
-      get '/competencies/:user_id', to: 'competecies#index', as: 'competency'
+      get '/users/:user_id/competencies', param: :user_id, to: 'competencies#index', controller: 'competencies', action: :index
     end
   end
+
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
      member do

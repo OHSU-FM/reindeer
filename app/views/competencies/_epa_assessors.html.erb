@@ -18,18 +18,18 @@
             <% rem = (v-assessors[k])*(-1) %>
             <tr>
                <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
-               <%= k %></a></span></td>
+               <b><%= k %></b></a></span></td>
 
                 <!-- <td style="text-align:center"><font color="purple"> --> <!--%= epa_level0[k] == 0? "" : epa_level0[k] %></td> -->
                 <td style="text-align:center"><font color="red"><b><%= epa_level1[k] == 0? "" : epa_level1[k] %></b></font></td>
-                <td style="text-align:center"><font color="tomato"><%= epa_level2[k] == 0? "" : epa_level2[k]%></font></td>
-                <td style="text-align:center"><font color="green"> <%= v == 0? "" : v %></font></td>
-                <td style="text-align:center"><font color="blue"> <%= assessors[k] %></font></td>
+                <td style="text-align:center"><font color="tomato"><b><%= epa_level2[k] == 0? "" : epa_level2[k]%></b></font></td>
+                <td style="text-align:center"><font color="green"><b><%= v == 0? "" : v %></b></font></td>
+                <td style="text-align:center"><font color="blue"><b><%= assessors[k] %></b></font></td>
 
                 <% if rem <=0 %>
                    <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
                 <% else %>
-                    <td style="text-align:center"><font color="Orange"><%= rem %></font></td>
+                    <td style="text-align:center"><font color="Orange"><b><%= rem %></b></font></td>
                 <% end %>
             </tr>
          <% end %>

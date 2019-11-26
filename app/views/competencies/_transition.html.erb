@@ -13,7 +13,7 @@
       </thead>
       <% @comp.each do |cd| %>
 
-        <% if cd["course_name"].include? "TRAM 703" or cd["course_name"].include? "TRAM 704" %>
+        <% if cd["course_name"].include? "TRAN 703" or cd["course_name"].include? "TRAN 704" %>
             <tr>
               <td><%= cd["course_name"] %></td>
               <td><%= cd["submit_date"] %></td>
