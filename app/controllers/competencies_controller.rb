@@ -48,6 +48,15 @@ class CompetenciesController < ApplicationController
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
+     if !@epas.nil?
+       gon.epa_adhoc = @epa_hash #@epa_adhoc
+       gon.epa_evaluators = @epa_evaluators
+       gon.unique_evaluators = @unique_evaluators
+       gon.selected_dates = @selected_dates
+       gon.selected_student = @selected_student
+       gon.total_wba_count = @total_wba_count
+     end 
+
      @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
      @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
      if @csl_data.empty?

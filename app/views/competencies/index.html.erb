@@ -11,7 +11,7 @@
        <li class="bold-italic"><a data-toggle="tab" href="#nbme" style="background-color:#FAF7A6">National Board Exams/CPX</a></li>
        <li class="bold-italic"><a data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9">All Courses</a></li>
        <li class="bold-italic"><a data-toggle="tab" href="#competency" style="background-color:#E0BBE4">Competencies</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPAs/WBAs</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPAs/WBAs/Badges</a></li>
        <li class="bold-italic"><a data-toggle="tab" href="#official" style="background-color:#BEC8F8">Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
 
 
@@ -97,10 +97,12 @@
     <div id="epa" class="tab-pane fade">
       <div class="center-div">
         <div class="inner-div">
-          <% if !@chart_epa.nil? %>
-            <br /> <br />
-            <%= high_chart("epa_graph", @chart_epa) %>
-          <% end %>
+            <% if !@epas.nil? %>
+              <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
+              <br>
+            <% end %>
+
+
           <% wba_epa_student = hf_series_data_student("EPA", params[:user_id]) %>
           <% if !wba_epa_student.nil? %>
              <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
@@ -110,7 +112,7 @@
             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
           <% end %>
 
-          <%= render partial: "collapsible_wpa_details" %>
+          <%= render partial: "collapsible_wba_details" %>
 
           <%= render partial: "collapsible_epas" %>
         </div>

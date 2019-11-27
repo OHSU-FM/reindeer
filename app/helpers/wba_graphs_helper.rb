@@ -433,6 +433,12 @@ module WbaGraphsHelper
         end
      end
 
+     if in_category == "EPA"
+       height = 400
+     else
+       height = 600
+     end
+
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
       #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
@@ -503,7 +509,7 @@ module WbaGraphsHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1400, height:600,
+                width: 1400, height: height,
                 plotBackgroundImage: ''
               })
     end

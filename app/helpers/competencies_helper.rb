@@ -318,7 +318,6 @@ module CompetenciesHelper
       return color_array
     end
 
-
     def domain_colors in_series
       temp_arry = []
       temp_data = {}
