@@ -95,6 +95,15 @@ module CompetenciesHelper
     end
   end
 
+  def hf_get_courses(comp, in_code, in_level)
+    courses  = comp.map{|key, val| key["course_name"] if key["#{in_code}"] == in_level or key["#{in_code}"] == 6 or key["#{in_code}"] == 9 or key["#{in_code}"] == 12 }.compact
+    long_str = ""
+    courses.sort.each do |course|
+      long_str += course + "<br>"
+    end
+    return long_str
+  end
+
   def hf_compute_domain_ave(comp_hash3, domain_comp_codes)
        ave_comp = hf_average_comp2 (comp_hash3)
        cnt = domain_comp_codes.count
