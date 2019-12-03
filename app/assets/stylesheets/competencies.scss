@@ -74,80 +74,84 @@ background-color:#caf4dd !important
     color: #666;
   }
 }
+// .progress {
+//   height: 20px;
+// }
+// .progress-bar {
+// background: -webkit-linear-gradient(left, #FF1A13 0%, #FF7115 25%, #FFF014 50%, #02E884 100%); /* Chrome10-25,Safari5.1-6 */
+// }
+
 .progress {
-  height: 20px;
-}
-.progress-bar {
-background: -webkit-linear-gradient(left, #FF1A13 0%, #FF7115 25%, #FFF014 50%, #02E884 100%); /* Chrome10-25,Safari5.1-6 */
+  position: relative;
+  height: 31px;
+  background: rgb(255, 0, 0);
+  background: -moz-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+  background: -webkit-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -o-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: linear-gradient(to right, rgba(199, 0, 83, 78) 0%, rgba(255, 106, 84, 100), rgba(255, 238, 84, 100), rgba(0, 240, 0, 1) 100%);
 }
 
-// .progress {
-//   position: relative;
-//   height: 31px;
-//   background: rgb(255, 0, 0);
-//   background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
-//   background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-// }
-//
-// .comp-progress {
-//   position: relative;
-//   height: 25px;
-//   background: rgb(255, 0, 0);
-//   background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
-//   background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-//   background: linear-gradient(to right, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
-// }
-//
-// .amount {
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   height: 100%;
-//   transition: all 0.8s;
-//   background: #E8FDD5;
-//   width: 0;
-// }
-//
-// .comp-amount {
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   height: 100%;
-//   transition: all 0.8s;
-//   background: #E8FDD5;
-//   width: 0;
-// }
-//
-// .progress:before {
-//   content: attr(data-amount)"% Complete";
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   z-index: 10;
-//   text-align: center;
-//   line-height: 31px;
-// }
-//
-// .comp-progress:before {
-//   content: attr(comp-data-amount)"% Complete";
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   z-index: 10;
-//   text-align: center;
-//   line-height: 31px;
-// }
+.comp-progress {
+  position: relative;
+  height: 25px;
+  background: rgb(255, 0, 0);
+  background: -moz-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
+  background: -webkit-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
+  background: linear-gradient(to right, rgba(199, 38, 0, 1) 0%, rgba(255, 106, 84, 100), rgba(255, 238, 84, 100), rgba(0, 240, 0, 1) 100%);
+}
+
+.amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: all 0.8s;
+  background: #E8FDD5;
+  width: 0;
+
+}
+
+.comp-amount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  transition: all 0.8s;
+  background: #E8FDD5;
+  width: 0;
+
+}
+
+.progress:before {
+  content: attr(data-amount)"% QA Completion";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  text-align: center;
+  line-height: 31px;
+  font-weight: bold;
+}
+
+.comp-progress:before {
+  content: attr(comp-data-amount)"% QA Completion";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  text-align: center;
+  line-height: 31px;
+  font-weight: bold;
+}
 
 .panel-default > .panel-heading-backgroud-color {
    background-color: #AFECE7;

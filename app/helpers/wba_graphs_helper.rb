@@ -162,19 +162,43 @@ module WbaGraphsHelper
     return comp, class_mean, category_labels
   end
 
+  def cohort_title(permission_group_id)
+    case permission_group_id
+      when 6
+        return 'Med20'
+      when 13
+        return 'Med21'
+      when 16
+        return 'Med22'
+      when 17
+        return 'Med23'
+      when 18
+        return 'Med24'
+      when 19
+        return 'Med25'
+      else
+        return nil
+    end
+
+  end
+
   def hf_get_clinical_dataset(user, dataset_type)
     student_email = user.first.email
-    cohort_title = user.first.cohort.title.split(" - ").last
+
     if !user.first.prev_permission_group_id.nil?
-      surveys = surveygrps(user.first.prev_permission_group_id)      
+      cohort_title = cohort_title(user.first.prev_permission_group_id)
+      surveys = surveygrps(user.first.prev_permission_group_id)
     else
+      cohort_title = cohort_title(user.first.permission_group_id)
       surveys = surveygrps(user.first.permission_group_id)
     end
     if surveys.nil?
       return {}
     end
     if dataset_type == "All Blocks"
-      sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? cohort_title}.first.split("|").first
+      sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? "#{cohort_title}"}
+      return {} if sid_clinical.empty? or sid_clinical.nil?
+      sid_clinical = sid_clinical.first.split("|").first
       rr = LimeSurvey.where(sid: sid_clinical).includes(:lime_groups)
       desired_data = process_all_blocks(rr)
       return desired_data

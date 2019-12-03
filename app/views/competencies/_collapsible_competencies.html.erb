@@ -11,10 +11,11 @@
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= key %>" aria-expanded="false" aria-controls="collapse<%= key %>">
                   <div class="labels">
                     <span><b><%= key %></b> - <i><%= hf_comp_domain_desc2(key) %></i>
-                      <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="<%= comp_domain_ave %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= comp_domain_ave %>%;">
-                        </div><b><%= comp_domain_ave %>% Completed </b>
-                      </div>
+
+                          <div id="progress-<%= key %>" class = "comp-progress" comp-data-amount = "<%= comp_domain_ave %>" >
+                                <div id="competency-<%= key %>" class="comp-amount" style="width: <%= 100-comp_domain_ave %>%"> </div>
+                          </div>
+
                     </span>
                   </div>
 

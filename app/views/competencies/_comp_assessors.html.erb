@@ -43,9 +43,8 @@
 
                   <td width="30%">
                       <span>
-                        <div class="progress">
-                          <div class="progress-bar" role="progressbar" aria-valuenow="<%= comp_ave %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= comp_ave %>%;">
-                          </div><%= comp_ave %>%
+                        <div id="progress-<%= k %>" class = "comp-progress" comp-data-amount = "<%= comp_ave %>" >
+                              <div id="competency-<%= k %>" class="comp-amount" style="width: <%= 100-comp_ave %>%"> </div>
                         </div>
                       </span>
                   </td>
