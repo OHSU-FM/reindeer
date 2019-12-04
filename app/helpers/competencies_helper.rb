@@ -95,6 +95,17 @@ module CompetenciesHelper
     end
   end
 
+  def hf_get_catalog(comp_code)
+
+    long_str = ""
+    courses = Course.select(:course_no, :course_name).where(competency_code: comp_code.upcase).limit(5)
+    return "" if courses.empty?
+    courses.each do |course|
+      long_str += course.course_no + " - " + course.course_name + "<br>"
+    end
+    return long_str
+  end
+
   def hf_get_courses(comp, in_code, in_level)
     courses  = comp.map{|key, val| key["course_name"] if key["#{in_code}"] == in_level or key["#{in_code}"] == 6 or key["#{in_code}"] == 9 or key["#{in_code}"] == 12 }.compact
     long_str = ""

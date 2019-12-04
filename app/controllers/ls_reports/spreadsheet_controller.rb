@@ -7,6 +7,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::CslevalHelper
   include SearchesHelper
   include EpasHelper
+  include ArtifactsHelper
 
   ##
   # show lime_survey

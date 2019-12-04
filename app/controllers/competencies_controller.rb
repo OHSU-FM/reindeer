@@ -6,6 +6,7 @@ class CompetenciesController < ApplicationController
   include LsReports::ClinicalphaseHelper
   include EpasHelper
   include WbaGraphsHelper
+  include ArtifactsHelper
 
   def index
 
@@ -92,11 +93,9 @@ class CompetenciesController < ApplicationController
     end
 
     @chart ||= hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
-
     @student_epa ||= hf_epa2(@comp_data_clinical)
     @epa_class_mean ||= hf_epa2(@comp_class_mean)
     @chart_epa ||= hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
-
 
   end
 

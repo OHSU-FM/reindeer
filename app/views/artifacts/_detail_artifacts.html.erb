@@ -13,7 +13,7 @@
     <% else %>
       <% epa = "EPA#{idx_epa}" %>
     <% end %>
-    <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa or a.title == 'Other' } %>
+    <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa or  a.title == "Progress Board" or a.title == "Grade Dispute" or a.title = "MSPE" or a.title == 'Other' } %>
 
     <% selected_artifacts.each do |artifact| %>
         <tr>

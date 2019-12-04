@@ -36,7 +36,11 @@
                   <% if rem <=0 %>
                      <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
                   <% else %>
-                      <td style="text-align:center"><font color="Orange"><b><%= rem %></font></b></td>
+                      <td style="text-align:center">
+                        <a href="#" style="color:orange" data-html="true" data-toggle="tooltip" title="<%= hf_get_catalog(k) %>"><b><%= rem %></a></b>
+                      </td>
+
+
                   <% end %>
                   <% comp_ave = ((val/assessors[k].to_f)*100).round(0) %>
                   <% comp_ave = comp_ave > 100? 100 : comp_ave %>

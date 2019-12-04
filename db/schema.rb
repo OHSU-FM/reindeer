@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_165851) do
+ActiveRecord::Schema.define(version: 2019_12_03_204129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,17 @@ ActiveRecord::Schema.define(version: 2019_11_18_165851) do
     t.integer "sizex"
     t.integer "sizey"
     t.boolean "resizeable", default: true
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "competency_code"
+    t.string "course_no"
+    t.string "course_name"
+    t.string "department"
+    t.text "course_purpose_statement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["competency_code", "course_no"], name: "index_courses_on_competency_code_and_course_no", unique: true
   end
 
   create_table "cpxes", force: :cascade do |t|
