@@ -38,4 +38,5 @@ Rails.application.config.assets.precompile += %w( print.css
     wba_graphs.css 
     csl_feedbacks.css   
     competencies.css 
+    courses.css
    )

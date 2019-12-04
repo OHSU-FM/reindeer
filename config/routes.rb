@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :courses
   resources :usmle_exams
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'

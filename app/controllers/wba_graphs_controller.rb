@@ -1,4 +1,5 @@
 class WbaGraphsController < ApplicationController
+  include ArtifactsHelper
   include WbaGraphsHelper
   layout 'full_width_csl'
   before_action :authenticate_user!
@@ -42,7 +43,7 @@ class WbaGraphsController < ApplicationController
 
   def get_entrustment_data
     if params[:user_id].present?
-      @user = User.select(:id, :email, :full_name, :permission_group_id).where(id: params[:user_id])
+      @user = User.select(:id, :email, :full_name, :permission_group_id, :prev_permission_group_id).where(id: params[:user_id])
       @clinical_data = hf_get_clinical_dataset(@user, 'Clinical')
       @percent_complete = hf_epa_class_mean(@clinical_data)
       @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')

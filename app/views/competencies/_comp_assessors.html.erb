@@ -37,7 +37,10 @@
                      <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
                   <% else %>
                       <td style="text-align:center">
-                        <a href="#" style="color:orange" data-html="true" data-toggle="tooltip" title="<%= hf_get_catalog(k) %>"><b><%= rem %></a></b>
+                        <b> <%= rem %> </b>
+                        <% if k == 'ics1' %>
+                          <%= link_to("Courses", courses_path(competency_code: k), target: '_blank') %>
+                        <% end %>
                       </td>
 
 

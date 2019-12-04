@@ -184,7 +184,6 @@ module WbaGraphsHelper
 
   def hf_get_clinical_dataset(user, dataset_type)
     student_email = user.first.email
-
     if !user.first.prev_permission_group_id.nil?
       cohort_title = cohort_title(user.first.prev_permission_group_id)
       surveys = surveygrps(user.first.prev_permission_group_id)
