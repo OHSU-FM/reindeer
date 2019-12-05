@@ -65,7 +65,7 @@ class CompetenciesController < ApplicationController
        @csl_data = []
      end
      @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@user, 'All Blocks')
-     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
+     @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
      @usmle_exams = UsmleExam.where(user_id: @user.first.id).order(:exam_type, :no_attempts)

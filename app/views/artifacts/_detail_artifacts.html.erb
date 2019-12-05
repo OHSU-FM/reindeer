@@ -13,29 +13,30 @@
     <% else %>
       <% epa = "EPA#{idx_epa}" %>
     <% end %>
-    <% selected_artifacts = @artifacts_student.select{|a| a if a.content == epa or  a.title == "Progress Board" or a.title == "Grade Dispute" or a.title = "MSPE" or a.title == 'Other' } %>
 
-    <% selected_artifacts.each do |artifact| %>
-        <tr>
-          <td><%= artifact.title %></td>
-          <td><%= artifact.content %> </td>
-          <td><%= artifact.user_id.to_s %></td>
-          <td><table class="responsive table table-hover">
-            <% if artifact.documents.attached? %>
-              <% artifact.documents.each do |document| %>
-                <tr>
-                  <td> <%= document.filename %> </td>
-                  <td>
-                    <%= link_to 'View', url_for(document), target: :_blank %>
-                    /
-                    <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
-                  </td>
-                </tr>
+    <% @official_docs.each do |artifact| %>
+
+          <tr>
+            <td><%= artifact.title %></td>
+            <td><%= artifact.content %> </td>
+            <td><%= artifact.user_id.to_s %></td>
+            <td><table class="responsive table table-hover">
+              <% if artifact.documents.attached? %>
+                <% artifact.documents.each do |document| %>
+                  <tr>
+                    <td> <%= document.filename %> </td>
+                    <td>
+                      <%= link_to 'View', url_for(document), target: :_blank %>
+                      /
+                      <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                    </td>
+                  </tr>
+                <% end %>
               <% end %>
-            <% end %>
-           </table>
-          </td>
-        </tr>
+             </table>
+            </td>
+          </tr>
+
 
     <% end %>
 
