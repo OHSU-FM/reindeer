@@ -19,7 +19,7 @@ class CompetenciesController < ApplicationController
     # end
 
     if current_user.coaching_type == "student"
-      @user = current_user
+      @student = current_user
       full_name = current_user.full_name
       email = current_user.email
       permission_group_id = current_user.permission_group_id
@@ -31,21 +31,21 @@ class CompetenciesController < ApplicationController
 
     else
       if !(@comp = Competency.where(user_id: params[:user_id]).order(:submit_date)).empty?
-        @user = User.where(id: params[:user_id])
-        full_name = @user.first.full_name
-        email = @user.first.email
-        permission_group_id = @user.first.permission_group_id
+        @student = User.where(id: params[:user_id])
+        full_name = @student.first.full_name
+        email = @student.first.email
+        permission_group_id = @student.first.permission_group_id
         load_competencies(permission_group_id, full_name)
       else
-        @user = User.where(id: params[:user_id])
-        email = @user.first.email
+        @student = User.where(id: params[:user_id])
+        email = @student.first.email
         @comp = nil
       end
     end
 
 
     @pk = email
-    @student_year = @user.first.cohort.title.split(" - ").last
+    @student_year = @student.first.cohort.title.split(" - ").last
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
@@ -58,17 +58,17 @@ class CompetenciesController < ApplicationController
        gon.total_wba_count = @total_wba_count
      end
 
-     @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
-     @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
+     @preceptorship_data = hf_get_clinical_dataset(@student, 'Preceptorship')
+     @csl_data = hf_get_csl_datasets(@student, 'CSL Narrative Assessment')
      if @csl_data.empty?
-       @csl_feedbacks = CslFeedback.where(user_id: @user.first.id).order(:submit_date)
+       @csl_feedbacks = CslFeedback.where(user_id: @student.first.id).order(:submit_date)
        @csl_data = []
      end
-     @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@user, 'All Blocks')
+     @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@student, 'All Blocks')
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
-     @usmle_exams = UsmleExam.where(user_id: @user.first.id).order(:exam_type, :no_attempts)
+     @usmle_exams = UsmleExam.where(user_id: @student.first.id).order(:exam_type, :no_attempts)
      #if @not_found_cpx
       # @cpx_data = hf_get_cpx(@survey)
      #end
