@@ -19,7 +19,7 @@ class CslFeedbacksController < ApplicationController
    else
      @students = CslFeedback.where(cohorts: params[:cohort]).includes(:owner).all
      @cohort_students = @students.map(&:owner).uniq!.sort_by{|c| c.full_name}
-     @csl_feedbacks = CslFeedback.where(user_id: @cohort_students.first.id).order(:submit_date)
+     @csl_feedbacks = CslFeedback.where(user_id: params[:user_id]).order(:submit_date)
       # removed the coach category
       # if params[:coach_id].present?
       #   byebug

@@ -183,13 +183,13 @@ module WbaGraphsHelper
   end
 
   def hf_get_clinical_dataset(user, dataset_type)
-    student_email = user.first.email
-    if !user.first.prev_permission_group_id.nil?
-      cohort_title = cohort_title(user.first.prev_permission_group_id)
-      surveys = surveygrps(user.first.prev_permission_group_id)
+    student_email = user.email
+    if !user.prev_permission_group_id.nil?
+      cohort_title = cohort_title(user.prev_permission_group_id)
+      surveys = surveygrps(user.prev_permission_group_id)
     else
-      cohort_title = cohort_title(user.first.permission_group_id)
-      surveys = surveygrps(user.first.permission_group_id)
+      cohort_title = cohort_title(user.permission_group_id)
+      surveys = surveygrps(user.permission_group_id)
     end
     if surveys.nil?
       return {}
@@ -218,8 +218,8 @@ module WbaGraphsHelper
   end
 
   def hf_get_csl_datasets(user, dataset_type)
-    student_email = user.first.email
-    surveys = surveygrps(user.first.permission_group_id)
+    student_email = user.email
+    surveys = surveygrps(user.permission_group_id)
     csl_datasets = surveys.select{|s| s if s.include? "#{dataset_type}"} #.first.split("|").first
     big_data = []
     csl_datasets.each do |csl|

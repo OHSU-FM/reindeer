@@ -31,21 +31,20 @@ class CompetenciesController < ApplicationController
 
     else
       if !(@comp = Competency.where(user_id: params[:user_id]).order(:submit_date)).empty?
-        @student = User.where(id: params[:user_id])
-        full_name = @student.first.full_name
-        email = @student.first.email
-        permission_group_id = @student.first.permission_group_id
+        @student = User.find_by(id: params[:user_id])
+        full_name = @student.full_name
+        email = @student.email
+        permission_group_id = @student.permission_group_id
         load_competencies(permission_group_id, full_name)
       else
-        @student = User.where(id: params[:user_id])
-        email = @student.first.email
+        @student = User.find_by(id: params[:user_id])
+        email = @student.email
         @comp = nil
       end
     end
 
-
     @pk = email
-    @student_year = @student.first.cohort.title.split(" - ").last
+    @student_year = @student.cohort.title.split(" - ").last
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
@@ -61,14 +60,14 @@ class CompetenciesController < ApplicationController
      @preceptorship_data = hf_get_clinical_dataset(@student, 'Preceptorship')
      @csl_data = hf_get_csl_datasets(@student, 'CSL Narrative Assessment')
      if @csl_data.empty?
-       @csl_feedbacks = CslFeedback.where(user_id: @student.first.id).order(:submit_date)
+       @csl_feedbacks = CslFeedback.where(user_id: @student.id).order(:submit_date)
        @csl_data = []
      end
      @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@student, 'All Blocks')
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
-     @usmle_exams = UsmleExam.where(user_id: @student.first.id).order(:exam_type, :no_attempts)
+     @usmle_exams = UsmleExam.where(user_id: @student.id).order(:exam_type, :no_attempts)
      #if @not_found_cpx
       # @cpx_data = hf_get_cpx(@survey)
      #end

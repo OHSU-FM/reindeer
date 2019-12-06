@@ -32,6 +32,11 @@
                <%= link_to("<b>Clinical Phase Dataset Beta (In Progress! >= Med20)</b>".html_safe, competencies_path(user_id: result.id)) %><br>
             <% end %>
 
+            <% if hf_has_csl_feedbacks(result.id) %>
+              <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(cohort: cohort_title(result.permission_group_id), user_id: result.id, block: "FUND"), target: '_blank') %>
+              <br>
+            <% end %>
+
             <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>

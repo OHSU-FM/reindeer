@@ -43,17 +43,17 @@ class WbaGraphsController < ApplicationController
 
   def get_entrustment_data
     if params[:user_id].present?
-      @user = User.select(:id, :email, :full_name, :permission_group_id, :prev_permission_group_id).where(id: params[:user_id])
+      @user = User.find_by(id: params[:user_id])
       @clinical_data = hf_get_clinical_dataset(@user, 'Clinical')
       @percent_complete = hf_epa_class_mean(@clinical_data)
       @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
-      @wba = hf_get_wbas(@user.first.id)
+      @wba = hf_get_wbas(@user.id)
       @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
       if @csl_data.empty?
-        @csl_feedbacks = CslFeedback.where(user_id: @user.first.id).order(:submit_date)
+        @csl_feedbacks = CslFeedback.where(user_id: @user.id).order(:submit_date)
         @csl_data = []
       end
-      @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.first.email, "Progress Board")
+      @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
       @today_date = Time.new.strftime("%m/%d/%Y")
     end
     if request.xhr?

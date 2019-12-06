@@ -1,7 +1,10 @@
-<div class="panel panel-default">
-    <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@student.first.full_name}</b><br/> Coach: <b>#{@student.first.cohort.title}</b>".html_safe %>
-    </div>
-</div>
+<% if !@student.nil? %>
+  <div class="panel panel-default">
+      <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@student.full_name}</b><br/> Coach: <b>#{@student.cohort.title}</b>".html_safe %>
+      </div>
+  </div>
+<% end %>
+
 <% if !@category_labels.nil? %>
   <table class="table table-striped table-responsive-sm">
     <thead>
@@ -12,7 +15,7 @@
         <% end %>
       </tr>
     </thead>
-    <% cohort = @student.first.cohort.title.split(" - ").second %>
+    <% cohort = @student.cohort.title.split(" - ").second %>
     <% for j in 1..5 %>
         <tr>
           <td style="text-align:center"><%= "Comp#{j}"%></td>
@@ -21,7 +24,8 @@
             <% if @all_blocks["Comp#{j}"][i].to_f >= 70 %>
               <% if (j == 2 or j == 5) and (cohort > "Med21") %>
                   <td style="text-align:center">HSS: <%= @all_blocks["Comp#{j}"][i] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i]%></b></i> <br>
-                    BSS: <%= @all_blocks["Comp#{j}"][i+1] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i+1]%></td>
+                    BSS: <%=
+                     @all_blocks["Comp#{j}"][i+1] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i+1]%></td>
                     <% i = i + 2 %>
               <% else %>
                   <td style="text-align:center"> <%= @all_blocks["Comp#{j}"][i] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i] %></b></i>
@@ -31,6 +35,7 @@
               <td style="text-align:center;color:#FF4B44"><%= @all_blocks["Comp#{j}"][i] %> / <b><i><%=  @all_blocks_class_mean["Comp#{j}"][i] %></b></i></td>
               <% i = i + 1 %>
             <% end %>
+
           <% end %>
         </tr>
     <% end %>
@@ -40,26 +45,26 @@
     <div class="panel-body">
       <div class="row">
         <div class="column-fom">
-            <% comp1_graph ||= hf_create_chart_fom('Comp1 - Weekly/Quizzes', @all_blocks["Comp1"], @all_blocks_class_mean["Comp1"], @student.first.full_name, 'SpringGreen') %>
+            <% comp1_graph ||= hf_create_chart_fom('Comp1 - Weekly/Quizzes', @all_blocks["Comp1"], @all_blocks_class_mean["Comp1"], @student.full_name, 'SpringGreen') %>
             <%= high_chart("fom_comp1_graph", comp1_graph) %>
         </div>
         <div class="column-fom">
-            <% comp2_graph ||=  hf_create_chart_fom('Comp2 - Skills Assessments', @all_blocks["Comp2"], @all_blocks_class_mean["Comp2"], @student.first.full_name, 'Skyblue') %>
+            <% comp2_graph ||=  hf_create_chart_fom('Comp2 - Skills Assessments', @all_blocks["Comp2"], @all_blocks_class_mean["Comp2"], @student.full_name, 'Skyblue') %>
             <%= high_chart("fom_comp2_graph", comp2_graph) %>
         </div>
         <div class="column-fom">
-          <% comp3_graph ||= hf_create_chart_fom('Comp3 - OHSU Final Block Exam', @all_blocks["Comp3"], @all_blocks_class_mean["Comp3"], @student.first.full_name, 'Violet') %>
+          <% comp3_graph ||= hf_create_chart_fom('Comp3 - OHSU Final Block Exam', @all_blocks["Comp3"], @all_blocks_class_mean["Comp3"], @student.full_name, 'Violet') %>
             <%= high_chart("fom_comp3_graph",  comp3_graph) %>
         </div>
       </div>
 
       <div class="row">
         <div class="column-fom">
-            <% comp4_graph ||= hf_create_chart_fom('Comp4 - NBME Exam', @all_blocks["Comp4"], @all_blocks_class_mean["Comp4"], @student.first.full_name, 'Pink') %>
+            <% comp4_graph ||= hf_create_chart_fom('Comp4 - NBME Exam', @all_blocks["Comp4"], @all_blocks_class_mean["Comp4"], @student.full_name, 'Pink') %>
             <%= high_chart("fom_comp4_graph", comp4_graph) %>
         </div>
         <div class="column-fom">
-          <% comp5_graph ||= hf_create_chart_fom('Comp5 - Final Skills Exam', @all_blocks["Comp5"], @all_blocks_class_mean["Comp5"], @student.first.full_name, 'Aqua') %>
+          <% comp5_graph ||= hf_create_chart_fom('Comp5 - Final Skills Exam', @all_blocks["Comp5"], @all_blocks_class_mean["Comp5"], @student.full_name, 'Aqua') %>
           <%= high_chart("fom_comp5_graph", comp5_graph ) %>
         </div>
 
