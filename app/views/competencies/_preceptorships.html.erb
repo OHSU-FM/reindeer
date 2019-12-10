@@ -9,13 +9,15 @@
         <th scope="col">Comment</th>
       </tr>
     </thead>
-    <% @preceptorship_data.each do |pd| %>
-      <tr>
-        <td><%= pd["PreceptorName"] %></td>
-        <td><%= pd["SubmitDate"] %></td>
-        <td><%= pd["Grade"] %></td>
-        <td><%= pd["Comment"] %></td>
-      </tr>
+    <% if !@preceptorship_data.nil? %>
+      <% @preceptorship_data.each do |pd| %>
+        <tr>
+          <td><%= pd["PreceptorName"] %></td>
+          <td><%= pd["SubmitDate"] %></td>
+          <td><%= pd["Grade"] %></td>
+          <td><%= pd["Comment"] %></td>
+        </tr>
+      <% end %>
     <% end %>
   </table>
 </div>

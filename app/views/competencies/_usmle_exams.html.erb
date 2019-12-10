@@ -9,12 +9,14 @@
         <th scope="col">Exam Date</th>
       </tr>
     </thead>
-    <% @usmle_exams.each do |exam| %>
-          <tr>
-            <td><%= exam.exam_type %></td>
-            <td><%= exam.no_attempts %></td>
-            <td><%= exam.pass_fail %></td>
-            <td><%= exam.exam_score %></td>
-            <td><%= exam.exam_date %></td>
+    <% if !@usmle_exams.nil? %>
+      <% @usmle_exams.each do |exam| %>
+            <tr>
+              <td><%= exam.exam_type %></td>
+              <td><%= exam.no_attempts %></td>
+              <td><%= exam.pass_fail %></td>
+              <td><%= exam.exam_score %></td>
+              <td><%= exam.exam_date %></td>
+      <% end %>
     <% end %>
   </table>
