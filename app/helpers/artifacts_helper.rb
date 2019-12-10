@@ -1,5 +1,11 @@
 module ArtifactsHelper
 
+  ARTIFACT_CATEGORY = ["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board", "Grade Dispute", "MSPE", "Preceptorship Contract", "Other"]
+
+  def hf_category
+    return ARTIFACT_CATEGORY
+  end
+
   def hf_get_fom_artifacts (pk, artifact_title, artifact_content)
     selected_user = User.find_by(email: pk)
     if selected_user.nil?

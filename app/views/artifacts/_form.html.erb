@@ -25,7 +25,7 @@
       %>
     <% else %>
       <%= f.select :title,
-        options_for_select(["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board", "Grade Dispute", "MSPE", "Other"]),
+        options_for_select(hf_category),
         { include_blank: "---" },
         required: true
       %>

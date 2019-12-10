@@ -1,7 +1,10 @@
 <% if !@student.nil? %>
   <div class="panel panel-default">
-      <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@student.full_name}</b><br/> Coach: <b>#{@student.cohort.title}</b>".html_safe %>
-      </div>
+    <% if !@student.cohort.ni? %>
+       <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@student.full_name}</b><br/> Coach: <b>#{@student.cohort.title}</b>".html_safe %></div>
+    <% else %>
+        <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@student.full_name}</b><br/> Coach: <b>Not Assigned </b>".html_safe %></div>
+    <% end %>
   </div>
 <% end %>
 
