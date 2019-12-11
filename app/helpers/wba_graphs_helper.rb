@@ -263,15 +263,15 @@ module WbaGraphsHelper
     return epa
   end
 
-  def get_involvement_student(in_category, col_name, email)
+  def get_involvement_student(in_category, col_name, user_id)
     temp_hash = {}
-    username = email.split("@").first
+    #username = email.split("@").first
 
     in_category.each do |j|
         temp_involve = []
         (1..4).each do |k|
            #temp_data = Epa.where("#{col_name}": "#{j}", involvement: k).count
-           temp_data = Epa.where("clinical_assessor = ? and involvement = ? and student_assessed like ? ", "#{j}", k, "%-#{username}").count
+           temp_data = Epa.where("clinical_assessor = ? and involvement = ? and user_id = ? ", "#{j}", k, user_id).count
            temp_involve.push temp_data
         end
         temp_hash["#{j}"] = temp_involve

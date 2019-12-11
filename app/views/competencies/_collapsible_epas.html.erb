@@ -1,6 +1,6 @@
 <H4>Collapsible EPA Section </h4>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <% if !@student_epa.nil? %>
+  <% if !@student_epa.blank? %>
 
     <% for i in 1..13 do %>
       <% epa_code = "epa#{i}" %>

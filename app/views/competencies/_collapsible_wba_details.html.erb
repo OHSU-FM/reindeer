@@ -24,20 +24,22 @@
                           <th>Feedback</th>
                           <th>EncounterComplex</th>
                         </tr>
-                      <% @epas.each do |e| %>
-                        <tr>
-                            <td><%= e.epa %></td>
-                            <td><%= e.submit_date.strftime("%F") %></td>
-                            <td><%= e.clinical_discipline %></td>
-                            <td><%= e.clinical_setting %></td>
-                            <td><%= e.clinical_assessor %></td>
-                            <td><%= e.assessor_name %></td>
-                            <td><%= e.no_of_times_with_super %></td>
-                            <td><%= e.involvement %></td>
-                            <td><%= e.more_independent %></td>
-                            <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
-                        </tr>
-                      <% end %>
+                        <% if !@epa.blank? %>
+                          <% @epas.each do |e| %>
+                            <tr>
+                                <td><%= e.epa %></td>
+                                <td><%= e.submit_date.strftime("%F") %></td>
+                                <td><%= e.clinical_discipline %></td>
+                                <td><%= e.clinical_setting %></td>
+                                <td><%= e.clinical_assessor %></td>
+                                <td><%= e.assessor_name %></td>
+                                <td><%= e.no_of_times_with_super %></td>
+                                <td><%= e.involvement %></td>
+                                <td><%= e.more_independent %></td>
+                                <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
+                            </tr>
+                          <% end %>
+                        <% end %>
                     </table>
                   </div>
               </div>

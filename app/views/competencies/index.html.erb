@@ -108,7 +108,7 @@
           <% if !wba_epa_student.nil? %>
              <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
           <% end %>
-          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk) %>
+          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", params[:user_id]) %>
           <% if !wba_clinical_assessor.nil? %>
             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
           <% end %>
