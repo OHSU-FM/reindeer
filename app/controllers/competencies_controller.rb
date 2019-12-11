@@ -31,13 +31,16 @@ class CompetenciesController < ApplicationController
 
     else
       if !(@comp = Competency.where(user_id: params[:user_id]).order(:submit_date)).empty?
-        @student = User.find_by(id: params[:user_id])
+
+puts "params:[user_id] ==> " + params[:user_id].to_s
+
+        @student = User.where(id: params[:user_id]).first
         full_name = @student.full_name
         email = @student.email
         permission_group_id = @student.permission_group_id
         load_competencies(permission_group_id, full_name)
       else
-        @student = User.find_by(id: params[:user_id])
+        @student = User.where(id: params[:user_id]).first
         email = @student.email
         @comp = nil
       end

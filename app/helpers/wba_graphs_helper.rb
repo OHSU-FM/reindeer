@@ -266,6 +266,10 @@ module WbaGraphsHelper
   def get_involvement_student(in_category, col_name, user_id)
     temp_hash = {}
     #username = email.split("@").first
+    if user_id.to_s.include? "@"
+      email = user_id ## is an email
+      user_id = User.find_by(email: email ).id
+    end
 
     in_category.each do |j|
         temp_involve = []
