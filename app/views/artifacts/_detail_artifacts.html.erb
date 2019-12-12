@@ -13,9 +13,8 @@
     <% else %>
       <% epa = "EPA#{idx_epa}" %>
     <% end %>
-
-    <% @official_docs.each do |artifact| %>
-
+    <% if !@official_docs.blank? %>
+      <% @official_docs.each do |artifact| %>
           <tr>
             <td><%= artifact.title %></td>
             <td><%= artifact.content %> </td>
@@ -36,8 +35,6 @@
              </table>
             </td>
           </tr>
-
-
-    <% end %>
-
+        <% end %>
+      <% end %>
   </table>

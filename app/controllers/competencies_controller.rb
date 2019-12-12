@@ -8,6 +8,7 @@ class CompetenciesController < ApplicationController
   include WbaGraphsHelper
   include ArtifactsHelper
 
+
   def index
 
     @non_clinical_course_arry ||= hf_get_non_clinical_courses
@@ -17,6 +18,7 @@ class CompetenciesController < ApplicationController
     # else
     #   # do something else
     # end
+
 
     if current_user.coaching_type == "student"
       @student = current_user
@@ -30,17 +32,14 @@ class CompetenciesController < ApplicationController
       end
 
     else
-      if !(@comp = Competency.where(user_id: params[:user_id]).order(:submit_date)).empty?
-
-puts "params:[user_id] ==> " + params[:user_id].to_s
-
-        @student = User.where(id: params[:user_id]).first
+      if params[:slug].present? and  !(@comp = User.find(params[:slug]).competencies).blank?
+        @student = User.where(id: params[:slug]).first
         full_name = @student.full_name
         email = @student.email
         permission_group_id = @student.permission_group_id
         load_competencies(permission_group_id, full_name)
       else
-        @student = User.where(id: params[:user_id]).first
+        @student = User.where(id: params[:slug]).first
         email = @student.email
         @comp = nil
       end
@@ -74,6 +73,8 @@ puts "params:[user_id] ==> " + params[:user_id].to_s
      #if @not_found_cpx
       # @cpx_data = hf_get_cpx(@survey)
      #end
+
+     render :index
 
   end
 

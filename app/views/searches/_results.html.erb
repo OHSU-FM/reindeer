@@ -29,7 +29,7 @@
           <td>
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
             <% if ['dean', 'admin', 'coach'].include? current_user.coaching_type %>
-               <%= link_to("<b>Clinical Phase Dataset Beta (In Progress! >= Med20)</b>".html_safe, competencies_path(user_id: result.id)) %><br>
+               <%= link_to("<b>Clinical Phase Dataset Beta (In Progress! >= Med20)</b>".html_safe, competencies_path(slug: result.id)) %><br>
             <% end %>
 
             <% if hf_has_csl_feedbacks(result.id) %>
