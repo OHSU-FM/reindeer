@@ -12,15 +12,20 @@ Rails.application.routes.draw do
   get 'wba_graphs/show', to: 'wba_graphs#show'
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
   resources :epas
-  # resources :competencies, param: :slug,  only: [:index] do
+
+
+  # resources :competencies do
   #   member do
-  #     get '/users/:user_id/competencies', to: 'competencies#index', controller: 'competencies', action: :index
+  #     get '/users/:user_id/competencies', param: :user_id, to: 'competencies#index', controller: 'competencies', action: :index
   #   end
   # end
+  #
 
-  resources :users do
-    resources :competencies, only: [:index]
+  resources :user do
+    resources :competencies, param: :user_id, only: [:index]
   end
+
+
 
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
