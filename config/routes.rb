@@ -12,10 +12,14 @@ Rails.application.routes.draw do
   get 'wba_graphs/show', to: 'wba_graphs#show'
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
   resources :epas
-  resources :competencies, param: :slug,  only: [:index] do
-    member do
-      get '/users/:user_id/competencies', action: :index
-    end
+  # resources :competencies, param: :slug,  only: [:index] do
+  #   member do
+  #     get '/users/:user_id/competencies', to: 'competencies#index', controller: 'competencies', action: :index
+  #   end
+  # end
+
+  resources :users do
+    resources :competencies, only: [:index]
   end
 
   resources :artifacts do

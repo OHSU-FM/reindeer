@@ -32,14 +32,14 @@ class CompetenciesController < ApplicationController
       end
 
     else
-      if params[:slug].present? and  !(@comp = User.find(params[:slug]).competencies).blank?
-        @student = User.where(id: params[:slug]).first
+      if params[:user_id].present? and  !(@comp = User.find(params[:user_id]).competencies).blank?
+        @student = User.where(id: params[:user_id]).first
         full_name = @student.full_name
         email = @student.email
         permission_group_id = @student.permission_group_id
         load_competencies(permission_group_id, full_name)
       else
-        @student = User.where(id: params[:slug]).first
+        @student = User.where(id: params[:user_id]).first
         email = @student.email
         @comp = nil
       end
