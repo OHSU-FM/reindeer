@@ -13,13 +13,6 @@ class CompetenciesController < ApplicationController
 
     @non_clinical_course_arry ||= hf_get_non_clinical_courses
 
-    # if business = Business.where(:user_id => current_user.id).first
-    #   business.do_some_stuff
-    # else
-    #   # do something else
-    # end
-
-
     if current_user.coaching_type == "student"
       @selected_user = current_user
       full_name = current_user.full_name
