@@ -8,10 +8,15 @@
         <% i = 1 %>
         <% @percent_complete.drop(1).each do |val| %>
           <div class="row">
-              <%= render partial: 'qa_percent', locals: {epa_code: "EPA#{i}", epa_percent: val, wba: @wba["EPA#{i}"]} %>
+              <%= render partial: 'qa_percent', locals: {epa_code: "EPA#{i}", epa_percent: val, wba: @wba["EPA#{i}"], epas: epas} %>
               <% i = i + 1 %>
           </div>
         <% end %>
         <button type="button" class="btn btn-md btn-success" onclick="window.print();">Print to File/PDF to Save Data</button>
+
   <% end %>
 </div>
+
+
+
+<!-- Modal -->

@@ -23,10 +23,11 @@
             <div class="panel-body"><h4>CSL Evaluations</h4></div>
         </div>
          <div class="table-responsive-sm">
-          <% if @csl_data.nil? %>
+          <% if !@csl_data.blank? %>
+                <%= render partial: "csl_evals" %>
+          <% end %>
+          <% if !@csl_feedbacks.blank? %>
             <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
-          <% else %>
-            <%= render partial: "csl_evals" %>
           <% end %>
         </div>
 

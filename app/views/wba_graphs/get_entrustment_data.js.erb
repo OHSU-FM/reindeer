@@ -1,3 +1,3 @@
-$('#entrustment').html("<%= j render partial: 'get_entrustment_data', locals: { perecnt_complete: @percent_complete} %>");
+$('#entrustment').html("<%= j render partial: 'get_entrustment_data', locals: { perecnt_complete: @percent_complete, epas: @epas} %>");
 $('#review_comments').html("<%= j render partial: 'narrative_comments', locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data} %> ")
 console.log ("inside get_entrustment_data")

@@ -1,5 +1,4 @@
 
-
   <b><h4><%= epa_code %> - <%= hf_epa_desc2(epa_code) %></b></h4>
     <ul>
       <li>QA Completion bar: <b style="color:blue"><%= epa_percent %> %</b></li>
@@ -21,13 +20,38 @@
     <textarea rows="6" cols="100" placeholder="Please type notes or any comments on the EPA..">
     </textarea>
 
-    <h4>Total # of WBAs: <b style="color:blue"><%= wba.sum %></b>
-      [4s: <b style="color:green"><%= wba[3] %></b>
-       3s: <b style="color:orange"><%= wba[2] %></b>
-       2s: <b style="color:purple"><%= wba[1] %></b>
-       1s: <b style="color:aqua"><%= wba[0] %></b> ]
-    </h4>
+      <h4>Total # of WBAs: <b style="color:blue"><%= wba.sum %></b>
+        [4s: <b style="color:green"><%= wba[3] %></b>
+         3s: <b style="color:orange"><%= wba[2] %></b>
+         2s: <b style="color:purple"><%= wba[1] %></b>
+         1s: <b style="color:aqua"><%= wba[0] %></b> ]
+      </h4>
 
+      <button type="button" class="btn btn-info btn-small" data-toggle="modal" data-target="#myModal<%= "#{epa_code}"%>">WBA Detail</button>
 <hr>
 
-<!-- Modal -->
+
+
+<div id="myModal<%= "#{epa_code}" %>" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">WBA Detail - <%= epa_code %> - <%= hf_epa_desc2(epa_code) %></h4>
+      </div>
+      <div class="modal-body">
+        <% if !epas.blank?  %>
+        <%= render partial: 'wba_details', locals: {epa_code: epa_code, epas: epas} %>
+
+        <% end %>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

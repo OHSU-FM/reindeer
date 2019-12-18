@@ -54,10 +54,8 @@ class CompetenciesController < ApplicationController
 
      @preceptorship_data = hf_get_clinical_dataset(@selected_user, 'Preceptorship')
      @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
-     if @csl_data.empty?
-       @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date)
-       @csl_data = []
-     end
+     @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date)
+
      @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 

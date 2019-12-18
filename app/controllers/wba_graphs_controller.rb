@@ -1,9 +1,10 @@
 class WbaGraphsController < ApplicationController
-  include ArtifactsHelper
-  include WbaGraphsHelper
   layout 'full_width_csl'
   before_action :authenticate_user!
-
+  include CompetenciesHelper
+  include ArtifactsHelper
+  include WbaGraphsHelper
+  include EpasHelper
 
   def index
 
@@ -55,6 +56,16 @@ class WbaGraphsController < ApplicationController
       end
       @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
       @today_date = Time.new.strftime("%m/%d/%Y")
+      ## getting WPAs
+       @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
+       if !@epas.blank?
+         #   gon.epa_adhoc = @epa_hash #@epa_adhoc
+         # gon.epa_evaluators = @epa_evaluators
+         # gon.unique_evaluators = @unique_evaluators
+         # gon.selected_dates = @selected_dates
+         # gon.selected_student = @selected_student
+         # gon.total_wba_count = @total_wba_count
+       end
     end
     if request.xhr?
       respond_to do |format|
