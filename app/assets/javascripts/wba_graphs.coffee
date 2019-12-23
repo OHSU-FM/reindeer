@@ -3,6 +3,9 @@
 #=====================================================================
 $(document).ready ->
 
+
+  $("[id^=MyModalEPA]").draggable handle: '.modal-body'
+
   $(document).on 'click', '#comments-button', ->
     $('a[href="#review_comments"]').click()
     return

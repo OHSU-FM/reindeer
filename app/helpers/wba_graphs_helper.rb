@@ -19,6 +19,9 @@ module WbaGraphsHelper
             "EPA13" => "Identify System Failures/Contribute to a Cxof Safety/Improvement"
   }
 
+  COLORS = ['Salmon', 'AquaMarine', 'Plum', '#4d88ff', 'LawnGreen', '#7cb5ec', '#f7a35c', '#90ee7e', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee', '#55BF3B']
+
+
   class LimeTable < ActiveRecord::Base
   end
 
@@ -544,6 +547,128 @@ module WbaGraphsHelper
                 plotBackgroundImage: ''
               })
     end
+
+    return chart
+  end
+
+  #===========================================================================================================
+  def get_epa_color(k)
+      return COLORS[k]
+  end
+
+
+  def prepare_series_data(in_data)
+    series_data = []
+    if in_data.blank?
+      return []
+    end
+
+    len = in_data.length
+    i = 0
+
+    while i < len
+      #console.log ("while loop: " + JSON.stringify(in_data[i]))
+      tempDate = in_data[i][:x]
+      modDate = DateTime.parse(tempDate).strftime('%Q').to_i
+
+      hash_items = {}
+      hash_items.store('x', modDate)
+      hash_items.store('y', in_data[i][:y].to_i)
+      hash_items.store('evaluator', in_data[i][:evaluator])
+      hash_items["discipline"] = in_data[i][:discipline]
+      hash_items["setting"] = in_data[i][:setting]
+      hash_items["epa"] = in_data[i][:epa]
+      series_data << hash_items
+      i = i + 1
+    end
+    #console.log("series_data: " + JSON.stringify(series_data))
+
+    return series_data
+  end
+
+  def hf_create_wba_chart(epa_code, data_series, selected_dates, idx)
+
+     total_wba_count = 0
+     graph_title = "Work Based Assessment"
+     #seriesArr = []
+     #seriesArr << {name: epa_code, data: prepare_series_data(data_series), color: get_epa_color(idx)}
+     #seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
+     #console.log("seriesArr:" + JSON.stringify(seriesArr))
+     category = []
+     category.push epa_code
+     graph_title = epa_code + " - " + graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
+     total_wba_count = data_series.count
+
+
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: "<b>Work Based Assessment Datapoints - #{category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+      #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+      f.xAxis(
+        categories: category,
+        type: 'datetime',
+        tickInterval: 24 * 3600 * 1000 * 7 ,
+        dateTimeLabelFormats: {
+          day: '%d %b %Y'
+        },
+        title: {
+          text: 'Date of Observation'
+        },
+        labels: {
+          enabled: true,
+          format: "{value:%Y-%m-%d}",
+          labels: {
+                    style:  {
+                                fontWeight: 'bold',
+                                color: '#000000'
+                            }
+                  }
+        }
+      )
+      f.series(name: epa_code, data: prepare_series_data(data_series), pointInterval: 24 * 3600 * 1000 * 7, color: get_epa_color(idx))
+
+
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      #f.colors(get_4_random_colors)
+
+      f.yAxis [
+         { tickInterval: 1,
+           endonTick: false,
+           min: 0,
+           title: {text: "<b>Assessment Type</b>", margin: 20}
+
+         }
+      ]
+
+      f.tooltip(
+          useHTML: true,
+          xDateFormat: '%Y-%m-%d',
+          shared: false # this has to be false if we have extra data in series data
+      )
+
+      f.plot_options(
+
+        column: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+
+        series: {
+          cursor: 'pointer'
+
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "spline",
+                width: 1400, height: 400,
+                plotBackgroundImage: ''
+              })
+    end
+
 
     return chart
   end

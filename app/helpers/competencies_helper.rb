@@ -68,8 +68,21 @@ module CompetenciesHelper
                     "sbpic"=> ["sbpic1", "sbpic2", "sbpic3", "sbpic4", "sbpic5"]
    }
 
+   DECODE_PRECEPTOR_COMP = { '1' => "Beginning",
+                             '2' => "Effort",
+                             '3' => "Threshold",
+                             '4' => "Ready",
+                             '888' => "Missing",
+                             '' => "Missing"
+                           }
+
+
 
   #===================================================================================================================================================================
+  def hf_decode_preceptor_comp2(in_code)
+      return DECODE_PRECEPTOR_COMP[in_code]
+  end
+
   def hf_comp_domain
     return COMP_DOMAIN_DESC
   end

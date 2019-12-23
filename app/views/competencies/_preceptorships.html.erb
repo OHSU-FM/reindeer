@@ -6,6 +6,20 @@
         <th scope="col">Preceptor</th>
         <th scope="col">SubmitDate</th>
         <th scope="col">Grade</th>
+        <th scope="col">ICS1</th>
+        <th scope="col">ICS2</th>
+        <th scope="col">ICS4</th>
+        <th scope="col">ICS6</th>
+        <th scope="col">ICS7</th>
+        <th scope="col">PBLI1</th>
+        <th scope="col">PBLI8</th>
+        <th scope="col">PPPD1</th>
+        <th scope="col">PPPD2</th>
+        <th scope="col">PPPD6</th>
+        <th scope="col">PPPD9</th>
+        <th scope="col">SBPIC2</th>
+        <th scope="col">SBPIC4</th>
+        <th scope="col">SBPIC5</th>
         <th scope="col">Comment</th>
       </tr>
     </thead>
@@ -15,6 +29,20 @@
           <td><%= pd["PreceptorName"] %></td>
           <td><%= pd["SubmitDate"] %></td>
           <td><%= pd["Grade"] %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["ICS1"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["ICS2"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["ICS4"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["ICS6"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["ICS7"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["PBLI1"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["PBLI8"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["PPPD1"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["PPPD2"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["PPPD6"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["PPPD9"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["SBPIC2"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["SBPIC4"]) %></td>
+          <td><%= hf_decode_preceptor_comp2(pd["SBPIC5"]) %></td>
           <td><%= pd["Comment"] %></td>
         </tr>
       <% end %>

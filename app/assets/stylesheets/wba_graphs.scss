@@ -62,20 +62,7 @@ h5 {
 input[type="text"]{
 background-color:#caf4dd !important
 }
-.modal-body {
-    max-height: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: auto;
-}
 
-.modal-dialog {
-  height: 100%;
+.modal-dialog-centered .modal-content {
   width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.modal-content {
-  margin: 0 auto;
 }

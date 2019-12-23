@@ -284,6 +284,13 @@ $(document).ready ->
     @selected_student = if gon.selected_student? then gon.selected_student else ''
     @total_wba_count = if gon.total_wba_count? then gon.total_wba_count else ''
 
+    #==== Display all Ad Hoc graphs
+    graph_target = "data-visualization-AdHocAllEPAs"
+    graph_title = "All Work Based Assessments"
+    graph_sub_title = @selected_student
+    options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
+    window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
+
     window.chart2 = []
     i = 0
     for k of @epa_adhoc_series_data
@@ -296,13 +303,6 @@ $(document).ready ->
         options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates, @total_wba_count)
         window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
         #window.chart2[i] = Highcharts.chart(options)
-
-    #==== Display all Ad Hoc graphs
-    graph_target = "data-visualization-AdHocAllEPAs"
-    graph_title = "All Work Based Assessments"
-    graph_sub_title = @selected_student
-    options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
-    window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
 
     graph_target = "data-visualization-AdHocAllEPACount"
     graph_title = "Number of WBAs Per EPA"
