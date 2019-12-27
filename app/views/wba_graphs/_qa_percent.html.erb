@@ -37,12 +37,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">WBA Detail - <%= epa_code %> - <%= hf_epa_desc2(epa_code) %> - (The Time Graph is Coming Soon!)</h4>
+        <h4 class="modal-title">WBA Detail - <%= epa_code %> - <%= hf_epa_desc2(epa_code) %></h4>
       </div>
       <div class="modal-body">
         <% if !epas.blank?  %>
           <% epa_chart = hf_create_wba_chart(epa_code, @epa_hash[idx], @selected_dates, idx)%>
-          <%= high_chart("#{epa_code}_chart", epa_chart) %>
+          <%= high_chart("#{epa_code}_chart", epa_chart) do |chart| %>
+
+            <% "chart.yAxis.labels.formatter = function() {switch (this.value) {
+                                                                    case 1: return '<b>1 - I did it</b>';
+                                                                    case 2: return '<b>2 - I talked them through it</b>';
+                                                                    case 3: return '<b>3 - I directed them from time to time</b>';
+                                                                    case 4: return '<b>4 - I was available just in case</b>';
+                                                                    default: return this.y + 'test';}}" %>
+
+            <%= raw "options.tooltip.formatter = function() {return this.point.epa + '<br>' +'Involv.: ' + this.y + '<br>' + 'Date: ' + Highcharts.dateFormat('%Y-%m-%d', this.x) + '<br>' +
+                  'Discipline: ' + this.point.discipline + '<br>' + 'Setting: ' + this.point.setting + '<br>' + 'Evaluator: ' + this.point.evaluator;}" %>
+
+          <% end %>
+
           <%= render partial: 'wba_details', locals: {epa_code: epa_code, epas: epas} %>
 
         <% end %>

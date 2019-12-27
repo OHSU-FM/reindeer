@@ -29,7 +29,7 @@ module ArtifactsHelper
       return nil,0, nil
     else
       no_docs = 0
-      official_docs = Artifact.where(user_id: selected_user.id, title: ["Progress Board", "Other", "MPSE", "Grade Dispute"])
+      official_docs = Artifact.where(user_id: selected_user.id, title: ["Progress Board", "Other", "MPSE", "Grade Dispute"]).order(:created_at)
       #official_docs = artifacts_student.select{|a| a.title == "Progress Board" or a.title == "Grade Dispute" or a.title = "MSPE" or  a.title == "Other"}
       official_docs.each do |doc|
         no_docs = no_docs + doc.documents.count

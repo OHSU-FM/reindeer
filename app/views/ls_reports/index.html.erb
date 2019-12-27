@@ -35,6 +35,7 @@
         <% cohort_title = group.title.split(":").second %>
       </td>
     </tr>
+
   <% end %>
     <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date} %>
     <% role_aggregates.each do |ra| %>
@@ -60,10 +61,13 @@
               <td style="padding-left:20px;"><%= link_to(csl_title, csl_feedbacks_index_path(cohort: cohort_title, email: @pk, block: "FUND"), target: '_blank') %></td>
             </tr>
         <% end %>
-
       <% end %>
-
+      <% if current_user.coaching_type == "student" %>
+          <tr><td><%= link_to("<b>Clinical Phase Dataset (EPAs/WPASs/Badges)</b>".html_safe, user_competencies_path(user_id: current_user.id)) %></td></tr>
+      <% end %>
     <% end %>
+
+
 
     </tbody>
   </table>

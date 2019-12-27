@@ -633,7 +633,8 @@ module WbaGraphsHelper
       f.yAxis [
          { tickInterval: 1,
            endonTick: false,
-           min: 0,
+           min: 1,
+           max: 4,
            title: {text: "<b>Assessment Type</b>", margin: 20}
 
          }
