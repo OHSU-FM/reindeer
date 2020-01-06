@@ -29,7 +29,11 @@ module ArtifactsHelper
       return nil,0, nil
     else
       no_docs = 0
-      official_docs = Artifact.where(user_id: selected_user.id, title: ["Progress Board", "Other", "MPSE", "Grade Dispute"]).order(:created_at)
+      if artifact_title == "Preceptorship Contract"
+        official_docs = Artifact.where(user_id: selected_user.id, title: artifact_title).order(:created_at)
+      else
+        official_docs = Artifact.where(user_id: selected_user.id, title: ["Progress Board", "Other", "MPSE", "Grade Dispute"]).order(:created_at)
+      end
       #official_docs = artifacts_student.select{|a| a.title == "Progress Board" or a.title == "Grade Dispute" or a.title = "MSPE" or  a.title == "Other"}
       official_docs.each do |doc|
         no_docs = no_docs + doc.documents.count
