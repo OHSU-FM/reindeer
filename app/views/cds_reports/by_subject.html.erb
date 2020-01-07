@@ -1,0 +1,9 @@
+<h4> By Subject Report -- Working in Progress!!</h4>
+
+  <%= form_tag(cds_reports_past_due_path, method: "get",  class: 'navbar-form navbar-left', id: 'PastDueForm') do %>
+    Cohort <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
+        prompt: "Please Select Cohort" %>
+
+
+      <%= submit_tag 'Submit', id: 'Submit' %>
+  <% end %>

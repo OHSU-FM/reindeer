@@ -82,7 +82,7 @@ module CdsReportsHelper
     return cohorts_student
   end
 
-  def hf_get_past_due(past_due_mons, option, cohorts)
+  def hf_get_past_due(start_date, end_date, option, cohorts)
     process_cohort = ["Med23", "Med22", "Med21", "Med20"]
     past_due_hash = {}
 
@@ -92,11 +92,11 @@ module CdsReportsHelper
         if cohort.title.include? proc_cohort
           cohort.users.each do |user|
             if option == 'Meetings'
-              if user.meetings.where(created_at: "#{past_due_mons}".to_i.months.ago..Time.now).count == 0
+              if user.meetings.where("created_at >= ? and created_at <= ?", start_date, end_date).count == 0
                 past_due_students << user.full_name + "|" + cohort.title
               end
             elsif option == 'Goals'
-              if user.goals.where(created_at: "#{past_due_mons}".to_i.months.ago..Time.now).count == 0
+              if user.goals.where("created_at >= ? and created_at <= ?", start_date, end_date).count == 0
                 past_due_students << user.full_name + "|" + cohort.title
               end
             end

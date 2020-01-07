@@ -49,6 +49,6 @@
   </div>
 <% end %>
 
-<% @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Preceptorship Contract") %>
-<% @shelf_artifacts = @official_docs %>
+<% @preceptor_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Preceptorship Contract") %>
+<% @shelf_artifacts = @preceptor_docs %>
 <%= render partial: 'artifacts/shelf_artifacts' %>

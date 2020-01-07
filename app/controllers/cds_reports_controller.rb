@@ -16,16 +16,25 @@ class CdsReportsController < ApplicationController
   end
 
   def past_due
-    if params[:past_due_mons].present?
-      @past_due_mons = params[:past_due_mons]
+    if params[:startDate].present?
+      @start_date = params[:startDate]
+      @end_date = params[:endDate]
+
+      # @past_due_mons = params[:past_due_mons]
       @student_goal_meeting = params[:student_goal_meeting]
     end
+  end
+
+  def by_subject
+
   end
 
   private
   def set_resources
     @coaches = User.where(coaching_type: 'coach').order('full_name ASC')
     @cohorts = Cohort.all.order('title ASC').includes(:users)
+    @student_groups = PermissionGroup.where(" title like ?", "%Student%").order('title DESC')
+    @uniq_subjects ||= Coaching::Meeting.distinct.pluck(:subject).flatten
 
   end
 end

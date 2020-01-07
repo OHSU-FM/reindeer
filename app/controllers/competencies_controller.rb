@@ -46,8 +46,6 @@ class CompetenciesController < ApplicationController
 
 
      if !@epas.blank?
-
-       puts "@epas is not blank!!"
        gon.epa_adhoc = @epa_hash #@epa_adhoc
        gon.epa_evaluators = @epa_evaluators
        gon.unique_evaluators = @unique_evaluators
