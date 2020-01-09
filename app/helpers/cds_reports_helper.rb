@@ -16,6 +16,14 @@ module CdsReportsHelper
     return ALLCOHORTS
   end
 
+  def hf_get_full_name(user_id)
+    return User.find(user_id).full_name
+  end
+
+  def hf_get_cohort_info(user_id)
+    cohort = User.find(user_id).cohort.title
+
+  end
    def hf_proper_label in_str
      PROPER_LABELS.each do |label|
         return label if label.include? in_str.downcase
@@ -52,6 +60,30 @@ module CdsReportsHelper
      end
      return 0 ## not found in cohort_array
    end
+
+  def hf_get_user_subjects(selected_users, subject)
+    ret_subjects = []
+    selected_users.each do |user|
+      subjects = user.meetings.where("? = ANY(subject)", subject).first
+      if !subjects.blank?
+        ret_subjects.push subjects
+      end
+    end
+
+    return ret_subjects
+  end
+
+  def hf_get_subjects (permission_group_id)
+    users = PermissionGroup.find(permission_group_id).users
+    meeting_subjects = []
+    users.each do |user|
+      meeting_subject = user.meetings.distinct.pluck(:subject).flatten.uniq.sort
+      meeting_subjects.push meeting_subject
+    end
+    meeting_subjects = meeting_subjects.flatten.uniq.sort
+    meeting_subjects = meeting_subjects - [""]
+    return meeting_subjects
+  end
 
   def hf_get_cohort_students(cohorts)
    cohorts_student = []

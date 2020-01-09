@@ -1,5 +1,6 @@
 class CdsReportsController < ApplicationController
   layout 'full_width_margins'
+  include CdsReportsHelper
   before_action :authenticate_user!
   before_action :set_resources
   respond_to :json, :html
@@ -27,6 +28,15 @@ class CdsReportsController < ApplicationController
 
   def by_subject
 
+    if params[:permission_group_id].present?
+      @uniq_subjects ||= hf_get_subjects(params[:permission_group_id])
+      #@uniq_subjects ||= @uniq_subjects - [""]
+    end
+    if params[:subject].present?
+      @selected_users = PermissionGroup.find(params[:permission_group_id]).users
+      @subject = params[:subject]
+    end
+
   end
 
   private
@@ -34,7 +44,8 @@ class CdsReportsController < ApplicationController
     @coaches = User.where(coaching_type: 'coach').order('full_name ASC')
     @cohorts = Cohort.all.order('title ASC').includes(:users)
     @student_groups = PermissionGroup.where(" title like ?", "%Student%").order('title DESC')
-    @uniq_subjects ||= Coaching::Meeting.distinct.pluck(:subject).flatten
+
+
 
   end
 end
