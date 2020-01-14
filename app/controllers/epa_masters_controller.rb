@@ -3,7 +3,23 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters
   def index
-    @epa_masters = EpaMaster.all
+    @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
+    @cohort_students = []
+    if params[:permission_group_id].present?
+      @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
+    end
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: {cohort_students: @cohort_students}
+        }
+      end
+    else
+      respond_to do |format|
+        format.html
+      end
+    end
+
   end
 
   # GET /epa_masters/1
@@ -33,7 +49,9 @@ class EpaMastersController < ApplicationController
   # PATCH/PUT /epa_masters/1
   def update
     if @epa_master.update(epa_master_params)
-      redirect_to @epa_master, notice: 'Epa master was successfully updated.'
+      #redirect_to @epa_master, notice: 'Epa master was successfully updated.'
+      @selected_user_id = @epa_master.user_id
+      index
     else
       render :edit
     end
@@ -45,6 +63,27 @@ class EpaMastersController < ApplicationController
     redirect_to epa_masters_url, notice: 'Epa master was successfully destroyed.'
   end
 
+
+  def search_student
+    if params[:search]
+      @selected_user = nil
+      @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
+      if !@users.empty?
+        @epa_masters = @users.first.epa_masters.order(:id)
+        @full_name = @users.first.full_name
+        if @epa_masters.empty?
+          user_id = @users.first.id
+          create_epas user_id
+          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
+        end
+      end
+      respond_to do |format|
+
+        format.js { render partial: 'search-results'}
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_master
@@ -53,6 +92,18 @@ class EpaMastersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def epa_master_params
-      params.fetch(:epa_master, {})
+      params.require(:epa_master).permit(:user_id, :epa,
+        :status, :status_date, :expiration_date )
+    end
+
+    def create_epas selected_user_id
+      for i in 1..13 do
+        EpaMaster.where(user_id: selected_user_id, epa: "EPA#{i}").first_or_create do |epa|
+          epa.user_id = selected_user_id
+          epa.epa = "EPA#{i}"
+        end
+      end
+
+
     end
 end

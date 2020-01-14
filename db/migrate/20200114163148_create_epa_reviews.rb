@@ -1,5 +1,5 @@
 class CreateEpaReviews < ActiveRecord::Migration[5.2]
-  def up
+  def change
     create_table :epa_reviews do |t|
       t.string    :epa
       t.datetime  :review_date1
@@ -19,13 +19,6 @@ class CreateEpaReviews < ActiveRecord::Migration[5.2]
       t.references :reviewable, polymorphic: true, index: true
       t.timestamps
     end
-
-    def downn
-      drop_table :epa_reviews
-    end
-
     add_index :epa_reviews, [:epa, :id], :unique => true, :name => 'by_epa_reviews'
-
-
   end
 end

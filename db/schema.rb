@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_204129) do
+ActiveRecord::Schema.define(version: 2020_01_14_163148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -277,8 +277,18 @@ ActiveRecord::Schema.define(version: 2019_12_03_204129) do
     t.string "epa"
     t.datetime "review_date1"
     t.string "reviewed_by1"
-    t.string "egm_recommendation"
-    t.text "general_comments"
+    t.string "egm_recommendation1"
+    t.string "badge1"
+    t.string "insufficient_evidence1"
+    t.string "deny1"
+    t.text "general_comments1"
+    t.datetime "review_date2"
+    t.string "reviewed_by2"
+    t.string "egm_recommendation2"
+    t.string "badge2"
+    t.string "insufficient_evidence2"
+    t.string "deny2"
+    t.text "general_comments2"
     t.string "reviewable_type"
     t.bigint "reviewable_id"
     t.datetime "created_at", null: false

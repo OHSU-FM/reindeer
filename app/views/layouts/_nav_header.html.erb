@@ -46,7 +46,11 @@
         <% end %>
 
         <% if ['admin', 'dean'].include? current_user.coaching_type %>
-            <%= nav_link_to("EG Review", wba_graphs_index_path, target: '_blank') %>
+            <%= nav_link_to("EG Review", epa_masters_index_path, target: '_blank') %>
+        <% end %>
+
+        <% if ['admin', 'dean'].include? current_user.coaching_type %>
+            <%= nav_link_to("WBA wba_graphs", wba_graphs_index_path, target: '_blank') %>
         <% end %>
 
         <% if can? :list, LimeSurvey %>

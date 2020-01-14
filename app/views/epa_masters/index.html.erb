@@ -1,5 +1,12 @@
 <h1>Epa Masters</h1>
 
+<div class="float-right">
+   <%= form_tag(epa_masters_path,  action: 'search_student',  method: "get",  style: "float: right; display: block") do %>
+     <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
+     <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
+   <% end %>
+ </div>
+
 <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
   <thead>
     <tr>
