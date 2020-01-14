@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
 
   resources :epa_reviews
-  resources :epa_masters
+  resources :epa_masters do
+    member do
+      get 'search_student'
+    end
+    #resources :epa_reveiws
+  end
+
   resources :courses
   resources :usmle_exams
   get '/csl_feedbacks/index'

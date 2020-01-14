@@ -3,23 +3,24 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters
   def index
-    @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
-    @cohort_students = []
-    if params[:permission_group_id].present?
-      @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
-    end
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: {cohort_students: @cohort_students}
-        }
+    if params[:search]
+      byebug
+      @selected_user = nil
+      @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
+      if !@users.empty?
+        @epa_masters = @users.first.epa_masters.order(:id)
+        @full_name = @users.first.full_name
+        if @epa_masters.empty?
+          user_id = @users.first.id
+          create_epas user_id
+          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
+        end
       end
-    else
       respond_to do |format|
+        format.js { render partial: 'search-results'}
         format.html
       end
     end
-
   end
 
   # GET /epa_masters/1
@@ -78,7 +79,6 @@ class EpaMastersController < ApplicationController
         end
       end
       respond_to do |format|
-
         format.js { render partial: 'search-results'}
       end
     end

@@ -1,21 +1,49 @@
-<h1>Epa Masters</h1>
+<h4>Epa Masters</h4>
 
-<div class="float-right">
-   <%= form_tag(epa_masters_path,  action: 'search_student',  method: "get",  style: "float: right; display: block") do %>
-     <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
-     <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
-   <% end %>
- </div>
+<div id="container-fluid">
+    <% if can? :crud, Dashboard %>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+                 <span class="float-right">
+                    <%= form_tag(epa_masters_path,  action: 'search_student',  method: "get",  style: "float: right; display: block") do %>
+                      <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
+                      <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
+                    <% end %>
+                  </span>
+                  <span>
+                    <% if !@users.nil? %>
+                        <% if @users.count > 1 %>
+                            <div class="panel panel-default", style="float: right; display: inline-block">
+                              <div class="panel-heading">
+                                  <h4 class="panel-title">Search Result </h4>
+                              </div>
+                              <div class="panel-body">
 
-<table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" data-source="<%= url_for(format: :json)%>">
-  <thead>
-    <tr>
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
-    </tr>
-  </thead>
+                                      <% @users.each do |u| %>
+                                         <%= u.full_name %><br />
+                                      <% end %>
+                              </div>
+                            </div
+                        <% elsif @users.empty? %>
+                          <div class="panel panel-default">
+                            <div class="panel-body">
+                               <i><b>Not Found in Users Table!</b></i>
+                            </div>
+                          </div
+                        <% end %>
+                    <% end %>
+                  </span>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    <div id=main2-epa-masters %>
+      <%= render partial: 'epa_masters_table' %>
+    </div>
 
-</table>
-
-<br>
-
-<%= link_to 'New Epa Master', new_epa_master_path %>
+    <div id="main-epa-masters"> </div>
+    <div id="mymodal-epa-review"></div>
+    <div id="mymodal-epa-master"></div>
+    <div id="mymodal-load-qualtrics"></div>
+</div>
