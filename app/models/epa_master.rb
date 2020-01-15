@@ -3,7 +3,7 @@ class EpaMaster < ApplicationRecord
   has_many   :epa_reviews, as: :reviewable,  dependent: :destroy
   accepts_nested_attributes_for :epa_reviews
 
-  def statuses?
+  def badged?
      if (self.status == "Badge")
        return true
      else

@@ -1,0 +1,49 @@
+<div class="modal-body row">
+  <table class="responsive nowrap table table-hover" id="dttb-list-reviewable">
+    <thead>
+      <tr>
+        <th data-data="epa">EPA</th>
+        <th data-data="Review_Date1">Review Date1</th>
+        <th data-data="Reviewed_By1">ReviewedBy1</th>
+        <th data-data="EgRecomm1">EgRecomm1</th>
+        <th data-data="Badge1">Badge Reason1</th>
+        <th data-data="InsuffEvid1">Insuffiecint Evidence1</th>
+        <th data-data="Deny1">Deny1</th>
+        <th data-data="Comments1">Comments1</th>
+
+        <th data-data="Review_Date2">Review Date2</th>
+        <th data-data="Reviewed_By2">ReviewedBy2</th>
+        <th data-data="EgRecomm2">EgRecomm2</th>
+        <th data-data="Badge2">Badge Reason2</th>
+        <th data-data="InsuffEvid2">Insuffiecint Evidence2</th>
+        <th data-data="Deny2">Deny2</th>
+        <th data-data="Comments2">Comments2</th>
+      </tr>
+    </thead>
+    <% @reviewable.epa_reviews.each do |review| %>
+
+        <% if !review.reviewed_by1.nil? %>
+           <tr>
+             <td><%= review.epa %></td>
+             <td><%= review.review_date1 %></td>
+             <td><%= review.reviewed_by1 %></td>
+             <td><%= review.egm_recommendation1 %> </td>
+             <td><%= review.badge1 %> </td>
+             <td><%= review.insufficient_evidence1 %> </td>
+             <td><%= review.deny1 %> </td>
+             <td><%= review.general_comments1 %></td>
+             <td><%= review.review_date2 %></td>
+             <td><%= review.reviewed_by2 %></td>
+             <td><%= review.egm_recommendation2 %> </td>
+             <td><%= review.badge2 %> </td>
+             <td><%= review.insufficient_evidence2 %> </td>
+             <td><%= review.deny2 %> </td>
+             <td><%= review.general_comments2 %></td>
+
+           </tr>
+        <% end %>
+
+    <% end %>
+  </table>
+  <hr>
+</div>

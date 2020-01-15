@@ -1,4 +1,4 @@
-<h4>Epa Masters</h4>
+<h4>Entrustment Review</h4>
 
 <div id="container-fluid">
     <% if can? :crud, Dashboard %>
@@ -6,7 +6,7 @@
           <div class="panel-body">
             <div class="row">
                  <span class="float-right">
-                    <%= form_tag(epa_masters_path,  action: 'search_student',  method: "get",  style: "float: right; display: block") do %>
+                    <%= form_tag(epa_masters_path, method: "get",  style: "float: right; display: block") do %>
                       <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
                       <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
                     <% end %>
@@ -19,16 +19,15 @@
                                   <h4 class="panel-title">Search Result </h4>
                               </div>
                               <div class="panel-body">
-
                                       <% @users.each do |u| %>
-                                         <%= u.full_name %><br />
+                                         <%= link_to "#{u.full_name}".html_safe, epa_masters_path(search: "#{u.full_name}")  %><br />
                                       <% end %>
                               </div>
                             </div
                         <% elsif @users.empty? %>
                           <div class="panel panel-default">
                             <div class="panel-body">
-                               <i><b>Not Found in Users Table!</b></i>
+                               <i><b>Not Found in User Table!</b></i>
                             </div>
                           </div
                         <% end %>

@@ -1,10 +1,98 @@
-<%= simple_form_for(@epa_review) do |f| %>
-  <%= f.error_notification %>
+<%= form_for @epa_review,  html: {class: "form-horizontal", id: "review-form"}, remote: true  do |f| %>
 
-  <div class="form-inputs">
-  </div>
+    <%= f.hidden_field :reviewable_id %>
+    <%= f.hidden_field :reviewable_type %>
+    <%= f.hidden_field :epa %>
+  <div class="row">
+   <div class="col-xs-6">
+      <div class="form-group">
+        <%= f.label 'Recorded Date', class: "control-label col-sm-4" %>
+        <%= f.date_field :review_date1,  html5: true, value: Date.today  %>
+      </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+      <div class="form-group">
+        <%= f.label 'Recorded By', class: "control-label col-sm-4" %>
+        <%= f.text_field :reviewed_by1,  value: 'Bumsted, Tracy',
+          html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'EG Recommentation', class: "control-label col-sm-4" %>
+        <%= f.select :egm_recommendation1, ["Badge", "Insufficient Evidence",  "Deny"], include_blank: '--',
+           html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Badge', class: "control-label col-sm-4" %>
+        <%= f.select :badge1, ["Grounded Trust", "Presumptive Trust"], include_blank: '--',
+           html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Insufficient Evidence', class: "control-label col-sm-4" %>
+        <%= f.select :insufficient_evidence1, ["Conflicting Data", "Vague Data"], include_blank: '--',
+           html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Deny', class: "control-label col-sm-4" %>
+        <%= f.select :deny1, ["Distrust", "Questioned Trust"], include_blank: '--',
+           html5: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label 'Comments', class: "control-label col-sm-4" %>
+        <%= f.text_area :general_comments1, cols:30, rows: 5, html5: true %>
+      </div>
+    </div>
+
+    <div class="col-xs-6">
+       <div class="form-group">
+         <%= f.label 'Recorded Date', class: "control-label col-sm-4" %>
+         <%= f.date_field :review_date2,  html5: true, value: Date.today  %>
+       </div>
+
+       <div class="form-group">
+         <%= f.label 'Recorded By', class: "control-label col-sm-4" %>
+         <%= f.text_field :reviewed_by2,  value: 'Bumsted, Tracy',
+           html5: true %>
+       </div>
+
+       <div class="form-group">
+         <%= f.label 'EG Recommentation', class: "control-label col-sm-4" %>
+         <%= f.select :egm_recommendation2, ["Badge", "Insufficient Evidence",  "Deny"], include_blank: '--',
+            html5: true %>
+       </div>
+
+       <div class="form-group">
+         <%= f.label 'Badge', class: "control-label col-sm-4" %>
+         <%= f.select :badge1, ["Grounded Trust", "Presumptive Trust"], include_blank: '--',
+            html5: true %>
+       </div>
+
+       <div class="form-group">
+         <%= f.label 'Insufficient Evidence', class: "control-label col-sm-4" %>
+         <%= f.select :insufficient_evidence2, ["Conflicting Data", "Vague Data"], include_blank: '--',
+            html5: true %>
+       </div>
+
+       <div class="form-group">
+         <%= f.label 'Deny', class: "control-label col-sm-4" %>
+         <%= f.select :deny2, ["Distrust", "Questioned Trust"], include_blank: '--',
+            html5: true %>
+       </div>
+
+       <div class="form-group">
+         <%= f.label 'Comments', class: "control-label col-sm-4" %>
+         <%= f.text_area :general_comments2, cols:30, rows: 5, html5: true %>
+       </div>
+
+       <div class="form-actions">
+         <%= f.submit "Save Changes", class: "btn-primary", id: "SubmitReview" %>
+       </div>
+
+     </div>
+
+    </div>
+
 <% end %>
