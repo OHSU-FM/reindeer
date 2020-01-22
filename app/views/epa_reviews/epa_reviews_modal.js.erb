@@ -2,8 +2,12 @@ console.log ("inside epa_reviews_modal.js.erb");
 $("#mymodal-epa-review").html("<%= j render "new_modal" %>");
 $("#newEpaReviewModal").modal('show');
 
+$(".modal-dialog").draggable({
+    handle: ".modal-header"
+});
+
 $('#SubmitReview').click(function() {
    $('#newEpaReviewModal').modal('hide');
-   location.reload();
-
+   //$('tr:first-child').before(rows);
+  //rows.fadeIn("slow");
 });

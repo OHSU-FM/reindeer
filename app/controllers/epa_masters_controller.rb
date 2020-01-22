@@ -1,4 +1,6 @@
 class EpaMastersController < ApplicationController
+  layout 'full_width_csl'
+  before_action :authenticate_user!
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
 
   # GET /epa_masters

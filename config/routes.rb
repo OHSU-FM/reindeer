@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :epa_masters do
     member do
       get 'search_student'
+      get 'get_student'
     end
     #resources :epa_reveiws
   end
@@ -33,8 +34,6 @@ Rails.application.routes.draw do
   resources :user do
     resources :competencies, param: :user_id, only: [:index]
   end
-
-
 
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

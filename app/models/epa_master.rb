@@ -10,4 +10,6 @@ class EpaMaster < ApplicationRecord
        return false
      end
   end
+
+  
 end

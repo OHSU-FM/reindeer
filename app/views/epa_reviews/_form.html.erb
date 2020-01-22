@@ -1,4 +1,4 @@
-<%= form_for @epa_review,  html: {class: "form-horizontal", id: "review-form"}, remote: true  do |f| %>
+<%= form_for @epa_review, html: {class: "form-horizontal", id: "review-form"}, remote: true  do |f| %>
 
     <%= f.hidden_field :reviewable_id %>
     <%= f.hidden_field :reviewable_type %>
@@ -6,43 +6,42 @@
   <div class="row">
    <div class="col-xs-6">
       <div class="form-group">
-        <%= f.label 'Recorded Date', class: "control-label col-sm-4" %>
+        <%= f.label :review_date1,  'Recorded Date', class: "control-label col-sm-4" %>
         <%= f.date_field :review_date1,  html5: true, value: Date.today  %>
       </div>
 
       <div class="form-group">
-        <%= f.label 'Recorded By', class: "control-label col-sm-4" %>
-        <%= f.text_field :reviewed_by1,  value: 'Bumsted, Tracy',
-          html5: true %>
+        <%= f.label :reviewed_by1, 'Recorded By', class: "control-label col-sm-4" %>
+        <%= f.select :reviewed_by1, @eg_members, html5: true %>
       </div>
 
       <div class="form-group">
-        <%= f.label 'EG Recommentation', class: "control-label col-sm-4" %>
+        <%= f.label :egm_recommendation1, 'EG Recommentation', class: "control-label col-sm-4" %>
         <%= f.select :egm_recommendation1, ["Badge", "Insufficient Evidence",  "Deny"], include_blank: '--',
            html5: true %>
       </div>
 
       <div class="form-group">
-        <%= f.label 'Badge', class: "control-label col-sm-4" %>
+        <%= f.label :badge1, 'Badge', class: "control-label col-sm-4" %>
         <%= f.select :badge1, ["Grounded Trust", "Presumptive Trust"], include_blank: '--',
            html5: true %>
       </div>
 
       <div class="form-group">
-        <%= f.label 'Insufficient Evidence', class: "control-label col-sm-4" %>
+        <%= f.label :insufficient_evidence1, 'Insufficient Evidence', class: "control-label col-sm-4" %>
         <%= f.select :insufficient_evidence1, ["Conflicting Data", "Vague Data"], include_blank: '--',
            html5: true %>
       </div>
 
       <div class="form-group">
-        <%= f.label 'Deny', class: "control-label col-sm-4" %>
+        <%= f.label :deny1, 'Deny', class: "control-label col-sm-4" %>
         <%= f.select :deny1, ["Distrust", "Questioned Trust"], include_blank: '--',
            html5: true %>
       </div>
 
       <div class="form-group">
         <%= f.label 'Comments', class: "control-label col-sm-4" %>
-        <%= f.text_area :general_comments1, cols:30, rows: 5, html5: true %>
+        <%= f.text_area :general_comments1, cols:50, rows: 5, html5: true %>
       </div>
     </div>
 
@@ -53,38 +52,37 @@
        </div>
 
        <div class="form-group">
-         <%= f.label 'Recorded By', class: "control-label col-sm-4" %>
-         <%= f.text_field :reviewed_by2,  value: 'Bumsted, Tracy',
-           html5: true %>
+         <%= f.label :reviewed_by2, 'Recorded By', class: "control-label col-sm-4" %>
+         <%= f.select :reviewed_by2, @eg_members, html5: true %>
        </div>
 
        <div class="form-group">
-         <%= f.label 'EG Recommentation', class: "control-label col-sm-4" %>
+         <%= f.label :egm_recommendation2, 'EG Recommentation', class: "control-label col-sm-4" %>
          <%= f.select :egm_recommendation2, ["Badge", "Insufficient Evidence",  "Deny"], include_blank: '--',
             html5: true %>
        </div>
 
        <div class="form-group">
-         <%= f.label 'Badge', class: "control-label col-sm-4" %>
+         <%= f.label :badge1, 'Badge', class: "control-label col-sm-4" %>
          <%= f.select :badge1, ["Grounded Trust", "Presumptive Trust"], include_blank: '--',
             html5: true %>
        </div>
 
        <div class="form-group">
-         <%= f.label 'Insufficient Evidence', class: "control-label col-sm-4" %>
+         <%= f.label :insufficient_evidence2, 'Insufficient Evidence', class: "control-label col-sm-4" %>
          <%= f.select :insufficient_evidence2, ["Conflicting Data", "Vague Data"], include_blank: '--',
             html5: true %>
        </div>
 
        <div class="form-group">
-         <%= f.label 'Deny', class: "control-label col-sm-4" %>
+         <%= f.label :deny2, 'Deny', class: "control-label col-sm-4" %>
          <%= f.select :deny2, ["Distrust", "Questioned Trust"], include_blank: '--',
             html5: true %>
        </div>
 
        <div class="form-group">
-         <%= f.label 'Comments', class: "control-label col-sm-4" %>
-         <%= f.text_area :general_comments2, cols:30, rows: 5, html5: true %>
+         <%= f.label :general_comments2, 'Comments', class: "control-label col-sm-4" %>
+         <%= f.text_area :general_comments2, cols:50, rows: 5, html5: true %>
        </div>
 
        <div class="form-actions">
