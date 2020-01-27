@@ -17,6 +17,9 @@ class EpaReviewsController < ApplicationController
     @epa_review.epa = @epa_master.epa
     @epa_review_epa = @epa_review.epa
 
+    @decision_option = ["Grounded", "Presumptive"]
+    @decision_option2 = @decision_option
+
     respond_to do |format|
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
@@ -26,6 +29,18 @@ class EpaReviewsController < ApplicationController
   # GET /epa_reviews/1/edit
   def edit
     @epa_review = EpaReview.find(params[:id])
+    if @epa_review.badge_decision1 == 'Badge'
+      @decision_option = ["Grounded", "Presumptive"]
+    else
+      @decision_option = ["Distrust", "Questioned Trust"]
+    end
+
+    if @epa_review.badge_decision2 == 'Badge'
+      @decision_option2 = ["Grounded", "Presumptive"]
+    else
+      @decision_option2 = ["Distrust", "Questioned Trust"]
+    end
+
     @epa_review_epa = @epa_review.epa
     respond_to do |format|
       format.html
@@ -41,13 +56,14 @@ class EpaReviewsController < ApplicationController
       if @epa_review.save
         format.html { redirect_to @epa_review, notice: 'Epa review was successfully created.' }
         format.json { render :show, status: :created, location: @epa_review }
+
       else
         format.html { render :new }
         format.json { render json: @epa_review.errors, status: :unprocessable_entity }
       end
     end
 
-    @user_id = EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.egm_recommendation1, @epa_review.egm_recommendation2 )
+    @user_id = EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.badge_decision1, @epa_review.badge_decision2)
   end
 
   # PATCH/PUT /epa_reviews/1
@@ -63,7 +79,7 @@ class EpaReviewsController < ApplicationController
       end
     end
 
-    EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.egm_recommendation1, @epa_review.egm_recommendation2)
+    EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.badge_decision1, @epa_review.badge_decision2)
   end
 
   # DELETE /epa_reviews/1
@@ -85,10 +101,11 @@ class EpaReviewsController < ApplicationController
 
      # Never trust parameters from the scary internet, only allow the white list through.
      def epa_review_params
-       params.require(:epa_review).permit(:epa, :review_date1, :reviewed_by1,
-       :egm_recommendation1, :badge1, :insufficient_evidence1, :deny1, :general_comments1, :review_date2, :reviewed_by2,
-       :egm_recommendation2, :badge2, :insufficient_evidence2, :deny2, :general_comments2,
-        :reviewable_id, :reviewable_type)
+       params.require(:epa_review).permit(:epa, :review_date1, :reviewer1,
+       :badge_decision1, :trust1, :evidence1, :general_comments1,
+       :review_date2, :reviewer2,
+       :badge_decision2, :trust2, :evidence2, :general_comments2,
+       :reviewable_id, :reviewable_type)
      end
 
      def find_reviewable

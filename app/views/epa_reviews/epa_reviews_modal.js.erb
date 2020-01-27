@@ -1,3 +1,8 @@
+$.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	return results[1] || 0;
+}
+
 console.log ("inside epa_reviews_modal.js.erb");
 $("#mymodal-epa-review").html("<%= j render "new_modal" %>");
 $("#newEpaReviewModal").modal('show');
@@ -6,8 +11,56 @@ $(".modal-dialog").draggable({
     handle: ".modal-header"
 });
 
+$('#epa_review_badge_decision1').change(
+    function() {
+      var badge_decision1 = $('#epa_review_badge_decision1').val(); // $( "#myselect option:selected" ).text();
+      if (badge_decision1 == "Deny") {
+				$('#epa_review_trust1').empty();
+				var newOption = $('<option value="Distrust">Distrust</option><option value="Question Trust">Question Trust</option>');
+	      $('#epa_review_trust1').append(newOption);
+
+      }
+      else if (badge_decision1 == "Badge") {
+				$('#epa_review_trust1	').empty();
+				var newOption = $('<option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+	      $('#epa_review_trust1').append(newOption);
+      }
+    }
+);
+
+$('#epa_review_badge_decision2').change(
+	function() {
+		var badge_decision2 = $('#epa_review_badge_decision2').val(); // $( "#myselect option:selected" ).text();
+		if (badge_decision2 == "Deny") {
+			$('#epa_review_trust2').empty();
+			var newOption = $('<option value="Distrust">Distrust</option><option value="Question Trust">Question Trust</option>');
+			$('#epa_review_trust2').append(newOption);
+		}
+		else if (badge_decision2 == "Badge") {
+		 $('#epa_review_trust2').empty();
+		 var newOption = $('<option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+		 $('#epa_review_trust2').append(newOption);
+		}
+	}
+);
+
 $('#SubmitReview').click(function() {
    $('#newEpaReviewModal').modal('hide');
-   //$('tr:first-child').before(rows);
-  //rows.fadeIn("slow");
+   var byName = $.urlParam('search');
+   console.log("Search: " + byName);
+	 $.ajax({
+     url : '/epa_masters?search=' + byName,
+     type : 'GET',
+     dataType:'script',
+		 data: {search: byName},
+     success : function(data) {
+         //alert('Data: '+ JSON.stringify(data));
+				 console.log("epa_masters ajax is a success!")
+     },
+     error : function(request,error)
+     {
+         alert("Request: "+JSON.stringify(request));
+     }
+ 	});
+
 });
