@@ -71,8 +71,9 @@ class EpaReviewsController < ApplicationController
     @epa_review = EpaReview.find(params[:id])
     respond_to do |format|
       if @epa_review.update(epa_review_params)
-        format.html { redirect_to @epa_review, notice: 'Epa review was successfully updated.'}
-        format.json { render :show, status: :ok, location: @epa_review }
+        format.html { redirect_to epa_masters_path }
+        # format.html { redirect_to @epa_review, notice: 'Epa review was successfully updated.'}
+        # format.json { render :show, status: :ok, location: @epa_review }
       else
         format.html { render :edit }
         format.json { render json: @epa_review.errors, status: :unprocessable_entity }

@@ -6,9 +6,10 @@ class EpaMastersController < ApplicationController
   # GET /epa_masters
   def index
     if params[:search]
-      #byebug
       @selected_user = nil
       @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
+
+
       if !@users.empty? and @users.count == 1
         @epa_masters = @users.first.epa_masters.order(:id)
         @full_name = @users.first.full_name
