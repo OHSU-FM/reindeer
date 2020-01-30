@@ -106,12 +106,12 @@ class ArtifactsController < ApplicationController
              last_name = last_name + " " + temp_str3.first
              first_name = temp_str3.second
              full_name = last_name + ", " + first_name
-          elsif temp_str2.count == 2
+          elsif temp_str2.count >= 2
              full_name = temp_str2.first + ", " + temp_str2.second
-          elsif temp_str2.count == 3
-             full_name = temp_str2.first + ", " + temp_str2.second
-           elsif temp_str2.count == 4
-              full_name = temp_str2.first + ", " + temp_str2.second # + ", " + temp_str2.third
+          # elsif temp_str2.count == 3
+          #    full_name = temp_str2.first + ", " + temp_str2.second
+          #  elsif temp_str2.count == 4 or
+          #     full_name = temp_str2.first + ", " + temp_str2.second # + ", " + temp_str2.third
           else
              return
            end
