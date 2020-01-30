@@ -95,6 +95,7 @@ class ArtifactsController < ApplicationController
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
         temp_str = document.filename.to_s.split(" ")
+
         if temp_str.last.include? "Preceptorship"
           full_name = temp_str[0] + " " + temp_str[1]
         else
@@ -110,11 +111,12 @@ class ArtifactsController < ApplicationController
           elsif temp_str2.count == 3
              full_name = temp_str2.first + ", " + temp_str2.second
            elsif temp_str2.count == 4
-              full_name = temp_str2.first + " " + temp_str2.second + ", " + temp_str2.third
+              full_name = temp_str2.first + ", " + temp_str2.second # + ", " + temp_str2.third
           else
              return
            end
          end
+
 
         #filename = document.filename.to_s.gsub("_", ", ")
 

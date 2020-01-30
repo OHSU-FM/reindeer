@@ -50,3 +50,6 @@
       </table>
     </div>
 </div>
+
+<% @shelf_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Clinical") %>
+<%= render partial: 'artifacts/shelf_artifacts' %>
