@@ -20,10 +20,10 @@
                               </div>
                               <div class="panel-body">
                                       <% @users.each do |u| %>
-                                         <%= link_to "#{u.full_name}".html_safe, epa_masters_path(search: "#{u.full_name}")  %><br />
+                                         <%= link_to "#{u.full_name} - #{u.id}".html_safe, epa_masters_path(user_id: "#{u.id}")  %><br />
                                       <% end %>
                               </div>
-                            </div
+                            </div>
                         <% elsif @users.empty? %>
                           <div class="panel panel-default">
                             <div class="panel-body">

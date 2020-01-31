@@ -1,5 +1,13 @@
 class EpaReviewsController < ApplicationController
-  before_action :find_reviewable, :load_eg_members
+  before_action :authenticate_user!, :find_reviewable, :load_eg_members
+
+  include CompetenciesHelper
+  include ArtifactsHelper
+  include WbaGraphsHelper
+  include EpasHelper
+  include LsReports::CslevalHelper
+  include LsReports::ClinicalphaseHelper
+
   # GET /epa_reviews
   def index
     @epa_reviews  = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
@@ -19,7 +27,7 @@ class EpaReviewsController < ApplicationController
 
     @decision_option = ["Grounded", "Presumptive"]
     @decision_option2 = @decision_option
-
+    get_evidence @user_id
     respond_to do |format|
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
@@ -94,6 +102,31 @@ class EpaReviewsController < ApplicationController
     end
   end
 
+  def get_evidence (user_id)
+    @user ||= User.find(user_id)
+    @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
+    @percent_complete ||= hf_epa_class_mean(@clinical_data)
+    @preceptorship_data ||= hf_get_clinical_dataset(@user, 'Preceptorship')
+    @wba ||= hf_get_wbas(@user.id)
+    @csl_data ||= hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
+    if @csl_data.empty?
+      @csl_feedbacks = CslFeedback.where(user_id: @user.id).order(:submit_date)
+      @csl_data = []
+    end
+    @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
+    @today_date = Time.new.strftime("%m/%d/%Y")
+    ## getting WPAs
+     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
+     if !@epas.blank?
+       gon.epa_adhoc = @epa_hash #@epa_adhoc
+       gon.epa_evaluators = @epa_evaluators
+       gon.unique_evaluators = @unique_evaluators
+       gon.selected_dates = @selected_dates
+       gon.selected_student = @selected_student
+       gon.total_wba_count = @total_wba_count
+     end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_review
@@ -112,6 +145,7 @@ class EpaReviewsController < ApplicationController
      def find_reviewable
        @reviewable = EpaReview.find_by_id(params[:epa_review_id]) if params[:epa_review_id]
        @reviewable = EpaMaster.find_by_id(params[:epa_master_id]) if params[:epa_master_id]
+
      end
 
 

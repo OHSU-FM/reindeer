@@ -8,8 +8,6 @@ class EpaMastersController < ApplicationController
     if params[:search]
       @selected_user = nil
       @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
-
-
       if !@users.empty? and @users.count == 1
         @epa_masters = @users.first.epa_masters.order(:id)
         @full_name = @users.first.full_name
@@ -19,11 +17,26 @@ class EpaMastersController < ApplicationController
           @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
         end
       end
+
       respond_to do |format|
         format.js { render partial: 'search-results'}
         format.html
       end
+    elsif params[:user_id]
+      @user = User.find(params[:user_id])
+      @epa_masters = @user.epa_masters.order(:id)
+      @full_name = @user.full_name
+      if @epa_masters.empty?
+        create_epas @user.id
+        @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
+      end
     end
+
+    respond_to do |format|
+      format.js { render partial: 'search-results'}
+      format.html
+    end
+
   end
 
   # GET /epa_masters/1
@@ -86,6 +99,7 @@ class EpaMastersController < ApplicationController
       end
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
