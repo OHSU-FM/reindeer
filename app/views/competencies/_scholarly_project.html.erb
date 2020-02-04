@@ -4,6 +4,8 @@
       <thead>
         <tr>
           <th scope="col">CourseName</th>
+          <th scope="col">StartDt</th>
+          <th scope="col">EndDt</th>              
           <th scope="col">SubmitDt</th>
           <th scope="col">Evaluator</th>
           <th scope="col">FinalGrade</th>
@@ -16,6 +18,8 @@
         <% if cd["course_name"].include? "SCHI" %>
             <tr>
               <td><%= cd["course_name"] %></td>
+              <td><%= cd["start_date"] %></td>
+              <td><%= cd["end_date"] %></td>
               <td><%= cd["submit_date"] %></td>
               <td><%= cd["evaluator"] %></td>
               <td>
