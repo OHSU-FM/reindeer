@@ -5,6 +5,7 @@ class EpaReviewsController < ApplicationController
   include ArtifactsHelper
   include WbaGraphsHelper
   include EpasHelper
+  include EpaReviewsHelper
   include LsReports::CslevalHelper
   include LsReports::ClinicalphaseHelper
 
@@ -32,6 +33,7 @@ class EpaReviewsController < ApplicationController
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
     end
+    return
   end
 
   # GET /epa_reviews/1/edit
@@ -50,10 +52,15 @@ class EpaReviewsController < ApplicationController
     end
 
     @epa_review_epa = @epa_review.epa
+
+    @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
+    get_evidence @user_id
+
     respond_to do |format|
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
     end
+
   end
 
   # POST /epa_reviews
@@ -64,7 +71,6 @@ class EpaReviewsController < ApplicationController
       if @epa_review.save
         format.html { redirect_to @epa_review, notice: 'Epa review was successfully created.' }
         format.json { render :show, status: :created, location: @epa_review }
-
       else
         format.html { render :new }
         format.json { render json: @epa_review.errors, status: :unprocessable_entity }
@@ -82,12 +88,12 @@ class EpaReviewsController < ApplicationController
         format.html { redirect_to epa_masters_path }
         # format.html { redirect_to @epa_review, notice: 'Epa review was successfully updated.'}
         # format.json { render :show, status: :ok, location: @epa_review }
+
       else
         format.html { render :edit }
         format.json { render json: @epa_review.errors, status: :unprocessable_entity }
       end
     end
-
     EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.badge_decision1, @epa_review.badge_decision2)
   end
 
@@ -106,8 +112,10 @@ class EpaReviewsController < ApplicationController
     @user ||= User.find(user_id)
     @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
     @percent_complete ||= hf_epa_class_mean(@clinical_data)
+
     @preceptorship_data ||= hf_get_clinical_dataset(@user, 'Preceptorship')
     @wba ||= hf_get_wbas(@user.id)
+
     @csl_data ||= hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
     if @csl_data.empty?
       @csl_feedbacks = CslFeedback.where(user_id: @user.id).order(:submit_date)

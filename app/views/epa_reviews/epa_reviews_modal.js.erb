@@ -13,6 +13,7 @@ $(".modal-dialog").draggable({
 // to check make sure the previous ajax call is completed and successful.
 $('#review-form').bind('ajax:success', function() {
    $('#newEpaReviewModal').modal('hide');
+
 	 var byName = $.urlParam('search');
  	console.log("Search: " + byName);
  	$.ajax({

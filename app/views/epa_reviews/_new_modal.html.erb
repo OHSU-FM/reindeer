@@ -13,7 +13,6 @@
                   <li  class="active"><a data-toggle="tab" href="#EGReviewTab" ><b>EG Review</b></a></li>
                   <li ><a data-toggle="tab" href="#EvidenceTab" ><b>Evidence</b></a></li>
                   <li ><a data-toggle="tab" href="#SummaryTab" ><b>WBAs/EPAs</b></a></li>
-
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
@@ -29,7 +28,6 @@
                   <div id="SummaryTab" class="tab-pane fade" >
                     <div class="center-div">
                       <div class="inner-div">
-
                           <% wba_epa_student = hf_series_data_student("EPA", @user_id) %>
                           <% if !wba_epa_student.nil? %>
                              <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
@@ -43,19 +41,23 @@
                             <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
                             <br>
                           <% end %>
-
-
                         <%= render partial: "competencies/collapsible_wba_details" %>
-
                         <%= render partial: "competencies/collapsible_epas" %>
                       </div>
                     </div>
                   </div>
 
                   <div id="EvidenceTab" class="tab-pane fade" >
-                    <% if !@clinical_data.nil? %>
-                      <%= render partial: "wba_graphs/narrative_comments", locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data} %>
-                    <% end %>
+                    <% epa_idx = @epa_review_epa.split("EPA").second.to_i %>
+                    <div id='WbaInfo'> <%= render partial: "wba_info", locals: {epa: @epa_review_epa, wba: @wba["#{@epa_review_epa}"], qa_percent: @percent_complete[epa_idx]} %></div>
+                      <%= render partial: 'wba_graphs/wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
+                      <%= render partial: "wba_graphs/narrative_comments",
+                          locals: {clinical_data: @clinical_data,
+                                   preceptor_data: @preceptorship_data,
+                                   csl_data: @csl_data
+                                 } %>
+
+
                   </div>
 
                   <div class="modal-footer">

@@ -18,10 +18,6 @@ class EpaMastersController < ApplicationController
         end
       end
 
-      respond_to do |format|
-        format.js { render partial: 'search-results'}
-        format.html
-      end
     elsif params[:user_id]
       @user = User.find(params[:user_id])
       @epa_masters = @user.epa_masters.order(:id)
@@ -33,7 +29,7 @@ class EpaMastersController < ApplicationController
     end
 
     respond_to do |format|
-      format.js { render partial: 'search-results'}
+      format.js { render partial: 'search-results' and return} 
       format.html
     end
 
