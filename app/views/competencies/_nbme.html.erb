@@ -20,42 +20,43 @@
     </div>
   </div>
 </div>
+<% if !@comp.nil? %>
+  <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Clinical Subject Exams(Shelf Exams)</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">CourseName</th>
+              <th scope="col">StartDt</th>
+              <th scope="col">EndDt</th>
+              <th scope="col">StartDt</th>
+              <th scope="col">EndDt</th>
+              <th scope="col">SubmitDt</th>
+              <th scope="col">Evaluator</th>
+              <th scope="col">FinalGrade</th>
+            </tr>
+          </thead>
+          <% @comp.each do |cd| %>
+            <% if cd["course_name"].include? "770" %>
+                <tr>
+                  <td><%= cd["course_name"] %></td>
+                  <td><%= cd["start_date"] %></td>
+                  <td><%= cd["end_date"] %></td>
+                  <td><%= cd["submit_date"] %></td>
+                  <td><%= cd["evaluator"] %></td>
+                  <td>
+                    <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+                        title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_get_threshold(cd["course_name"]).to_s + hf_final_grade2(cd['final_grade']) %></a></span>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-      <h4>Clinical Subject Exams(Shelf Exams)</h4>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">CourseName</th>
-            <th scope="col">StartDt</th>
-            <th scope="col">EndDt</th>
-            <th scope="col">StartDt</th>
-            <th scope="col">EndDt</th>
-            <th scope="col">SubmitDt</th>
-            <th scope="col">Evaluator</th>
-            <th scope="col">FinalGrade</th>
-          </tr>
-        </thead>
-        <% @comp.each do |cd| %>
-          <% if cd["course_name"].include? "770" %>
-              <tr>
-                <td><%= cd["course_name"] %></td>
-                <td><%= cd["start_date"] %></td>
-                <td><%= cd["end_date"] %></td>
-                <td><%= cd["submit_date"] %></td>
-                <td><%= cd["evaluator"] %></td>
-                <td>
-                  <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
-                      title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_get_threshold(cd["course_name"]).to_s + hf_final_grade2(cd['final_grade']) %></a></span>
-
-                </td>
-              </tr>
+                  </td>
+                </tr>
+            <% end %>
           <% end %>
-        <% end %>
-      </table>
-    </div>
-</div>
+        </table>
+      </div>
+  </div>
+<% end %>
 
 <% @shelf_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Clinical") %>
 <%= render partial: 'artifacts/shelf_artifacts' %>
