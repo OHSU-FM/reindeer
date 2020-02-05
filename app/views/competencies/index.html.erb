@@ -67,11 +67,11 @@
     </div>
 
     <div id="nbme" class="tab-pane fade">
-      <% if !@comp.nil? %>
+      <% if !@usmle_exams.nil? %>
         <%= render partial: "nbme" %>
         <%= render partial: 'artifacts/shelf_artifacts' %>
       <% else %>
-        <h4> No NMBE/Shelf data FOUND! </h4>
+        <h4> No NBME/Shelf data FOUND! </h4>
       <% end %>
     </div>
 

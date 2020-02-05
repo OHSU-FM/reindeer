@@ -64,6 +64,7 @@ class CompetenciesController < ApplicationController
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
      @usmle_exams = UsmleExam.where(user_id: @selected_user.id).order(:exam_type, :no_attempts)
+
      #if @not_found_cpx
       # @cpx_data = hf_get_cpx(@survey)
      #end
