@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_163148) do
+ActiveRecord::Schema.define(version: 2020_02_07_154648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -316,6 +316,28 @@ ActiveRecord::Schema.define(version: 2020_01_14_163148) do
     t.index ["user_id"], name: "index_epas_on_user_id"
   end
 
+  create_table "fom_exams", force: :cascade do |t|
+    t.string "course_code"
+    t.datetime "submit_date"
+    t.decimal "wk1"
+    t.decimal "wk2"
+    t.decimal "wk3"
+    t.decimal "wk4"
+    t.decimal "wk5"
+    t.decimal "wk6"
+    t.decimal "wk7"
+    t.decimal "wk8"
+    t.decimal "wk9"
+    t.decimal "wk10"
+    t.decimal "dropped_score"
+    t.string "dropped_quiz"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "course_code"], name: "by_user_course_code", unique: true
+    t.index ["user_id"], name: "index_fom_exams_on_user_id"
+  end
+
   create_table "goals", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -587,6 +609,7 @@ ActiveRecord::Schema.define(version: 2020_01_14_163148) do
   add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
+  add_foreign_key "fom_exams", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "usmle_exams", "users"
 end

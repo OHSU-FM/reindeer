@@ -49,7 +49,7 @@ epa_codes = (category_code) ->
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}
-
+          cat_array.push {id: "FoM CSV File", value: "FoM CSV File"}
         else
           return []
 
