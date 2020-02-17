@@ -1,4 +1,4 @@
-<h4>Entrustment Review</h4>
+<h4>Entrustment Review Module</h4>
 
 <div id="container-fluid">
     <% if can? :crud, Dashboard %>
@@ -16,10 +16,10 @@
                         <% if @users.count > 1 %>
                             <div class="panel panel-default", style="float: right; display: inline-block">
                               <div class="panel-heading">
-                                  <h4 class="panel-title">Search Result </h4>
+                                  <h4 class="panel-title">Search Results </h4>
                               </div>
                               <div class="panel-body">
-                                      <% @users.each do |u| %>
+                                      <% @users.sort_by {|user| user.full_name}.each do |u| %>
                                          <%= link_to "#{u.full_name} - #{u.id}".html_safe, epa_masters_path(user_id: "#{u.id}")  %><br />
                                       <% end %>
                               </div>

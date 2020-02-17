@@ -69,4 +69,27 @@ class FomExam < ApplicationRecord
     return log_results
   end
 
+  def self.exec_raw_sql attachment_id, permission_group
+    row_to_hash = {}
+    CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true) do |row|
+      row_to_hash = row.to_hash
+    end
+    sql = "select users.full_name, "
+    sql_avg = "select "
+    row_to_hash.each do |key, val|
+      val = val.gsub(" ", "")
+      sql += "#{key}, "
+      if key.include? "comp1_wk"
+        sql_avg += "AVG(#{key}) as avg_#{key}, "
+      end
+    end
+    sql = sql.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group.to_s + " and users.id = fom_exams.user_id order by users.full_name ASC"
+    sql_avg = sql_avg.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group.to_s + " and users.id = fom_exams.user_id "
+    results = ActiveRecord::Base.connection.exec_query(sql)
+    results_avg ||= ActiveRecord::Base.connection.exec_query(sql_avg)
+
+    return results, results_avg,  row_to_hash
+
+  end
+
 end

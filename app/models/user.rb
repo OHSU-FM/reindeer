@@ -261,6 +261,8 @@ class User < ActiveRecord::Base
         inline_add false
       end
 
+      field :prev_permission_group_id
+
       field :user_externals, :has_many_association
       field :explain_survey_access do
         partial 'users/field_explain_survey_access'
@@ -290,7 +292,7 @@ class User < ActiveRecord::Base
     end
 
     list do
-      include_fields :id, :username, :email, :permission_group,  :is_ldap, :can_dashboard, :can_chart,
+      include_fields :id, :username, :email, :permission_group, :is_ldap, :can_dashboard, :can_chart,
         :admin, :superadmin
       exclude_fields :lime_user, :password, :password_confirmation, :explain_survey_access,
         :user_externals, :current_sign_in_at, :sign_in_count, :permission_ls_groups,

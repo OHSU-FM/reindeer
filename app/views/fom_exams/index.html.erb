@@ -26,6 +26,8 @@
                       <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
                       /
                       <%= link_to 'Process', user_fom_exam_process_csv_path(user_id: params[:user_id], fom_exam_user_id: params[:user_id], attach_id: artifact.documents.first) %>
+                      /
+                      <%= link_to 'Display FoM Exam', user_display_fom_path(user_id: params[:user_id], course_code: 'FUND', attach_id: artifact.documents.first) %>
 
                     </td>
                   </tr>

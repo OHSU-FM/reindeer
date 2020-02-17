@@ -65,3 +65,48 @@ $('#epa_review_badge_decision2').change(
 		}
 	}
 );
+
+
+// var serializedData = $('#review-form').serializeArray();
+// console.log("form_data:" + JSON.stringify(serializedData))
+// $.each(serializedData, function (key, item) {
+// 		console.log(item.name+': ' + item.value);
+// });
+
+var values = {};
+$.each($("#review-form").serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+});
+
+//Value Retrieval Function
+var getValue = function (valueName) {
+    return values[valueName];
+};
+
+//Retrieve the Values
+var badge_decision1 = getValue("epa_review[badge_decision1]");
+var badge_decision2 = getValue("epa_review[badge_decision2]");
+console.log("badge_decision1: " + badge_decision1);
+console.log("badge_decision2: " + badge_decision2);
+
+if (badge_decision1 != "" && badge_decision2 != "") {
+	$('#col-reviewer1').addClass("visible");
+	$('#col-reviewer2').addClass("visible");
+} else if (badge_decision1 != "" && badge_decision2 == "") {
+					$('#col-reviewer1').removeClass("visible").addClass("hidden");
+					$('#col-reviewer2').addClass("visible");
+
+}
+
+//('#col-reviewer2').addClass("hidden");
+
+$('.text_container').click(function() {
+	var $this = $(this);
+
+	if ($this.hasClass("hidden")) {
+		$(this).removeClass("hidden").addClass("visible");
+
+	} else {
+		$(this).removeClass("visible").addClass("hidden");
+	}
+});

@@ -156,11 +156,8 @@ class EpaReviewsController < ApplicationController
 
      end
 
-
      def load_eg_members
        @eg_members ||= EpaReview.load_eg_members
      end
-
-
 
 end

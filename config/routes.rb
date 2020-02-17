@@ -38,8 +38,14 @@ Rails.application.routes.draw do
   resources :user do
     resources :fom_exams, param: :user_id, only: [:index] do
       get "process_csv", param: :file_name
+
     end
   end
+
+  resources :user do
+    get "display_fom", param: :course_code, controller: "fom_exams"
+  end
+
 
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

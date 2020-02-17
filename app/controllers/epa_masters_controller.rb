@@ -7,7 +7,9 @@ class EpaMastersController < ApplicationController
   def index
     if params[:search]
       @selected_user = nil
-      @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
+      @parameter = params[:search].downcase
+      #@results = User.where("lower(full_name) LIKE :search", search: @parameter)
+      @users = User.where("lower(full_name) LIKE ? and coaching_type = ? ", "%#{@parameter}%", "student")
       if !@users.empty? and @users.count == 1
         @epa_masters = @users.first.epa_masters.order(:id)
         @full_name = @users.first.full_name
@@ -29,7 +31,7 @@ class EpaMastersController < ApplicationController
     end
 
     respond_to do |format|
-      format.js { render partial: 'search-results' and return} 
+      format.js { render partial: 'search-results' and return}
       format.html
     end
 

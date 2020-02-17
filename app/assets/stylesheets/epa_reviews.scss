@@ -18,3 +18,11 @@
   margin: auto;
   max-width: 1400px;
 }
+
+.hidden>div {
+	display:none;
+}
+
+.visible>div {
+	display:block;
+}
