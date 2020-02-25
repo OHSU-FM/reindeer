@@ -92,4 +92,19 @@ class FomExam < ApplicationRecord
 
   end
 
+  def self.get_attachment_by_filename(user_id)
+
+      sql_filename = "select aa.id, att.record_id, att.blob_id, atb.filename from " +
+                      "artifacts aa, " +
+                      "active_storage_attachments att ," +
+                      "active_storage_blobs atb " +
+                      "where aa.user_id = " + "#{user_id}" +
+      	              "aa.title = 'Other' and " +
+      	              "aa.content = 'FoM CSV File' and " +
+      	              "att.record_id = aa.id and " +
+      	              "atb.id = att.blob_id and atb.filename like 'med23_fund_labels%'"
+
+      results = ActiveRecord::Base.connection.exec_query(sql)
+  end
+
 end

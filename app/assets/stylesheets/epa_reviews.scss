@@ -26,3 +26,15 @@
 .visible>div {
 	display:block;
 }
+
+mark,
+.mark {
+  font-weight: bold;
+  background-color: blue;
+  color: black;
+}
+
+span, .marked {
+  color: red;
+  background-color: blue;
+}

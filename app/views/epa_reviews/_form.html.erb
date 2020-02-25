@@ -9,12 +9,12 @@
    <div class="col-xs-6" id="col-reviewer1">
       <div class="form-group">
         <%= f.label :review_date1,  'Review Date', class: "control-label col-sm-4" %>
-        <%= f.date_field :review_date1,  html5: true  %>
+        <%= f.date_field :review_date1, value: Time.now.strftime('%Y-%m-%d'), html5: true  %>
       </div>
 
       <div class="form-group">
         <%= f.label :reviewer1, 'Reviewer', class: "control-label col-sm-4" %>
-        <%= f.select :reviewer1, @eg_members, include_blank: '--', html5: true %>
+        <%= f.select :reviewer1, @eg_members, include_blank: '--',  value: 'EG Member',  html5: true %>
       </div>
 
       <div class="form-group">

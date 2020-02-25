@@ -4,7 +4,8 @@ $.urlParam = function(name){
 }
 
 console.log ("inside epa_reviews_modal.js.erb");
-$("#mymodal-epa-review").html("<%= j render "new_modal" %>");
+
+$("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
 $("#newEpaReviewModal").modal('show');
 
 $(".modal-dialog").draggable({
@@ -73,6 +74,7 @@ $('#epa_review_badge_decision2').change(
 // 		console.log(item.name+': ' + item.value);
 // });
 
+
 var values = {};
 $.each($("#review-form").serializeArray(), function (i, field) {
     values[field.name] = field.value;
@@ -97,16 +99,3 @@ if (badge_decision1 != "" && badge_decision2 != "") {
 					$('#col-reviewer2').addClass("visible");
 
 }
-
-//('#col-reviewer2').addClass("hidden");
-
-$('.text_container').click(function() {
-	var $this = $(this);
-
-	if ($this.hasClass("hidden")) {
-		$(this).removeClass("hidden").addClass("visible");
-
-	} else {
-		$(this).removeClass("visible").addClass("hidden");
-	}
-});

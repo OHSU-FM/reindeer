@@ -26,6 +26,8 @@ class EpaReviewsController < ApplicationController
     @epa_review.epa = @epa_master.epa
     @epa_review_epa = @epa_review.epa
 
+    @epa_review.evidence1 = "testing"
+
     @decision_option = ["Grounded", "Presumptive"]
     @decision_option2 = @decision_option
     get_evidence @user_id
@@ -66,6 +68,7 @@ class EpaReviewsController < ApplicationController
   # POST /epa_reviews
   def create
     @epa_review = EpaReview.new(epa_review_params)
+
 
     respond_to do |format|
       if @epa_review.save

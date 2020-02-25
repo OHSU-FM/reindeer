@@ -27,7 +27,7 @@
                       <td><%= cd["Eval"] %></td>
                       <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
                       <td><%= cd["ProfConcerns"] %></td>
-                      <td><%= cd["MSPE"] %></td>
+                      <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
                     </tr>
                   <% end %>
                 </table>
@@ -60,7 +60,7 @@
                       <td><%= pd["PreceptorName"] %></td>
                       <td><%= pd["SubmitDate"] %></td>
                       <td><%= pd["Grade"] %></td>
-                      <td><%= pd["Comment"] %></td>
+                      <td><%= hf_highlight(pd["Comment"], epa_code) %></td>
                     </tr>
                   <% end %>
                 </table>
@@ -97,7 +97,7 @@
                               <td><%= data["BlockName"] %></td>
                               <td><%= data["CSLInstructor"].split(":").last %></td>
                               <td><%= data["SelectedStudent"] %></td>
-                              <td><%= data["Comments"] %></td>
+                              <td><%= hf_highlight(data["Comments"], epa_code) %></td>
                             </tr>
                           <% end %>
                         <% end %>
