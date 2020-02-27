@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_204129) do
+ActiveRecord::Schema.define(version: 2020_02_26_153605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,9 +276,17 @@ ActiveRecord::Schema.define(version: 2019_12_03_204129) do
   create_table "epa_reviews", force: :cascade do |t|
     t.string "epa"
     t.datetime "review_date1"
-    t.string "reviewed_by1"
-    t.string "egm_recommendation"
-    t.text "general_comments"
+    t.string "reviewer1"
+    t.string "badge_decision1"
+    t.string "trust1"
+    t.text "evidence1"
+    t.text "general_comments1"
+    t.datetime "review_date2"
+    t.string "reviewer2"
+    t.string "badge_decision2"
+    t.string "trust2"
+    t.text "evidence2"
+    t.text "general_comments2"
     t.string "reviewable_type"
     t.bigint "reviewable_id"
     t.datetime "created_at", null: false
@@ -304,8 +312,71 @@ ActiveRecord::Schema.define(version: 2019_12_03_204129) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.string "response_id"
+    t.boolean "attending_faculty"
     t.index ["response_id"], name: "index_epas_on_response_id"
     t.index ["user_id"], name: "index_epas_on_user_id"
+  end
+
+  create_table "fom_exams", force: :cascade do |t|
+    t.string "course_code"
+    t.datetime "submit_date"
+    t.decimal "comp1_wk1"
+    t.decimal "comp1_wk2"
+    t.decimal "comp1_wk3"
+    t.decimal "comp1_wk4"
+    t.decimal "comp1_wk5"
+    t.decimal "comp1_wk6"
+    t.decimal "comp1_wk7"
+    t.decimal "comp1_wk8"
+    t.decimal "comp1_wk9"
+    t.decimal "comp1_wk10"
+    t.decimal "comp1_wk11"
+    t.decimal "comp1_wk12"
+    t.decimal "comp1_dropped_score"
+    t.string "comp1_dropped_quiz"
+    t.decimal "comp2a_hss1"
+    t.decimal "comp2a_hss2"
+    t.decimal "comp2a_hss3"
+    t.decimal "comp2a_hss4"
+    t.decimal "comp2a_hss5"
+    t.decimal "comp2a_hss6"
+    t.decimal "comp2a_hssavg"
+    t.decimal "comp2b_bss1"
+    t.decimal "comp2b_bss2"
+    t.decimal "comp2b_bss3"
+    t.decimal "comp2b_bss4"
+    t.decimal "comp2b_bss5"
+    t.decimal "comp2b_bss6"
+    t.decimal "comp2b_bss7"
+    t.decimal "comp2b_bss8"
+    t.decimal "comp2b_bss9"
+    t.decimal "comp2b_bssavg"
+    t.decimal "comp3_final1"
+    t.decimal "comp3_final2"
+    t.decimal "comp3_final3"
+    t.decimal "comp4_nbme"
+    t.decimal "comp5a_hss1"
+    t.decimal "comp5a_hss2"
+    t.decimal "comp5a_hss3"
+    t.decimal "comp5a_hssavg"
+    t.decimal "comp5b_bss1"
+    t.decimal "comp5b_bss2"
+    t.decimal "comp5b_bss3"
+    t.decimal "comp5b_bss4"
+    t.decimal "comp5b_bss5"
+    t.decimal "comp5b_bssavg"
+    t.decimal "summary_comp1"
+    t.decimal "summary_comp2a"
+    t.decimal "summary_comp2b"
+    t.decimal "summary_comp3"
+    t.decimal "summary_comp4"
+    t.decimal "summary_comp5a"
+    t.decimal "summary_comp5b"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "course_code"], name: "by_user_course_code", unique: true
+    t.index ["user_id"], name: "index_fom_exams_on_user_id"
   end
 
   create_table "goals", id: :serial, force: :cascade do |t|
@@ -535,6 +606,8 @@ ActiveRecord::Schema.define(version: 2019_12_03_204129) do
     t.string "ls_list_state", default: "dirty"
     t.string "coaching_type"
     t.integer "prev_permission_group_id"
+    t.string "spec_program"
+    t.string "sid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
@@ -579,6 +652,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_204129) do
   add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
+  add_foreign_key "fom_exams", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "usmle_exams", "users"
 end

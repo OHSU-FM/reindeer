@@ -16,21 +16,52 @@
 
           <div id="list_csl_feedbacks">
             <% csl_feedbacks.sort_by{|c| c.submit_date}.each do |eval| %>
-              <tr>
-                  <td><%= eval.csl_title %> </td>
-                  <td><%= eval.submit_date %> </td>
-                  <td><%= eval.instructor %> </td>
-                  <td><%= eval.selected_student %> </td>
-                  <td><%= eval.c1 %> </td>
-                  <td><%= eval.c1_feedback %> </td>
-                  <td><%= eval.c2 %> </td>
-                  <td><%= eval.c2_feedback %> </td>
-                  <td><%= eval.feedback_strength %> </td>
-                  <td><%= eval.feedback_improve %> </td>
-              </tr>
+              <% if !eval.csl_title.include? "(2020)" %>
+                <tr>
+                    <td><%= eval.csl_title %> </td>
+                    <td><%= eval.submit_date %> </td>
+                    <td><%= eval.instructor %> </td>
+                    <td><%= eval.selected_student %> </td>
+                    <td><%= eval.c1 %> </td>
+                    <td><%= eval.c1_feedback %> </td>
+                    <td><%= eval.c2 %> </td>
+                    <td><%= eval.c2_feedback %> </td>
+                    <td><%= eval.feedback_strength %> </td>
+                    <td><%= eval.feedback_improve %> </td>
+                </tr>
+              <% end %>
             <% end %>
 
           </div>
         </table>
   </div>
+
+  <div id="csl-table2">
+        <table id="csl_evaluation2" style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center" >
+          <tr bgcolor="F2DBD6">
+            <th>Block Title</th>
+            <th>Submit Date</th>
+            <th>Instructor(s)</th>
+            <th>Selected Student</th>
+            <th>Feedback</th>
+          </tr>
+
+          <div id="list_csl_feedbacks">
+            <% csl_feedbacks.sort_by{|c| c.submit_date}.each do |eval| %>
+              <% if eval.csl_title.include? "(2020)" %>
+                <tr>
+                    <td><%= eval.csl_title %> </td>
+                    <td><%= eval.submit_date %> </td>
+                    <td><%= eval.instructor %> </td>
+                    <td><%= eval.selected_student %> </td>
+                    <td><%= eval.feedback_strength %> </td>
+
+                </tr>
+              <% end %>
+            <% end %>
+
+          </div>
+        </table>
+  </div>
+
 <% end %>
