@@ -27,7 +27,7 @@ module LsReportsHelper
             title =  "CSL Narrative Assessment Evaluation " + csl
             return title
       elsif csl.include? ra_title
-            title =  "CSL Narrative Assessment Evaluation " + csl
+            title =  csl
             return title
       else
         title = nil
