@@ -18,7 +18,7 @@
         <% end %>
       </tr>
     </thead>
-    <% cohort = @selected_user.cohort.title.split(" - ").second %>
+    <% cohort = @selected_user_year %>
     <% for j in 1..5 %>
         <tr>
           <td style="text-align:center"><%= "Comp#{j}"%></td>

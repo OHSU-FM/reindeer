@@ -39,7 +39,7 @@ class CompetenciesController < ApplicationController
     end
 
     @pk = email
-    @selected_user_year = @selected_user.cohort.title.split(" - ").last
+    @selected_user_year = @selected_user.permission_group.title.split(" ").last.gsub(/[()]/, "")
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
