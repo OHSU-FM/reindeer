@@ -5,6 +5,7 @@ class WbaGraphsController < ApplicationController
   include ArtifactsHelper
   include WbaGraphsHelper
   include EpasHelper
+  include EpaReviewsHelper
 
   def index
 

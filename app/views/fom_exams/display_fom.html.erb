@@ -1,0 +1,51 @@
+<div class="container">
+      <h2>FoM Assessments </h2>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#FoMDetail">FoM Details</a>
+            </h4>
+          </div>
+
+          <div id="FoMDetail" class="panel-collapse collapse">
+            <div class="panel-body">
+              <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" >
+                <thead>
+                  <tr class="filters">
+                    <th style="text-align:center">User</th>
+                    <% @exam_headers.each do |key, val| %>
+                      <th><%= val %></th>
+                    <% end %>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @comp1_quizzes.rows.each do |row| %>
+                        <tr>
+                          <% row.each do |data| %>
+                            <td style="text-align:center"><%= data %></td>
+                          <% end %>
+                        </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" href="#FoMComp1">FoM Component1</a>
+            </h4>
+          </div>
+          <div id="FoMComp1" class="panel-collapse collapse">
+            <div class="panel-body">
+              <h4> Component 1 graphs </h4>
+              <% comp1_graph ||= hf_create_graph( @comp1_quizzes, @comp_avg_quizzes,  @exam_headers ) %>
+              <%= high_chart("fom_comp1_graph", comp1_graph) %>
+              </div>
+          </div>
+        </div>
+
+  </div>

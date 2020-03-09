@@ -1,0 +1,41 @@
+<h4> FoM Exams Index </h4>
+
+  <table class="table table-condensed table-hover spreadsheet-body">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>UserID</th>
+        <th>Artifacts/Documents</th>
+      </tr>
+    </thead>
+    <% if !@artifacts.blank? %>
+      <% @artifacts.each do |artifact| %>
+          <tr>
+            <td><%= artifact.title %></td>
+            <td><%= artifact.content %> </td>
+            <td><%= artifact.user_id.to_s %></td>
+            <td><table class="responsive table table-hover">
+              <% if artifact.documents.attached? %>
+                <% artifact.documents.each do |document| %>
+                  <tr>
+                    <td> <%= document.filename %> </td>
+                    <td>
+                      <%= link_to 'View', url_for(document), target: :_blank %>
+                      /
+                      <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                      /
+                      <%= link_to 'Process', user_fom_exam_process_csv_path(user_id: params[:user_id], fom_exam_user_id: params[:user_id], attach_id: artifact.documents.first) %>
+                      /
+                      <%= link_to 'Display FoM Exam', user_display_fom_path(user_id: params[:user_id], course_code: 'FUND', attach_id: artifact.documents.first) %>
+
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+             </table>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+  </table>

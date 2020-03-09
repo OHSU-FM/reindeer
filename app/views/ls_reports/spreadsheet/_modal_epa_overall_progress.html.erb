@@ -60,7 +60,7 @@
 
                         <div id = "WBAClinicalAssessors<%= i %>" class="tab-pane fade in active">
 
-                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk) %>
+                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk, false) %>
                           <% if !wba_clinical_assessor.nil? %>
                             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
                           <% end %>

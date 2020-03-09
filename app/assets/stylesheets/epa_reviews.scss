@@ -1,0 +1,40 @@
+// Place all the styles related to the epa_reviews controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.modal-text-align-center {
+    text-align: center;
+}
+.modal-title {
+  margin-right: -49px;
+}
+.center-div
+{
+     margin: auto;
+     max-width: 1600px;
+}
+.inner-div
+{
+  margin: auto;
+  max-width: 1400px;
+}
+
+.hidden>div {
+	display:none;
+}
+
+.visible>div {
+	display:block;
+}
+
+mark,
+.mark {
+  font-weight: bold;
+  background-color: blue;
+  color: black;
+}
+
+span, .marked {
+  color: red;
+  background-color: blue;
+}

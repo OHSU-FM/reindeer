@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :epa_reviews
+  resources :epa_masters do
+    member do
+      get 'search_student'
+      get 'get_student'
+    end
+    #resources :epa_reveiws
+  end
+
   resources :courses
   resources :usmle_exams
   get '/csl_feedbacks/index'
@@ -26,6 +35,16 @@ Rails.application.routes.draw do
     resources :competencies, param: :user_id, only: [:index]
   end
 
+  resources :user do
+    resources :fom_exams, param: :user_id, only: [:index] do
+      get "process_csv", param: :file_name
+
+    end
+  end
+
+  resources :user do
+    get "display_fom", param: :course_code, controller: "fom_exams"
+  end
 
 
   resources :artifacts do

@@ -46,7 +46,11 @@
         <% end %>
 
         <% if ['admin', 'dean'].include? current_user.coaching_type %>
-            <%= nav_link_to("EG Review", wba_graphs_index_path, target: '_blank') %>
+            <%= nav_link_to("EG Review", epa_masters_path, target: '_blank') %>
+        <% end %>
+
+        <% if ['admin', 'dean'].include? current_user.coaching_type %>
+            <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
         <% end %>
 
         <% if can? :list, LimeSurvey %>
@@ -99,6 +103,7 @@
               "#{Settings.lime_url}/admin",
               :target=>'_blank') if can? :read, :lime_survey_website %>
               <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank') if can? :access, :rails_admin %>
+              <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, user_fom_exams_path(user_id: current_user.id), target: '_blank') if can? :access, :rails_admin %>
               <li role="separator" class="divider"></li>
 
               <li>

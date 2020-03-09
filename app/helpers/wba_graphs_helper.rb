@@ -372,7 +372,7 @@ module WbaGraphsHelper
 
   end
 
-  def hf_series_data_student(in_category, params_id)  #params_id = could be email or user_id
+  def hf_series_data_student(in_category, params_id, pie_graph)  #params_id = could be email or user_id
     if in_category == "EPA"
       epas_hash = get_epa_involvement_by_student_assessed(params_id)
       if !epas_hash.nil?
@@ -387,7 +387,11 @@ module WbaGraphsHelper
       if clinical_assessor_hash.values.sum.sum != 0
         categories = clinical_assessor_hash.keys
         data_series = clinical_assessor_hash.values.transpose
-        create_chart(data_series, in_category, categories)
+        if pie_graph
+          create_pie_chart(data_series, categories)
+        else
+          create_chart(data_series, in_category, categories)
+        end
       end
     end
   end
@@ -455,6 +459,71 @@ module WbaGraphsHelper
     create_chart(data_series, in_category, categories)
 
 
+  end
+
+  def create_pie_chart(data_series, categories)
+    total_wba_count = 0
+
+     data_series.each do |data|
+       if !data.nil?
+          total_wba_count += data.map{|i| i.to_i}.sum
+        end
+     end
+
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: "<b>Work Based Assessment Datapoints - Clinical Assessor</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+
+        pie_data = prep_data(categories, data_series)
+        f.series(type: 'pie',
+                name: 'Total No of DataPoints',
+                data: pie_data,
+                center: [210,130], size: 150, showInLegend: false
+        )
+
+
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      f.colors(get_4_random_colors)
+
+      f.plot_options(
+
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            depth: 25,
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
+            }
+        },
+
+        column: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+
+        series: {
+          cursor: 'pointer'
+
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      f.chart({
+                defaultSeriesType: "pie",
+                plotBackgroundImage: '',
+                type: 'pie',
+                options3d: {
+                  enabled: true,
+                  alpha: 45,
+                  beta: 0
+                }
+              })
+    end
+
+    return chart
   end
 
   def create_chart(data_series, in_category, categories)
