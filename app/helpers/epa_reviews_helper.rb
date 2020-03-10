@@ -41,6 +41,14 @@ module EpaReviewsHelper
     return text_marked.html_safe
   end
 
+  def hf_wba_str(wba)
+    wba_str = ''
+    for i in 0..3 do
+          wba_str +=  hf_wba_instance_def(i+1) + ": #{wba[i]}" + "\r"
+    end
+    return wba_str
+  end
+
 
   # def hf_highlight(text, epa_code)
   #   if epa_code == "N/A"

@@ -11,3 +11,12 @@
 .opaque-image {
   opacity: 0.25;
 }
+.redact {
+  background-color: rgba(0,0,0,1);
+  padding: 1% 2%;
+  min-width: 50%;
+  -webkit-transition: background-color 500ms ease-out;
+  -moz-transition: background-color 500ms ease-out;
+  -o-transition: background-color 500ms ease-out;
+  transition: background-color 500ms ease-out;
+}

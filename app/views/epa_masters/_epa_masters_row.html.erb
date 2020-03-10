@@ -13,28 +13,19 @@
     <table>
         <% epa_master.epa_reviews.each do |review| %>
         <tr>
-          <td>
+          <td><span>
+              <% str_html1, str_html2 = hf_redact_text(review) %>
               <%= review.review_date1.nil? ? review.review_date1 : review.review_date1.strftime("%m-%d-%Y")  %> /
-              <% if review.badge_decision1 == "Badge" %>
-                <span class="text-success"> <%= review.badge_decision1 %></span> /
-              <% else %>
-                 <span class="bg-danger text-white"> <%= review.badge_decision1 %></span> /
-              <% end %>
-              <%= review.reviewer1 %> /
-              <b><%= review.general_comments1 %></b> /
+              <%= str_html1.to_s.html_safe %>
 
               <%= review.review_date2.nil? ? review.review_date2 : review.review_date2.strftime("%m-%d-%Y")  %> /
-              <% if review.badge_decision2 == "Badge" %>
-                <span class="text-success"> <%= review.badge_decision2 %></span> /
-              <% else %>
-                 <span class="bg-danger text-white"> <%= review.badge_decision2 %></span> /
-              <% end %>
-              <%= review.reviewer2 %> /
-              <b><%= review.general_comments2 %></b>
+              <%= str_html2.to_s.html_safe %>
+              </span>
+
               <%= link_to '', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
                   'data-target' => '#mymodal-epa-review', class: "glyphicon glyphicon-plus"}%>
               <%= link_to '', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
-                  'data-target' => '#mymodal-epa-review', class: "glyphicon glyphicon-pencil"}  %>
+                  'data-target' => '#mymodal-epa-review', class: "glyphicon glyphicon-edit"}  %>
               <%= link_to '', epa_review_path(id: review.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_review glyphicon glyphicon-trash' %>
 
             </td>

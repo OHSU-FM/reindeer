@@ -26,11 +26,17 @@ class EpaReviewsController < ApplicationController
     @epa_review.epa = @epa_master.epa
     @epa_review_epa = @epa_review.epa
 
-    @epa_review.evidence1 = "testing"
-
     @decision_option = ["Grounded", "Presumptive"]
     @decision_option2 = @decision_option
     get_evidence @user_id
+
+    epa_idx = @epa_review_epa.split("EPA").second.to_i
+    str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
+                   "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
+    str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
+    @epa_review.evidence1 = str_complete + str_wba
+    @epa_review.evidence2 = str_complete + str_wba
+
     respond_to do |format|
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
@@ -56,7 +62,15 @@ class EpaReviewsController < ApplicationController
     @epa_review_epa = @epa_review.epa
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
+
     get_evidence @user_id
+    epa_idx = @epa_review_epa.split("EPA").second.to_i
+    str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
+                   "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
+    str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
+
+    @epa_review.evidence1 = str_complete + str_wba if @epa_review.evidence1.blank?
+    @epa_review.evidence2 = str_complete + str_wba if @epa_review.evidence2.blank?
 
     respond_to do |format|
       format.html
@@ -68,7 +82,6 @@ class EpaReviewsController < ApplicationController
   # POST /epa_reviews
   def create
     @epa_review = EpaReview.new(epa_review_params)
-
 
     respond_to do |format|
       if @epa_review.save

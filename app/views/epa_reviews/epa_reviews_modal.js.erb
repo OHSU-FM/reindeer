@@ -97,5 +97,7 @@ if (badge_decision1 != "" && badge_decision2 != "") {
 } else if (badge_decision1 != "" && badge_decision2 == "") {
 					$('#col-reviewer1').removeClass("visible").addClass("hidden");
 					$('#col-reviewer2').addClass("visible");
-
+} else if (badge_decision1 == "" && badge_decision2 != "") {
+									$('#col-reviewer2').removeClass("visible").addClass("hidden");
+									$('#col-reviewer1').addClass("visible");
 }
