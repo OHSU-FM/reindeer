@@ -1,5 +1,13 @@
 module EpaMastersHelper
 
+  EPA_CODES = ['EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6',
+               'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13'
+              ]
+
+  def hf_epa_codes
+    return EPA_CODES
+  end
+
   def hf_format_date (in_date)
     if !in_date.nil?
       in_date = in_date.strftime("%m/%d/%Y")
@@ -50,6 +58,20 @@ module EpaMastersHelper
 
     return str_html1, str_html2
 
+  end
+
+  def hf_load_eg_members
+    if File.file? (Rails.root + "public/epa_reviews/eg_members.json")
+      json_obj ||= File.read(Rails.root + "public/epa_reviews/eg_members.json")
+      eg_members ||= JSON.parse(json_obj).map{|e| e["eg_member"]}
+
+    else
+       return nil
+    end
+  end
+
+  def hf_get_epa_reviews(epa_master, selected_reviewer)
+    epa_reviews = epa_master.epa_reviews.where("reviewer1 = ? or reviewer2 = ?", selected_reviewer, selected_reviewer)
   end
 
 end

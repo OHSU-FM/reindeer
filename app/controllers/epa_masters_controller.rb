@@ -19,6 +19,10 @@ class EpaMastersController < ApplicationController
           @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
         end
       end
+      respond_to do |format|
+        format.js { render partial: 'search-results' and return}
+        format.html
+      end
 
     elsif params[:user_id]
       @user = User.find(params[:user_id])
@@ -28,11 +32,9 @@ class EpaMastersController < ApplicationController
         create_epas @user.id
         @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
       end
-    end
-
-    respond_to do |format|
-      format.js { render partial: 'search-results' and return}
-      format.html
+      respond_to do |format|
+        format.html
+      end
     end
 
   end
@@ -76,6 +78,18 @@ class EpaMastersController < ApplicationController
   def destroy
     @epa_master.destroy
     redirect_to epa_masters_url, notice: 'Epa master was successfully destroyed.'
+  end
+
+  def eg_report
+    if params[:eg_member].present?
+      @epa_masters = EpaMaster.where("status is NULL and epa = ?", params[:epa]).order(:user_id).includes(:user)
+
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :eg_report
+
   end
 
 

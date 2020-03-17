@@ -2,13 +2,14 @@ Rails.application.routes.draw do
 
   resources :epa_reviews
   resources :epa_masters do
-    member do
+    collection  do
       get 'search_student'
-      get 'get_student'
+      get 'eg_report', to: 'epa_masters#eg_report'
+
     end
     #resources :epa_reveiws
   end
-
+  #get 'epa_masters/eg_report', controller: "epa_masters", action: :eg_report, to: "epa_masters#eg_report"
   resources :courses
   resources :usmle_exams
   get '/csl_feedbacks/index'
