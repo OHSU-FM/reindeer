@@ -1,5 +1,12 @@
 module SearchesHelper
 
+
+  def hf_exists_in_FomExam(user_id)
+    blocks = FomExam.where(user_id: user_id).select(:course_code).uniq
+    return blocks
+
+  end
+
   def probe_dataset(lime_survey)
     student_data = []
     student_email_col = lime_survey.student_email_column

@@ -1,6 +1,13 @@
 class FomExam < ApplicationRecord
   belongs_to :user
+  has_one :fom_label
 
+  PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
+
+
+  def self.comp_keys
+    return PREFIX_KEYS
+  end
 
   def self.format_date(in_date)
     temp_date = in_date.split("/")
@@ -35,11 +42,13 @@ class FomExam < ApplicationRecord
   end
 
   def self.process_file(attachment_id)
+
     log_results = []
     row_to_hash = {}
     no_updated = 0
     no_not_updated = 0
     total_count = 0
+
     CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true) do |row|
       yes_updated = true
       total_count += 1
@@ -69,24 +78,44 @@ class FomExam < ApplicationRecord
     return log_results
   end
 
-  def self.exec_raw_sql attachment_id, permission_group
+  def self.exec_raw_sql user_id, attachment_id, permission_group_id, course_code
     row_to_hash = {}
-    CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true) do |row|
-      row_to_hash = row.to_hash
-    end
-    sql = "select users.full_name, "
-    sql_avg = "select "
-    row_to_hash.each do |key, val|
-      val = val.gsub(" ", "")
-      sql += "#{key}, "
-      if key.include? "comp1_wk"
-        sql_avg += "AVG(#{key}) as avg_#{key}, "
+    if attachment_id.to_i != -1
+      CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true) do |row|
+        row_to_hash = row.to_hash
+        sql = "select users.full_name, "
+        sql_avg = "select "
+        row_to_hash.each do |key, val|
+            val = val.gsub(" ", "")
+            sql += "#{key}, "
+            if key.match(Regexp.union(PREFIX_KEYS))
+              sql_avg += "AVG(#{key}) as avg_#{key}, "
+            end
+        end
       end
+    else
+      fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
+      row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
+      sql = "select users.full_name, "
+      sql_avg = "select "
+      row_to_hash.each do |key, val|
+        if key != 'permission_group_id'
+          val = val.gsub(" ", "")
+          sql += "#{key}, "
+          if key.match(Regexp.union(PREFIX_KEYS))
+            sql_avg += "AVG(#{key}) as avg_#{key}, "
+          end
+        end
+      end
+
     end
-    sql = sql.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group.to_s + " and users.id = fom_exams.user_id order by users.full_name ASC"
-    sql_avg = sql_avg.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group.to_s + " and users.id = fom_exams.user_id "
-    results = ActiveRecord::Base.connection.exec_query(sql)
-    results_avg ||= ActiveRecord::Base.connection.exec_query(sql_avg)
+
+    sql = sql.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group_id.to_s + " and users.id = fom_exams.user_id and " +
+                                    " fom_exams.user_id = " + user_id + " and fom_exams.course_code = " + "'" + course_code + "'"  + " order by users.full_name ASC"
+    sql_avg = sql_avg.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group_id.to_s +
+                                            " and users.id = fom_exams.user_id and fom_exams.course_code = " + "'" + course_code.to_s + "'"
+    results = ActiveRecord::Base.connection.exec_query(sql).to_hash
+    results_avg ||= ActiveRecord::Base.connection.exec_query(sql_avg).to_hash
 
     return results, results_avg,  row_to_hash
 

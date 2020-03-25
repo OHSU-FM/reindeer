@@ -1,51 +1,63 @@
 <div class="container">
-      <h2>FoM Assessments </h2>
+      <h2>FoM Assessments - <%= @block_desc %></h2>
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a data-toggle="collapse" href="#FoMDetail">FoM Details</a>
+          <div class="panel-heading" role="tab" id="HeadingStudentInfo">
+            <h4 class="panel-title" >
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#StudentInfo" aria-expanded="true" aria-controls="StudentInfo">Student Information</a>
             </h4>
           </div>
-
-          <div id="FoMDetail" class="panel-collapse collapse">
+          <div id="StudentInfo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingStudentInfo">
             <div class="panel-body">
-              <table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" >
-                <thead>
-                  <tr class="filters">
-                    <th style="text-align:center">User</th>
-                    <% @exam_headers.each do |key, val| %>
-                      <th><%= val %></th>
-                    <% end %>
-
-                  </tr>
-                </thead>
+              <table class="responsive nowrap table table-hover" >
                 <tbody>
-                  <% @comp1_quizzes.rows.each do |row| %>
-                        <tr>
-                          <% row.each do |data| %>
-                            <td style="text-align:center"><%= data %></td>
-                          <% end %>
-                        </tr>
-                  <% end %>
+                  <tr>
+                    <td>Student</td><th><%= @student_full_name %></th>
+                  </tr>
+                  <tr>
+                      <td>Student Email</td><th><%= @student_email %></th>
+                  </tr>
+                  <tr>
+                    <td>Student UID</td><th><%= @student_uid %></th>
+                  </tr>
+                  <tr>
+                    <td>Coach Info</td><th><%= @coach_info %></th>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+        <% @comp_keys.each do |comp| %>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="Heading<%= comp %>">
+                <h4 class="panel-title" aria-expanded="true" aria-controls="collapse_<%= comp %>">
+                  <a class="collapsed" data-toggle="collapse" href="#collapse_<%= comp %>"> <%= hf_component_desc(comp) %>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse_<%= comp %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="Heading<%= comp %>">
+                <div class="panel-body">
+                  <% comp_graph ||= hf_create_graph(comp, @comp1_quizzes, @comp_avg_quizzes,  @exam_headers ) %>
+                  <%= high_chart("#{comp}_graph", comp_graph) %>
+                  </div>
+              </div>
+            </div>
+        <% end %>
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a data-toggle="collapse" href="#FoMComp1">FoM Component1</a>
+          <div class="panel-heading" role="tab" id="HeadingAttachment">
+            <h4 class="panel-title" aria-expanded="true" aria-controls="collapse_attachment">
+              <a class="collapsed" data-toggle="collapse" href="#collapse_attachment"> Attachment(s)
+              </a>
             </h4>
           </div>
-          <div id="FoMComp1" class="panel-collapse collapse">
+          <div id="collapse_attachment" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingAttachment">
             <div class="panel-body">
-              <h4> Component 1 graphs </h4>
-              <% comp1_graph ||= hf_create_graph( @comp1_quizzes, @comp_avg_quizzes,  @exam_headers ) %>
-              <%= high_chart("fom_comp1_graph", comp1_graph) %>
-              </div>
+              <%= render partial: 'artifacts/shelf_artifacts' %>
+            </div>
           </div>
         </div>
 
+
+    </div>
   </div>

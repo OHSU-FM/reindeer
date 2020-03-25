@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_26_153605) do
+ActiveRecord::Schema.define(version: 2020_03_19_164534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -377,6 +377,13 @@ ActiveRecord::Schema.define(version: 2020_02_26_153605) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "course_code"], name: "by_user_course_code", unique: true
     t.index ["user_id"], name: "index_fom_exams_on_user_id"
+  end
+
+  create_table "fom_labels", force: :cascade do |t|
+    t.integer "permission_group_id"
+    t.string "course_code"
+    t.json "labels"
+    t.index ["permission_group_id", "course_code"], name: "by_permission_group_course_code", unique: true
   end
 
   create_table "goals", id: :serial, force: :cascade do |t|
