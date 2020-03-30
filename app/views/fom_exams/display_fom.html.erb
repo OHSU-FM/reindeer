@@ -1,10 +1,11 @@
-<div class="container">
+<!-- Page Header -->
+<div class='container'>
       <h2>FoM Assessments - <%= @block_desc %></h2>
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="HeadingStudentInfo">
             <h4 class="panel-title" >
-              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#StudentInfo" aria-expanded="true" aria-controls="StudentInfo">Student Information</a>
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#StudentInfo" aria-expanded="true" aria-controls="StudentInfo">Student Information - <b><%= @student_full_name %></b></a>
             </h4>
           </div>
           <div id="StudentInfo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="HeadingStudentInfo">
@@ -32,14 +33,21 @@
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="Heading<%= comp %>">
                 <h4 class="panel-title" aria-expanded="true" aria-controls="collapse_<%= comp %>">
-                  <a class="collapsed" data-toggle="collapse" href="#collapse_<%= comp %>"> <%= hf_component_desc(comp) %>
+                  <a class="collapsed" data-toggle="collapse" href="#collapse_<%= comp %>">
+                    <span> <%= hf_component_desc(comp) %>&nbsp;&nbsp;<div class="<%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type) %>" style="color:red"></div></span>
                   </a>
                 </h4>
               </div>
               <div id="collapse_<%= comp %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="Heading<%= comp %>">
                 <div class="panel-body">
-                  <% comp_graph ||= hf_create_graph(comp, @comp1_quizzes, @comp_avg_quizzes,  @exam_headers ) %>
+                  <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers ) %>
                   <%= high_chart("#{comp}_graph", comp_graph) %>
+                  <% if comp == 'comp1_wk' %>
+                    <br />
+                    Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
+                    Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
+                  <% end %>
+
                   </div>
               </div>
             </div>
@@ -60,4 +68,5 @@
 
 
     </div>
-  </div>
+
+</div>

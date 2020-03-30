@@ -29,6 +29,34 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     return COMPONENT_DESC[in_code]
   end
 
+  def hf_check_failed_comp(comp, failed_comps, coaching_type)
+
+    str_warning = ""
+    return str_warning if coaching_type == "student"
+    failed_comps.each do |fcomp|
+      if fcomp.include? comp
+        return "glyphicon glyphicon-warning-sign"
+      end
+    end
+    return str_warning
+  end
+
+  def hf_scan_failed_score(hash_components)
+    failed_comp = []
+    comp_keys = FomExam.comp_keys
+    hash_components.each do |comp|
+      comp_keys.each do |comp_key|
+        value = comp.map{|key, value| value if key.include? comp_key and value.to_f < 70.0}.compact
+        if !value.empty?
+          failed_comp.push comp_key
+        end
+      end
+    end
+
+    return failed_comp
+
+  end
+
   def check_pass_fail(data_series)
     fail_hash = {}
     new_series = []

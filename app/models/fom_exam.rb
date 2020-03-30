@@ -1,6 +1,5 @@
 class FomExam < ApplicationRecord
   belongs_to :user
-  has_one :fom_label
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
@@ -27,14 +26,16 @@ class FomExam < ApplicationRecord
 
        user = User.find_by(email: row["email"])
        if user.nil?
+         puts "email: " + row["email"]
          yes_updated = false
+         byebug
        else
          row["user_id"] = user.id
          row["submit_date"] = format_date(row["submit_date"])
          row_hash = {}
          row_hash = row.to_hash
          row_hash.delete("email")
-         FomExam.where(user_id: user.id, course_code: row["course_code"]).first_or_create.update(row_hash)
+         FomExam.where(user_id: user.id, course_code: row["course_code"], permission_group_id: row["permission_group_id"]).first_or_create.update(row_hash)
          yes_updated = true
 
        end
@@ -85,7 +86,7 @@ class FomExam < ApplicationRecord
         row_to_hash = row.to_hash
         sql = "select users.full_name, "
         sql_avg = "select "
-        row_to_hash.each do |key, val|
+        row_to_hash.each do |key, val| # build sql using form label record --> customized headers
             val = val.gsub(" ", "")
             sql += "#{key}, "
             if key.match(Regexp.union(PREFIX_KEYS))
@@ -93,12 +94,12 @@ class FomExam < ApplicationRecord
             end
         end
       end
-    else
+    else # attachment_id = -1 get fom label from table fom_labels
       fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
       row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
       sql = "select users.full_name, "
       sql_avg = "select "
-      row_to_hash.each do |key, val|
+      row_to_hash.each do |key, val|  # build sql using form label record --> customized headers
         if key != 'permission_group_id'
           val = val.gsub(" ", "")
           sql += "#{key}, "
@@ -110,9 +111,10 @@ class FomExam < ApplicationRecord
 
     end
 
-    sql = sql.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group_id.to_s + " and users.id = fom_exams.user_id and " +
-                                    " fom_exams.user_id = " + user_id + " and fom_exams.course_code = " + "'" + course_code + "'"  + " order by users.full_name ASC"
-    sql_avg = sql_avg.delete_suffix(", ") + " from fom_exams, users where users.permission_group_id = " + permission_group_id.to_s +
+    sql = sql.delete_suffix(", ") + " from fom_exams, users where users.id = fom_exams.user_id and " +
+                                    " fom_exams.user_id = " + user_id + " and fom_exams.course_code = " + "'" + course_code + "' and "  +
+                                    " fom_exams.permission_group_id=" + permission_group_id.to_s  + " order by users.full_name ASC"
+    sql_avg = sql_avg.delete_suffix(", ") + " from fom_exams, users where fom_exams.permission_group_id= " + permission_group_id.to_s +
                                             " and users.id = fom_exams.user_id and fom_exams.course_code = " + "'" + course_code.to_s + "'"
     results = ActiveRecord::Base.connection.exec_query(sql).to_hash
     results_avg ||= ActiveRecord::Base.connection.exec_query(sql_avg).to_hash

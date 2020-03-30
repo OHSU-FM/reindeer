@@ -30,8 +30,12 @@
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
             <%= link_to("<b>Clinical Phase Dataset NEW! (>= Med20)</b>".html_safe, user_competencies_path(user_id: result.id)) %><br>
             <%  hf_exists_in_FomExam(result.id).each do |block| %>
-                <%= link_to("<b>Med23:Foundation of Medicine: #{block.course_code} (Beta!)</b>".html_safe, user_display_fom_path(user_id: result.id, permission_group_id: result.permission_group_id,
-                                                                                                              course_code: "#{block.course_code}", attach_id: -1), target: '_blank') %> <br>
+                <% cohort = block["cohort"] %>
+                <% permission_group_id = block["permission_group_id"] %>
+                <% course_code = block["course_code"] %>
+                <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b>".html_safe,
+                        user_display_fom_path(user_id: result.id, permission_group_id: permission_group_id,
+                        course_code: course_code, attach_id: -1), target: '_blank') %> <br>
                <% end %>
 
               <% if hf_has_csl_feedbacks(result.id) %>
