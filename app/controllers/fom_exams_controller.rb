@@ -6,6 +6,16 @@ class FomExamsController < ApplicationController
     @artifacts = Artifact.where(user_id: params[:user_id])
   end
 
+  def export_block
+    @export_block = FomExam.where(permission_group_id: 17, course_code: '1-FUND')
+    #@csv_data = @export_block.to_csv
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @export_block.to_csv,  file: 'export_block.csv' }
+    end
+  end
+
   def process_csv
     # @artifacts.first.documents.first.download --> works
     if !hf_check_label_file(params[:attach_id])

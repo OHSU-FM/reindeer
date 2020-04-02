@@ -1,5 +1,6 @@
 
 <%= render 'layouts/nav_header' %>
+<div class="container">
 <h3>Search Result</h3>
   <% if !@results.nil? %>
     <table class="table table-hover main-table">
@@ -33,16 +34,20 @@
                 <% cohort = block["cohort"] %>
                 <% permission_group_id = block["permission_group_id"] %>
                 <% course_code = block["course_code"] %>
-                <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b>".html_safe,
-                        user_display_fom_path(user_id: result.id, permission_group_id: permission_group_id,
-                        course_code: course_code, attach_id: -1), target: '_blank') %> <br>
-               <% end %>
+                <% if !course_code.include? "DISABLED" %>
+                  <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b>".html_safe,
+                          user_display_fom_path(user_id: result.id, permission_group_id: permission_group_id,
+                          course_code: course_code, attach_id: -1), target: '_blank') %> <br>
+                <% else %>
+                   <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b><br />".html_safe %>
+                <% end %>
+            <% end %>
 
-              <% if hf_has_csl_feedbacks(result.id) %>
-              <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(cohort: cohort_title(result.permission_group_id), user_id: result.id, block: "FUND"), target: '_blank') %>
-              <br>
+            <% if hf_has_csl_feedbacks(result.id) %>
+            <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(cohort: cohort_title(result.permission_group_id), user_id: result.id, block: "FUND"), target: '_blank') %>
+            <br>
 
-              <% end %>
+            <% end %>
 
             <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
@@ -62,3 +67,4 @@
     <% hf_write_hash(@temp_hash) %>
 
   <% end %>
+</div>

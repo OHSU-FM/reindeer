@@ -1,34 +1,20 @@
 // Place all the styles related to the searches controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.loading{
-  font:26px/1.5 Monospace;
-  color:#f44262;
-  perspective:100px;
-  >span{
-    animation:flip 2s infinite;
-    display: inline-block;
-    transform-origin:50% 50% -10px;
-    transform-style: preserve-3d;
-    @for $i from 1 to 12{
-      &:nth-child(#{$i}){
-        animation-delay:$i/10+s;
-      }
-    }
-  }
-}
-@keyframes flip{
-  to{
-    transform: rotateX(1turn);
-  }
-}
-.pagination-holder {
-  text-align: center;
-}
+
 
 .link-to-text-color {
   background-color: #dbcfe7;
 }
 .table1 {
 background: rgba(255,255,255,0.5);
+}
+
+.container a:hover {
+  color: #f55e55;
+  text-decoration: none;
+  background-color: #CAE5FF;
+}
+body {
+  background-color: #F7FAFE;
 }

@@ -28,7 +28,7 @@
         <div class="panel-heading" role="tab" id="heading<%= index %>">
             <h4 class="panel-title">
               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="false" aria-controls="collapse<%= index %>">
-                <%= "#{index} Students with No <b><i>#{@student_goal_meeting}</i></b> in the Past <b><i>#{@past_due_mons}</i></b> Months (Total: #{students.count})".html_safe %>
+                 <%= sanitize "#{index} Students with No <b><i>#{@student_goal_meeting}</i></b> in the Past <b><i>#{@past_due_mons}</i></b> Months (Total: #{students.count})".html_safe %>
               </a>
             </h4>
         </div>

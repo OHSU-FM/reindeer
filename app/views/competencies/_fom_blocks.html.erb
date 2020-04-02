@@ -1,9 +1,9 @@
 <% if !@selected_user.nil? %>
   <div class="panel panel-default">
     <% if !@selected_user.cohort.nil? %>
-       <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@selected_user.full_name}</b><br/> Coach: <b>#{@selected_user.cohort.title}</b>".html_safe %></div>
+       <div class="panel-body"><h4>FoM Blocks</h4> <%= sanitize "Student: <b>#{@selected_user.full_name}</b><br/> Coach: <b>#{@selected_user.cohort.title}</b>".html_safe %></div>
     <% else %>
-        <div class="panel-body"><h4>FoM Blocks</h4> <%= "Student: <b>#{@selected_user.full_name}</b><br/> Coach: <b>Not Assigned </b>".html_safe %></div>
+        <div class="panel-body"><h4>FoM Blocks</h4> <%= sanitize "Student: <b>#{@selected_user.full_name}</b><br/> Coach: <b>Not Assigned </b>".html_safe %></div>
     <% end %>
   </div>
 <% end %>

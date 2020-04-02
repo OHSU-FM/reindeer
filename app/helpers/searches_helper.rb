@@ -6,11 +6,17 @@ module SearchesHelper
     blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).uniq
     blocks.each do |block|
       block_hash = {}
-      cohort = PermissionGroup.find(block.permission_group_id).title.delete('()').split(" ").last
-      block_hash.store("course_code", block.course_code)
-      block_hash.store("permission_group_id", block.permission_group_id)
-      block_hash.store("cohort", cohort)
-      block_array.push block_hash
+      if FomLabel.find_by(permission_group_id: block.permission_group_id, course_code: block.course_code).block_enabled
+          block_hash.store("course_code", block.course_code)
+      else
+          block_hash.store("course_code", block.course_code + " - DISABLED!")
+      end
+        cohort = PermissionGroup.find(block.permission_group_id).title.delete('()').split(" ").last
+
+        block_hash.store("permission_group_id", block.permission_group_id)
+        block_hash.store("cohort", cohort)
+        block_array.push block_hash
+
     end
     return block_array
   end

@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   resources :user do
     resources :fom_exams, param: :user_id, only: [:index] do
       get "process_csv", param: :file_name
-
+      get 'export_block', param: :course_code
     end
   end
 
