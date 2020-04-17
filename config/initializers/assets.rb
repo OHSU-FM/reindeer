@@ -42,4 +42,5 @@ Rails.application.config.assets.precompile += %w( print.css
     epa_masters.css
     epa_reviews.css
     fom_exams.css
+    preceptor_evals.css 
    )

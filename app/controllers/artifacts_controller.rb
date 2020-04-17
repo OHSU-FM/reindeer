@@ -1,5 +1,6 @@
 class ArtifactsController < ApplicationController
   layout 'full_width_margins'
+  before_action :authenticate_user!
   before_action :set_artifact, only: [:show, :edit, :update, :destroy, :move]
 
 

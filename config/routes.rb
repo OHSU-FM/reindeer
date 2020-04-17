@@ -36,10 +36,14 @@ Rails.application.routes.draw do
     resources :competencies, param: :user_id, only: [:index]
   end
 
+
+  get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+  get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+  get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+  get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
+
   resources :user do
-    resources :fom_exams, param: :user_id, only: [:index] do
-      get "process_csv", param: :file_name
-      get 'export_block', param: :course_code
+    resources :preceptor_evals,  only: [:index] do
     end
   end
 

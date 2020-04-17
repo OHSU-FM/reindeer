@@ -1,4 +1,5 @@
 class FomExamsController < ApplicationController
+  before_action :authenticate_user!
   include FomExamsHelper
   include ArtifactsHelper
 
@@ -6,13 +7,20 @@ class FomExamsController < ApplicationController
     @artifacts = Artifact.where(user_id: params[:user_id])
   end
 
-  def export_block
-    @export_block = FomExam.where(permission_group_id: 17, course_code: '1-FUND')
-    #@csv_data = @export_block.to_csv
-
+  def list_all_blocks
+    @list_all_blocks = FomExam.distinct.pluck(:permission_group_id, :course_code).sort
     respond_to do |format|
       format.html
-      format.csv { send_data @export_block.to_csv,  file: 'export_block.csv' }
+    end
+  end
+
+  def export_block
+    if params[:permssion_group_id].present? and params[:course_code].present?
+      @export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
+      send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
+    end
+    respond_to do |format|
+      format.html
     end
   end
 
@@ -32,7 +40,7 @@ class FomExamsController < ApplicationController
        student  = User.find(params[:user_id])
        @student_email = student.email
        @student_full_name = student.full_name
-       @coach_info = student.cohort.title
+       @coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(params[:course_code])
        @student_uid = student.sid
        @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(params[:user_id], params[:attach_id], params[:permission_group_id], params[:course_code] )

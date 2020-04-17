@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_162333) do
+ActiveRecord::Schema.define(version: 2020_04_06_160951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -551,6 +551,37 @@ ActiveRecord::Schema.define(version: 2020_04_02_162333) do
     t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true
   end
 
+  create_table "preceptor_evals", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.string "preceptor_name"
+    t.date "submit_date"
+    t.string "term"
+    t.string "grade"
+    t.string "professional_concerns"
+    t.string "concern_comments"
+    t.text "mspe_comments"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "permission_group_id"], name: "by_user_permission_group_id"
+    t.index ["user_id"], name: "index_preceptor_evals_on_user_id"
+  end
+
   create_table "question_widgets", id: :serial, force: :cascade do |t|
     t.integer "role_aggregate_id"
     t.integer "lime_question_qid"
@@ -663,6 +694,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_162333) do
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "fom_exams", "users"
+  add_foreign_key "preceptor_evals", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "usmle_exams", "users"
 end

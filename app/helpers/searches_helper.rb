@@ -16,9 +16,15 @@ module SearchesHelper
         block_hash.store("permission_group_id", block.permission_group_id)
         block_hash.store("cohort", cohort)
         block_array.push block_hash
-
     end
     return block_array
+  end
+
+  def hf_exists_in_PreceptorEval(user_id)
+    preceptor_evals = PreceptorEval.where(user_id: user_id).select(:user_id, :permission_group_id).uniq.first
+    return nil if preceptor_evals.nil?
+    cohort = PermissionGroup.find(preceptor_evals.permission_group_id).title.delete('()').split(" ").last
+    return cohort
   end
 
   def probe_dataset(lime_survey)

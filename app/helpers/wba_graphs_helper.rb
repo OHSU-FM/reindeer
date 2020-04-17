@@ -482,7 +482,10 @@ module WbaGraphsHelper
 
 
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-      f.colors(get_4_random_colors)
+      #f.colors(get_4_random_colors)
+      f.set_options(
+        color: ["#35FF84", "#B331E8", "#424EFF"]
+      )
 
       f.plot_options(
 
@@ -556,7 +559,7 @@ module WbaGraphsHelper
       f.series(name: "1 - I did it", yAxis: 0, data: data_series[0])
       f.series(name: "2 - I talked them through it", yAxis: 0, data: data_series[1])
       f.series(name: "3 - I directed them from time to time", yAxis: 0, data: data_series[2])
-      f.series(name: "4 - I was available just in case", yAxis: 0, data: data_series[3], drilldown: "IwasAvailable")
+      f.series(name: "4 - I was available just in case", yAxis: 0, data: data_series[3])
       if in_category == "Clinical Assessor"
         pie_data = prep_data(categories, data_series)
         f.series(type: 'pie',
@@ -566,19 +569,9 @@ module WbaGraphsHelper
         )
       end
 
-      f.drilldown(
-        series: [{
-          id: "IwasAvailable",
-          data:[
-              ['A', 4],
-              ['B', 5],
-              ['C', 6]
-
-          ]
-        }]
-       )
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-      f.colors(get_4_random_colors)
+      #f.colors(get_4_random_colors)
+      f.colors(["#FFBDB5", "#35FF84", "#B331E8", "#424EFF"])
 
       f.yAxis [
          { tickInterval: 20,

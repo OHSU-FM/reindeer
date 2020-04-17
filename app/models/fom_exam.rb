@@ -1,5 +1,6 @@
 class FomExam < ApplicationRecord
   belongs_to :user
+  belongs_to :user_only_fetch_email, -> {select("users.id, users.email, users.full_name")}, class_name: 'User', foreign_key: 'user_id'
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
@@ -7,16 +8,15 @@ class FomExam < ApplicationRecord
   def self.comp_keys
     return PREFIX_KEYS
   end
-  
+
   def self.to_csv
       CSV.generate do |csv|
-        csv << column_names
+        csv << column_names + ['user_id', 'email', 'full_name']
         all.each do |result|
-          csv << result.attributes.values_at(*column_names)
+          csv << result.attributes.values_at(*column_names) + result.user_only_fetch_email.attributes.values
         end
       end
     end
-
 
   def self.format_date(in_date)
     temp_date = in_date.split("/")
@@ -31,9 +31,7 @@ class FomExam < ApplicationRecord
     return in_file
   end
 
-
   def self.update_exam(row, yes_updated)
-
        user = User.find_by(email: row["email"])
        if user.nil?
          puts "email: " + row["email"]

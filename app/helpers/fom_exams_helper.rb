@@ -1,6 +1,6 @@
 module FomExamsHelper
 
-COMPONENT_DESC = {'comp1_wk' => 'Component 1: Institutional Knowledge (Weekly Tests/Quizzes)',
+COMPONENT_DESC = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
                   'comp2a_hss' => 'Component 2A: Clinical/Health Systems Science Skills Assessments',
                   'comp2b_bss' => 'Component 2B: Basic Science Skills Assessments',
                   'comp3_final' => 'Component 3: Final Block Exam',
@@ -13,11 +13,10 @@ COMPONENT_DESC = {'comp1_wk' => 'Component 1: Institutional Knowledge (Weekly Te
 BLOCKS = {  '1-FUND' => "Fundamentals",
             '2-BLHD' => "Blood & Host Defence",
             '3-SBM'  => "Skin, Bones & Musculature",
-            "4-CARE" => "Cardiopulmonary & Renal",
-            "5-CPR"  => "Cardiopulmonary & Renal",
-            "6-HODI" => "Hormones & Digestion",
-            "7-NSF"  => "Nervous System & Function",
-            "8-DEVH" => "Developing Human"
+            "4-CPR"  => "Cardiopulmonary & Renal",
+            "5-HODI" => "Hormones & Digestion",
+            "6-NSF"  => "Nervous System & Function",
+            "-DEVH" => "Developing Human"
 
 }
 

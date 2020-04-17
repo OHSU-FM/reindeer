@@ -1,6 +1,6 @@
 <h4> FoM Exams Index </h4>
 
-  <table class="table table-condensed table-hover spreadsheet-body">
+  <table class="table table-condensed table-hover spreadsheet-body" style="background-color:#FEF9F4;">
     <thead>
       <tr>
         <th>Title</th>
@@ -9,6 +9,7 @@
         <th>Artifacts/Documents</th>
       </tr>
     </thead>
+
     <% if !@artifacts.blank? %>
       <% @artifacts.each do |artifact| %>
           <tr>
@@ -25,9 +26,8 @@
                       /
                       <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
                       /
-                      <%= link_to 'Process', user_fom_exam_process_csv_path(user_id: params[:user_id], fom_exam_user_id: params[:user_id], attach_id: artifact.documents.first) %>
-                      /
-                      <%= link_to 'Export Block', user_fom_exam_export_block_path(user_id: params[:user_id], fom_exam_user_id: params[:user_id], course_code: 'FUND') %>
+                      <%= link_to 'Process', fom_exams_process_csv_path(attach_id: artifact.documents.first) %>
+
 
                     </td>
                   </tr>
