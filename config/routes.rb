@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
+
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'
   get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
@@ -25,9 +25,6 @@ Rails.application.routes.draw do
   get '/epa_masters/get_by_user/:user_id', to: "epa_masters#get_by_user", as: 'get_by_user'
   #get '/epa_masters/search_student/', to: "epa_masters#search_student", as: 'search_student'
 
-
-=======
-
   resources :epa_reviews
   resources :epa_masters do
     collection  do
@@ -50,7 +47,7 @@ Rails.application.routes.draw do
   get 'wba_graphs/index', to: 'wba_graphs#index'
   get 'wba_graphs/show', to: 'wba_graphs#show'
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
->>>>>>> dev/redei-portal_v5
+
   resources :epas
 
 
