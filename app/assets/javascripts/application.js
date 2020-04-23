@@ -16,6 +16,7 @@
 //= require rails-ujs
 //= require popper
 //= require bootstrap-sprockets
+//= require select2
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
@@ -52,7 +53,6 @@
 //= require sessions.js
 //= require animations.js
 //= require form-utils.js
-//= require select2
 //= require simplemde.min
 //= require nested_form_fields
 //= require goals
@@ -66,6 +66,8 @@
 //= require ls_reports_spreadsheet.js
 //= require searches.js
 //= require students.js
+//= require epa_masters.js
+//= require epa_reviews.js
 //= require cds_reports
 //= require wba_graphs
 //= require csl_feedbacks

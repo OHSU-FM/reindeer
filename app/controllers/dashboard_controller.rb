@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+  include LsReportsHelper
   layout 'full_width'
 
   def index

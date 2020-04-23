@@ -83,7 +83,6 @@ class LsReports::BaseController < ApplicationController
     # Data exports for javascript
     gon.qstats = @lime_survey.lime_stats.load_data
     gon.full_qstats = @lime_survey_unfiltered.lime_stats.load_data
-
     gon.series_name = @fm.series_name
     gon.unfiltered_series_name = @fm.unfiltered_series_name
 

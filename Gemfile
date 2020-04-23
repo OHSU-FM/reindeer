@@ -11,7 +11,7 @@ gem "rdoc"
 # Database
 gem 'pg'
 gem "composite_primary_keys"
-gem "redis", "~>3.2"
+gem "redis", "~>4.1.0"
 
 # Record Versioning
 gem "paper_trail"
@@ -28,7 +28,7 @@ gem "rails_admin"
 gem "settingslogic"
 
 gem "cancancan"
-gem "devise"
+gem "devise", "~> 4.6.2"
 # LDAP
 gem "devise_ldap_authenticatable"
 # Prevent Excessive log file information
@@ -37,12 +37,13 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
+gem "jbuilder"
 gem "popper_js", "~> 1.14.3"
-gem "bootstrap-sass", '~> 3.3.7'
+gem "bootstrap-sass", '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
+gem 'jquery-ui-rails', '~> 6.0.1'
 gem "jquery-rails"
 #gem "jquery-ui-rails"
 
@@ -60,7 +61,7 @@ gem 'kaminari'
 # UI: Charts
 ##############################
 
-gem "json"
+gem "json", "~> 2.2.0"
 gem "gon"
 
 ##############################

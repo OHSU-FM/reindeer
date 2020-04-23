@@ -61,9 +61,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    bootstrap-sass (3.3.7)
+    bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
+      sassc (>= 2.0.0)
     builder (3.2.4)
     bullet (6.1.0)
       activesupport (>= 3.0.0)
@@ -96,10 +96,10 @@ GEM
     csv_hasher (0.1.0)
     debug_inspector (0.0.3)
     descriptive-statistics (2.2.0)
-    devise (4.7.1)
+    devise (4.6.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
+      railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
     devise_ldap_authenticatable (0.8.6)
@@ -159,14 +159,16 @@ GEM
       railties (>= 3.1)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
+    jbuilder (2.10.0)
+      activesupport (>= 5.0.0)
     jquery-datatables (1.10.20)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    jquery-ui-rails (5.0.5)
+    jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
-    json (2.3.0)
+    json (2.2.0)
     kaminari (1.2.0)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.0)
@@ -298,7 +300,7 @@ GEM
       ffi (~> 1.0)
     rdoc (6.2.1)
     redcarpet (3.5.0)
-    redis (3.3.5)
+    redis (4.1.3)
     regexp_parser (1.7.0)
     remotipart (1.4.4)
     request_store (1.5.0)
@@ -398,7 +400,7 @@ DEPENDENCIES
   awesome_print
   better_errors
   binding_of_caller
-  bootstrap-sass (~> 3.3.7)
+  bootstrap-sass (~> 3.4.1)
   bullet
   bundler
   byebug
@@ -409,7 +411,7 @@ DEPENDENCIES
   composite_primary_keys
   csv_hasher
   descriptive-statistics
-  devise
+  devise (~> 4.6.2)
   devise_ldap_authenticatable
   exception_notification
   factory_bot_rails
@@ -421,10 +423,11 @@ DEPENDENCIES
   guard-rspec
   high_voltage
   highcharts-rails
+  jbuilder
   jquery-datatables
   jquery-rails
-  jquery-ui-rails (~> 5.0, >= 5.0.5)
-  json
+  jquery-ui-rails (~> 6.0.1)
+  json (~> 2.2.0)
   kaminari
   lazy_high_charts
   lograge
@@ -445,7 +448,7 @@ DEPENDENCIES
   rails_layout
   rdoc
   redcarpet
-  redis (~> 3.2)
+  redis (~> 4.1.0)
   rspec-rails
   ruby-prof
   rufus-scheduler

@@ -171,8 +171,8 @@ module LsReports::ClinicalphaseHelper
       rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
       rr = rr.lime_survey
       limegroups = rr.lime_groups # used where clause instead of find_by
-      student_email_col = rr.student_email_column
-      comp_data = rr.dataset   #lq.first.dataset
+      student_email_col = rr.lime_survey.student_email_column
+      comp_data = rr.lime_survey.dataset   #lq.first.dataset
     end
     comp = {}
 
@@ -286,8 +286,8 @@ module LsReports::ClinicalphaseHelper
        end
        rr = rr.lime_survey
        limegroups = rr.lime_groups # used where clause instead of find_by
-       student_email_col = rr.student_email_column
-       comp_data = rr.dataset   #lq
+       student_email_col = rr.lime_survey.student_email_column
+       comp_data = rr.lime_survey.dataset   #lq
     end
     #rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
     if rr.nil?

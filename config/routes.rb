@@ -1,5 +1,30 @@
 Rails.application.routes.draw do
 
+  get '/csl_feedbacks/index'
+  get '/csl_feedbacks/get_csl_feedback'
+  get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
+  get 'cds_reports', to: 'cds_reports#index'
+  get 'wba_graphs/index', to: 'wba_graphs#index'
+  get 'wba_graphs/show', to: 'wba_graphs#show'
+  resources :epas do
+    resources :epas
+  end
+
+  #get '/epa_reviews/get_qualtrics/:user_id', to: "epa_reviews#get_qualtrics"
+  get '/epa_reviews/get_qualtrics/', to: "epa_reviews#get_qualtrics"
+  post '/epa_reviews/get_qualtrics/', to: "epa_reviews#get_qualtrics", as: 'get_qualtrics'
+  resources :epa_masters do
+    member do
+      post 'search_student'
+    end
+    #resources :epa_reveiws
+  end
+  resources :epa_reviews
+
+  get '/epa_masters/export_data', to: "epa_masters#export_data"
+  get '/epa_masters/get_by_user/:user_id', to: "epa_masters#get_by_user", as: 'get_by_user'
+  #get '/epa_masters/search_student/', to: "epa_masters#search_student", as: 'search_student'
+
   resources :epa_reviews
   resources :epa_masters do
     collection  do
@@ -22,6 +47,7 @@ Rails.application.routes.draw do
   get 'wba_graphs/index', to: 'wba_graphs#index'
   get 'wba_graphs/show', to: 'wba_graphs#show'
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
+
   resources :epas
 
 

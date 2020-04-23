@@ -1,4 +1,4 @@
-<% if !@csl_evals.empty? %>
+<% if !@csl_evals.nil? %>
     <table id="csl_evaluation" style="width: 80%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center">
       <% @csl_evals.each do |evals| %>
         <tr bgcolor="light blue"> <th colspan="3" style="text-align:center;" ><b><%= evals.first["csl_survey"].first %> </b></th></tr>

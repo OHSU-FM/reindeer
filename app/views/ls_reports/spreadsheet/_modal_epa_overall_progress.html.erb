@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header"
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
-                     <h3 class="modal-title modal-text-align-center"><font color="Green"> Qualified Assessors/Work Based Assessments Overall Progress </font></h3> <!-- - <%= overall_progress_val %>% -->
+                     <h3 class="modal-title modal-text-align-center"><font color="Green"> Overall EPA Progress </font></h3> <!-- - <%= overall_progress_val %>% -->
             </div>
 
             <div class="modal-body">
@@ -14,6 +14,7 @@
 
                         <li><a data-toggle="tab" href="#WBAClinicalAssessors<%= i %>" style="background-color:#ED5107" id="tab-6-epa-<%= i %>">WBA by Clinical Assessors</a></li>
                         <li><a data-toggle="tab" href="#EPAGraph<%= i %>" id="tab-1-epa-<%= i %>">QA Summary Graph</a></li>
+                        <li><a data-toggle="tab" href="#EPAStatus<%= i %>" id="tab-2-EPAStatus-<%= i %>">EPA Badge Status</a></li>
                     </ul>
 
                     <div class="tab-content">
@@ -49,6 +50,14 @@
                         </div>
 
                         <div id="AdHocAllEPAs<%= i %>" class="tab-pane fade in active">
+<<<<<<< HEAD
+                            <br />
+                            <div id="data-visualization-AdHocAllEPAs" style="width: 1000px; height: 800px; margin: 0 auto"></div>
+                            <br />
+                            <br />
+                            <div id="data-visualization-AdHocAllEPACount" style="width: 1000px; height: 500px; margin: 0 auto"></div>
+                            <br />
+=======
                                 <br />
                                 <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
                                 <br />
@@ -56,8 +65,19 @@
                                 <div id="data-visualization-AdHocAllEPACount" style="width: 1200px; height: 400px; margin: 0 auto"></div>
                                 <br />
 
+>>>>>>> dev/redei-portal_v5
                         </div>
+                        <div id="EPAStatus<%= i %>" class="tab-pane fade in">
+                          <div class="container-fluid">
+                             <table>
+                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 1, upperIndex: 5} %> </tr>
+                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 6, upperIndex: 10} %> </tr>
+                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 11, upperIndex: 13} %> </tr>
+                             </table>
 
+<<<<<<< HEAD
+                        </div>
+=======
                         <div id = "WBAClinicalAssessors<%= i %>" class="tab-pane fade in active">
 
                           <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk, false) %>
@@ -67,6 +87,7 @@
                         </div>
 
                     </div>
+>>>>>>> dev/redei-portal_v5
 
                 </div>
             </div>
