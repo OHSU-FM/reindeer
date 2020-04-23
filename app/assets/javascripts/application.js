@@ -69,6 +69,8 @@
 //= require epa_masters.js
 //= require epa_reviews.js
 //= require cds_reports
+//= require wba_graphs
 //= require csl_feedbacks
+//= require fom_exams
 // turbolinks is commented out..
 // require turbolinks

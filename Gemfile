@@ -4,7 +4,7 @@ source "https://rubygems.org"
 # Main
 ##############################
 gem "bundler"
-gem 'rails', '~> 5.2.3'
+gem 'rails', '~> 5.2.2.1'
 gem "rdoc"
 #gem 'pg', '~>0.21'
 
@@ -145,6 +145,8 @@ gem 'rails-ujs', '~> 0.1.0'
 # highchart
 gem "highcharts-rails"
 gem "lazy_high_charts"
+#gem 'chartkick'
+#gem 'groupdate'
 #=======================
 # dataTables
 gem 'jquery-datatables'
@@ -152,3 +154,5 @@ gem 'jquery-datatables'
 gem "csv_hasher"
 gem 'activestorage-validator', '~> 0.1.0'
 gem 'bullet', group: 'development'
+gem 'font-awesome-sass', '~> 4.4.0'
+gem "font-awesome-rails"

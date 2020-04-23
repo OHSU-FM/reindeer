@@ -1,8 +1,7 @@
-<% csl_feedbacks.each do |eval| %>
+<% csl_feedbacks.sort_by{|c| c.submit_date}.each do |eval| %>
 
   <tr>
       <td><%= eval.csl_title %> </td>
-            <% byebug %>
       <td><%= eval.submit_date %> </td>
       <td><%= eval.instructor %> </td>
       <td><%= eval.selected_student %> </td>

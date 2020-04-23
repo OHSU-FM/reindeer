@@ -1,6 +1,6 @@
 class SearchesController < ApplicationController
   include SearchesHelper
-  layout 'full_width_height_margins'
+  #layout 'full_width_height_margins'
 
   def search
 
@@ -9,11 +9,19 @@ class SearchesController < ApplicationController
       @results.push current_user
     elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
+    elsif current_user.spec_program == "ProgDirPhD"
+      #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
+      @parameter = params[:search].downcase + "%"
+      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program='PhD'", search: @parameter)
+      if @results.blank?
+        redirect_to(root_path, alert: "No records found for #{params[:search]}")
+      end
     elsif current_user.coaching_type == 'coach'
         coach_search
     elsif !params[:search].downcase.include? "med18"
       @parameter = params[:search].downcase + "%"
       @results = User.where("lower(full_name) LIKE :search", search: @parameter)
+
     else
       @student_year = hf_student_year(params[:search])
       @class_comp = Competency.order('student_name').where(student_year: @student_year).page(params[:page])
@@ -47,7 +55,7 @@ class SearchesController < ApplicationController
     if @parameter == "*"
       load_all_students(cohorts)
     else
-        if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23'].include? @parameter
+        if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23', 'med24'].include? @parameter
           cohorts.each do |cohort|
             user = User.find_by("cohort_id = ? and full_name LIKE ?",  "#{cohort.id}", "#{@parameter.capitalize}%")
             @results.push user if !user.nil?

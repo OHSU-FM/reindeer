@@ -45,6 +45,21 @@
           <%= nav_link_to("Home", main_app.root_path, class: "dashboard-link") %>
         <% end %>
 
+        <% if ['admin', 'dean'].include? current_user.coaching_type %>
+          <div style="" class="btn-group btn navbar-btn navbar-left">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">EG Review<b class="caret"></b></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+              <%= nav_link_to("EG-Review", epa_masters_path, target: '_blank') %>
+              <%= nav_link_to('EG-Report', eg_report_epa_masters_path, target: '_blank') %>
+            </ul>
+          </div>
+
+        <% end %>
+
+        <% if ['admin', 'dean'].include? current_user.coaching_type %>
+            <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
+        <% end %>
+
         <% if can? :list, LimeSurvey %>
 
           <% if ['admin', 'dean'].include? current_user.coaching_type %>
@@ -57,22 +72,31 @@
           <% end %>
 
           <% if !['student', 'coach'].include? current_user.coaching_type %>
-            <%= nav_link_to('CDS-Report', cds_reports_path) %>
+            <div style="" class="btn-group btn navbar-btn navbar-left">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">CDS-Report<b class="caret"></b></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <%= nav_link_to('CDS-Report', cds_reports_path, target: '_blank') %>
+                <%= nav_link_to('Past Due Report', cds_reports_past_due_path, target: '_blank') %>
+                <%= nav_link_to('By Subject', cds_reports_by_subject_path, target: '_blank') %>
+              </ul>
+            </div>
 
           <% end %>
 
           <% if current_user.coaching_type == "coach" and params[:slug].present? %>
               <% temp_pk = params[:slug] + "@ohsu.edu" %>
-            <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: hf_get_clinical_phase_sid(temp_pk), pk: temp_pk),
-               target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
+              <% clinical_phase_sid = hf_get_clinical_phase_sid(temp_pk) %>
+              <% if !clinical_phase_sid.nil? %>
+                  <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: clinical_phase_sid, pk: temp_pk),
+                     target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
+              <% end %>
           <% end %>
 
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
-          <% if current_user.coaching_type == 'student' and !current_user.prev_permission_group_id.nil? %>
+          <% if current_user.coaching_type == 'student' %>
              <%= nav_link_to "Your Datasets", search_searches_path(current_user) %>
-          <% else %>
-             <%= render partial: "layouts/dropdown_menu_for_students" %>
           <% end %>
+
           <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
 
         <% end %>
@@ -90,6 +114,9 @@
               "#{Settings.lime_url}/admin",
               :target=>'_blank') if can? :read, :lime_survey_website %>
               <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank') if can? :access, :rails_admin %>
+              <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(user_id: current_user.id), target: '_blank') if can? :access, :rails_admin %>
+              <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank') if can? :access, :rails_admin %>
+
               <li role="separator" class="divider"></li>
 
               <li>

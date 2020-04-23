@@ -1,11 +1,55 @@
 // Place all the styles related to the epa_masters controller here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+
 .form-inline div { display: inline-block }
 
 .parent-class .form-horizontal .control-label {
     text-align: left;
 }
 .opaque-image {
-  opacity: 0.5;
+  opacity: 0.25;
+}
+.redact {
+  background-color: rgba(0,0,0,1);
+  padding: 1% 2%;
+  min-width: 50%;
+  -webkit-transition: background-color 500ms ease-out;
+  -moz-transition: background-color 500ms ease-out;
+  -o-transition: background-color 500ms ease-out;
+  transition: background-color 500ms ease-out;
+}
+// tr.has-epa-reviews{
+//     display: table-row;
+//     font-family:cursive;
+//     background-color:lightblue;
+//     cursor:pointer;
+//     border-collapse:collapse;
+// }
+
+.has_epa_reviews {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: small;
+  font-style: italic;
+  font-weight: bold;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.has_epa_reviews td, .has_epa_reviews th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.has_epa_reviews tr:nth-child(even){background-color: #f2f2f2;}
+
+.has_epa_reviews tr:hover {background-color: #ddd;}
+
+.has_epa_reviews th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
 }

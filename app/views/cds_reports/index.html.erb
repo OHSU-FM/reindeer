@@ -5,6 +5,7 @@
   <b>Please Select a Coach</b> <%= select_tag 'user_id', options_for_select(@coaches.collect{ |u| [u.full_name, u.id] }, params[:user_id]),
   html: {selected: true}, include_blank: "All", onchange: "this.form.submit();" %>
 <% end %>
+
 <%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>
  <% cds, coach_array  = hf_cds_reporting(@cohorts) %>
  <% if @coach_name == "ALL" %>
@@ -15,6 +16,8 @@
 
 Most Active <%= temp_var %> is <b> <%= coach_array.first.first %> </b> and has <b><%= coach_array.first.last %></b> meetings. <br />
 Least Active <%= temp_var %> is <b> <%= coach_array.last.first %> </b> and has <b><%= coach_array.last.last %></b> meetings.
+
+
   <table class="responsive nowrap table table-hover" >
     <tbody>
        <% cohorts_total = hf_get_cohort_students(@cohorts) %>

@@ -1,77 +1,16 @@
 class EpaMastersController < ApplicationController
+  layout 'full_width_csl'
   before_action :authenticate_user!
-  before_action :set_epa_master, only: [:show, :edit, :update]
-  before_action :set_resources, only: [:show]
-  include EpaMastersHelper
-
-  def get_index
-    @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
-    if @epa_masters.empty?
-      create_epas @selected_user_id
-      @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
-    end
-
-    render :index
-
-  end
+  before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
 
   # GET /epa_masters
   def index
-
-   @student_groups = hf_student_groups
-   @cohort_students = []
-   if params[:permission_group_id].present?
-     @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
-     if request.xhr?
-       respond_to do |format|
-         format.json {
-           render json: {cohort_students: @cohort_students}
-         }
-       end
-     end
-   end
-
-
-   if params[:search]
-     @selected_user = nil
-     @users = User.where("full_name LIKE ? ", "%#{params[:search]}%")
-     if !@users.empty?
-       @epa_masters = @users.first.epa_masters.order(:id)
-       @full_name = @users.first.full_name
-       if @epa_masters.empty?
-         user_id = @users.first.id
-         create_epas user_id
-         @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
-       end
-     end
-
-   elsif  params[:email].present?
-     byebug
-      @selected_user = User.find_by(email: params[:email])
-      @selected_user_id = @selected_user.id
-      @full_name = @selected_user.full_name
-      #@epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
-      get_index
-    elsif params[:user_id].present?
-       @selected_user = User.find_by(id: params[:user_id])
-       @selected_user_id = @selected_user.id
-       @full_name = @selected_user.full_name
-       #@epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
-       get_index
-       # byebug
-    elsif params[:id].present?
-      @selected_user_id = @epa_master.user_id
-      @full_name = User.find(@epa_master.user_id).full_name
-      #@epa_reviews = EpaReview.find_by(epa_masters_id: params[:epa_masters_id])
-      get_index
-    end
-  end
-
-  def search_student
     if params[:search]
       @selected_user = nil
-      @users = User.where("full_name LIKE ? ", "%#{params[:search]}%")
-      if !@users.empty?
+      @parameter = params[:search].downcase
+      #@results = User.where("lower(full_name) LIKE :search", search: @parameter)
+      @users = User.where("lower(full_name) LIKE ? and coaching_type = ? ", "%#{@parameter}%", "student")
+      if !@users.empty? and @users.count == 1
         @epa_masters = @users.first.epa_masters.order(:id)
         @full_name = @users.first.full_name
         if @epa_masters.empty?
@@ -81,90 +20,18 @@ class EpaMastersController < ApplicationController
         end
       end
       respond_to do |format|
-
-        format.js { render partial: 'search-results'}
-      end
-    end
-  end
-
-  def export_data
-    if params[:permission_group_id].present?
-        EpaMaster.export_data_delimited(params[:permission_group_id])
-        @file_name = Rails.root + "tmp/chungp_epas.txt"
-        send_file(@file_name, filename: @file_name,  type: 'application/pdf/text/docx/doc', :disposition=>'inline', :target=>"_blank")
-
-    end
-  end
-
-  def new_master
-    @epa_master = EpaMaster.new
-    #flash[:notice] = '** You need to select a student first! ***'
-    @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
-    @cohort_students = []
-    if params[:permission_group_id].present?
-      @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
-    end
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: {cohort_students: @cohort_students}
-        }
-      end
-    end
-  end
-
-  # GET /epa_masters/1
-  def show
-    if params[:userid].present?
-    end
-  end
-
-  # GET /epa_masters/new
-  def new
-    if params[:user_id].present?
-      @selected_user_id = params[:user_id].to_i
-    elsif params[:email].present?
-      @selected_user = User.find_by(email: params[:email])
-      @selected_user_id = @selected_user.id
-    end
-    @epa_master = EpaMaster.new
-    @epa_master.user_id = @selected_user_id
-
-    render :new
-      # respond_to do |format|
-      #   format.html
-      #   format.js
-      # end
-  end
-
-  # GET /epa_masters/1/edit
-  def edit
-    @epa_master = EpaMaster.find(params[:id])
-    @selected_user_id = @epa_master.user_id
-    @full_name = User.find(@epa_master.user_id).full_name
-    respond_to do |format|
-      format.html
-      format.js {render template: 'epa_masters/epa_master_modal.js.erb'}
-    end
-
-  end
-
-  def get_by_user
-    @selected_user_id = params[:user_id]
-
-    byebug
-    @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
-    get_index
-    if @epa_masters.empty?
-      create_epas @selected_user_id
-      @epa_masters = EpaMaster.where(user_id: @selected_user_id).order(:id)
-    end
-    if request.xhr?
-      respond_to do |format|
-        format.js { render action: 'get_by_user', status: 200 }
+        format.js { render partial: 'search-results' and return}
+        format.html
       end
 
-    else
+    elsif params[:user_id]
+      @user = User.find(params[:user_id])
+      @epa_masters = @user.epa_masters.order(:id)
+      @full_name = @user.full_name
+      if @epa_masters.empty?
+        create_epas @user.id
+        @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
+      end
       respond_to do |format|
         format.html
       end
@@ -172,9 +39,23 @@ class EpaMastersController < ApplicationController
 
   end
 
+  # GET /epa_masters/1
+  def show
+  end
+
+  # GET /epa_masters/new
+  def new
+    @epa_master = EpaMaster.new
+  end
+
+  # GET /epa_masters/1/edit
+  def edit
+  end
+
   # POST /epa_masters
   def create
-     @epa_master = EpaMaster.new(epa_master_params)
+    @epa_master = EpaMaster.new(epa_master_params)
+
     if @epa_master.save
       redirect_to @epa_master, notice: 'Epa master was successfully created.'
     else
@@ -187,7 +68,6 @@ class EpaMastersController < ApplicationController
     if @epa_master.update(epa_master_params)
       #redirect_to @epa_master, notice: 'Epa master was successfully updated.'
       @selected_user_id = @epa_master.user_id
-
       index
     else
       render :edit
@@ -200,19 +80,43 @@ class EpaMastersController < ApplicationController
     redirect_to epa_masters_url, notice: 'Epa master was successfully destroyed.'
   end
 
+  def eg_report
+    if params[:eg_member].present?
+      @epa_masters = EpaMaster.where("status is NULL and epa = ?", params[:epa]).order(:user_id).includes(:user)
 
-  def render_400
-    # Clear the previous response body to avoid a DoubleRenderError
-    # when redirecting or rendering another view
-    self.response_body = nil
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :eg_report
 
-    render(nothing: true, status: 400)
   end
+
+
+  def search_student
+    if params[:search]
+      @selected_user = nil
+      @users = User.where("full_name LIKE ? and coaching_type = ? ", "%#{params[:search]}%", "student")
+      if !@users.empty?
+        @epa_masters = @users.first.epa_masters.order(:id)
+        @full_name = @users.first.full_name
+        if @epa_masters.empty?
+          user_id = @users.first.id
+          create_epas user_id
+          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
+        end
+      end
+      respond_to do |format|
+        format.js { render partial: 'search-results'}
+      end
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_master
-      @selected_user_id = EpaMaster.find(params[:id])
+      @epa_master = EpaMaster.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

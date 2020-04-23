@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User.references:</strong>
+  <%= @usmle_exam.user.references %>
+</p>
+
+<p>
+  <strong>Exam type:</strong>
+  <%= @usmle_exam.exam_type %>
+</p>
+
+<p>
+  <strong>No attempts:</strong>
+  <%= @usmle_exam.no_attempts %>
+</p>
+
+<p>
+  <strong>Pass fail:</strong>
+  <%= @usmle_exam.pass_fail %>
+</p>
+
+<p>
+  <strong>Exam score:</strong>
+  <%= @usmle_exam.exam_score %>
+</p>
+
+<p>
+  <strong>Exam date:</strong>
+  <%= @usmle_exam.exam_date %>
+</p>
+
+<%= link_to 'Edit', edit_usmle_exam_path(@usmle_exam) %> |
+<%= link_to 'Back', usmle_exams_path %>

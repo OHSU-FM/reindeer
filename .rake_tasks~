@@ -27,6 +27,10 @@ db:structure:load
 db:test:before
 db:version
 dev:cache
+<<<<<<< HEAD
+=======
+highcharts:update
+>>>>>>> dev/redei-portal_v5
 initializers
 log:clear
 middleware

@@ -1,54 +1,11 @@
 module EpaMastersHelper
 
-  def hf_student_groups
-    student_groups ||=  PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
-    return student_groups
-  end
+  EPA_CODES = ['EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6',
+               'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13'
+              ]
 
-  def create_epa_masters (selected_user_id)
-    for i in 1..13 do
-      EpaMaster.where(user_id: selected_user_id, epa: "EPA#{i}").first_or_create do |epa|
-        epa.user_id = selected_user_id
-        epa.epa = "EPA#{i}"
-      end
-    end
-  end
-
-  def get_epa_reviews(epa_master)
-    reviews = epa_master.epa_reviews
-    status_str = ""
-    reviews.each do |review|
-      status_str = review.egm_recommendation + "|" + hf_format_date(review.review_date1) + "|" + review.general_comments
-    end
-    return status_str
-  end
-
-  def hf_get_epa_master_badges(selected_user_id)
-    epa_badges = []
-    status_date_array = []
-    badged = {}
-    status_date = {}
-    selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id).includes(:epa_reviews)
-
-    if selected_recs.length < 13
-      create_epa_masters (selected_user_id)
-      selected_recs = EpaMaster.where(user_id: selected_user_id).order(:id)
-    end
-    selected_recs.each do |rec|
-      badged = {rec.epa => "epa/#{rec.epa}.png"}
-      if (rec.status == "Badge")
-        status_date = {rec.epa => hf_format_date(rec.status_date)}
-
-      else
-        status_date = {rec.epa => get_epa_reviews(rec)}
-
-        #badged = {rec.epa => "epa/not_badge_#{rec.epa}.png"}
-      end
-      status_date_array.push status_date
-      epa_badges.push badged
-    end
-
-    return epa_badges, status_date_array
+  def hf_epa_codes
+    return EPA_CODES
   end
 
   def hf_format_date (in_date)
@@ -59,13 +16,62 @@ module EpaMastersHelper
     end
   end
 
-  def hf_count_not_badged (in_hash)
-    return in_hash.select{|k| k.first.second.include? "not" }.count
+  def hf_redact_text (review_rec)
+    str_html1 = ''
+    str_html2 = ''
+
+    if !review_rec.reviewer1.blank? and review_rec.reviewer2.blank?
+        # redact review1 data
+
+        # #str_html = review_rec.badge_decision1 + " / " +
+        #             review_rec.reviewer1 + " / " +
+        #             review_rec.general_comments1  + " / "
+        #str_html = '<span class="redact">' + str_html + '</span>'
+        str_html1 = 'EG Reviewer1 <span class="glyphicon glyphicon-ok" style="color:green;"></span>'
+
+    end
+    if review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
+          # redact review2 data
+
+          # str_html = review_rec.badge_decision2 + " / " +
+          #             review_rec.reviewer2 + " / " +
+          #             review_rec.general_comments2  + " / "
+          # str_html = '<span class="redact" style="color:black">' + str_html + '</span>'
+          str_html2 = 'EG Reviewer2 <span class="glyphicon glyphicon-ok" style="color:green;"></span>'
+
+    end
+
+    if !review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
+      if review_rec.badge_decision1 == "Badge"
+          str_html1 = '<span class="text-success">' + review_rec.badge_decision1 + '</span>'
+      else
+          str_html1 = '<span class="bg-danger text-white">' + review_rec.badge_decision1 + '</span>'
+      end
+      str_html1 = str_html1 + ' / ' + review_rec.reviewer1 + ' / ' + review_rec.general_comments1
+      if review_rec.badge_decision2 == "Badge"
+          str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
+      else
+          str_html2 = '<span class="bg-danger text-white">' + review_rec.badge_decision2 + '</span>'
+      end
+      str_html2 = str_html2 + ' / ' + review_rec.reviewer2 + ' / ' + review_rec.general_comments2
+    end
+
+    return str_html1, str_html2
+
   end
 
-  def hf_get_entrustment_members
-    json ||= File.read("#{Rails.root}/public/entrustment_members.json")
-    entrustment_members = JSON.parse(json).values.flatten.sort
-    return entrustment_members
+  def hf_load_eg_members
+    if File.file? (Rails.root + "public/epa_reviews/eg_members.json")
+      json_obj ||= File.read(Rails.root + "public/epa_reviews/eg_members.json")
+      eg_members ||= JSON.parse(json_obj).map{|e| e["eg_member"]}
+
+    else
+       return nil
+    end
   end
+
+  def hf_get_epa_reviews(epa_master, selected_reviewer)
+    epa_reviews = epa_master.epa_reviews.where("reviewer1 = ? or reviewer2 = ?", selected_reviewer, selected_reviewer)
+  end
+
 end

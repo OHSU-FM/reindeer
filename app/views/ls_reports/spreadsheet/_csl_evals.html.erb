@@ -22,6 +22,8 @@
         </tr>
       <% end %>
     </table>
+<% elsif !@csl_feedbacks.nil? %>
+  <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
 <% else %>
   <h4> No CSL Narrative Feedbacks! </h4>
 <% end %>

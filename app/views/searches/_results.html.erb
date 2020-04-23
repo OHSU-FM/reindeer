@@ -1,5 +1,6 @@
 
 <%= render 'layouts/nav_header' %>
+<div class="container">
 <h3>Search Result</h3>
   <% if !@results.nil? %>
     <table class="table table-hover main-table">
@@ -28,12 +29,37 @@
           <% end %>
           <td>
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
-            <% hf_datasets(result, @temp_hash).each do |dataset| %>
+            <%= link_to("<b>Clinical Phase Dataset NEW! (>= Med20)</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
+            <%  hf_exists_in_FomExam(result.id).each do |block| %>
+                <% cohort = block["cohort"] %>
+                <% permission_group_id = block["permission_group_id"] %>
+                <% course_code = block["course_code"] %>
+                <% if !course_code.include? "DISABLED" %>
+                  <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b>".html_safe,
+                          user_display_fom_path(user_id: result.id, permission_group_id: permission_group_id,
+                          course_code: course_code, attach_id: -1), target: '_blank') %> <br>
+                <% else %>
+                   <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b><br />".html_safe %>
+                <% end %>
+            <% end %>
 
+            <% cohort = hf_exists_in_PreceptorEval(result.id) %>
+            <% if !cohort.blank? %>
+              <%= link_to("<b>#{cohort}:Foundation of Medicine: Preceptorship Evaluations (Beta!)</b>".html_safe,
+                      user_preceptor_evals_path(user_id: result.id, permission_group_id: result.permission_group_id), target: '_blank') %> <br>
+            <% end %>
+
+            <% if hf_has_csl_feedbacks(result.id) %>
+            <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(cohort: cohort_title(result.permission_group_id), user_id: result.id, block: "FUND"), target: '_blank') %>
+            <br>
+
+            <% end %>
+
+            <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>
                    <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
-                      class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %> <br>
+                      class: "modal-click", 'data-target': '#modal-dataset' %> <br>
               <% else %>
                     <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
                        class: "modal-click", 'data-target': '#modal-dataset' %> <br>
@@ -47,3 +73,4 @@
     <% hf_write_hash(@temp_hash) %>
 
   <% end %>
+</div>

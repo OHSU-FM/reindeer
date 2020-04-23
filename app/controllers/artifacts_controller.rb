@@ -1,5 +1,6 @@
 class ArtifactsController < ApplicationController
   layout 'full_width_margins'
+  before_action :authenticate_user!
   before_action :set_artifact, only: [:show, :edit, :update, :destroy, :move]
 
 
@@ -94,9 +95,34 @@ class ArtifactsController < ApplicationController
 
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
-        filename = document.filename.to_s.gsub(" ", "_")
-        temp_str = filename.split("_")
-        full_name = temp_str.first.capitalize + ", " + temp_str.second.capitalize
+        temp_str = document.filename.to_s.split(" ")
+
+        if temp_str.last.include? "Preceptorship"
+          full_name = temp_str[0] + " " + temp_str[1]
+        else
+          temp_str2 = temp_str.first.split("_")
+          if temp_str2.count == 1
+             last_name = temp_str2.first
+             temp_str3 = temp_str.second.split("_")
+             last_name = last_name + " " + temp_str3.first
+             first_name = temp_str3.second
+             full_name = last_name + ", " + first_name
+          elsif temp_str2.count >= 2
+             full_name = temp_str2.first + ", " + temp_str2.second
+          # elsif temp_str2.count == 3
+          #    full_name = temp_str2.first + ", " + temp_str2.second
+          #  elsif temp_str2.count == 4 or
+          #     full_name = temp_str2.first + ", " + temp_str2.second # + ", " + temp_str2.third
+          else
+             return
+           end
+         end
+
+
+        #filename = document.filename.to_s.gsub("_", ", ")
+
+        #full_name = temp_str.first + ", " + temp_str.second
+
         @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
           temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title) do |a|

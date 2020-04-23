@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+<<<<<<< HEAD
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'
   get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
@@ -25,7 +26,61 @@ Rails.application.routes.draw do
   #get '/epa_masters/search_student/', to: "epa_masters#search_student", as: 'search_student'
 
 
+=======
+
+  resources :epa_reviews
+  resources :epa_masters do
+    collection  do
+      get 'search_student'
+      get 'eg_report', to: 'epa_masters#eg_report'
+
+    end
+    #resources :epa_reveiws
+  end
+  #get 'epa_masters/eg_report', controller: "epa_masters", action: :eg_report, to: "epa_masters#eg_report"
+  resources :courses
+  resources :usmle_exams
+  get '/csl_feedbacks/index'
+  get '/csl_feedbacks/get_csl_feedback'
+  get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
+
+  get 'cds_reports', to: 'cds_reports#index'
+  get 'cds_reports/past_due', to: 'cds_reports#past_due'
+  get 'cds_reports/by_subject', to: 'cds_reports#by_subject'
+  get 'wba_graphs/index', to: 'wba_graphs#index'
+  get 'wba_graphs/show', to: 'wba_graphs#show'
+  get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
+>>>>>>> dev/redei-portal_v5
   resources :epas
+
+
+  # resources :competencies do
+  #   member do
+  #     get '/users/:user_id/competencies', param: :user_id, to: 'competencies#index', controller: 'competencies', action: :index
+  #   end
+  # end
+  #
+
+  resources :user do
+    resources :competencies, param: :user_id, only: [:index]
+  end
+
+
+  get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+  get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+  get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+  get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
+
+  resources :user do
+    resources :preceptor_evals,  only: [:index] do
+    end
+  end
+
+  resources :user do
+    get "display_fom", param: :course_code, controller: "fom_exams"
+  end
+
+
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
      member do

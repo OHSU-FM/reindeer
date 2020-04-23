@@ -33,10 +33,23 @@ epa_codes = (category_code) ->
           cat_array = []
           cat_array.push {id: "Progress Board Letter", value: "Progress Board Letter"}
           cat_array.push {id: "Other", value: "Other"}
+  else if category_code == "Grade Dispute"
+            cat_array = []
+            cat_array.push {id: "Grade Dispute", value: "Grade Dispute"}
+  else if category_code == "MSPE"
+            cat_array = []
+            cat_array.push {id: "MSPE Draft", value: "MSPE Draft"}
+            cat_array.push {id: "MSPE Final", value: "MSPE Final"}
+            cat_array.push {id: "MSPE Supplement", value: "MSPE Supplement"}
+  else if category_code == "Preceptorship Contract"
+            cat_array = []
+            cat_array.push {id: "Contract 1", value: "Contract 1"}
+            cat_array.push {id: "Contract 2", value: "Contract 2"}
+            cat_array.push {id: "Contract 3", value: "Contract 3"}
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}
-
+          cat_array.push {id: "FoM CSV File", value: "FoM CSV File"}
         else
           return []
 

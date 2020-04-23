@@ -16,6 +16,14 @@ module CdsReportsHelper
     return ALLCOHORTS
   end
 
+  def hf_get_full_name(user_id)
+    return User.find(user_id).full_name
+  end
+
+  def hf_get_cohort_info(user_id)
+    cohort = User.find(user_id).cohort.title
+
+  end
    def hf_proper_label in_str
      PROPER_LABELS.each do |label|
         return label if label.include? in_str.downcase
@@ -53,6 +61,30 @@ module CdsReportsHelper
      return 0 ## not found in cohort_array
    end
 
+  def hf_get_user_subjects(selected_users, subject)
+    ret_subjects = []
+    selected_users.each do |user|
+      subjects = user.meetings.where("? = ANY(subject)", subject).first
+      if !subjects.blank?
+        ret_subjects.push subjects
+      end
+    end
+
+    return ret_subjects
+  end
+
+  def hf_get_subjects (permission_group_id)
+    users = PermissionGroup.find(permission_group_id).users
+    meeting_subjects = []
+    users.each do |user|
+      meeting_subject = user.meetings.distinct.pluck(:subject).flatten.uniq.sort
+      meeting_subjects.push meeting_subject
+    end
+    meeting_subjects = meeting_subjects.flatten.uniq.sort
+    meeting_subjects = meeting_subjects - [""]
+    return meeting_subjects
+  end
+
   def hf_get_cohort_students(cohorts)
    cohorts_student = []
    students_hash = {}
@@ -80,6 +112,33 @@ module CdsReportsHelper
       end
     end
     return cohorts_student
+  end
+
+  def hf_get_past_due(start_date, end_date, option, cohorts)
+    process_cohort = ["Med23", "Med22", "Med21", "Med20"]
+    past_due_hash = {}
+
+    process_cohort.each do |proc_cohort|
+      past_due_students = []
+      cohorts.each do |cohort|
+        if cohort.title.include? proc_cohort
+          cohort.users.each do |user|
+            if option == 'Meetings'
+              if user.meetings.where("created_at >= ? and created_at <= ?", start_date, end_date).count == 0
+                past_due_students << user.full_name + "|" + cohort.title
+              end
+            elsif option == 'Goals'
+              if user.goals.where("created_at >= ? and created_at <= ?", start_date, end_date).count == 0
+                past_due_students << user.full_name + "|" + cohort.title
+              end
+            end
+          end
+        end
+      end
+      past_due_hash[proc_cohort] = past_due_students.sort
+    end
+
+    return past_due_hash
   end
 
   def hf_get_past_data(cohorts)

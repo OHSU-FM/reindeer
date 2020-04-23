@@ -26,13 +26,15 @@ class User < ActiveRecord::Base
 
   has_one :dashboard, dependent: :destroy
 
-  has_one :competency, dependent: :destroy
-
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
+  has_many :competencies, dependent: :destroy
+  has_one  :cpx, dependent: :destroy
+  has_many :usmle_exams, dependent: :destroy
   has_many :epa_masters, dependent: :destroy
-  has_many :csl_evals, dependent: :destroy
-  has_many :csl_feedbacks, dependent: :destroy
+  has_many :fom_exams, dependent: :destroy
+  has_many :fom_labels
+  has_many :preceptor_evals, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -234,7 +236,7 @@ class User < ActiveRecord::Base
     group :sign_in_details do
       active false
       [:current_sign_in_at, :sign_in_count, :reset_password_sent_at,
-       :remember_created_at, :last_sign_ilime_surveyn_at, :current_sign_in_ip,
+       :remember_created_at, :last_sign_in_at, :current_sign_in_ip,
        :last_sign_in_ip].each do |attr|
          field attr
        end
@@ -260,6 +262,8 @@ class User < ActiveRecord::Base
         inline_edit false
         inline_add false
       end
+
+      field :prev_permission_group_id
 
       field :user_externals, :has_many_association
       field :explain_survey_access do

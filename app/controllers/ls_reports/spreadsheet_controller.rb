@@ -7,7 +7,8 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::CslevalHelper
   include SearchesHelper
   include EpasHelper
-  include EpaMastersHelper
+  include ArtifactsHelper
+
   ##
   # show lime_survey
   def show
@@ -20,25 +21,23 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       redirect_to ls_reports_path
     end
 
+
     @lime_survey.wipe_response_sets
 
     @response_sets = hf_flatten_response_sets @lime_survey
     @rs_data = hf_transpose_response_sets @response_sets
-
     @rs_data.sort_by!{|obj| obj["StartDt"]}
     @rs_questions = hf_transpose_questions @response_sets
-
     @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
     @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
+    @rs_questions_unfiltered = @rs_questions
 
-    @rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
+
     @comp_domain_desc = hf_comp_domain_desc
-
     @non_clinical_course_arry = hf_get_non_clinical_courses
-
     @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
-    @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
 
+    @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
     @comp_hash2 = hf_load_all_competencies(@rs_data, "2")
     @comp_hash1 = hf_load_all_competencies(@rs_data, "1")
     @comp_hash0 = hf_load_all_competencies(@rs_data, "0")
@@ -47,6 +46,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
     @comp_level2 = hf_comp_courses(@rs_data, "2")
     @comp_level1 = hf_comp_courses(@rs_data, "1")
     @comp_level0 = hf_comp_courses(@rs_data, "0")
+
 
     if @pk != "_"
       @student_cohort = User.find_by(email: @pk).permission_group.title
@@ -104,24 +104,20 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       end
     end
 
-
-    @cpx_data = hf_get_cpx(@survey)
+    @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
+    if @not_found_cpx
+      @cpx_data = hf_get_cpx(@survey)
+    end
     @usmle_data = hf_get_usmle(@survey)
     @shelf_attachments = hf_get_shelf_attachments(@survey)
 
     @preceptor_view = @preceptorship.flatten
-    @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
-    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student = hf_get_epas(@pk)
-
-
-    #@csl_evals2 = hf_new_csl_evals(@pk)
-    # @csl_feedbacks = hf_csl_feedbacks(@pk)
-    # if @csl_feedbacks.nil?
+    @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
+    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
-    @csl_feedbacks = hf_csl_feedbacks(@pk)
-    # end
-
-    @epa_badges, @review_date = hf_get_epa_master_badges(@selected_user_id)
+    if @csl_evals.empty?
+      @csl_feedbacks = CslFeedback.where(user_id: @selected_user_id).order(:submit_date)
+    end
 
 
   end
@@ -178,6 +174,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       gon.unique_evaluators = @unique_evaluators
       gon.selected_dates = @selected_dates
       gon.selected_student = @selected_student
+      gon.total_wba_count = @total_wba_count
     end
 
     #gon.preceptorship = @preceptorship

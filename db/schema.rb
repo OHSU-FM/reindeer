@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_26_223707) do
+ActiveRecord::Schema.define(version: 2020_04_06_160951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,64 +93,73 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "competencies", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
+  create_table "competencies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "permission_group_id"
     t.string "student_uid"
-    t.string "student_name"
     t.string "email"
-    t.string "student_year"
-    t.decimal "ics", precision: 5, scale: 2
-    t.decimal "mk", precision: 5, scale: 2
-    t.decimal "pbli", precision: 5, scale: 2
-    t.decimal "pcp", precision: 5, scale: 2
-    t.decimal "pppd", precision: 5, scale: 2
-    t.decimal "sbpic", precision: 5, scale: 2
-    t.decimal "ics1", precision: 5, scale: 2
-    t.decimal "ics2", precision: 5, scale: 2
-    t.decimal "ics3", precision: 5, scale: 2
-    t.decimal "ics4", precision: 5, scale: 2
-    t.decimal "ics5", precision: 5, scale: 2
-    t.decimal "ics6", precision: 5, scale: 2
-    t.decimal "ics7", precision: 5, scale: 2
-    t.decimal "ics8", precision: 5, scale: 2
-    t.decimal "mk1", precision: 5, scale: 2
-    t.decimal "mk2", precision: 5, scale: 2
-    t.decimal "mk3", precision: 5, scale: 2
-    t.decimal "mk4", precision: 5, scale: 2
-    t.decimal "mk5", precision: 5, scale: 2
-    t.decimal "pbli1", precision: 5, scale: 2
-    t.decimal "pbli2", precision: 5, scale: 2
-    t.decimal "pbli3", precision: 5, scale: 2
-    t.decimal "pbli4", precision: 5, scale: 2
-    t.decimal "pbli5", precision: 5, scale: 2
-    t.decimal "pbli6", precision: 5, scale: 2
-    t.decimal "pbli7", precision: 5, scale: 2
-    t.decimal "pbli8", precision: 5, scale: 2
-    t.decimal "pcp1", precision: 5, scale: 2
-    t.decimal "pcp2", precision: 5, scale: 2
-    t.decimal "pcp3", precision: 5, scale: 2
-    t.decimal "pcp4", precision: 5, scale: 2
-    t.decimal "pcp5", precision: 5, scale: 2
-    t.decimal "pcp6", precision: 5, scale: 2
-    t.decimal "pppd1", precision: 5, scale: 2
-    t.decimal "pppd2", precision: 5, scale: 2
-    t.decimal "pppd3", precision: 5, scale: 2
-    t.decimal "pppd4", precision: 5, scale: 2
-    t.decimal "pppd5", precision: 5, scale: 2
-    t.decimal "pppd6", precision: 5, scale: 2
-    t.decimal "pppd7", precision: 5, scale: 2
-    t.decimal "pppd8", precision: 5, scale: 2
-    t.decimal "pppd9", precision: 5, scale: 2
-    t.decimal "pppd10", precision: 5, scale: 2
-    t.decimal "pppd11", precision: 5, scale: 2
-    t.decimal "sbpic1", precision: 5, scale: 2
-    t.decimal "sbpic2", precision: 5, scale: 2
-    t.decimal "sbpic3", precision: 5, scale: 2
-    t.decimal "sbpic4", precision: 5, scale: 2
-    t.decimal "sbpic5", precision: 5, scale: 2
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "ics8", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "mk4", limit: 2
+    t.integer "mk5", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pbli4", limit: 2
+    t.integer "pbli5", limit: 2
+    t.integer "pbli6", limit: 2
+    t.integer "pbli7", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pcp4", limit: 2
+    t.integer "pcp5", limit: 2
+    t.integer "pcp6", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd3", limit: 2
+    t.integer "pppd4", limit: 2
+    t.integer "pppd5", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd7", limit: 2
+    t.integer "pppd8", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "pppd10", limit: 2
+    t.integer "pppd11", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic3", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["student_uid"], name: "index_competencies_on_student_uid"
+    t.index ["permission_group_id"], name: "index_competencies_on_permission_group_id"
     t.index ["user_id"], name: "index_competencies_on_user_id"
   end
 
@@ -161,6 +170,26 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
     t.integer "sizex"
     t.integer "sizey"
     t.boolean "resizeable", default: true
+  end
+
+  create_table "courses", force: :cascade do |t|
+    t.string "competency_code"
+    t.string "course_no"
+    t.string "course_name"
+    t.string "department"
+    t.text "course_purpose_statement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["competency_code", "course_no"], name: "index_courses_on_competency_code_and_course_no", unique: true
+  end
+
+  create_table "cpxes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "email"
+    t.string "full_name"
+    t.json "cpx_data"
+    t.index ["email"], name: "index_cpxes_on_email", unique: true
+    t.index ["user_id"], name: "index_cpxes_on_user_id"
   end
 
   create_table "critical_values", primary_key: ["alpha", "df"], force: :cascade do |t|
@@ -247,9 +276,17 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
   create_table "epa_reviews", force: :cascade do |t|
     t.string "epa"
     t.datetime "review_date1"
-    t.string "reviewed_by1"
-    t.string "egm_recommendation"
-    t.text "general_comments"
+    t.string "reviewer1"
+    t.string "badge_decision1"
+    t.string "trust1"
+    t.text "evidence1"
+    t.text "general_comments1"
+    t.datetime "review_date2"
+    t.string "reviewer2"
+    t.string "badge_decision2"
+    t.string "trust2"
+    t.text "evidence2"
+    t.text "general_comments2"
     t.string "reviewable_type"
     t.bigint "reviewable_id"
     t.datetime "created_at", null: false
@@ -275,8 +312,81 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.string "response_id"
+    t.boolean "attending_faculty"
     t.index ["response_id"], name: "index_epas_on_response_id"
     t.index ["user_id"], name: "index_epas_on_user_id"
+  end
+
+  create_table "fom_exams", force: :cascade do |t|
+    t.string "course_code"
+    t.datetime "submit_date"
+    t.decimal "comp1_wk1"
+    t.decimal "comp1_wk2"
+    t.decimal "comp1_wk3"
+    t.decimal "comp1_wk4"
+    t.decimal "comp1_wk5"
+    t.decimal "comp1_wk6"
+    t.decimal "comp1_wk7"
+    t.decimal "comp1_wk8"
+    t.decimal "comp1_wk9"
+    t.decimal "comp1_wk10"
+    t.decimal "comp1_wk11"
+    t.decimal "comp1_wk12"
+    t.decimal "comp1_dropped_score"
+    t.string "comp1_dropped_quiz"
+    t.decimal "comp2a_hss1"
+    t.decimal "comp2a_hss2"
+    t.decimal "comp2a_hss3"
+    t.decimal "comp2a_hss4"
+    t.decimal "comp2a_hss5"
+    t.decimal "comp2a_hss6"
+    t.decimal "comp2a_hssavg"
+    t.decimal "comp2b_bss1"
+    t.decimal "comp2b_bss2"
+    t.decimal "comp2b_bss3"
+    t.decimal "comp2b_bss4"
+    t.decimal "comp2b_bss5"
+    t.decimal "comp2b_bss6"
+    t.decimal "comp2b_bss7"
+    t.decimal "comp2b_bss8"
+    t.decimal "comp2b_bss9"
+    t.decimal "comp2b_bssavg"
+    t.decimal "comp3_final1"
+    t.decimal "comp3_final2"
+    t.decimal "comp3_final3"
+    t.decimal "comp4_nbme"
+    t.decimal "comp5a_hss1"
+    t.decimal "comp5a_hss2"
+    t.decimal "comp5a_hss3"
+    t.decimal "comp5a_hssavg"
+    t.decimal "comp5b_bss1"
+    t.decimal "comp5b_bss2"
+    t.decimal "comp5b_bss3"
+    t.decimal "comp5b_bss4"
+    t.decimal "comp5b_bss5"
+    t.decimal "comp5b_bssavg"
+    t.decimal "summary_comp1"
+    t.decimal "summary_comp2a"
+    t.decimal "summary_comp2b"
+    t.decimal "summary_comp3"
+    t.decimal "summary_comp4"
+    t.decimal "summary_comp5a"
+    t.decimal "summary_comp5b"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "permission_group_id"
+    t.decimal "comp2a_hss7"
+    t.index ["user_id", "permission_group_id", "course_code"], name: "by_user_permission_group_course_code", unique: true
+    t.index ["user_id"], name: "index_fom_exams_on_user_id"
+  end
+
+  create_table "fom_labels", force: :cascade do |t|
+    t.integer "permission_group_id"
+    t.string "course_code"
+    t.json "labels"
+    t.boolean "block_enabled"
+    t.index ["permission_group_id", "course_code"], name: "by_permission_group_course_code", unique: true
   end
 
   create_table "goals", id: :serial, force: :cascade do |t|
@@ -441,6 +551,37 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
     t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true
   end
 
+  create_table "preceptor_evals", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.string "preceptor_name"
+    t.date "submit_date"
+    t.string "term"
+    t.string "grade"
+    t.string "professional_concerns"
+    t.string "concern_comments"
+    t.text "mspe_comments"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "permission_group_id"], name: "by_user_permission_group_id"
+    t.index ["user_id"], name: "index_preceptor_evals_on_user_id"
+  end
+
   create_table "question_widgets", id: :serial, force: :cascade do |t|
     t.integer "role_aggregate_id"
     t.integer "lime_question_qid"
@@ -506,9 +647,23 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
     t.string "ls_list_state", default: "dirty"
     t.string "coaching_type"
     t.integer "prev_permission_group_id"
+    t.string "spec_program"
+    t.string "sid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  create_table "usmle_exams", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "exam_type"
+    t.integer "no_attempts"
+    t.string "pass_fail"
+    t.integer "exam_score"
+    t.datetime "exam_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_usmle_exams_on_user_id"
   end
 
   create_table "version_notes", id: :serial, force: :cascade do |t|
@@ -532,9 +687,17 @@ ActiveRecord::Schema.define(version: 2019_07_26_223707) do
 
   add_foreign_key "artifacts", "users"
   add_foreign_key "cohorts", "users"
+<<<<<<< HEAD
+=======
+  add_foreign_key "competencies", "permission_groups"
+  add_foreign_key "competencies", "users"
+>>>>>>> dev/redei-portal_v5
   add_foreign_key "csl_evals", "users"
   add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
+  add_foreign_key "fom_exams", "users"
+  add_foreign_key "preceptor_evals", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
+  add_foreign_key "usmle_exams", "users"
 end

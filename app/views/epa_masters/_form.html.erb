@@ -1,96 +1,10 @@
-<%= form_for @epa_master, html: {class: "form-horizontal"} do |f| %>
-  <div class="col-xs-4">
+<%= simple_form_for(@epa_master) do |f| %>
+  <%= f.error_notification %>
 
-      <%= f.hidden_field :user_id,  value: @epa_master.user_id %>
-      <%= f.hidden_field :epa, value: @epa_master.epa %>
-
-      <div class="form-group">
-        <%= f.label 'Review Date1', class: "control-label col-sm-4" %>
-        <%= f.date_field :review_date1,  as: :date, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.select :reviewed_by1a, hf_get_entrustment_members, selected: @epa_master.reviewed_by1a, prompt: '--',
-          html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.select :reviewed_by1b, hf_get_entrustment_members, selected: @epa_master.reviewed_by1b, prompt: '--',
-           html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Note1', class: "control-label col-sm-4" %>
-        <%= f.text_area :note1,  cols:25, rows: 5, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Status1', class: "control-label col-sm-4" %>
-        <%= f.select :status1, ["No", "Not Ready", "Yes"], prompt: '--', html5: true %>
-      </div>
+  <div class="form-inputs">
   </div>
 
-  <div class="col-xs-4">
-      <div class="form-group">
-        <%= f.label 'Review Date2', class: "control-label col-sm-4" %>
-        <%= f.date_field :review_date2,  as: :date, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.select :reviewed_by2a, hf_get_entrustment_members, selected: @epa_master.reviewed_by2a, prompt: '--',
-          html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.select :reviewed_by2b, hf_get_entrustment_members, selected: @epa_master.reviewed_by2a, prompt: '--',
-           html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Note2', class: "control-label col-sm-4" %>
-        <%= f.text_area :note2, cols:25, rows: 5, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Status2', class: "control-label col-sm-4" %>
-        <%= f.select :status2, ["No", "Not Ready", "Yes"], prompt: '--',  html5: true %>
-      </div>
-  </div>
-  <div class="col-xs-4">
-      <div class="form-group">
-        <%= f.label 'Review Date3', class: "control-label col-sm-4" %>
-        <%= f.date_field :review_date3,  as: :date, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.select :reviewed_by3a, hf_get_entrustment_members, selected: @epa_master.reviewed_by3a, prompt: '--',
-            include_blank: "---", html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Reviewed By', class: "control-label col-sm-4" %>
-        <%= f.select :reviewed_by3b, hf_get_entrustment_members, selected: @epa_master.reviewed_by3b, prompt: '--',
-            include_blank: "---", html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Note3', class: "control-label col-sm-4" %>
-        <%= f.text_area :note3, cols:25, rows: 5, html5: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label 'Status3', class: "control-label col-sm-4" %>
-        <%= f.select :status3, ["No", "Not Ready", "Yes"], prompt: '--', html5: true %>
-      </div>
-
-      <div class="form-actions">
-        <%= f.submit "Save Changes", class: "btn-primary", id: "submit" %>
-      </div>
-
+  <div class="form-actions">
+    <%= f.button :submit %>
   </div>
 <% end %>

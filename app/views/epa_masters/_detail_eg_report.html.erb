@@ -1,0 +1,50 @@
+
+<table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" >
+  <thead>
+    <tr class="filters">
+      <% @epa_masters.column_names.each do |col| %>
+        <th style="text-align:center"><%= col %></th>
+      <% end %>
+
+    </tr>
+  </thead>
+  <tbody>
+    <% @epa_masters.each do |epa_master| %>
+           <tr>
+              <td style="text-align:center"><%= epa_master.id %></td>
+              <td style="text-align:center"><%= epa_master.epa %></td>
+              <td style="text-align:center"><%= epa_master.status.to_s %></td>
+              <td style="text-align:center"><%= epa_master.status_date.to_s %></td>
+              <td style="text-align:center"><%= epa_master.expiration_date.to_s %></td>
+              <td style="text-align:center"><%= link_to(epa_master.user.full_name, epa_masters_path(user_id: epa_master.user_id), target: '_blank') %></td>
+              <td style="text-align:center"><%= epa_master.created_at.strftime('%F') %></td>
+              <td style="text-align:center"><%= epa_master.updated_at.strftime('%F') %></td>
+           </tr>
+
+           <% epa_reviews = hf_get_epa_reviews(epa_master, params[:eg_member]) %>
+            <% if !epa_reviews.blank? %>
+              <tr>
+                <td colspan="8" >
+                  <table class="table-hover has_epa_reviews">
+                    <% epa_reviews.each do |epa_review| %>
+                      <tr>
+                         <td><%= epa_review.epa %> </td>
+                         <td><%= hf_format_date(epa_review.review_date1) %> </td>
+                         <td><%= epa_review.reviewer1 %> </td>
+                         <td style="color:red"><%= epa_review.badge_decision1 %> </td>
+                         <td style="color:orange"><%= epa_review.trust1 %> </td>
+                         <td><%= epa_review.general_comments1 %> </td>
+                         <td><%= hf_format_date(epa_review.review_date2) %> </td>
+                         <td><%= epa_review.reviewer2 %> </td>
+                         <td style="color:red"><%= epa_review.badge_decision2 %> </td>
+                         <td style="color:orange"><%= epa_review.trust2 %> </td>
+                         <td><%= epa_review.general_comments2 %> </td>
+                    <% end %>
+                  </table>
+                </td>
+              </tr>
+            <% end %>
+
+    <% end %>
+  </tbody>
+</table>

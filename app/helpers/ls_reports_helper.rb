@@ -4,13 +4,21 @@ module LsReportsHelper
     (full_desc ? strip_tags(question.question) : question.title.titleize).html_safe
   end
 
+  def hf_has_csl_feedbacks(user_id)
+    if CslFeedback.where(user_id: user_id).exists?
+        return true
+    else
+      return false
+    end
+  end
+
   def hf_csl_feedbacks_title(ra_title, csl_feedbacks_title)
     title = nil
     if ra_title.include? "CPR"
       ra_title = ra_title + "/HODI"
     end
     ra_title = ra_title.split("-").last
-    puts "ra_title: " + ra_title
+    #puts "ra_title: " + ra_title
     csl_feedbacks_title.each do |csl|
       if (csl.include? ra_title) and (csl.include? "Mid-Term")
             title = "CSL Narrative Assessment Evaluation " + csl
@@ -19,7 +27,7 @@ module LsReportsHelper
             title =  "CSL Narrative Assessment Evaluation " + csl
             return title
       elsif csl.include? ra_title
-            title =  "CSL Narrative Assessment Evaluation " + csl
+            title =  csl
             return title
       else
         title = nil

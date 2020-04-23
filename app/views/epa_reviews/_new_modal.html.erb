@@ -1,24 +1,76 @@
-<div id="newEpaReviewModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
-  <div class="modal-dialog modal-lg" style="width:1250px;">
+
+  <div id="newEpaReviewModal" class="modal" role="dialog" >
+    <div class="modal-dialog modal-lg" style="width:1450px; height:1000px;">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title title-inline" ><%= controller.action_name.capitalize %> Review - <b><font color="blue">
-              <%= @epa_review_epa %></b></font> </h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <a href="#close" class="close" data-dismiss="modal" >X</a>
+          <h4 class="modal-title modal-text-align-center" ><font color="blue"><%= controller.action_name.capitalize %> Review: </font>
+              <%= @epa_review_epa %> - <%= hf_epa_desc2(@epa_review_epa) %></h4>
         </div>
-        <div class="modal-body row">
-            <% if !@reviewable.nil? %>
-                <% if @reviewable.epa_reviews.count > 0  %>
-                   <%= render partial: "epa_reviews/list_reviewable" %>
-                <% end %>
-            <% end %>
-            <%= render partial: "epa_reviews/form" %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+          <div class="modal-body">
+              <!-- Nav tabs -->
+              <ul class="nav nav-pills">
+                  <li  class="active"><a data-toggle="tab" href="#EGReviewTab" ><b>EG Review</b></a></li>
+                  <li ><a data-toggle="tab" href="#EvidenceTab" ><b>Evidence</b></a></li>
+                  <li ><a data-toggle="tab" href="#SummaryTab" ><b>Other</b></a></li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                  <div id="EGReviewTab" class="tab-pane fade in active">
+                    <% if !@reviewable.nil? %>
+                        <% if @reviewable.epa_reviews.count > 0  %>
+                           <%= render partial: "epa_reviews/list_reviewable" %>
+                        <% end %>
+                    <% end %>
+
+                    <%= render partial: "epa_reviews/form" %>
+                  </div>
+
+                  <div id="SummaryTab" class="tab-pane fade" >
+                    <div class="center-div">
+                      <div class="inner-div">
+                          <% wba_epa_student = hf_series_data_student("EPA", @user_id, false) %>
+                          <% if !wba_epa_student.nil? %>
+                             <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
+                          <% end %>
+                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @user_id, false) %>
+                          <% if !wba_clinical_assessor.nil? %>
+                            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+                          <% end %>
+
+                        <%= render partial: "competencies/collapsible_wba_details" %>
+                        <%= render partial: "competencies/collapsible_epas" %>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="EvidenceTab" class="tab-pane fade" >
+                    <% epa_idx = @epa_review_epa.split("EPA").second.to_i %>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div id='WbaInfo'> <%= render partial: "wba_info", locals: {epa: @epa_review_epa, wba: @wba["#{@epa_review_epa}"], qa_percent: @percent_complete[epa_idx]} %></div>
+                      </div>
+                      <div class="col-sm-4">
+                        <% wba_clinical_assessor_pie = hf_series_data_student("Clinical Assessor", @user_id, true) %>
+                        <% if !wba_clinical_assessor_pie.nil? %>
+                          <%= high_chart("wba_clinical_assessor_pie_graph", wba_clinical_assessor_pie) %>
+                        <% end %>
+                      </div>
+                    </div>
+
+                      <%= render partial: 'wba_graphs/wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
+                      <%= render partial: "wba_graphs/narrative_comments",
+                          locals: {clinical_data: @clinical_data,
+                                   preceptor_data: @preceptorship_data,
+                                   csl_data: @csl_data,
+                                   epa_code: @epa_review_epa } %>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
       </div>
+    </div>
   </div>
-</div>

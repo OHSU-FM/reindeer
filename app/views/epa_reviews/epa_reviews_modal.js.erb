@@ -1,0 +1,103 @@
+$.urlParam = function(name){
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	return results[1] || 0;
+}
+
+console.log ("inside epa_reviews_modal.js.erb");
+
+$("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
+$("#newEpaReviewModal").modal('show');
+
+$(".modal-dialog").draggable({
+    handle: ".modal-header"
+});
+// to check make sure the previous ajax call is completed and successful.
+$('#review-form').bind('ajax:success', function() {
+   $('#newEpaReviewModal').modal('hide');
+
+	 var byName = $.urlParam('search');
+ 	console.log("Search: " + byName);
+ 	$.ajax({
+ 		url : '/epa_masters?search=' + byName,
+ 		type : 'GET',
+ 		dataType:'script',
+ 		data: {search: byName},
+ 		success : function(data) {
+ 				//alert('Data: '+ JSON.stringify(data));
+ 				console.log("epa_masters ajax is a success!")
+
+ 		},
+ 		error : function(request,error)
+ 		{
+ 				alert("Request: "+JSON.stringify(request));
+ 		}
+  });
+});
+
+$('#epa_review_badge_decision1').change(
+    function() {
+      var badge_decision1 = $('#epa_review_badge_decision1').val(); // $( "#myselect option:selected" ).text();
+      if (badge_decision1 == "Deny") {
+				$('#epa_review_trust1').empty();
+				var newOption = $('<option value="Distrust">Distrust</option><option value="Question Trust">Question Trust</option>');
+	      $('#epa_review_trust1').append(newOption);
+
+      }
+      else if (badge_decision1 == "Badge") {
+				$('#epa_review_trust1	').empty();
+				var newOption = $('<option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+	      $('#epa_review_trust1').append(newOption);
+      }
+    }
+);
+
+$('#epa_review_badge_decision2').change(
+	function() {
+		var badge_decision2 = $('#epa_review_badge_decision2').val(); // $( "#myselect option:selected" ).text();
+		if (badge_decision2 == "Deny") {
+			$('#epa_review_trust2').empty();
+			var newOption = $('<option value="Distrust">Distrust</option><option value="Question Trust">Question Trust</option>');
+			$('#epa_review_trust2').append(newOption);
+		}
+		else if (badge_decision2 == "Badge") {
+		 $('#epa_review_trust2').empty();
+		 var newOption = $('<option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+		 $('#epa_review_trust2').append(newOption);
+		}
+	}
+);
+
+
+// var serializedData = $('#review-form').serializeArray();
+// console.log("form_data:" + JSON.stringify(serializedData))
+// $.each(serializedData, function (key, item) {
+// 		console.log(item.name+': ' + item.value);
+// });
+
+
+var values = {};
+$.each($("#review-form").serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+});
+
+//Value Retrieval Function
+var getValue = function (valueName) {
+    return values[valueName];
+};
+
+//Retrieve the Values
+var badge_decision1 = getValue("epa_review[badge_decision1]");
+var badge_decision2 = getValue("epa_review[badge_decision2]");
+console.log("badge_decision1: " + badge_decision1);
+console.log("badge_decision2: " + badge_decision2);
+
+if (badge_decision1 != "" && badge_decision2 != "") {
+	$('#col-reviewer1').addClass("visible");
+	$('#col-reviewer2').addClass("visible");
+} else if (badge_decision1 != "" && badge_decision2 == "") {
+					$('#col-reviewer1').removeClass("visible").addClass("hidden");
+					$('#col-reviewer2').addClass("visible");
+} else if (badge_decision1 == "" && badge_decision2 != "") {
+									$('#col-reviewer2').removeClass("visible").addClass("hidden");
+									$('#col-reviewer1').addClass("visible");
+}

@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <table class="table-condensed table-striped table-hover">
+       <tr>
+         <h3> These are Courses Offer This Competency: <%= params[:competency_code].upcase %> </h3>
+       </tr>
+       <% @courses.each do |course| %>
+          <tr>
+            <%= course.course_no %>&nbsp&nbsp
+          </tr>
+       <% end %>
+  </table>
+</div>

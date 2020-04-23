@@ -100,7 +100,7 @@ yAxis_types = ->
         }]
 
 #======================================================================================================
-build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates) ->
+build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, total_wba_count) ->
 
   if build_type == "Individual"
     seriesArr = []
@@ -117,7 +117,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
           seriesArr = []
           category = []
           i = 1;
-          graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
+          graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1] + "<br>" + " Total # of WBAs: " + total_wba_count
           graph_type = 'spline'
           yAxis_params = yAxis_types
           #console.log("yAxis_params: " + JSON.stringify(yAxis_types))
@@ -201,7 +201,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
   }
 
 #======================================================================================================
-build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, epa_evaluators) ->
+build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, epa_evaluators, total_wba_count) ->
 
   if in_data == undefined
     return
@@ -211,7 +211,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
     drilldownSeriesArr = []
     category = []
     i = 1;
-    graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]
+    graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + total_wba_count
     graph_type = 'column'
     yAxis_params = yAxis_types
     while i <= 13  # 13 epas
@@ -282,6 +282,14 @@ $(document).ready ->
     @unique_evalutors = if gon.unique_evaluators? then gon.unique_evalutors else ''
     @selected_dates = if gon.selected_dates? then gon.selected_dates else ''
     @selected_student = if gon.selected_student? then gon.selected_student else ''
+    @total_wba_count = if gon.total_wba_count? then gon.total_wba_count else ''
+
+    #==== Display all Ad Hoc graphs
+    graph_target = "data-visualization-AdHocAllEPAs"
+    graph_title = "All Work Based Assessments"
+    graph_sub_title = @selected_student
+    options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
+    window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
 
     window.chart2 = []
     i = 0
@@ -292,19 +300,12 @@ $(document).ready ->
         console.log ("graph_target: " + graph_target)
         graph_title = "Work Based Assessment"
         graph_sub_title = @selected_student
-        options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates)
+        options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates, @total_wba_count)
         window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
         #window.chart2[i] = Highcharts.chart(options)
 
-    #==== Display all Ad Hoc graphs
-    graph_target = "data-visualization-AdHocAllEPAs"
-    graph_title = "All Work Based Assessments"
-    graph_sub_title = @selected_student
-    options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates)
-    window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
-
     graph_target = "data-visualization-AdHocAllEPACount"
-    graph_title = "Number of Observations Per WBA"
+    graph_title = "Number of WBAs Per EPA"
     graph_sub_title = @selected_student
-    options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data )
+    options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data, @total_wba_count)
     window.chart4 = Highcharts.chart($.extend(true, null, theme_light, options))

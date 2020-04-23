@@ -1,0 +1,15 @@
+
+<br />
+<% if !@log_results.blank? %>
+  <h4> Exams are updated! </h4>
+  <br />
+  <% @log_results.each do |result| %>
+    <%= result %>
+    <hr>
+  <% end %>
+<% else %>
+  <br />
+  <h5> Processed Label File </h5>
+<% end %>
+<br />
+<%= link_to 'Back', fom_exams_user_path(user_id: current_user.id, action: 'index')%>
