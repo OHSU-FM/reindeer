@@ -1,0 +1,280 @@
+// this is so poorly organized. i am deeply sorry.
+
+$dusty:    #96858F;
+$lavendar: #6D7993;
+$overcast: #9099A2;
+$paper:    #D5D5D5;
+
+.container-flex, html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.container-flex {
+  display: flex;
+  width: 100%;
+  min-height: 800px;
+  padding: 0;
+  justify-content: space-between;
+}
+
+.horizontal {
+  flex-direction: row;
+}
+
+.container-flex > #cs-goals-nav {
+  flex-shrink: 0;
+  overflow-x: hidden;
+  background-color: $lavendar;
+  width: 55px;
+  transition: width 0.4s ease-in;
+
+  &.open {
+    width: 350px;
+    transition: width 0.4s ease-out;
+    padding: 0 15px 0 0;
+    margin: 0px 0px 15px 0px;
+
+    #cs-sidebar-toggle {
+      text-align: right;
+      font-size: 20px;
+    }
+
+    .system-explanation { max-width: 100%; }
+  }
+
+  ul > li > a,
+  .student-with-goals {
+    font-size: 14px;
+    color: white;
+    
+  }
+
+  .list-group.list-group-root > .list-group > .list-group-item {
+    padding-left: 20px;
+  }
+
+  #cs-sidebar-toggle {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-back: 5px;
+  }
+
+  // text in left nav should truncate when nav is collapsed
+  .flex-child {
+    min-width: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .system-explanation {
+    font-size: 14px;
+    padding-left: 15px;
+    padding-right: 10px;
+    white-space: initial;
+  }
+}
+
+.container-flex > #cs-goals-main {
+  height: 100%;
+  flex: 3 1 auto;
+  order: 2;
+  transition: width 0.7s ease-out;
+  background-color: $paper;
+  -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+
+  .goals-header { padding-left: 10px; }
+
+  .table-container {
+    max-height: calc(100% - 435px);
+    overflow-y: auto;
+  }
+
+  .pagination-holder { text-align: center; }
+
+  .pagination-holder > .pagination {
+    margin-top: 15px;
+    margin-bottom: 0px;
+    display: inline-block;
+  }
+
+  #cs-student-select {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+
+    > #student-select { width: 25%; }
+  }
+
+  .main-table {
+    margin: 0px 10px 0px 10px;
+    max-width: 98%;
+    padding: 35px 70px 50px 90px;
+    > td {
+      vertical-align: middle;
+    }
+  }
+
+  > .general-comments {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    max-height: 300px;
+    padding-left: 24px;
+  }
+
+ .h4-general-comments {
+    font-size: medium;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-bottom: 5px;
+  }
+
+  > .general-comments > .chat-wrapper {
+    position: relative;
+    max-height: 350px;
+
+  }
+
+  > .general-comments > .chat-wrapper > .general-messages {
+    overflow-y: auto;
+    max-height: 180px;
+    position: fixed;
+    bottom: 39px;
+    width: 40%;
+    padding: 0px 65px 30px 10px;
+    background-color: lightblue;
+    transition: width 0.3s ease-in;
+    -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+    -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+    box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  }
+
+  > .general-comments > .chat-wrapper > .room-speaker {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 5px 65px 10px 0px;
+  }
+}
+
+.container-flex > #cs-detail {
+  flex-shrink: 0;
+  overflow-x: hidden;
+  background-color: $overcast;
+
+  &:not(.show-detail) {
+    flex: 0 6 auto;
+    order: 3;
+    width: 0px;
+    transition: width 0.3s ease-out;
+
+    // don't wrap text during transition out
+    min-width: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.show-detail {
+    flex: 1 6 auto;
+    order: 3;
+    width: 555px;
+    transition: width 0.3s ease-in;
+    -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+    -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+    box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
+  }
+
+  div.dfield_with_errors { display: inline }.etail-header {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+
+    h3 { color: $paper; }
+  }
+
+  div.detail-section {
+    display: inline;
+
+    h4 {
+      color: $paper;
+      background-color: $dusty;
+      padding-left: 20px;
+      padding-right: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    div {
+      font-size: 16px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}
+
+@media all and (max-width: 640px) {
+  .container-flex { flex-direction: column; }
+
+  .container-flex #cs-goals-main,
+  .container-flex #cs-detail {
+    order: 0;
+  }
+
+  .container-flex #cs-goals-nav {
+    flex: 0 1 auto;
+    order: 0;
+    transition: height 0.7s ease-out;
+  }
+
+  .container-flex #cs-goals-main > ul > li { margin-top: 10px; }
+}
+
+.table-controls {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-right: 5px;
+
+  > .search-bar {
+    float: right;
+    margin-right: 5px;
+  }
+
+  > .complete-checkbox {
+    float: right;
+    margin-right: 5px;
+    font-size: 16px;
+  }
+}
+
+.title-inline { display: inline; }
+
+.goal-tabs {
+  padding-left: 10px;
+}
+
+.spinner-holder {
+  position: relative;
+
+  img {
+    display: block;
+    margin: auto;
+    margin-top: 50%;
+  }
+}
+
+.grayed-out {
+  opacity: 0.7;
+}
+.field_with_errors {
+   display: inline
+ }

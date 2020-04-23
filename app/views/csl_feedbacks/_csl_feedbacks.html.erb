@@ -1,0 +1,67 @@
+<% if !csl_feedbacks.nil? %>
+  <div id="csl-table">
+        <table id="csl_evaluation" style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center" >
+          <tr bgcolor="F2DBD6">
+            <th>Block Title</th>
+            <th>Submit Date</th>
+            <th>Instructor(s)</th>
+            <th>Selected Student</th>
+            <th>Compared to other students in our small group this student came prepared for the small group session topic of the day (e.g., appeared to have done pre-work, completed readings, and reviewed session guide).</th>
+            <th>If you selected "Less than the average student in the group" please provide additional specific feedback for this student regarding how they can improve:</th>
+            <th>Compared to other students in our small group this student participated during the small group session discussion/activity (e.g., engaged in discussion, asked questions).</th>
+            <th>If you selected “less than the average student in the group,” please provide additional specific feedback for this student regarding how they can improve:</th>
+            <th>Describe the student’s strengths demonstrated during small group sessions</th>
+            <th>Provide specific feedback on 1-3 areas of improvement for this student</th>
+          </tr>
+
+          <div id="list_csl_feedbacks">
+            <% csl_feedbacks.sort_by{|c| c.submit_date}.each do |eval| %>
+              <% if !eval.csl_title.include? "(2020)" %>
+                <tr>
+                    <td><%= eval.csl_title %> </td>
+                    <td><%= eval.submit_date %> </td>
+                    <td><%= eval.instructor %> </td>
+                    <td><%= eval.selected_student %> </td>
+                    <td><%= eval.c1 %> </td>
+                    <td><%= eval.c1_feedback %> </td>
+                    <td><%= eval.c2 %> </td>
+                    <td><%= eval.c2_feedback %> </td>
+                    <td><%= eval.feedback_strength %> </td>
+                    <td><%= eval.feedback_improve %> </td>
+                </tr>
+              <% end %>
+            <% end %>
+
+          </div>
+        </table>
+  </div>
+
+  <div id="csl-table2">
+        <table id="csl_evaluation2" style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center" >
+          <tr bgcolor="F2DBD6">
+            <th>Block Title</th>
+            <th>Submit Date</th>
+            <th>Instructor(s)</th>
+            <th>Selected Student</th>
+            <th>Feedback</th>
+          </tr>
+
+          <div id="list_csl_feedbacks">
+            <% csl_feedbacks.sort_by{|c| c.submit_date}.each do |eval| %>
+              <% if eval.csl_title.include? "(2020)" %>
+                <tr>
+                    <td><%= eval.csl_title %> </td>
+                    <td><%= eval.submit_date %> </td>
+                    <td><%= eval.instructor %> </td>
+                    <td><%= eval.selected_student %> </td>
+                    <td><%= eval.feedback_strength %> </td>
+
+                </tr>
+              <% end %>
+            <% end %>
+
+          </div>
+        </table>
+  </div>
+
+<% end %>

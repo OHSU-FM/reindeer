@@ -5,7 +5,7 @@
 }
 
 .modal-dialog {
-  width: 60%;
+  width: 100%;
   margin: auto;
 }
 
@@ -70,7 +70,7 @@ td:first-child {
 }
 
 .modal-dialog > div {
-    width: 1100px;
+    width: 1500px;
 }
 
 
@@ -175,7 +175,7 @@ a {
 
 /* tab color */
 .nav-tabs>li>a {
-  background-color: #555; 
+  background-color: #555;
   border-color: #777777;
   color:#fff;
 }
@@ -191,4 +191,52 @@ a {
 .nav-tabs>li>a:hover {
   border-color: #000000;
   background-color: #111111;
+}
+
+.noBorder table, .noBorder td, .noBorder th {
+    border-collapse: separate;
+    border-spacing: 0px 10px;
+
+}
+.Beginning {
+  background-color: lightyellow;
+  border:1px solid black;
+}
+.Effort {
+  background-color: pink;
+  border:1px solid black;
+}
+.Threshold {
+  background-color: lightblue;
+  border:1px solid black;
+}
+.Ready {
+  background-color: lightgreen;
+  border:1px solid black;
+}
+.noBorder table {
+  border-bottom:0;
+  border-left:0;
+}
+div.precept-header {
+  font-size: 150%;
+  color: "#0d0d0d";
+  background-color: "lightgray";
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.column {
+  float: left;
+  padding: 10px;
+
+}
+.left {
+  width: 40%;
+}
+
+.right {
+  width: 60%;
 }

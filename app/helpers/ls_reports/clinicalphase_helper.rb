@@ -1,6 +1,21 @@
 module LsReports::ClinicalphaseHelper
   include LsReportsHelper
 
+  PRECEPTOR_COMP_DEF = { "Beginning" => "<b>Beginning</b>: Performs the attribute inconsistently; improvement is needed, or does not yet perform.",
+                           "Effort" => "<b>Expending Effort</b>: Clearly trying to perform tasks.  Performs some aspects of the attribute consistently, but others aspects may not yet be skillful, complete, or accurate; the student demonstrates the attribute on some occasions.",
+                           "Threshold" => "<b>Teetering at the Threshold</b>: Almost clerkship ready.  Performs most aspets of the attribute consistently; the student successfully demonstrates this attribute on the majority of occasions. ",
+                           "Ready" => "<b>Ready for Clerkship</b>: Performs the attribute proficiently and reliably; the student consistently demonstrates this attribute."
+  }
+
+  DECODE_PRECEPTOR_COMP = { '1' => "Beginning",
+                            '2' => "Effort",
+                            '3' => "Threshold",
+                            '4' => "Ready",
+                            '888' => "Missing",
+                            '' => "Missing"
+
+  }
+
   BLOCKS = {  'FUND' => "Fundamentals",
               'BLHD' => "Blood & Host Defence",
               'SBM'  => "Skin, Bones & Musculature",
@@ -11,7 +26,49 @@ module LsReports::ClinicalphaseHelper
               "DEVH" => "Developing Human"
 
   }
+
+  COMP = { "SBP" => "Systems-Based Practice",
+           "PBLI" => "Practice-Based Learning & Improvement",
+           "PROF" => "Professionalism",
+           "ICS" => "Interpersonal & Communication Skills",
+           "PPPD" => "Professionalism and Personal & Professional Development",
+           "SBPIC" => "Systems‐Based Practice and Interprofessional Collaboration"
+  }
+
   GRAPH_COLOR = ["#8100ba", "#ff79c2", "#b52e2b", "#6cffb1", "#ff0066", "#fff631", "#6f9090"]
+
+  class LimeTable < ActiveRecord::Base
+  end
+
+
+  def hf_decode_preceptor_comp(in_code)
+      return DECODE_PRECEPTOR_COMP[in_code]
+  end
+
+  def hf_decode_comp(in_str)
+    if in_str.include? "SBP1"
+      return COMP["SBP"]
+    elsif in_str.include? "PBL1"
+      return COMP["PBLI"]
+    elsif in_str.include? "PBLI"
+      return COMP["PBLI"]
+    elsif in_str.include? "PROF1"
+      return COMP["PROF"]
+    elsif in_str.include? "ICS1"
+      return COMP["ICS"]
+    elsif in_str.include? "PPPD"
+      return COMP["PPPD"]
+    elsif in_str.include? "SBPIC"
+      return COMP["SBPIC"]
+    else
+      return "Invalid Preceptorship Competency Code : " + in_str
+    end
+  end
+
+  def hf_precetor_comp_def(in_code)
+    return PRECEPTOR_COMP_DEF[in_code]
+  end
+
 
   def hf_desc(in_code)
     return BLOCKS[in_code ]
@@ -21,7 +78,7 @@ module LsReports::ClinicalphaseHelper
      qq = grp_questions.select {|q| q.title = title}
      #{}"851468X295X3975StudentEmail"
      return "#{qq[0].sid}X#{qq[0].gid}X#{qq[0].qid}#{title}"
-  end 
+  end
 
   def hf_format_data in_data
     comp = {"FUND"=> [], "BLHD" => [], "SBM" => [], "CARE" => [], "CPR" => [], "HODI" => [], "NSF" => [], "DEVH" => []}
@@ -47,88 +104,132 @@ module LsReports::ClinicalphaseHelper
             comp["HODI"].push v
         elsif k.include? "NSF"
             comp["NSF"].push v
-        elsif k.include? "DEVH"
-            comp["DEVH"].push v
-        
-        end 
+        elsif k.inc
+          lude? "DEVH"
+            comp["DEVH"].push vbiryani chicken
+
+        end
       end
     end
     comp.reject! { |k, v| v.empty?}
 
     return comp
-  end 
+  end
+
+  def hf_get_sid (in_hash, pk, in_str)
+    username = pk.split("@").first
+    if !in_hash["#{username}"].nil?
+      selected_hash = in_hash["#{username}"].select{|s| s["survey"].include? in_str}
+      if !selected_hash.empty?
+          selected_sid = selected_hash.first["sid"]
+          return selected_sid
+       else
+         return nil
+       end
+    else
+      return nil
+    end
+  end
+
+  def hf_get_clinical_phase_sid(pk)
+
+      permission_group_id = User.where(email: pk).first.permission_group_id
+      surveys = PermissionLsGroup.where(permission_group_id: permission_group_id)
+
+      surveys.each do |survey|
+        temp_survey = LimeSurveysLanguagesetting.where(surveyls_survey_id: survey.lime_survey_sid).first
+        if temp_survey.surveyls_title.include? "Core Clinical"
+          return temp_survey.surveyls_survey_id
+        end
+      end
+      return nil
+  end
+
 
   def get_dataset(in_survey, category, dataset)
     temp_data = in_survey.first.surveyls_title.split(":")
-    student_year = temp_data.second
-    #category = "Foundations of Medicine"
-    #dataset = "All Blocks (Graph View)"
+    @student_year = temp_data.second
+    return LimeSurveysLanguagesetting.includes(:lime_groups).find_by(surveyls_title: "SA:#{@student_year}:#{category}:#{dataset}")
 
-    #rr = RoleAggregate.find_by(lime_survey_sid: 851468)
-    return LimeSurveysLanguagesetting.find_by(surveyls_title: "SA:#{student_year}:#{category}:#{dataset}")
   end
 
-  def hf_get_all_blocks(in_survey, pk)
+  def get_student_data(in_data, question, sub_question)
+    #locate the hash pair and return the value
+    score = in_data.first.select {|d| d["#{question.sid}X#{question.gid}X#{question.qid}#{sub_question.title}"]}.first.second
+    score = score.to_s.to_d.truncate(2).to_f
+    return score
+  end
 
-    #rr = get_dataset(in_survey, "Foundations of Medicine", "All Blocks (Graph View)")
-    #allblocks = {}
-    #rr.lime_survey.lime_groups.each do |grp|
-    #    lq = grp.lime_questions
-    #    col_name = get_col_name(lq, "StudentEmail")
-    #    allblocks = lq.first.dataset
-    #    student_blocks = allblocks.select {|rec| rec["#{col_name}"] == @pk}
-    #    binding.pry
-    #    return hf_format_data(student_blocks)
-    #end
+  def hf_get_all_blocks(in_sid, pk)
 
+    if in_sid.instance_of? String
+      rr = LimeSurvey.where(sid: in_sid).includes(:lime_groups)
+      limegroups = rr.first.lime_groups.includes(:lime_questions)  # used where clause instead of find_by
+      student_email_col = rr.first.student_email_column
+      comp_data = rr.first.dataset   #lq.first.dataset
+    else
+      rr = get_dataset(in_sid, "Foundation of Medicine", "All Blocks (Graph View)")
+      rr = rr.lime_survey
+      limegroups = rr.lime_groups # used where clause instead of find_by
+      student_email_col = rr.student_email_column
+      comp_data = rr.dataset   #lq.first.dataset
+    end
     comp = {}
 
-    rr = get_dataset(in_survey, "Foundations of Medicine", "All Blocks (Graph View)")
-    role = RoleAggregate.find_by(lime_survey_sid: rr.surveyls_survey_id)
-    kparams = params[:role_aggregate]||{:agg=>params[:agg], :pk=>params[:pk]}
+    if rr.nil?
+      return comp  ## return empty hash array
+    end
 
-    new_user = User.find_by(email: pk)
-    fm2 = FilterManager.new new_user, role.lime_survey.sid, :params=>kparams
-    # Alias used in view
-    @lime_survey2 = fm2.lime_survey
+    student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
+    if student_data.empty?
+       return {}  # missing in graph  view dataset
+    end
 
-    qstats = @lime_survey2.lime_stats.load_data
-    qstats.each do |s|
-        tmp_data = []
-        if !s.title.include? "PersonalData"
-          temp_data = s.response_set.data.map {|d| d.data}.flatten
-          comp["#{s.title}"] = temp_data
+    limegroups.each do |grp|
+        comp = {}
+
+        grp.parent_questions.each do |pquestion|
+          if !pquestion.title.include? "PersonalData"
+            temp_comp = []
+            pquestion.sub_questions.each do |sq|
+              temp_comp.push get_student_data(student_data, pquestion, sq)
+            end
+            comp["#{pquestion.title}"] = temp_comp
+          end       #return format_usmle(student_usmle)
 
         end
-
     end
-    return comp
+    comp_data = nil
+    lq = nil
+    rr = nil
 
+    return comp
   end
 
-  def hf_get_all_blocks_class_mean(in_survey)
-    rr = get_dataset(in_survey, "Foundations of Medicine", "All Blocks (Graph View)")
-    role = RoleAggregate.find_by(lime_survey_sid: rr.surveyls_survey_id)
-    fm_data = role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
+  def hf_get_all_blocks_class_mean(survey_sid)
 
-    #qstats = @lime_survey.lime_stats.load_data
-    #full_qstats = @lime_survey_unfiltered.lime_stats.load_data
+    if survey_sid.instance_of? String
+       role = LimeSurvey.find_by(sid: survey_sid)
+    else
+       role = get_dataset(survey_sid, "Foundation of Medicine", "All Blocks (Graph View)")
+       role = role.lime_survey
+    end
+    fm_data = role.lime_stats.load_data
+
+    #role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
 
     class_mean = {}
     fm_data.each do |r_data|
       comp = []
-      if !r_data.sub_stats.empty?
-          #puts r_data.question.title 
-          sb =  r_data.sub_stats
+      sb = r_data.sub_stats
+      if !sb.empty?
           sb.each do |s|
-              #puts s.question.title + " ==> " + s.descriptive_stats.mean.to_s
               comp.push s.descriptive_stats.mean.to_s.to_d.truncate(2).to_f
           end
           class_mean["#{r_data.question.title}"] = comp
       end
     end
     @category_labels = fm_data[1].sub_stats.map{|d| d.q_text}
-
     fm_data = nil
     role = nil
     return class_mean
@@ -141,30 +242,101 @@ module LsReports::ClinicalphaseHelper
     temp_data = responses.map {|k,v| v}
     temp_hash = {submit_date => temp_data}
     return temp_hash
-
-  end 
+  end
 
   def format_precept_data in_data
     r_array = []
     in_data.each do |data|
       r_array.push get_data(data)
     end
-    #binding.pry
     return r_array
-  end 
+  end
 
-  def hf_get_preceptorship in_survey
-    rr = get_dataset(in_survey, "Preceptorship", "Preceptorship")
-    role = RoleAggregate.find_by(lime_survey_sid: rr.surveyls_survey_id)
-    fm_data = role.lime_survey.lime_groups.first.lime_questions.first.lime_stats.load_data
-    class_precept = {}
-    personal_data = rr.lime_survey.lime_groups.select {|g| g.group_name = "Personal Data"}
-    lq = personal_data.first.lime_questions
-    col_name = get_col_name(lq, "StudentEmail")
-    class_precept = lq.first.dataset
-    student_precept= class_precept.select {|rec| rec["#{col_name}"] == @pk}
-    return format_precept_data(student_precept)
+  def load_precept_data(in_q, in_d)
+    temp_array = []
+    i = 0
+    in_q.each do |k|
+      temp_hash = {}
+      temp_hash = {k => in_d[i]}
+      temp_array.push temp_hash
+      i = i + 1
+    end
+    return temp_array
+  end
 
+  def get_student_precept(in_data, question, sub_question)
+    #locate the hash pair and return the value
+    if !sub_question.nil?
+       return in_data.map {|d| d["#{question.sid}X#{question.gid}X#{question.qid}#{sub_question.title}"]}
+    else
+       return in_data.map {|d| d["#{question.sid}X#{question.gid}X#{question.qid}"]}
+    end
+  end
+
+  def hf_get_preceptorship(in_survey, pk)
+    if in_survey.instance_of? String
+      rr = LimeSurvey.where(sid: in_survey).includes(:lime_groups)
+      limegroups = rr.first.lime_groups.includes(:lime_questions)  # used where clause instead of find_by
+      student_email_col = rr.first.student_email_column
+      comp_data = rr.first.dataset   #lq.first.dataset
+    else
+       rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+       if rr.nil?
+         return {}
+       end
+       rr = rr.lime_survey
+       limegroups = rr.lime_groups # used where clause instead of find_by
+       student_email_col = rr.student_email_column
+       comp_data = rr.dataset   #lq
+    end
+    #rr = get_dataset(in_survey, "Foundation of Medicine", "Preceptorship")
+    if rr.nil?
+      return {}
+    end
+
+    # limegroups = rr.lime_groups
+    # #lq = limegroups.first.lime_questions
+    # student_email_col = rr.student_email_column
+    # #col_name = get_col_name(lq, "StudentEmail")
+    # comp_data = rr.dataset  #lq.first.dataset
+    student_data = comp_data.select {|rec| rec["#{student_email_col}"] == @pk}
+    student_data = student_data.sort_by {|d| d["id"]}
+
+    precept_hash = []
+
+    limegroups.each do |lgroup|
+      q_question = []
+      q_data = []
+      temp_comp = []
+      lgroup.parent_questions.each do |pquestion|
+        if !lgroup.group_name.include? "Personal Data"
+          if !lgroup.group_name.include? "Preceptor Info"
+              q_question = pquestion.sub_questions.map {|q|  q.question + " (#{q.title})" }
+          else
+              q_question = pquestion.sub_questions.map {|q|  q.question}
+          end
+
+          temp_comp = []
+          if !pquestion.sub_questions.empty?
+            pquestion.sub_questions.each do |sq|
+              temp_comp.push get_student_precept(student_data, pquestion, sq)
+            end
+          else
+            q_question = pquestion
+            temp_comment = get_student_precept(student_data, pquestion, nil)
+
+            temp_comp.push temp_comment.flatten
+            q_question = []
+            q_question.push pquestion.question
+          end
+
+          precept_hash.push load_precept_data(q_question, temp_comp)
+
+        end
+      end
+    end
+
+    return precept_hash
   end
 
   def hf_reformat_array in_data
@@ -181,76 +353,110 @@ module LsReports::ClinicalphaseHelper
     return r_array
   end
 
-  def get_key key
-    case key
-      when 0 then return "FUND-Mean"
-      when 1 then return "BLHD-Mean"
-      when 2 then return "SBM-Mean"
-      when 3 then return "CPR-Mean"
-      when 4 then return "HODI-Mean"
-      when 5 then return "NSF-Mean"
-      when 6 then return "DEVH-Mean"
-    end
-  end
-
-  def hf_reformat_array2 in_data
-    binding.pry
-    r_array = []
-    temp_array = []
-
-    for j in 0..6
-      for i in 1..5
-        mean_val = in_data["Comp#{i}"][j]
-        if !mean_val.nil?
-            mean_val = mean_val.to_d.truncate(2).to_f
-        else
-            mean_val = 0.00
-        end 
-        temp_array.push mean_val
-      end
-      my_hash = {}
-      i = i + 1
-      my_hash = {:key => j, :name => get_key(j), :data => temp_array, :color => 'url(#highcharts-default-pattern-1)'}
-      r_array.push my_hash
-      temp_array = []
-    end
-  
-    return r_array
-  end
-
   def format_usmle(in_data)
     usmle = []
+    data_array = []
     in_data.each do |data|
       data.each do |key, val|
         tmp_hash = {}
+        data_array = []
         temp_key = nil
-        if key.include? "Step1PassFail"
+        if (key.include? "Step1PassFail") or (key.include? "RetestPF")
           temp_key = 'Step 1 USMLE Exam (Pass/Fail)'
-        elsif key.include? "Step1ExamScore"
-          temp_key = "Step 1 USMLE Exam Score"
-        elsif key.include? "Step1ExamDT"
+        elsif (key.include? "Step1ExamScore") or (key.include? "RetestExamScore")
+          temp_key = "Step 1 USMLE Exam Score" + " (" + hf_get_threshold("STEP1") + ")"
+        elsif (key.include? "Step1ExamDT") or (key.include? "RetestExamDt")
           temp_key = "Step 1 USMLE Exam Date"
-        elsif key.include? "CK01"
+        elsif (key.include? "CKPassFail") or (key.include? "CK01") or (key.include? "CKPFRetest")
           temp_key = "Step 2 Clinical Knowledge Exam (Pass/Fail)"
-        elsif key.include? "CK02"
-          temp_key = "Step 2 Clinical Knowledge Exam Score"
-        elsif key.include? "CK03"
+        elsif (key.include? "CKExam") or (key.include? "CK02") or (key.include? "CKExamRetest")
+          temp_key = "Step 2 Clinical Knowledge Exam Score" + " (" + hf_get_threshold("STEP2CK") + ")"
+        elsif (key.include? "CKDT") or (key.include? "CK03") or (key.include? "CKDTRetest")
           temp_key = "Step 2 Clinical Knowledge Exam Date"
-        elsif key.include? "CS01"
-          temp_key = "Step 2 Clinical Skill Exam Score"
-        elsif key.include? "CS02"
-          temp_key = "Step 2 Clinical Skill Exam Date" 
-        else 
-          temp_key = nil       
+        elsif (key.include? "CSExam") or (key.include? "CS01") or (key.include? "CSExamRetest")
+          temp_key = "Step 2 Clinical Skill Exam Score" + " (" + hf_get_threshold("STEP2CS") + ")"
+        elsif (key.include? "CSDT") or (key.include? "CS02") or (key.include? "CSDTRetest")
+          temp_key = "Step 2 Clinical Skill Exam Date"
+        else
+          temp_key = nil
         end
 
         if !temp_key.nil?
-          tmp_hash = {"#{temp_key}" => val}
+          data_array.push val
+          tmp_hash = {"#{temp_key}" => data_array}
           usmle.push tmp_hash
         end
       end
-    end 
+    end
+    # remove duplicate hash-key in usmle save the values in array format
+    usmle = usmle.each_with_object({}) { |el, h| el.each { |k, v| h[k].nil? ? h[k] = v : h[k] = (Array.new([h[k]]) << v).flatten } }
     return usmle
+  end
+
+  def get_proper_code (course_name)
+    course_code = course_name.gsub(/"|\[|\]/, '').split(" ").second
+    case course_code
+      when "770A"
+        return "FAMP"
+      when "770B"
+        return "IMED"
+      when  "770C"
+        return "NEUR"
+      when "770D"
+        return "OBGY"
+      when "770E"
+        return "PEDI"
+      when "770F"
+        return "PSYC"
+      when "770G"
+        return "SURG"
+      else
+        return nil
+    end
+  end
+
+  def hf_get_threshold (in_course_name)
+    course_code = in_course_name.to_s.gsub(/"|\[|\]/, '').split(" ").first
+
+    if course_code.to_s.include? "STEP"
+      if  @student_year == "Med18"
+         thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med19"
+         thres_score = Threshold.Med19.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med20"
+         thres_score = Threshold.Med20.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med21"
+          thres_score = Threshold.Med21.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med22"
+          thres_score = Threshold.Med22.select {|s| s == course_code}.flatten.second
+      end
+      return thres_score.nil? ? "" : "Threshold: #{thres_score.to_s}"
+    end
+    if course_code == "INTS"
+       course_code = get_proper_code(in_course_name)
+    end
+    # remove "[ ]" brackets
+    if in_course_name.nil?
+      thres_score = nil
+      return thres_score.nil? ? "" : "(Passing Threshold: #{thres_score.to_s}) /"
+    end
+    course_number = in_course_name["770"]
+    if course_number == "770"
+      if @student_year == "Med18"
+         thres_score = Threshold.Med18.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med19"
+              thres_score = Threshold.Med19.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med20"
+              thres_score = Threshold.Med20.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med21"
+              thres_score = Threshold.Med21.select {|s| s == course_code}.flatten.second
+      elsif @student_year == "Med22"
+              thres_score = Threshold.Med22.select {|s| s == course_code}.flatten.second
+      end
+    else
+      thres_score = nil
+    end
+    return thres_score.nil? ? "" : "(Passing Threshold: #{thres_score.to_s}) /"
 
   end
 
@@ -258,14 +464,175 @@ module LsReports::ClinicalphaseHelper
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "National Board Licensing Exams", "USMLE Exams")
     student_usmle = {}
-    limegroups = rr.lime_survey.lime_groups
+    if rr.nil?
+      return {}
+    end
+    #limegroups = rr.lime_survey.lime_groups
+    limegroups = rr.lime_groups
     limegroups.each do |grp|
         lq = grp.lime_questions
         col_name = get_col_name(lq, "StudentEmail")
         usmle_data = lq.first.dataset
         student_usmle = usmle_data.select {|rec| rec["#{col_name}"] == @pk}
+        if student_usmle.empty?
+          return {}
+        end
         return format_usmle(student_usmle)
     end
-  end 
+  end
+
+  def get_cpx_data student_cpx, key1, key2, data1, data2
+    data = []
+    if data2 == "Total Test"
+      key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key1}
+      val1 = student_cpx.map{|k| k[key[0]]}.first
+      key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key2}
+      val2 = student_cpx.map{|k| k[key[0]]}.first
+      total_score = val1.to_i + val2.to_i
+      data.push ""
+      data1 = "<b>" + total_score.to_s + "</b>" + data1
+      data.push data1
+      if total_score.to_i >= 204
+        data.push "P"
+      else
+        data.push "NP"
+      end
+      temp_hash = {}
+      temp_hash = {data2 => data}
+      return temp_hash
+    elsif data2 == "Attachment"
+          filecount_key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key1}
+          filecount = student_cpx.map{|k| k[filecount_key[0]]}.first  ## no. of attachment
+          rec_id = student_cpx.map{|k| k["id"]}.first  ## for the selected student
+          sid = filecount_key.first.split("X").first
+          q_id = filecount_key.first.split("X").last.split("_").first #split the string of ["961225X1049X12532_filecount"]
+          file_key = filecount_key.first.split("_").first
+          file_info = student_cpx.map{|k| k[file_key]}.first
+          file_name = JSON(file_info).first["name"]
+          temp_hash = {}
+          data.push '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + file_name + '"' + ' target="_blank"' + '>' + file_name + '</a>'
+          data.push "" # filler for cols
+          data.push ""
+
+          temp_hash = { data2 => data }
+          return temp_hash
+    end
+#<a href="/ls_files/961225/1/12532/Ager,%20Emily%20CPX%20Performance.pdf">Ager, Emily CPX Performance.pdf</a>
+
+    key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key1}
+    val = student_cpx.map{|k| k[key[0]]}.first
+    data.push val
+    key = student_cpx.map{|k| k.keys}.first.select {|k| k.include? key2}
+    val = student_cpx.map{|k| k[key[0]]}.first
+    if key2 == "ICS5"
+      data.push "<b>" + val.split(".").first + "</b>"+ "/152"
+    elsif key2 == "CIS6"
+      data.push "<b>" + val.split(".").first + "</b>"+ "/140"
+    else
+      data.push "<b>" + val + "</b>"
+    end
+
+    data.push data1
+    temp_hash = {}
+    temp_hash = {data2 => data}
+    return temp_hash
+
+  end
+
+  def format_cpx student_cpx
+    cpx = []
+    cpx.push get_cpx_data(student_cpx, "CIS6", "ICS5", "/292", "Total Test")
+    cpx.push get_cpx_data(student_cpx, "SEP1", "ICS5", "106/152", "Integrated Clinical Encounter (ICE)")
+    cpx.push get_cpx_data(student_cpx, "SEP1", "CIS6", "98/140", "Communication & Interpersonal Skills (CIS)")
+    cpx.push get_cpx_data(student_cpx, "SEP1", "SEP2", "P/NP", "Spoken English Proficiency (SEP)")
+    cpx.push get_cpx_data(student_cpx, "PEE1", "PEE2", "P/NP", "Post Encounter Exercises")
+    cpx.push get_cpx_data(student_cpx, "filecount", "", "", "Attachment")
+    return cpx
+  end
+
+  def hf_get_new_cpx (email)
+    cpx = Cpx.find_by(email: email)
+    if cpx.nil?
+      return nil, true, nil
+    end
+    cpx_data = JSON.parse(cpx.cpx_data)
+    cpx_artifacts = Artifact.find_by(user_id: cpx.user_id, content: 'CPX')
+    return cpx_data, false, cpx_artifacts    # return false meant it found cpx data
+  end
+
+  def hf_get_cpx in_survey
+    #SA:Med18:National Board Licensing Exams:USMLE Exams
+    rr = get_dataset(in_survey, "Clinical Phase", "Clinical Performance Exam (CPX)")
+
+    if rr.nil?
+      return {}
+    end
+    student_cpx = {}
+    student_data = []
+    #limegroups = rr.lime_survey.lime_groups
+
+    #limegroups = rr.lime_survey.lime_groups # used where clause instead of find_by
+    limegroups = rr.lime_groups # used where clause instead of find_by
+    limegroups.each do |grp|
+        lq = grp.lime_questions
+        col_name = get_col_name(lq, "StudentEmail")
+        if !col_name.nil?
+          cpx_data = lq.first.dataset
+          student_cpx = cpx_data.select {|rec| rec["#{col_name}"] == @pk}
+          if student_cpx.empty?
+             return {}
+          end
+          student_data = format_cpx(student_cpx)
+          return student_data
+
+        end
+    end
+  end
+
+ def load_attachments student_attach
+   attach_array = []
+   filecount_key = student_attach.map{|k| k.keys}.first.select {|k| k.include? "filecount"}
+   filecount = student_attach.map{|k| k[filecount_key[0]]}.first  ## no. of attachment
+   if filecount.to_s != ""
+     rec_id = student_attach.map{|k| k["id"]}.first  ## for the selected student
+     sid = filecount_key.first.split("X").first
+     q_id = filecount_key.first.split("X").last.split("_").first #split the string of ["961225X1049X12532_filecount"]
+     file_key = filecount_key.first.split("_").first
+     file_info = student_attach.map{|k| k[file_key]}.first
+     attachments = JSON(file_info)
+     attachments.each do |attach|
+       ls_file = '<a href="/ls_files/' + sid.to_s + '/' + rec_id.to_s + '/' + q_id.to_s + '/' + attach["name"] + '"' + ' target="_blank"' + '>' + attach["name"] + '</a>'
+       attach_array.push ls_file
+     end
+     return attach_array
+   else
+     return []
+   end
+  end
+
+  def hf_get_shelf_attachments in_survey
+    rr = get_dataset(in_survey, "Clinical Phase", "Shelf Exam Score Reports")
+    if rr.nil?
+      return {}
+    end
+    shelf_attachments = []
+    #limegroups = rr.lime_survey.lime_groups
+    limegroups = rr.lime_groups
+    limegroups.each do |grp|
+        lq = grp.lime_questions
+        col_name = get_col_name(lq, "StudentEmail")
+        if !col_name.nil?
+          student_data = lq.first.dataset
+          student_attach = student_data.select {|rec| rec["#{col_name}"] == @pk}
+          if student_attach.empty?
+             return []
+          end
+          shelf_attachments = load_attachments(student_attach)
+          return shelf_attachments
+        end
+    end
+  end
+
+
 
 end

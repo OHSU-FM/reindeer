@@ -1,9 +1,69 @@
 require "spec_helper"
 
-describe User do
+RSpec.describe User, type: :model do
 
   after :each do
     Redis.current.flushdb
+  end
+
+  describe 'coaching system' do
+    it 'has readers for the various coaching system roles' do
+      ['coach', 'student', 'dean'].each do |type|
+        user = create :user, coaching_type: type
+
+        expect(user.send("#{type}?")).to be_truthy
+      end
+    end
+
+    it 'has {role}_or_higher? methods that return booleans' do
+      user = create :user, coaching_type: 'student'
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_falsey
+      expect(user.dean_or_higher?).to be_falsey
+
+      user = create :user, coaching_type: 'coach'
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_truthy
+      expect(user.dean_or_higher?).to be_falsey
+
+      user = create :user, coaching_type: 'dean'
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_truthy
+      expect(user.dean_or_higher?).to be_truthy
+
+      user = create :admin, coaching_type: nil
+      expect(user.student_or_higher?).to be_truthy
+      expect(user.coach_or_higher?).to be_truthy
+      expect(user.dean_or_higher?).to be_truthy
+    end
+
+    it "#cohort returns cohort user belongs to" do
+      c = create :cohort, :with_users
+      user = c.users.first
+      expect(user.cohort).to eq c
+    end
+
+    it "#cohorts returns list of cohorts user owns" do
+      user = build :user
+      c = create :cohort, owner: user
+      c2 = create :cohort
+      expect(user.cohorts).to eq [c]
+      expect(user.cohorts).not_to include c2
+    end
+
+    it "#cohorts returns list of all cohorts as admin" do
+      admin = build :admin
+      c = create :cohort
+      expect(admin.cohorts).to include c
+    end
+
+    describe "#room" do
+      it "creates one if one doesn't exist" do
+        student = create :student, room: nil
+        student.reload
+        expect(User.find(student.id).room).to be_a Room
+      end
+    end
   end
 
   it "has a factory" do
@@ -104,47 +164,9 @@ describe User do
       expect(a.lime_surveys_by_most_recent).to eq [s1, s2]
     end
 
-    it "#cohort returns cohort user belongs to" do
-      c = create :cohort, :with_users
-      user = c.users.first
-      expect(user.cohort).to eq c
-    end
-
-    it "#cohorts returns list of cohorts user owns" do
-      user = build :user
-      c = create :cohort, owner: user
-      c2 = create :cohort
-      expect(user.cohorts).to eq [c]
-      expect(user.cohorts).not_to include c2
-    end
-
-    it "#cohorts returns list of all cohorts as admin" do
-      admin = build :admin
-      c = create :cohort
-      expect(admin.cohorts).to include c
-    end
-
-    it "#active_assignment_groups returns ags user owns that have users" do
-      user = build :user
-      create(:assignment_group, cohort: build(:cohort, owner: user))
-      expect(user.active_assignment_groups.count).to eq 0
-      user2 = build :user
-      create(:assignment_group, cohort: build(:cohort, :with_users, owner: user2))
-      expect(user2.active_assignment_groups.count).to eq 1
-    end
-
-    it "#assignment_groups lists ags user owns" do
-      user = build :user
-      create(:assignment_group, cohort: build(:cohort, owner: user))
-      expect(user.assignment_groups.count).to eq 1
-    end
-
-    it "#assignment_groups lists ags user belongs to" do
-      c = build :cohort, :with_users
-      user = c.users.first
-      create :assignment_group, cohort: c
-
-      expect(user.assignment_groups.count).to eq 1
+    it "#to_param" do
+      u = create :user, username: 'test'
+      expect(u.to_param).to eq 'test'
     end
 
     it "#display_name" do
@@ -162,18 +184,6 @@ describe User do
       test_str.each_with_index {|str, i|
         expect(User.new.display_name str).to eq key[i]
       }
-    end
-
-    it "#unstatused_user_responses?" do
-      (1..3).to_a.each do |i|
-        ua = create :user_assignment, :with_user_responses, ur_count: i, owner_status: nil
-        expect(ua.user.unstatused_user_responses_count).to eq i
-      end
-
-      ua = create :user_assignment
-      ur1 = create :user_response, user_assignment: ua
-      ur2 = create :user_response, owner_status: nil, user_assignment: ua
-      expect(ua.user.unstatused_user_responses_count).to eq 1
     end
   end
 end

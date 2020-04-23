@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= render partial: 'layouts/head' %>
+<body>
+
+<div class="container-flex horizontal">
+  <%= render 'layouts/nav_header' %>
+  <div id="flash-messages">
+    <%= render 'shared/messages' %>
+  </div>
+  <%= yield %>
+</div>
+
+</body>
+</html>

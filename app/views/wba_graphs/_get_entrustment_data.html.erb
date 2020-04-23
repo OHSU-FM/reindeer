@@ -1,0 +1,22 @@
+<div id="EntrustmentID">
+  <% if !@percent_complete.nil? %>
+            <h3><b>EPA Final Summary for <%= @user.full_name %></b></h3>
+            <h5><b>(as of <%= @today_date %>, reviewed by </b>
+               <input type="text" name="reviewedby" placeholder="Entrustment Member"><br>
+            </h5>
+        <hr>
+        <% i = 1 %>
+        <% @percent_complete.drop(1).each do |val| %>
+          <div class="row">
+              <%= render partial: 'qa_percent', locals: {epa_code: "EPA#{i}", epa_percent: val, wba: @wba["EPA#{i}"], epas: epas, idx: i} %>
+              <% i = i + 1 %>
+          </div>
+        <% end %>
+        <button type="button" class="btn btn-md btn-success" onclick="window.print();">Print to File/PDF to Save Data</button>
+
+  <% end %>
+</div>
+
+
+
+<!-- Modal -->

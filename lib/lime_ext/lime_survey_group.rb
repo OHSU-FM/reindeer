@@ -43,7 +43,7 @@ class LimeExt::LimeSurveyGroup
 
   def self.check_table(table_name, col_name, pk)
     LimeTable.table_name = table_name
-    LimeTable.where("#{col_name}" => pk).present?
+    LimeTable.where("#{col_name}": pk).present?
   end
 
   def title

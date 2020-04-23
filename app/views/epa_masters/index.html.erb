@@ -1,0 +1,48 @@
+<h4>Entrustment Review Module</h4>
+
+<div id="container-fluid">
+    <% if can? :crud, Dashboard %>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+                 <span class="float-right">
+                    <%= form_tag(epa_masters_path, method: "get",  style: "float: right; display: block") do %>
+                      <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
+                      <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
+                    <% end %>
+                  </span>
+                  <span>
+                    <% if !@users.nil? %>
+                        <% if @users.count > 1 %>
+                            <div class="panel panel-default", style="float: right; display: inline-block">
+                              <div class="panel-heading">
+                                  <h4 class="panel-title">Search Results </h4>
+                              </div>
+                              <div class="panel-body">
+                                      <% @users.sort_by {|user| user.full_name}.each do |u| %>
+                                         <%= link_to "#{u.full_name} - #{u.id}".html_safe, epa_masters_path(user_id: "#{u.id}")  %><br />
+                                      <% end %>
+                              </div>
+                            </div>
+                        <% elsif @users.empty? %>
+                          <div class="panel panel-default">
+                            <div class="panel-body">
+                               <i><b>Not Found in User Table!</b></i>
+                            </div>
+                          </div
+                        <% end %>
+                    <% end %>
+                  </span>
+            </div>
+          </div>
+        </div>
+    <% end %>
+    <div id=main2-epa-masters %>
+      <%= render partial: 'epa_masters_table' %>
+    </div>
+
+    <div id="main-epa-masters"> </div>
+    <div id="mymodal-epa-review"></div>
+    <div id="mymodal-epa-master"></div>
+    <div id="mymodal-load-qualtrics"></div>
+</div>

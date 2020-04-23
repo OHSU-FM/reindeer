@@ -16,7 +16,7 @@
               <div class="container-fluid">
 
                 <ul class="nav nav-tabs" id="MyCompetencyTabs">
-                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Details/Comments</a></li> 
+                    <li class="active"><a data-toggle="tab" href="#Comments<%= x["CourseID"] %>">Grade Details</a></li>
                     <li><a data-toggle="tab" href="#CoreData<%= x["CourseID"] %>">Competency Summary</a></li>
                     <li><a data-toggle="tab" href="#DetailCompetency<%= x["CourseID"] %>">Competency Details</a></li>
 
@@ -31,7 +31,7 @@
                                             <% if !["MedhubID", "StudentEmail", "StudentName", "CoachEmail", "CoachName", "CourseID"].include? k %>
                                                 <tr>
                                                     <td><%= k %></td>
-                                                    <td><%= v %></td>
+                                                    <td><%= hf_check_display_json(v).html_safe %></td>
                                                 </tr>
                                             <% end %>
                                        <% end %>
@@ -98,7 +98,7 @@
 
                     <div id="DetailCompetency<%= x["CourseID"] %>" class="tab-pane fade">
                          <table class="table borderless table-condensed table-striped ">
-                            <% if x["CourseName"].include? "FoM" %>
+                            <% if x["CourseName"].to_s.include? "FoM" %>
                                 <tr><td></td>
                                     <td><b> ** You have earned enstrustable status for the following competencies in the Foundations of Medicine curriculum. </b></td>
                                 </tr>
@@ -112,7 +112,7 @@
                                                </td>
 
                                                 <% tmp_comment = v.split("^") %>
-                                                <% if x["CourseName"].include? "FoM" %>
+                                                <% if x["CourseName"].to_s.include? "FoM" %>
                                                       <% tmp_comment_fom = tmp_comment[0].split("~") %>
                                                       <td><%= tmp_comment_fom[1] %></td>
                                                 <% else %>

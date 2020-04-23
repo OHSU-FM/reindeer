@@ -6,8 +6,8 @@ class DashboardController < ApplicationController
       redirect_to auto_path
       return
     end
-
-    @surveys = current_user.lime_surveys_by_most_recent(5)
+    get_artifacts
+    #@surveys = current_user.lime_surveys_by_most_recent(5)
     @dash = Dashboard.includes(:dashboard_widgets)
       .where(user_id: current_user.id).first_or_initialize
     authorize! :read, @dash
@@ -38,8 +38,9 @@ class DashboardController < ApplicationController
     @dash.assign_attributes(dashboard_params)
     authorize! :create, @dash
 
+
     respond_to do |format|
-      if @dash.save
+      if @dash.save!
         format.html{ redirect_to dashboard_path(@dash) }
         format.json{ render json: { dash: @dash }, status: :ok }
       else
@@ -67,6 +68,17 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def get_artifacts
+    @artifacts = User.find(current_user.id).artifacts
+    @no_of_docs = 0
+    @artifacts.each do |artifact|
+      if artifact.documents.attached?
+           @no_of_docs += artifact.documents.count.to_s.to_i
+      end
+    end
+
+  end
 
   def do_gon
     gon.dashboard_widgets = @dash.dashboard_widgets

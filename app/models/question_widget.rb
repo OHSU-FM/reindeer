@@ -3,7 +3,7 @@ class QuestionWidget < ActiveRecord::Base
   # Because we use FilterManager
   include LsReportsHelper
   # Because Science
-  has_paper_trail
+  #has_paper_trail
 
   belongs_to :role_aggregate
   belongs_to :lime_question, foreign_key: :lime_question_qid, primary_key: :qid

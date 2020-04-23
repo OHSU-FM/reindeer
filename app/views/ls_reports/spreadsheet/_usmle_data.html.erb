@@ -1,24 +1,75 @@
-<table style="width: 30%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
-  <tr>
-    <% @usmle_data.each do |data| %>
-      <% data.each do |key, val| %>
+
+<div class="row">
+   <div class="column left">
+      <!--table style="width: 40%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">  -->
+      <table  class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+        <tr><th><h4>USMLE Step Exams</h4></th><th></th><th></th></tr>
         <tr>
-          <% if key.include? "Knowledge" %>
-            <td><font color="blue"><%= key %></font></td>
-            <td><font color="blue"><b><%= val %></b></font></td>
-          <% elsif  key.include? "USMLE" %>
-            <td><font color="#6f9090"><%= key %></font></td>
-            <td><font color="#6f9090"><b><%= val %></b></font></td>
-          <% elsif key.include? "Skill" %>
-            <td><font color="#b52e2b"><%= key %></font></td>
-            <td><font color="#b52e2b"><b><%= val %></b></font></td>        
+          <th></th>
+          <th>1st Attempt</th>
+          <th>2nd Attempt</th>
+        </tr>
+        <tr>
+          <% @usmle_data.each do |key, val| %>
+              <tr>
+                <% if key.include? "Knowledge" %>
+                  <td><font color="blue"><%= key %></font></td>
+                    <% val.each do |v| %>
+                     <td><font color="blue"><b><%= v %></b></font></td>
+                    <% end %>
+                <% elsif  key.include? "USMLE" %>
+                  <td><font color="#6f9090"><%= key %></font></td>
+                     <% val.each do |v| %>
+                       <td><font color="#6f9090"><b><%= v %></b></font></td>
+                     <% end %>
+                <% elsif key.include? "Skill" %>
+                  <td><font color="#b52e2b"><%= key %></font></td>
+                    <% val.each do |v| %>
+                       <td><font color="#b52e2b"><b><%= v %></b></font></td>
+                    <% end %>
+                <% end %>
+              </tr>
+
           <% end %>
         </tr>
-      <% end %>
-    <% end %>
-  </tr>
- 
-  <tr>
 
-  </tr>
-</table>
+        <tr>
+
+        </tr>
+      </table>
+    </div>
+  <div class="column right">
+    <% if @not_found_cpx %>
+      <table  class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
+            <tr><th><h4>Clinical Performance Exam (CPX)</h4></th><th></th><th></th><th></th></tr>
+            <tr>
+              <th></th>
+              <th>Date</th>
+              <th>Total Score</th>
+              <th>Pass</th>
+            </tr>
+
+          <% @cpx_data.each do |data| %>
+           <% data.each do |key, value| %>
+                <tr>
+                  <td><%= key %></td>
+                    <% if key == "Attachment" %>
+                      <% value.each do |data| %>
+                        <td><%= data.html_safe %></td>
+                      <% end %>
+                      </ul>
+                    <% else %>
+                      <% value.each do |data| %>
+                        <td><%= data.to_s.html_safe %></td>
+                      <% end %>
+                    <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+      </table>
+    <% else %>
+      <%= render partial: 'ls_reports/spreadsheet/cpx_data' %>
+    <% end %>
+  </div>
+
+</div>

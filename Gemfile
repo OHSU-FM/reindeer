@@ -4,11 +4,12 @@ source "https://rubygems.org"
 # Main
 ##############################
 gem "bundler"
-gem 'rails', '5.0.0.1'
+gem 'rails', '~> 5.2.2.1'
 gem "rdoc"
+#gem 'pg', '~>0.21'
 
 # Database
-gem "pg"
+gem 'pg'
 gem "composite_primary_keys"
 gem "redis", "~>3.2"
 
@@ -36,21 +37,24 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-
-gem "sass-rails"
+gem "popper_js", "~> 1.14.3"
+gem "bootstrap-sass", '~> 3.3.7'
+gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-
+gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
 gem "jquery-rails"
-gem "jquery-ui-rails"
+#gem "jquery-ui-rails"
 
 # CSS / js
-gem "bootstrap-sass"
 # Random bug:
 # Error encountered while saving cache (".....") can't dump anonymous class
 # http://stackoverflow.com/questions/22276991/heroku-error-encountered-while-saving-cache
 gem "sass"#, "~> 3.2.13"
 gem "select2-rails"
+
+# pagination
+gem 'kaminari'
 
 ##############################
 # UI: Charts
@@ -75,8 +79,6 @@ gem "simple_form"
 gem "high_voltage"
 # Statistics
 gem "descriptive-statistics"
-
-gem "smart_listing"
 
 ##############################
 # Analysis
@@ -106,6 +108,7 @@ group :test, :development do
     gem "better_errors"
     gem "stackprof"
     gem "ruby-prof"
+    gem "pry"
   end
 end
 
@@ -118,7 +121,7 @@ end
 group :development do
   gem "rack-mini-profiler", require: false
   gem "webrick"
-  gem "thin"
+  gem "puma"
   gem "rails_layout"
   gem "awesome_print"
 
@@ -131,6 +134,24 @@ group :development do
   gem "guard"
   gem "guard-rspec"
 end
-
+gem 'mini_racer'
+gem 'autoprefixer-rails'
 gem 'rufus-scheduler'
-gem 'whenever', :require => false
+gem 'whenever', require: false
+gem 'nested_form_fields'
+gem 'turbolinks', '~> 5.0', '>= 5.0.1'
+gem 'rails-ujs', '~> 0.1.0'
+# highchart
+gem "highcharts-rails"
+gem "lazy_high_charts"
+#gem 'chartkick'
+#gem 'groupdate'
+#=======================
+# dataTables
+gem 'jquery-datatables'
+#========================
+gem "csv_hasher"
+gem 'activestorage-validator', '~> 0.1.0'
+gem 'bullet', group: 'development'
+gem 'font-awesome-sass', '~> 4.4.0'
+gem "font-awesome-rails"

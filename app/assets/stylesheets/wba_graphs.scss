@@ -1,0 +1,68 @@
+// Place all the styles related to the wba_graphs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+//@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+// @import "font-awesome-sprockets";
+// @import "font-awesome";
+.center-div
+{
+     margin: auto;
+     max-width: 1600px;
+}
+.inner-div
+{
+  margin: auto;
+  max-width: 1400px;
+}
+.bold-italic {
+    font-weight: bold;
+    font-style: italic;
+
+}
+.nav-tabs {
+    padding-top: 10px;
+    padding-left: 0px;
+    margin-bottom: 0;
+    border: none;
+}
+.tab-content {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+input[type=checkbox], input[type=radio] {
+    vertical-align: middle;
+}
+input[type=radio] {
+    bottom: 2px;
+}
+
+.panel-title > a:before {
+    float: right !important;
+    font-family: FontAwesome;
+    content:"\f068";
+    padding-right: 5px;
+}
+.panel-title > a.collapsed:before {
+    float: right !important;
+    content:"\f067";
+}
+.panel-title > a:hover,
+.panel-title > a:active,
+.panel-title > a:focus  {
+    text-decoration:none;
+}
+h3 {
+  text-align:center;
+}
+h5 {
+  text-align:center;
+}
+input[type="text"]{
+background-color:#caf4dd !important
+}
+
+.modal-dialog-centered .modal-content {
+  width: 100%;
+}

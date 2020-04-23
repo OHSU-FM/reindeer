@@ -1,33 +1,54 @@
-<table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
-    <% @preceptor_view.each do |p| %>
-      <tr>
-          <% p.each do |key, val| %>
-              <% if ["Preceptor Name", "Submit Date", "Grade", "Term", "Comment"].include? key %>
-                  <td><b><%= key.nil? ? "Comments" : key %> </b></td>
-                  <% val.each do |d| %>
-                      <td><%= d %> </td>
-                  <% end %>
-              <% end %>
+<div id="Preceptorship-FoM">
+  <% if !@preceptorship.empty? %>
+      <table style="width: 80%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center">
+          <% @preceptor_view.each do |p| %>
+            <tr>
+                <% p.each do |key, val| %>
+                    <% if ["Preceptor Name", "Submit Date", "Grade", "Term", "Comment", "Professional Concerns Comments", "MSPE Comments", "Comment/Feedback"].include? key %>
+                        <td><b><%= key %> </b></td>
+                        <% val.each do |d| %>
+                            <td><%= d %> </td>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </tr>
           <% end %>
-      </tr>
-    <% end %>
-</table>
-<table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
-    <tr>
-      <td>
-          <div id="data-visualization-1" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
-      </td>
-      <td>
-          <div id="data-visualization-2" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
-      </td>
-    </tr>
-    <tr>
-      <td>
-          <div id="data-visualization-3" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
-      </td>
-      <td>
-          <div id="data-visualization-4" style="min-width: 800px; height: 400px; margin: 0 auto"></div>
-      </td>
-
-    </tr>
-</table>
+      </table>
+      <table style="width: 80%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body noBorder center">
+        <% if @preceptorship.count == 8 %>
+          <% hash_count = 7 %>
+        <% else %>
+          <% hash_count = 4  %>
+        <% end %>
+        <% for i in  1..hash_count  %>
+          <tr>
+            <td>
+                <div class="col-sm-4" id="table-visualization-<%= i %>" ></div>
+                  <table style="background-color:#f2f2f2">
+                    <body>
+                      <% if !["Professional Concerns Comments", "MSPE Comments", "Comment/Feedback"].include? @preceptorship[i][0].flatten.first %>
+                          <tr><td colspan='3' style="text-align:center"><h4>Preceptorship Evaluations</h4></td></tr>
+                          <tr><td style="text-align:right;"><b>Competency: <i><%= hf_decode_comp(@preceptorship[i][0].flatten.first) %></i></b></td>
+                            <% @preceptorship[0][3]["Term"].each do |term| %>
+                              <td style='width:130px; text-align:center'><b><%= term %></b></td>
+                            <% end %>
+                          </tr>
+                          <% @preceptorship[i].each do |precept| %>
+                            <tr><td style="text-align:right;"><%= precept.first[0] %></td>
+                              <% precept.first[1].each do |comp| %>
+                                <% preceptor_comp = hf_decode_preceptor_comp(comp) %>
+                                <td class="<%= preceptor_comp %>" style="text-align:center; vertical-align:middle">
+                                  <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_precetor_comp_def(preceptor_comp) %>" ><%= preceptor_comp %></a></span>
+                                </td>
+                              <% end %>
+                            </tr>
+                          <% end %>
+                      <% end %>
+                    </body>
+                  </table>
+              </td>
+            </tr>
+        <% end %>
+      </table>
+  <% end %>
+</div>

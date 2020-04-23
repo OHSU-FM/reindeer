@@ -1,0 +1,15 @@
+<% csl_feedbacks.sort_by{|c| c.submit_date}.each do |eval| %>
+
+  <tr>
+      <td><%= eval.csl_title %> </td>
+      <td><%= eval.submit_date %> </td>
+      <td><%= eval.instructor %> </td>
+      <td><%= eval.selected_student %> </td>
+      <td><%= eval.c1 %> </td>
+      <td><%= eval.c1_feedback %> </td>
+      <td><%= eval.c2 %> </td>
+      <td><%= eval.c2_feedback %> </td>
+      <td><%= eval.feedback_strength %> </td>
+      <td><%= eval.feedback_improve %> </td>
+  </tr>
+<% end %>

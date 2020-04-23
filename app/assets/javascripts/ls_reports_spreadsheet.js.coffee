@@ -92,37 +92,45 @@ get_all_series_data = (series_data_hash, in_type) ->
         series_data.push series_data_hash[k]
   series_data
 
-get_all_series_data_allblocks = (series_data_hash, in_type) ->
-  series_data = []
-  for k of series_data_hash
-    if series_data_hash.hasOwnProperty(k)
-      if in_type =="student"
-        if k.includes('Comp1')
-          series_data.push {y: series_data_hash[k], color:'Salmon'}
-        else if k.includes('Comp2')
-          series_data.push {y: series_data_hash[k], color:'AquaMarine'}
-        else if k.includes('Comp3')
-          series_data.push {y: series_data_hash[k], color:'Plum'}
-        else if k.includes('Comp4')
-          series_data.push {y: series_data_hash[k], color:'Khaki'}
-        else if k.includes('Comp5')
-          series_data.push {y: series_data_hash[k], color:'LawngGreen'}    
-        else
-          console.log ('found else: ' + k)
-          series_data.push series_data_hash[k]
+get_allblocks_color = (k) ->
+  if k.includes('Comp1')
+    return 'Salmon'
+  else if k.includes('Comp2')
+    return 'AquaMarine'
+  else if k.includes('Comp3')
+    return 'Plum'
+  else if k.includes('Comp4')
+    return '#4d88ff'
+  else if k.includes('Comp5')
+    return 'LawnGreen'
+  else
+    console.log ('found else: ' + k)
 
-      else
-        series_data.push series_data_hash[k]
-  series_data  
+get_desc = (k) ->
+  if k.includes('Comp1')
+    return 'Component 1 - Weekly Tests/Quizzes'
+  else if k.includes('Comp2')
+    return 'Component 2 - Skills Assessments'
+  else if k.includes('Comp3')
+    return 'Component 3 - OHSU Final Block Exam'
+  else if k.includes('Comp4')
+    return 'Component 4 - NBME Exam'
+  else if k.includes('Comp5')
+    return 'Component 5 - Final Skills Exam'
+  else
+    console.log ('found else: ' + k)
+
 
 get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category) ->
   show_legend_1 = true
-  show_legend_2 = true  
+  show_legend_2 = true
   return {
-    chart: renderTo: render_to_2
+    chart:
+      renderTo: render_to_2
+      plotBackgroundImage: ''
     title: text: graph_title
     subtitle: text: graph_sub_title
-    xAxis: 
+    xAxis:
       categories: xAxis_category
 
     colors: [
@@ -153,7 +161,7 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
                     color: Highcharts.getOptions().colors[1]
                 }
             }
-        }, { 
+        }, {
             title: {
                 text: '',
                 style: {
@@ -176,7 +184,7 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
     },
     plotOptions: {
         series: {
-          pointPadding: 0, 
+          pointPadding: 0,
           groupPadding: 0
         }
     },
@@ -193,11 +201,11 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
         data: series_data_1_nc,
         tooltip: {
           valueSuffix: '%'
-          formatter: ->       
+          formatter: ->
               return '<b>'+ this.x +'</b>' + '<br/><span style="color:'+ this.point.series.color +'"> ' + this.point.series.name + ': ' + this.y+'%</span>';
 
-        } 
-               
+        }
+
     }, {
         type: 'scatter'
         color: 'black'
@@ -217,41 +225,129 @@ get_options = (series_data_1, series_data_1_nc, series_data_2, graph_title, grap
                       font: '10px Helvetica'
                      }
         }
-    }]    
+    }]
     }
 
-build_options = (in_data, in_mean_data, render_to_2, graph_title, graph_sub_title) ->
-  # in_data is in hash format
+get_desc2 = (in_data) ->
+  $.each in_data, (key, val) ->
+    console.log "key: " + key + " ---> val: " + val
+    if key == "Term"
+      return val
 
-  console.log("in_data['Comp1']: " + in_data["Comp1"])
+normalize = (val) ->
+  for i of val
+    if val[i] == '888'
+      val[i] = 0
+    else if val[i] == '999'
+      val[i] = 0
+    else
+      val[i] = val[i] * 1
+
+  return val
+
+reformat_in_data = (in_data) ->
+  new_array = []
+  sm_array = []
+  i = 0
+  while (i < 3)
+    sm_array = []
+    j = 0
+    while (j < 4)
+      #console.log ("in_data: j=" + j + "-> "  + in_data[j][i])
+      sm_array.push in_data[j][i]
+      j = j + 1
+    new_array.push sm_array
+    i = i + 1
+  return new_array
+
+generate_table = (target_idx, in_term, in_categories, in_array, graph_title, graph_sub_title) ->
+
+  console.log "graph_title: " + graph_title
+  console.log "graph_sub_title: " + graph_sub_title
+
+
+  $("#table-visualization-" + target_idx).remove
+  $("#table-visualization-" + target_idx).html ""
+  table = $("#table-visualization-" + target_idx)
+  row = "<tr><td colspan='3'style='text-align:center'>" + graph_title + "<br/>" + graph_sub_title+ "</td></tr>"
+  table.append(row)
+  col = ""
+  col = "<td>" + "<b>Competency</b>" + "</td>"
+  i = 0
+  columnCount = in_term.length
+  while i < columnCount
+    col = col +  "<td style='width:130px; text-align:center; '><b>" + in_term[i] + "</b></td>"
+    i++
+  content = "<tr style='height: 10px'>" + col + "</tr>"
+  table.append(content)
+
+  i = 0
+  while i < in_array.length
+    j = 0
+    col = ""
+    content = ""
+    col = "<td>" + in_categories[i] + "</td>"
+    while j < columnCount
+      href_tip = '<a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_precetor_comp_codes(' + in_array[i][j] + ')%>" >' + in_array[i][j] + '</a></span>'
+      col = col + "<td style='text-align:center; vertical-align:middle; border-width:thin; border-color:black'>" + in_array[i][j] + "</td>"
+      j++
+    content = "<tr>" + col + "</tr>"
+    table.append(content)
+    i++
+
+
+  $ ->
+    $('#table-visualization-' + target_idx + ' td').each ->
+      if $(this).text() == '1'
+        $(this).text("Beginning")
+        $(this).css 'background-color', 'lightyellow'
+      if $(this).text() == '2'
+        $(this).text("Effort")
+        $(this).css 'background-color', 'pink'
+      else if $(this).text() == '3'
+            $(this).text("Threshold")
+            $(this).css 'background-color', 'lightblue'
+      else  if $(this).text() == '4'
+            $(this).text("Ready")
+            $(this).css 'background-color', 'lightgreen'
+      else  if $(this).text() == '888'
+            $(this).text("N/A")
+            $(this).css 'background-color', 'lightpurple'
+      return
+    return
+
+
+check_series_data = (in_data) ->
+  data_array = []
+  i = 0
+  while i < in_data.length
+    if in_data[i] < 70
+      data_array.push {y: in_data[i], color: '#FFA500'}
+    else
+      data_array.push in_data[i]
+    i++
+  return data_array
+
+build_options = (idx, in_data, in_mean_data, render_to_2, graph_title, graph_sub_title, category) ->
 
   seriesArr = []
-  #$.each in_data, (key, val) ->
-  #  console.log ("key: " + val.name)
-  #  console.log ('val: ' + val.data)
-    #if val.name.includes("Mean")
-    #  seriesArr.push {name: val.name, type: 'column', marker: {symbol: 'diamond'}, color: val.color, data: val.data}
-    #else
-  seriesArr.push {name: "Comp1", type: "column", pointWidth: 12,  data: in_data["Comp1"]}
-  seriesArr.push {name: "Clas Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data["Comp1"], color: "black"}
-    #return
 
-  #$.each in_mean_data, (key, val) ->
-  #  seriesArr.push {name: val.name, type: "column", pointWidth: 10, marker: {symbol: 'diamond'}, color: 'blue', data: val.data}
-  #  return
+  console.log ("build_options -> in_data: " + in_data)
 
-
-  console.log ("seriesArr[0]: " + seriesArr[0].name)
+  seriesArr.push {name: get_desc(idx), type: "column", pointWidth: 12,  data: check_series_data(in_data), color: get_allblocks_color(idx)}
+  seriesArr.push {name: "Class Mean", type: "scatter", marker: {symbol: 'diamond'}, pointWidth: 12, data: in_mean_data, color: "black"}
 
   show_legend_1 = true
-  show_legend_2 = true  
+  show_legend_2 = true
 
   return {
-    chart: renderTo: render_to_2
+    chart:
+      renderTo: render_to_2
+      plotBackgroundImage: ''
     title: text: graph_title
     subtitle: text: graph_sub_title
-    xAxis: 
-      categories: ["FUND", "BLHD", "SBM", "CPR", "HODI", "NSF", "DEVH" ]
+    xAxis:
+      categories: category
       tickInterval: 1
       labels:
         enabled: true
@@ -285,7 +381,7 @@ build_options = (in_data, in_mean_data, render_to_2, graph_title, graph_sub_titl
                     color: Highcharts.getOptions().colors[2]
                 }
             }
-        }, { 
+        }, {
             title: {
                 text: '',
                 style: {
@@ -308,14 +404,14 @@ build_options = (in_data, in_mean_data, render_to_2, graph_title, graph_sub_titl
     },
     plotOptions: {
         series: {
-          pointPadding: 0.2, 
+          pointPadding: 0.2,
           groupPadding: 0.1
         }
     },
     series: seriesArr
   }
 
-create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc,comp_class_mean_hash, in_code, in_series_name) ->
+create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash_nc, comp_class_mean_hash, in_code, in_series_name) ->
   date = new Date()
   new_date = "As of Date: " + (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()
   render_to_2 = graph_target
@@ -323,11 +419,13 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
   show_legend_2 = true          #series_data_2 = "Null"
   graph_type = "column"
 
+  console.log("render_to_2: " + graph_target)
+
   if in_code == 'all-comp'
     series_data_1 = get_all_series_data(series_data_hash, "student")
     series_data_2 = get_all_series_data(comp_class_mean_hash, "student")
     graph_title = "Student Attainment of Required Number of Entrustable Milestones by UME Competency."
-    graph_sub_title = "<b>% Complete - " + new_date + "</b>" 
+    graph_sub_title = "<b>% Complete - " + new_date + "</b>"
     series_data_1 = series_data_2
     series_data_2 = "Null"
     show_legend_2 = false          #series_data_2 = "Null"
@@ -348,13 +446,28 @@ create_graph = (graph_target, xAxis_category, series_data_hash, series_data_hash
     options = get_options(series_data_1, series_data_1_nc, series_data_2, graph_title, graph_sub_title, series_data_name_1, series_data_name_2, render_to_2, graph_type, xAxis_category)
     window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
   else if in_code == 'allblocks'
-    data = series_data_hash
-    mean_data = comp_class_mean_hash
+    #data = series_data_hash
+    #mean_data = comp_class_mean_hash
 
     graph_title = new_date + " (" + in_series_name + ")"
     graph_sub_title = "<b>ALL BLOCK</b>"
-    options = build_options(data, mean_data, graph_target, graph_title, graph_sub_title)
-    window.chart2 = Highcharts.chart($.extend(true, null, theme_light, options))
+    i = 0
+    window.chart2 = []
+    category1 = ["FUND", "BLHD", "SBM", "CPR", "HODI", "NSF", "DEVH" ]
+    category2 = ["FUND-HSS", "FUND-BSS", "BLHD-HSS", "BLHD-BSS", "SBM-HSS", "SBM-BSS", "CPR-HSS", "CPR-BSS",  "HODI-HSS", "HODI-BSS", "NSF-HSS", "NSF-BSS", "DEVH-HSS" , "DEVH-BSS"]
+    $.each series_data_hash, (key, val) ->
+      console.log ("key: " + key)
+      console.log ('val: ' + val)
+      data = val
+      mean_data = comp_class_mean_hash[key]
+      graph_target = "data-visualization-" + key
+      if key == "Comp2" or key == "Comp5"
+        options = build_options(key, data, mean_data, graph_target, graph_title, graph_sub_title, category2)
+      else
+        options = build_options(key, data, mean_data, graph_target, graph_title, graph_sub_title, category1)
+      window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
+      i = i + 1
+
   else
     series_data_1 = get_series_data(series_data_hash, in_code, "student")
     series_data_1_nc = get_series_data_nc(series_data_hash_nc, in_code, "student")
@@ -384,22 +497,8 @@ theme_dark =
         '#a32a00'
       ]
       chart:
-        backgroundColor:
-          linearGradient:
-            x1: 0
-            y1: 0
-            x2: 1
-            y2: 1
-          stops: [
-            [
-              0
-              '#2a2a2b'
-            ]
-            [
-              1
-              '#3e3e40'
-            ]
-          ]
+        plotBackgroundImage: ''
+        backgroundColor: '#6C6E6D'
         style: fontFamily: 'sans-serif'
         plotBorderColor: '#606063'
       title: style:
@@ -490,51 +589,68 @@ theme_dark =
       textColor: '#C0C0C0'
       contrastTextColor: '#F0F0F3'
       maskColor: 'rgba(255,255,255,0.3)'
-"<b>% Complete</b><br /><b>* Grey bar indicates tracked competency without meeting the clinical context requirement for entrustability.</b><br/>
-<b>For a complete list of competencies that meet this criteria, please refer to pp. 51-52 of the Student Handbook.</b>"
 
-theme_light =
-  colors: [
-    '#7cb5ec'
-    '#f7a35c'
-    '#90ee7e'
-    '#7798BF'
-    '#aaeeee'
-    '#ff0066'
-    '#eeaaee'
-    '#55BF3B'
-    '#DF5353'
-    '#7798BF'
-    '#aaeeee'
-  ]
-  chart:
-    backgroundColor: 'white'
-    style: fontFamily: 'sans-serif'
-  title: style:
-    fontSize: '16px'
-    fontWeight: 'bold'
-    textTransform: ''
-  tooltip:
-    borderWidth: 0
-    backgroundColor: 'rgba(219,219,216,0.8)'
-    shadow: false
-  legend: itemStyle:
-    fontWeight: 'bold'
-    fontSize: '13px'
-  xAxis:
-    gridLineWidth: null
-    labels: style: fontSize: '12px'
-  yAxis:
-    minorTickInterval: 'auto'
-    title: style: textTransform: 'uppercase'
-    labels: style: fontSize: '12px'
-  plotOptions: candlestick: lineColor: '#404048'
-  background2: '#F0F0EA'
+
+  theme_light =
+    colors: [
+      '#7cb5ec'
+      '#f7a35c'
+      '#90ee7e'
+      '#7798BF'
+      '#aaeeee'
+      '#ff0066'
+      '#eeaaee'
+      '#55BF3B'
+      '#DF5353'
+      '#7798BF'
+      '#aaeeee'
+    ]
+    chart:
+      backgroundColor: '#e8f4ea'
+      style: fontFamily: 'sans-serif'
+    title: style:
+      fontSize: '16px'
+      fontWeight: 'bold'
+      textTransform: ''
+    tooltip:
+      borderWidth: 0
+      backgroundColor: 'gray'
+      shadow: false
+    legend: itemStyle:
+      fontWeight: 'bold'
+      fontSize: '13px'
+    xAxis:
+      gridLineWidth: null
+      labels: style: fontSize: '12px'
+    yAxis:
+      minorTickInterval: 'auto'
+      title: style: textTransform: 'uppercase'
+      labels: style: fontSize: '12px'
+
 
 $(document).ready ->
 
-    return unless gon?
+    $('.Precept-FoM').on 'click', ->
+      $('.nav-tabs a:first').tab('show')
+      setTimeout (->
+        #something you want delayed
+        document.getElementById("Preceptorship-FoM").scrollIntoView()
+        console.log ("scroll into View!!")
+        return
+      ), 2000
+      return
 
+    $('.CSLEvals-FoM').on 'click', ->
+      $('.nav-tabs a:first').tab('show')
+      setTimeout (->
+        #something you want delayed
+        document.getElementById("csl_evaluation").scrollIntoView()
+        console.log ("scroll into View!!")
+        return
+      ), 2000
+      return
+
+    return unless gon?
 
     # Load the fonts
     Highcharts.createElement 'link', {
@@ -543,38 +659,6 @@ $(document).ready ->
       type: 'text/css'
     }, null, document.getElementsByTagName('head')[0]
 
-    $(".spreadsheet ").DataTable({"aLengthMenu":[[25,50,100,200,-1],[25,50,100,200,"All"]],
-    dom: '<"H"Tfr>t<"F"ip>',
-    tableTools: {aButtons: ["copy",
-                              {
-                                    "sExtends": "collection",
-                                    "sPdfOrientation": "landscape",
-                                    "sButtonText": 'Save <span class="caret" />',
-                                    "aButtons":    [ "csv", "xls" ]
-                                }], sSwfPath: window.BASE_URL+"assets/dataTables/extensions/TableTools/swf/copy_csv_xls_pdf.swf" }}  )
-
-    $.extend( true, $.fn.DataTable.TableTools.classes, {
-        "container": "btn-group",
-        "buttons": {
-                    "normal": "btn",
-                    "disabled": "btn disabled"
-                    },
-        "collection": {
-                        "container": "DTTT_dropdown dropdown-menu",
-                        "buttons": {
-                            "normal": "",
-                            "disabled": "disabled"
-                        }
-                      }
-        } );
-
-    $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
-        "collection": {
-                        "container": "ul",
-                        "button": "li",
-                        "liner": "a"
-                      }
-     } );
 
     $('[title]').each ->
         $(this).tooltip
@@ -729,10 +813,12 @@ $(document).ready ->
     #Save the HighChart Default Theme
     HCDefaults = $.extend(true, {}, Highcharts.getOptions(), {})
     if @series_data != ""
-      window.chart = Highcharts.chart($.extend(true, null, theme_dark, {
+      window.chart = Highcharts.chart($.extend(true, null, HCDefaults, {
         chart:
           renderTo: window.render_to
+          plotBackgroundImage: ''
           polar: true
+          type: 'line'
         title: text: graph_title
         subtitle: text: ''
         xAxis: categories: ['Overall EPA', 'EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6', 'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13']
@@ -879,7 +965,7 @@ $(document).ready ->
         @code = 'all-comp'
         @graph_target = "data-visualization-" + "all-comp"
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
-      else if currentTab.includes("FoM Block")
+      else if currentTab.includes("FoM Blocks")
         return unless gon?
 
         @all_comp_codes = if gon.all_comp_codes? then gon.all_comp_codes else ''
@@ -889,8 +975,20 @@ $(document).ready ->
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = ["Comp1", "Comp2", "Comp3", "Comp4", "Comp5"]
         @code = 'allblocks'
-        @graph_target = "data-visualization-" + "allblocks"
+        @graph_target = ""
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
+
+      else if currentTab.includes("Preceptorship")
+        return unless gon?
+
+        @series_data_2 = if gon.preceptorship? then gon.preceptorship else ''
+        @precept_class_mean = if gon.preceptorship_class_mean? then gon.preceptorship_class_mean else ''
+        @series_data_2_nc = ""
+        @series_name = if gon.series_name? then gon.series_name else ''
+        @xAxis_category = ""
+        @code = 'preceptorship'
+        @graph_target = ""
+        precept_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @precept_class_mean, @code, @series_name)
       else if not currentTab.includes("EPA-Graph")
         return unless gon?
 

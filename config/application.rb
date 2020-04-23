@@ -29,7 +29,6 @@ module EdnaConsole
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"]
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/**/*.rb"]
     config.autoload_paths += Dir["#{Rails.root.to_s}/lib/"]
-    config.autoload_paths += Dir["#{Rails.root.to_s}/app/services/**/*.rb"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -70,8 +69,8 @@ module EdnaConsole
     # Setup automatic code generator configuration
     # E.g. $ rails g model WhipperSnapper
     config.generators do |g|
-      g.test_framework :minitest, spec: true, fixture: false
-      g.integration_tool :minitest
+      g.test_framework :rspec, spec: true, fixture: false
+      g.integration_tool :rspec
     end
 
   end

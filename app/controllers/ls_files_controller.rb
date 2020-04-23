@@ -36,8 +36,8 @@ class LsFilesController < ApplicationController
             raise ActionController::RoutingError.new('File not Found')
             return
         end
-
-        # Send the file
-        send_file fpath, :filename=>f_inf['name'], :type => 'application/octet-stream', :disposition=>:attachment, :x_sendfile=>true
+        # to download attatment from REDEI
+        # :disposition=>'attatment'  --> to ddownload
+        send_file fpath, :filename=>f_inf['name'], :type => 'application/pdf', :disposition=>'inline', :target=>"_blank"
     end
 end

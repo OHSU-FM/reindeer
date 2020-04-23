@@ -13,6 +13,7 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  config.action_controller.include_all_helpers = false
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
@@ -20,7 +21,7 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_files = true
+  #config.serve_static_files = true
 
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = :uglifier
@@ -28,14 +29,14 @@ Rails.application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = true
-
+  config.public_file_server.enabled = true
   # Generate digests for assets URLs.
   config.assets.digest = false
   config.assets.compress = false
 
   # Specifies the header that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
-  # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
+  config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
@@ -89,4 +90,7 @@ Rails.application.configure do
           :exception_recipients => Settings.exception_notification.exception_recipients
       }
   end
+  config.action_cable.allowed_request_origins = ["https://redei.ohsu.edu"]
+  config.action_cable.url = "wss://redei.ohsu.edu/websocket" 
+  config.active_storage.service = :production
 end

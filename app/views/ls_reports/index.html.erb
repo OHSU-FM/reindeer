@@ -2,12 +2,7 @@
 
   <h1>Reports</h1>
   <div class="row main">
-    <div class="col-md-12">
-      <%= select_tag "user",
-        grouped_options_for_select(hf_report_filter_hash(@cohorts), ls_reports_path(pk_filter: params[:pk_filter])),
-        include_blank: "All Students",
-        class: "needs-select2 collection-select" %>
-    </div>
+
   </div>
   <table class="table table-hover">
     <thead>
@@ -37,22 +32,43 @@
       <tr>
       <td colspan="5" style="text-align:left;">
         <h3><i><%= hf_group_title(group.title).html_safe %></i></h3>
+        <% cohort_title = group.title.split(":").second %>
       </td>
     </tr>
+
   <% end %>
     <% role_aggregates = group.role_aggregates.sort_by{|ra|ra.lime_survey.last_updated.to_date} %>
     <% role_aggregates.each do |ra| %>
       <tr>
-      <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]),
-        :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
-      <% full_acc = can?(:unfiltered_read, ra) %>
-      <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
-          data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
-          ></i></td>
-      <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
-    </tr>
-  <% end %>
-  <% end %>
+
+        <% if ra.name.include? "CSL" %>
+          <td style="padding-left:20px;"><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]), method: :get,
+            :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+        <% else %>
+          <td><%= link_to ra.name, polymorphic_path([ra.default_view, :ls_report], :sid=>ra.lime_survey_sid, pk: params[:pk_filter]), method: :get,
+            :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
+        <% end %>
+
+          <% full_acc = can?(:unfiltered_read, ra) %>
+          <td><i class="fa fa-<%= full_acc ? 'unlock' : 'filter' %>" style="color:<%= full_acc ? 'green' : 'maroon'%>;"
+              data-toggle="tooltip" title="<%= full_acc ? "All data is visible" : "Only permitted records are visible"%>"
+              ></i></td>
+          <td><%= ra.lime_survey.last_updated.to_s.to_date %></td>
+        </tr>
+        <% csl_title = hf_csl_feedbacks_title(ra.name, @csl_feedbacks_title) %>
+        <% if !csl_title.nil? %>
+            <tr>
+              <td style="padding-left:20px;"><%= link_to(csl_title, csl_feedbacks_index_path(cohort: cohort_title, email: @pk, block: "FUND"), target: '_blank') %></td>
+            </tr>
+        <% end %>
+      <% end %>
+      <% if current_user.coaching_type == "student" %>
+          <tr><td><%= link_to("<b>Clinical Phase Dataset (EPAs/WPASs/Badges)</b>".html_safe, user_competencies_path(user_id: current_user.id)) %></td></tr>
+      <% end %>
+    <% end %>
+
+
+
     </tbody>
   </table>
 </div>

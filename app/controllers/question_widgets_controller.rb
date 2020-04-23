@@ -9,15 +9,19 @@ class QuestionWidgetsController < ApplicationController
 
     respond_to do |format|
       if @question_widget.save
-        format.html { redirect to root_path, notice: 'Added to dashboard' }
+        #byebug
+        format.html { redirect_to root_path, notice: 'Added to dashboard' }
         format.json { render json: { message: 'Added to dashboard',
                                      dash_widget_id: dash_widget.id },
                       status: :created}
+
       else
-        format.html { redirect to root_path, notice: 'Error adding to dashboard' }
+        format.html { redirect_to root_path, notice: 'Error adding to dashboard' }
         format.json { render json: { message: 'Error adding to dashboard' },
                       status: :unprocessable_entity }
       end
+
+
     end
   end
 

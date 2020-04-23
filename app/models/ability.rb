@@ -1,11 +1,12 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize user
     user ||= User.new                   # guest user (not logged in)
 
     alias_action :create, :read, :update, :destroy, to: :crud
     alias_action :create, :update, :destroy, to: :alter
+    alias_action :read, :update, to: :modify
 
     all_users_permissions user
     # Normal admin function
@@ -13,6 +14,11 @@ class Ability
       admin_users_permissions user
     else
       other_users_permissions user
+    end
+
+    # coaching system abilities
+    if ["coach", "student", "dean"].include? user.coaching_type
+      self.send("#{user.coaching_type}_permissions", user)
     end
 
     # Do not allow people to:
@@ -48,7 +54,7 @@ class Ability
 
     if user.superadmin?
       # Super powers!!
-      can :debug,  :dashboard
+      can :debug, :dashboard
       can :manage, :all
       can :read, :lime_survey_website
     end
@@ -56,55 +62,6 @@ class Ability
 
   # Non Admin users
   def other_users_permissions user
-    can [:list, :read], Assignment::AssignmentGroup do |ag|
-      ag.owner == user || ag.users.include?(user)
-    end
-
-    can :create, Assignment::AssignmentGroup if user.can_create_assignment_group?
-    # only owners can comment on assignment_groups (broadcast)
-    can :comment_on, Assignment::AssignmentGroup do |ag|
-      ag.owner == user
-    end
-    can :comment_on, CommentThread do |t|
-      [t.first_user, t.second_user].include? user
-    end
-    can [:list, :read, :fetch_compare], Assignment::UserAssignment do |ua|
-      ua.user_id == user.id || ua.assignment_group.owner == user
-    end
-    can [:list, :read, :comment_on], Assignment::UserResponse do |ur|
-      ur.user == user || ur.ag_owner == user
-    end
-    can :set_owner_status, Assignment::UserResponse, ag_owner: user
-
-    can :create, Comment do |c|
-      case c.commentable.class.to_s
-      when "Assignment::AssignmentGroup"
-        c.commentable.owner == user
-      when "Assignment::UserResponse"
-        c.commentable.user == user || c.commentable.assignment_group.owner == user
-      when "CommentThread"
-        c.commentable.first_user == user || c.commentable.second_user == user
-      else
-        false
-      end
-    end
-    can [:list, :read], Comment do |c|
-      case c.commentable.class.to_s
-      when "Assignment::AssignmentGroup"
-        c.commentable.owner == user || c.commentable.users.include?(user)
-      when "Assignment::UserResponse"
-        c.commentable.user == user || c.commentable.assignment_group.owner == user
-      when "CommentThread"
-        c.commentable.first_user == user || c.commentable.second_user == user
-      else
-        false
-      end
-    end
-
-    can :destroy, Comment do |c|
-      c.user.id == user.id
-    end
-
     can :update, User, id: user.id
     can :read, User, id: user.id
 
@@ -130,7 +87,13 @@ class Ability
       # If we are missing user_externals etc... you will still receive a true on can? :read
       # But will throw an error on the view (handled in dashboard/ ls_reports:index etc..)
       if user.permission_group_id.present?
-        plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+        #plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+        plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+        if plg.nil?
+          if user.prev_permission_group_id.present?
+            plg = PermissionLsGroup.where(permission_group_id: user.prev_permission_group_id, lime_survey_sid: lime_survey.sid).first
+          end
+        end
         plg.present? && plg.ready_for_use?
       else
         false
@@ -139,8 +102,16 @@ class Ability
 
     can :read_unfiltered, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
-        if user.lime_surveys.include? lime_survey
-          plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+
+          # if user.lime_surveys.include? lime_survey
+          #   plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+          #   (plg.present? && plg.ready_for_use? && plg.view_all) ? true : false
+          # else
+          #   byebug
+          #   false
+          # end
+        plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+        if plg.present?
           (plg.present? && plg.ready_for_use? && plg.view_all) ? true : false
         else
           false
@@ -153,12 +124,26 @@ class Ability
     # If a user is allowed to view a given survey and they can 'view_spreadsheet' then allow them to view it
     can :read_raw_data, LimeSurvey do |lime_survey|
       if user.permission_group_id.present?
-        has_ls = user.role_aggregates.map{|ra| ra.lime_survey_sid }.include? lime_survey.sid
+        #has_ls = user.role_aggregates.map{|ra| ra.lime_survey_sid }.include? lime_survey.sid
+
         if user.lime_surveys.include? lime_survey
           plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+          if plg.nil?
+            if user.prev_permission_group_id.present?
+              plg = PermissionLsGroup.where(permission_group_id: user.prev_permission_group_id, lime_survey_sid: lime_survey.sid).first
+            end
+          end
           (plg.present? && plg.ready_for_use? && plg.view_raw) ? true : false
         else
+          # dean level
           false
+          # byebug
+          #  plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+          #  if plg.present?
+          #    (plg.present? && plg.ready_for_use? && plg.view_raw) ? true : false
+          #  else
+          #     false
+          #  end
         end
       else
         false
@@ -168,5 +153,35 @@ class Ability
     if user.lime_user
       can :access, :lime_server
     end
+  end
+
+  def student_permissions user
+    can :read, Student
+    can :create, Coaching::Goal
+    can :create, Coaching::Meeting
+    can :modify, Coaching::Goal do |goal|
+      goal.user == user
+    end
+    can :modify, Coaching::Meeting do |m|
+      m.user == user
+    end
+  end
+
+  def coach_permissions user
+    can :read, Student
+    can :create, Coaching::Goal
+    can :create, Coaching::Meeting
+    can :modify, Coaching::Goal do |goal|
+      user.cohorts.include? goal.user.cohort
+    end
+    can :modify, Coaching::Meeting do |m|
+      user.cohorts.include? m.user.cohort
+    end
+  end
+
+  def dean_permissions user
+    can :read, Student
+    can :read, Coaching::Goal
+    can :read, Coaching::Meeting
   end
 end

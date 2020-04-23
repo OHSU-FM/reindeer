@@ -1,60 +1,135 @@
 Rails.application.routes.draw do
 
+  resources :epa_reviews
+  resources :epa_masters do
+    collection  do
+      get 'search_student'
+      get 'eg_report', to: 'epa_masters#eg_report'
+
+    end
+    #resources :epa_reveiws
+  end
+  #get 'epa_masters/eg_report', controller: "epa_masters", action: :eg_report, to: "epa_masters#eg_report"
+  resources :courses
+  resources :usmle_exams
+  get '/csl_feedbacks/index'
+  get '/csl_feedbacks/get_csl_feedback'
+  get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
+
+  get 'cds_reports', to: 'cds_reports#index'
+  get 'cds_reports/past_due', to: 'cds_reports#past_due'
+  get 'cds_reports/by_subject', to: 'cds_reports#by_subject'
+  get 'wba_graphs/index', to: 'wba_graphs#index'
+  get 'wba_graphs/show', to: 'wba_graphs#show'
+  get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
+  resources :epas
+
+
+  # resources :competencies do
+  #   member do
+  #     get '/users/:user_id/competencies', param: :user_id, to: 'competencies#index', controller: 'competencies', action: :index
+  #   end
+  # end
+  #
+
+  resources :user do
+    resources :competencies, param: :user_id, only: [:index]
+  end
+
+
+  get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+  get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+  get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+  get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
+
+  resources :user do
+    resources :preceptor_evals,  only: [:index] do
+    end
+  end
+
+  resources :user do
+    get "display_fom", param: :course_code, controller: "fom_exams"
+  end
+
+
+  resources :artifacts do
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+     member do
+       delete :delete_document_attachment
+       get 'move_files'
+     end
+  end
+  namespace :coaching do
+    resources :students, param: :slug, only: [:show] do
+      member do
+        post 'search_goals'
+        post 'completed_goals'
+        post 'search_meetings'
+      end
+    end
+
+    resources :goals do
+      member do
+        get 'show_detail'
+      end
+    end
+
+    resources :meetings do
+      member do
+        get 'show_detail'
+      end
+    end
+  end
+
+  # resources :searches, param: :search, only: [:index] do
+  #   member do
+  #     get 'search'
+  #   end
+  # end
+
+  get '/search' => 'searches#search', as: 'search_searches'
+
+  resources :coaching, only: [:index]
+  resources :rooms, only: [:show, :index]
+
   devise_for :users
-  mount RailsAdmin::Engine => "/admin", :as => "rails_admin"
 
-  resources :dashboard, :controller=>:dashboard, :as=>:dashboards, :except=>[:new]
-  get "dashboard/:id/widgets/:widget_id", :to=>"dashboard#show_widget", :constraints=>{:id=>/\d+/, :widget_id=>/\d+/}, :as=>"show_widget"
+  mount RailsAdmin::Engine => "/admin", as: "rails_admin"
+  mount ActionCable.server => "/cable"
 
-  resources :question_widgets, :only=>[:create]
-  get "question_widgets", :controller=>"question_widgets"
+  resources :messages
 
-  resources :ls_reports, :only=>[:index, :show], :param=>:sid do
+  resources :dashboard, controller: :dashboard, as: :dashboards, except: [:new]
+  get "dashboard/:id/widgets/:widget_id", to: "dashboard#show_widget",
+   constraints: { id: /\d+/, widget_id: /\d+/ }, as: "show_widget"
+
+  resources :question_widgets, only: [:create]
+  get "question_widgets", controller: "question_widgets"
+
+  resources :ls_reports, only: [:index, :show], param: :sid do
     member do
-      get "filter(/:pk(/:agg))", :action=>:show, :as=>:filter, :controller=>"ls_reports/filter",
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:filter
+      get "filter(/:pk(/:agg))", action: :show, as: :filter, controller: "ls_reports/filter",
+        constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :filter
     end
     member do
-      get "graph(/:pk(/:agg))", :action=>:show, :as=>:graph, :controller=>"ls_reports/graph",
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:graph
+      get "graph(/:pk(/:agg))", action: :show, as: :graph, controller: "ls_reports/graph",
+        constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :graph
     end
     member do
-      get "spreadsheet(/:pk(/:agg))", :action=>:show, :as=>:spreadsheet, :controller=>"ls_reports/spreadsheet",
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}, :view_type=>:spreadsheet
+      get "spreadsheet(/:pk(/:agg))", action: :show, as: :spreadsheet, controller: "ls_reports/spreadsheet",
+        constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :spreadsheet
     end
     member do
-      get "instrument(/:pk(/:agg))", :action=>:show, :as=>:instrument, :controller=>"ls_reports/instrument",
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/}
-    end
-    member do
-      get "partial/:view_type/:gid(/:pk(/:agg))", :to=>"ls_reports/base#show_part", :as=>:part_of,
-        :constraints=>{:pk=>/[^\/]+/, :agg=>/[^\/]+/, :gid=>/[^\/]+/}
+      get "partial/:view_type/:gid(/:pk(/:agg))", to: "ls_reports/base#show_part", as: :part_of,
+        constraints: { pk: /[^\/]+/, agg: /[^\/]+/, gid: /[^\/]+/ }
     end
   end
 
-  resources :user, :controller=>:users, :param=>:username, :only=>[:show, :update]
+  resources :user, controller: :users, param: :username, only: [:show, :update]
 
-  resources :comment_thread, only: :show do
-    resources :comments, only: [:index, :create, :destroy]
-  end
+  get "ls_files/:sid/:row_id/:qid/:name", to: "ls_files#show", constraints: { name: /[^\/]+/ }, as: :lime_file
 
-  namespace :assignment, path: Settings.assignments_route_name  do
-    root to: "assignment_groups#index"
-    resources :assignment_groups, param: :assignment_group_id, path: :groups, only: [:index, :show, :update] do
-      resources :comments, module: :assignment_group, only: [:index, :create, :destroy]
-    end
-    resources :user_assignments, path: :tasks, only: [:show] do
-      get "/fetch_compare" => "user_assignments#fetch_compare"
-    end
-    resources :user_responses, path: :responses, only: [:show] do
-      resources :comments, module: :user_response, only: [:index, :create, :destroy]
-      get "/set_owner_status" => "user_responses#set_owner_status"
-    end
-  end
-
-  get "ls_files/:sid/:row_id/:qid/:name", :to=>"ls_files#show", :constraints=>{:name=>/[^\/]+/}, :as=>:lime_file
-
-  root :to=>"dashboard#index"
+  root to: "dashboard#index"
 
   # Error routing
   get "errors/file_not_found"
@@ -66,8 +141,7 @@ Rails.application.routes.draw do
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
 
-  get "pages/*id", to: "high_voltage/pages#show", :as => :page, :format => false
+  get "pages/*id", to: "high_voltage/pages#show", as: :page, format: false
 
-  match "*any", via: :all, to: "errors#file_not_found"
-
+  #match "*any", via: :all, to: "errors#file_not_found"
 end

@@ -1,0 +1,32 @@
+<div id="<%= modal_id %>" class="modal" tabindex="-1" role="dialog" data-keyboard="true" data-backdrop="static" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h3><%= message %>...</h3>
+            </div>
+            <div class="modal-body" >
+                <div style="height:60px">
+                  <span id="searching_spinner_center" style="position: absolute;display: block;left: 30%; margin-left:-35px;">
+                    <div class="loading">
+                      <span><b>W</b></span>
+                      <span>a</span>
+                      <span>i</span>
+                      <span>t</span>
+                      <span> </span>
+                      <span><b>F</b></span>
+                      <span>o</span>
+                      <span>r</span>
+                      <span> </span>
+                      <span><b>I</b></span>
+                      <span>t</span>
+                      <span>!</span>
+                    </div>
+                  </span>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button id="modal_cancel" type="button" class="btn btn-default" data-dismiss="modal" onclick="window.stop()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,55 +1,66 @@
+<div class="row" >
+  <div class="column left" >
+    <table class="table table-condensed spreadsheet-body">
+        <tr>
+            <td class="align-right"><%= @rs_questions["StudentID"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentID"] %></td>
+        </tr>
+        <tr>
+            <td class="align-right"><%= @rs_questions["StudentName"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentName"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["StudentEmail"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["StudentEmail"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["CoachName"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["CoachName"] %></td>
+         </tr>
+         <tr>
+            <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
+            <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
+         </tr>
+     </table>
+  </div>
+  <div class="column right" >
+    <table  style="width: 30%;"class="table table-condensed spreadsheet-body">
+      <tr><td> <a class="Precept-FoM" href="#Preceptorship-FoM">Preceptorship Evaluations</a> <td></tr>
+      <% if !@csl_evals.empty? %>
+        <tr> <td><a class="CSLEvals-FoM" href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
+      <% end %>
+    </table>
+  </div>
 
-<table style="width: 30%;" class="table table-condensed  spreadsheet-body">
-    <tr>
-        <td class="align-right"><%= @rs_questions["StudentID"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentID"] %></td>
-    </tr>
-    <tr>
-        <td class="align-right"><%= @rs_questions["StudentName"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentName"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["StudentEmail"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["StudentEmail"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["CoachName"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["CoachName"] %></td>
-     </tr>
-     <tr>
-        <td class="align-right"><%= @rs_questions["CoachEmail"] %></td>
-        <td class="bold-italic"><%= @rs_data.first["CoachEmail"] %></td>
-     </tr>
- </table>
+</div>
 
 <body>
  <div class="container-fluid">
 
     <ul id="MainTabs" class="nav nav-tabs">
-        <li class="bold-italic"><a data-toggle="tab" href="#fom">FoM Block</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#preceptor">Preceptorship</a></li>   
-        <li class="bold-italic"><a data-toggle="tab" href="#scholarly">Scholarly Project</a></li>     
+        <li id="FoMBlock" class="bold-italic"><a data-toggle="tab" href="#fom">FoM Blocks</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#preceptor">Preceptorship</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#scholarly">Scholarly Project</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#transition">Transition Courses</a></li>
         <li class="active bold-italic"><a data-toggle="tab" href="#core">Core Experiences</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#electives">Electives</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#intersessions">Intersessions</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#shelfexams">National Board Exams/CPX</a></li>
         <li class="bold-italic"><a data-toggle="tab" href="#all_courses">ALL</a></li>
-        <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>        
-        <% if !current_user.permission_group.nil? && current_user.permission_group.title == "Dean"%>
-            <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
-        <% end %>
+        <li class="bold-italic"><a data-toggle="tab" href="#Competencies" style="background-color:#33b5e5" >Competencies</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#EPA" style="background-color:#00C851" >EPAs</a></li>
+        <li class="bold-italic"><a data-toggle="tab" href="#official_letters" style="background-color:#726A95" >Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
+
     </ul>
 
     <div class="tab-content">
-
         <div id="core" class="tab-pane active fade in">
           <table style="width: 100%;" class="table table-condensed table-striped ls_reports_filter spreadsheet-body">
             <tbody>
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if x["CourseName"].include? "730" or x["CourseName"].include? "731"%>
+                     <% if x["CourseName"].to_s.include? "730" or x["CourseName"].to_s.include? "731"%>
                              <td class="bold-italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -60,6 +71,23 @@
             </tbody>
           </table>
         </div>
+        <div id="scholarly" class="tab-pane fade">
+            <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+                <tbody>
+                     <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
+                     <% @rs_data.each do |x| %>
+                        <tr>
+                          <% if x["CourseName"].to_s.include? "SCHI" %>
+                             <td class="italic"> <%= x["CourseName"] %>
+                                 <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
+                             </td>
+                             <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
+                          <% end %>
+                        </tr>
+                     <% end %>
+                </tbody>
+            </table>
+        </div>
 
          <div id="fom" class="tab-pane fade">
               <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
@@ -67,7 +95,7 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "FoM" %>
+                          <% if x["CourseName"].to_s.include? "FoM" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -78,15 +106,24 @@
                      <tr><%= render partial: 'all_blocks_data' %></tr>
                 </tbody>
               </table>
-              
+              <div class="precept-header" >Preceptorship Information </div>
+              <%= render partial: 'preceptorship_data'%>
+              <div class="CSLEvals-FoM" id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
+              <%= render partial: 'csl_evals' %>
         </div>
+
+
+        <div id="preceptor" name="Preceptorship" class="tab-pane fade">
+          <%= render partial: 'preceptorship_data'%>
+        </div>
+
         <div id="transition" class="tab-pane fade">
             <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
                 <tbody>
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "TRAN 703" %>
+                          <% if x["CourseName"].to_s.include? "TRAN 703" or x["CourseName"].to_s.include? "TRAN 704"  %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -98,13 +135,17 @@
               </table>
         </div>
          <div id="shelfexams" class="tab-pane fade">
-               <%= render partial: 'ls_reports/spreadsheet/usmle_data' %>
-              <table style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body">
+              <%= render partial: 'ls_reports/spreadsheet/usmle_data' %>
+              <table style="width: 100%;" class="table table-condensed table-striped table-hover spreadsheet-body">
                 <tbody>
+                     <tr>
+                        <th><h4>NBME/MedU Clinical Subject Exams (Shelf Exams)</h4></th>
+                        <th colspan="8"></th>
+                     </tr>
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 770" %>
+                          <% if x["CourseName"].to_s.include? "INTS 770" or x["CourseName"].to_s.include? "CPX 702" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -112,9 +153,10 @@
                           <% end %>
                         </tr>
                      <% end %>
-
                 </tbody>
               </table>
+           <%= render partial: 'ls_reports/spreadsheet/shelf_attachments' %>
+
         </div>
 
         <div id="intersessions" class="tab-pane fade">
@@ -123,8 +165,8 @@
                      <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                      <% @rs_data.each do |x| %>
                         <tr>
-                          <% if x["CourseName"].include? "INTS 771" or x["CourseName"].include? "INTS 772" or x["CourseName"].include? "INTS 773" or x["CourseName"].include? "INTS 774"%>
-                         
+                          <% if x["CourseName"].to_s.include? "INTS 771" or x["CourseName"].to_s.include? "INTS 772" or x["CourseName"].to_s.include? "INTS 773" or x["CourseName"].to_s.include? "INTS 774"%>
+
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -142,7 +184,12 @@
                 <%= render :partial=>'ls_reports/spreadsheet/content_static_header' %>
                 <% @rs_data.each do |x| %>
                     <tr>
-                     <% if !x["CourseName"].include? "730" and !x["CourseName"].include? "731" and !x["CourseName"].include? "INTS" and !x["CourseName"].include? "FoM" and !x["CourseName"].include? "703" %>
+                     <% if !x["CourseName"].to_s.include? "730" and
+                           !x["CourseName"].to_s.include? "731" and
+                           !x["CourseName"].to_s.include? "INTS" and
+                           !x["CourseName"].to_s.include? "FoM" and
+                           !x["CourseName"].to_s.include? "703" and
+                           !x["CourseName"].to_s.include? "SCHI" %>
                              <td class="italic"> <%= x["CourseName"] %>
                                  <%= render :partial=>'ls_reports/spreadsheet/modal_content', :locals=>{:x=>x, :show_button=>true}%>
                              </td>
@@ -170,7 +217,7 @@
                         <td><%= x["EndDt"] %></td>
                         <td><%= x["SubmitDt"] %></td>
                         <td><%= x["Eval"] %> </td>
-                        <td><%= x["FinalGrade"] %></td>
+                        <td><%= hf_parse_grade(x["FinalGrade"]) %></td>
                     </tr>
                  <% end %>
                 </tbody>
@@ -185,7 +232,7 @@
                     <% overall_progress = overall_progress + hf_average_domain(@comp_hash3, key) %>
                <% end %>
                <% overall_progress = overall_progress / 6 %>
-                <tr>
+                <tr bgcolor="E5C5E8">
                     <td><span><b>All Domains</b>
                           <button type="button" class="btn btn-info btn-info fa fa-bar-chart" data-toggle="modal" data-keyboard="true"  data-target="#Domain-All">Chart
                           </button>
@@ -203,7 +250,6 @@
                     </td>
 
                 </tr>
-
 
                 <% @comp_domain_desc.each do |key, value| %>
                   <tr>
@@ -235,6 +281,12 @@
 
         </div>
 
+        <div id="official_letters" class="tab-pane fade">
+            <div id="Progress Board">
+                <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+            </div>
+        </div>
+
         <div id="EPA" class="tab-pane fade">
              <table style="width: 80%;" class="table table-hover table-condensed ls_reports_filter spreadsheet-body">
                 <tbody class="bold-italic">
@@ -250,12 +302,16 @@
                             </span>
                         </td>
                         <td>
-                            <span><h4><p><font color="green">&emsp;Overall Progress</font></p></h4>
+                            <span><h4><p><font color="green">&emsp;Qualified Assessors/Work Based Assessments Overall Progress</font></p></h4>
                             </span>
                             <span>
-                                <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
-                                  <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
-                                </div>
+                                <!-- Commented the progress graph out by Tracy request on 9/25/2018-->
+                                <% if !current_user.permission_group.nil? and @student_cohort.include? "Med19" %>
+                                  <div id="progress-epa0" class = "progress" data-amount = "<%= overall_ave_epa %>" >
+                                    <div id="epa0" class="amount" style="width: <%= 100-overall_ave_epa %>%"> </div>
+                                  </div>
+                                <% end %>
+
                             </span>
                         </td>
                     </tr>
@@ -266,7 +322,6 @@
                                 <span>
                                     <button type="button" class="btn btn-info btn-info glyphicon glyphicon-info-sign" data-toggle="modal" data-keyboard="true"  data-target="#EPA<%= i.to_s %>">Detail
                                     </button>
-
                                     <%= render :partial=>'ls_reports/spreadsheet/modal_epa_content', :locals=>{:i=>i, :epa=>epa, :epa_desc=>epa_desc["EPA#{i}"], :assessors=> hf_assessors} %>
                                 </span>
                             </td>
@@ -278,11 +333,15 @@
                                     </font></h4>
                                 </span>
                                 <span>
-                                    <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
-                                      <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
-                                    </div>
+                                    <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
+                                    <!-- Activated epa progress bar for all -->
+                                      <div id="progress-epa<%= i %>" class = "progress" data-amount = "<%= ave %>" >
+                                        <div id="epa<%= i %>" class="amount" style="width: <%= 100-ave %>%"> </div>
+                                      </div>
+
                                 </span>
-                                <!--<%= hf_display_epa_detail(epa) %> -->
+                                <!--<%= hf_display_epa_detail(epa) %>
+                                -->
                             </td>
                         </tr>
                     <% end %>

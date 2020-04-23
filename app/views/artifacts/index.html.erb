@@ -1,0 +1,54 @@
+
+  <h4> All documents <%= link_to 'Upload Documents', new_artifact_path, class: "btn btn-primary" %> </h4>
+
+  <table class="responsive nowrap table table-hover" id="artifacts" >
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>UserID</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @artifacts.each do |artifact| %>
+      <tr>
+        <td><%= artifact.title %></td>
+        <td><%= artifact.content %> </td>
+        <td><%= artifact.user_id.to_s %></td>
+        <td>
+          <% if current_user.coaching_type != 'student' or !artifact.content.to_s.include? "Progress Board" %>
+            <%= link_to 'Edit', edit_artifact_path(artifact) %>
+            /
+            <%= link_to 'Destroy Artifact', artifact, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+          <% if current_user.coaching_type == 'admin' %>
+            /
+            <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
+          <% end %>
+        </td>
+        <td>
+          <table class="responsive nowrap table table-hover" id="artifacts-table2"  >
+            <% if artifact.documents.attached? %>
+              <% artifact.documents.each do |document| %>
+                <tr>
+                  <td> <%= document.filename %> </td>
+                  <td>
+                    <%= link_to 'View', url_for(document), target: :_blank  %>
+                    /
+                    <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                     <% if ['admin', 'dean'].include? current_user.coaching_type %>
+                        /
+                        <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
+                     <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+         </table>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>

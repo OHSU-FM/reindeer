@@ -27,17 +27,17 @@ class @Dashboard.Errors.WidgetTooWideError extends Error
     name: 'WidgetTooWideError'
     constructor: (@message) ->
 # DB has colliding widgets
-class @Dashboard.Errors.CollisionError extends Error 
+class @Dashboard.Errors.CollisionError extends Error
     name: 'CollisionError'
     constructor: (@message) ->
-class @Dashboard.Errors.ExhaustedError extends Error 
+class @Dashboard.Errors.ExhaustedError extends Error
     name: 'ExhaustedError'
     constructor: (@message) ->
 # DB has rectangle extending off the edge
-class @Dashboard.Errors.RectangleOffTheEdgeError extends Error 
+class @Dashboard.Errors.RectangleOffTheEdgeError extends Error
     name: 'RectangleOffTheEdgeError'
     constructor: (@message) ->
-class @Dashboard.Errors.InvalidIdError extends Error 
+class @Dashboard.Errors.InvalidIdError extends Error
     name: 'InvalidIdErro_'
     constructor: (@message) ->
 
@@ -58,7 +58,7 @@ WidgetLoader.load = (charts, dash_widget) ->
 
 WidgetLoader.load_question_widget = (dash_widget, widget, $target, content) ->
     return switch widget.graph_type
-        when 'html' 
+        when 'html'
             console.log('HTML Widget')
             widget.content.html
         else
@@ -77,9 +77,9 @@ class @Dashboard.CollisionDetector
         constructor: (opts={}) ->
             @max_cols = opts.max_cols || 5;
             @cm = [];
-        
+
         ##
-        # Register a rectangle in the collision matrix (cm) 
+        # Register a rectangle in the collision matrix (cm)
         # - Returns: index of insertion point if succeeds
         # - Or throws an error stating why it failed
         register_rectangle: (pos, sizex, sizey, rid) ->
@@ -91,13 +91,13 @@ class @Dashboard.CollisionDetector
                 throw new Dashboard.Errors.InvalidIdError()
             if sizex > @max_cols
                 throw new Dashboard.Errors.WidgetTooWideError()
-             
+
             # maximum number of times to try
             for attempt_num in [0..200]
                 go_next_attempt = false
-                c_pos = pos+attempt_num 
+                c_pos = pos+attempt_num
                 console.log 'c_pos:' + c_pos
-                
+
                 try
                     # calculate what indecies this rectangle inhabits
                     indecies = @indexes_of c_pos, sizex, sizey
@@ -107,39 +107,39 @@ class @Dashboard.CollisionDetector
                         continue
                     else
                         throw e
-                 
+
                 # check for collisions
                 for idx in indecies
                     if @cm[idx] > 0
                         go_next_attempt = true
                         console.log 'next'
                         break
-                
+
                 if go_next_attempt == true
                     continue
-                
+
                 # mark spot as taken
                 @set_indecies indecies, rid
-                
+
                 # return the start of the spot that was registered
                 coords = @pos_to_coord Math.min.apply(Math, indecies)
                 coords.rid = rid
                 coords.pos = c_pos
                 console.log 'pos: '+pos+' c_pos: '+ c_pos
                 return coords
-            
+
             throw new Dashboard.Errors.ExhaustedError();
-        
+
         #
-        # return all of the indexes that are occupied by the 
+        # return all of the indexes that are occupied by the
         # following rectangle
-        #            
+        #
         indexes_of: (pos, sizex, sizey) ->
             indecies = []
             coord = @pos_to_coord(pos)
             if coord.col+(sizex-1) > @max_cols
                 throw new Dashboard.Errors.RectangleOffTheEdgeError()
-           
+
             for p_x in [0...sizex]
                 console.log 'p_x: '+ p_x
                 # add indecies for every row and col
@@ -148,7 +148,7 @@ class @Dashboard.CollisionDetector
                     n_pos = @coord_to_pos coord.col+p_x, coord.row+p_y
                     indecies.push n_pos
             return indecies
-        
+
         #
         # Set the value of these indecies to rid
         # - Effectively take ownership of the indexes
@@ -158,13 +158,13 @@ class @Dashboard.CollisionDetector
                     throw new Dashboard.Errors.CollisionError()
                 @cm[index] = rid
             return true
-        
+
         #
         # get the col and row of this position
         #
         pos_to_coord: (val) ->
             return { col: ((val-1) % (@max_cols))+1, row: parseInt((val-1) / (@max_cols))+1 }
-        
+
         #
         # get the position of this col and row
         #
@@ -181,7 +181,7 @@ class @Dashboard.GuiErrors.PositionMissingError extends Error
     constructor: (@message) ->
 
 ##
-# 
+#
 class @Dashboard.GuiErrors.WidgetMissingError extends Error
     name: 'WidgetMissingError'
     constructor: (@message) ->
@@ -203,7 +203,7 @@ class @Dashboard.Widget
 ##
 # Controls for dashboard
 class @Dashboard.Gui
-    
+
     ##
     #
     constructor: (container, opts={}) ->
@@ -217,7 +217,7 @@ class @Dashboard.Gui
         @refreshing = false
         @detector = new Dashboard.CollisionDetector({max_cols:@max_cols})
         return;
-    
+
     ##
     #
     gridify: ->
@@ -247,23 +247,23 @@ class @Dashboard.Gui
                     klass.update_and_submit()
                     return
             }
-        }).data('gridster'); 
+        }).data('gridster');
         @event_handlers();
-    
+
     ##
     # Automatically resize all widgets
     auto_resize_widgets: ->
         klass = @
         @widgets().each ->
-            klass.auto_resize_widget($(@)) 
-        return   
+            klass.auto_resize_widget($(@))
+        return
 
     ##
     # Automatically resize this widget
     auto_resize_widget: ($widget) ->
         $hook = $widget.find('.widget-resize-hook')
         # $table = $widget.find('.widget-table')
-        wratio = ($widget.width()-30) / $hook.width() 
+        wratio = ($widget.width()-30) / $hook.width()
         hratio =   ($widget.height()-80) / $hook.height()
         if wratio > hratio
             wratio = hratio
@@ -281,9 +281,14 @@ class @Dashboard.Gui
     update_and_submit: ->
         @update_widgets()
         console.log('Triggered a save')
-        @node.trigger('submit.rails')
-        return 
-   
+        #@node.trigger('submit.rails')
+        #Rails.fire(@node, 'submit')
+        form = document.querySelector('form')
+        Rails.fire(form, 'submit')
+
+
+        return
+
     ##
     # refresh form data for all widgets in this dash
     update_widgets: ->
@@ -302,10 +307,10 @@ class @Dashboard.Gui
         sizey = parseInt(widget.attr('data-sizey')) || 1
         widget.find('.sizex').val(sizex)
         widget.find('.sizey').val(sizey)
-        widget.find('.position').val(pos) 
+        widget.find('.position').val(pos)
 
     ##
-    # Input widget positions into collision detector 
+    # Input widget positions into collision detector
     # and update data attributes accordingly
     detect_and_repair_collisions: ->
         klass = @
@@ -332,7 +337,7 @@ class @Dashboard.Gui
     #
     event_handlers: ->
         klass = @;
-       
+
         # Screen reorientation change (mobile)
         @node.on 'oreientationchange', (event) ->
             klass.auto_resize_widgets()
@@ -341,14 +346,14 @@ class @Dashboard.Gui
         @node.find('#dashboard-add')
             .data('association-insertion-position', 'after')
             .data('association-insertion-node', '');
-        
+
         # The theme for the page has changed
         @node.on 'change', 'input[type="radio"].toggle-theme', (evt, element) ->
             window.Dashboard.swap_theme( this.value )
             # Update Form
             klass.update_and_submit()
             return;
-        
+
         # Update record after a change
         @node.on 'change', '.dashboard-navbar select', (evt) ->
             klass.update_and_submit()
@@ -360,7 +365,7 @@ class @Dashboard.Gui
             klass.gridster.add_widget(element, 1, 1);
             klass.update_and_submit()
             return;
-        
+
         # Event triggered after form has been successfully updated
         @node.on 'ajax:success', (event, xhr, status) ->
             # Delete widgets that are marked for deletion
@@ -368,14 +373,15 @@ class @Dashboard.Gui
             klass.remove_deleted_widgets()
             klass.replace_created_widgets(xhr)
             klass.replace_stale_widgets(xhr)
+
             return;
-        
+
         @node.on 'ajax:error', (event, xhr, status) ->
             # Delete widgets that are marked for deletion
             console.log('form ajax error')
             klass.node.addClass('ajax-error')
             return;
-        
+
         @node.on 'ajax:beforeSend', (event, xhr, status) ->
             console.log('form ajax beforeSend')
             klass.disable_all_inputs()
@@ -384,32 +390,38 @@ class @Dashboard.Gui
         @node.on 'ajax:complete', (event, xhr, status) ->
             console.log('form ajax complete')
             klass.enable_all_inputs()
+            # Retaching the saved element
+            $("#SearchPlaceHolder").append(window.SearchElement)
+            $("#SearchInputForm").fadeIn()
+            console.log ("Enabled Input Search Form after a Dashboard had been deleted!")
             return;
-        
+
         # a widget will be removed from the form
         @node.on 'cocoon:before-remove', (evt, element) ->
             console.log('cocoon:before-remove')
             $(element).addClass('delete-after-update')
             return;
-        
+
         # a widget has been removed from the form
         @node.on 'cocoon:after-remove', (evt, element) ->
             console.log('cocoon:after-remove')
+            # save the detached element
+            window.SearchElement = $("#SearchInputForm").detach()
             klass.update_and_submit()
             return;
-        
+
         # a select has changed on the form
         @node.on 'change', '.radio-select input[type="radio"]', (evt, element) ->
             $(this).parents('.radio-select').children('li').each ->
                 $(this).removeClass('selected');
             $(this).parents('li').addClass('selected');
             return;
-         
+
         @node.on 'show.bs.modal', '.gridster .modal', (evt, element) ->
-            klass.unpack_modal($(this))                            # Move form so that modal isn't broken 
-            console.log 'a modal was shown' 
+            klass.unpack_modal($(this))                            # Move form so that modal isn't broken
+            console.log 'a modal was shown'
             return
-        
+
         @node.on 'hide.bs.modal', '.gridster .modal', (evt, element) ->
             klass.repack_modal($(this))                            # Move form back to original place
             console.log 'a modal was closed'
@@ -418,7 +430,7 @@ class @Dashboard.Gui
         # Select box change event for widget element
         @node.on 'change', '.gridster select', (evt, element) ->
             $(this).parents('li.nested-fields').addClass('replace-after-update')
-            klass.update_and_submit() 
+            klass.update_and_submit()
             return
 
         # Someone double-clicked on a widget
@@ -436,15 +448,17 @@ class @Dashboard.Gui
             $('#modal_blank .modal-body').empty().append($node)
             $('#modal_blank .modal-header button').after($widget_title)
             $('#modal_blank').modal('show')
-        
+            console.log ("** double click on widget **")
+
+
         # Update size after shown
         $('#modal_blank').on 'shown.bs.modal', (evt, element) ->
             klass.auto_resize_widget($('#modal_blank .modal-content'))
-        
+
         # Update the size of the contained chart on orientation change (ipad etc...)
         $('#modal_blank').on 'orientationchange', (evt, element) ->
-            klass.auto_resize_widget($('#modal_blank .modal-content')) 
-        
+            klass.auto_resize_widget($('#modal_blank .modal-content'))
+
         # Move contents back home
         $('#modal_blank').on 'hide.bs.modal', (evt, element) ->
             # Replace editable title
@@ -453,10 +467,10 @@ class @Dashboard.Gui
             $old_title = $widget.find('.widget-title-container')
             $old_title.before($new_title)
             $old_title.remove()
-            
+
             $node = $(this).find('.modal-body').children()
             $('#modal-marker').after($node)
-            
+
             # Clean up and re-size widgets
             $('#modal-marker').remove()
             klass.auto_resize_widget($widget)
@@ -471,7 +485,7 @@ class @Dashboard.Gui
             return;
 
         return # End of EventHandlers Function
-    
+
     ##
     #
     max_cols: ->
@@ -483,7 +497,7 @@ class @Dashboard.Gui
         cell_width = Math.max.apply( null, cell_widths);
         # return the larger of the two
         Math.max.apply null, [cell_width, grid_width]
- 
+
     ##
     # Return the minimum width of the dashboard
     dash_min_width: ->
@@ -491,11 +505,11 @@ class @Dashboard.Gui
 
     ##
     # Copy and replace old grid
-    refresh: -> 
+    refresh: ->
         if @refreshing == true
             return;
         @refreshing = true
-        
+
         @node.find('ul').find('li.gs-w')
             .removeData('col')
             .removeData('row')
@@ -508,7 +522,7 @@ class @Dashboard.Gui
         #$('#dash').css('min-width', klass.dash_min_width())
         @gridify();
         @refreshing = false
-        return; 
+        return;
 
     ##
     # Called after ajax:success to remove widgets that were deleted
@@ -521,7 +535,7 @@ class @Dashboard.Gui
             # Update grid as well
             klass.gridster.remove_widget(this)
             return
-    
+
     ##
     # Called after ajax:success to replace widgets that were originally marked with 'new-record' css class
     replace_created_widgets: (xhr) ->
@@ -534,7 +548,7 @@ class @Dashboard.Gui
             $(this).find('div.inner-widget-container').replaceWith(new_widget)
             return
         return
-    
+
     ##
     # Called after ajax:success to replace widgets that need to be redrawn
     replace_stale_widgets: (xhr) ->
@@ -567,7 +581,7 @@ class @Dashboard.Gui
     # Move modal back so that everything is where it belongs
     repack_modal: ($modal, completely=true) ->
         $target = @node.find( $modal.attr('data-target') )      # Get target for where to return form
-        $modal.insertAfter($target)                             # Move form back to original place 
+        $modal.insertAfter($target)                             # Move form back to original place
         return
 
     ##
@@ -604,7 +618,7 @@ class @Dashboard.Gui
         klass = @
         $widget.find('.chart-container-outer').each ->
             chart = new Chart(this);
-            setTimeout (-> 
+            setTimeout (->
                 # resize widget contents to stay inside of widget
                 klass.auto_resize_widget($widget)
                 # Show widget contents after resize has occurred
@@ -624,7 +638,7 @@ class @Dashboard.Gui
         match = $(xhr).find('.gridster li input.position[value="'+pos+'"]').first()
         if match.length == 0
             throw new Dashboard.GuiErrors.WidgetMissingError()
-        return $(match).parents('div.inner-widget-container')   
+        return $(match).parents('div.inner-widget-container')
 
     ##
     #
@@ -652,7 +666,7 @@ class @Dashboard.Gui
                         li.gs-w
                             div.inner-widget-container
                                 div.widget-controls
-                                    a.remove_fields    
+                                    a.remove_fields
                                 div.widget-content
                                     div.widget-show
                                     div.widget-edit
@@ -661,6 +675,7 @@ class @Dashboard.Gui
 
 $(document).ready ->
     return if $('body').attr('id') != 'dashboard'
+
 
     # Debug ability, add variables to global namespace
     window.dashboards = []
@@ -697,7 +712,7 @@ $(document).ready ->
         # Create gridded dashboard
         dashboard.gridify();
         # Reveal widgets after timeout
-        setTimeout (-> 
+        setTimeout (->
             # resize widget contents to stay inside of widget
             dashboard.auto_resize_widgets()
             # Show widget contents after resize has occurred
@@ -705,8 +720,5 @@ $(document).ready ->
         ), 600
         # Add to global for debug
         window.dashboards.push(dashboard)
-    
+
     return;
-
-
-

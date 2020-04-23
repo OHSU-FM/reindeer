@@ -8,12 +8,10 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  */
-
-@import "bootstrap-sprockets";
-@import "bootstrap";
+@import 'jquery-ui';
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
 @import 'select2';
-@import 'bootstrap-growl';
-@import 'bootstrap-mods';
 @import 'bootstrap-callouts';
 @import 'introjs';
 @import 'animations';
@@ -24,9 +22,13 @@
 @import 'mini_profiler';
 @import 'ls_reports';
 @import 'dashboard';
-@import 'dataTables';
 @import 'nav_header';
-@import 'dataTables/extensions/TableTools/css/dataTables.tableTools';
 @import 'layouts';
 @import 'sessions';
 @import 'simplemde';
+@import 'rooms';
+@import 'goals';
+@import 'artifacts';
+@import "datatables";
+@import "font-awesome-sprockets";
+@import "font-awesome";

@@ -5,12 +5,17 @@
       class="layout-full-width <%= current_user_theme %>"
       data-spy="scroll" data-target="#scroll-spy-nav">
 
+
     <%= render 'layouts/nav_header' %>
 
     <!-- Page Content -->
     <div class="col-lg-12">
+      <body id="<%= controller_name %>"
+            class="layout-full-width <%= current_user_theme %>"
+            data-spy="scroll" data-target="#scroll-spy-nav">
         <%= render 'shared/messages' %>
         <%= yield %>
+      </body>
     </div>
 
     <!-- /.container -->
@@ -28,7 +33,5 @@
     </div>
     <!-- /.container -->
 
-</body>
 
 </html>
-

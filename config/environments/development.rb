@@ -17,6 +17,7 @@ Rails.application.configure do
   # Show full error reports and enable caching for reports controller
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = ENV['RAILS_CACHE'].to_s == '1'
+  config.action_controller.include_all_helpers = false
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -56,4 +57,32 @@ Rails.application.configure do
    #   #Bullet.rollbar = true
    #   Bullet.add_footer = true
    # end
+  config.action_cable.disable_request_forgery_protection = true
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
+  config.action_cable.url = "ws://localhost:3000/cable"
+
+  config.active_storage.service = :local
+
+
+config.after_initialize do
+  Bullet.enable = false 
+  #Bullet.sentry = true
+  Bullet.alert = true
+  Bullet.bullet_logger = true
+  Bullet.console = true
+  #Bullet.growl = true
+  #Bullet.xmpp = { :account  => 'bullets_account@jabber.org',
+  #                :password => 'bullets_password_for_jabber',
+  #                :receiver => 'your_account@jabber.org',
+  #                :show_online_status => true }
+  Bullet.rails_logger = true
+  #Bullet.honeybadger = true
+  #Bullet.bugsnag = true
+  #Bullet.airbrake = true
+  #Bullet.rollbar = true
+  #Bullet.add_footer = true
+  #Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
+  #Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
+  #Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
+end
 end

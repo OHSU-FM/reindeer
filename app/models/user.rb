@@ -18,10 +18,23 @@ class User < ActiveRecord::Base
   has_many :permission_ls_groups, through: :permission_group
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
+  has_many :goals, -> { order 'created_at DESC' }, class_name: 'Coaching::Goal',
+    dependent: :destroy
+  has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
+  has_many :messages, dependent: :destroy
+  has_one :room, as: :discussable
 
   has_one :dashboard, dependent: :destroy
 
-  include EdnaConsole::UserHasAssignments
+  has_many :artifacts, dependent: :destroy
+  has_many :epas, dependent: :destroy
+  has_many :competencies, dependent: :destroy
+  has_one  :cpx, dependent: :destroy
+  has_many :usmle_exams, dependent: :destroy
+  has_many :epa_masters, dependent: :destroy
+  has_many :fom_exams, dependent: :destroy
+  has_many :fom_labels
+  has_many :preceptor_evals, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -35,6 +48,8 @@ class User < ActiveRecord::Base
   }
 
   validate :ldap_cannot_update_password
+
+  after_initialize :set_default_values
 
   def ldap_cannot_update_password
     if is_ldap? && encrypted_password_changed?
@@ -63,8 +78,7 @@ class User < ActiveRecord::Base
 
     # Role permissions
     admin: 25,
-    superadmin: 50
-  }
+    superadmin: 50 }
 
   ROLES.each{|role, i|
     # setter
@@ -102,10 +116,28 @@ class User < ActiveRecord::Base
     define_method(role) do
       self.roles.include? role
     end
-  }
+ }
 
   def roles_enum
     ROLES.keys
+  end
+
+  COACHING_ROLES = {
+    'dean': 30,
+    'coach': 20,
+    'student': 10
+  }
+
+  # define "#{role}?" style getters for coaching system
+  COACHING_ROLES.each do |role, val|
+    define_method("#{role.to_s}?") do
+      coaching_type == role.to_s
+    end
+
+    define_method("#{role.to_s}_or_higher?") do
+      return true if admin_or_higher?
+      COACHING_ROLES[coaching_type.to_sym] >= val
+    end
   end
 
   def title
@@ -231,6 +263,8 @@ class User < ActiveRecord::Base
         inline_add false
       end
 
+      field :prev_permission_group_id
+
       field :user_externals, :has_many_association
       field :explain_survey_access do
         partial 'users/field_explain_survey_access'
@@ -299,7 +333,13 @@ class User < ActiveRecord::Base
     return details.html_safe
   end
 
+  def lime_surveys_languagesettings
+    survey_titles ||= LimeSurveysLanguagesetting.select(:surveyls_title).distinct
+    return survey_titles
+  end
+
   def lime_surveys
+
     if has_dirty_ls_list? or admin_or_higher? or Redis.current.smembers("user:#{id}:ls_p_list").empty?
       ls_list = role_aggregates.map{|ra| ra.lime_survey }
       unless ls_list.empty?
@@ -347,33 +387,12 @@ class User < ActiveRecord::Base
     return @cohorts
   end
 
-  def assignment_groups
-    return @assignment_groups if defined? @assignment_groups
-    ags = []
-    if self.admin_or_higher?
-      ags << Assignment::AssignmentGroup.all
-    else
-      # all AG user owns or participates in
-      ags << cohorts.map {|c| c.assignment_groups } unless cohorts.empty?
-      ags << cohort.assignment_groups unless cohort.nil?
+  private
+
+  def set_default_values
+    return unless room.nil?
+    if !self.id.nil?
+      Room.create(discussable: self, identifier: "student_room_#{self.id}")
     end
-    ags.flatten!
-    @assignment_groups ||= ags
-    return @assignment_groups
   end
-
-  def active_assignment_groups
-    return @active_assignment_groups if defined? @active_assignment_groups
-    @active_assignment_groups = assignment_groups.reject { |ag| ag.users.empty? }
-    return @active_assignment_groups
-  end
-
-  # number (int) of ur where owner_status == nil
-  def unstatused_user_responses_count
-    return 0 unless user_assignments.any?{|ua| !ua.user_responses.empty? }
-    user_assignments.map{|ua|
-      ua.user_responses.where(owner_status: nil).count
-    }.sum
-  end
-
 end

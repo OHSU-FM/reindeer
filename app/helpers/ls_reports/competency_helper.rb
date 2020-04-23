@@ -52,7 +52,7 @@ module LsReports::CompetencyHelper
     'MK2-E' => 'Possesses sufficient clinical science knowledge and the ability to apply that required knowledge to common medical and surgical conditions and basic preventive care (e.g., can make a diagnosis, recommend initial management, and recognize variation in the presentation of common medical and surgical conditions). ',
     'MK3-E' => 'Possesses sufficient knowledge of epidemiology and the ability to apply that required knowledge to common medical and surgical conditions and basic preventive care (e.g., can make a diagnosis and recommend initial management).  Able to identify resources and recommend their use to help prevent common illnesses and promote health. ',
     'MK4-E' => 'Routinely considers psychosocial and cultural influences on a patient\'s health and care plan.  Able assist patients having difficulty adhering to a treatment plan, helping them identify barriers and adapt plan that may address their challenges.  ',
-    'MK5-E' => 'Articulates the value of standardization in reducing errors and applies this in caring for patients in clinical settings.  Uses measurement to understand the variance across the health care system. ',
+    'MK5-E' => 'Articulates the value of standardization in reducing errors and applies this in caring for patients in clinical settings.  Uses measurement to understand the variance across the health care system. Constructs and interprets Plan-Do-Study-Act (PDSA) performance improvement cycles and run charts for measures of performance of key processes.  Articulates how various elements of the health care system (patients, families, populations, caregivers, procedures, activities, and technologies) are interdependent, and can apply this knowledge to meet the needs of individuals and communities.',
     'PCP1-E'=> 'Clinical experience allows linkage of signs and symptoms of a current patient to those encountered in previous patients. When gathering information, is able to filter, prioritize, and synthesize it into pertinent positives and negatives as well as broad diagnostic categories. Performs basic physical examination maneuvers correctly and recognizes and correctly interprets abnormal findings. Consistently and successfully uses a developmentally appropriate approach to the physical examination. Seeks and obtains data from secondary sources when needed. ',
     'PCP2-E'=> 'Consistently interprets basic diagnostic tests accurately. Understands the concepts of pre-test probability and test-performance characteristics. ',
     'PCP3-E'=> 'Abstracts and reorganizes elicited clinical findings using semantic qualifiers (such as paired opposites that are used to describe clinical information [e.g., acute and chronic]) to compare and contrast the diagnoses being considered. The emergence of pattern recognition in diagnostic and therapeutic reasoning typically results in a well-synthesized and organized assessment of a focused differential diagnosis and management plan. The focused differential and working diagnosis allows incorporation of patient preferences into the diagnostic and management plan.',
@@ -169,7 +169,7 @@ module LsReports::CompetencyHelper
 
   COMP_CODES_CC = ["ICS1", "ICS2", "ICS4", "ICS5", "ICS6", "ICS7","ICS8",
                    "PPPD1", "PPPD2", "PPPD3", "PPPD4", "PPPD10", "PPPD11",
-                   "PBLI3", "PBLI6", "PBLI8","PCP1", 
+                   "PBLI3", "PBLI6", "PBLI8","PCP1",
                    "PCP2", "PCP3", "PCP4", "PCP5", "PCP6",
                    "SBPIC3"]
 
@@ -220,7 +220,7 @@ module LsReports::CompetencyHelper
     non_clinical_courses_arry = IO.readlines(pathFile)
     non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
     return non_clinical_courses_arry
-  end 
+  end
 
   def tag_non_clinical_course(in_course)
     course_code = in_course.split("]")
@@ -233,7 +233,7 @@ module LsReports::CompetencyHelper
     elsif in_course.include? "Non-Clinical Foundations of Medicine"
         in_course = "*" + in_course
     end
-    
+
     return in_course
   end
 
@@ -261,7 +261,7 @@ module LsReports::CompetencyHelper
   end
 
   def check_clinical_comp(in_course, in_level, in_comp_code)
-    course_code = in_course.split("]") 
+    course_code = in_course.split("]")
     course_code[0] = course_code[0].gsub("[", "")
     if @non_clinical_course_arry.include?(course_code[0]) and in_level == "3" and COMP_CODES_CC.include?(in_comp_code)
         #puts "in_course: " + course_code[0] + " in_comp_code: " + in_comp_code + " level: " + in_level
@@ -272,13 +272,12 @@ module LsReports::CompetencyHelper
 
   end
 
-
   # nc means non-clinical courses
   def hf_load_all_competencies_nc(rs_data, level)
     comp_hash = {}
     COMP_CODES.each do |comp|
-      comp_hash[comp] = 0      
-    end  
+      comp_hash[comp] = 0
+    end
 
     rs_data.each do |rec|
       COMP_CODES.each do |comp|
@@ -318,7 +317,7 @@ module LsReports::CompetencyHelper
     #binding.pry
     return comp_hash
   end
- 
+
   def hf_comp_courses(rs_data, level)
     competency_courses = {}
     COMP_CODES.each do |comp|
@@ -681,7 +680,11 @@ module LsReports::CompetencyHelper
       end
     end
     for i in 0..13
-      class_mean_epa[i] = (total_epa[i]/students_epa.count.to_f).round(0)
+      if !students_epa.empty?
+        class_mean_epa[i] = (total_epa[i]/students_epa.count.to_f).round(0)
+      else
+        class_mean_epa[i] = 0
+      end
     end
     return class_mean_epa
   end

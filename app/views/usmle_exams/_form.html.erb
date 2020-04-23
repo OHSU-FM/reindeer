@@ -1,0 +1,16 @@
+<%= simple_form_for(@usmle_exam) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :user.references %>
+    <%= f.input :exam_type %>
+    <%= f.input :no_attempts %>
+    <%= f.input :pass_fail %>
+    <%= f.input :exam_score %>
+    <%= f.input :exam_date %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

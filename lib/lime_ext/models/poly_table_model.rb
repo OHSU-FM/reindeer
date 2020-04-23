@@ -3,6 +3,9 @@ module LimeExt
   class PolyTableModel
     SQL_SUB_REGEX = /[^A-Za-z0-9 @,._]+/
 
+    class PolyTable < ActiveRecord::Base
+    end
+
     def sid
       @sid
     end
@@ -48,12 +51,15 @@ module LimeExt
     # Return array of column names for this survey
     def column_names
       return @column_names if defined? @column_names
-      query = "
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_schema='#{LimeExt.schema}' AND table_name='#{self.class.table_name(sid)}'"
-      result = Array ActiveRecord::Base.connection.execute(query)
+      # query = "
+      #       SELECT column_name
+      #       FROM information_schema.columns
+      #       WHERE table_schema='#{LimeExt.schema}' AND table_name='#{self.class.table_name(sid)}'"
+      # result = Array ActiveRecord::Base.connection.execute(query)
+      PolyTable.table_name = "information_schema.columns"
+      result = PolyTable.select(:column_name).where(table_schema: "#{LimeExt.schema}", table_name: "#{self.class.table_name(sid)}")
       @column_names = result.map{|col|col["column_name"]}
+
     end
 
     def empty?

@@ -1,0 +1,18 @@
+<table class="table table-hover main-table">
+  <thead>
+    <tr>
+      <th><%= hf_sort_link "created_at", "Added On" %></th>
+      <th><%= hf_sort_link "name", "Goal" %></th>
+      <th><%= hf_sort_link "competency_tag" %></th>
+      <th><%= hf_sort_link "g_status", "Status" %></th>
+    </tr>
+  </thead>
+
+  <tbody id="goals-table">
+    <%= render partial: "goals_table_loop", locals: { goals: @goals } %>
+  </tbody>
+</table>
+
+<div class="pagination-holder">
+  <%= paginate @goals %>
+</div>

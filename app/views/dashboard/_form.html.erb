@@ -1,16 +1,7 @@
-<% content_for :head do %>
-  <!-- # Include Google js api for jspivot -->
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <%= stylesheet_link_tag 'charts' %>
-  <script type="text/javascript">
-    // Add google visualization lib
-  google.load("visualization", "1", {packages:["corechart"]});
-  </script>
-<% end %>
 
 <%= content_for :body_classes do @dash.theme end %>
 
-<div class="dashboard-container-outer">
+<div class="dashboard-container-outer", id="dashboard">
   <%= form_for @dash, :remote=>true, "data-type" => "json", :html=>{:class=>'dashboard-container'} do |f| %>
     <div class="dashboard-container-inner">
       <nav class="dashboard-navbar navbar navbar-default fade-in one" role="navigation">
@@ -92,9 +83,10 @@
           <% end %>
         <!-- After render -->
         <% end %>
-        <% if @surveys.present? %>
-          <%= render partial: "dashboard/widgets/recent_surveys", locals: {dash: @dash} %>
-        <% end %>
+        <!-- < % if @surveys.present? %>  -->
+        <!--  < %= render partial: "dashboard/widgets/recent_surveys", locals: {dash: @dash} %> -->
+        <!-- < % end %> -->
+
       </ul>
     </div>
   </div>

@@ -4,6 +4,38 @@ module LsReportsHelper
     (full_desc ? strip_tags(question.question) : question.title.titleize).html_safe
   end
 
+  def hf_has_csl_feedbacks(user_id)
+    if CslFeedback.where(user_id: user_id).exists?
+        return true
+    else
+      return false
+    end
+  end
+
+  def hf_csl_feedbacks_title(ra_title, csl_feedbacks_title)
+    title = nil
+    if ra_title.include? "CPR"
+      ra_title = ra_title + "/HODI"
+    end
+    ra_title = ra_title.split("-").last
+    #puts "ra_title: " + ra_title
+    csl_feedbacks_title.each do |csl|
+      if (csl.include? ra_title) and (csl.include? "Mid-Term")
+            title = "CSL Narrative Assessment Evaluation " + csl
+            return title
+      elsif (csl.include? ra_title) and (csl.include? "End of Term")
+            title =  "CSL Narrative Assessment Evaluation " + csl
+            return title
+      elsif csl.include? ra_title
+            title =  csl
+            return title
+      else
+        title = nil
+      end
+    end
+    return title
+  end
+
 
   class AccessDenied < Exception; end
 
@@ -51,26 +83,42 @@ module LsReportsHelper
     title.include?(":") ? title.split(":").last(2).join(" - ") : title
   end
 
+  # "C": "Coaching Feedback",
+  # "EPA&C": "EPAs & Competencies",
+  # "TE": "Teacher Evaluations",
+  # "CE": "Course Evaluations",
+  # "P/LSE": "Preceptor/Learning Setting Evaluation",
+  #{}"C": "Coaching Feedback",
+
   # needed for menu generation and translation
+  # "EPA&C": "EPAs & Competencies",
+  # "TE": "Teacher Evaluations",
+  # "CE": "Course Evaluations",
+  # "P/LSE": "Preceptor/Learning Setting Evaluation",
+  # "C": "Coaching Feedback",
+
   MENU_HEADERS = {
                    "SA": "Student Assessment",
-                   "C": "Coaching",
-                   "EPA&C": "EPAs & Competencies",
-                   "TE": "Teacher Evaluations",
-                   "CE": "Course Evaluations",
-                   "P/LSE": "Preceptor/Learning Setting Evaluation",
+                   "C": "Coaching Feedback",
                    "O": "Other"
   }.stringify_keys!
 
   # sorts ls titles available to user
-  def hf_generate_menu_hash lime_surveys
-    nested_hash = Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
-
-    filtered_titles = lime_surveys.map{|s|
-      s.lime_surveys_languagesettings[0].surveyls_title
-    }.select{|title|
-      MENU_HEADERS.keys.include? title.split(":").first
-    }.sort
+  def hf_generate_menu_hash in_user
+    nested_hash ||= Hash.new{|hash, key| hash[key] = Hash.new(&hash.default_proc) }
+    if in_user.student?
+      filtered_titles ||= in_user.lime_surveys.map{|s|
+        s.lime_surveys_languagesettings[0].surveyls_title
+      }.select{|title|
+        MENU_HEADERS.keys.include? title.split(":").first
+      }.sort
+    else
+      filtered_titles ||= in_user.lime_surveys_languagesettings.map{|s|
+        s.surveyls_title
+      }.select{|title|
+        MENU_HEADERS.keys.include? title.split(":").first
+      }.sort
+    end
 
     filtered_titles.each do |title|
       level1, level2, level3, val = title.split(":")
@@ -282,6 +330,12 @@ module LsReportsHelper
       unless @ability.can? :read_unfiltered, lime_survey
         # Filters for comparison
         plg = user.permission_group.permission_ls_groups.where(lime_survey_sid: lime_survey.sid).first
+        if plg.nil? and user.prev_permission_group_id.present?
+          plg = PermissionLsGroup.where(permission_group_id: user.prev_permission_group_id, lime_survey_sid: lime_survey.sid).first
+        else
+          # Dean's level
+          plg = PermissionLsGroup.where(permission_group_id: user.permission_group_id, lime_survey_sid: lime_survey.sid).first
+        end
         raise "Permissions Error: User cannot access this survey" unless plg.present?
         plg.permission_ls_group_filters.each do |plgk|
           fieldname = plgk.lime_question.my_column_name
@@ -379,6 +433,7 @@ module LsReportsHelper
   ##
   # Does this user have a widget for this pk, agg and question?
   def user_has_widget? user, question, pk, agg, view_type, graph_type
+
     !user.question_widgets.find{|qw|
       qw.lime_question_qid == question.qid &&
         qw.agg=agg.to_s && qw.pk==pk.to_s &&

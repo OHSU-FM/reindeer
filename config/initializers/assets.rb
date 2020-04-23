@@ -25,4 +25,22 @@ Rails.application.config.assets.precompile += %w( print.css
     settings.css
     rails_admin_iframe.css
     dataTables/*
-    )
+    goals.css
+    action_plan_items.css
+    rooms.css
+    coaching_students.css
+    coaching.css
+    cable.js
+    searches.css
+    artifacts.css
+    epa_graphs.js
+    cds_reports.css
+    wba_graphs.css
+    csl_feedbacks.css
+    competencies.css
+    courses.css
+    epa_masters.css
+    epa_reviews.css
+    fom_exams.css
+    preceptor_evals.css 
+   )

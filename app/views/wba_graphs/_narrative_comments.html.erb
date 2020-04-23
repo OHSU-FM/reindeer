@@ -1,0 +1,163 @@
+
+  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          Clinical Experience Phase Course Comments
+              </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+              <div class="table-responsive-sm">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">CourseName</th>
+                      <th scope="col">Evaluator</th>
+                      <th scope="col">FinalGrade</th>
+                      <th scope="col">ProfConcern</th>
+                      <th scope="col">MSPE Comment</th>
+                    </tr>
+                  </thead>
+                  <% clinical_data.each do |cd| %>
+                    <tr>
+                      <td><%= cd["CourseName"] %></td>
+                      <td><%= cd["Eval"] %></td>
+                      <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
+                      <td><%= cd["ProfConcerns"] %></td>
+                      <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
+                    </tr>
+                  <% end %>
+                </table>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Foundations of Medicine Phase Preceptorship Comments
+              </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+              <div class="table-responsive-sm">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Preceptor</th>
+                      <th scope="col">SubmitDate</th>
+                      <th scope="col">Grade</th>
+                      <th scope="col">Comment</th>
+                    </tr>
+                  </thead>
+                  <% preceptor_data.each do |pd| %>
+                    <tr>
+                      <td><%= pd["PreceptorName"] %></td>
+                      <td><%= pd["SubmitDate"] %></td>
+                      <td><%= pd["Grade"] %></td>
+                      <td><%= hf_highlight(pd["Comment"], epa_code) %></td>
+                    </tr>
+                  <% end %>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Foundations of Medicine Phase CSL Narrative Feedback
+              </a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+              <div class="panel-body"
+                <div class="table-responsive-sm">
+                  <% if csl_data.empty? %>
+                    <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+                  <% else %>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">CSL Block Title</th>
+                            <th scope="col">CSL Instructor</th>
+                            <th scope="col">Student</th>
+                            <th scope="col">Feedback</th>
+                          </tr>
+                        </thead>
+                        <% csl_data.each do |csl| %>
+                          <% csl.each do |data| %>
+                            <tr>
+                              <td><%= data["BlockName"] %></td>
+                              <td><%= data["CSLInstructor"].split(":").last %></td>
+                              <td><%= data["SelectedStudent"] %></td>
+                              <td><%= hf_highlight(data["Comments"], epa_code) %></td>
+                            </tr>
+                          <% end %>
+                        <% end %>
+                      </table>
+                  <% end %>
+                </div>
+               </div>
+           </div>
+       </div>
+       <div class="panel panel-default">
+           <div class="panel-heading" role="tab" id="headingFour">
+             <h4 class="panel-title">
+               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                 Official Documents <span class="badge badge-warning"><%= @no_official_docs %></span>
+               </a>
+             </h4>
+           </div>
+           <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+               <div class="panel-body"
+                 <div class="table-responsive-sm">
+                    <% if @no_official_docs == 0 %>
+                      <h5> No Official Documents Found  ! </h5>
+                    <% else %>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>UserID</th>
+                            <th>Artifacts/Documents</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <% selected_artifacts = @artifacts_student.select{|a| a if a.content == "Progress Board Letter" or a.content == "Misc" } %>
+                        <% selected_artifacts.each do |artifact| %>
+                            <tr>
+                              <td><%= artifact.title %></td>
+                              <td><%= artifact.content %> </td>
+                              <td><%= artifact.user_id.to_s %></td>
+                              <td><table class="responsive table table-hover">
+                                <% if artifact.documents.attached? %>
+                                  <% artifact.documents.each do |document| %>
+                                    <tr>
+                                      <td> <%= document.filename %> </td>
+                                      <td>
+                                        <%= link_to 'View', url_for(document), target: :_blank %>
+                                        /
+                                        <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                                      </td>
+                                    </tr>
+                                  <% end %>
+                                <% end %>
+                               </table>
+                              </td>
+                            </tr>
+                        <% end %>
+                      </table>
+                    <% end %>
+                 </div>
+               </div>
+           </div>
+      </div>
+  </div>

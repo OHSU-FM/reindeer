@@ -1,0 +1,29 @@
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title title-inline" id="newGoalModalLabel">New Goal - <b><font color="blue">
+            <%= hf_get_label(current_user) %> </font></b> </h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body row modal-goal">
+          <div class="container col-sm-10">
+            <%= render partial: "coaching/goals/goal_form", locals: { student: @student } %>
+          </div>
+          <div class="col-sm-2">
+              <p><b> Remember, "smart" goals are... </b></p>
+              <p> I - Important </p>
+              <p> S - Specific </p>
+              <p> M - Measurable </p>
+              <p> A - Achievable</p>
+              <p> R - Realistic </p>
+              <p> T - Time-based </p>
+          </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>

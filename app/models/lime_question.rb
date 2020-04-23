@@ -2,6 +2,11 @@ class LimeQuestion < ActiveRecord::Base
 
   include LsReports::CompetencyHelper
 
+  class LimeQuestionAttributes < ActiveRecord::Base
+    self.table_name = "lime_question_attributes"
+    alias_attribute :xattribute, :attribute
+  end
+
   # Question types used by LimeSurvey and the short names we use for partials
   QTYPES = {
     '1'=>'dual_arr',          # - Array (Flexible Labels) Dual Scale
@@ -80,13 +85,22 @@ class LimeQuestion < ActiveRecord::Base
 
   def qattrs
     return @qattrs if defined? @qattrs
+    connection = ActiveRecord::Base.connection
     @qattrs = HashWithIndifferentAccess.new
-    qas = ActiveRecord::Base.connection.execute(
-      "SELECT qaid, qid, attribute as xattribute, value, language
-      FROM lime_question_attributes
-      WHERE qid = #{qid}").each do |qa|
-      @qattrs[qa["xattribute"]] = qa["value"]
-    end
+    query = "SELECT qaid, qid, attribute as xattribute, value, language FROM lime_question_attributes
+            WHERE qid = #{connection.quote(qid)}"
+     qas = ActiveRecord::Base.connection.execute(query).each do |qa|
+       @qattrs[qa["xattribute"]] = qa["value"]
+     end
+
+
+
+     # qas = LimeQuestionAttributes.select(:qaid, :qid, :xattribute, :value, :language).where(qid: "#{qid}").each do |qa|
+     #   @qattrs[qa["xattribute"]] = qa["value"]
+     # end
+
+
+
     return @qattrs
   end
 

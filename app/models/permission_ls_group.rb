@@ -39,31 +39,11 @@ class PermissionLsGroup < ActiveRecord::Base
   end
 
   rails_admin do
-    navigation_label 'Permissions'
-    label 'Lime Survey'
     visible false
-    list do
-      field :id do
-        pretty_value do
-          bindings[:view].link_to(bindings[:object].id, bindings[:view].edit_path(bindings[:object].class, bindings[:object].id))
-        end
-      end
-      field :enabled
-      field :ready_for_use?, :boolean do
-        read_only true
-      end
-      field :permission_group
-      field :lime_survey
-      field :view_raw
-      field :view_all
-      field :updated_at
-      field :created_at
-      sort_by "permission_group_id, lime_survey_sid"
-    end
 
     edit do
       field :ready_for_use?, :boolean do
-        read_only true
+       read_only true
       end
 
       field :permission_group do
@@ -72,8 +52,9 @@ class PermissionLsGroup < ActiveRecord::Base
       end
 
       field :lime_survey do
-        LimeSurvey.with_data_table.map{|ls| ls.title}.sort_by {|e| e[0] }
+        LimeSurvey.with_data_table.map{|ls| ls.title }.sort_by{|e| e[0] }
       end
+
       field :enabled
       field :view_raw
       field :view_all

@@ -1,37 +1,83 @@
 <script src="https://highcharts.github.io/pattern-fill/pattern-fill-v2.js"></script>
 <table style="width: 100%;" class="table table-stripe table-condensed table-hover ls_reports_filter spreadsheet-body">
-  <tr><th >Blocks</th>
+  <tr> <th width="6%">Blocks</th>
       <th class="centered-cell">FUND <br > Student / Class Mean</th>
       <th class="centered-cell">BLHD <br > Student / Class Mean</th>
       <th class="centered-cell">SBM <br > Student / Class Mean</th>
-      <th class="centered-cell">CARE <br > Student / Class Mean</th>
-      <th class="centered-cell">HODI <br > Student / Class Mean</th>   
-      <th class="centered-cell">NSF <br > Student / Class Mean</th>   
-      <th class="centered-cell">DEVH <br > Student / Class Mean</th>   
+      <th class="centered-cell">CARE/CPR <br > Student / Class Mean</th>
+      <th class="centered-cell">HODI <br > Student / Class Mean</th>
+      <th class="centered-cell">NSF <br > Student / Class Mean</th>
+      <th class="centered-cell">DEVH <br > Student / Class Mean</th>
 
   </tr>
   <% class_mean = @allblocks_class_mean %>
   <% i = 0 %>
-  <% @allblocks.each do |k, v| %>
+  <% @allblocks.each do |k, data| %>
     <tr>
-        <td><%= k %></td>
-        <% v.each do |item| %>
-            <td class="centered-cell">
+        <% if (@cohort_year >= "2018") and (k=="Comp2" or k=="Comp5") %>
+           <td> <%= "#{k}" %> </td>
+             <% i = 0 %>
 
-                <font color="green"><%= "%3.2f" % item.to_s.to_d.truncate(2).to_s %> </font>
-                <%= " / " %>
-                <% if class_mean["#{k}"][i].nil? %>
-                    <font color="blue"> 0.00 </font>
-                <% else %>
-                  <font color="blue"> <%= "%3.2f" % class_mean["#{k}"][i].to_d.truncate(2).to_s %> </font>
-                <% end %>
-                <% i = i + 1 %>
-            </td>
+              <% while i < data.length %>
+                  <td width="10%" class="centered-cell">
+                     <font color="green">HSS: <%= "%3.2f" % data[i].to_s.to_d.truncate(2).to_s %> </font>
+                     <%= " / " %>
+                     <% if class_mean["#{k}"][i].nil? %>
+                         <font color="blue"> 0.00 </font>
+                     <% else %>
+                       <font color="blue"> <%= "%3.2f" % class_mean["#{k}"][i].to_d.truncate(2).to_s %> </font>
+                     <% end %>
+                     <br >
+                     <font color="green">BSS: <%= "%3.2f" % data[i+1].to_s.to_d.truncate(2).to_s %> </font>
+                     <%= " / " %>
+                     <% if class_mean["#{k}"][i].nil? %>
+                         <font color="blue"> 0.00 </font>
+                     <% else %>
+                       <font color="blue"> <%= "%3.2f" % class_mean["#{k}"][i+1].to_s.to_d.truncate(2).to_s %> </font>
+                     <% end %>
+                     <% i = i + 2 %>
+                 </td>
+            <% end %>
+        <% else %>
+          <td><%= k %></td>
+          <% data.each do |item| %>
+              <td class="centered-cell">
+
+                  <font color="green"><%= "%3.2f" % item.to_s.to_d.truncate(2).to_s %> </font>
+                  <%= " / " %>
+                  <% if class_mean["#{k}"][i].nil? %>
+                      <font color="blue"> 0.00 </font>
+                  <% else %>
+                    <font color="blue"> <%= "%3.2f" % class_mean["#{k}"][i].to_d.truncate(2).to_s %> </font>
+                  <% end %>
+                  <% i = i + 1 %>
+              </td>
+          <% end %>
         <% end %>
+
     </tr>
     <% i = 0 %>
   <% end %>
+</table>
+<table style="width: 100%;" class="table table-hover ls_reports_filter spreadsheet-body">
   <tr>
-    <div id="data-visualization-allblocks" style="max-width: 500px; height: 300px; margin: 0 auto"></div>
+      <td>
+        <div id="data-visualization-Comp1" style="min-width: 500px; height: 300px; margin: 0 auto"></div>
+      </td>
+      <td>
+        <div id="data-visualization-Comp2" style="min-width: 500px; height: 300px; margin: 0 auto"></div>
+      </td>
+       <td>
+        <div id="data-visualization-Comp3" style="min-width: 500px; height: 300px; margin: 0 auto"></div>
+      </td>
   </tr>
+  <tr>
+      <td>
+        <div id="data-visualization-Comp4" style="min-width: 500px; height: 300px; margin: 0 auto"></div>
+      </td>
+      <td>
+        <div id="data-visualization-Comp5" style="min-width: 500px; height: 300px; margin: 0 auto"></div>
+      </td>
+  </tr>
+
 </table>

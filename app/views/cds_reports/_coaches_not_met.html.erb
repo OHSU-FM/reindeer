@@ -1,0 +1,34 @@
+<% coaches_not_met_past_2_months = hf_get_coaches_not_met_past_2_months(@cohorts) %>
+<% subjects = coaches_not_met_past_2_months["Med22"].map{|k,v| k} %>
+<% cohorts = hf_all_cohorts %>
+
+<tr bgcolor="F2EAE9"><th><h3>Coaches</h3></th></tr>
+<% for v in 0..subjects.length-1 do %>
+  <tr>
+     <% temp_sub = subjects[v] %>
+      <td><%= subjects[v] %> </td>
+      <% coaches_not_met_past_2_months.map{|k,v| v[temp_sub]}.each do |data| %>
+        <td>
+          <% hf_parse_coach(data).each do |coach| %>
+             <%= coach %><br />
+          <% end %>
+        </td>
+
+      <% end %>
+  </tr>
+<% end %>
+<tr bgcolor="F2EAE9"><th><h3>Students</h3></th></tr>
+ <% for v in 0..subjects.length-1 do %>
+   <tr>
+      <% temp_sub = subjects[v] %>
+       <td><%= subjects[v] %> </td>
+       <% coaches_not_met_past_2_months.map{|k,v| v[temp_sub]}.each do |data| %>
+         <td>
+           <% hf_parse_student(data).each do |student| %>
+              <%= student %><br />
+           <% end %>
+         </td>
+
+       <% end %>
+   </tr>
+ <% end %>

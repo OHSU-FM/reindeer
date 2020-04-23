@@ -32,9 +32,9 @@ class RoleAggregate < ActiveRecord::Base
             .sort_by {|e| e[0] }
         end
       end
-      field :ready_for_use? do
-        read_only true
-      end
+      #field :ready_for_use? do
+      #  read_only true
+      #end
 
       group 'Primary Filter' do
         field :pk_label
@@ -60,7 +60,9 @@ class RoleAggregate < ActiveRecord::Base
   end
 
   def delete_dash_widgets
-    question_widgets.each{|qw| qw.dash_widget.destroy }
+    if !question_widgets.nil?
+        question_widgets.each{|qw| qw.dash_widget.destroy if !qw.dash_widget.nil? }
+    end
   end
 
   def validates_table_existance

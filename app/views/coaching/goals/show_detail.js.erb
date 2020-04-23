@@ -1,0 +1,6 @@
+
+$('#cs-detail').addClass('show-detail');
+$('#cs-detail').html("<%= j render partial: 'show_detail', locals: { goal: @goal } %>");
+$("tr#goalId-<%= @goal.id %>").addClass("active").siblings().removeClass('active');
+roomNumber = $("#room-identifier-goal").data("room-number")
+window.cableCreate(roomNumber);

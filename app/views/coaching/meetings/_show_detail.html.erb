@@ -1,0 +1,57 @@
+<div class="detail-header">
+  <div class="detail-section">
+    <h4><font color="#4c0946">Meeting Subject(s)</font></h4>
+    <div>
+        <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
+          <%= b.check_box(checked: true, class: 'MyCheckBox') %>
+          <b> <%= b.text %> </b> <br />
+       <% end %>
+    </div>
+    <% if current_user.admin_or_higher? %>
+      <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
+    <% end %>
+    <button type="button" class="close" aria-label="Close" id="hide-detail">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+
+<div class="detail-section">
+  <h4>Meeting Details</h4>
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
+  <div><i>Contact Type: </i><%= meeting.location %></div>
+  <div><i>Date: </i><%= meeting.date.strftime("%m/%d/%Y") %></div>
+</div>
+
+<div class="detail-section">
+  <h4>Meeting Summary</h4><i><font color="#4c0946"> * To update Meeting Summary, please click on Status field to select 'Update Meeting Summary'.</font><i>
+  <div>
+    <%= text_area_tag :notes, meeting.notes, class: "updateNotes", rows: 5, style: 'width:100%' %>
+  </div>
+</div>
+
+<div class="detail-section">
+  <h4>Meeting Documentation</h4>
+  <div class="meeting-comments">
+         <h1 id="room-identifier-meeting" data-room-number=<%= "#{meeting.room.id}" %>></h1>
+
+            <div class="row">
+              <div id="room-id-<%= "#{meeting.room.id}" %>">
+                  <% meeting.room.messages.sort_by(&:created_at).each do |message| %>
+                    <%= render partial: "/messages/message", locals: {message: message} %>
+                <% end %>
+
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              <form style="width: 100%">
+                  <input type="text" id="meeting_comment_room" data-behavior="room_speaker_meeting"
+                    style="width: 100%" placeholder="Meeting Comment - type in here & press RETURN to save...">
+              </form>
+            </div>
+
+  </div>
+</div>

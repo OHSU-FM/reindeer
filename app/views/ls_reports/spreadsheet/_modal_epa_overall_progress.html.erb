@@ -1,54 +1,73 @@
 
 <div id="EPA<%= i %>" class="modal fade" role="dialog" data-modal-index="1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered" >
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header"
                  <a href="#close" class="close" data-dismiss="modal" >X</a>
-                     <h3 class="modal-title modal-text-align-center"><font color="Green"> EPA Overall Progress - <%= overall_progress_val %>%</font></h3>
+                     <h3 class="modal-title modal-text-align-center"><font color="Green"> Qualified Assessors/Work Based Assessments Overall Progress </font></h3> <!-- - <%= overall_progress_val %>% -->
             </div>
 
             <div class="modal-body">
                 <div class="container-fluid">
-                    <ul class="list-inline" id="MyOverallProgressTabs">
-                        <li class="active"><a data-toggle="tab" href="#EPAGraph<%= i %>" id="tab-1-epa-<%= i %>">EPA Graph</a></li>
+                    <ul class="list-inline nav nav-tabs" id="MyOverallProgressTabs">
+                        <li class="active"><a data-toggle="tab" href="#AdHocAllEPAs<%= i %>" id="tab-5-epa-<%= i %>" >WBA Summary Graph</a></li>
+
+                        <li><a data-toggle="tab" href="#WBAClinicalAssessors<%= i %>" style="background-color:#ED5107" id="tab-6-epa-<%= i %>">WBA by Clinical Assessors</a></li>
+                        <li><a data-toggle="tab" href="#EPAGraph<%= i %>" id="tab-1-epa-<%= i %>">QA Summary Graph</a></li>
                     </ul>
 
                     <div class="tab-content">
-                        <div id="EPAGraph<%= i %>" class="tab-pane fade in active">
+                        <div id="EPAGraph<%= i %>" class="tab-pane fade in">
                             <div class="col-sm-3">
                                  <table id="EPATable" class="table borderless table-condensed modal-text-align-center table-striped table-hover">
                                     <tr>
                                         <td>EPA</td>
                                         <td>Complete (%)</td>
-                                    </tr> 
+                                    </tr>
                                     <% for j in 1..13 %>
                                         <% epa = hf_epa(@rs_data, j.to_s, "3") %>
                                         <% ave = hf_average_epa(epa) %>
                                         <tr>
                                             <td>
-                                                <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_epa_desc("EPA"+j.to_s) %>" ><%= j %></span></a>      
+                                                <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_epa_desc("EPA"+j.to_s) %>" ><%= j %></span></a>
                                             </td>
 
                                             <td><%= ave %></td>
                                         </tr>
                                     <% end %>
-                                 </table>    
-                            </div>  
-
+                                 </table>
+                            </div>
                             <div class="col-sm-6">
-                            <div id="epa-container-dark" style="min-width: 600px; height: 550px; margin: 0 auto"></div>
+                               <div id="epa-container-dark" style="min-width: 600px; height: 550px; margin: 0 auto"></div>
                                 <div id="graph-buttons">
                                     <button id="plain" class="btn btn-info btn-sm">Column</button>
                                     <button id="inverted" class="btn btn-info btn-sm">Bar</button>
                                     <button id="polar" class="btn btn-info btn-sm">Polar</button>
                                     <button id="update-theme" class="btn btn-info btn-sm">Printer-Friendly</button>
-
                                 </div>
-                            </div>     
+                            </div>
+                        </div>
+
+                        <div id="AdHocAllEPAs<%= i %>" class="tab-pane fade in active">
+                                <br />
+                                <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
+                                <br />
+                                <br />
+                                <div id="data-visualization-AdHocAllEPACount" style="width: 1200px; height: 400px; margin: 0 auto"></div>
+                                <br />
 
                         </div>
+
+                        <div id = "WBAClinicalAssessors<%= i %>" class="tab-pane fade in active">
+
+                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk, false) %>
+                          <% if !wba_clinical_assessor.nil? %>
+                            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+                          <% end %>
+                        </div>
+
                     </div>
- 
+
                 </div>
             </div>
             <div class="modal-footer">

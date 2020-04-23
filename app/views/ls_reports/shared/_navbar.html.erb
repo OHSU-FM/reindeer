@@ -2,7 +2,6 @@
 <%= render partial: 'shared/modal_blank' %>
 
 <div id="ls_reports_nav">
-  <div id="container"></div>
   <ul class="list-inline">
     <li>
       <ul class="breadcrumb">
@@ -37,18 +36,12 @@
             <li>
               <button type="button" class="btn btn-xs btn-primary" onclick="window.print();">Print</button>
             </li>
-            <% if can?(:access, :lime_server) && can?(:read_data, @lime_survey) %>
-              <li>
-                <a id="export-dataset" href="<%= Settings.lime_url %>/index.php/admin/export/sa/exportresults/surveyid/<%= @sid %>"
-                  class="btn btn-xs btn-default" target="_blank">Export</a>
-              </li>
-            <% end %>
           </ul>
         </div>
         <% unless @hide_pk %>
           <!-- Residency Program Selector -->
           <div class="pull-right pad-right">
-            <b><%= @role_aggregate.pk_label %></b>
+            <b><%= @role_aggregate.pk_label %></b> <font color="red"><i>(please select a student below)</i></font>
             <br/>
             <select id="pk_selector" name="pk_selector" class="select_a_link form-control input-sm">
               <% @pk_enum.each do |key, val|%>

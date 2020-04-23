@@ -1,0 +1,128 @@
+<div class="container-fluid">
+   <ul id="MainTabs2" class="nav nav-tabs">
+
+       <li class="bold-italic"><a data-toggle="tab" href="#fom" style="background-color:#97BC72">FoM Blocks</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#Preceptorship" style="background-color:#28B5AB">Preceptorship</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#scholarly" style="background-color:#68C7AB">Scholarly Project</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#transition" style="background-color:#98C7AB">Transition Courses</a></li>
+       <li class="active bold-italic"><a data-toggle="tab" href="#core" style="background-color:#FEC8D8">Core Experiences</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#elective" style="background-color:#DAF7A6">Electives</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#intersessions" style="background-color:#AAG7A6">Intersessions</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#nbme" style="background-color:#FAF7A6">National Board Exams/CPX</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9">All Courses</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#competency" style="background-color:#E0BBE4">Competencies</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPAs/WBAs/Badges</a></li>
+       <li class="bold-italic"><a data-toggle="tab" href="#official" style="background-color:#BEC8F8">Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
+
+
+   </ul>
+  <div class="tab-content">
+    <div id="fom" class="tab-pane fade">
+        <%= render partial: "fom_blocks" %>
+        <div class="panel panel-default">
+            <div class="panel-body"><h4>CSL Evaluations</h4></div>
+        </div>
+         <div class="table-responsive-sm">
+          <% if !@csl_data.blank? %>
+                <%= render partial: "csl_evals" %>
+          <% end %>
+          <% if !@csl_feedbacks.blank? %>
+            <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+          <% end %>
+        </div>
+
+    </div>
+    <div id="Preceptorship" class="tab-pane fade">
+      <%= render partial: "preceptorships" %>
+    </div>
+
+    <div id="scholarly" class="tab-pane fade">
+      <%= render partial: "scholarly_project" %>
+    </div>
+
+    <div id="transition" class="tab-pane fade">
+      <%= render partial: "transition" %>
+    </div>
+
+    <div id="core" class="tab-pane active fade in">
+      <div class="center-div">
+          <% if !@comp.nil? %>
+            <%= render partial: "core_courses" %>
+          <% else %>
+            <h4> No Core Courses data FOUND! </h4>
+          <% end %>
+        </div>
+    </div>
+
+    <div id="elective" class="tab-pane fade">
+      <% if !@comp.nil? %>
+        <%= render partial: "electives" %>
+      <% else %>
+        <h4> No Elective Courses data FOUND! </h4>
+      <% end %>
+    </div>
+
+    <div id="intersessions" class="tab-pane fade">
+      <%= render partial: "intersessions" %>
+    </div>
+
+    <div id="nbme" class="tab-pane fade">
+      <% if !@usmle_exams.blank? %>
+        <%= render partial: "nbme" %>
+      <% else %>
+        <h4> No NBME/Shelf data FOUND! </h4>
+      <% end %>
+    </div>
+
+    <div id="all_clinical" class="tab-pane fade">
+      <%= render partial: "all_clinical" %>
+    </div>
+
+    <div id="competency" class="tab-pane fade">
+      <div class="container-fluid">
+          <div class="center-div">
+            <div class="inner-div">
+              <% if !@chart.nil? %>
+                <br /> <br />
+                <%= high_chart("comp_graph", @chart) %>
+                <%= render partial: "collapsible_competencies" %>
+                <% else %>
+                  <h4> No Competency/EPA data FOUND! </h4>
+              <% end %>
+            </div>
+          </div>
+
+      </div>
+    </div>
+
+    <div id="epa" class="tab-pane fade">
+      <div class="center-div">
+        <div class="inner-div">
+            <% if !@epas.blank?  %>
+              <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
+              <br>
+            <% end %>
+
+          <% wba_epa_student = hf_series_data_student("EPA", params[:user_id], false) %>
+          <% if !wba_epa_student.nil? %>
+             <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
+          <% end %>
+          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", params[:user_id], false) %>
+          <% if !wba_clinical_assessor.nil? %>
+            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+          <% end %>
+
+          <%= render partial: "collapsible_wba_details" %>
+
+          <%= render partial: "collapsible_epas" %>
+        </div>
+      </div>
+    </div>
+    <div id="official" class="tab-pane fade">
+        <div id="Progress Board">
+            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+        </div>
+    </div>
+
+  </div>
+</div>

@@ -5,4 +5,9 @@
              <li><%= link %></li>
         <% end %>
     <% #end %>
+    <% @pk = current_user.email if @pk.nil? or @pk == "_" %>
+    <% fom_block = @lime_survey.title.split("-").last %>
+    <% @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@pk, "FoM", fom_block) %>
+    <%= render partial: 'artifacts/shelf_artifacts' %>
+
 </ul>

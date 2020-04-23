@@ -48,3 +48,6 @@ bower.json
 
 .svn
 public/
+/public/packs
+/public/packs-test
+/node_modules
