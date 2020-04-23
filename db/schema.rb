@@ -687,11 +687,8 @@ ActiveRecord::Schema.define(version: 2020_04_06_160951) do
 
   add_foreign_key "artifacts", "users"
   add_foreign_key "cohorts", "users"
-<<<<<<< HEAD
-=======
   add_foreign_key "competencies", "permission_groups"
   add_foreign_key "competencies", "users"
->>>>>>> dev/redei-portal_v5
   add_foreign_key "csl_evals", "users"
   add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "epa_masters", "users"
