@@ -35,7 +35,7 @@ Rails.application.configure do
   config.assets.compress = false
 
   # Specifies the header that your server uses for sending files.
-  config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
+  #config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
@@ -90,7 +90,7 @@ Rails.application.configure do
           :exception_recipients => Settings.exception_notification.exception_recipients
       }
   end
-  config.action_cable.allowed_request_origins = ["https://redei.ohsu.edu"]
-  config.action_cable.url = "wss://redei.ohsu.edu/websocket" 
+  config.action_cable.allowed_request_origins = ["https://redei2.ohsu.edu"]
+  config.action_cable.url = "wss://redei2.ohsu.edu/websocket" 
   config.active_storage.service = :production
 end
