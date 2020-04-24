@@ -50,14 +50,7 @@
                         </div>
 
                         <div id="AdHocAllEPAs<%= i %>" class="tab-pane fade in active">
-<<<<<<< HEAD
-                            <br />
-                            <div id="data-visualization-AdHocAllEPAs" style="width: 1000px; height: 800px; margin: 0 auto"></div>
-                            <br />
-                            <br />
-                            <div id="data-visualization-AdHocAllEPACount" style="width: 1000px; height: 500px; margin: 0 auto"></div>
-                            <br />
-=======
+
                                 <br />
                                 <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
                                 <br />
@@ -65,29 +58,18 @@
                                 <div id="data-visualization-AdHocAllEPACount" style="width: 1200px; height: 400px; margin: 0 auto"></div>
                                 <br />
 
->>>>>>> dev/redei-portal_v5
+
                         </div>
                         <div id="EPAStatus<%= i %>" class="tab-pane fade in">
-                          <div class="container-fluid">
-                             <table>
-                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 1, upperIndex: 5} %> </tr>
-                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 6, upperIndex: 10} %> </tr>
-                               <tr><%= render partial: 'ls_reports/spreadsheet/display_badges', locals: {lowIndex: 11, upperIndex: 13} %> </tr>
-                             </table>
+                            <div id = "WBAClinicalAssessors<%= i %>" class="tab-pane fade in active">
+                              <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk, false) %>
+                              <% if !wba_clinical_assessor.nil? %>
+                                <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+                              <% end %>
+                            </div>
 
-<<<<<<< HEAD
-                        </div>
-=======
-                        <div id = "WBAClinicalAssessors<%= i %>" class="tab-pane fade in active">
-
-                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @pk, false) %>
-                          <% if !wba_clinical_assessor.nil? %>
-                            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
-                          <% end %>
                         </div>
 
-                    </div>
->>>>>>> dev/redei-portal_v5
 
                 </div>
             </div>
