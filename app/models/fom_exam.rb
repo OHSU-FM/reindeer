@@ -36,7 +36,7 @@ class FomExam < ApplicationRecord
        if user.nil?
          puts "email: " + row["email"]
          yes_updated = false
-         byebug
+         #byebug
        else
          row["user_id"] = user.id
          row["submit_date"] = format_date(row["submit_date"])
@@ -61,17 +61,18 @@ class FomExam < ApplicationRecord
     CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t") do |row|
       yes_updated = true
       total_count += 1
-      FomExam.update_exam(row, yes_updated)
-      row_to_hash = row.to_hash
-      if yes_updated
-        row_to_hash.store("status", " --> Updated")
-        no_updated += 1
-      else
-        row_to_hash.store("status", " --> NOT Updated")
-        no_not_updated += 1
+      if !row["email"].blank?
+        FomExam.update_exam(row, yes_updated)
+        row_to_hash = row.to_hash
+        if yes_updated
+          row_to_hash.store("status", " --> Updated")
+          no_updated += 1
+        else
+          row_to_hash.store("status", " --> NOT Updated")
+          no_not_updated += 1
+        end
+        log_results.push row_to_hash
       end
-      log_results.push row_to_hash
-
     end
     attachment = ActiveStorage::Attachment.find(attachment_id)
     filename = attachment.blob.filename.to_s
