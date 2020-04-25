@@ -3,7 +3,7 @@ module SearchesHelper
 
   def hf_exists_in_FomExam(user_id)
     block_array = []
-    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).uniq
+    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
     blocks.each do |block|
       block_hash = {}
       if FomLabel.find_by(permission_group_id: block.permission_group_id, course_code: block.course_code).block_enabled
