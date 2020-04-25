@@ -58,7 +58,7 @@ class FomExam < ApplicationRecord
     no_not_updated = 0
     total_count = 0
 
-    CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true) do |row|
+    CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t") do |row|
       yes_updated = true
       total_count += 1
       FomExam.update_exam(row, yes_updated)
@@ -94,7 +94,7 @@ class FomExam < ApplicationRecord
   def self.exec_raw_sql user_id, attachment_id, permission_group_id, course_code
     row_to_hash = {}
     if attachment_id.to_i != -1
-      CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true) do |row|
+      CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t") do |row|
         row_to_hash = row.to_hash
         sql = "select users.full_name, "
         sql_avg = "select "

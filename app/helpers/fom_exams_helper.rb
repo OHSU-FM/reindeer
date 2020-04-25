@@ -76,14 +76,15 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
   def hf_check_label_file(attachment_id)
     filename = ActiveStorage::Attachment.find(attachment_id).filename.to_s
     if filename.include? 'label'
-      csv_table = CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true)
+      csv_table = CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t")
       json_string = csv_table.map(&:to_h).to_json
       label_hash = JSON.parse(json_string)
       permission_group_id = label_hash.first["permission_group_id"]
       course_code = label_hash.first["course_code"]
-
-      FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first_or_create.update(labels: json_string)
-      return true
+      if !course_code.blank? 
+        FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first_or_create.update(labels: json_string)
+        return true
+      end
     else
       return false
     end
