@@ -1,0 +1,19 @@
+<% if !@preceptor_assesses.blank? %>
+  <div class="row">
+    <h5>&nbsp;&nbsp;Student Name: <b><%= @full_name %></b></h5>
+  </div>
+  <div class="row">
+    <div class="table-responsive-sm">
+      <table class="table table-striped">
+        <% @preceptor_assesses.drop(3).each do |key, values| %>
+          <tr>
+            <td style="width:600px;text-align:right;"><i> <%= hf_attribute_def(key.classify).html_safe %></i> </td>
+              <% values.each do |val| %>
+                <td> <%= val %> </td>
+              <% end %>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+<% end %>

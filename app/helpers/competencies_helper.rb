@@ -76,9 +76,34 @@ module CompetenciesHelper
                              '' => "Missing"
                            }
 
+   ATTRIBUTES_DEF = {
+            'Attribute1' => "Did the student know their <B>limitations</B>, e.g. did they know what they did not know, ask for help when needed, etc.?",
+            'Attribute1No' => "Please indicate how the student did not demonstrate this attribute.",
+            'Attribute2' => "Was the student <B>truthful</B> (was there absence of deception in interactions with the preceptor, transparency of knowledge gaps or skills, or in the uncertainty regarding one's abilities)?",
+            'Attribute2No' => "Please indicate how the student did not demonstrate this attribute.",
+            'Attribute3' => "Was the student <B>conscientious</B> (did the student follow through with tasks especially in regard to consistency, resourcefulness and initiative)?",
+            'Attribute3No' => "Please indicate how the student did not demonstrate this attribute.",
+   }
 
 
   #===================================================================================================================================================================
+  def hf_attribute_def(in_key)
+    if in_key.include? "Attribute"
+      return ATTRIBUTES_DEF[in_key]
+    else
+      return "<b>" + in_key + "</b>"
+    end
+
+  end
+
+  def hf_collect_values(hashes)
+    h = Hash.new{|h,k| h[k]=[]}
+    hashes.each_with_object(h) do |h, result|
+      h.each{ |k, v| result[k] << v }
+    end
+    return h
+  end
+
   def hf_decode_preceptor_comp2(in_code)
       return DECODE_PRECEPTOR_COMP[in_code]
   end

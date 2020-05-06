@@ -38,6 +38,8 @@ class CompetenciesController < ApplicationController
       end
     end
 
+
+    @full_name = @selected_user.full_name
     @pk = email
     @selected_user_year = @selected_user.permission_group.title.split(" ").last.gsub(/[()]/, "")
 
@@ -55,6 +57,8 @@ class CompetenciesController < ApplicationController
      end
 
      @preceptorship_data = hf_get_clinical_dataset(@selected_user, 'Preceptorship')
+     preceptor_assesses = PreceptorAssess.where(user_id: @selected_user).map(&:attributes) ## med23 preceptor evaluations
+     @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
      @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date)

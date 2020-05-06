@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2020_04_06_160951) do
+ActiveRecord::Schema.define(version: 2020_05_06_021012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -552,6 +551,30 @@ ActiveRecord::Schema.define(version: 2020_04_06_160951) do
     t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true
   end
 
+  create_table "preceptor_assesses", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "response_id"
+    t.string "preceptor_name"
+    t.string "preceptor_email"
+    t.date "submit_date"
+    t.string "term"
+    t.string "grade"
+    t.boolean "attribute1"
+    t.text "attribute1_no"
+    t.boolean "attribute2"
+    t.text "attribute2_no"
+    t.boolean "attribute3"
+    t.text "attribute3_no"
+    t.text "overall_performance"
+    t.text "feedback"
+    t.string "professional_concerns"
+    t.string "concern_comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["response_id"], name: "index_preceptor_assesses_on_response_id"
+    t.index ["user_id"], name: "index_preceptor_assesses_on_user_id"
+  end
+
   create_table "preceptor_evals", force: :cascade do |t|
     t.bigint "user_id"
     t.integer "permission_group_id"
@@ -695,6 +718,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_160951) do
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "fom_exams", "users"
+  add_foreign_key "preceptor_assesses", "users"
   add_foreign_key "preceptor_evals", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade
   add_foreign_key "usmle_exams", "users"
