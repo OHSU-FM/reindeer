@@ -1,23 +1,28 @@
 <% if !@selected_user.nil? %>
   <div class="panel panel-default">
-    <% if !@selected_user.cohort.nil? %>
-       <div class="panel-body"><h4>FoM Blocks</h4> <%= sanitize "Student: <b>#{@selected_user.full_name}</b><br/> Coach: <b>#{@selected_user.cohort.title}</b>".html_safe %></div>
-    <% else %>
-        <div class="panel-body"><h4>FoM Blocks</h4> <%= sanitize "Student: <b>#{@selected_user.full_name}</b><br/> Coach: <b>Not Assigned </b>".html_safe %></div>
-    <% end %>
-  </div>
+        <div class="panel-body"><p><h4>FoM Blocks</h4>
+          <table class="table table-striped table-responsive-sm" style="width:40%">
+            <tr>
+              <td style="text-align:right">Student:</td><td><b><%= @selected_user.full_name %></b></td>
+              <td style="text-align:right">Email:</td><td><b><%= @selected_user.email%></b></td>
+              <td style="text-align:right">UID:</td><td><b><%= @selected_user.sid.to_s %></b></td>
+              <td style="text-align:right">Coach:</td><td><b><%= @selected_user.cohort.title.to_s %></b></td>
+            </tr>
+          </table>
+        </div>
+    </div>
 <% end %>
 
 <% if !@category_labels.nil? %>
   <table class="table table-striped table-responsive-sm">
-    <thead>
+
       <tr>
         <th scope="col" style="text-align:center">Component/Block</th>
         <% @category_labels.each do |header| %>
           <th scope="col" style="text-align:center" ><%= header %> / Class Mean</th>
         <% end %>
       </tr>
-    </thead>
+
     <% cohort = @selected_user_year %>
     <% for j in 1..5 %>
         <tr>

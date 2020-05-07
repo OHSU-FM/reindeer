@@ -231,6 +231,8 @@ class User < ActiveRecord::Base
       field :password_confirmation
       field :is_ldap
       field :cohort
+      field :spec_program
+      field :sid
     end
 
     # Should be read only

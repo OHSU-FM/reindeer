@@ -8,6 +8,7 @@
         <tr>
           <th>Student</th>
           <th>Student Email </th>
+          <th>UID </th>
           <th>Permission Group</th>
           <th>Coaching Type</th>
           <th>Cohort</th>
@@ -20,6 +21,7 @@
         <tr>
           <td> <%= result.full_name %></td>
           <td> <%= result.email %></td>
+          <td> <%= result.sid.to_s %></td>
           <td> <%= result.permission_group.title.to_s %></td>
           <td> <%= result.coaching_type.to_s %></td>
           <% if result.coaching_type == 'student' %>
