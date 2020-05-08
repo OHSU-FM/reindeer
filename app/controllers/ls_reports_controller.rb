@@ -21,8 +21,13 @@ class LsReportsController < ApplicationController
     @survey_groups.sort_by{|group| group.title }
 
     @cohorts = current_user.cohorts
+      byebug
     #@recent = surveys.first(5)
-    cohort = @survey_groups.first.title.split(":").second
+    if !@survey_groups.blank?
+      cohort = @survey_groups.first.title.split(":").second
+    end 
+
+
 
     @csl_feedbacks_title ||= CslFeedback.where("csl_title like ?", "%#{cohort}%").pluck(:csl_title).uniq
 

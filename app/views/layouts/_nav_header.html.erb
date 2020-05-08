@@ -95,6 +95,8 @@
           <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% if current_user.coaching_type == 'student' %>
              <%= nav_link_to "Your Datasets", search_searches_path(current_user) %>
+          <% else %>
+              <%= render partial: "layouts/dropdown_menu_for_students" %>
           <% end %>
 
           <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>

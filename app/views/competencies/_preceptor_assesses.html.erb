@@ -9,7 +9,11 @@
           <tr>
             <td style="width:600px;text-align:right;"><i> <%= hf_attribute_def(key.classify).html_safe %></i> </td>
               <% values.each do |val| %>
+              <% if [true, false].include? val %>
+                <td> <%= val ?  'Yes' : 'No' %> </td>
+              <% else %>
                 <td> <%= val %> </td>
+              <% end %>
               <% end %>
           </tr>
         <% end %>
