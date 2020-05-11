@@ -22,8 +22,12 @@
               <%= str_html2.to_s.html_safe %>
               </span>
 
-              <%= link_to '', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
-                  'data-target' => '#mymodal-epa-review', class: "glyphicon glyphicon-plus"}%>
+              <% if !str_html1.empty? and !str_html2.empty? %>
+                <%= link_to '', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
+                    'data-target' => '#mymodal-epa-review', class: "glyphicon glyphicon-plus"}%>
+              <% end %>
+
+
               <%= link_to '', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
                   'data-target' => '#mymodal-epa-review', class: "glyphicon glyphicon-edit"}  %>
               <%= link_to '', epa_review_path(id: review.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_review glyphicon glyphicon-trash' %>

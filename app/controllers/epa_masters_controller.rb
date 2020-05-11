@@ -41,6 +41,8 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters/1
   def show
+
+    byebug
   end
 
   # GET /epa_masters/new
@@ -81,6 +83,7 @@ class EpaMastersController < ApplicationController
   end
 
   def eg_report
+
     if params[:eg_member].present?
       @epa_masters = EpaMaster.where("status is NULL and epa = ?", params[:epa]).order(:user_id).includes(:user)
 

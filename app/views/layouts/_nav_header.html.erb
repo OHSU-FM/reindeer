@@ -49,8 +49,8 @@
           <div style="" class="btn-group btn navbar-btn navbar-left">
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">EG Review<b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-              <%= nav_link_to("EG-Review", epa_masters_path, target: '_blank') %>
-              <%= nav_link_to('EG-Report', eg_report_epa_masters_path, target: '_blank') %>
+              <%= nav_link_to("EG-Review", epa_masters_path,  target: '_blank') %>
+              <%= nav_link_to('EG-Report', eg_report_epa_masters_path, method: :get, target: '_blank') %>
             </ul>
           </div>
 
@@ -61,11 +61,6 @@
         <% end %>
 
         <% if can? :list, LimeSurvey %>
-
-          <% if ['admin', 'dean'].include? current_user.coaching_type %>
-              <%= nav_link_to("Badging EPAs", epa_masters_path(email: @pk), class: "link-to-text-color", target: '_blank')  %>
-              <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
-          <% end %>
 
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
             <%= nav_link_to(hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank')  %>
