@@ -21,11 +21,10 @@ class LsReportsController < ApplicationController
     @survey_groups.sort_by{|group| group.title }
 
     @cohorts = current_user.cohorts
-      byebug
     #@recent = surveys.first(5)
     if !@survey_groups.blank?
       cohort = @survey_groups.first.title.split(":").second
-    end 
+    end
 
 
 
