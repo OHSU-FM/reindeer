@@ -1,8 +1,3 @@
-$.urlParam = function(name){
-	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-	return results[1] || 0;
-}
-
 console.log ("inside epa_reviews_modal.js.erb");
 
 $("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
@@ -15,13 +10,30 @@ $(".modal-dialog").draggable({
 $('#review-form').bind('ajax:success', function() {
    $('#newEpaReviewModal').modal('hide');
 
-	 var byName = $.urlParam('search');
- 	console.log("Search: " + byName);
+	const queryString = window.location.search;
+	console.log(queryString);
+	const urlParams = new URLSearchParams(queryString);
+	const byEmail = urlParams.get('email');
+	const byName = urlParams.get('search');
+	console.log('email: ' + byEmail);
+	console.log('search: ' + byName);
+
+	if (byName == null) {
+		UrlParam = 'email';
+		Param = byEmail;
+		dataParam = {email: byEmail}
+	}
+	else {
+		UrlParam = 'search';
+		Param = byName;
+		dataParam = {search: byName}
+	}
+
  	$.ajax({
- 		url : '/epa_masters?search=' + byName,
+ 		url : '/epa_masters?' + UrlParam + '=' + Param,
  		type : 'GET',
  		dataType:'script',
- 		data: {search: byName},
+ 		data: dataParam,
  		success : function(data) {
  				//alert('Data: '+ JSON.stringify(data));
  				console.log("epa_masters ajax is a success!")

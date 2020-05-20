@@ -10,7 +10,17 @@
               <h4 class="panel-title">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
-                    <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %> </span>
+                    <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
+                      [Badge Status:
+                      <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
+                            <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
+                            <%= image_tag ("epa/EPA#{i}"), size: "20x20" %>
+                      <% else %>
+                            <%=  @student_badge_info["EPA#{i}"]["status"] %>]
+                            <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
+                      <% end %>
+
+                    </span>
 
                   </div>
 

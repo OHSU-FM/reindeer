@@ -21,4 +21,5 @@ class EpaMaster < ApplicationRecord
   end
 
 
+
 end

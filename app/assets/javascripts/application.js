@@ -14,6 +14,8 @@
 //= require jquery.min.js
 //= require jquery-ui
 //= require rails-ujs
+// turbolinks is commented out..
+// require turbolinks
 //= require popper
 //= require bootstrap-sprockets
 //= require select2
@@ -72,5 +74,3 @@
 //= require wba_graphs
 //= require csl_feedbacks
 //= require fom_exams
-// turbolinks is commented out..
-// require turbolinks

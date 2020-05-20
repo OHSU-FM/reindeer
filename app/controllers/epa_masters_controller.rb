@@ -5,7 +5,7 @@ class EpaMastersController < ApplicationController
 
   # GET /epa_masters
   def index
-    if params[:search]
+    if params[:search].present?
       @selected_user = nil
       @parameter = params[:search].downcase
       #@results = User.where("lower(full_name) LIKE :search", search: @parameter)
@@ -23,26 +23,33 @@ class EpaMastersController < ApplicationController
         format.js { render partial: 'search-results' and return}
         format.html
       end
-
-    elsif params[:user_id]
+    elsif params[:user_id].present?
       @user = User.find(params[:user_id])
-      @epa_masters = @user.epa_masters.order(:id)
-      @full_name = @user.full_name
-      if @epa_masters.empty?
-        create_epas @user.id
-        @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
-      end
-      respond_to do |format|
-        format.html
-      end
+      load_epa_masters
+    elsif params[:email].present?
+      @user = User.find_by(email: params[:email])
+      load_epa_masters
     end
 
   end
 
+  def load_epa_masters
+    @epa_masters = @user.epa_masters.order(:id)
+    @full_name = @user.full_name
+    if @epa_masters.empty?
+      create_epas @user.id
+      @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
+    end
+    respond_to do |format|
+      format.html
+      format.js { render partial: 'search-results' and return}
+    end
+  end
+
+
   # GET /epa_masters/1
   def show
 
-    byebug
   end
 
   # GET /epa_masters/new
@@ -95,7 +102,6 @@ class EpaMastersController < ApplicationController
 
   end
 
-
   def search_student
     if params[:search]
       @selected_user = nil
@@ -117,6 +123,8 @@ class EpaMastersController < ApplicationController
 
 
   private
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_master
       @epa_master = EpaMaster.find(params[:id])

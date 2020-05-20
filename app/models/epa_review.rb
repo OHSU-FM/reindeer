@@ -11,11 +11,22 @@ class EpaReview < ApplicationRecord
        return user_id = EpaMaster.where(id: reviewable_id).select(:user_id)
     end
 
-    def self.load_eg_members
-      if File.file? (Rails.root + "public/epa_reviews/eg_members.json")
-        json_obj = File.read(Rails.root + "public/epa_reviews/eg_members.json")
-        eg_members = JSON.parse(json_obj).map{|e| e["eg_member"]}
+    def self.load_eg_members(user)
+          if File.file? (Rails.root + "public/epa_reviews/eg_cohorts.csv")
+        eg_cohorts = []
+        rows ||= CSV.foreach(Rails.root + "public/epa_reviews/eg_cohorts.csv", headers: true)
+        rows.each do |row|
+          eg_cohorts << row.to_hash
+        end
 
+        eg_full_name1 = eg_cohorts.collect{|e| e["eg_full_name1"] if e["email"] == user.email}.compact
+        eg_full_name2 = eg_cohorts.collect{|e| e["eg_full_name2"] if e["email"] == user.email}.compact
+
+        if eg_full_name1.blank? or eg_full_name2.blank?
+          eg_full_name1 = eg_cohorts.collect{|e| e["eg_full_name1"]}.uniq
+          eg_full_name2 = eg_cohorts.collect{|e| e["eg_full_name2"]}.uniq
+        end
+        return (eg_full_name1 + eg_full_name2).sort
       else
          return nil
       end

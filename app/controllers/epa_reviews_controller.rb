@@ -1,5 +1,5 @@
 class EpaReviewsController < ApplicationController
-  before_action :authenticate_user!, :find_reviewable, :load_eg_members
+  before_action :authenticate_user!, :find_reviewable   #, :load_eg_members
 
   include CompetenciesHelper
   include ArtifactsHelper
@@ -30,6 +30,10 @@ class EpaReviewsController < ApplicationController
     @decision_option2 = @decision_option
     get_evidence @user_id
 
+    if !current_user.admin_or_higher? then
+      @eg_members = [current_user.full_name]
+    end
+
     epa_idx = @epa_review_epa.split("EPA").second.to_i
     str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
                    "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
@@ -41,19 +45,24 @@ class EpaReviewsController < ApplicationController
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
     end
-    return
+
+    #return
   end
 
   # GET /epa_reviews/1/edit
   def edit
     @epa_review = EpaReview.find(params[:id])
-    if @epa_review.badge_decision1 == 'Badge'
+    if @epa_review.badge_decision1 == 'Not Yet'
+      @decision_option = []
+    elsif @epa_review.badge_decision1 == 'Badge'
       @decision_option = ["Grounded", "Presumptive"]
     else
       @decision_option = ["Distrust", "Questioned Trust"]
     end
 
-    if @epa_review.badge_decision2 == 'Badge'
+    if @epa_review.badge_decision2 == 'Not Yet'
+      @decision_option2 = []
+    elsif @epa_review.badge_decision2 == 'Badge'
       @decision_option2 = ["Grounded", "Presumptive"]
     else
       @decision_option2 = ["Distrust", "Questioned Trust"]
@@ -139,6 +148,8 @@ class EpaReviewsController < ApplicationController
     end
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
     @today_date = Time.new.strftime("%m/%d/%Y")
+    load_eg_members(@user)
+
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
@@ -172,8 +183,8 @@ class EpaReviewsController < ApplicationController
 
      end
 
-     def load_eg_members
-       @eg_members ||= EpaReview.load_eg_members
+     def load_eg_members(user)
+       @eg_members ||= EpaReview.load_eg_members(user)
      end
 
 end

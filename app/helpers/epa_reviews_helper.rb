@@ -7,18 +7,18 @@ module EpaReviewsHelper
              4 => "I was available just in case"}
 
 
-  EPA_KEYWORDS = {"EPA1" => ["history", "physical"],
-            "EPA2" => ["diagnosis"],
-            "EPA3" => ["diagnostic", "screening tests"],
-            "EPA4" => ["discuss orders", "prescriptions"],
-            "EPA5" => ["patient record"], # "Document a clinical encounter in the patient record",
-            "EPA6" => ["presentation"],   # "Provide an oral presentation of a clinical encounter",
-            "EPA7" => ["evidence", "patient care"], # "Form clinical questions and retrieve evidence to advance patient care",
-            "EPA8" => ["patient handover", "transition care"],  # "Give or receive a patient handover to transition care responsibility",
-            "EPA9" => ["collaborate"], # "Collaborate as a member of an interprofessional team",
-            "EPA10" => ["urgent care", "emergent care", "evaluation"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
-            "EPA11" => ["consent", "test", "procedure"],  # "Obtain informed consent for tests and/or procedures",
-            "EPA12" => ["perform", "procedure"],  #"Perform general procedures of a physician ",
+  EPA_KEYWORDS = {"EPA1" => ["history", "physical exam", "interview", "clinical reasoning"],
+            "EPA2" => ["differential diagnosis", "ddx"],
+            "EPA3" => ["diagnostic", "screening tests", "interpret", "cost effective"],
+            "EPA4" => ["orders",  "prescriptions"],
+            "EPA5" => ["document", "progress note", "history and physical", "patient record", "H&P"], # "Document a clinical encounter in the patient record",
+            "EPA6" => ["oral resentation", "soap", "H&P"],   # "Provide an oral presentation of a clinical encounter",
+            "EPA7" => ["clinical question", "evidence", "patient care"], # "Form clinical questions and retrieve evidence to advance patient care",
+            "EPA8" => ["handover", "handoff", "transition"],  # "Give or receive a patient handover to transition care responsibility",
+            "EPA9" => ["team", "interprofessional", "collaborate"], # "Collaborate as a member of an interprofessional team",
+            "EPA10" => ["urgent", "emergent", "RRT", "code"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
+            "EPA11" => ["informed consent"],  # "Obtain informed consent for tests and/or procedures",
+            "EPA12" => ["procedure"],  #"Perform general procedures of a physician ",
             "EPA13" => ["system failures", "safety", "improvement"] # "Identify system failures and contribute to a culture of safety and improvement"
   }
 

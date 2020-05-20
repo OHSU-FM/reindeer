@@ -8,6 +8,36 @@ module EpaMastersHelper
     return EPA_CODES
   end
 
+  def hf_load_eg_cohorts (eg_member_email)
+    if File.file? (Rails.root + "public/epa_reviews/eg_cohorts.csv")
+      eg_cohorts = []
+
+      rows ||= CSV.foreach(Rails.root + "public/epa_reviews/eg_cohorts.csv", headers: true)
+      rows.each do |row|
+        eg_cohorts << row.to_hash
+      end
+      selected_cohorts = eg_cohorts.select{|eg| eg if eg["eg_email1"] == eg_member_email or eg["eg_email2"] == eg_member_email}
+      if !selected_cohorts.blank?
+        return selected_cohorts
+      else
+         return eg_cohorts
+      end
+    else
+       return nil
+    end
+  end
+
+  def hf_get_badge_info(user_id)
+
+     student_badge_hash = {}
+     student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
+     student_badge_info = student_badge_info.map(&:attributes)
+     EPA_CODES.each do |epa|
+       student_badge_hash.store("#{epa}", student_badge_info.select{|s| s if s["epa"] == epa}.first)
+     end
+     return student_badge_hash
+  end
+
   def hf_format_date (in_date)
     if !in_date.nil?
       in_date = in_date.strftime("%m/%d/%Y")
