@@ -21,6 +21,12 @@
           <%= f.label :badge_decision1, 'Badge Decision', class: "control-label col-sm-4" %>
           <%= f.select :badge_decision1, ["Not Yet", "Badge", "Deny"], include_blank: '--',
              html5: true %>
+         </div>
+
+         <div class="form-group">
+          <%= f.label :reason1, 'Reason', class: "control-label col-sm-4" %>
+           <%= f.select :reason1, @eg_reasons, include_blank: '--',
+              html5: true %>
         </div>
 
         <div class="form-group">
@@ -35,8 +41,13 @@
         </div>
 
         <div class="form-group">
-          <%= f.label 'Comments', class: "control-label col-sm-4" %>
+          <%= f.label 'Internal Comments', class: "control-label col-sm-4" %>
           <%= f.text_area :general_comments1, cols:50, rows: 5, html5: true %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label 'Comments to Student', class: "control-label col-sm-4" %>
+          <%= f.text_area :student_comments1, cols:50, rows: 3, html5: true %>
         </div>
       </div>
 
@@ -53,9 +64,15 @@
 
         <div class="form-group">
           <%= f.label :badge_decision2, 'Badge Decision', class: "control-label col-sm-4" %>
-          <%= f.select :badge_decision2, ["Not Yet"", Badge", "Deny"], include_blank: '--',
+          <%= f.select :badge_decision2, ["Not Yet", "Badge", "Deny"], include_blank: '--',
              html5: true %>
         </div>
+        <div class="form-group">
+          <%= f.label :reason2, 'Reason', class: "control-label col-sm-4" %>
+          <%= f.select :reason2, @eg_reasons, include_blank: '--',
+             html5: true %>
+         </div>
+
 
         <div class="form-group">
           <%= f.label :trust2, 'Trust', class: "control-label col-sm-4" %>
@@ -69,11 +86,13 @@
         </div>
 
         <div class="form-group">
-          <%= f.label 'Comments', class: "control-label col-sm-4" %>
+          <%= f.label 'Internal Comments', class: "control-label col-sm-4" %>
           <%= f.text_area :general_comments2, cols:50, rows: 5, html5: true %>
         </div>
-
-       </div>
+        <div class="form-group">
+          <%= f.label 'Comments to Student', class: "control-label col-sm-4" %>
+          <%= f.text_area :student_comments2, cols:50, rows: 3, html5: true %>
+        </div>         </div>
       </div>
       <div class="row">
 

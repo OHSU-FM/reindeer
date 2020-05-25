@@ -1,5 +1,5 @@
 class EpaReviewsController < ApplicationController
-  before_action :authenticate_user!, :find_reviewable   #, :load_eg_members
+  before_action :authenticate_user!, :find_reviewable, :load_reasons   #, :load_eg_members
 
   include CompetenciesHelper
   include ArtifactsHelper
@@ -171,9 +171,9 @@ class EpaReviewsController < ApplicationController
      # Never trust parameters from the scary internet, only allow the white list through.
      def epa_review_params
        params.require(:epa_review).permit(:epa, :review_date1, :reviewer1,
-       :badge_decision1, :trust1, :evidence1, :general_comments1,
-       :review_date2, :reviewer2,
-       :badge_decision2, :trust2, :evidence2, :general_comments2,
+       :badge_decision1, :reason1, :trust1, :evidence1, :general_comments1,
+       :review_date2, :reviewer2, :student_comments1,
+       :badge_decision2, :reason2, :trust2, :evidence2, :general_comments2, :student_comments2,
        :reviewable_id, :reviewable_type)
      end
 
@@ -185,6 +185,10 @@ class EpaReviewsController < ApplicationController
 
      def load_eg_members(user)
        @eg_members ||= EpaReview.load_eg_members(user)
+     end
+
+     def load_reasons
+       @eg_reasons ||= EgReason.all.select(:reason).to_a.map{|r| r.reason}
      end
 
 end

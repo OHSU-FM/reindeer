@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_06_021012) do
+ActiveRecord::Schema.define(version: 2020_05_25_134811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -261,6 +261,12 @@ ActiveRecord::Schema.define(version: 2020_05_06_021012) do
     t.text "version", null: false
   end
 
+  create_table "eg_reasons", force: :cascade do |t|
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "epa_masters", force: :cascade do |t|
     t.string "epa"
     t.string "status"
@@ -291,6 +297,10 @@ ActiveRecord::Schema.define(version: 2020_05_06_021012) do
     t.bigint "reviewable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "reason1"
+    t.string "reason2"
+    t.string "student_comments1"
+    t.string "student_comments2"
     t.index ["epa", "id"], name: "by_epa_reviews", unique: true
     t.index ["reviewable_type", "reviewable_id"], name: "index_epa_reviews_on_reviewable_type_and_reviewable_id"
   end

@@ -1,4 +1,5 @@
 class EpaReview < ApplicationRecord
+    has_one :epa_reason
     belongs_to :reviewable, polymorphic: true
 
     def self.update_epa_master(reviewable_id, epa, badge_decision1, badge_decision2 )
