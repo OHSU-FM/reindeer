@@ -31,8 +31,10 @@
                 </a>
               </h4>
           </div>
+
           <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
               <div class="panel-body">
+                  <%= render partial: "detail_badge_display", locals: {i: i, epa: epa} %>
                   <%= render partial: "epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
               </div>
           </div>

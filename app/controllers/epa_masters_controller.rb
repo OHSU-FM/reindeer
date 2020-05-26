@@ -140,6 +140,7 @@ class EpaMastersController < ApplicationController
       for i in 1..13 do
         EpaMaster.where(user_id: selected_user_id, epa: "EPA#{i}").first_or_create do |epa|
           epa.user_id = selected_user_id
+          epa.status = 'Not Yet'
           epa.epa = "EPA#{i}"
         end
       end
