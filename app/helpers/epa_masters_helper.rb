@@ -36,7 +36,6 @@ module EpaMastersHelper
        EPA_CODES.each do |epa|
          student_badge_hash.store("#{epa}", not_yet_status)
        end
-       byebug
        return student_badge_hash
      end
      student_badge_info = student_badge_info.map(&:attributes)
