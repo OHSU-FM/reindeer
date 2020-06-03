@@ -6,6 +6,7 @@ class EpaReviewsController < ApplicationController
   include WbaGraphsHelper
   include EpasHelper
   include EpaReviewsHelper
+  include EpaMastersHelper
   include LsReports::CslevalHelper
   include LsReports::ClinicalphaseHelper
 
@@ -135,8 +136,23 @@ class EpaReviewsController < ApplicationController
 
   def get_evidence (user_id)
     @user ||= User.find(user_id)
-    @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
-    @percent_complete ||= hf_epa_class_mean(@clinical_data)
+
+    if (@comp = Competency.where(user_id: @user.id).order(:submit_date)).empty?
+      @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
+      @percent_complete ||= hf_epa_class_mean(@clinical_data)
+    else
+      @comp = @comp.map(&:attributes)
+      @comp_hash3 = hf_load_all_comp2(@comp, 3)
+      @comp_hash2 = hf_load_all_comp2(@comp, 2)
+      @comp_hash1 = hf_load_all_comp2(@comp, 1)
+
+      @comp_data_clinical = hf_average_comp2 (@comp_hash3)
+      @student_epa ||= hf_epa2(@comp_data_clinical)
+      @percent_complete = @student_epa
+
+    end
+
+    @student_badge_info = hf_get_badge_info(@user.id)
 
     @preceptorship_data ||= hf_get_clinical_dataset(@user, 'Preceptorship')
     @wba ||= hf_get_wbas(@user.id)

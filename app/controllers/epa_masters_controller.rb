@@ -1,7 +1,9 @@
 class EpaMastersController < ApplicationController
   layout 'full_width_csl'
   before_action :authenticate_user!
+
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
+
 
   # GET /epa_masters
   def index
@@ -40,6 +42,7 @@ class EpaMastersController < ApplicationController
       create_epas @user.id
       @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
     end
+
     respond_to do |format|
       format.html
       format.js { render partial: 'search-results' and return}

@@ -59,8 +59,10 @@
                     </div>
 
                       <%= render partial: 'wba_graphs/wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
+
                       <%= render partial: "wba_graphs/narrative_comments",
                           locals: {clinical_data: @clinical_data,
+                                   comp: @comp,
                                    preceptor_data: @preceptorship_data,
                                    csl_data: @csl_data,
                                    epa_code: @epa_review_epa } %>
