@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  #get 'student_assessments/index'
+  resource :student_assessments, param: :slug, only: [:show]
+
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'
   get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"

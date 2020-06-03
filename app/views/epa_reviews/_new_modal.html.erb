@@ -45,7 +45,12 @@
                   </div>
 
                   <div id="EvidenceTab" class="tab-pane fade" >
-                    <% epa_idx = @epa_review_epa.split("EPA").second.to_i %>
+                    <% if @percent_complete.keys.first.include? 'epa' %>
+                      <% epa_idx = @epa_review_epa.downcase %>
+                    <% else %>
+                      <% epa_idx = @epa_review_epa.split("EPA").second.to_i %>
+                    <% end %>
+
                     <div class="row">
                       <div class="col-sm-4">
                         <div id='WbaInfo'> <%= render partial: "wba_info", locals: {epa: @epa_review_epa, wba: @wba["#{@epa_review_epa}"], qa_percent: @percent_complete[epa_idx]} %></div>

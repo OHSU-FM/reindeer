@@ -147,9 +147,7 @@ class EpaReviewsController < ApplicationController
       @comp_hash1 = hf_load_all_comp2(@comp, 1)
 
       @comp_data_clinical = hf_average_comp2 (@comp_hash3)
-      @student_epa ||= hf_epa2(@comp_data_clinical)
-      @percent_complete = @student_epa
-
+      @percent_complete ||= hf_epa2(@comp_data_clinical)
     end
 
     @student_badge_info = hf_get_badge_info(@user.id)
