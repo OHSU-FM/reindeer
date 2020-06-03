@@ -7,19 +7,19 @@ module EpaReviewsHelper
              4 => "I was available just in case"}
 
 
-  EPA_KEYWORDS = {"EPA1" => ["history", "exam", "physical exam", "examination", "interview", "information gathering"],
-            "EPA2" => ["differential diagnosis", "ddx"],
+  EPA_KEYWORDS = {"EPA1" => ["history", "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+            "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
             "EPA3" => ["interpret", "cost-effective", "labs", "test", "screening test"],
             "EPA4" => ["orders",  "prescription"],
             "EPA5" => ["document", "documentation", "note", "progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
             "EPA6" => ["presentation", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
-            "EPA7" => ["clinical question", "evidence", "patient care"], # "Form clinical questions and retrieve evidence to advance patient care",
+            "EPA7" => ["clinical question", "evidence", "patient care"],  # "Form clinical questions and retrieve evidence to advance patient care",
             "EPA8" => ["handover", "handoff", "transition"],  # "Give or receive a patient handover to transition care responsibility",
             "EPA9" => ["team", "interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
             "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
             "EPA11" => ["informed consent", "shared decision making"],  # "Obtain informed consent for tests and/or procedures",
-            "EPA12" => ["procedure", "technical skills", "IV", "venipuncture", "bladder catheterization", "bag-valve mask ventilation", "suture", "laceration repair"],  #"Perform general procedures of a physician ",
-            "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety"] # "Identify system failures and contribute to a culture of safety and improvement"
+            "EPA12" => ["procedure", "technical skills","technical", "IV", "venipuncture", "bladder catheterization", "bag-valve mask ventilation", "suture", "laceration repair"],  #"Perform general procedures of a physician ",
+            "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety", "project"] # "Identify system failures and contribute to a culture of safety and improvement"
   }
 
   HIGHLIGHT_WORDS = ["presentation"]

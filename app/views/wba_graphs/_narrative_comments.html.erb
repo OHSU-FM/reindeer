@@ -18,18 +18,41 @@
                       <th scope="col">Evaluator</th>
                       <th scope="col">FinalGrade</th>
                       <th scope="col">ProfConcern</th>
+                      <th scope="col">Feedback</th>
                       <th scope="col">MSPE Comment</th>
                     </tr>
                   </thead>
-                  <% clinical_data.each do |cd| %>
-                    <tr>
-                      <td><%= cd["CourseName"] %></td>
-                      <td><%= cd["Eval"] %></td>
-                      <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
-                      <td><%= cd["ProfConcerns"] %></td>
-                      <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
-                    </tr>
+                  <% if !clinical_data.nil? %>
+                    <% clinical_data.each do |cd| %>
+                      <tr>
+                        <td><%= cd["CourseName"] %></td>
+                        <td><%= cd["Eval"] %></td>
+                        <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
+                        <td><%= cd["ProfConcerns"] %></td>
+                        <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
+                      </tr>
+                    <% end %>
+                  <% else %>
+                    <% comp.each do |cd| %>
+
+                      <% if cd["course_name"].include? "730" or cd["course_name"].include? "731" %>
+                          <tr>
+                            <td><%= cd["course_name"] %></td>
+                            <td><%= cd["evaluator"] %></td>
+                            <td>
+                              <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+                                  title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a></span>
+
+                            </td>
+                            <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
+                            <td><%= hf_highlight(cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " "), epa_code) %></td>
+                            <td><%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></td>
+
+                          </tr>
+                      <% end %>
+                    <% end %>
                   <% end %>
+
                 </table>
               </div>
             </div>

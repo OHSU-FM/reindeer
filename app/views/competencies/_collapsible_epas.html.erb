@@ -2,6 +2,7 @@
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% if !@student_epa.blank? %>
 
+
     <% for i in 1..13 do %>
       <% epa_code = "epa#{i}" %>
       <% epa = hf_epa_level3_detail(@comp, i.to_s, "3") %>
@@ -11,13 +12,15 @@
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
                     <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
-                      [Badge Status:
-                      <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
-                            <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
-                            <%= image_tag ("epa/EPA#{i}"), size: "20x20" %>
-                      <% else %>
-                            <%=  @student_badge_info["EPA#{i}"]["status"] %>]
-                            <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
+                      <% if current_user.coaching_type != "student" %>
+                        [Badge Status:
+                        <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
+                              <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
+                              <%= image_tag ("epa/EPA#{i}"), size: "20x20" %>
+                        <% else %>
+                              <%=  @student_badge_info["EPA#{i}"]["status"] %>]
+                              <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
+                        <% end %>
                       <% end %>
 
                     </span>
@@ -34,8 +37,8 @@
 
           <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
               <div class="panel-body">
-                  <%= render partial: "detail_badge_display", locals: {i: i, epa: epa} %>
-                  <%= render partial: "epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
+                  <%= render partial: "competencies/detail_badge_display", locals: {i: i, epa: epa} %>
+                  <%= render partial: "competencies/epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
               </div>
           </div>
       </div>
