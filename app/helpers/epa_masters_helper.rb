@@ -30,11 +30,20 @@ module EpaMastersHelper
   def hf_get_badge_info(user_id)
 
      student_badge_hash = {}
+     not_yet_status = {"status" => "Not Yet"}
      student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
+     if student_badge_info.empty?
+       EPA_CODES.each do |epa|
+         student_badge_hash.store("#{epa}", not_yet_status)
+       end
+       byebug
+       return student_badge_hash
+     end
      student_badge_info = student_badge_info.map(&:attributes)
      EPA_CODES.each do |epa|
        student_badge_hash.store("#{epa}", student_badge_info.select{|s| s if s["epa"] == epa}.first)
      end
+
      return student_badge_hash
   end
 
