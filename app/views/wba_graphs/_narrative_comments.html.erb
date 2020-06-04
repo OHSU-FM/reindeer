@@ -23,19 +23,18 @@
                     </tr>
                   </thead>
                   <% if !clinical_data.nil? %>
-                    <% clinical_data.each do |cd| %>
-                      <tr>
-                        <td><%= cd["CourseName"] %></td>
-                        <td><%= cd["Eval"] %></td>
-                        <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
-                        <td><%= cd["ProfConcerns"] %></td>
-                        <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
-                      </tr>
-                    <% end %>
+                      <% if !cd["CourseName"].include? "770" %>
+                          <tr>
+                            <td><%= cd["CourseName"] %></td>
+                            <td><%= cd["Eval"] %></td>
+                            <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
+                            <td><%= cd["ProfConcerns"] %></td>
+                            <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
+                          </tr>
+                      <% end %>
                   <% else %>
-                    <% comp.each do |cd| %>
-
-                      <% if cd["course_name"].include? "730" or cd["course_name"].include? "731" %>
+                    <% comp.each do |cd| %>"
+                      <% if !cd["course_name"].include? "770"  %>
                           <tr>
                             <td><%= cd["course_name"] %></td>
                             <td><%= cd["evaluator"] %></td>

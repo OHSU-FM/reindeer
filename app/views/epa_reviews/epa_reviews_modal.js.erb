@@ -98,14 +98,21 @@ var getValue = function (valueName) {
 };
 
 //Retrieve the Values
+
+var reviewer1 = getValue("epa_review[reviewer1]");
+var full_name = $('#full_name').data('full_name');
 var badge_decision1 = getValue("epa_review[badge_decision1]");
 var badge_decision2 = getValue("epa_review[badge_decision2]");
+console.log('full_name: ' + full_name);
 console.log("badge_decision1: " + badge_decision1);
 console.log("badge_decision2: " + badge_decision2);
 
 if (badge_decision1 != "" && badge_decision2 != "") {
 	$('#col-reviewer1').addClass("visible");
 	$('#col-reviewer2').addClass("visible");
+} else if (badge_decision1 != "" && reviewer1 == full_name && badge_decision2 == "") {
+					$('#col-reviewer2').removeClass("visible").addClass("hidden");
+					$('#col-reviewer1').addClass("visible");
 } else if (badge_decision1 != "" && badge_decision2 == "") {
 					$('#col-reviewer1').removeClass("visible").addClass("hidden");
 					$('#col-reviewer2').addClass("visible");
