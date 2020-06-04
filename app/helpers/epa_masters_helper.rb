@@ -65,7 +65,7 @@ module EpaMastersHelper
         #             review_rec.reviewer1 + " / " +
         #             review_rec.general_comments1  + " / "
         #str_html = '<span class="redact">' + str_html + '</span>'
-        str_html1 = 'EG Reviewer1 <span class="glyphicon glyphicon-ok" style="color:green;"></span>'
+        str_html1 = review_rec.reviewer1 + '<span class="glyphicon glyphicon-ok" style="color:green;"></span>'
 
     end
     if review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
@@ -75,7 +75,7 @@ module EpaMastersHelper
           #             review_rec.reviewer2 + " / " +
           #             review_rec.general_comments2  + " / "
           # str_html = '<span class="redact" style="color:black">' + str_html + '</span>'
-          str_html2 = 'EG Reviewer2 <span class="glyphicon glyphicon-ok" style="color:green;"></span>'
+          str_html2 = review_rec.reviewer2 + '<span class="glyphicon glyphicon-ok" style="color:green;"></span>'
 
     end
 

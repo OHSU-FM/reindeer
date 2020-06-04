@@ -30,10 +30,10 @@ class EpaReviewsController < ApplicationController
     @decision_option = ["Grounded", "Presumptive"]
     @decision_option2 = @decision_option
     get_evidence @user_id
-
-    if !current_user.admin_or_higher? then
-      @eg_members = [current_user.full_name]
-    end
+    #
+    # if !current_user.admin_or_higher? then
+    #   @eg_members = [current_user.full_name]
+    # end
 
     epa_idx = @epa_review_epa.split("EPA").second.to_i
     str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
@@ -92,7 +92,6 @@ class EpaReviewsController < ApplicationController
   # POST /epa_reviews
   def create
     @epa_review = EpaReview.new(epa_review_params)
-
     respond_to do |format|
       if @epa_review.save
         format.html { redirect_to @epa_review, notice: 'Epa review was successfully created.' }
@@ -109,6 +108,7 @@ class EpaReviewsController < ApplicationController
   # PATCH/PUT /epa_reviews/1
   def update
     @epa_review = EpaReview.find(params[:id])
+
     respond_to do |format|
       if @epa_review.update(epa_review_params)
         format.html { redirect_to epa_masters_path }
