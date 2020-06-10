@@ -15,7 +15,7 @@
                   <span class="float-right">
                     <% eg_cohorts = hf_load_eg_cohorts (current_user.email) %>
                      <%= form_tag(epa_masters_path, method: "get",  style: "float: right; display: block") do %>
-                     <%= select_tag :email, options_for_select(eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]), 
+                     <%= select_tag :email, options_for_select(eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
                          prompt: "Please Select a Student"  %>
                        <%= submit_tag "Go", name: 'form2[email]', class: "btn btn-success"%>
                      <% end %>

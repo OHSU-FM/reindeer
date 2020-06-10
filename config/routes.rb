@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   #get 'student_assessments/index'
   resource :student_assessments, param: :slug, only: [:show]
+  get '/student_assessments/search'
 
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'

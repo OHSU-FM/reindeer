@@ -1,2 +1,32 @@
-<h1>StudentAssessments#show</h1>
-<p>Find me in app/views/student_assessments/show.html.erb</p>
+<h4>Student Assessments </h4>
+
+<div id="container-fluid">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row" %>
+        <span class="float: left" >
+           <%= form_tag(student_assessments_path, method: "get",  style: "float: left; display: block") do %>
+           <%= select_tag :id, options_for_select(@cohorts_menu.collect{|s| [s["title"], s["id"]]}, selected: params[:id]),
+               prompt: "Please Select a Cohort" %>
+             <%= submit_tag "Go", name: 'form[cohorts]', class: "btn btn-success"%>
+           <% end %>
+        </span>
+        <% if !@students.nil? %>
+          <span class="float: left">
+             <%= form_tag(student_assessments_search_path, method: "get",  style: "float: left; display: block") do %>
+             <%= select_tag :email, options_for_select(@students.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
+                 prompt: "Please Select a student"  %>
+               <%= submit_tag "Go", name: 'form[students]', class: "btn btn-success"%>
+             <% end %>
+          </span>
+        <% end %>
+      </div>
+      <div class="row">
+        <% if !@results.nil? %>
+          <%= render partial: "searches/results.html.erb" %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

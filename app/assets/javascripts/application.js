@@ -22,6 +22,7 @@
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
+//= require jquery.contextMenu.js
 //= require bootstrap-notify.js
 //= require notify.js
 //= require intro.js

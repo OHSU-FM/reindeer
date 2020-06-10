@@ -45,7 +45,7 @@ gem "coffee-rails"
 gem "uglifier"
 gem 'jquery-ui-rails', '~> 6.0.1'
 gem "jquery-rails"
-#gem "jquery-ui-rails"
+gem "jquery_context_menu-rails"
 
 # CSS / js
 # Random bug:

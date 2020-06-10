@@ -1,3 +1,8 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+
 
   <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
@@ -10,6 +15,7 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
+  <span class="context-menu-one btn btn-neutral">right click me</span>
               <div class="table-responsive-sm">
                 <table class="table">
                   <thead>
@@ -33,7 +39,7 @@
                           </tr>
                       <% end %>
                   <% else %>
-                    <% comp.each do |cd| %>"
+                    <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
                           <tr>
                             <td><%= cd["course_name"] %></td>
@@ -45,7 +51,7 @@
                             </td>
                             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
                             <td><%= hf_highlight(cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " "), epa_code) %></td>
-                            <td><%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></td>
+                            <td><span class="context-menu-one"><%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></span></td>
 
                           </tr>
                       <% end %>
@@ -57,6 +63,9 @@
             </div>
         </div>
     </div>
+
+<input type='hidden' value='' id='txt_id'>
+
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">

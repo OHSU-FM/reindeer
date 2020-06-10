@@ -1,4 +1,4 @@
-console.log ("inside epa_reviews_modal.js.erb");
+
 
 $("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
 $("#newEpaReviewModal").modal('show');
@@ -120,3 +120,31 @@ var getValue = function (valueName) {
 // 									$('#col-reviewer2').removeClass("visible").addClass("hidden");
 // 									$('#col-reviewer1').addClass("visible");
 // }
+
+
+
+  $(function() {
+      $.contextMenu({
+          selector: '.context-menu-one',
+          callback: function(key, options) {
+              var m = "clicked: " + key;
+              var selectedText = window.getSelection().toString();
+              window.console && console.log(m) || alert(m + "selected text: " + selectedText);
+          },
+          items: {
+              "EPA1": {name: "Tag to EPA1"},
+              "EPA2": {name: "Tag to EPA2"},
+              "copy": {name: "Copy", icon: "copy"},
+              "paste": {name: "Paste", icon: "paste"},
+              "delete": {name: "Delete", icon: "delete"},
+              "sep1": "---------",
+              "quit": {name: "Quit", icon: function(){
+                  return 'context-menu-icon context-menu-icon-quit';
+              }}
+          }
+      });
+
+      $('.context-menu-one').on('click', function(e){
+          console.log('clicked on Core Comments', this);
+      })
+  });

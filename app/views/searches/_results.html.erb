@@ -37,11 +37,11 @@
                 <% permission_group_id = block["permission_group_id"] %>
                 <% course_code = block["course_code"] %>
                 <% if !course_code.include? "DISABLED" %>
-                  <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b>".html_safe,
+                  <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (New!)</b>".html_safe,
                           user_display_fom_path(user_id: result.id, permission_group_id: permission_group_id,
                           course_code: course_code, attach_id: -1), target: '_blank') %> <br>
                 <% else %>
-                   <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code} (Beta!)</b><br />".html_safe %>
+                   <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code} (New!)</b><br />".html_safe %>
                 <% end %>
             <% end %>
 

@@ -81,7 +81,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
       label_hash = JSON.parse(json_string)
       permission_group_id = label_hash.first["permission_group_id"]
       course_code = label_hash.first["course_code"]
-      if !course_code.blank? 
+      if !course_code.blank?
         FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first_or_create.update(labels: json_string)
         return true
       end
@@ -90,19 +90,16 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     end
   end
 
-
   def hf_create_graph(component, class_data, avg_data,  categories)
 
     student_name = class_data.first["full_name"]  # processing student Alver
     student_series = class_data.first.drop(2)  # removed the first 2 items in array
-    student_series = student_series.map{|d| d.second.to_f if d.first.include? component}.compact
+    student_series = student_series.map{|d| d.second.to_s.to_f if d.first.include? component}.compact
 
     #student_series = student_series[0..-3].map{|s| s.second.to_f} # removed the last 2 items in array
     student_series = check_pass_fail(student_series)
-    class_mean_series = avg_data.first.map{|s| s.second.to_d.truncate(2).to_f if !s.second.nil? and s.first.include? component}.compact
-
+    class_mean_series = avg_data.first.map{|s| s.second.to_s.to_d.truncate(2).to_f if s.first.include? component}.compact
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
-
     height = 400
 
     title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
