@@ -12,7 +12,6 @@ class StudentAssessmentsController < ApplicationController
       @students ||= Cohort.find(params[:id]).users.select(:id, :email, :username, :full_name).order(:full_name)
     end
 
-    render :show
     if request.xhr?
       respond_to do |format|
         format.json {
@@ -20,6 +19,7 @@ class StudentAssessmentsController < ApplicationController
         }
       end
     end
+    render :show
   end
 
   def search
@@ -34,8 +34,10 @@ class StudentAssessmentsController < ApplicationController
   private
 
   def load_cohorts_menu
-      if current_user.coaching_type != 'student'
+      if current_user.coaching_type == 'coach'
         @cohorts_menu ||= current_user.cohorts.order(:title)
+      elsif current_user.dean_or_higher?
+          @cohorts_menu ||= Cohort.all.order(:title).uniq
       end
   end
 

@@ -1,14 +1,16 @@
 
-
-$("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
-$("#newEpaReviewModal").modal('show');
-
-$(".modal-dialog").draggable({
+window.$("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
+window.$("#newEpaReviewModal").modal('show');
+window.$(".modal-dialog").draggable({
     handle: ".modal-header"
 });
+
+
 // to check make sure the previous ajax call is completed and successful.
 $('#review-form').bind('ajax:success', function() {
    $('#newEpaReviewModal').modal('hide');
+
+  console.log("After Modal Hide ***");
 
 	const queryString = window.location.search;
 	console.log(queryString);
@@ -121,30 +123,31 @@ var getValue = function (valueName) {
 // 									$('#col-reviewer1').addClass("visible");
 // }
 
+$(function() {
+     $.contextMenu({
+         selector: '.context-menu-one',
+         callback: function(key, options) {
+             var m = "clicked: " + key;
+             var selectedText = window.getSelection().toString();
+             window.console && console.log(m) || alert(m + ' selectedText: ' + selectedText);
+         },
+         items: {
+             "EPA1": {name: "EPA1", icon: "copy"},
+             "EPA2": {name: "EPA2", icon: "copy"},
+             "EPA3": {name: "EPA3", icon: "copy"},
+             "EPA4": {name: "EPA4", icon: "copy"},                                       
+             "cut": {name: "Cut", icon: "cut"},
+            copy: {name: "Copy", icon: "copy"},
+             "paste": {name: "Paste", icon: "paste"},
+             "delete": {name: "Delete", icon: "delete"},
+             "sep1": "---------",
+             "quit": {name: "Quit", icon: function(){
+                 return 'context-menu-icon context-menu-icon-quit';
+             }}
+         }
+     });
 
-
-  $(function() {
-      $.contextMenu({
-          selector: '.context-menu-one',
-          callback: function(key, options) {
-              var m = "clicked: " + key;
-              var selectedText = window.getSelection().toString();
-              window.console && console.log(m) || alert(m + "selected text: " + selectedText);
-          },
-          items: {
-              "EPA1": {name: "Tag to EPA1"},
-              "EPA2": {name: "Tag to EPA2"},
-              "copy": {name: "Copy", icon: "copy"},
-              "paste": {name: "Paste", icon: "paste"},
-              "delete": {name: "Delete", icon: "delete"},
-              "sep1": "---------",
-              "quit": {name: "Quit", icon: function(){
-                  return 'context-menu-icon context-menu-icon-quit';
-              }}
-          }
-      });
-
-      $('.context-menu-one').on('click', function(e){
-          console.log('clicked on Core Comments', this);
-      })
-  });
+     $('.context-menu-one').on('click', function(e){
+         console.log('clicked', this);
+     })
+ });

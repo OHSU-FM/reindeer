@@ -11,6 +11,8 @@ module EdnaConsole
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token
 
+    config.assets.paths << Rails.root.join('app', 'assets', 'font', 'node_modules')
+
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
     config.exceptions_app = self.routes

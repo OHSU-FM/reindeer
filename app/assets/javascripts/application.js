@@ -17,12 +17,12 @@
 // turbolinks is commented out..
 // require turbolinks
 //= require popper
-//= require bootstrap-sprockets
 //= require select2
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
 //= require jquery.contextMenu.js
+//= require bootstrap-sprockets
 //= require bootstrap-notify.js
 //= require notify.js
 //= require intro.js
@@ -75,3 +75,7 @@
 //= require wba_graphs
 //= require csl_feedbacks
 //= require fom_exams
+//= require jquery-contextmenu/dist/jquery.contextMenu.js
+//= require jquery-contextmenu/dist/jquery.ui.position.js
+//= require jquery-contextmenu/dist/jquery.contextMenu.min.js
+//= require jquery-contextmenu/dist/jquery.ui.position.min.js

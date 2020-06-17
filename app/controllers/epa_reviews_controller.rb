@@ -35,9 +35,10 @@ class EpaReviewsController < ApplicationController
     #   @eg_members = [current_user.full_name]
     # end
 
-    epa_idx = @epa_review_epa.split("EPA").second.to_i
+    epa_idx = @epa_review_epa.downcase
     str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
                    "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
+
     str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
     @epa_review.evidence1 = str_complete + str_wba
     @epa_review.evidence2 = str_complete + str_wba
@@ -92,6 +93,7 @@ class EpaReviewsController < ApplicationController
   # POST /epa_reviews
   def create
     @epa_review = EpaReview.new(epa_review_params)
+
     respond_to do |format|
       if @epa_review.save
         format.html { redirect_to @epa_review, notice: 'Epa review was successfully created.' }
