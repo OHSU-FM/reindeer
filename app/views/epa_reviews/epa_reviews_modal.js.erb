@@ -75,7 +75,14 @@ $('#review-form').bind('ajax:success', function() {
 	console.log('email: ' + byEmail);
 	console.log('search: ' + byName);
 
-  localStorageAjax();
+  if (epa_json.length === 0) {
+    refreshEpaMasterAjax();
+  }
+  else {
+    localStorageAjax();
+  }
+
+
 
 });
 
