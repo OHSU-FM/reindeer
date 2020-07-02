@@ -13,7 +13,12 @@ Rails.application.routes.draw do
 
   resources :epas
 
-  resources :epa_reviews
+  resources :epa_reviews do
+    collection do
+      post 'local_storage'
+    end
+  end
+
   resources :epa_masters do
     collection  do
       get 'search_student'

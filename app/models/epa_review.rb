@@ -2,6 +2,31 @@ class EpaReview < ApplicationRecord
     has_one :epa_reason
     belongs_to :reviewable, polymorphic: true
 
+    def self.load_epa(epa_data, eg_full_name1, eg_full_name2)
+      # epa_data is an ActionController Parameters tyoe
+      keys = epa_data.keys
+      keys.each do |key|
+        email = epa_data["#{key}"]["email"]
+        epa = epa_data["#{key}"]["epa"]
+        comments = epa_data["#{key}"]["comments"]
+        full_name = epa_data["#{key}"]["full_name"]
+        user = User.find_by(email: email)
+        epa_master = user.epa_masters.find_by(epa: epa)
+        epa_review = user.epa_masters.find_by(epa: epa).epa_reviews.where(epa: epa)
+        if !epa_review.empty?
+
+          if full_name == epa_review.last.reviewer1
+            epa_review.update(badge_decision1: 'Not Yet', general_comments1: comments)
+          else
+            epa_review.update(badge_decision1: 'Not Yet', general_comments2: comments)
+          end
+        else
+            epa_review.create(review_date1: DateTime.now, reviewer1: eg_full_name1, reviewer2: eg_full_name2, epa: epa, badge_decision1: 'Not Yet', badge_decision2: 'Not Yet', general_comments1: comments)
+        end
+      end
+
+    end
+
     def self.update_epa_master(reviewable_id, epa, badge_decision1, badge_decision2 )
 
        if badge_decision1 == "Badge" and badge_decision2 == "Badge"
@@ -13,7 +38,7 @@ class EpaReview < ApplicationRecord
     end
 
     def self.load_eg_members(user)
-          if File.file? (Rails.root + "public/epa_reviews/eg_cohorts.csv")
+      if File.file? (Rails.root + "public/epa_reviews/eg_cohorts.csv")
         eg_cohorts = []
         rows ||= CSV.foreach(Rails.root + "public/epa_reviews/eg_cohorts.csv", headers: true)
         rows.each do |row|
@@ -27,7 +52,8 @@ class EpaReview < ApplicationRecord
           eg_full_name1 = eg_cohorts.collect{|e| e["eg_full_name1"]}.uniq
           eg_full_name2 = eg_cohorts.collect{|e| e["eg_full_name2"]}.uniq
         end
-        return (eg_full_name1 + eg_full_name2).sort
+
+        return (eg_full_name1 + eg_full_name2).sort, eg_full_name1, eg_full_name2
       else
          return nil
       end

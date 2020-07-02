@@ -1,5 +1,5 @@
 class EpaReviewsController < ApplicationController
-  before_action :authenticate_user!, :find_reviewable, :load_reasons   #, :load_eg_members
+  before_action :authenticate_user!, :find_reviewable, :load_reasons # :load_eg_members
 
   include CompetenciesHelper
   include ArtifactsHelper
@@ -19,6 +19,21 @@ class EpaReviewsController < ApplicationController
   def show
   end
 
+  def local_storage
+    if params[:epa_json].present?
+      email = params[:epa_json]["0"]["email"]
+      user = User.find_by(email: email)
+      load_eg_members(user)
+
+      EpaReview.load_epa(params[:epa_json], @eg_full_name1, @eg_full_name2)
+    end
+
+    respond_to do |format|
+      format.json #{ head :no_content }
+      #format.js { render action: 'Updated EPAs!', status: 200 }
+    end
+  end
+
   # GET /epa_reviews/new
   def new
     @epa_review = @reviewable.epa_reviews.new
@@ -30,10 +45,15 @@ class EpaReviewsController < ApplicationController
     @decision_option = ["Grounded", "Presumptive"]
     @decision_option2 = @decision_option
     get_evidence @user_id
-    #
-    # if !current_user.admin_or_higher? then
-    #   @eg_members = [current_user.full_name]
-    # end
+
+    if !current_user.admin_or_higher? then
+      @eg_members = [current_user.full_name]
+    end
+
+    @epa_review.reviewer1 = @eg_full_name1.first
+    @epa_review.reviewer2 = @eg_full_name2.first
+    @epa_review.reason1 = @eg_reasons.second
+    @epa_review.reason2 = @eg_reasons.second
 
     epa_idx = @epa_review_epa.downcase
     str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
@@ -72,17 +92,20 @@ class EpaReviewsController < ApplicationController
 
     @epa_review_epa = @epa_review.epa
 
+
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
 
     get_evidence @user_id
     epa_idx = @epa_review_epa.split("EPA").second.to_i
-    str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
+
+    str_complete = "QA Completion %: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
                    "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
     str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
 
     @epa_review.evidence1 = str_complete + str_wba if @epa_review.evidence1.blank?
     @epa_review.evidence2 = str_complete + str_wba if @epa_review.evidence2.blank?
-
+    @epa_review.reviewer1 = @eg_full_name1 if @epa_review.reviewer1.blank?
+    @epa_review.reviewer2 = @eg_full_name2 if @epa_review.reviewer2.blank?
     respond_to do |format|
       format.html
       format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
@@ -166,6 +189,7 @@ class EpaReviewsController < ApplicationController
     @today_date = Time.new.strftime("%m/%d/%Y")
     load_eg_members(@user)
 
+
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
@@ -200,7 +224,7 @@ class EpaReviewsController < ApplicationController
      end
 
      def load_eg_members(user)
-       @eg_members ||= EpaReview.load_eg_members(user)
+       @eg_members, @eg_full_name1, @eg_full_name2 = EpaReview.load_eg_members(user)
      end
 
      def load_reasons

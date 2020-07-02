@@ -1,3 +1,15 @@
+'use strict';
+
+
+$(window).on('beforeunload', function(){
+    socket.close();
+});
+
+//const queryString = window.location.search;
+//console.log(queryString);
+var urlParams = new URLSearchParams(window.location.search);
+var byEmail = urlParams.get('email');
+var byName = urlParams.get('search');
 
 window.$("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
 window.$("#newEpaReviewModal").modal('show');
@@ -5,30 +17,37 @@ window.$(".modal-dialog").draggable({
     handle: ".modal-header"
 });
 
+function localStorageAjax() {
 
-// to check make sure the previous ajax call is completed and successful.
-$('#review-form').bind('ajax:success', function() {
-   $('#newEpaReviewModal').modal('hide');
+  $.ajax({
+     url : '/epa_reviews/local_storage',
+     type : 'post',
+     dataType:'json',
+     data: {epa_json: epa_json},
+     success : function(epa_json) {
+         //alert('Data: '+ JSON.stringify(data));
+         alert("local_storage ajax is a success!\n"+JSON.stringify(epa_json));
+         refreshEpaMasterAjax();
 
-  console.log("After Modal Hide ***");
+     },
+     error : function(request,error)
+     {
+         alert("Request Reviews: "+JSON.stringify(request));
+     }
+  });
 
-	const queryString = window.location.search;
-	console.log(queryString);
-	const urlParams = new URLSearchParams(queryString);
-	const byEmail = urlParams.get('email');
-	const byName = urlParams.get('search');
-	console.log('email: ' + byEmail);
-	console.log('search: ' + byName);
+}
 
-	if (byName == null) {
-		UrlParam = 'email';
-		Param = byEmail;
-		dataParam = {email: byEmail}
+function refreshEpaMasterAjax() {
+  if (byName == null) {
+		var UrlParam = 'email';
+		var Param = byEmail;
+		var dataParam = {email: byEmail}
 	}
 	else {
-		UrlParam = 'search';
-		Param = byName;
-		dataParam = {search: byName}
+		var UrlParam = 'search';
+		var Param = byName;
+		var dataParam = {search: byName}
 	}
 
  	$.ajax({
@@ -46,6 +65,18 @@ $('#review-form').bind('ajax:success', function() {
  				alert("Request: "+JSON.stringify(request));
  		}
   });
+}
+
+// to check make sure the previous ajax call is completed and successful.
+$('#review-form').bind('ajax:success', function() {
+
+  $('#newEpaReviewModal').modal('hide');
+  console.log("After Modal Hide ***");
+	console.log('email: ' + byEmail);
+	console.log('search: ' + byName);
+
+  localStorageAjax();
+
 });
 
 $('#epa_review_badge_decision1').change(
@@ -123,28 +154,83 @@ var getValue = function (valueName) {
 // 									$('#col-reviewer1').addClass("visible");
 // }
 
+
+
+var epa_json = []
+var EpaArray = ["EPA1", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13"]
+var contextMenuItems = {};
+for (var i = 0, l = EpaArray.length; i < l; i++) {
+    contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "copy" };
+}
+contextMenuItems["sep1"] = "---------";
+contextMenuItems["paste"] = {name: "Paste", icon: "paste"};
+//console.log("contextMenuItems: " + JSON.stringify(contextMenuItems));
+console.log("*** Try to tag EPA being REVIEWED !")
+var epa = $("#epa").val();
+var reviewable_id = $("#reviewable_id").val();
+//var epa_name = {name: epa, icon: "copy"};
+contextMenuItems[epa] = {name: epa +" - Reviewing!", icon: "copy" };
+
 $(function() {
+  $('#course_name').mouseup(function(){
+    //$(this).after("Mouse button released.");
+    var course_name = $('#course_name').data('course-name')
+
+  });
+
      $.contextMenu({
          selector: '.context-menu-one',
          callback: function(key, options) {
+
              var m = "clicked: " + key;
              var selectedText = window.getSelection().toString();
-             window.console && console.log(m) || alert(m + ' selectedText: ' + selectedText);
+             var parentid = window.getSelection().anchorNode.parentElement.id;
+             var course_name = $('#' + parentid).data('course-name').split("]");
+             var course_code = course_name[0].replace("[", "");
+             var formAction = $('#review-form').attr('action');
+
+             var reviewable_id = $("#reviewable_id").val();
+             var fullName = $('#full_name').data('full_name');
+             var reviewer1 = $('#epa_review_reviewer1').val();
+             var epa = $("#epa").val();
+
+
+             if (epa == key) {
+               if (fullName === reviewer1) {
+                 var GeneralComment1 =  $("#epa_review_general_comments1").val();
+                 var lineFeed = GeneralComment1 === '' ? "" : "\n";
+                 $("#epa_review_general_comments1").val(GeneralComment1 + lineFeed + course_code + ": " + selectedText);
+               }
+               else {
+                 var GeneralComment2 =  $("#epa_review_general_comments2").val();
+                 var lineFeed = GeneralComment2 === '' ? "" : "\n";
+                 $("#epa_review_general_comments2").val(GeneralComment2 + lineFeed + course_code + ": " + selectedText);
+               }
+
+             }
+             else {
+               var epa_hash = {}
+               epa_hash["epa"] = key;
+               epa_hash["full_name"] = fullName;;
+               epa_hash["comments"] =  course_code + ": " + selectedText;
+               epa_hash["email"] = byEmail
+               console.log("epa_hash: " + JSON.stringify(epa_hash));
+               console.log('ByEmail - inside contextMenu: ' + byEmail)
+               epa_json.push(epa_hash);
+
+             }
+
+             window.console && console.log(m) || alert(m + '\nparentid: ' + parentid + '\ncourse_code: ' + course_code + '\nselectedText: ' + selectedText +
+                    "\nformAction: " + formAction +
+                    "\nepa: " + epa +
+                    "\nreviewable_id: " + reviewable_id +
+                    "\nfull_name: " + fullName
+                );
+
+
          },
-         items: {
-             "EPA1": {name: "EPA1", icon: "copy"},
-             "EPA2": {name: "EPA2", icon: "copy"},
-             "EPA3": {name: "EPA3", icon: "copy"},
-             "EPA4": {name: "EPA4", icon: "copy"},                                       
-             "cut": {name: "Cut", icon: "cut"},
-            copy: {name: "Copy", icon: "copy"},
-             "paste": {name: "Paste", icon: "paste"},
-             "delete": {name: "Delete", icon: "delete"},
-             "sep1": "---------",
-             "quit": {name: "Quit", icon: function(){
-                 return 'context-menu-icon context-menu-icon-quit';
-             }}
-         }
+         items: contextMenuItems
+
      });
 
      $('.context-menu-one').on('click', function(e){

@@ -75,7 +75,7 @@
 //= require wba_graphs
 //= require csl_feedbacks
 //= require fom_exams
-//= require jquery-contextmenu/dist/jquery.contextMenu.js
-//= require jquery-contextmenu/dist/jquery.ui.position.js
-//= require jquery-contextmenu/dist/jquery.contextMenu.min.js
-//= require jquery-contextmenu/dist/jquery.ui.position.min.js
+//=  require jquery-contextmenu/dist/jquery.contextMenu.js
+//=  require jquery-contextmenu/dist/jquery.ui.position.js
+//=  require jquery-contextmenu/dist/jquery.contextMenu.min.js
+//=  require jquery-contextmenu/dist/jquery.ui.position.min.js

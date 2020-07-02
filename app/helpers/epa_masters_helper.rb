@@ -8,6 +8,12 @@ module EpaMastersHelper
     return EPA_CODES
   end
 
+  def hf_get_eg_members(eg_cohorts, email)
+    eg_full_name1 = eg_cohorts.collect{|e| e["eg_full_name1"] if e["email"] == email}.compact
+    eg_full_name2 = eg_cohorts.collect{|e| e["eg_full_name2"] if e["email"] == email}.compact
+    return eg_full_name1.join, eg_full_name2.join
+  end
+
   def hf_load_eg_cohorts (eg_member_email)
     if File.file? (Rails.root + "public/epa_reviews/eg_cohorts.csv")
       eg_cohorts = []
@@ -85,13 +91,13 @@ module EpaMastersHelper
       else
           str_html1 = '<span class="bg-danger text-white">' + review_rec.badge_decision1 + '</span>'
       end
-      str_html1 = str_html1 + ' / ' + review_rec.reviewer1 + ' / ' + review_rec.general_comments1
+      str_html1 = str_html1 + ' / ' + review_rec.reviewer1 + ' / ' + review_rec.general_comments1.to_s
       if review_rec.badge_decision2 == "Badge"
           str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
       else
           str_html2 = '<span class="bg-danger text-white">' + review_rec.badge_decision2 + '</span>'
       end
-      str_html2 = str_html2 + ' / ' + review_rec.reviewer2 + ' / ' + review_rec.general_comments2
+      str_html2 = str_html2 + ' / ' + review_rec.reviewer2 + ' / ' + review_rec.general_comments2.to_s
     end
 
     return str_html1, str_html2

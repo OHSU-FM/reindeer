@@ -5,8 +5,8 @@
       <div class="modal-content">
         <div class="modal-header">
           <a href="#close" class="close" data-dismiss="modal" >X</a>
-          <h4 class="modal-title modal-text-align-center" ><font color="blue"><%= controller.action_name.capitalize %> Review: </font>
-              <%= @epa_review_epa %> - <%= hf_epa_desc2(@epa_review_epa) %></h4>
+          <h4 class="modal-title modal-text-align-center" ><b><%= controller.action_name.capitalize %> Review: </b>
+              <%= @epa_review_epa %> - <%= hf_epa_desc_with_color(@epa_review_epa) %></h4>
         </div>
           <div class="modal-body">
               <!-- Nav tabs -->

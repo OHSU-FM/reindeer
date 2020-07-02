@@ -2,9 +2,9 @@
 <br />
 
   <%= form_for @epa_review, html: {class: "form-horizontal", id: "review-form"}, remote: true  do |f| %>
-      <%= f.hidden_field :reviewable_id %>
-      <%= f.hidden_field :reviewable_type %>
-      <%= f.hidden_field :epa %>
+      <%= f.hidden_field :reviewable_id, id: "reviewable_id" %>
+      <%= f.hidden_field :reviewable_type, id: "reviewable_type"%>
+      <%= f.hidden_field :epa, id: "epa" %>
     <div class="row">
      <div class="col-sm-6" id="col-reviewer1">
         <div class="form-group">
@@ -14,26 +14,26 @@
 
         <div class="form-group">
           <%= f.label :reviewer1, 'Reviewer', class: "control-label col-sm-4" %>
-          <%= f.select :reviewer1, @eg_members,  selected_value: @epa_review.reviewer2, include_blank: '--', html5: {selected: true} %>
+          <%= f.text_field :reviewer1,   html5: {selected: true} %>
           <%= content_tag "div", id: "full_name", 'data-full_name' => current_user.full_name do %><% end %>
         </div>
 
         <div class="form-group">
           <%= f.label :badge_decision1, 'Badge Decision', class: "control-label col-sm-4" %>
-          <%= f.select :badge_decision1, ["Not Yet", "Badge", "Deny"], include_blank: '--',
+          <%= f.select :badge_decision1, ["Not Yet", "Badge", "Deny"],
              html5: true %>
          </div>
 
          <div class="form-group">
           <%= f.label :reason1, 'Reason', class: "control-label col-sm-4" %>
-           <%= f.select :reason1, @eg_reasons, include_blank: '--',
-              html5: true %>
+           <%= f.select :reason1, @eg_reasons,
+              html5: {selected: true}  %>
         </div>
 
         <div class="form-group">
           <%= f.label :trust1, 'Trust', class: "control-label col-sm-4" %>
           <%= f.select :trust1, @decision_option,  include_blank: '--',
-             html5: true %>
+              html5: {selected: true} %>
         </div>
 
         <div class="form-group">
@@ -60,17 +60,16 @@
 
         <div class="form-group">
           <%= f.label :reviewer2, 'Reviewer', class: "control-label col-sm-4" %>
-          <%= f.select :reviewer2, @eg_members, selected_value: @epa_review.reviewer2, include_blank: '--', html5: {selected: true}  %>
+          <%= f.text_field :reviewer2,  html5: {selected: true}  %>
         </div>
 
         <div class="form-group">
           <%= f.label :badge_decision2, 'Badge Decision', class: "control-label col-sm-4" %>
-          <%= f.select :badge_decision2, ["Not Yet", "Badge", "Deny"], include_blank: '--',
-             html5: true %>
+          <%= f.select :badge_decision2, ["Not Yet", "Badge", "Deny"], html5: true %>
         </div>
         <div class="form-group">
           <%= f.label :reason2, 'Reason', class: "control-label col-sm-4" %>
-          <%= f.select :reason2, @eg_reasons, include_blank: '--',
+          <%= f.select :reason2, @eg_reasons,
              html5: true %>
          </div>
 

@@ -20,6 +20,7 @@
                       <th scope="col">ProfConcern</th>
                       <th scope="col">Feedback</th>
                       <th scope="col">MSPE Comment</th>
+                      <th scope="col">Created At</th>
                     </tr>
                   </thead>
                   <% if !clinical_data.nil? %>
@@ -29,10 +30,13 @@
                             <td><%= cd["Eval"] %></td>
                             <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
                             <td><%= cd["ProfConcerns"] %></td>
+                            <td><%= hf_highlight(cd["feedback"], epa_code) %></td>
                             <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
+                            <td><%= cd["created_at"].strftime('%F')  %></td>
                           </tr>
                       <% end %>
                   <% else %>
+                    <% i = 0 %>
                     <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
                           <tr>
@@ -43,9 +47,13 @@
                                   title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a></span>
 
                             </td>
+                            <% i = i + 1 %>
                             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
-                            <td><%= hf_highlight(cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " "), epa_code) %></td>
-                            <td><span class="context-menu-one"><%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></span></td>
+                            <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
+                              <%= hf_highlight(cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " "), epa_code) %></span></td>
+                            <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
+                              <%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></span></td>
+                            <td><%= cd["created_at"].strftime('%F') %></td>
 
                           </tr>
                       <% end %>

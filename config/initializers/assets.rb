@@ -1,5 +1,5 @@
 
-Rails.application.config.assets.paths << Rails.root.join('node_modules')
+Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'font', 'node_modules')
 Rails.application.config.assets.precompile += %w( print.css
     assignment/*
     assignment_assignment_groups.css
