@@ -1,5 +1,5 @@
 
-Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'font', 'node_modules')
+Rails.application.config.assets.paths << Rails.root.join("node_modules")
 Rails.application.config.assets.precompile += %w( print.css
     assignment/*
     assignment_assignment_groups.css
@@ -53,6 +53,6 @@ Rails.application.config.assets.precompile += %w( print.css
     fom_exams.css
     preceptor_evals.css
     student_assessments.css
-    jquery.contextMenu.css
-    jquery.contextMenu.js
+    jquery.contextmenu/dist/jquery.contextMenu.css
+    jquery.contextmenu/dist/jquery.contextMenu.js
    )

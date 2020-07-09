@@ -1,6 +1,6 @@
 class CompetenciesController < ApplicationController
   layout 'full_width_csl'
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :load_release_date
   include CompetenciesHelper
   include LsReports::CslevalHelper
   include LsReports::ClinicalphaseHelper
@@ -39,6 +39,7 @@ class CompetenciesController < ApplicationController
       end
     end
 
+    @release_date = load_release_date
 
     @full_name = @selected_user.full_name
     @pk = email
@@ -99,6 +100,13 @@ class CompetenciesController < ApplicationController
 
     @epa_class_mean ||= hf_epa2(@comp_class_mean)
     @chart_epa ||= hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
+
+  end
+
+  private
+
+  def load_release_date
+    badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
 
   end
 

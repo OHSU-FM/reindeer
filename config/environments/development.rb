@@ -5,7 +5,7 @@ Rails.application.configure do
   config.lograge.enabled = true
   # Reload files in the lib directory
   config.autoload_paths += %W(#{config.root}/lib/edna_console)
-  config.assets.paths << Rails.root.join('node_modules')
+  config.assets.paths << Rails.root.join("node_modules")
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -34,7 +34,7 @@ Rails.application.configure do
   # number of complex assets.
   #config.assets.compress = true
   #config.assets.compile = true
-  #config.assets.digest = false
+  #config.assets.digest = true
   config.assets.debug = true
 
   # Adds additional error checking when serving assets at runtime.

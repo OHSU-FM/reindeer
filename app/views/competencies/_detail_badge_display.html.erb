@@ -1,4 +1,4 @@
-<% if current_user.coaching_type != "student" %>
+<% if hf_ok_to_release_badge?(@student_badge_info["EPA#{i}"]["status_date"], @release_date["Badge"]["releaseDate"])  #current_user.coaching_type != "student" %>
   <table>
     <tr>
       <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>

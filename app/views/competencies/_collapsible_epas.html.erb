@@ -12,7 +12,7 @@
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
                     <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
-                      <% if current_user.coaching_type != "student" %>
+                      <% if hf_ok_to_release_badge?(@student_badge_info["EPA#{i}"]["status_date"], @release_date["Badge"]["releaseDate"]) #current_user.coaching_type != "student" %>
                         [Badge Status:
                         <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
                               <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
@@ -21,6 +21,10 @@
                               <%=  @student_badge_info["EPA#{i}"]["status"] %>]
                               <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                         <% end %>
+                      <% else %>
+                          [Badge Status:
+                        <%=  @student_badge_info["EPA#{i}"]["status"] %>]
+                        <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                       <% end %>
 
                     </span>

@@ -46,7 +46,7 @@ gem "uglifier"
 gem 'jquery-ui-rails', '~> 6.0.1'
 gem "jquery-rails"
 gem "jquery_context_menu-rails"
-
+#gem 'webpacker', '~> 3.5'
 # CSS / js
 # Random bug:
 # Error encountered while saving cache (".....") can't dump anonymous class

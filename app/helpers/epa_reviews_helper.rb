@@ -34,7 +34,7 @@ module EpaReviewsHelper
     "EPA8" => "#7F00FF", # violet
     "EPA9" => "#00FFFF", # Cyan
     "EPA10" => "#FF7F50", # coral
-    "EPA11" => "#E6E6FA", # Lilac
+    "EPA11" => "#40E0D0", # Turquoise
     "EPA12" => "#FF00FF", # Magneta
     "EPA13" => "#2B22AA" # indigo
 

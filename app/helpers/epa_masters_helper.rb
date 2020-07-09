@@ -8,6 +8,14 @@ module EpaMastersHelper
     return EPA_CODES
   end
 
+  def hf_ok_to_release_badge? (status_date, release_date)
+      if (!status_date.nil?) and (status_date < release_date)
+        return true
+      else
+        return false
+      end
+  end
+
   def hf_get_eg_members(eg_cohorts, email)
     eg_full_name1 = eg_cohorts.collect{|e| e["eg_full_name1"] if e["email"] == email}.compact
     eg_full_name2 = eg_cohorts.collect{|e| e["eg_full_name2"] if e["email"] == email}.compact
