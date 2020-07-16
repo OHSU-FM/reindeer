@@ -32,9 +32,10 @@ class FomExam < ApplicationRecord
   end
 
   def self.update_exam(row, yes_updated)
-       user = User.find_by(email: row["email"])
+       #user = User.find_by(email: row["email"])
+       user = User.find_by(sid: "U000" + row["sid"])
        if user.nil?
-         puts "email: " + row["email"]
+         #puts "email: " + row["email"]
          yes_updated = false
          #byebug
        else
@@ -43,6 +44,8 @@ class FomExam < ApplicationRecord
          row_hash = {}
          row_hash = row.to_hash
          row_hash.delete("email")
+         row_hash.delete("full_name")
+         row_hash.delete("sid")
          FomExam.where(user_id: user.id, course_code: row["course_code"], permission_group_id: row["permission_group_id"]).first_or_create.update(row_hash)
          yes_updated = true
 

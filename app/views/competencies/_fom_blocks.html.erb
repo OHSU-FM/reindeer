@@ -6,7 +6,7 @@
               <td style="text-align:right">Student:</td><td><b><%= @selected_user.full_name %></b></td>
               <td style="text-align:right">Email:</td><td><b><%= @selected_user.email%></b></td>
               <td style="text-align:right">UID:</td><td><b><%= @selected_user.sid.to_s %></b></td>
-              <td style="text-align:right">Coach:</td><td><b><%= @selected_user.cohort.title.to_s %></b></td>
+              <td style="text-align:right">Coach:</td><td><b><%= @selected_user.cohort.nil? ? "Not Assigned" : @selected_user.cohort.title.to_s %></b></td>
             </tr>
           </table>
         </div>

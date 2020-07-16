@@ -68,44 +68,61 @@ module EpaMastersHelper
     end
   end
 
-  def hf_redact_text (review_rec)
+  def hf_redact_text (review_rec, current_user)
     str_html1 = ''
     str_html2 = ''
 
-    if !review_rec.reviewer1.blank? and review_rec.reviewer2.blank?
-        # redact review1 data
-
-        # #str_html = review_rec.badge_decision1 + " / " +
-        #             review_rec.reviewer1 + " / " +
-        #             review_rec.general_comments1  + " / "
-        #str_html = '<span class="redact">' + str_html + '</span>'
-        str_html1 = review_rec.reviewer1 + '<span class="glyphicon glyphicon-ok" style="color:green;"></span>'
-
-    end
-    if review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
-          # redact review2 data
-
-          # str_html = review_rec.badge_decision2 + " / " +
-          #             review_rec.reviewer2 + " / " +
-          #             review_rec.general_comments2  + " / "
-          # str_html = '<span class="redact" style="color:black">' + str_html + '</span>'
-          str_html2 = review_rec.reviewer2 + '<span class="glyphicon glyphicon-ok" style="color:green;"></span>'
-
-    end
+    # if !review_rec.reviewer1.blank? and review_rec.reviewer2.blank?
+    #     # redact review1 data
+    #
+    #     # #str_html = review_rec.badge_decision1 + " / " +
+    #     #             review_rec.reviewer1 + " / " +
+    #     #             review_rec.general_comments1  + " / "
+    #     #str_html = '<span class="redact">' + str_html + '</span>'
+    #     str_html1 = review_rec.reviewer1 + '<span class="glyphicon glyphicon-ok" style="color:green;"></span>'
+    #
+    # end
+    # if review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
+    #       # redact review2 data
+    #
+    #       # str_html = review_rec.badge_decision2 + " / " +
+    #       #             review_rec.reviewer2 + " / " +
+    #       #             review_rec.general_comments2  + " / "
+    #       # str_html = '<span class="redact" style="color:black">' + str_html + '</span>'
+    #       str_html2 = review_rec.reviewer2 + '<span class="glyphicon glyphicon-ok" style="color:green;"></span>'
+    #
+    # end
 
     if !review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
-      if review_rec.badge_decision1 == "Badge"
-          str_html1 = '<span class="text-success">' + review_rec.badge_decision1 + '</span>'
-      else
-          str_html1 = '<span class="bg-danger text-white">' + review_rec.badge_decision1 + '</span>'
+      date1 = review_rec.review_date1.nil? ? review_rec.review_date1.to_s : review_rec.review_date1.strftime("%m-%d-%Y")
+      date2 = review_rec.review_date2.nil? ? review_rec.review_date2.to_s : review_rec.review_date2.strftime("%m-%d-%Y")
+      if review_rec.badge_decision1 == "Badge" and review_rec.badge_decision2 == "Badge"
+
+        str_html1 = '<span class="text-success">' + review_rec.badge_decision1 + '</span>'
+        str_html1 = date1 + " / " + str_html1 + ' / ' + review_rec.reviewer1 # + ' / ' + review_rec.general_comments1.to_s
+        str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
+        str_html2 = date2 + " / " + str_html2 + ' / ' + review_rec.reviewer2  #+ ' / ' + review_rec.general_comments2.to_s
+        return str_html1, str_html2
       end
-      str_html1 = str_html1 + ' / ' + review_rec.reviewer1 + ' / ' + review_rec.general_comments1.to_s
-      if review_rec.badge_decision2 == "Badge"
-          str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
+
+      if review_rec.reviewer1 == current_user.full_name
+        if review_rec.badge_decision1 == "Badge"
+            str_html1 = '<span class="text-success">' + review_rec.badge_decision1 + '</span>'
+        else
+            str_html1 = '<span class="bg-danger text-white">' + review_rec.badge_decision1 + '</span>'
+        end
+        str_html1 = date1 + " / " + str_html1 + ' / ' + review_rec.reviewer1   #+ ' / ' + review_rec.general_comments1.to_s
+        str_html2 = ''
       else
-          str_html2 = '<span class="bg-danger text-white">' + review_rec.badge_decision2 + '</span>'
+        if review_rec.badge_decision2 == "Badge"
+            str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
+        else
+            str_html2 = '<span class="bg-danger text-white">' + review_rec.badge_decision2 + '</span>'
+        end
+        str_html2 = date2 + " / " + str_html2 + ' / ' + review_rec.reviewer2   #+ ' / ' + review_rec.general_comments2.to_s
+        str_html1 = ''
       end
-      str_html2 = str_html2 + ' / ' + review_rec.reviewer2 + ' / ' + review_rec.general_comments2.to_s
+
     end
 
     return str_html1, str_html2
