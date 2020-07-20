@@ -360,8 +360,8 @@ module WbaGraphsHelper
          hash_data.store(:name, categories[i])
          hash_data.store(:y, mod_data_series[i].sum)
        else
-       hash_data.store(:name, categories[i] + " - 0")
-        hash_data.store(:y, [0])
+       hash_data.store(:name, categories[i])
+        hash_data.store(:y, 0)
        end
        hash_data.store(:color, random_color)
        pie_data.push hash_data
@@ -562,10 +562,13 @@ module WbaGraphsHelper
       f.series(name: "4 - I was available just in case", yAxis: 0, data: data_series[3])
       if in_category == "Clinical Assessor"
         pie_data = prep_data(categories, data_series)
+
+
         f.series(type: 'pie',
                 name: 'Total No of DataPoints',
                 data: pie_data,
-                center: [920,80], size: 150, showInLegend: false
+                center: [400,100], size: 150, showInLegend: false
+
         )
       end
 

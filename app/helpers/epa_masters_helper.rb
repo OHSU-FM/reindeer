@@ -9,7 +9,9 @@ module EpaMastersHelper
   end
 
   def hf_ok_to_release_badge? (status_date, release_date)
-      if (!status_date.nil?) and (status_date < release_date)
+      if release_date == ""
+        return false
+      elsif (!status_date.nil?) and (status_date < release_date)
         return true
       else
         return false
