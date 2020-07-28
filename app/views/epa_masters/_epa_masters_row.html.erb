@@ -16,7 +16,7 @@
         <tr>
           <td><span>
               <% str_html1, str_html2 = hf_redact_text(review, current_user) %>
-              <%= str_html1.blank? ? '' : (str_html1.to_s + ' | ').html_safe %> 
+              <%= str_html1.blank? ? '' : (str_html1.to_s + ' | ').html_safe %>
               <%= str_html2.to_s.html_safe %>
               </span>
 

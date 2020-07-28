@@ -26,7 +26,7 @@ function localStorageAjax() {
      data: {epa_json: epa_json},
      success : function(epa_json) {
          //alert('Data: '+ JSON.stringify(data));
-         alert("local_storage ajax is a success!\n"+JSON.stringify(epa_json));
+         //alert("local_storage ajax is a success!\n"+JSON.stringify(epa_json));
          refreshEpaMasterAjax();
 
      },
@@ -71,9 +71,9 @@ function refreshEpaMasterAjax() {
 $('#review-form').bind('ajax:success', function() {
 
   $('#newEpaReviewModal').modal('hide');
-  console.log("After Modal Hide ***");
-	console.log('email: ' + byEmail);
-	console.log('search: ' + byName);
+  // console.log("After Modal Hide ***");
+	// console.log('email: ' + byEmail);
+	// console.log('search: ' + byName);
 
   if (epa_json.length === 0) {
     refreshEpaMasterAjax();
@@ -81,8 +81,6 @@ $('#review-form').bind('ajax:success', function() {
   else {
     localStorageAjax();
   }
-
-
 
 });
 
@@ -153,11 +151,11 @@ if (review_date2 === "") {
 }
 
 
-console.log('full_name: ' + full_name);
-console.log("badge_decision1: " + badge_decision1);
-console.log("badge_decision2: " + badge_decision2);
-console.log("gen comm1: "  + general_comm1);
-console.log("gen comm2: " + general_comm2);
+// console.log('full_name: ' + full_name);
+// console.log("badge_decision1: " + badge_decision1);
+// console.log("badge_decision2: " + badge_decision2);
+// console.log("gen comm1: "  + general_comm1);
+// console.log("gen comm2: " + general_comm2);
 
 if (badge_decision1 === "Badge" && badge_decision2 === "Badge") {
 	$('#col-reviewer1').addClass("visible");
@@ -179,26 +177,38 @@ var epa_json = []
 var EpaArray = ["EPA1", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13"]
 var contextMenuItems = {};
 for (var i = 0, l = EpaArray.length; i < l; i++) {
-    contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "copy" };
+    contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "fa-copy" };
 }
 contextMenuItems["sep1"] = "---------";
-contextMenuItems["paste"] = {name: "Paste", icon: "paste"};
-//console.log("contextMenuItems: " + JSON.stringify(contextMenuItems));
-console.log("*** Try to tag EPA being REVIEWED !")
+contextMenuItems["paste"] = {name: "Paste", icon: "fa-paste"};
 var epa = $("#epa").val();
 var reviewable_id = $("#reviewable_id").val();
-//var epa_name = {name: epa, icon: "copy"};
-contextMenuItems[epa] = {name: epa +" - Reviewing!", icon: "copy" };
+
+function reloadContextMenuItems(epa) {
+  //var epa = $("#epa").val();
+  contextMenuItems[epa] = {name: epa +" - Reviewing!", icon: "fa-copy" };
+  console.log("epa selected: " + epa)
+  return contextMenuItems
+}
+
 
 $(function() {
   $('#course_name').mouseup(function(){
-    //$(this).after("Mouse button released.");
+    $(this).after("Mouse button released.");
     var course_name = $('#course_name').data('course-name')
-
-  });
+   });
 
      $.contextMenu({
          selector: '.context-menu-one',
+            //items: reloadContextMenuItems(epa),
+            build: function($triggerElement, e){
+                    var epa = $("#epa").val();
+                    return {
+                        //callback: function(){},
+                        items: reloadContextMenuItems(epa)
+                    }
+           },
+
          callback: function(key, options) {
 
              var m = "clicked: " + key;
@@ -233,26 +243,26 @@ $(function() {
                epa_hash["full_name"] = fullName;;
                epa_hash["comments"] =  course_code + ": " + selectedText;
                epa_hash["email"] = byEmail
-               console.log("epa_hash: " + JSON.stringify(epa_hash));
-               console.log('ByEmail - inside contextMenu: ' + byEmail)
+               // console.log("epa_hash: " + JSON.stringify(epa_hash));
+               // console.log('ByEmail - inside contextMenu: ' + byEmail)
                epa_json.push(epa_hash);
 
              }
 
-             window.console && console.log(m) || alert(m + '\nparentid: ' + parentid + '\ncourse_code: ' + course_code + '\nselectedText: ' + selectedText +
-                    "\nformAction: " + formAction +
-                    "\nepa: " + epa +
-                    "\nreviewable_id: " + reviewable_id +
-                    "\nfull_name: " + fullName
-                );
+             // window.console && console.log(m) || alert(m + '\nparentid: ' + parentid + '\ncourse_code: ' + course_code + '\nselectedText: ' + selectedText +
+             //        "\nformAction: " + formAction +
+             //        "\nepa: " + epa +
+             //        "\nreviewable_id: " + reviewable_id +
+             //        "\nfull_name: " + fullName
+             //    );
 
 
-         },
-         items: contextMenuItems
+         }
+
 
      });
 
      $('.context-menu-one').on('click', function(e){
-         console.log('clicked', this);
+         //console.log('clicked', this);
      })
  });
