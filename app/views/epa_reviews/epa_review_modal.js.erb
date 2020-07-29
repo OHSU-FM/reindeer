@@ -1,9 +1,0 @@
-console.log ("inside epa_reviews_modal.js.erb");
-$("#mymodal-epa-review").html("<%= j render "new_modal" %>");
-$("#newEpaReviewModal").modal('show');
-
-$('#SubmitReview').click(function() {
-   $('#newEpaReviewModal').modal('hide');
-   location.reload();
-
-});

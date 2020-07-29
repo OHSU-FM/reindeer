@@ -85,7 +85,7 @@ module EpaReviewsHelper
   def hf_wba_str(wba)
     wba_str = ''
     for i in 0..3 do
-          wba_str +=  hf_wba_instance_def(i+1) + ": #{wba[i]}" + "\r"
+          wba_str +=  "#{wba[i]} -> " + hf_wba_instance_def(i+1) + "\r"
     end
     return wba_str
   end
