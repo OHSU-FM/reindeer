@@ -195,6 +195,8 @@ class EpaReviewsController < ApplicationController
     @today_date = Time.new.strftime("%m/%d/%Y")
     load_eg_members(@user)
 
+    @most_recent_review_date = EpaReview.get_max_date(user_id)
+
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)

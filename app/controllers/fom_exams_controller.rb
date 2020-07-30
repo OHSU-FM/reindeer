@@ -58,7 +58,4 @@ class FomExamsController < ApplicationController
 
  private
 
-
-
-
 end

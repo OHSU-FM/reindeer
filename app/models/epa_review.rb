@@ -62,4 +62,21 @@ class EpaReview < ApplicationRecord
 
     end
 
+    def self.execute_sql(*sql_array)
+      connection.exec_query(send(:sanitize_sql_array, sql_array))
+    end
+
+    def self.get_max_date(user_id)
+      sql = "select max(epa_reviews.updated_at)
+	           FROM public.epa_reviews, epa_masters, users
+	           where epa_masters.id = epa_reviews.reviewable_id and
+		           epa_masters.user_id = #{user_id}"
+
+      result ||= EpaReview.execute_sql(sql).to_hash
+
+      return result.first["max"].to_date.strftime('%F')
+
+
+    end
+
 end

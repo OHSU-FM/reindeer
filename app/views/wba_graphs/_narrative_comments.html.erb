@@ -4,7 +4,7 @@
         <div class="panel-heading" role="tab" id="headingOne">
             <h4 class="panel-title">
               <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-          Clinical Experience Phase Course Comments
+          Clinical Experience Phase Course Comments --> Most recently review date: <%= @most_recent_review_date %>
               </a>
             </h4>
         </div>
@@ -36,10 +36,15 @@
                           </tr>
                       <% end %>
                   <% else %>
+                    <% comp = comp.sort_by {|c| c["created_at"]}.reverse! %>
                     <% i = 0 %>
                     <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
-                          <tr>
+                          <% if @most_recent_review_date >= cd["created_at"].strftime('%F') %>
+                            <tr style="background-color:#EFF1A2">
+                          <% else %>
+                            <tr>
+                          <% end %>
                             <td><%= cd["course_name"] %></td>
                             <td><%= cd["evaluator"] %></td>
                             <td>
@@ -53,7 +58,7 @@
                               <%= hf_highlight(cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " "), epa_code) %></span></td>
                             <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
                               <%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></span></td>
-                            <td><%= cd["created_at"].strftime('%F') %></td>
+                            <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
 
                           </tr>
                       <% end %>
