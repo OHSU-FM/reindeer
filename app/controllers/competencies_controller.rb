@@ -8,6 +8,7 @@ class CompetenciesController < ApplicationController
   include WbaGraphsHelper
   include ArtifactsHelper
   include EpaMastersHelper
+  include FomExamsHelper
 
 
   def index
@@ -64,7 +65,12 @@ class CompetenciesController < ApplicationController
      @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date)
 
-     @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
+     if @selected_user.permission_group_id >= 17
+       @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
+     else
+       @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
+     end
+
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)

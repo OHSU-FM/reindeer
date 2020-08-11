@@ -11,7 +11,7 @@ class FomExam < ApplicationRecord
 
   def self.to_csv
       CSV.generate do |csv|
-        csv << column_names + ['user_id', 'email', 'full_name']
+        csv << ['user_id', 'email', 'full_name'] + column_names
         all.each do |result|
           csv << result.attributes.values_at(*column_names) + result.user_only_fetch_email.attributes.values
         end
@@ -163,5 +163,7 @@ class FomExam < ApplicationRecord
 
       results = ActiveRecord::Base.connection.exec_query(sql)
   end
+
+
 
 end
