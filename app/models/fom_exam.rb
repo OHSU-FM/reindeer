@@ -33,7 +33,8 @@ class FomExam < ApplicationRecord
 
   def self.update_exam(row, yes_updated)
        #user = User.find_by(email: row["email"])
-       user = User.find_by(sid: "U000" + row["sid"])
+       formatted_sid = format('U%08d', row["sid"])
+       user = User.find_by(sid: formatted_sid)
        if user.nil?
          #puts "email: " + row["email"]
          yes_updated = false
@@ -41,6 +42,10 @@ class FomExam < ApplicationRecord
        else
          row["user_id"] = user.id
          row["submit_date"] = format_date(row["submit_date"])
+         if row["comp1_dropped_quiz"] == 'nil'
+           row["comp1_dropped_quiz"] = nil
+           row["comp1_dropped_score"] = nil
+         end 
          row_hash = {}
          row_hash = row.to_hash
          row_hash.delete("email")

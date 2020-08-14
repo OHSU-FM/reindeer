@@ -99,6 +99,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     #student_series = student_series[0..-3].map{|s| s.second.to_f} # removed the last 2 items in array
     student_series = check_pass_fail(student_series)
     class_mean_series = avg_data.first.map{|s| s.second.to_s.to_d.truncate(2).to_f if s.first.include? component}.compact
+    class_mean_series = check_pass_fail(class_mean_series)
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
     height = 400
 
