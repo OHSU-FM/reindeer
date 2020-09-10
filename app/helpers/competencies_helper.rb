@@ -180,6 +180,7 @@ module CompetenciesHelper
         long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td><tr>"
       end
       long_str += "</table>"
+
       return long_str
     rescue
       return json_str

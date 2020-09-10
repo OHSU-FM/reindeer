@@ -91,6 +91,10 @@ module Coaching::StudentsHelper
       return "MD22"
     elsif student.permission_group.title.include? "Med23"
       return "MD23"
+    elsif student.permission_group.title.include? "Med24"
+      return "MD24"
+    elsif student.permission_group.title.include? "Med25"
+      return "MD25"
     else
       return "Test User"
     end
