@@ -2,39 +2,47 @@ class EpaMastersController < ApplicationController
   layout 'full_width_csl'
   before_action :authenticate_user!
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
+  before_action :load_eg_cohorts
   include EpaMastersHelper
+
 
   # GET /epa_masters
   def index
-    @eg_cohorts ||= hf_load_eg_cohorts (current_user.email)
-    if params[:search].present?
-      @selected_user = nil
-      @parameter = params[:search].downcase
-      #@results = User.where("lower(full_name) LIKE :search", search: @parameter)
-      @users = User.where("lower(full_name) LIKE ? and coaching_type = ? ", "%#{@parameter}%", "student")
-      if !@users.empty? and @users.count == 1
-        @epa_masters = @users.first.epa_masters.order(:id)
-        @full_name = @users.first.full_name
-        if @epa_masters.empty?
-          user_id = @users.first.id
-          email = @users.first.email
-          create_epas user_id, email
-          @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
-        end
-      end
-      respond_to do |format|
-        format.js { render partial: 'search-results' and return}
-        format.html
-      end
-    elsif params[:user_id].present?
-      @user = User.find(params[:user_id])
-      load_epa_masters
-    elsif params[:email].present?
+
+    if params[:uniq_cohort].present?
+      @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
+    end
+    if params[:email].present?
       @user = User.find_by(email: params[:email])
       load_epa_masters
     end
 
-
+    # if params[:search].present?
+    #   @selected_user = nil
+    #   @parameter = params[:search].downcase
+    #   #@results = User.where("lower(full_name) LIKE :search", search: @parameter)
+    #   @users = User.where("lower(full_name) LIKE ? and coaching_type = ? ", "%#{@parameter}%", "student")
+    #   if !@users.empty? and @users.count == 1
+    #     @epa_masters = @users.first.epa_masters.order(:id)
+    #     @full_name = @users.first.full_name
+    #     if @epa_masters.empty?
+    #       user_id = @users.first.id
+    #       email = @users.first.email
+    #       create_epas user_id, email
+    #       @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
+    #     end
+    #   end
+    #   respond_to do |format|
+    #     format.js { render partial: 'search-results' and return}
+    #     format.html
+    #   end
+    # elsif params[:user_id].present?
+    #   @user = User.find(params[:user_id])
+    #   load_epa_masters
+    # elsif params[:email].present?
+    #   @user = User.find_by(email: params[:email])
+    #   load_epa_masters
+    # end
   end
 
   def load_epa_masters
@@ -164,6 +172,11 @@ class EpaMastersController < ApplicationController
     def epa_master_params
       params.require(:epa_master).permit(:user_id, :epa,
         :status, :status_date, :expiration_date )
+    end
+
+    def load_eg_cohorts
+      @all_cohorts ||= hf_load_eg_cohorts
+      @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
     end
 
 

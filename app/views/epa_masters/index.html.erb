@@ -5,21 +5,22 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-                 <span class="float-right">
 
-                    <%= form_tag(epa_masters_path, method: "get",  style: "float: right; display: block") do %>
-                      <%= text_field_tag :search, params[:search], placeholder: "Enter LastName, FirstName" %>
-                      <%= submit_tag "Search", name: 'form2[search]', class: "btn btn-success"%>
-                    <% end %>
-                  </span>
-                  <span class="float-right">
+              <span class="float-right">
 
-                     <%= form_tag(epa_masters_path, method: "get",  style: "float: right; display: block") do %>
+                 <%= form_tag(epa_masters_path, method: "get") do %>
+                   <%= label_tag :Cohort %>
+                   <%= select_tag :uniq_cohort, options_for_select(@uniq_cohorts, selected: params[:uniq_cohort]),
+                       prompt: "Please Select a Cohort", onchange: "this.form.submit();"  %>
+                   <% if !@eg_cohorts.blank? %>
+                     <%= label_tag :Student %>
                      <%= select_tag :email, options_for_select(@eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
-                         prompt: "Please Select a Student"  %>
-                       <%= submit_tag "Go", name: 'form2[email]', class: "btn btn-success"%>
-                     <% end %>
+                         prompt: "Please Select a Student", onchange: "this.form.submit();" %>
+                   <% end %>
+
+                 <% end %>
                   </span>
+
 
                   <span>
                     <% if !@users.nil? %>

@@ -12,13 +12,18 @@ class StudentAssessmentsController < ApplicationController
       @students ||= Cohort.find(params[:id]).users.select(:id, :email, :username, :full_name).order(:full_name)
     end
 
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: {cohort_students: @cohort_students}
-        }
-      end
+    if params[:email].present?
+      @results = []
+      @results.push User.find_by(email: params[:email])
     end
+
+    # if request.xhr?
+    #   respond_to do |format|
+    #     format.json {
+    #       render json: {cohort_students: @cohort_students}
+    #     }
+    #   end
+    # end
     render :show
   end
 

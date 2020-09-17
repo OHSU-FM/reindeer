@@ -51,3 +51,12 @@ span, .marked {
 pull-right{
   float: right;
 }
+
+.bootstrap-select .dropdown-menu {
+  max-width: 100px;
+}
+.bootstrap-select .dropdown-menu span.text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -2,6 +2,16 @@ class EpaReview < ApplicationRecord
     has_one :epa_reason
     belongs_to :reviewable, polymorphic: true
 
+
+    def self.comments_to_student
+      return [
+        "Congratulations! Evidence supports badging you for this EPA.",
+        "You are making progress towards completing this EPA - continue to look for experiences.",
+        "Work towards obtaining more experiences and WBAs to support badging for this EPA.",
+        "Talk with your coach for help locating opportunities to gather more experience towards this EPA. No progress apparent on this EPA."
+      ]
+    end
+
     def self.load_epa(epa_data, eg_full_name1, eg_full_name2)
       # epa_data is an ActionController Parameters tyoe
       keys = epa_data.keys

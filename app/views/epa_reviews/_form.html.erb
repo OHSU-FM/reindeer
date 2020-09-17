@@ -8,98 +8,84 @@
     <div class="row">
      <div class="col-sm-6" id="col-reviewer1">
         <div class="form-group">
-          <%= f.label :review_date1,  'Review Date', class: "control-label col-sm-4" %>
+          <%= f.label :review_date1,  'Review Date', class: "control-label col-sm-2" %>
           <%= f.date_field :review_date1, html5: {selected: true}  %>
         </div>
-
         <div class="form-group">
-          <%= f.label :reviewer1, 'Reviewer', class: "control-label col-sm-4" %>
+          <%= f.label :reviewer1, 'Reviewer', class: "control-label col-sm-2" %>
           <%= f.text_field :reviewer1,   html5: {selected: true} %>
           <%= content_tag "div", id: "full_name", 'data-full_name' => current_user.full_name do %><% end %>
         </div>
-
         <div class="form-group">
-          <%= f.label :badge_decision1, 'Badge Decision', class: "control-label col-sm-4" %>
-          <%= f.select :badge_decision1, ["Not Yet", "Badge", "Deny"],
-             html5: true %>
-         </div>
-
-         <div class="form-group">
-          <%= f.label :reason1, 'Reason', class: "control-label col-sm-4" %>
-           <%= f.select :reason1, @eg_reasons,
-              html5: {selected: true}  %>
+          <%= f.label :badge_decision1, 'Badge Decision', class: "control-label col-sm-2" %>
+          <%= f.select :badge_decision1, ["Not Yet", "Badge", "Deny"], html5: true %>
         </div>
-
         <div class="form-group">
-          <%= f.label :trust1, 'Trust', class: "control-label col-sm-4" %>
-          <%= f.select :trust1, @decision_option,  include_blank: '--',
-              html5: {selected: true} %>
+          <%= f.label :reason1, 'Reason', class: "control-label col-sm-2" %>
+          <%= f.select :reason1, @eg_reasons, html5: {selected: true}  %>
         </div>
-
         <div class="form-group">
-          <%= f.label 'Evidence', class: "control-label col-sm-4" %>
-          <%= f.text_area :evidence1, cols:50, rows: 6, html5: true %>
+          <%= f.label :trust1, 'Trust', class: "control-label col-sm-2" %>
+          <%= f.select :trust1, @decision_option,  include_blank: '--', html5: {selected: true} %>
         </div>
-
         <div class="form-group">
-          <%= f.label 'Internal Comments', class: "control-label col-sm-4" %>
-          <%= f.text_area :general_comments1, cols:50, rows: 5, html5: true %>
+          <%= f.label 'Evidence', class: "control-label col-sm-2" %>
+          <%= f.text_area :evidence1, cols:100, rows: 6, html5: true %>
         </div>
-
         <div class="form-group">
-          <%= f.label 'Comments to Student', class: "control-label col-sm-4" %>
-          <%= f.text_area :student_comments1, cols:50, rows: 3, html5: true %>
+          <%= f.label 'Internal Comments', class: "control-label col-sm-2" %>
+          <%= f.text_area :general_comments1, cols:100, rows: 5, html5: true %>
+        </div>
+        <div class="form-group">
+          <%= f.label 'Comments to Student', class: "control-label col-sm-2" %>
+          <%= f.select :student_comments1, EpaReview.comments_to_student, html5: true  %>
         </div>
       </div>
 
       <div class="col-sm-6" id="col-reviewer2">
         <div class="form-group">
-          <%= f.label :review_date2,  'Review Date', class: "control-label col-sm-4" %>
+          <%= f.label :review_date2,  'Review Date', class: "control-label col-sm-2" %>
           <%= f.date_field :review_date2,  html5: true %>
         </div>
 
         <div class="form-group">
-          <%= f.label :reviewer2, 'Reviewer', class: "control-label col-sm-4" %>
+          <%= f.label :reviewer2, 'Reviewer', class: "control-label col-sm-2" %>
           <%= f.text_field :reviewer2,  html5: {selected: true}  %>
         </div>
 
         <div class="form-group">
-          <%= f.label :badge_decision2, 'Badge Decision', class: "control-label col-sm-4" %>
+          <%= f.label :badge_decision2, 'Badge Decision', class: "control-label col-sm-2" %>
           <%= f.select :badge_decision2, ["Not Yet", "Badge", "Deny"], html5: true %>
         </div>
         <div class="form-group">
-          <%= f.label :reason2, 'Reason', class: "control-label col-sm-4" %>
-          <%= f.select :reason2, @eg_reasons,
-             html5: true %>
+          <%= f.label :reason2, 'Reason', class: "control-label col-sm-2" %>
+          <%= f.select :reason2, @eg_reasons, html5: true %>
          </div>
 
-
         <div class="form-group">
-          <%= f.label :trust2, 'Trust', class: "control-label col-sm-4" %>
-          <%= f.select :trust2, @decision_option2, include_blank: '--',
-             html5: true %>
+          <%= f.label :trust2, 'Trust', class: "control-label col-sm-2" %>
+          <%= f.select :trust2, @decision_option2, include_blank: '--', html5: true %>
         </div>
 
         <div class="form-group">
-          <%= f.label 'Evidence', class: "control-label col-sm-4" %>
-          <%= f.text_area :evidence2, cols:50, rows: 5, html5: true %>
+          <%= f.label 'Evidence', class: "control-label col-sm-2" %>
+          <%= f.text_area :evidence2, cols:100, rows: 5, html5: true %>
         </div>
 
         <div class="form-group">
-          <%= f.label 'Internal Comments', class: "control-label col-sm-4" %>
-          <%= f.text_area :general_comments2, cols:50, rows: 5, html5: true %>
+          <%= f.label 'Internal Comments', class: "control-label col-sm-2" %>
+          <%= f.text_area :general_comments2, cols:100, rows: 5, html5: true %>
         </div>
         <div class="form-group">
-          <%= f.label 'Comments to Student', class: "control-label col-sm-4" %>
-          <%= f.text_area :student_comments2, cols:50, rows: 3, html5: true %>
-        </div>         </div>
-      </div>
-      <div class="row">
-
-          <div class="form-actions">
-            <%= f.submit "Save Changes", class: "btn-primary center-block", id: "SubmitReview" %>
-          </div>
-
+          <%= f.label 'Comments to Student', class: "control-label col-sm-2" %>
+          <%= f.select :student_comments2, EpaReview.comments_to_student, html5: true %>
+        </div>
       </div>
 
+    </div>
+    <div class="row">
+        <div class="form-actions">
+          <%= f.submit "Save Changes", class: "btn-primary center-block", id: "SubmitReview" %>
+        </div>
+    </div>
   <% end %>

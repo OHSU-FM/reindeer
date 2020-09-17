@@ -24,22 +24,18 @@ module EpaMastersHelper
     return eg_full_name1.join, eg_full_name2.join
   end
 
-  def hf_load_eg_cohorts (eg_member_email)
+  def hf_load_eg_cohorts
     if File.file? (Rails.root + "public/epa_reviews/eg_cohorts.csv")
       eg_cohorts = []
-
       rows ||= CSV.foreach(Rails.root + "public/epa_reviews/eg_cohorts.csv", headers: true)
       rows.each do |row|
         eg_cohorts << row.to_hash
       end
-      selected_cohorts = eg_cohorts.select{|eg| eg if eg["eg_email1"] == eg_member_email or eg["eg_email2"] == eg_member_email}
-      if !selected_cohorts.blank?
-        return selected_cohorts
-      else
+      if !eg_cohorts.blank?
          return eg_cohorts
-      end
-    else
+      else
        return nil
+      end 
     end
   end
 
@@ -115,14 +111,14 @@ module EpaMastersHelper
         end
         str_html1 = date1 + " / " + str_html1 + ' / ' + review_rec.reviewer1   #+ ' / ' + review_rec.general_comments1.to_s
         str_html2 = ''
-      else
-        if review_rec.badge_decision2 == "Badge"
-            str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
-        else
-            str_html2 = '<span class="bg-danger text-white">' + review_rec.badge_decision2 + '</span>'
-        end
-        str_html2 = date2 + " / " + str_html2 + ' / ' + review_rec.reviewer2   #+ ' / ' + review_rec.general_comments2.to_s
-        str_html1 = ''
+      elsif review_rec.reviewer2 == current_user.full_name
+          if review_rec.badge_decision2 == "Badge"
+              str_html2 = '<span class="text-success">' + review_rec.badge_decision2 + '</span>'
+          else
+              str_html2 = '<span class="bg-danger text-white">' + review_rec.badge_decision2 + '</span>'
+          end
+          str_html2 = date2 + " / " + str_html2 + ' / ' + review_rec.reviewer2   #+ ' / ' + review_rec.general_comments2.to_s
+          str_html1 = ''
       end
 
     end
