@@ -181,7 +181,7 @@ class EpaReviewsController < ApplicationController
       @percent_complete ||= hf_epa2(@comp_data_clinical)
     end
 
-    @student_badge_info = hf_get_badge_info(@user.id)
+    #@student_badge_info = hf_get_badge_info(@user.id)
 
     @preceptorship_data ||= hf_get_clinical_dataset(@user, 'Preceptorship')
     @wba ||= hf_get_wbas(@user.id)

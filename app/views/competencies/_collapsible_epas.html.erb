@@ -18,12 +18,12 @@
                               <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
                               <%= image_tag ("epa/EPA#{i}"), size: "20x20" %>
                         <% else %>
-                              <%=  @student_badge_info["EPA#{i}"]["status"] %>]
+                              <span style="color:blue;"> <%= @student_badge_info["EPA#{i}"]["status"] %></span>]
                               <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                         <% end %>
                       <% else %>
                           [Badge Status:
-                        <%=  @student_badge_info["EPA#{i}"]["status"] %>]
+                        <span style="color:blue;"> <%= @student_badge_info["EPA#{i}"]["status"] %></span>]
                         <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                       <% end %>
 

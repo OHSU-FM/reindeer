@@ -11,7 +11,7 @@ module EpaMastersHelper
   def hf_ok_to_release_badge? (status_date, release_date)
       if release_date == ""
         return false
-      elsif (!status_date.nil?) and (status_date < release_date)
+      elsif (!status_date.nil?) and (status_date <= release_date)
         return true
       else
         return false
@@ -35,7 +35,7 @@ module EpaMastersHelper
          return eg_cohorts
       else
        return nil
-      end 
+      end
     end
   end
 
@@ -44,6 +44,7 @@ module EpaMastersHelper
      student_badge_hash = {}
      not_yet_status = {"status" => "Not Yet"}
      student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
+
      if student_badge_info.empty?
        EPA_CODES.each do |epa|
          student_badge_hash.store("#{epa}", not_yet_status)
@@ -51,8 +52,36 @@ module EpaMastersHelper
        return student_badge_hash
      end
      student_badge_info = student_badge_info.map(&:attributes)
+
      EPA_CODES.each do |epa|
-       student_badge_hash.store("#{epa}", student_badge_info.select{|s| s if s["epa"] == epa}.first)
+       student_comments = []
+       temp_badge = {}
+       temp_badge = student_badge_info.select{|s| s if s["epa"] == epa}.first
+       if temp_badge["status"].to_s == ""
+          temp_badge["status"] = 'Not Yet'
+       end
+
+       epa_reviews_final = EpaReview.where(reviewable_id: temp_badge["id"], epa: temp_badge["epa"]).last
+       if !epa_reviews_final.blank?
+         if epa_reviews_final["student_comments1"].to_s != ""
+            student_comments << epa_reviews_final["student_comments1"]
+         else
+            student_comments << "None"
+         end
+
+         if !epa_reviews_final["student_comments2"].to_s != ""
+            student_comments << epa_reviews_final["student_comments2"]
+         else
+            student_comments << "None"
+         end
+         student_comments = student_comments.uniq.reject(&:blank?)
+         temp_badge.store("student_comments", student_comments)
+         student_badge_hash.store("#{epa}", temp_badge )
+       else
+         student_comments << "None"
+         temp_badge.store("student_comments", student_comments)
+         student_badge_hash.store("#{epa}", temp_badge )
+       end
      end
 
      return student_badge_hash

@@ -40,9 +40,9 @@ class StudentAssessmentsController < ApplicationController
 
   def load_cohorts_menu
       if current_user.coaching_type == 'coach'
-        @cohorts_menu ||= current_user.cohorts.order(:title)
+        @cohorts_menu ||= current_user.cohorts.where("permission_group_id >= ?", 13).order(:title)
       elsif current_user.dean_or_higher?
-          @cohorts_menu ||= Cohort.all.order(:title).uniq
+          @cohorts_menu ||= Cohort.where("permission_group_id >= ?", 13).order(:title).uniq
       end
   end
 

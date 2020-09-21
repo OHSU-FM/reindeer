@@ -5,9 +5,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-
-              <span class="float-right">
-
+              <span class="float-left">
                  <%= form_tag(epa_masters_path, method: "get") do %>
                    <%= label_tag :Cohort %>
                    <%= select_tag :uniq_cohort, options_for_select(@uniq_cohorts, selected: params[:uniq_cohort]),
@@ -17,11 +15,8 @@
                      <%= select_tag :email, options_for_select(@eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
                          prompt: "Please Select a Student", onchange: "this.form.submit();" %>
                    <% end %>
-
                  <% end %>
                   </span>
-
-
                   <span>
                     <% if !@users.nil? %>
                         <% if @users.count > 1 %>

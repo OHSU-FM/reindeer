@@ -77,6 +77,7 @@ class CompetenciesController < ApplicationController
      @usmle_exams = UsmleExam.where(user_id: @selected_user.id).order(:exam_type, :no_attempts)
      @student_badge_info = hf_get_badge_info(@selected_user.id)
 
+
      #if @not_found_cpx
       # @cpx_data = hf_get_cpx(@survey)
      #end
