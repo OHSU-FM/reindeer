@@ -12,7 +12,7 @@
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
                     <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
-                      <% if hf_ok_to_release_badge?(@student_badge_info["EPA#{i}"]["status_date"], @release_date["Badge"]["releaseDate"]) #current_user.coaching_type != "student" %>
+                      <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
                         [Badge Status:
                         <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
                               <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
@@ -22,9 +22,8 @@
                               <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                         <% end %>
                       <% else %>
-                          [Badge Status:
-                        <span style="color:blue;"> <%= @student_badge_info["EPA#{i}"]["status"] %></span>]
-                        <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
+
+                              <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                       <% end %>
 
                     </span>
@@ -41,8 +40,10 @@
 
           <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
               <div class="panel-body">
+
                   <%= render partial: "competencies/detail_badge_display", locals: {i: i, epa: epa} %>
-                  <%= render partial: "competencies/epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
+
+                <%= render partial: "competencies/epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
               </div>
           </div>
       </div>

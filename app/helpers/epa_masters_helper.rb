@@ -8,10 +8,13 @@ module EpaMastersHelper
     return EPA_CODES
   end
 
-  def hf_ok_to_release_badge? (status_date, release_date)
+  def hf_ok_to_release_badge (status_date, release_date)
+
       if release_date == ""
         return false
-      elsif (!status_date.nil?) and (status_date <= release_date)
+      elsif (!status_date.blank?) and (status_date <= release_date)
+        return true
+      elsif (status_date.blank?) and (!release_date.blank?)
         return true
       else
         return false

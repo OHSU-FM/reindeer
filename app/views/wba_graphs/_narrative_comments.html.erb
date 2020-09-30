@@ -20,10 +20,11 @@
                       <th scope="col">ProfConcern</th>
                       <th scope="col">Feedback</th>
                       <th scope="col">MSPE Comment</th>
-                      <th scope="col">Created At</th>
+
                     </tr>
                   </thead>
-                  <% if !clinical_data.nil? %>
+                  <% if !clinical_data.blank? %>
+                     <% clinical_data.each do |cd| %>
                       <% if !cd["CourseName"].include? "770" %>
                           <tr>
                             <td><%= cd["CourseName"] %></td>
@@ -32,9 +33,10 @@
                             <td><%= cd["ProfConcerns"] %></td>
                             <td><%= hf_highlight(cd["feedback"], epa_code) %></td>
                             <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
-                            <td><%= cd["created_at"].strftime('%F')  %></td>
+  
                           </tr>
                       <% end %>
+                    <% end %>
                   <% else %>
                     <% comp = comp.sort_by {|c| c["created_at"]}.reverse! %>
                     <% i = 0 %>

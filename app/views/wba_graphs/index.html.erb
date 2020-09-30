@@ -44,6 +44,7 @@
         </div>
       </div>
       <div id="review_comments" class="tab-pane fade">
+
         <% if !@clinical_data.nil? %>
           <%= render partial: "narrative_comments", locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data, epa_code: 'N/A'} %>
         <% end %>
