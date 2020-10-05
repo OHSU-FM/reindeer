@@ -10,9 +10,10 @@ module EpaMastersHelper
 
   def hf_ok_to_release_badge (status_date, release_date)
 
-      if release_date == ""
+      if release_date.blank? and status_date.blank?
         return false
-      elsif (!status_date.blank?) and (status_date <= release_date)
+      elsif (!status_date.blank?) and (!release_date.blank?) and (status_date <= release_date)
+
         return true
       elsif (status_date.blank?) and (!release_date.blank?)
         return true
@@ -123,7 +124,7 @@ module EpaMastersHelper
     #
     # end
 
-    if !review_rec.reviewer1.blank? and !review_rec.reviewer2.blank?
+    if !review_rec.reviewer1.blank? or !review_rec.reviewer2.blank?
       date1 = review_rec.review_date1.nil? ? review_rec.review_date1.to_s : review_rec.review_date1.strftime("%m-%d-%Y")
       date2 = review_rec.review_date2.nil? ? review_rec.review_date2.to_s : review_rec.review_date2.strftime("%m-%d-%Y")
       if review_rec.badge_decision1 == "Badge" and review_rec.badge_decision2 == "Badge"
