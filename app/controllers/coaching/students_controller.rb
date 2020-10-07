@@ -60,7 +60,8 @@ module Coaching
           (redirect_to coaching_index_path and return) unless @cohorts.include? @student.cohort
           @students = @student.cohort.users
         elsif current_user.dean_or_higher?
-          @cohorts = Cohort.includes(:users).includes(:owner).all
+          # exclude Med18, Med19 & Med20
+          @cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
           @coaches = @cohorts.map(&:owner).uniq!
           @students = @cohorts.map(&:users).flatten
         end
