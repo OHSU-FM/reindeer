@@ -23,6 +23,9 @@ Rails.application.routes.draw do
     collection  do
       get 'search_student'
       get 'eg_report', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_report'
+      get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
+      get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
+      get 'download_wba', param: :file_name, action: :download_wba,  controller: 'eg_masters', to: 'epa_masters#download_wba'
     end
 
   end

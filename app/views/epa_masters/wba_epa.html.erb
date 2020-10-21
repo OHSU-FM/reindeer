@@ -1,0 +1,21 @@
+<div class="container" >
+  <div class='row'><br />
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= form_tag(wba_epa_epa_masters_path, method: "get", id: 'wba_epa_form') do %>
+          <div class="form-group navbar-form navbar-left">
+             <b>Cohort </b> <%= select_tag :cohort, options_for_select(["Med21", "Med22"], selected: params[:cohort]), include_blank: '--',
+                prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <% if !@wba_epa_data.blank? %>
+        <%= render partial: 'detail_wba_epa', locals: {cohort: params[:cohort]} %>
+      <% end %>
+    <% end %>
+
+ </div>
+
+</div>

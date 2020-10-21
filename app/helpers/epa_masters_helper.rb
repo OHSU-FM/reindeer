@@ -4,6 +4,25 @@ module EpaMastersHelper
                'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13'
               ]
 
+  EPA = { "epa1" => ["pcp1", "ics1", "ics2", "ics3", "ics4", "pppd1", "pppd2", "pppd3", "pppd7", "pppd10", "sbpic3" ],
+          "epa2" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli1", "ics6", "pppd7", "pppd10", "pppd11", "sbpic3"],
+          "epa3" => ["pcp2", "pcp3", "pcp4", "pcp5", "mk2", "mk3", "mk4", "mk5", "pbli3", "pbli4", "ics2", "pppd3", "pppd7", "pppd10", "sbpic2", "sbpic3" ],
+          "epa4" => ["pcp3", "pcp4", "mk1", "mk2", "mk3", "pbli1", "pbli3", "pbli4", "ics1", "ics2", "pppd7", "pppd10", "sbpic2", "sbpic3"],
+          "epa5" => ["pcp4", "mk5", "ics1", "ics2", "ics5", "ics6", "ics8", "pppd2", "pppd5", "pppd7", "pppd9", "pppd10", "sbpic1", "sbpic3", "sbpic4", "sbpic5"],
+          "epa6" => ["pcp4", "pbli1", "pbli2", "ics1", "ics2", "ics6", "ics7", "ics8", "pppd2", "pppd4", "pppd7", "pppd10", "pppd11", "sbpic3", "sbpic4", "sbpic5"],
+          "epa7" => ["mk1", "mk2", "mk3", "mk4", "mk5", "pbli1", "pbli2", "pbli3", "pbli4", "pbli5", "pppd7", "pppd10", "sbpic3" ],
+          "epa8" => ["ics4", "ics5", "ics6", "ics7", "ics8", "pppd2", "pppd7", "pppd10", "sbpic3", "sbpic4", "sbpic5"],
+          "epa9" => ["mk5", "ics3", "ics6", "pppd4", "pppd7", "pppd8", "pppd9", "pppd10", "sbpic3", "sbpic4", "sbpic5"],
+          "epa10" => ["pcp1", "pcp2", "pcp3", "pcp4", "pcp6", "mk2", "ics3", "ics6", "ics8", "pppd3", "pppd4", "pppd6", "pppd7", "pppd10", "sbpic3", "sbpic5"],
+          "epa11" => ["pcp4", "mk1", "mk2", "mk3", "ics1", "ics2", "ics3", "ics5", "pppd7", "pppd9", "pppd10", "sbpic2", "sbpic3"],
+          "epa12" => ["pcp6", "ics1", "ics5", "pppd3", "pppd4", "pppd6", "pppd7", "pppd9", "pppd10", "sbpic3"],
+          "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
+  }
+
+  class CohortMspe < ActiveRecord::Base
+      table_name = ""
+  end
+
   def hf_epa_codes
     return EPA_CODES
   end
@@ -173,5 +192,77 @@ module EpaMastersHelper
   def hf_get_epa_reviews(epa_master, selected_reviewer)
     epa_reviews = epa_master.epa_reviews.where("reviewer1 = ? or reviewer2 = ?", selected_reviewer, selected_reviewer)
   end
+
+  def hf_epa_qa(comp_data, sid, full_name)
+    epa = {}
+    epa["StudentId"] = sid
+    epa["Student"] = full_name
+    for i in 1..13
+       epa_code = "epa" + i.to_s
+        temp_percent = 0
+        EPA[epa_code].each do |c|
+          temp_percent = temp_percent + comp_data[c]
+        end
+        epa[epa_code] = (temp_percent/EPA[epa_code].count.to_f).round(0)
+    end
+
+    return epa
+  end
+
+  def process_epa(students)
+
+    data = []
+    students.each do |student|
+      comp = Competency.where(student_uid: student.sid)
+      comp = comp.map(&:attributes)
+      comp_hash3 = hf_load_all_comp2(comp, 3)
+      comp_data_clinical = hf_average_comp2 (comp_hash3)
+      student_epa = hf_epa_qa(comp_data_clinical, student.sid, student.full_name)
+
+      data.push student_epa
+    end
+    return data
+  end
+
+  def count_wbas(wbas, sid, full_name)
+    epa_hash = {}
+    tot_count = 0
+    epa_hash["StudentId"] = sid
+    epa_hash["Student Name"] = full_name
+    for i in 1..13
+      epa_code = 'EPA' + i.to_s
+      epa_count = wbas.collect{|w| w.epa if w.epa == "#{epa_code}"}.compact.count
+      tot_count += epa_count
+      epa_hash.store(epa_code, epa_count)
+    end
+    epa_hash["Total Count"] = tot_count
+    return epa_hash
+
+  end
+
+  def process_wba(students)
+    data = []
+    students.each do |student|
+      user = User.find_by(sid: student.sid)
+      if !user.nil?
+        wbas = Epa.where(user_id: user.id)
+        student_epa = count_wbas(wbas, student.sid, student.full_name)
+        data.push student_epa
+      end
+    end
+    return data
+  end
+
+  def hf_process_cohort (cohort, code)
+    CohortMspe.table_name = "#{cohort.downcase}_mspes"
+    students = CohortMspe.all
+    if code=='EPA'
+      epas_data = process_epa(students)
+    else
+      wpa_data = process_wba(students)
+    end
+
+  end
+
 
 end

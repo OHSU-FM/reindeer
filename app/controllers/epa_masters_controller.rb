@@ -4,6 +4,7 @@ class EpaMastersController < ApplicationController
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
   before_action :load_eg_cohorts
   include EpaMastersHelper
+  include CompetenciesHelper
 
 
   # GET /epa_masters
@@ -103,8 +104,38 @@ class EpaMastersController < ApplicationController
     redirect_to epa_masters_url, notice: 'Epa master was successfully destroyed.'
   end
 
-  def eg_report
+  def epa_qa
+    if params[:cohort].present?
+        @epa_qa_data = hf_process_cohort(params[:cohort], "EPA")
+        create_file @epa_qa_data, "epa_qa.txt"
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :epa_qa
 
+  end
+
+  def wba_epa
+    if params[:cohort].present?
+        @wba_epa_data = hf_process_cohort(params[:cohort], "WBA")
+        create_file @wba_epa_data, "wpa_epa.txt"
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :wba_epa
+
+  end
+
+  def download_wba
+      if params[:file_name].present?
+        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+      end
+  end
+
+
+  def eg_report
     if params[:eg_member].present?
       @epa_masters = EpaMaster.where("status is NULL and epa = ?", params[:epa]).order(:user_id).includes(:user)
 
@@ -178,6 +209,17 @@ class EpaMastersController < ApplicationController
     def load_eg_cohorts
       @all_cohorts ||= hf_load_eg_cohorts
       @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
+    end
+
+    def create_file (in_data, in_file)
+      file_name = "#{Rails.root}/tmp/#{in_file}"
+
+      CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+        csvfile << in_data.first.keys
+        in_data.each do |row|
+          csvfile << row.values
+        end
+      end
     end
 
 

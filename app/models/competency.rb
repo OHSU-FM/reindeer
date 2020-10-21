@@ -1,8 +1,6 @@
 class Competency < ApplicationRecord
   belongs_to :user
 
-
-
   def self.write_hash_to_json_file(hash, filename)
      File.open(filename,"w") do |f|
        f.write(JSON.pretty_generate(hash))
