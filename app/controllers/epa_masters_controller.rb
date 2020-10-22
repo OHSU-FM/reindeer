@@ -113,13 +113,16 @@ class EpaMastersController < ApplicationController
         end
      end
      render :epa_qa
-
   end
 
   def wba_epa
     if params[:cohort].present?
         @wba_epa_data = hf_process_cohort(params[:cohort], "WBA")
-        create_file @wba_epa_data, "wpa_epa.txt"
+        @wba_epa_data = @wba_epa_data.sort_by{ |wba| wba["TotalCount"] }.reverse
+
+
+
+        create_file @wba_epa_data, "wba_epa.txt"
         respond_to do |format|
           format.html
         end

@@ -235,7 +235,7 @@ module EpaMastersHelper
       tot_count += epa_count
       epa_hash.store(epa_code, epa_count)
     end
-    epa_hash["Total Count"] = tot_count
+    epa_hash["TotalCount"] = tot_count
     return epa_hash
 
   end
