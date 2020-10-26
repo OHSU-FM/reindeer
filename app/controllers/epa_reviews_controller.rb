@@ -168,7 +168,7 @@ class EpaReviewsController < ApplicationController
   def get_evidence (user_id)
     @user ||= User.find(user_id)
 
-    if (@comp = Competency.where(user_id: @user.id).order(:submit_date)).empty?
+    if (@comp = Competency.where(user_id: @user.id).order(submit_date: :desc)).empty?
       @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
       @percent_complete ||= hf_epa_class_mean(@clinical_data)
     else

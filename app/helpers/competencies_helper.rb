@@ -177,7 +177,7 @@ module CompetenciesHelper
         if key.nil?
           key = "Grade"
         end
-        long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td><tr>"
+        long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td></tr>"
       end
       long_str += "</table>"
 

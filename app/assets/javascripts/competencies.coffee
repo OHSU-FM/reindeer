@@ -3,5 +3,4 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
   $('[data-toggle=tooltip]').tooltip()
-
   return

@@ -20,14 +20,14 @@ class CompetenciesController < ApplicationController
       full_name = current_user.full_name
       email = current_user.email
       permission_group_id = current_user.permission_group_id
-      if !(@comp = Competency.where(user_id: current_user.id).order(:submit_date)).empty?
+      if !(@comp = Competency.where(user_id: current_user.id).order(start_date: :desc)).empty?
         load_competencies(permission_group_id, full_name)
       else
         @comp = nil
       end
 
     else
-      if params[:user_id].present? and  !(@comp = User.find(params[:user_id]).competencies).blank?
+      if params[:user_id].present? and  !(@comp = Competency.where(user_id: params[:user_id]).order(start_date: :desc)).empty?
         @selected_user = User.where(id: params[:user_id]).first
         full_name = @selected_user.full_name
         email = @selected_user.email

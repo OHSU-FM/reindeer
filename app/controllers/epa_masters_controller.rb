@@ -218,7 +218,7 @@ class EpaMastersController < ApplicationController
       file_name = "#{Rails.root}/tmp/#{in_file}"
 
       CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
-        csvfile << in_data.first.keys
+        csvfile << in_data.first.keys.upcase
         in_data.each do |row|
           csvfile << row.values
         end

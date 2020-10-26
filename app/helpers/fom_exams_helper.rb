@@ -75,7 +75,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
 
   def hf_check_label_file(attachment_id)
     filename = ActiveStorage::Attachment.find(attachment_id).filename.to_s
-    if filename.include? 'label'
+    if filename.downcase.include? 'label'
       csv_table = CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t")
       json_string = csv_table.map(&:to_h).to_json
       label_hash = JSON.parse(json_string)
