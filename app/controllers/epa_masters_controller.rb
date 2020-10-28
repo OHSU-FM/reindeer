@@ -6,7 +6,6 @@ class EpaMastersController < ApplicationController
   include EpaMastersHelper
   include CompetenciesHelper
 
-
   # GET /epa_masters
   def index
 
@@ -60,7 +59,6 @@ class EpaMastersController < ApplicationController
       format.js { render partial: 'search-results' and return}
     end
   end
-
 
   # GET /epa_masters/1
   def show
@@ -119,16 +117,12 @@ class EpaMastersController < ApplicationController
     if params[:cohort].present?
         @wba_epa_data = hf_process_cohort(params[:cohort], "WBA")
         @wba_epa_data = @wba_epa_data.sort_by{ |wba| wba["TotalCount"] }.reverse
-
-
-
         create_file @wba_epa_data, "wba_epa.txt"
         respond_to do |format|
           format.html
         end
      end
      render :wba_epa
-
   end
 
   def download_wba
@@ -136,7 +130,6 @@ class EpaMastersController < ApplicationController
         send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
       end
   end
-
 
   def eg_report
     if params[:eg_member].present?
@@ -188,16 +181,10 @@ class EpaMastersController < ApplicationController
         review.reviewer1 = eg_full_name1
         review.reviewer2 = eg_full_name2
       end
-
     end
-
-
   end
 
-
   private
-
-
     # Use callbacks to share common setup or constraints between actions.
     def set_epa_master
       @epa_master = EpaMaster.find(params[:id])
@@ -218,7 +205,7 @@ class EpaMastersController < ApplicationController
       file_name = "#{Rails.root}/tmp/#{in_file}"
 
       CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
-        csvfile << in_data.first.keys.upcase
+        csvfile << in_data.first.keys
         in_data.each do |row|
           csvfile << row.values
         end
