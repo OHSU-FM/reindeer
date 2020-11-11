@@ -125,6 +125,8 @@ class User < ActiveRecord::Base
 
   COACHING_ROLES = {
     'dean': 30,
+    'dean_career': 30,
+    'dean_academic': 25,
     'coach': 20,
     'student': 10
   }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_152956) do
+ActiveRecord::Schema.define(version: 2020_11_11_193952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 2020_07_16_152956) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "advisors", force: :cascade do |t|
+    t.string "type"
+    t.string "name"
+    t.string "email"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "artifacts", force: :cascade do |t|
@@ -314,6 +323,15 @@ ActiveRecord::Schema.define(version: 2020_07_16_152956) do
     t.index ["user_id"], name: "index_epas_on_user_id"
   end
 
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "fom_exams", force: :cascade do |t|
     t.string "course_code"
     t.datetime "submit_date"
@@ -398,6 +416,19 @@ ActiveRecord::Schema.define(version: 2020_07_16_152956) do
     t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
+  create_table "med21_mspes", primary_key: "sid", id: :string, limit: 10, force: :cascade do |t|
+    t.string "email", limit: 50, null: false
+    t.string "full_name", limit: 50
+    t.index ["email"], name: "med21_mspe_email_key", unique: true
+  end
+
+  create_table "medhub_period_ids", id: false, force: :cascade do |t|
+    t.integer "courseID"
+    t.integer "periodID"
+    t.date "start_date"
+    t.date "end_date"
+  end
+
   create_table "meetings", id: :serial, force: :cascade do |t|
     t.string "subject", array: true
     t.datetime "date"
@@ -407,6 +438,9 @@ ActiveRecord::Schema.define(version: 2020_07_16_152956) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "advisor_type"
+    t.integer "advisor_id"
+    t.integer "appointment_id"
     t.index ["user_id"], name: "index_meetings_on_user_id"
   end
 

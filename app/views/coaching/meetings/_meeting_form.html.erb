@@ -28,8 +28,23 @@
 
   <div class="form-group">
     <%= f.label :date, class: "control-label col-sm-4" %>
-    <%= f.date_field :date, required: true %>
+    <%= f.date_field :date, id: "meeting_date", required: true %>
   </div>
+
+  <div class="form-group">
+    <%= f.label :advisor_type, class: "control-label col-sm-4" %>
+    <%= f.select_tag :advisor_type, options_for_select(["Academic", "Career", "Wellness"], selected: params[:advisor_type]),
+        prompt: "Select an Advisor Type", required: true %> <br />
+  </div>
+
+  <div class="form-group">
+    <%= f.label :advisor, class: "control-label col-sm-4" %>
+    <%= f.select_tag :advisor_id, options_for_select(@career_advisors.collect{ |c| [c.full_name, c.id] }, selected: params[:advisor_id]),
+        prompt: "Select an Advisor", required: true %> <br />
+  </div>
+
+
+
 
   <%= f.hidden_field :user_id, value: student.id %>
 

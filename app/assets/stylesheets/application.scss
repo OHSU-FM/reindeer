@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  * @import "jquery.contextMenu";
  */
+@import 'fullcalendar';
 @import 'jquery-ui';
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
@@ -36,3 +37,4 @@
 @import "font-awesome";
 @import "jquery-contextmenu/dist/jquery.contextMenu";
 @import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
+@import 'events'

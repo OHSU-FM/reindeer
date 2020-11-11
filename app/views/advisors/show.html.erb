@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @advisor.type %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @advisor.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @advisor.email %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @advisor.status %>
+</p>
+
+<%= link_to 'Edit', edit_advisor_path(@advisor) %> |
+<%= link_to 'Back', advisors_path %>

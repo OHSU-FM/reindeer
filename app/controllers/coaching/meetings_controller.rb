@@ -66,11 +66,11 @@ module Coaching
 
     def meeting_params
       params.require(:coaching_meeting)
-      .permit(:notes, :location, :date, :m_status, :user_id, subject: [])
+      .permit(:notes, :location, :date, :m_status, :user_id, advisor_type, advisor_id, appointment_id, subject: [])
     end
 
     def meeting_update_params
-      params.permit(:id, :m_status, :notes, subject: [])
+      params.permit(:id, :m_status, :notes, advisor_type, advisor_id, appointment_id, subject: [])
     end
   end
 end

@@ -16,6 +16,7 @@
 //= require rails-ujs
 // turbolinks is commented out..
 // require turbolinks
+//= require calendar
 //= require popper
 //= require select2
 //= require jquery_mods
@@ -80,3 +81,7 @@
 //=  require jquery-contextmenu/dist/jquery.ui.position.js
 //=  require jquery-contextmenu/dist/jquery.contextMenu.min.js
 //=  require jquery-contextmenu/dist/jquery.ui.position.min.js
+//= require moment
+//= require fullcalendar
+//= require events
+//= require meetings

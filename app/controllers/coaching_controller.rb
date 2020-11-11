@@ -15,7 +15,7 @@ class CoachingController < ApplicationController
         ## orig code --> current_user.cohorts.first.users.first
         redirect_to coaching_student_path(student)
       end
-    elsif current_user.dean? || current_user.admin_or_higher?
+    elsif current_user.dean_career? ||  current_user.dean? || current_user.admin_or_higher?
       if !email.nil?
         selected_student = User.find_by(email: email)
         redirect_to coaching_student_path selected_student

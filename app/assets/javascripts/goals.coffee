@@ -98,6 +98,7 @@ $.fn.clear_previous_errors = () ->
   return
 
 $(document).ready ->
+
   ua = window.navigator.userAgent;
   is_ie = /MSIE|Trident/.test(ua);
   if ( is_ie )

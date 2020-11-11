@@ -53,6 +53,7 @@ Rails.application.config.assets.precompile += %w( print.css
     fom_exams.css
     preceptor_evals.css
     student_assessments.css
+    events.css
     jquery.contextmenu/dist/jquery.contextMenu.css
     jquery.contextmenu/dist/jquery.contextMenu.js
    )

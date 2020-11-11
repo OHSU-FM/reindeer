@@ -51,7 +51,7 @@ module Coaching
         @meetings = @student.meetings
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
-
+        @career_advisors = User.where(coaching_type: 'dean_career').select(:id, :full_name)
 
         if current_user.student? && @student != current_user
           redirect_to root_path and return

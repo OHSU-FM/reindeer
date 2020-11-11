@@ -37,7 +37,7 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-gem "jbuilder"
+gem "jbuilder", '~> 2.5'
 gem "popper_js", "~> 1.14.3"
 gem "bootstrap-sass", '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
@@ -46,6 +46,9 @@ gem "uglifier"
 gem 'jquery-ui-rails', '~> 6.0.1'
 gem "jquery-rails"
 gem "jquery_context_menu-rails"
+gem "momentjs-rails"
+gem "fullcalendar-rails"
+gem "fullcalendar"
 #gem 'webpacker', '~> 3.5'
 # CSS / js
 # Random bug:

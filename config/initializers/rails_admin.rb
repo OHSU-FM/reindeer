@@ -35,6 +35,20 @@ RailsAdmin.config do |config|
 
   end
 
+  config.model 'Event' do
+    edit do
+      field :title
+      field :description
+      # Config date's format
+      field :start_date do
+        strftime_format '%d-%m-%Y %H:%M:%S'
+      end
+      field :end_date do
+        strftime_format '%d-%m-%Y %H:%M:%S'
+      end
+    end
+  end
+
   # Temporary workaround for bug in rails_admin, forms won't submit
   #https://github.com/sferik/rails_admin/issues/2443
   config.browser_validations = false
