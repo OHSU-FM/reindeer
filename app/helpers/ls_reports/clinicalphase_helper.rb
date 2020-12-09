@@ -17,7 +17,7 @@ module LsReports::ClinicalphaseHelper
   }
 
   BLOCKS = {  'FUND' => "Fundamentals",
-              'BLHD' => "Blood & Host Defence",
+              'BLHD' => "Blood & Host Defense",
               'SBM'  => "Skin, Bones & Musculature",
               "CARE" => "Cardiopulmonary & Renal",
               "CPR"  => "Cardiopulmonary & Renal",

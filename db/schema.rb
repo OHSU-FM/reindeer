@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_11_193952) do
+ActiveRecord::Schema.define(version: 2020_11_16_175353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_11_11_193952) do
   end
 
   create_table "advisors", force: :cascade do |t|
-    t.string "type"
+    t.string "advisor_type"
     t.string "name"
     t.string "email"
     t.string "status"
@@ -441,6 +441,7 @@ ActiveRecord::Schema.define(version: 2020_11_11_193952) do
     t.string "advisor_type"
     t.integer "advisor_id"
     t.integer "appointment_id"
+    t.integer "event_id"
     t.index ["user_id"], name: "index_meetings_on_user_id"
   end
 

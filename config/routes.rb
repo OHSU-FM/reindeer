@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   resources :advisors
+
   resources :events do
     collection do
       get 'create_batch_appointments', action: :create_batch_appointments, controller: 'events', to: 'events#create_batch_appointments'
@@ -97,6 +98,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+
 
   # resources :searches, param: :search, only: [:index] do
   #   member do

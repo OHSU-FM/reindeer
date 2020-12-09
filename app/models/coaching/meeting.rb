@@ -4,6 +4,7 @@ class Coaching::Meeting < ApplicationRecord
   VALID_STATUSES = ["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"]
 
   belongs_to :user, required: true
+  #has_one :event
 
   has_one :room, as: :discussable
   validates_presence_of :subject, :date, :m_status, :location

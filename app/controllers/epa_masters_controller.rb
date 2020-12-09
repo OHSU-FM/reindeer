@@ -11,7 +11,7 @@ class EpaMastersController < ApplicationController
 
     if params[:uniq_cohort].present?
       @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
-
+byebug
     end
     if params[:email].present?
       @user = User.find_by(email: params[:email])

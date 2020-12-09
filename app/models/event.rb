@@ -1,5 +1,9 @@
 class Event < ApplicationRecord
 
+  #belongs_to :meeting
+
+  WillPaginate.per_page = 10
+
 
   def self.enumerate_hours(start_date, end_date)
     date_array = {}

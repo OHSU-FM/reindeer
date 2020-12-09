@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :fom_labels
   has_many :preceptor_evals, dependent: :destroy
   has_many :preceptor_assesses, dependent: :destroy
+  #has_one :advisor, foreign_key: :email, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -125,8 +126,6 @@ class User < ActiveRecord::Base
 
   COACHING_ROLES = {
     'dean': 30,
-    'dean_career': 30,
-    'dean_academic': 25,
     'coach': 20,
     'student': 10
   }

@@ -6,7 +6,7 @@
   <% if current_user.coach? %>
     <%= render partial: "cohorts_select" %>
   <% elsif current_user.dean_or_higher? %>
-    <%= render partial: "coaches_select" %>
+    <%= render partial: "permission_groups_select" %>
   <% end %>
 
   <div class="flex-child">
@@ -33,7 +33,7 @@
       <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false">Meetings</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="scheduues-tab" data-toggle="tab" href="#schedules" role="tab" aria-controls="schedules" aria-selected="false">Schedules</a>
+      <a class="nav-link" id="appointments-tab" data-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="false">Appointments</a>
     </li>
 
   </ul>
@@ -69,11 +69,17 @@
 
       <%= render partial: "meetings_table" %>
     </div>
-    <div class="tab-pane fade" id="schedules" role="tabpanel" aria-labelledby="schedules-tab">
+    <div class="tab-pane fade" id="appointments" role="tabpanel" aria-labelledby="appointments-tab">
 
       <div class="calendar_container">
-        <div class="row">
-          <%= link_to "Appointments", events_path, target: '_blank' %>
+        <div class="container">
+          <% if current_user.dean_or_higher? %>
+            <%= nav_link_to "Appointments", events_path, target: '_blank' %>
+            <%= nav_link_to "Advisors", advisors_path, target: '_blank' %>
+          <% end %>
+
+          <%= render partial: "appointments" %>
+
         </div>
 
       </div>
@@ -81,7 +87,7 @@
 
   </div>
 
-  <div class="general-comments" id="room-identifier" data-room-number=<%= "#{@room_id}" %>>
+  <!-- <div class="general-comments" id="room-identifier" data-room-number=<%= "#{@room_id}" %>>
     <div class="w3-container">
       <div class="h4-general-comments">General Comments</div>
     </div>
@@ -98,7 +104,7 @@
         </div>
       <% end %>
     </div>
-  </div>
+  </div> -->
 </div>
 
 <div id="cs-detail">

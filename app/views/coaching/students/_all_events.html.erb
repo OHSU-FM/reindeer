@@ -1,0 +1,25 @@
+<table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+  <thead>
+    <tr>
+      <th data-data="id">EventId</th>
+      <th data-data="title">Title</th>
+      <th data-data="description">Description</th>
+      <th data-data="start_date">Start date</th>
+      <th data-data="end_date">End date</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+    </tr>
+  </thead>
+
+  <% @events.each do |event| %>
+    <tr>
+      <td><%= event.id %></td>
+      <td><%= event.title %></td>
+      <td><%= event.description %></td>
+      <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
+      <td><%= event.end_date.strftime("%m/%d/%Y %T %p")%></td>
+      <td><%= f.label :event_id, "select"  %><%= f.radio_button :event_id, "#{event.id}" %></td>
+
+    </tr>
+  <% end %>
+
+</table>

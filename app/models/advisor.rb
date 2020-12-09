@@ -1,2 +1,3 @@
 class Advisor < ApplicationRecord
+  belongs_to :user
 end

@@ -4,6 +4,8 @@ module Coaching
     helper  :all
 
     def create
+      @advisors = Advisor.all
+      @events = Event.all  #where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
 
       respond_to do |format|
@@ -62,15 +64,19 @@ module Coaching
       end
     end
 
+    def get_advisors
+      byebug
+    end
+
     private
 
     def meeting_params
       params.require(:coaching_meeting)
-      .permit(:notes, :location, :date, :m_status, :user_id, advisor_type, advisor_id, appointment_id, subject: [])
+      .permit(:notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
     end
 
     def meeting_update_params
-      params.permit(:id, :m_status, :notes, advisor_type, advisor_id, appointment_id, subject: [])
+      params.permit(:id, :m_status, :notes, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
     end
   end
 end

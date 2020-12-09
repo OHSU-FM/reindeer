@@ -1,36 +1,10 @@
-<h1>Events</h1>
-
-<table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
-  <thead>
-    <tr>
-      <th data-data="title">Title</th>
-      <th data-data="description">Description</th>
-      <th data-data="start_date">Start date</th>
-      <th data-data="end_date">End date</th>
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
-    </tr>
-  </thead>
-
-  <% @events.each do |event| %>
-    <tr>
-      <td><%= event.title %></td>
-      <td><%= event.description %></td>
-      <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
-      <td><%= event.end_date.strftime("%m/%d/%Y %T %p")%></td>
-      <td><%= link_to 'Show', event %> /
-        <%= link_to 'Edit', edit_event_path(event) %> /
-        <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-
-    </tr>
-  <% end %>
-
-</table>
-
-<br>
-
-<%= link_to 'New Event', new_event_path %> <br />
-<%= link_to 'Create More Events', create_batch_appointments_events_path, target: :_blank  %>
-
+<span>
+  <h4>All Appointments</h4>
+  <%= link_to 'New Appointment', new_event_path %> /
+  <%= link_to 'Create More Appointments', create_batch_appointments_events_path, target: :_blank  %>
+</span>
+<%= render partial: "all_valid_events"  %>
 <hr>
+
 <div id="calendar">
 </div>

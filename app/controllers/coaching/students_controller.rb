@@ -9,6 +9,11 @@ module Coaching
 
     # GET /coaching/students/{student_username}
     def show
+
+      respond_to do |format|
+        format.json
+        format.html
+      end
     end
 
     def search_goals
@@ -51,7 +56,10 @@ module Coaching
         @meetings = @student.meetings
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
-        @career_advisors = User.where(coaching_type: 'dean_career').select(:id, :full_name)
+        @advisors = Advisor.all
+        @events = Event.where('start_date > ?', DateTime.now)
+        @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
+        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
 
         if current_user.student? && @student != current_user
           redirect_to root_path and return
@@ -64,6 +72,7 @@ module Coaching
           @cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
           @coaches = @cohorts.map(&:owner).uniq!
           @students = @cohorts.map(&:users).flatten
+
         end
       end
 

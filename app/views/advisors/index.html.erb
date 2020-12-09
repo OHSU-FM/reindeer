@@ -7,9 +7,26 @@
       <th data-data="name">Name</th>
       <th data-data="email">Email</th>
       <th data-data="status">Status</th>
+      <th data-data="created_at">Created At</th>
+      <th data-data="updated_at">Updated At</th>
       <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
     </tr>
   </thead>
+  <% @advisors.each do |advisor| %>
+    <tr>
+      <td><%= advisor.advisor_type %></td>
+      <td><%= advisor.name %></td>
+      <td><%= advisor.email %></td>
+      <td><%= advisor.status %></td>
+      <td><%= advisor.created_at.strftime("%m/%d/%Y %T %p") %></td>
+      <td><%= advisor.updated_at.strftime("%m/%d/%Y %T %p")%></td>
+      <td><%= link_to 'Show', advisor %> /
+        <%= link_to 'Edit', edit_advisor_path(advisor) %> /
+        <%= link_to 'Destroy', advisor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+    </tr>
+  <% end %>
+
 
 </table>
 

@@ -11,7 +11,7 @@ COMPONENT_DESC = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Qu
                 }
 
 BLOCKS = {  '1-FUND' => "Fundamentals",
-            '2-BLHD' => "Blood & Host Defence",
+            '2-BLHD' => "Blood & Host Defense",
             '3-SBM'  => "Skin, Bones & Musculature",
             "4-CPR"  => "Cardiopulmonary & Renal",
             "5-HODI" => "Hormones & Digestion",

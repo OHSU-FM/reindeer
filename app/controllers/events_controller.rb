@@ -2,10 +2,13 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   respond_to :html, :json
 
+  include EventsHelper
+
   # GET /events
   # GET /events.json
   def index
-    @events = Event.where('start_date > ?', DateTime.now)
+    #@events = Event.where('start_date > ?', DateTime.now)
+    @events = Event.all.order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
     respond_to do |format|
       format.json
       format.html
@@ -68,12 +71,12 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
+    @advisors = Advisor.all
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
       @appointments = Event.enumerate_hours(params[:start_date], params[:end_date])
 
-      byebug
       #Time.at(@appointments.first).utc.strftime("%m/%d/%Y %T %p")
 
     end
@@ -85,8 +88,10 @@ class EventsController < ApplicationController
       data = appointment.split("|")
       title = data[0].split(" - ").first
       description = data[0]
-      start_date = data[1]
-      end_date = data[2]
+      start_date = hf_format_datetime(data[1])
+      end_date = hf_format_datetime(data[2])
+
+
       Event.create(title: title, description: description, start_date: start_date, end_date: end_date)
     end
     respond_to do |format|

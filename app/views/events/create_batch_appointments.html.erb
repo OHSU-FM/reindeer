@@ -4,12 +4,16 @@
 <%= form_tag(create_batch_appointments_events_path, method: 'get') do %>
 
   <%= label_tag :Type_Of_Advisor %>
-  <%= select_tag :advisor_type, options_for_select(["Academic", "Career", "Wellness"], selected: params[:advisor_type]),
-      prompt: "Select an Advisor Type" %> <br />
+  <%= select_tag :advisor_type, options_for_select(["Academic", "Career", "Wellness"], selected: params[:advisor_type]), include_blank: "---",
+       required: true  %> <br />
+
+  <div hidden>
+    <div class="advisors-details" data-advisors="<%= @advisors.to_json %>">
+    </div>
+  </div>
 
   <%= label_tag :Advisor %>
-  <%= select_tag :advisor, options_for_select(["Synder, Ben", "Shuford, Alex", "Hasan, Reem"], selected: params[:advisor]),
-      prompt: "Select an Advisor" %> <br />
+  <%= select_tag :advisor, options_for_select([], selected: params[:advisor]), include_blank: "---" , required: true  %> <br />
 
   <label for="start_date">Choose Your Start Date/Time:</label>
   <input type="datetime-local" id="start_date"
@@ -39,14 +43,16 @@
     <% @appointments.each do |appointment| %>
         <tr>
           <% i = i + 1 %>
-          <% start_date = Time.at(appointment.second.to_datetime).utc.strftime("%m/%d/%Y %T %p") %>
-          <% end_date = Time.at(appointment.second.to_datetime+1.hour).utc.strftime("%m/%d/%Y %T %p") %>
+          <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y %T %p") %>
+          <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+45.minutes).utc.strftime("%m/%d/%Y %T %p") %>
+          <% advisor_name = @advisors.collect{|a| a.name if a.id.to_s == params[:advisor]}.compact.first %>
           <td><%= @advisor_type %></td>
-          <td><%= "#{@advisor_type} - #{@advisor}" %></td>
+          <td><%= "#{@advisor_type} - #{advisor_name}" %></td>
+
           <td><%= start_date  %></td>
           <td><%= end_date %></td>
           <td><%= label_tag do %>
-              <%= check_box_tag "checkbox", "#{@advisor_type} - #{@advisor}|#{start_date}|#{end_date}", false %>
+              <%= check_box_tag "checkbox", "#{@advisor_type} - #{advisor_name}|#{start_date}|#{end_date}", false %>
               Save
             <% end %>
           </td>

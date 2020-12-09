@@ -1,10 +1,11 @@
 class AdvisorsController < ApplicationController
   before_action :set_advisor, only: [:show, :edit, :update, :destroy]
-
+  respond_to :html, :json
   # GET /advisors
   # GET /advisors.json
   def index
     @advisors = Advisor.all
+
   end
 
   # GET /advisors/1
@@ -59,6 +60,10 @@ class AdvisorsController < ApplicationController
       format.html { redirect_to advisors_url, notice: 'Advisor was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def get_advisors
+    byebug
   end
 
   private
