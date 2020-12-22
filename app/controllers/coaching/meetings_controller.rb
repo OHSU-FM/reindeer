@@ -7,9 +7,11 @@ module Coaching
       @advisors = Advisor.all
       @events = Event.all  #where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
+      EventMailer.notify_student.deliver_now
 
       respond_to do |format|
         if @meeting.save
+
           format.js { render action: 'show', status: :created }
         else
           format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }

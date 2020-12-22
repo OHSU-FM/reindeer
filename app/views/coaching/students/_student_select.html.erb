@@ -1,3 +1,4 @@
+<b> Student </b>
 <select id="student-select" onchange="window.location=this.value">
   <% if !@students.nil? %>
       <% if !current_user.admin_or_higher? %>

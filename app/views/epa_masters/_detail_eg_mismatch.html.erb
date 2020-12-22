@@ -1,0 +1,25 @@
+<span>
+  <h4 style="text-align:center"> EG Mismatch Report
+  <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: 'eg_mismatch.txt') %>
+  </h4>
+</span>
+
+<table class="responsive nowrap table table-hover" id="dttb-epa_masters" data-sort="true" >
+  <thead>
+    <tr class="filters">
+      <% @epa_masters.first.keys.each do |col| %>
+        <th style="text-align:center"><%= col.titleize  %></th>
+      <% end %>
+
+    </tr>
+  </thead>
+  <tbody>
+    <% @epa_masters.each do |epa_master| %>
+      <tr>
+        <% epa_master.each do |key, val| %>
+          <td> <%= val %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

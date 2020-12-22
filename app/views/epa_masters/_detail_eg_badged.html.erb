@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class='column'>
+      <table class="responsive nowrap table table-hover" data-sort="true" >
+        <thead>
+          <tr class="filters">
+            <th>EPA</th>
+            <th># of Badges </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <% @epa_badged_count.each do |count| %>
+            <tr>
+              <% count.each do |val| %>
+                <td> <%= val %> </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class='column'>
+      <table class="responsive nowrap table table-hover" data-sort="true" >
+        <thead>
+          <tr class="filters">
+            <th>Student</th>
+            <th># of Badges </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <% @student_epa_count.each do |count| %>
+            <tr>
+              <% count.each do |val| %>
+                <td> <%= val %> </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

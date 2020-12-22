@@ -189,6 +189,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     lazy_high_charts (1.6.1)
       hash-deep-merge
     less (2.6.0)
@@ -198,6 +200,8 @@ GEM
       less (~> 2.6.0)
       sprockets (> 2, < 4)
       tilt
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
     libv8 (8.4.255.0)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -443,6 +447,7 @@ DEPENDENCIES
   json (~> 2.2.0)
   kaminari
   lazy_high_charts
+  letter_opener
   lograge
   mini_racer
   momentjs-rails

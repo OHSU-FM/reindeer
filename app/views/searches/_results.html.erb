@@ -37,9 +37,11 @@
                 <% permission_group_id = block["permission_group_id"] %>
                 <% course_code = block["course_code"] %>
                 <% if !course_code.include? "DISABLED" %>
+                  <% session[:attach_id] = -1 %>
+                  <% session[:course_code] = course_code %>
+                  <% session[:user_id] = result.id %>
                   <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code} (New!)</b>".html_safe,
-                          user_display_fom_path(user_id: result.id, permission_group_id: permission_group_id,
-                          course_code: course_code, attach_id: -1), target: '_blank') %> <br>
+                          fom_exams_display_fom_path, target: '_blank') %> <br>
                 <% else %>
                    <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code} (New!)</b><br />".html_safe %>
                 <% end %>
@@ -52,8 +54,10 @@
             <% end %>
 
             <% if hf_has_csl_feedbacks(result.id) %>
-            <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(cohort: cohort_title(result.permission_group_id), user_id: result.id, block: "FUND"), target: '_blank') %>
-            <br>
+              <% session[:user_id] = result.id %>
+              <% session[:cohort] = cohort_title(result.permission_group_id) %>
+              <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path, target: '_blank') %>
+              <br>
 
             <% end %>
 

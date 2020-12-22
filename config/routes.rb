@@ -30,10 +30,11 @@ Rails.application.routes.draw do
   resources :epa_masters do
     collection  do
       get 'search_student'
-      get 'eg_report', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_report'
+      get 'eg_mismatch', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_mismatch'
+      get 'eg_badged', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_badged'
       get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
       get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
-      get 'download_wba', param: :file_name, action: :download_wba,  controller: 'eg_masters', to: 'epa_masters#download_wba'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters'
     end
 
   end
@@ -65,9 +66,10 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :user do
-    get "display_fom", param: :course_code, controller: "fom_exams"
-  end
+  #resources :user do
+    get "/fom_exams/display_fom",  controller: "fom_exams", action: "display_form", to: 'fom_exams#display_fom'
+  #end
+
 
 
   resources :artifacts do

@@ -34,5 +34,6 @@ $(document).ready ->
       data: appointments: JSON.stringify(appointments)
       dataType: 'json'
       success: (data) ->
-        alert 'successfully ' + JSON.stringify(data)
+        alert 'All Appointments were successfully saved!'
+        window.location = '/events'
         return

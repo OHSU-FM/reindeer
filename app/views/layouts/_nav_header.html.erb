@@ -20,6 +20,7 @@
         <% end %>
       <% end %>
     </div>
+
     <div id="SearchPlaceHolder">
       <div id="SearchInputForm">
         <% if current_user.coaching_type != 'student' %>
@@ -50,7 +51,8 @@
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">EG Review<b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
               <%= nav_link_to("EG-Review", epa_masters_path,  target: '_blank') %>
-              <%= nav_link_to('EG-Report', eg_report_epa_masters_path, method: :get, target: '_blank') %>
+              <%= nav_link_to('EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank') %>
+              <%= nav_link_to('EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank') %>
               <%= nav_link_to('EPA-Q/A-Report', epa_qa_epa_masters_path, method: :get, target: '_blank') %>
               <%= nav_link_to('WBA/EPA-Report', wba_epa_epa_masters_path, method: :get, target: '_blank') %>
             </ul>
@@ -89,7 +91,7 @@
               <% end %>
           <% end %>
 
-          <%= nav_link_to("Coaching Documentation System", coaching_index_path(email: @pk), target: '_blank')  %>
+          <%= nav_link_to("OASIS System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% if current_user.coaching_type == 'student' %>
              <%= nav_link_to "Your Datasets", search_searches_path(current_user) %>
           <%# <% else %>

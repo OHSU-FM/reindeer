@@ -9,6 +9,13 @@ class EventsController < ApplicationController
   def index
     #@events = Event.where('start_date > ?', DateTime.now)
     @events = Event.all.order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    @events.each do |event|
+      full_name = hf_full_name (event.id)
+      if !full_name.empty?
+        event.title = event.title + ' - ' + full_name
+      end
+
+    end
     respond_to do |format|
       format.json
       format.html
@@ -90,13 +97,13 @@ class EventsController < ApplicationController
       description = data[0]
       start_date = hf_format_datetime(data[1])
       end_date = hf_format_datetime(data[2])
-
-
       Event.create(title: title, description: description, start_date: start_date, end_date: end_date)
+
     end
+
     respond_to do |format|
+      format.html { redirect_to action: "index", notice: 'Apppointments were successfully created.' }
       format.json
-      format.html
     end
   end
 

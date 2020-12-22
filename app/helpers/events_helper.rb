@@ -14,5 +14,16 @@ module EventsHelper
 
   end
 
+  def hf_full_name event_id
+    meeting = Coaching::Meeting.find_by(event_id: event_id)
+    if meeting.nil?
+      return ""
+    else
+      user = User.find_by(id: meeting.user_id)
+      return user.full_name
+    end
+
+  end
+
 
 end

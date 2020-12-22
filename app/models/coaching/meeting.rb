@@ -7,6 +7,7 @@ class Coaching::Meeting < ApplicationRecord
   #has_one :event
 
   has_one :room, as: :discussable
+  has_one :event
   validates_presence_of :subject, :date, :m_status, :location
   validates :m_status, inclusion: { in: VALID_STATUSES }
 

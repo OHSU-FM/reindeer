@@ -2,7 +2,7 @@ class EpaMastersController < ApplicationController
   layout 'full_width_csl'
   before_action :authenticate_user!
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
-  before_action :load_eg_cohorts
+  before_action :load_eg_cohorts, :set_resources
   include EpaMastersHelper
   include CompetenciesHelper
 
@@ -11,7 +11,6 @@ class EpaMastersController < ApplicationController
 
     if params[:uniq_cohort].present?
       @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
-byebug
     end
     if params[:email].present?
       @user = User.find_by(email: params[:email])
@@ -125,22 +124,37 @@ byebug
      render :wba_epa
   end
 
-  def download_wba
+  def download_file
       if params[:file_name].present?
         send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
       end
   end
 
-  def eg_report
-    if params[:eg_member].present?
-      @epa_masters = EpaMaster.where("status is NULL and epa = ?", params[:epa]).order(:user_id).includes(:user)
+  def eg_mismatch
+    if params[:cohort].present?
+      @epa_masters = EpaMaster.get_epa_mismatch params[:cohort]
+      if !@epa_masters.empty?
+        create_file @epa_masters, "eg_mismatch.txt"
+      else
+        @epa_masters = "No Mismatch Record Found!"
+      end
+    end
+    respond_to do |format|
+      format.html
+    end
+    render :eg_mismatch
 
-        respond_to do |format|
-          format.html
-        end
-     end
-     render :eg_report
+  end
 
+  def eg_badged
+    if params[:cohort].present?
+      epa_badged = EpaMaster.get_epa_badged params[:cohort]
+      @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged
+    end
+    respond_to do |format|
+      format.html
+    end
+    render :eg_badged
   end
 
   def search_student
@@ -186,6 +200,11 @@ byebug
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
+    def set_resources
+      @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
+    end
+
     def set_epa_master
       @epa_master = EpaMaster.find(params[:id])
     end
@@ -205,7 +224,7 @@ byebug
       file_name = "#{Rails.root}/tmp/#{in_file}"
 
       CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
-        csvfile << in_data.first.keys
+        csvfile << in_data.first.keys.map{|c| c.titleize}
         in_data.each do |row|
           csvfile << row.values
         end

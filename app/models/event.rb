@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
 
-  #belongs_to :meeting
+  belongs_to :meeting
 
   WillPaginate.per_page = 10
 

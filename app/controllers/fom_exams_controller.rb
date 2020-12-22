@@ -33,22 +33,26 @@ class FomExamsController < ApplicationController
   end
 
   def display_fom
-    @course_code = params[:course_code]
-    if params[:permission_group_id].present? and params[:user_id].present?  #current_user.admin_or_higher?
+
+    if session[:user_id].present?  #current_user.admin_or_higher?
+      if session[:user_id] == current_user.id or current_user.coaching_type == 'dean' or current_user.coaching_type == 'coach'
        #permission_group_id  = 17 # cohort Med23
+       @course_code = session[:course_code]  #params[:course_code]
        @comp_keys = FomExam.comp_keys
-       student  = User.find(params[:user_id])
+       student  = User.find(session[:user_id])
        @student_email = student.email
        @student_full_name = student.full_name
        @coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
-       @block_desc = hf_get_block_desc(params[:course_code])
+       @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(params[:user_id], params[:attach_id], params[:permission_group_id], params[:course_code] )
+       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(session[:user_id], session[:attach_id], student.permission_group_id, @course_code )
 
        @failed_comps = hf_scan_failed_score(@comp_exams)
        block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
        @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-
+     else
+       @comp_keys = ' **** You NOT AUTHORIZED to view this account! ***'
+     end
     end
 
     respond_to do |format|

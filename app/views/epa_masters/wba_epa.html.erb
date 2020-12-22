@@ -7,15 +7,14 @@
              <b>Cohort </b> <%= select_tag :cohort, options_for_select(["Med21", "Med22"], selected: params[:cohort]), include_blank: '--',
                 prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
           </div>
+        <% end %>
       </div>
     </div>
   </div>
-  <div class="row">
+
       <% if !@wba_epa_data.blank? %>
         <%= render partial: 'detail_wba_epa', locals: {cohort: params[:cohort]} %>
       <% end %>
-    <% end %>
 
- </div>
 
 </div>

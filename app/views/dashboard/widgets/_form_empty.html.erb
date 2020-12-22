@@ -5,24 +5,29 @@
         data-sizey="1" data-min-sizey="1" data-max-sizey="1"
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
     <div class="widget-resize-hook">
-        <h3>Welcome to <%= Settings.site.name %></h3>
-        <p>
-            You haven't added anything to your dashboard yet.
-        </p>
+        <h3 style="background-color: #FFFF00">OASIS Up Coming Appointments</h3>
+          <% if !@meetings.nil? and current_user.coaching_type == 'student' %>
+            <% event = Event.where("id = ? and start_date >= ?", @meetings.last.event_id, "2020-12-20") %>
+
+              <h4>Advisor: <b><%= event.first.description %></b></h4>
+              <h4>Start Date: <b><%= event.first.start_date %></b></h4>
+              <h4>End Date: <b><%= event.first.end_date %></b></h4>
+          <% else %>
+          <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
+              Please check OASIS for Appointments!
+              <i class="fa fa-external-link"></i>
+          <% end %>
+          <% end %>
         <br/>
-        <%= link_to ls_reports_path, :class=>'btn btn-success' do %>
-            View Reports
-            <i class="fa fa-external-link"></i>
-        <% end %>
+
     </div>
 </li>
 
 <li data-col="3" data-row="1" data-sizex="3" data-sizey="1" data-min-sizex="2" class="gs-w" style="padding:0 20px;">
     <div class="xwidget-resize-hook">
-        <h3>This is <em>your</em> dashboard!</h3>
-        <p>A place where you can store things to look at later. You can also resize and move items around on your dashboard.</p>
+        <h4>*** More data display coming soon! ***</4>
         <br/>
-        <a class="btn btn-large btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();">Take a tour!</a>
+        <!-- <a class="btn btn-large btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();">Take a tour!</a> -->
     </div>
 </li>
 

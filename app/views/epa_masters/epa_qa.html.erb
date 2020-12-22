@@ -12,11 +12,11 @@
     </div>
 
   </div>
-  <div class="row">
-      <% if !@epa_qa_data.blank? %>
-        <%= render partial: 'detail_epa_qa' %>
-      <% end %>
+
+  <% if !@epa_qa_data.blank? %>
+      <%= render partial: 'detail_epa_qa' %>
     <% end %>
- </div>
+  <% end %>
+
 
 </div>

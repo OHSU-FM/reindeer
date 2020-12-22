@@ -11,6 +11,9 @@ class DashboardController < ApplicationController
     #@surveys = current_user.lime_surveys_by_most_recent(5)
     @dash = Dashboard.includes(:dashboard_widgets)
       .where(user_id: current_user.id).first_or_initialize
+    if current_user.coaching_type == 'student'
+      @meetings = Coaching::Meeting.where(user_id: current_user.id).where.not(event_id: [nil, ""])
+    end
     authorize! :read, @dash
     do_gon
 

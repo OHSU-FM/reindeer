@@ -16,6 +16,7 @@ module EdnaConsole
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
     config.exceptions_app = self.routes
+    config.action_mailer.smtp_settings = { enable_starttls_auto: false  }
 
     #How to silence "I18n.enforce_available_locales" deprecation warnings
     config.i18n.enforce_available_locales = false

@@ -101,6 +101,7 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
+  gem 'letter_opener'
 end
 
 group :test, :development do

@@ -13,13 +13,13 @@ class CslFeedbacksController < ApplicationController
 
    elsif current_user.coaching_type == "coach"
      #@coaches.push current_user
-     @cohort_students = current_user.cohorts.where("title like ?", "%#{params[:cohort]}%").first.users.order('full_name ASC')
+     @cohort_students = current_user.cohorts.where("title like ?", "%#{session[:cohort]}%").first.users.order('full_name ASC')
      @csl_feedbacks = CslFeedback.where(user_id: @cohort_students[0].id).order(:submit_date)
      #@cohort_students = Cohort.where("user_id = ? and title LIKE ?", current_user.id, "%#{params[:cohort]}%").first.users.order('full_name ASC')
    else
-     @students = CslFeedback.where(cohorts: params[:cohort]).includes(:owner).all
+     @students = CslFeedback.where(cohorts: session[:cohort]).includes(:owner).all
      @cohort_students = @students.map(&:owner).uniq!.sort_by{|c| c.full_name}
-     @csl_feedbacks = CslFeedback.where(user_id: params[:user_id]).order(:submit_date)
+     @csl_feedbacks = CslFeedback.where(user_id: session[:user_id]).order(:submit_date)
       # removed the coach category
       # if params[:coach_id].present?
       #   byebug
