@@ -67,7 +67,7 @@ module Coaching
     end
 
     def get_advisors
-      byebug
+  
     end
 
     private
