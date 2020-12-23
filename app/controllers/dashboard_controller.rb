@@ -13,6 +13,8 @@ class DashboardController < ApplicationController
       .where(user_id: current_user.id).first_or_initialize
     if current_user.coaching_type == 'student'
       @meetings = Coaching::Meeting.where(user_id: current_user.id).where.not(event_id: [nil, ""])
+    else
+      @meetings = []
     end
     authorize! :read, @dash
     do_gon

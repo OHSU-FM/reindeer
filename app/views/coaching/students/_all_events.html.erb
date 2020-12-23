@@ -12,13 +12,16 @@
 
   <% @events.each do |event| %>
     <tr>
-      <td><%= event.id %></td>
-      <td><%= event.title %></td>
-      <td><%= event.description %></td>
-      <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
-      <td><%= event.end_date.strftime("%m/%d/%Y %T %p")%></td>
-      <td><%= f.label :event_id, "select"  %><%= f.radio_button :event_id, "#{event.id}" %></td>
-
+      <% found = [] %>
+      <% found = Coaching::Meeting.where(event_id: event.id) %>
+      <% if found.empty? %>
+        <td><%= event.id %></td>
+        <td><%= event.title %></td>
+        <td><%= event.description %></td>
+        <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
+        <td><%= event.end_date.strftime("%m/%d/%Y %T %p")%></td>
+        <td><%= f.label :event_id, "select"  %><%= f.radio_button :event_id, "#{event.id}" %></td>
+      <% end %>
     </tr>
   <% end %>
 

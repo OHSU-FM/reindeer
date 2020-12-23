@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_16_175353) do
+ActiveRecord::Schema.define(version: 2020_12_23_175911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -416,6 +416,12 @@ ActiveRecord::Schema.define(version: 2020_11_16_175353) do
     t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
+  create_table "ipe_courses", primary_key: "course_id", id: :string, limit: 10, force: :cascade do |t|
+    t.string "course_code", limit: 20, null: false
+    t.string "course_name", limit: 50
+    t.index ["course_code"], name: "ipe_courses_course_code_key", unique: true
+  end
+
   create_table "med21_mspes", primary_key: "sid", id: :string, limit: 10, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
@@ -442,6 +448,7 @@ ActiveRecord::Schema.define(version: 2020_11_16_175353) do
     t.integer "advisor_id"
     t.integer "appointment_id"
     t.integer "event_id"
+    t.string "advice_category"
     t.index ["user_id"], name: "index_meetings_on_user_id"
   end
 

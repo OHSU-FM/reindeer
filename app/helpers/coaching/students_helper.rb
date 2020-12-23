@@ -39,6 +39,19 @@ module Coaching::StudentsHelper
     ]
   end
 
+  def hf_meeting_ipas_for_select
+    [
+      ["Adult Learning Theory"],
+      ["Learning Support"],
+      ["Study Strategies"],
+      ["Study Schedules"],
+	    ["Assessment Strategies"],
+	    ["Assist Struggling & High Performing Students"],
+      ["Remediation strategies"],
+      ["Other"]
+    ]
+  end
+
   # returns the long form human readable version of a competency tag
   # @param {String} c_tag
   # @return {String} long competency tag (ex: Patient Care (PC))

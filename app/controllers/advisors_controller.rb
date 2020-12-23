@@ -74,6 +74,6 @@ class AdvisorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def advisor_params
-      params.require(:advisor).permit(:type, :name, :email, :status)
+      params.require(:advisor).permit(:advisor_type, :name, :email, :status)
     end
 end

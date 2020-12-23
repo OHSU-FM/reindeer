@@ -10,8 +10,7 @@
           <th>Student Email </th>
           <th>UID </th>
           <th>Permission Group</th>
-          <th>Coaching Type</th>
-          <th>Cohort</th>
+          <th>Program Status</th>
           <th>DataSets</th>
         </tr>
       </thead>
@@ -23,12 +22,8 @@
           <td> <%= result.email %></td>
           <td> <%= result.sid.to_s %></td>
           <td> <%= result.permission_group.title.to_s %></td>
-          <td> <%= result.coaching_type.to_s %></td>
-          <% if result.coaching_type == 'student' %>
-             <td> <%= result.cohort ? result.cohort.title : "Not Available"%></td>
-          <% else %>
-              <td> N/A </td>
-          <% end %>
+          <td> <%= result.spec_program %></td>
+
           <td>
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
             <%= link_to("<b>Clinical Phase Dataset NEW! (>= Med20)</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>

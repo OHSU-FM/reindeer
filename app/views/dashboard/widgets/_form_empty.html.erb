@@ -6,19 +6,21 @@
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
     <div class="widget-resize-hook">
         <h3 style="background-color: #FFFF00">OASIS Up Coming Appointments</h3>
-          <% if !@meetings.nil? and current_user.coaching_type == 'student' %>
-            <% event = Event.where("id = ? and start_date >= ?", @meetings.last.event_id, "2020-12-20") %>
+          <% if !@meetings.empty? and current_user.coaching_type == 'student' %>
+            <% event = Event.where("id = ? and start_date >= ?", @meetings.last.event_id, Date.today) %>
+             <% if !event.empty? %>
+                <h4>Advisor: <b><%= event.first.description %></b></h4>
+                <h4>Start Date: <b><%= event.first.start_date %></b></h4>
+                <h4>End Date: <b><%= event.first.end_date %></b></h4>
+            <% else %>
+                <h4> *** No Appointments Found! *** </h4>
+            <% end %>
 
-              <h4>Advisor: <b><%= event.first.description %></b></h4>
-              <h4>Start Date: <b><%= event.first.start_date %></b></h4>
-              <h4>End Date: <b><%= event.first.end_date %></b></h4>
-          <% else %>
+          <% end %>
           <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
-              Please check OASIS for Appointments!
+              Create an Appointment at OASIS!
               <i class="fa fa-external-link"></i>
           <% end %>
-          <% end %>
-        <br/>
 
     </div>
 </li>
