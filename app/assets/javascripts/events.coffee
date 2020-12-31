@@ -4,7 +4,7 @@
 $ ->
   $('#advisor_type').change ->
     advisorType = @value
-    alert advisorType
+    #alert advisorType
     $('#advisor').empty()
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
@@ -19,21 +19,27 @@ $ ->
 
 appointments = []
 $(document).ready ->
+  $("#startDate").val(new Date().toJSON().slice(0,19))
+
+  $('#check_all').click ->
+    $('input:checkbox').prop 'checked', @checked
+    return
+
   $('#calendar').fullCalendar events: '/events.json'
   console.log ("Inside events.coffee!")
   #$('#calendar').fullCalendar({ });
-  $('#SaveAll').click ->
-    $.each $('input[name=\'checkbox\']:checked'), ->
-      appointments.push $(this).val()
-      return
-    #console.log("appointments: " + appointments)
-    #console.log("JSON: " + JSON.stringify(appointments))
-    $.ajax
-      url: '/events/save_all'
-      type: 'get'
-      data: appointments: JSON.stringify(appointments)
-      dataType: 'json'
-      success: (data) ->
-        alert 'All Appointments were successfully saved!'
-        window.location = '/events'
-        return
+  # $('#SaveAll').click ->
+  #   $.each $('input[name=\'checkbox\']:checked'), ->
+  #     appointments.push $(this).val()
+  #     return
+  #   #console.log("appointments: " + appointments)
+  #   #console.log("JSON: " + JSON.stringify(appointments))
+  #   $.ajax
+  #     url: '/events/save_all'
+  #     type: 'get'
+  #     data: appointments: JSON.stringify(appointments)
+  #     dataType: 'json'
+  #     success: (data) ->
+  #       alert 'All Appointments were successfully saved!'
+  #       window.location = '/events'
+  #       return

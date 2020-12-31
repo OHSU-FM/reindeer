@@ -1,0 +1,40 @@
+<% if !@appointments.nil? %>
+  <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+    <thead>
+      <tr>
+        <th data-data="title">Title</th>
+        <th data-data="description">Description</th>
+        <th data-data="start_date">Start date</th>
+        <th data-data="end_date">End date</th>
+        <th data-data="check_all">
+          <%= check_box_tag "check_all", "check_all", false %> Check All
+        </th>
+        <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+      </tr>
+    </thead>
+    <% i = 0 %>
+    <% @appointments.each do |appointment| %>
+        <tr>
+          <% i = i + 1 %>
+          <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p") %>
+          <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+45.minutes).utc.strftime("%m/%d/%Y at %I:%M %p") %>
+          <% advisor_name = @advisors.collect{|a| a.name if a.id.to_s == params[:advisor]}.compact.first %>
+          <td><%= @advisor_type %></td>
+          <td><%= "#{@advisor_type} - #{advisor_name}" %></td>
+
+          <td><%= start_date  %></td>
+          <td><%= end_date %></td>
+          <td><%= label_tag do %>
+              <%= check_box_tag "checkbox", "#{@advisor_type} - #{advisor_name}|#{start_date}|#{end_date}", false, id: "checkbox#{i}" %>
+              Save
+            <% end %>
+          </td>
+        </tr>
+
+
+    <% end %>
+
+  </table>
+
+  <button id="SaveAll">Save All</button>
+<% end %>

@@ -101,6 +101,10 @@ Rails.application.routes.draw do
     end
   end
 
+  # namespace :coaching do
+  #   get "/load_ipas_ipps",  controller: "meetings", action: "load_ipas_ipps"
+  # end
+
 
 
   # resources :searches, param: :search, only: [:index] do

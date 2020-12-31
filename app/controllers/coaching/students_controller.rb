@@ -6,7 +6,7 @@ module Coaching
     before_action :set_resources, only: [:show]
 
     helper_method :sort_column, :sort_direction
-
+    helper  :all
     # GET /coaching/students/{student_username}
     def show
 

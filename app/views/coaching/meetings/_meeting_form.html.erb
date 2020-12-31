@@ -10,11 +10,13 @@
 
   <div class="form-group">
     <%= f.label :subject, "Subject(s):", class: "control-label col-sm-4" %><br />
-    <div class="col-sm-6">
-      <%= f.collection_check_boxes(:subject,  hf_meeting_ipas_for_select, :first, :first, required: true, id: 'coaching_meeting_subjects') do |c| %>
-          <%= c.check_box %>
-          <b> <%= c.text %> </b> <br />
-         <% end %>
+    <div class="col-sm-6" id='coaching_meeting_subjects'>
+      <% if !@load_advice_subjects.nil? %>
+        <%= f.collection_check_boxes(:subject,  @load_advice_subjects, :first, :first, required: true) do |c| %>
+            <%= c.check_box %>
+            <b> <%= c.text %> </b> <br />
+           <% end %>
+      <% end %>
     </div>
   </div>
 

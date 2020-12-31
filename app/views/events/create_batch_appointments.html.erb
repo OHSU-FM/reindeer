@@ -1,7 +1,7 @@
 <h4>Create Available Appointments</h4>
 <hr>
 
-<%= form_tag(create_batch_appointments_events_path, method: 'get') do %>
+<%= form_tag(create_batch_appointments_events_path, method: 'get', remote: true) do %>
 
   <%= label_tag :Type_Of_Advisor %>
   <%= select_tag :advisor_type, options_for_select(["Academic", "Career", "Wellness"], selected: params[:advisor_type]), include_blank: "---",
@@ -14,54 +14,15 @@
 
   <%= label_tag :Advisor %>
   <%= select_tag :advisor, options_for_select([], selected: params[:advisor]), include_blank: "---" , required: true  %> <br />
+  <%= label_tag :StartDate %>
+  <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now) %> <br />
+  <%= label_tag :EndDate %>
+  <%= datetime_select("end_date", "end_date", ampm: true,  default: 6.hour.from_now) %> <br />
 
-  <label for="start_date">Choose Your Start Date/Time:</label>
-  <input type="datetime-local" id="start_date"
-         name="start_date" value="<%= DateTime.current.to_date %>"
-         min="<%= DateTime.current.to_date %>"   > <br />
-
-   <label for="end_date">Choose Your End Date/Time:</label>
-   <input type="datetime-local" id="end_date"
-          name="end_date" value="<%= DateTime.current.to_date %>"
-          min="<%= DateTime.current.to_date %>" max="<%= DateTime.current.to_date+8.hour %>" > <br />
-
-    <%= submit_tag "Go" %>
+  <%= submit_tag "Go" %>
 
 <% end %>
-<% if !@appointments.nil? %>
-  <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
-    <thead>
-      <tr>
-        <th data-data="title">Title</th>
-        <th data-data="description">Description</th>
-        <th data-data="start_date">Start date</th>
-        <th data-data="end_date">End date</th>
-        <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
-      </tr>
-    </thead>
-    <% i = 0 %>
-    <% @appointments.each do |appointment| %>
-        <tr>
-          <% i = i + 1 %>
-          <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y %T %p") %>
-          <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+45.minutes).utc.strftime("%m/%d/%Y %T %p") %>
-          <% advisor_name = @advisors.collect{|a| a.name if a.id.to_s == params[:advisor]}.compact.first %>
-          <td><%= @advisor_type %></td>
-          <td><%= "#{@advisor_type} - #{advisor_name}" %></td>
 
-          <td><%= start_date  %></td>
-          <td><%= end_date %></td>
-          <td><%= label_tag do %>
-              <%= check_box_tag "checkbox", "#{@advisor_type} - #{advisor_name}|#{start_date}|#{end_date}", false %>
-              Save
-            <% end %>
-          </td>
-        </tr>
+<div id="appt-table"></div>
 
-
-    <% end %>
-
-  </table>
-
-  <button id="SaveAll">Save All</button>
-<% end %>
+<%= render partial: 'detail_appointments'  %>

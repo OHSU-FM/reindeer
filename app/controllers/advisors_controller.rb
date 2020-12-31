@@ -63,7 +63,7 @@ class AdvisorsController < ApplicationController
   end
 
   def get_advisors
-    byebug
+
   end
 
   private

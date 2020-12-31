@@ -25,5 +25,16 @@ module EventsHelper
 
   end
 
+  def hf_get_date_now
+    #DateTime.current.strftime("%m/%d/%Y %T %p")
+    now = Time.now
+    if now.min > 0 then
+       now =  now + 3600
+    end
+
+    return now.strftime("%m/%d/%Y %T %p")
+
+  end
+
 
 end

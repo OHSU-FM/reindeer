@@ -1,7 +1,7 @@
 $ ->
   $('#coaching_meeting_advisor_type').change ->
     advisorType = @value
-    alert advisorType
+    #alert advisorType
     $('#coaching_meeting_advisor_id').empty()
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
@@ -14,14 +14,36 @@ $ ->
       #$(this).text(advisor)
   return
 
+ipas = [
+        "Adult Learning Theory"
+        "Learning Support"
+        "Study Strategies"
+        "Study Schedules"
+  	    "Assessment Strategies"
+  	    "Assist Struggling & High Performing Students"
+        "Remediation strategies"
+        "Other"
+]
+ipps = [
+      "Specialty speed dating"
+      "MD panels/career exploration"
+      "TTCE"
+      "Residency Apps"
+]
+
 $ ->
   $('#coaching_meeting_advice_category').change ->
     adviceCategory = @value
-    alert adviceCategory
+    #alert adviceCategory
+    if adviceCategory == 'IPAS'
+      data = ipas
+    else
+      data = ipps
+    # I'm expecting your data will be similar to this
+    nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
-    array_ipps = ["CheckBox1", "CheckBox2", "CheckBox3"]
-    $.each array_ipps, ->
-      $('#coaching_meeting_subjects').append $('<label>').text(@name).prepend($('<input>').attr('type', 'checkbox').val(@name).prop('checked', @checked))
+    $.each data, (index) ->
+      $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
       return
   return
 

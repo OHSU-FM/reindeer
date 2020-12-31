@@ -1,8 +1,15 @@
 <div class="detail-header">
   <div class="detail-section">
-    <h4><font color="#4c0946">Meeting Subject(s)</font></h4>
+    <h4><font color="#4c0946">Meeting Subject(s): <%= meeting.advice_category %></font></h4>
     <div>
-        <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
+        <% if meeting.advice_category == 'IPAS' %>
+            <% meeting_subjects = hf_meeting_ipas_for_select %>
+        <% elsif meeting.advice_category == 'IPPS'  %>
+            <% meeting_subjects = hf_meeting_ipps_for_select %>
+        <% else %>
+            <% meeting_subjects = hf_meeting_tags_for_select %>
+        <% end %>
+        <%= collection_check_boxes(:meeting, :subject, meeting_subjects, :first, :first, checked: meeting.subject) do |b| %>
           <%= b.check_box(checked: true, class: 'MyCheckBox') %>
           <b> <%= b.text %> </b> <br />
        <% end %>
@@ -21,6 +28,10 @@
   <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
   <div><i>Contact Type: </i><%= meeting.location %></div>
   <div><i>Date: </i><%= meeting.date.strftime("%m/%d/%Y %T %p") %></div>
+  <div><i>Advisor: <%= hf_get_advisor_name(meeting.advisor_id) %> </i></div>
+  <% start_date, end_date = hf_get_appt_dates(meeting.event_id) %>
+  <div><i>Appt Start Date: <%= start_date %></i></div>
+  <div><i>Appt End Date  : <%= end_date %> </i></div>
 </div>
 
 <div class="detail-section">
@@ -43,8 +54,6 @@
 
               </div>
             </div>
-
-            <hr>
 
             <div class="row">
               <form style="width: 100%">

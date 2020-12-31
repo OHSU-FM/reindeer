@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-  respond_to :html, :json
+
 
   include EventsHelper
 
@@ -83,7 +83,10 @@ class EventsController < ApplicationController
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
       @appointments = Event.enumerate_hours(params[:start_date], params[:end_date])
-
+      respond_to do |format|
+        #format.html
+        format.js { render action: 'display_batch_appointments', status: 200 }
+      end
       #Time.at(@appointments.first).utc.strftime("%m/%d/%Y %T %p")
 
     end
@@ -95,8 +98,8 @@ class EventsController < ApplicationController
       data = appointment.split("|")
       title = data[0].split(" - ").first
       description = data[0]
-      start_date = hf_format_datetime(data[1])
-      end_date = hf_format_datetime(data[2])
+      start_date = hf_format_datetime(data[1].gsub("at ", ""))
+      end_date = hf_format_datetime(data[2].gsub("at ", ""))
       Event.create(title: title, description: description, start_date: start_date, end_date: end_date)
 
     end

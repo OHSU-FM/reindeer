@@ -1,13 +1,13 @@
 module Coaching
   class MeetingsController < ApplicationController
-
+    include Coaching::MeetingsHelper
     helper  :all
 
     def create
       @advisors = Advisor.all
       @events = Event.all  #where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
-      EventMailer.notify_student.deliver_now
+      EventMailer.notify_student.deliver_later
 
       respond_to do |format|
         if @meeting.save
@@ -20,12 +20,26 @@ module Coaching
     end
 
     def show_detail
+
       @meeting = Meeting.find params[:id]
 
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
       end
     end
+
+    # def load_ipas_ipps
+    #
+    #   if params[:adviceCategory] == 'IPAS'
+    #     @load_advice_subjects = hf_meeting_ipas_for_select
+    #   else
+    #     @load_advice_subjects = hf_meeting_ipps_for_select
+    #   end
+    #
+    #   respond_to do |format|
+    #     format.js
+    #   end
+    # end
 
     def edit
       @meeting = Meeting.find params[:id]
@@ -66,19 +80,17 @@ module Coaching
       end
     end
 
-    def get_advisors
-  
-    end
+
 
     private
 
     def meeting_params
       params.require(:coaching_meeting)
-      .permit(:notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
+      .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
     end
 
     def meeting_update_params
-      params.permit(:id, :m_status, :notes, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
+      params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
     end
   end
 end

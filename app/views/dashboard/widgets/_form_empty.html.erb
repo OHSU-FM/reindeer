@@ -1,17 +1,28 @@
 <% return unless dash.dashboard_widgets.count == 0 %>
 
 <li class="gs-w gs-w-no-resize" style="padding:0 20px;"
-        data-col="1" data-row="1"
+        data-col="2" data-row="1"
         data-sizey="1" data-min-sizey="1" data-max-sizey="1"
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
     <div class="widget-resize-hook">
         <h3 style="background-color: #FFFF00">OASIS Up Coming Appointments</h3>
           <% if !@meetings.empty? and current_user.coaching_type == 'student' %>
-            <% event = Event.where("id = ? and start_date >= ?", @meetings.last.event_id, Date.today) %>
-             <% if !event.empty? %>
-                <h4>Advisor: <b><%= event.first.description %></b></h4>
-                <h4>Start Date: <b><%= event.first.start_date %></b></h4>
-                <h4>End Date: <b><%= event.first.end_date %></b></h4>
+            <% events = Event.where("id = ? and start_date >= ?", @meetings.last.event_id, Date.today) %>
+             <% if !events.nil? %>
+                <table class="table table-hover w-auto"  >
+                  <tr>
+                    <th data-data="advisor">Advisor</th>
+                    <th data-data="start_date">Start date</th>
+                    <th data-data="end_date">End date</th>
+                  </tr>
+                  <% events.each do |event| %>
+                    <tr>
+                      <td><%= event.description %></td>
+                      <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
+                      <td><%= event.end_date.strftime("%m/%d/%Y %T %p") %></td>
+                    </tr>
+                  <% end %>
+                </table>
             <% else %>
                 <h4> *** No Appointments Found! *** </h4>
             <% end %>
