@@ -15,9 +15,9 @@
   <%= label_tag :Advisor %>
   <%= select_tag :advisor, options_for_select([], selected: params[:advisor]), include_blank: "---" , required: true  %> <br />
   <%= label_tag :StartDate %>
-  <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now) %> <br />
+  <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now, minute_step: 30) %> <br />
   <%= label_tag :EndDate %>
-  <%= datetime_select("end_date", "end_date", ampm: true,  default: 6.hour.from_now) %> <br />
+  <%= datetime_select("end_date", "end_date", ampm: true,  default: 6.hours.from_now, minute_step: 30) %> <br />
 
   <%= submit_tag "Go" %>
 
