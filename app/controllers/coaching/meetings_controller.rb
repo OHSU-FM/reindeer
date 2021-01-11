@@ -5,10 +5,10 @@ module Coaching
 
     def create
       @advisors = Advisor.all
-      @events = Event.all  #where('start_date > ?', DateTime.now)
+      @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
-      EventMailer.notify_student.deliver_later
-
+      EventMailer.notify_student(@meeting).deliver_later
+      Event.find(@meeting.event_id).update(student_id: @meeting.user_id)
       respond_to do |format|
         if @meeting.save
 

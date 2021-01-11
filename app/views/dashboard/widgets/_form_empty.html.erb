@@ -2,24 +2,31 @@
 
 <li class="gs-w gs-w-no-resize" style="padding:0 20px;"
         data-col="2" data-row="1"
-        data-sizey="1" data-min-sizey="1" data-max-sizey="1"
+        data-sizey="2.3" data-min-sizey="2" data-max-sizey="2.3"
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
-    <div class="widget-resize-hook">
+    <div class="widget">
         <h3 style="background-color: #FFFF00">OASIS Up Coming Appointments</h3>
-          <% if !@meetings.empty? and current_user.coaching_type == 'student' %>
-            <% events = Event.where("id = ? and start_date >= ?", @meetings.last.event_id, Date.today) %>
+             <% events = hf_get_events(@meetings) %>
              <% if !events.nil? %>
-                <table class="table table-hover w-auto"  >
+                <table class="table table-hover"  >
                   <tr>
-                    <th data-data="advisor">Advisor</th>
+                    <% if current_user.coaching_type == 'dean' %>
+                        <th data-data="student">Student</th>
+                    <% else %>
+                        <th data-data="advisor">Advisor</th>
+                    <% end %>
                     <th data-data="start_date">Start date</th>
                     <th data-data="end_date">End date</th>
                   </tr>
                   <% events.each do |event| %>
                     <tr>
-                      <td><%= event.description %></td>
-                      <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
-                      <td><%= event.end_date.strftime("%m/%d/%Y %T %p") %></td>
+                      <% if current_user.coaching_type == 'dean' %>
+                          <td><%= User.find(event.student_id).full_name %></td>
+                      <% else %>
+                          <td><%= event.description %></td>
+                      <% end %>
+                      <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                      <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
                     </tr>
                   <% end %>
                 </table>
@@ -27,7 +34,7 @@
                 <h4> *** No Appointments Found! *** </h4>
             <% end %>
 
-          <% end %>
+
           <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
               Create an Appointment at OASIS!
               <i class="fa fa-external-link"></i>
