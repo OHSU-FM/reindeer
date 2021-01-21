@@ -15,20 +15,27 @@ $ ->
   return
 
 ipas = [
-        "Adult Learning Theory"
-        "Learning Support"
-        "Study Strategies"
-        "Study Schedules"
-  	    "Assessment Strategies"
-  	    "Assist Struggling & High Performing Students"
-        "Remediation strategies"
-        "Other"
+  "Peer Tutoring"
+  "Provost’s Student Learning Support Specialist"
+  "Student Health & Wellness Center"
+  "Office of Student Access / Explore accommodations"
+  "Financial / Debt Mgr"
+  "UME curricular leader (block, thread, course, or clinical experience director)"
+  "Other OASIS advisor"
+  "UME Student Affairs"
+  "Other (text box)"
 ]
+
 ipps = [
-      "Specialty speed dating"
-      "MD panels/career exploration"
-      "TTCE"
-      "Residency Apps"
+  "Dept-based Residency Specialty Advisor connection"
+  "Online resources explored / encouraged (Careers in Med, Sakai, etc)"
+  "Student Health & Wellness Center"
+  "Office of Student Access / Explore accommodations"
+  "Financial / Debt Mgr"
+  "UME curricular leader (course or clinical experience director)"
+  "Other OASIS advisor"
+  "UME Student Affairs"
+  "Other (text box)"
 ]
 
 $ ->
@@ -46,6 +53,21 @@ $ ->
       $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
       return
   return
+
+$ ->
+  $('#coaching_meeting_advisor_type').change ->
+  advisorType = @value
+
+  if advisorType == 'Career'
+    data = ipps
+  else
+    data = ipas
+  nbsp = '&nbsp'
+  $('#coaching_meeting_subjects').empty()
+  $.each data, (index) ->
+    $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
+    return
+return
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")

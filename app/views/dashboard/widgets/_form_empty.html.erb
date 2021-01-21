@@ -1,11 +1,11 @@
 <% return unless dash.dashboard_widgets.count == 0 %>
 
 <li class="gs-w gs-w-no-resize" style="padding:0 20px;"
-        data-col="2" data-row="1"
+        data-col="3" data-row="1"
         data-sizey="2.3" data-min-sizey="2" data-max-sizey="2.3"
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
     <div class="widget">
-        <h3 style="background-color: #FFFF00">OASIS Up Coming Appointments</h3>
+        <h4 style="background-color: #FFFF00">OASIS Up Coming Appointments</h4>
              <% events = hf_get_events(@meetings) %>
              <% if !events.nil? %>
                 <table class="table table-hover"  >
@@ -21,7 +21,7 @@
                   <% events.each do |event| %>
                     <tr>
                       <% if current_user.coaching_type == 'dean' %>
-                          <td><%= User.find(event.student_id).full_name %></td>
+                          <td><%= User.find(event.user_id).full_name %></td>
                       <% else %>
                           <td><%= event.description %></td>
                       <% end %>
@@ -36,7 +36,7 @@
 
 
           <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
-              Create an Appointment at OASIS!
+              I Want to Schedule an Appointment <br >with OASIS Academic or Career Advisor
               <i class="fa fa-external-link"></i>
           <% end %>
 
@@ -51,7 +51,7 @@
     </div>
 </li>
 
-<li class="gs-w gs-w-no-resize" style="padding:20px 35px;"
+<!-- <li class="gs-w gs-w-no-resize" style="padding:20px 35px;"
         data-step="3"
         data-intro="Charts and other graphical items can be enlarged and viewed separately when double clicked."
         data-position="right"
@@ -76,4 +76,4 @@
 
             </div>
         </div>
-</li>
+</li> -->

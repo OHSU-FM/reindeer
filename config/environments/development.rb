@@ -37,6 +37,7 @@ Rails.application.configure do
   #config.assets.compile = true
   #config.assets.digest = true
   config.assets.debug = true
+  #config.assets.check_precompiled_asset = false
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.

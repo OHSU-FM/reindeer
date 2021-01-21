@@ -12,7 +12,12 @@
 
   <% @events.each do |event| %>
     <tr>
-      <td><%= event.title %></td>
+      <% if event.user_id.nil? %>
+        <td><%= event.title %></td>
+      <% else %>
+        <% student = event.user %>
+        <td><%= link_to(event.title, coaching_student_path(student), target: '_blank') %></td>
+      <% end %>
       <td><%= event.description %></td>
       <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
       <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p")%></td>

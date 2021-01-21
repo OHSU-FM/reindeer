@@ -1,0 +1,55 @@
+<div class="form-group">
+  <%= label_tag :from, 'From', class: "control-label col-sm-2" %>
+  <%= text_field_tag 'from', '', size: 50 %> <br />
+</div>
+<div class="form-group">
+  <%= label_tag :subject, 'Subject', class: "control-label col-sm-2" %>
+  <%= text_area_tag 'subject', nil, rows: 2, cols: 100 %>
+</div>
+<div class="form-group">
+  <%= label_tag :body_message, 'Body Message', class: "control-label col-sm-2" %>
+  <%= text_area_tag 'body_message', nil, rows: 10, cols: 100 %>
+</div>
+
+  <% if !user_ids.nil? %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= check_box_tag "checkAll", "checkAll", false %> Check All
+        <%= button_tag "Sent Alerts", id: "SendAlerts" %>
+        <table class="table table-hover"  >
+          <% user_ids = user_ids.sort %>
+          <% i = 0 %>
+          <% while i <= user_ids.count-1 %>
+            <tr>
+              <% user = User.where(id: user_ids[i]).select(:id, :full_name, :email).first %>
+              <% id = user.id %>
+              <td><%= user.full_name %> </td>
+              <td><%= user.email %> </td>
+              <td><%= label_tag do %>
+                  <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
+                  Send Alert
+                <% end %>
+              </td>
+              <% i += 1 %>
+
+              <% if (i) < user_ids.count %>
+
+                  <% user = User.where(id: user_ids[i]).select(:id, :full_name, :email).first %>
+                  <% id = user.id %>
+                  <td><%= user.full_name %> </td>
+                  <td><%= user.email %> </td>
+                  <td><%= label_tag do %>
+                      <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
+                      Send Alert
+                    <% end %>
+                  </td>
+                  <% i += 1 %>
+              <% end %>
+
+            </tr>
+
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <% end %>

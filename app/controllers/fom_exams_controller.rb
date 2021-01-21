@@ -1,5 +1,8 @@
 class FomExamsController < ApplicationController
+
+  protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!
+
   include FomExamsHelper
   include ArtifactsHelper
 
@@ -28,6 +31,23 @@ class FomExamsController < ApplicationController
     # @artifacts.first.documents.first.download --> works
     if !hf_check_label_file(params[:attach_id])
       @log_results = FomExam.process_file(params[:attach_id])
+    end
+
+  end
+
+  def send_alerts
+    if params[:uniq_cohort].present?
+      fom_label = FomLabel.last
+      @user_ids = FomExam.where(permission_group_id: params[:uniq_cohort], course_code: fom_label.course_code).pluck(:user_id)
+    elsif params[:email_message].present? #ajax
+        @email_message = JSON.parse(params[:email_message])
+        FomExamMailer.notify_student(@user_ids, @email_message).now
+#byebug
+    end
+
+    respond_to do |format|
+      format.js {render action: 'send_alerts', status: 200}
+      format.html
     end
 
   end

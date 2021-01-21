@@ -2,7 +2,7 @@
   <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
     <thead>
       <tr>
-        <th data-data="id">EventId</th>
+        <th data-data="Student">Student</th>
         <th data-data="title">Title</th>
         <th data-data="description">Description</th>
         <th data-data="start_date">Start date</th>
@@ -11,16 +11,17 @@
       </tr>
     </thead>
 
-    <% @appointments.each do |appointment| %>
-    <% event = Event.find(appointment.event_id) %>
-      <tr>
-        <td><%= event.id %></td>
-        <td><%= event.title %></td>
-        <td><%= event.description %></td>
-        <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
-        <td><%= event.end_date.strftime("%m/%d/%Y %T %p")%></td>
+    <% if !@appointments.nil? %>
+      <% @appointments.each do |appointment| %>
+        <% event = Event.find(appointment.event_id) %>
+        <tr>
+          <td><%= appointment.user.full_name %></td>
+          <td><%= event.title %></td>
+          <td><%= event.description %></td>
+          <td><%= event.start_date.strftime("%m/%d/%Y %T %p") %></td>
+          <td><%= event.end_date.strftime("%m/%d/%Y %T %p")%></td>
 
-      </tr>
+        </tr>
+      <% end %>
     <% end %>
-
   </table>

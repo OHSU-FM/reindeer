@@ -49,6 +49,7 @@ module Coaching
       def set_resources
         #@student = User.find_by_username(params[:slug])
         @student = User.where("username = ?", params[:slug]).first
+
         @@student_g = @student
 
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
@@ -58,10 +59,12 @@ module Coaching
         @room_id = @student.room.id
         @advisors = Advisor.all
         @events = Event.where('start_date > ?', DateTime.now)
+        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
 
         if current_user.student? && @student != current_user
+
           redirect_to root_path and return
         elsif current_user.coach?
           @cohorts = current_user.cohorts.where("title NOT LIKE ?", "%Med18%").order('title DESC')
@@ -70,8 +73,13 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           @cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @coaches = @cohorts.map(&:owner).uniq!
-          @students = @cohorts.map(&:users).flatten
+           #@coaches = @cohorts.map(&:owner).uniq!
+           @students = @cohorts.map(&:users).flatten
+
+          #@students = Event.where('start_date > ?', DateTime.now).where.not(user_id: nil).includes(:user).map(&:user).flatten
+
+
+
 
         end
       end

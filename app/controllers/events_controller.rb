@@ -8,9 +8,9 @@ class EventsController < ApplicationController
   def index
     #@events = Event.where('start_date > ?', DateTime.now)
     @events = Event.all.order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
-    @events.each do |event|
-      full_name = hf_full_name (event.id)
-      if !full_name.empty?
+    @events.each do |event|      
+      if !event.user_id.nil?
+        full_name = event.user.full_name  #hf_full_name (event.id)
         event.title = event.title + ' - ' + full_name
       end
 
@@ -117,6 +117,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :description, :start_date, :end_date, :student_id)
+      params.require(:event).permit(:title, :description, :start_date, :end_date, :user_id)
     end
 end

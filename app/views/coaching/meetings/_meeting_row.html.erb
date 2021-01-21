@@ -1,8 +1,7 @@
 <tr class="show-detail clickable-row <%= "active" if defined? active_row %>" id="meetingId-<%= meeting.id %>">
   <td><%= meeting.created_at.strftime("%m/%d/%Y") %></td>
   <td><%= hf_format_subjects(meeting.subject) %></td>
-  <td><%= meeting.location %></td>
   <td><%= meeting.m_status %></td>
   <td><%= meeting.date.strftime("%m/%d/%Y %T %p") %></td>
-  <td><%= link_to 'Details', show_detail_coaching_meeting_path(meeting), remote: true, class: "btn btn-default" %></td>
+  <td><%= link_to 'Details', show_detail_coaching_meeting_path(meeting), remote: true, class: "btn btn-success" %></td>
 </tr>

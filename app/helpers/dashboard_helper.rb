@@ -34,6 +34,9 @@ module DashboardHelper
       return events_array
     elsif current_user.coaching_type == 'dean' and meetings.empty?
         advisor = Advisor.find_by(email: current_user.email)
+        if advisor.nil?
+          return []
+        end
         meetings = Coaching::Meeting.where(advisor_id: advisor.id)
         events_array = []
 
@@ -41,7 +44,7 @@ module DashboardHelper
           events = Event.where("id = ? and start_date >= ?", meeting.event_id, Date.today)
           if !events.empty?
             events_array.push events.first
-            if events_array.count == 8 
+            if events_array.count == 8
               return events_array
             end
           end

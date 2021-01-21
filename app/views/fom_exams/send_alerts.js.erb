@@ -1,0 +1,40 @@
+$('#send-alerts-list').html("<%= j render partial: 'fom_exams/send_alerts_list', locals: { user_ids: @user_ids} %>");
+
+$("#checkAll").change(function () {
+    $("input:checkbox").prop('checked', $(this).prop("checked"));
+});
+
+$('#SendAlerts').click(function(){
+  var email_message = [];
+  var skip_emails = [];
+  alert ('button is clicked');
+
+  $("input:checkbox:not(:checked)").each(function () {
+     skip_emails.push({user_id: $(this).val()});
+  });
+  email_message.push({skip_email: skip_emails});
+
+  var from = $("#from").val();
+  email_message.push({from: from});
+
+  var subject = $("#subject").val();
+  email_message.push({subject: subject})
+
+  var body_message = $("#body_message").val();
+  email_message.push({body_message: body_message});
+
+  $.ajax({
+    type: 'post',
+    dataType: 'script',
+    url: '/fom_exams/send_alerts',
+    data: {email_message: JSON.stringify(email_message)},
+    success: function(data) {
+      alert('Send Alerts Data is Valid!');
+    },
+    error: function(request,error) {
+      alert("Request Reviews: "+JSON.stringify(request));
+    }
+  });
+
+
+});

@@ -8,38 +8,37 @@
   <% elsif current_user.dean_or_higher? %>
     <%= render partial: "permission_groups_select" %>
   <% end %>
-
-
 </div>
 
 <div id="cs-goals-main">
 
   <% if current_user.coach_or_higher? %>
+
     <div id="cs-student-select">
       <%= render partial: "student_select" %>
     </div>
     <hr>
   <% end %>
 
-  <h3 class="goals-header">Coaching Documentation System - <%= hf_get_label(current_user) %></h3>
+  <h3 class="goals-header">OASIS Documentation System - <%= hf_get_label(current_user) %></h3>
 
   <ul class="nav nav-tabs goal-tabs" role="tablist" id="myTab">
-    <li class="nav-item active">
+    <!-- <li class="nav-item active">
       <a class="nav-link" id="goals-tab" data-toggle="tab" href="#goals" role="tab" aria-controls="goals" aria-selected="true">Goals</a>
+    </li> -->
+    <li class="nav-item active">
+      <a class="nav-link" id="appointments-tab" data-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="false">Appointments</a>
     </li>
+    
     <li class="nav-item">
       <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false">Meetings</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" id="appointments-tab" data-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="false">Appointments</a>
-    </li>
 
   </ul>
-
   <div class="tab-content" style="height: 50%;">
     <div class="tab-pane active" id="goals" role="tabpanel" aria-labelledby="goals-tab" style="height: 75%">
       <div class="table-controls">
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal" id="newGoalButton">Add new goal</button>
+        <!-- <button type="button" class="btn btn-default" data-toggle="modal" data-target="#newGoalModal" id="newGoalButton">Add new goal</button> -->
 
         <%= form_tag completed_goals_coaching_student_path(@student), method: :post, remote: true, name: "goal_checkbox", class: "complete-checkbox" do %>
           <label for="goal_complete">Status</label>
@@ -112,9 +111,9 @@
 </div>
 
 
-<div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
-  <%= render partial: "coaching/goals/new_goal_modal" %>
-</div>
+<!-- <div class="modal fade" id="newGoalModal" tabindex="-1" role="dialog" aria-labelledby="newGoalModalLabel" aria-hidden="true">
+  <% #=  render partial: "coaching/goals/new_goal_modal" %>
+</div> -->
 <div class="modal fade" id="newMeetingModal" tabindex="-1" role="dialog" aria-labelledby="newMeetingModalLabel" aria-hidden="true">
   <%= render partial: "coaching/meetings/new_meeting_modal" %>
 </div>

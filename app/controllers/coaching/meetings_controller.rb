@@ -8,7 +8,7 @@ module Coaching
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
       EventMailer.notify_student(@meeting).deliver_later
-      Event.find(@meeting.event_id).update(student_id: @meeting.user_id)
+      Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
       respond_to do |format|
         if @meeting.save
 
@@ -56,7 +56,6 @@ module Coaching
     # this is dirty and manual because we're not using link_to in the view :(
     def update
       @meeting = Meeting.find params[:id]
-
       respond_to do |format|
         if @meeting.update_attributes(meeting_update_params)
           format.js { render action: 'update', status: :ok }
@@ -86,11 +85,11 @@ module Coaching
 
     def meeting_params
       params.require(:coaching_meeting)
-      .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
+      .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id, subject: [], advisor_outcomes: [], advisor_discussed: [])
     end
 
     def meeting_update_params
-      params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :appointment_id, :event_id, subject: [])
+      params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :event_id, subject: [], advisor_outcomes: [], advisor_discussed: [])
     end
   end
 end

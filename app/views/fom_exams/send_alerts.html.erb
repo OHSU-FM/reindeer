@@ -1,0 +1,14 @@
+<h3> FoM - Send Alerts </h3>
+
+<%= form_for(send_alerts_fom_exams_path, action: 'send_alerts', remote: true, method: 'post', html: { class: 'form-horizontal' },wrapper: :horizontal_form) do %>
+    <div class="form-group">
+      <%= label_tag :Cohort %>
+      <%= select_tag :uniq_cohort, options_for_select([["Med24",18], ["Med23", 17]], selected: params[:uniq_cohort]),
+          prompt: "Please Select a Cohort"  %> <br />
+    <%= submit_tag 'Go', :name => 'commit'%>
+    </div>
+
+
+<% end %>
+
+<div id="send-alerts-list"></div>

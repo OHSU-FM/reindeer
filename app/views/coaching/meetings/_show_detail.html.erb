@@ -1,19 +1,43 @@
 <div class="detail-header">
   <div class="detail-section">
-    <h4><font color="#4c0946">Meeting Subject(s): <%= meeting.advice_category %></font></h4>
+
+    <h4><font color="#4c0946">Primary Reason for Appointment (check all that apply): </font></h4>
     <div>
-        <% if meeting.advice_category == 'IPAS' %>
-            <% meeting_subjects = hf_meeting_ipas_for_select %>
-        <% elsif meeting.advice_category == 'IPPS'  %>
-            <% meeting_subjects = hf_meeting_ipps_for_select %>
-        <% else %>
-            <% meeting_subjects = hf_meeting_tags_for_select %>
-        <% end %>
-        <%= collection_check_boxes(:meeting, :subject, meeting_subjects, :first, :first, checked: meeting.subject) do |b| %>
+        <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
           <%= b.check_box(checked: true, class: 'MyCheckBox') %>
+          <b> <%= b.text %> </b> <br />
+        <% end %>
+    </div>
+
+    <h4><font color="#4c0946">Advisor Discussed (check all that apply): </font></h4>
+    <div>
+      <% if meeting.advisor_type == 'Career' %>
+        <% advisor_subjects = hf_career_advisor_outcomes_for_select %>
+      <% else %>
+        <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
+      <% end %>
+      <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
+        <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
+        <b> <%= b.text %> </b> <br />
+     <% end %>
+    </div>
+
+    <h4><font color="#4c0946">Outcomes/Recommendation (check all that apply): <%= meeting.advice_category %></font></h4>
+    <div>
+        <% if meeting.advisor_type == 'Academic' %>
+            <% advisor_outcomes = hf_meeting_ipas_for_select %>
+        <% elsif meeting.advisor_type == 'Career'  %>
+            <% advisor_outcomes = hf_meeting_ipps_for_select %>
+        <% else %>
+            <% advisor_outcomes = hf_meeting_ipas_for_select %>
+        <% end %>
+        <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
+          <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
           <b> <%= b.text %> </b> <br />
        <% end %>
     </div>
+
+
     <% if current_user.admin_or_higher? %>
       <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
     <% end %>
@@ -24,8 +48,11 @@
 </div>
 
 <div class="detail-section">
-  <h4>Meeting Details</h4>
-  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"], meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %></div>
+  <h4>Meeting Details <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %></h4>
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"],
+     meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %>
+
+  </div>
   <div><i>Contact Type: </i><%= meeting.location %></div>
   <div><i>Date: </i><%= meeting.date.strftime("%m/%d/%Y %T %p") %></div>
   <div><i>Advisor: <%= hf_get_advisor_name(meeting.advisor_id) %> </i></div>

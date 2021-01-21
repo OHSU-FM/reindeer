@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
   get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
 
+
   resources :user do
     resources :preceptor_evals,  only: [:index] do
     end
@@ -70,6 +71,12 @@ Rails.application.routes.draw do
     get "/fom_exams/display_fom",  controller: "fom_exams", action: "display_form", to: 'fom_exams#display_fom'
   #end
 
+resource :fom_exams do
+    member do
+      post 'send_alerts'
+      get 'send_alerts'
+    end
+end
 
 
   resources :artifacts do
