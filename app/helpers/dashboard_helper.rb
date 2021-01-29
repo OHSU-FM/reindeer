@@ -23,6 +23,9 @@ module DashboardHelper
   end
 
   def hf_get_events(meetings)
+    # if meetings.empty?
+    #   return []
+    # end
     if current_user.coaching_type == 'student'
       events_array = []
       meetings.each do |meeting|
@@ -50,8 +53,6 @@ module DashboardHelper
           end
 
         end
-
-
         return events_array
 
     end

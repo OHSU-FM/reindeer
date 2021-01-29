@@ -19,13 +19,14 @@
           <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p") %>
           <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+45.minutes).utc.strftime("%m/%d/%Y at %I:%M %p") %>
           <% advisor_name = @advisors.collect{|a| a.name if a.id.to_s == params[:advisor]}.compact.first %>
+          <% advisor_id = @advisors.collect{|a| a.id if a.id.to_s == params[:advisor]}.compact.first %>
           <td><%= @advisor_type %></td>
-          <td><%= "#{@advisor_type} - #{advisor_name}" %></td>
+          <td><%= "#{@advisor_type} Advisor - #{advisor_name}" %></td>
 
           <td><%= start_date  %></td>
           <td><%= end_date %></td>
           <td><%= label_tag do %>
-              <%= check_box_tag "checkbox", "#{@advisor_type} - #{advisor_name}|#{start_date}|#{end_date}", false, id: "checkbox#{i}" %>
+              <%= check_box_tag "checkbox", "#{@advisor_type} Advisor - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", false, id: "checkbox#{i}" %>
               Save
             <% end %>
           </td>

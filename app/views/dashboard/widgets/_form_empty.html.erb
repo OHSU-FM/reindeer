@@ -5,7 +5,8 @@
         data-sizey="2.3" data-min-sizey="2" data-max-sizey="2.3"
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
     <div class="widget">
-        <h4 style="background-color: #FFFF00">OASIS Up Coming Appointments</h4>
+
+        <h4><font color="purple">Scheduled Appointment(s)</font></h4>
              <% events = hf_get_events(@meetings) %>
              <% if !events.nil? %>
                 <table class="table table-hover"  >
@@ -34,7 +35,7 @@
                 <h4> *** No Appointments Found! *** </h4>
             <% end %>
 
-
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMeetingModal" id="newMeetingButton">Create New Appointment</button>
           <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
               I Want to Schedule an Appointment <br >with OASIS Academic or Career Advisor
               <i class="fa fa-external-link"></i>
@@ -50,6 +51,7 @@
         <!-- <a class="btn btn-large btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();">Take a tour!</a> -->
     </div>
 </li>
+
 
 <!-- <li class="gs-w gs-w-no-resize" style="padding:20px 35px;"
         data-step="3"

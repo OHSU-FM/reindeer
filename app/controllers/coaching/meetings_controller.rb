@@ -7,24 +7,29 @@ module Coaching
       @advisors = Advisor.all
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
-      EventMailer.notify_student(@meeting).deliver_later
       Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
+      EventMailer.notify_student(@meeting).deliver_later
+
       respond_to do |format|
         if @meeting.save
-
           format.js { render action: 'show', status: :created }
         else
           format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
         end
       end
+
     end
 
     def show_detail
-
       @meeting = Meeting.find params[:id]
-
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
+      end
+    end
+
+    def get_events
+      respond_to do |format|
+        format.js { render action: 'get_events', status: :ok }
       end
     end
 
@@ -67,8 +72,8 @@ module Coaching
 
     def destroy
       @meeting = Meeting.find params[:id]
-
-      redirect_to coaching_index_path && return unless current_user.admin_or_higher?
+      Event.find(@meeting.event_id).update(user_id: nil)  # release back to the queue
+      #redirect_to coaching_index_path && return unless current_user.admin_or_higher?
 
       respond_to do |format|
         if @meeting.destroy
@@ -79,17 +84,20 @@ module Coaching
       end
     end
 
-
-
     private
 
     def meeting_params
       params.require(:coaching_meeting)
-      .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id, subject: [], advisor_outcomes: [], advisor_discussed: [])
+      .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id, subject: [])
+      #
+      # .permit( :notes,  :date, :m_status, :user_id, :advisor_type,
+      #   :advisor_id, :event_id)
     end
 
     def meeting_update_params
-      params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :event_id, subject: [], advisor_outcomes: [], advisor_discussed: [])
+      params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :event_id, :academic_discussed_other, :academic_outcomes_other,
+        :career_discussed_other, :career_outcomes_other, :advisor_notes,
+        subject: [], advisor_outcomes: [], advisor_discussed: [])
     end
   end
 end

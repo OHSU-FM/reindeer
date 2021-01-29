@@ -1,46 +1,94 @@
 <div class="detail-header">
   <div class="detail-section">
 
-    <h4><font color="#4c0946">Primary Reason for Appointment (check all that apply): </font></h4>
-    <div>
-        <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
-          <%= b.check_box(checked: true, class: 'MyCheckBox') %>
-          <b> <%= b.text %> </b> <br />
-        <% end %>
-    </div>
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
 
-    <h4><font color="#4c0946">Advisor Discussed (check all that apply): </font></h4>
-    <div>
-      <% if meeting.advisor_type == 'Career' %>
-        <% advisor_subjects = hf_career_advisor_outcomes_for_select %>
-      <% else %>
-        <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
-      <% end %>
-      <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
-        <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
-        <b> <%= b.text %> </b> <br />
-     <% end %>
-    </div>
+          <div class="panel-heading active" role="tab" id="headingOne">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <h4><font color="#4c0946">Primary Reason for Appointment (check all that apply): </font></h4>
+              </a>
+            </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+              <div>
+                  <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
+                    <%= b.check_box(checked: true, class: 'MyCheckBox') %>
+                    <b> <%= b.text %> </b> <br />
+                  <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <h4><font color="#4c0946"><%= meeting.advisor_type %> Advisor Discussed (check all that apply): </font></h4>
+              </a>
+            </h4>
+          </div>
+          <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+              <div>
+                <% if meeting.advisor_type == 'Career' %>
+                  <% advisor_subjects = hf_career_advisor_discussed_for_select %>
+                <% else %>
+                  <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
+                <% end %>
+                <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
+                  <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
+                  <b> <%= b.text %> </b> <br />
+               <% end %>
+               <% if meeting.advisor_type == "Academic" %>
+                  <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
+               <% elsif meeting.advisor_type == "Career" %>
+                  <%= text_field_tag :career_discussed_other, meeting.career_discussed_other, id: 'career_discussed_other' %>
+               <% else %>
+                  <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
+               <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingThree">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <h4><font color="#4c0946"><%= meeting.advisor_type %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category %></font></h4>
+              </a>
+            </h4>
+          </div>
+          <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+              <div>
+                  <% if meeting.advisor_type == 'Academic' %>
+                      <% advisor_outcomes = hf_meeting_ipas_for_select %>
+                  <% elsif meeting.advisor_type == 'Career'  %>
+                      <% advisor_outcomes = hf_meeting_ipps_for_select %>
+                  <% else %>
+                      <% advisor_outcomes = hf_meeting_ipas_for_select %>
+                  <% end %>
+                  <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
+                    <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
+                    <b> <%= b.text %> </b> <br />
+                 <% end %>
+              </div>
+               <% if meeting.advisor_type == "Academic" %>
+                  <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other' %>
+                <% elsif meeting.advisor_type == "Career" %>
+                    <%= text_field_tag :career_outcomes_other, meeting.career_outcomes_other, id: 'career_outcomes_other' %>
+                <% else %>
+                  <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other'  %>
+                <% end %>
 
-    <h4><font color="#4c0946">Outcomes/Recommendation (check all that apply): <%= meeting.advice_category %></font></h4>
-    <div>
-        <% if meeting.advisor_type == 'Academic' %>
-            <% advisor_outcomes = hf_meeting_ipas_for_select %>
-        <% elsif meeting.advisor_type == 'Career'  %>
-            <% advisor_outcomes = hf_meeting_ipps_for_select %>
-        <% else %>
-            <% advisor_outcomes = hf_meeting_ipas_for_select %>
-        <% end %>
-        <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
-          <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
-          <b> <%= b.text %> </b> <br />
-       <% end %>
-    </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-
-    <% if current_user.admin_or_higher? %>
-      <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
-    <% end %>
     <button type="button" class="close" aria-label="Close" id="hide-detail">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -48,46 +96,30 @@
 </div>
 
 <div class="detail-section">
-  <h4>Meeting Details <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %></h4>
-  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "No Show", "Rescheduled", "Update Meeting Summary", "Update Meeting Subjects"],
-     meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %>
-
+  <h4><font color="#4c0946">Advisor Meeting Documentation</font></h4>
+  <div>
+    <%= text_area_tag :notes, meeting.advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%' %>
   </div>
-  <div><i>Contact Type: </i><%= meeting.location %></div>
-  <div><i>Date: </i><%= meeting.date.strftime("%m/%d/%Y %T %p") %></div>
-  <div><i>Advisor: <%= hf_get_advisor_name(meeting.advisor_id) %> </i></div>
+</div>
+
+<div class="detail-section">
+  <h4><font color="#4c0946">Meeting Status </font></h4>
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "Meeting Canceled", "Rescheduled"],
+     meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %>
+  </div>
+  <div><i>Advisor Type: <b><%= meeting.advisor_type %> </b></i></div>
+  <div><i>Advisor: <b><%= hf_get_advisor_name(meeting.advisor_id) %> </b></i></div>
   <% start_date, end_date = hf_get_appt_dates(meeting.event_id) %>
   <div><i>Appt Start Date: <%= start_date %></i></div>
-  <div><i>Appt End Date  : <%= end_date %> </i></div>
+  <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %>
 </div>
+<% if current_user.admin_or_higher? %>
+  <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
+<% end %>
 
 <div class="detail-section">
-  <h4>Meeting Summary</h4><i><font color="#4c0946"> * To update Meeting Summary, please click on Status field to select 'Update Meeting Summary'.</font><i>
+  <h4><font color="#4c0946">Student Meeting Documentation</font></h4>
   <div>
-    <%= text_area_tag :notes, meeting.notes, class: "updateNotes", rows: 5, style: 'width:100%' %>
-  </div>
-</div>
-
-<div class="detail-section">
-  <h4>Meeting Documentation</h4>
-  <div class="meeting-comments">
-         <h1 id="room-identifier-meeting" data-room-number=<%= "#{meeting.room.id}" %>></h1>
-
-            <div class="row">
-              <div id="room-id-<%= "#{meeting.room.id}" %>">
-                  <% meeting.room.messages.sort_by(&:created_at).each do |message| %>
-                    <%= render partial: "/messages/message", locals: {message: message} %>
-                <% end %>
-
-              </div>
-            </div>
-
-            <div class="row">
-              <form style="width: 100%">
-                  <input type="text" id="meeting_comment_room" data-behavior="room_speaker_meeting"
-                    style="width: 100%" placeholder="Meeting Comment - type in here & press RETURN to save...">
-              </form>
-            </div>
-
+    <%= text_area_tag :notes, meeting.notes, class: "updateStudentNotes", rows: 5, style: 'width:100%' %>
   </div>
 </div>

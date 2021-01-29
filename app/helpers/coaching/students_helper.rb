@@ -21,22 +21,19 @@ module Coaching::StudentsHelper
   end
 
   def hf_meeting_tags_for_select
-    [
-      ["Academic Advising"],
-      ["Goal Setting/Updating"],
-      ["Wellness Check"],
-      ["Monitoring EPAs"],
-      ["Residency Advising Follow-up"],
-      ["USMLE - Step1"],
-      ["USMLE - Step 2 CK"],
-      ["USMLE - Stpe 2 CS"],
-      ["Board Studying"],
-      ["Rotation Scheduling"],
-      ["Remediation"],
-      ["MSPE"],
-      ["Other"]
-
-    ]
+    return [["Academic Advising"],
+              ["Goal Setting/Updating"],
+              ["Wellness Check"],
+              ["Monitoring EPAs"],
+              ["Residency Advising Follow-up"],
+              ["USMLE - Step1"],
+              ["USMLE - Step 2 CK"],
+              ["USMLE - Stpe 2 CS"],
+              ["Board Studying"],
+              ["Rotation Scheduling"],
+              ["Remediation"],
+              ["MSPE"],
+              ["Other"]]
   end
 
 

@@ -7,8 +7,9 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     #@events = Event.where('start_date > ?', DateTime.now)
-    @events = Event.all.order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
-    @events.each do |event|      
+    advisor = Advisor.find_by(email: current_user.email)
+    @events = Event.where(advisor_id: advisor.id).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    @events.each do |event|
       if !event.user_id.nil?
         full_name = event.user.full_name  #hf_full_name (event.id)
         event.title = event.title + ' - ' + full_name
@@ -99,7 +100,8 @@ class EventsController < ApplicationController
       description = data[0]
       start_date = hf_format_datetime(data[1].gsub("at ", ""))
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
-      Event.create(title: title, description: description, start_date: start_date, end_date: end_date)
+      advisor_id = data[3].to_i
+      Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
 
     end
 

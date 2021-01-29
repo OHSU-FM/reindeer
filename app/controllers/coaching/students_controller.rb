@@ -54,13 +54,14 @@ module Coaching
 
         @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
 
-        @meetings = @student.meetings
+        @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
         @advisors = Advisor.all
-        @events = Event.where('start_date > ?', DateTime.now)
+        @events = Event.where('start_date > ?', DateTime.now).order(:id )
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
+        @event_students = Event.where('start_date > ?', DateTime.now).where.not(user_id: [nil, ""]).order(:id)
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
 
         if current_user.student? && @student != current_user

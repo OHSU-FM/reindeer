@@ -278,3 +278,20 @@ $paper:    #D5D5D5;
 .field_with_errors {
    display: inline
  }
+
+ 
+ .panel-title > a:before {
+     float: right !important;
+     font-family: FontAwesome;
+     content:"\f068";
+     padding-right: 5px;
+ }
+ .panel-title > a.collapsed:before {
+     float: right !important;
+     content:"\f067";
+ }
+ .panel-title > a:hover,
+ .panel-title > a:active,
+ .panel-title > a:focus  {
+     text-decoration:none;
+ }

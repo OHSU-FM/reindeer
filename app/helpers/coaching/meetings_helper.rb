@@ -1,5 +1,23 @@
 module Coaching::MeetingsHelper
 
+  def hf_get_start_time (event_id)
+    event = Event.find_by(id: event_id)
+    if event.nil?
+      return "N/A"
+    else
+      return event.start_date
+    end
+  end
+
+  def hf_get_advisor(advisor_id)
+    if !advisor_id.nil?
+      advisor = Advisor.find_by(id: advisor_id)
+      return advisor.name + " / " + advisor.advisor_type
+    else
+      return "N/A"
+    end 
+  end
+
   def hf_format_subjects(subjects)
     subjects.reject!(&:blank?)
     return subjects.to_csv.gsub(",", "/")
@@ -36,7 +54,7 @@ module Coaching::MeetingsHelper
     ]
   end
 
-  def hf_career_advisor_outcomes_for_select
+  def hf_career_advisor_discussed_for_select
       [
         ["Meet & Greet (Introduction)"],
         ["General career advising and specialty exploration for undecided student"],
