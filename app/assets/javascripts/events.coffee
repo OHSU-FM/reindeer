@@ -1,6 +1,40 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
+dateName = (yyyy, mm, dd) ->
+
+  monthNames = [
+    'January'
+    'February'
+    'March'
+    'April'
+    'May'
+    'June'
+    'July'
+    'August'
+    'September'
+    'October'
+    'November'
+    'December'
+  ]
+  dayNames = [
+    'Sunday'
+    'Monday'
+    'Tuesday'
+    'Wednesday'
+    'Thursday'
+    'Friday'
+    'Saturday'
+  ]
+  today = new Date(yyyy, mm-1, dd)
+  dd = today.getDate()
+  dayname = dayNames[today.getDay()]
+  mm = monthNames[today.getMonth()]
+  yyyy = today.getFullYear()
+  fullDate = dayname + ' ' + dd + ' ' + mm + ' ' + yyyy
+  #alert 'the current date is: ' + fullDate
+  return dayname
+
 $ ->
   $('#advisor_type').change ->
     advisorType = @value
@@ -19,6 +53,12 @@ $ ->
 
 appointments = []
 $(document).ready ->
+  yyyy = $("#start_date_start_date_1i").val()
+  mm = $("#start_date_start_date_2i").val()
+  dd = $("#start_date_start_date_3i").val()
+  $("#start_weekday").val(dateName(yyyy, mm, dd))
+  $("#end_weekday").val(dateName(yyyy, mm, dd))
+
   $("#startDate").val(new Date().toJSON().slice(0,19))
 
   $('#check_all').click ->
@@ -27,6 +67,23 @@ $(document).ready ->
 
   $('#calendar').fullCalendar events: '/events.json'
   console.log ("Inside events.coffee!")
+
+  $('[id^="start_date_start_date"]').change ->
+    yyyy = $("#start_date_start_date_1i").val()
+    mm = $("#start_date_start_date_2i").val()
+    dd = $("#start_date_start_date_3i").val()
+    #alert("YYYY+MM+DD: " + yyyy + "/" + mm + "/" + dd)
+    $("#end_date_end_date_1i").val($("#start_date_start_date_1i").val())
+    $("#end_date_end_date_2i").val($("#start_date_start_date_2i").val())
+    $("#end_date_end_date_3i").val($("#start_date_start_date_3i").val())
+    $("#start_weekday").val(dateName(yyyy, mm, dd))
+    $("#end_weekday").val(dateName(yyyy, mm, dd))
+    #alert(dateName(yyyy, mm, dd))
+
+    # alert("Start_Date: " + yyyy + "/" + mm + "/" + dd )
+    # dayInformation = String(moment(yyyy+"-"+mm+"-"+dd))
+    # alert(dayInformation)
+
   #$('#calendar').fullCalendar({ });
   # $('#SaveAll').click ->
   #   $.each $('input[name=\'checkbox\']:checked'), ->

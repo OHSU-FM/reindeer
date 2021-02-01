@@ -30,7 +30,7 @@ $(document).ready ->
       selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
       selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text()
       selection = selectedAdvisorText   #selectedAdvisorType + " Advisor - " + selectedAdvisorText
-      alert("selection: " + selection)
+      #
       dataset = $('#EventsTable tbody').find('tr')
       # show all rows first
       dataset.show()

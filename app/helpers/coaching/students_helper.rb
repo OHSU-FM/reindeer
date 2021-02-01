@@ -64,15 +64,15 @@ module Coaching::StudentsHelper
 
   def hf_get_label (current_user)
     if  current_user.coaching_type == 'student'
-      return " #{current_user.full_name}"
+      return " #{current_user.full_name} - #{hf_get_cohort(current_user)}"
     elsif current_user.coaching_type == 'admin' and params[:email].present?
       @student = User.find_by("email = ?", params[:email])
-      return "Student: #{@student.full_name}"
-    elsif current_user.coaching_type == 'admin' and params[:slug].present?
+      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
+    elsif current_user.coaching_type == 'dean' and params[:slug].present?
       @student = User.find_by("username = ?", params[:slug])
-      return "Student: #{@student.full_name}"
+      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
     else
-      return "Student: #{@student.full_name}"
+      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
     end
   end
 
@@ -93,8 +93,10 @@ module Coaching::StudentsHelper
       return "MD24"
     elsif student.permission_group.title.include? "Med25"
       return "MD25"
+    elsif student.permission_group.title.include? "Med26"
+      return "MD26"
     else
-      return "Test User"
+      return "Invalid Cohort!"
     end
   end
 

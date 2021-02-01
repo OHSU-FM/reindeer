@@ -52,7 +52,7 @@ module Coaching
 
         @@student_g = @student
 
-        @goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
+        #@goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
 
         @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
@@ -61,8 +61,9 @@ module Coaching
         @events = Event.where('start_date > ?', DateTime.now).order(:id )
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
-        @event_students = Event.where('start_date > ?', DateTime.now).where.not(user_id: [nil, ""]).order(:id)
+
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
+        @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).where.not(user_id: [nil, ""]).order(:id)
 
         if current_user.student? && @student != current_user
 
@@ -75,12 +76,21 @@ module Coaching
           # exclude Med18, Med19 & Med20
           @cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
            #@coaches = @cohorts.map(&:owner).uniq!
-           @students = @cohorts.map(&:users).flatten
-
-          #@students = Event.where('start_date > ?', DateTime.now).where.not(user_id: nil).includes(:user).map(&:user).flatten
-
-
-
+           #@students = @cohorts.map(&:users).flatten
+           advisor = Advisor.find_by(email: current_user.email)
+           if !advisor.nil?
+             @students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: nil).includes(:user).map(&:user).flatten.uniq!
+             @event_students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).order(:id)
+             if @students.nil?
+               #@students = Event.where(advisor_id: advisor.id).where.not(user_id: nil).includes(:user).map(&:user).flatten.uniq!
+               @event_students = nil #Event.where('start_date > ?', DateTime.now).where.not(user_id: [nil, ""]).order(:id)
+               @students = @cohorts.map(&:users).flatten
+             end
+           else
+             @students = @cohorts.map(&:users).flatten
+             #@students = Event.where('start_date > ?', DateTime.now).where.not(user_id: nil).includes(:user).map(&:user).flatten.uniq!
+            byebug
+           end
 
         end
       end

@@ -8,7 +8,11 @@ class EventsController < ApplicationController
   def index
     #@events = Event.where('start_date > ?', DateTime.now)
     advisor = Advisor.find_by(email: current_user.email)
-    @events = Event.where(advisor_id: advisor.id).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    if !advisor.nil?
+      @events = Event.where(advisor_id: advisor.id).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    else
+      @events = Event.where.not(user_id: nil).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    end
     @events.each do |event|
       if !event.user_id.nil?
         full_name = event.user.full_name  #hf_full_name (event.id)

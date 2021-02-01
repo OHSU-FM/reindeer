@@ -104,7 +104,7 @@
 
 <div class="detail-section">
   <h4><font color="#4c0946">Meeting Status </font></h4>
-  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "Meeting Canceled", "Rescheduled"],
+  <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "Meeting Canceled", "Rescheduled", "No Show"],
      meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %>
   </div>
   <div><i>Advisor Type: <b><%= meeting.advisor_type %> </b></i></div>
