@@ -1,6 +1,6 @@
 <div class="flex-child">
   <ul class="list-group list-group-root">
-    <% @permission_groups.each do |group| %>
+    <% @permission_groups.sort.each do |group| %>
       <a href="#<%= group.id %>" class="list-group-item" data-toggle="collapse"><%= group.title %></a>
 
       <div class="list-group collapse" id="<%= group.id %>">

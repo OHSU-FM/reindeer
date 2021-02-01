@@ -3,7 +3,6 @@
 class CoachingController < ApplicationController
   def index
      email = params[:email]
-
     if current_user.student?
       redirect_to coaching_student_path(current_user)
     elsif current_user.coach?

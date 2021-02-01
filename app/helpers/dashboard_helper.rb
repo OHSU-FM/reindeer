@@ -23,37 +23,30 @@ module DashboardHelper
   end
 
   def hf_get_events(meetings)
-    if meetings.empty?
-      return []
-    end
-
     if current_user.coaching_type == 'student'
       events_array = []
       meetings.each do |meeting|
-        events = Event.where("id = ? and start_date >= ?", meeting.event_id, Date.today)
+        events = Event.where("id = ? and start_date > ?", meeting.event_id, Date.today)
         if !events.empty?
           events_array.push events.first
         end
       end
       return events_array
-    elsif current_user.coaching_type == 'dean' and !meetings.empty?
+    elsif current_user.coaching_type == 'dean' and meetings.empty?
         advisor = Advisor.find_by(email: current_user.email)
         if advisor.nil?
           return []
         end
-        # meetings = Coaching::Meeting.where(advisor_id: advisor.id)
-        # events_array = []
-
+        meetings = Coaching::Meeting.where(advisor_id: advisor.id)
+        events_array = []
         meetings.each do |meeting|
-          events = Event.where("id = ? and start_date >= ?", meeting.event_id, Date.today)
-
+          events = Event.where("id = ? and start_date > ?", meeting.event_id, Date.today)
           if !events.empty?
             events_array.push events.first
             if events_array.count == 8
               return events_array
             end
           end
-
         end
         return events_array
 

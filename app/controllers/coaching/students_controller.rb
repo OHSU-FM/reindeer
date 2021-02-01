@@ -79,17 +79,17 @@ module Coaching
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
            if !advisor.nil?
-             @students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: nil).includes(:user).map(&:user).flatten.uniq!
-             @event_students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).order(:id)
+             @students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              if @students.nil?
                #@students = Event.where(advisor_id: advisor.id).where.not(user_id: nil).includes(:user).map(&:user).flatten.uniq!
-               @event_students = nil #Event.where('start_date > ?', DateTime.now).where.not(user_id: [nil, ""]).order(:id)
+               #@event_students = nil #Event.where('start_date > ?', DateTime.now).where.not(user_id: [nil, ""]).order(:id)
+               @event_students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).order(:id)
                @students = @cohorts.map(&:users).flatten
              end
            else
              @students = @cohorts.map(&:users).flatten
              #@students = Event.where('start_date > ?', DateTime.now).where.not(user_id: nil).includes(:user).map(&:user).flatten.uniq!
-            byebug
+            #byebug
            end
 
         end

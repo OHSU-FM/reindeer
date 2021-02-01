@@ -14,7 +14,7 @@
       <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
     </tr>
   </thead>
-  <% @advisors.each do |advisor| %>
+  <% @advisors.sort_by(&:advisor_type).each do |advisor| %>
     <tr>
       <td><%= advisor.advisor_type %></td>
       <td><%= advisor.name %></td>
