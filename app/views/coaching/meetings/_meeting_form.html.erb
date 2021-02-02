@@ -7,7 +7,7 @@
 </div>
 
 <div hidden>
-  <div class="advisors-details" data-advisors="<%= @advisors.to_json %>">
+  <div class="advisors-details" data-advisors="<%= @advisors.sort_by(&:name).to_json %>">
   </div>
 </div>
 
