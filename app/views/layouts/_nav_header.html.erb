@@ -67,12 +67,9 @@
         <% end %>
 
         <% if can? :list, LimeSurvey %>
-
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
             <%= nav_link_to(hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank')  %>
           <% end %>
-
-
 
           <% if current_user.coaching_type == "coach" and params[:slug].present? %>
               <% temp_pk = params[:slug] + "@ohsu.edu" %>

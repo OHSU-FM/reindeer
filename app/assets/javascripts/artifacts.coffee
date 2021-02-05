@@ -46,6 +46,10 @@ epa_codes = (category_code) ->
             cat_array.push {id: "Contract 1", value: "Contract 1"}
             cat_array.push {id: "Contract 2", value: "Contract 2"}
             cat_array.push {id: "Contract 3", value: "Contract 3"}
+  else if category_code == "OASIS Documents"
+            cat_array = []
+            cat_array.push {id: "IPAS", value: "IPAS"}
+            cat_array.push {id: "IPPS", value: "IPPS"}                     
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}

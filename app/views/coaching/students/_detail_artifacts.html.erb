@@ -1,0 +1,61 @@
+<br />
+<div class="row">
+    <div class="col-sm-10">
+      <table class="responsive nowrap table table-hover" id="artifacts" >
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Action</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% artifacts.each do |artifact| %>
+          <tr>
+            <td><%= artifact.title %></td>
+            <td><%= artifact.content %> </td>
+            <td>
+              <% if current_user.coaching_type != 'student' or !artifact.content.to_s.include? "Progress Board" %>
+                <%= link_to 'Destroy Artifact', artifact, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
+              <% if current_user.coaching_type == 'admin' %>
+                /
+                <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
+              <% end %>
+            </td>
+            <td>
+              <table class="responsive nowrap table table-hover" id="artifacts-table2"  >
+                <% if artifact.documents.attached? %>
+                  <tr>
+                    <th>File Name</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                  </tr>
+                  <% artifact.documents.each do |document| %>
+                    <tr>
+                      <td> <%= document.filename %> </td>
+                      <td> <%= artifact.created_at.strftime("%m/%d/%Y") %> </td>
+                      <td>
+                        <%= link_to 'View', url_for(document), target: :_blank  %>
+                        /
+                        <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                         <% if ['admin', 'dean'].include? current_user.coaching_type %>
+                            /
+                            <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
+                         <% elsif current_user.id == artifact.user_id %>
+                            /
+                            <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
+                         <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+             </table>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>

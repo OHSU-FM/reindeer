@@ -1,12 +1,8 @@
 <h2>CSL Evaluations</h2>
-
-
 <%= form_tag(csl_feedbacks_index_path, method: "get",  class: 'navbar-form navbar-left', id: 'CslFeedbackForm') do %>
-
   <div class="form-group">
     <b><%= params[:cohort] %>  Student</b> <%= select_tag 'student_id', options_for_select(@cohort_students.collect{ |u| [u.full_name, u.id] }, selected: params[:user_id]) %>
   </div>
-
 <% end %>
 
-  <%= render partial: "csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+<%= render partial: "csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>

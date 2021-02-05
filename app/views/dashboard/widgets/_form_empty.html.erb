@@ -19,7 +19,7 @@
                     <th data-data="start_date">Start date</th>
                     <th data-data="end_date">End date</th>
                   </tr>
-                  <% events.sort.each do |event| %>
+                  <% events.sort_by(&:start_date).each do |event| %>
                     <tr>
                       <% if current_user.coaching_type == 'dean' %>
                           <td><%= User.find(event.user_id).full_name %></td>

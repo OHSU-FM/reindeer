@@ -6,6 +6,9 @@
   <td><%= schedule_dateTime == "N/A" ? "N/A" : schedule_dateTime.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
   <td><%= hf_get_advisor(meeting.advisor_id) %> </td>
   <td><%= link_to 'View Details', show_detail_coaching_meeting_path(meeting), remote: true, class: "btn btn-success" %></td>
+  <% if schedule_dateTime != 'N/A' and current_user.coaching_type == 'student' %>
+    <td><%= link_to 'Upload IPAS/IPPS', artifacts_path, target: '_blank', class: "btn btn-info"  %></td>
+  <% end %>
   <% if schedule_dateTime != 'N/A' and schedule_dateTime.to_i > DateTime.now.to_i %>
     <td><%= link_to "Delete/Cancel Appointment", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-danger", data: { confirm: 'Are you sure?' } %></td>
   <% end %>
