@@ -14,7 +14,15 @@
           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
               <div>
-                  <%= collection_check_boxes(:meeting, :subject, hf_meeting_tags_for_select, :first, :first, checked: meeting.subject) do |b| %>
+                <% if meeting.advisor_type == 'Career' %>
+                  <% select_options = hf_career_primary_for_select%>
+                <% elsif meeting.advisor_type == 'Academic'%>
+                  <% select_options = hf_academic_primary_for_select %>
+                <% else %>
+                  <% select_options = hf_meeting_tags_for_select %>
+                <% end %>
+
+                  <%= collection_check_boxes(:meeting, :subject, select_options, :first, :first, checked: meeting.subject) do |b| %>
                     <%= b.check_box(checked: true, class: 'MyCheckBox') %>
                     <b> <%= b.text %> </b> <br />
                   <% end %>

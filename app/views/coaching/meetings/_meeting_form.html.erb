@@ -32,10 +32,6 @@
     <%= f.label :subject, "Primary Reason(s)", class: "control-label col-sm-4" %><br />
     <div class="col-sm-6" id='coaching_meeting_subjects'>
 
-        <%= f.collection_check_boxes(:subject,hf_meeting_tags_for_select, :first, :first, checked: true) do |c| %>
-            <%= c.check_box %>
-            <b> <%= c.text %> </b> <br />
-           <% end %>
     </div>
   </div>
 

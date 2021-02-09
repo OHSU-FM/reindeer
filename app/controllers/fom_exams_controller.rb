@@ -55,9 +55,11 @@ class FomExamsController < ApplicationController
   def display_fom
 
     if session[:user_id].present?  #current_user.admin_or_higher?
-      if session[:user_id] == current_user.id or current_user.coaching_type == 'dean' or current_user.coaching_type == 'coach'
+      if session[:user_id] == current_user.id or current_user.coaching_type == 'dean' or
+        current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
-       @course_code = session[:course_code]  #params[:course_code]
+       @course_code = params[:course_code] #session[:course_code]  #params[:course_code]
+
        @comp_keys = FomExam.comp_keys
        student  = User.find(session[:user_id])
        @student_email = student.email

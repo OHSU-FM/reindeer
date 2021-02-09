@@ -25,6 +25,9 @@ module DashboardHelper
   def hf_get_events(meetings)
     if current_user.coaching_type == 'student'
       events_array = []
+      if meetings.nil?
+        return events_array
+      end 
       meetings.each do |meeting|
         events = Event.where("id = ? and start_date > ?", meeting.event_id, Date.today)
         if !events.empty?

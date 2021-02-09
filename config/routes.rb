@@ -68,13 +68,14 @@ Rails.application.routes.draw do
   end
 
   #resources :user do
-    get "/fom_exams/display_fom",  controller: "fom_exams", action: "display_form", to: 'fom_exams#display_fom'
+    #post "/fom_exams/display_fom",  controller: "fom_exams", action: "display_form", to: 'fom_exams#display_fom'
   #end
 
 resource :fom_exams do
     member do
       post 'send_alerts'
       get 'send_alerts'
+      get 'display_fom'
     end
 end
 

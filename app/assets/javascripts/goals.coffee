@@ -54,7 +54,7 @@ $(document).on 'click', '#SaveMeeting', (e) ->
     #alert 'coaching_type (goals.coffee): ' + coaching_type
     $('#cs-detail *').prop 'disabled', false  #enable all unless it is a student
     if coaching_type == 'student'
-      $('.MyCheckBox').prop('disabled', true)
+      #$('.MyCheckBox').prop('disabled', true)  # enable as student can modify
       $('.MyCheckBoxAdvisorDiscussed').prop('disabled', true)
       $('.MyCheckBoxAdvisorOutcomes').prop('disabled', true)
       $("input[type=text]").prop('disabled', true)

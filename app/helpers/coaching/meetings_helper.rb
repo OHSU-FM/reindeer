@@ -15,7 +15,7 @@ module Coaching::MeetingsHelper
       return advisor.name + " / " + advisor.advisor_type
     else
       return "N/A"
-    end 
+    end
   end
 
   def hf_format_subjects(subjects)
@@ -40,6 +40,39 @@ module Coaching::MeetingsHelper
     else
       return "", ""
     end
+  end
+
+  def hf_academic_primary_for_select
+    [
+      ["Goal Setting/Updated IPAS"],
+      ["General Learning/Study Strategies"],
+      ["General Assessment/Test-Taking Strategies"],
+      ["Remediation Support"],
+      ["Time Management During Blocks/Rotations"],
+      ["NBME exams – Comp 4 or Clinical Self-Assessments"],
+      ["USMLE – Step 1"],
+      ["USMLE - Step 2 CK"],
+      ["Clinical Skill Assessments – CSAs, OSCEs, CPX"],
+      ["Other"]
+    ]
+  end
+
+  def hf_career_primary_for_select
+    [
+      ["Goal Setting/Updated IPPS"],
+      ["General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?"],
+      ["Electives/Rotation Scheduling Advising"],
+      ["Residency Application (ERAS) General Advice"],
+      ["Residency Application - Personal Statement Advice"],
+      ["Residency Application - Letters of Recommendation Advice"],
+      ["Residency Application – Selecting GME Programs to Apply To"],
+      ["Residency Application – Interviewing Tips/Best Practices"],
+      ["Residency Application – Completing My Rank Order List"],
+      ['Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'],
+      ['Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'],
+      ['Alternate Careers Advising – "After graduation, what options besides GME can I explore?"']
+    ]
+
   end
 
   def hf_academic_advisor_discussed_for_select
