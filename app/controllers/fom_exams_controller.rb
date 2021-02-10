@@ -58,8 +58,7 @@ class FomExamsController < ApplicationController
       if session[:user_id] == current_user.id or current_user.coaching_type == 'dean' or
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
-       @course_code = params[:course_code] #session[:course_code]  #params[:course_code]
-
+       @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
        @comp_keys = FomExam.comp_keys
        student  = User.find(session[:user_id])
        @student_email = student.email
@@ -67,6 +66,7 @@ class FomExamsController < ApplicationController
        @coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
+
        @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(session[:user_id], session[:attach_id], student.permission_group_id, @course_code )
 
        @failed_comps = hf_scan_failed_score(@comp_exams)

@@ -9,7 +9,7 @@ class StudentAssessmentsController < ApplicationController
 
     if params[:id].present?
       @id = params[:id]
-      @students ||= Cohort.find(params[:id]).users.select(:id, :email, :username, :full_name).order(:full_name)
+      @students ||= User.where(permission_group_id: params[:id]).select(:id, :email, :username, :full_name).order(:full_name)
     end
 
     if params[:email].present?
@@ -42,7 +42,7 @@ class StudentAssessmentsController < ApplicationController
       if current_user.coaching_type == 'coach'
         @cohorts_menu ||= current_user.cohorts.where("permission_group_id >= ?", 13).order(:title)
       elsif current_user.dean_or_higher?
-          @cohorts_menu ||= Cohort.where("permission_group_id >= ?", 13).order(:title).uniq
+          @cohorts_menu ||= PermissionGroup.where("id >= ? and id <> 15", 13).order(:title).uniq
       end
   end
 

@@ -15,7 +15,23 @@ $(document).ready ->
       $('#SearchForm').attr('onsubmit','return true;')
       return
   $('#SearchForm').attr('onsubmit','return false;')
-  console.log ("inside searches cofffeescript!")
+
+  # $('#course_code a').click ->
+  #   courseCode = $(this).data("course-code")
+  #   alert ("Search -> courseCode: " + courseCode)
+  #   $.ajax
+  #     dataType: 'json'
+  #     type: 'GET'
+  #     url: '/fom_exams/display_fom'
+  #     data: course_code:  JSON.stringify(courseCode)
+  #     success: (data) ->
+  #       alert 'data: ' + JSON.stringify(data)
+  #       return
+  #     error: (request, error) ->
+  #       alert 'Request Reviews: ' + JSON.stringify(request)
+  #       return
+  #
+  #   return
 
 
 ## Meeting Form

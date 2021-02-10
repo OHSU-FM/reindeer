@@ -186,7 +186,7 @@ $paper:    #D5D5D5;
   &.show-detail {
     flex: 1 6 auto;
     order: 3;
-    width: 650px;
+    width: 850px;
     transition: width 0.3s ease-in;
     -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
     -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
@@ -221,7 +221,7 @@ $paper:    #D5D5D5;
   }
 }
 
-@media all and (max-width: 640px) {
+@media all and (max-width: 840px) {
   .container-flex { flex-direction: column; }
 
   .container-flex #cs-goals-main,
@@ -279,7 +279,7 @@ $paper:    #D5D5D5;
    display: inline
  }
 
- 
+
  .panel-title > a:before {
      float: right !important;
      font-family: FontAwesome;
