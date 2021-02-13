@@ -75,7 +75,7 @@ resource :fom_exams do
     member do
       post 'send_alerts'
       get 'send_alerts'
-      get 'display_fom'
+      post 'display_fom'
     end
 end
 

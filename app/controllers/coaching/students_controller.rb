@@ -46,8 +46,6 @@ module Coaching
 
     def advisor_reports
 
-byebug
-
       @meetings = Meeting.where(advisor_id: params[:id]).where.not(m_status: 'No Show').group(:user_id).count if params[:id].present?
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }

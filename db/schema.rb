@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_25_175217) do
+ActiveRecord::Schema.define(version: 2021_02_13_185301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -726,10 +727,12 @@ ActiveRecord::Schema.define(version: 2021_01_25_175217) do
     t.integer "prev_permission_group_id"
     t.string "spec_program"
     t.string "sid"
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sid"], name: "index_users_on_sid", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
+    t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
   create_table "usmle_exams", force: :cascade do |t|
