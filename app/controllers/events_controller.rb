@@ -11,7 +11,7 @@ class EventsController < ApplicationController
     if !advisor.nil?
       @events = Event.where(advisor_id: advisor.id).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
     else
-      @events = Event.where.not(user_id: nil).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+      @events = Event.where('start_date > ?', DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
     end
     @events.each do |event|
       if !event.user_id.nil?

@@ -80,6 +80,15 @@ $(document).ready ->
     $("#end_weekday").val(dateName(yyyy, mm, dd))
     #alert(dateName(yyyy, mm, dd))
 
+
+  $('#myInput').on 'keyup', ->
+    value = $(this).val().toLowerCase()
+    $('#all_events_table tr').filter ->
+      $(this).toggle $(this).text().toLowerCase().indexOf(value) > -1
+      return
+    return
+
+
     # alert("Start_Date: " + yyyy + "/" + mm + "/" + dd )
     # dayInformation = String(moment(yyyy+"-"+mm+"-"+dd))
     # alert(dayInformation)

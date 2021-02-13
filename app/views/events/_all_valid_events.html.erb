@@ -1,5 +1,7 @@
-<%= will_paginate @events %>
-<table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+<p>Type something in the input field to search the table for Names (lastLame, firstName):</p>
+<input class="form-control" id="myInput" type="text" placeholder="Search..">
+ <% # =will_paginate @events %> 
+<table class="responsive nowrap table table-hover" data-toggle="table" id="all_events_table" data-sort="true" data-url="<%= url_for(format: :json) %>">
   <thead>
     <tr>
       <th data-data="title">Title</th>

@@ -93,6 +93,7 @@ end
         post 'search_goals'
         post 'completed_goals'
         post 'search_meetings'
+        post 'advisor_reports'
       end
     end
 

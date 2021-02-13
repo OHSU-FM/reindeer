@@ -1,6 +1,6 @@
 class AdvisorsController < ApplicationController
   before_action :set_advisor, only: [:show, :edit, :update, :destroy]
-  respond_to :html, :json
+  respond_to :html, :json, :js
   # GET /advisors
   # GET /advisors.json
   def index
@@ -61,9 +61,6 @@ class AdvisorsController < ApplicationController
     end
   end
 
-  def get_advisors
-
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

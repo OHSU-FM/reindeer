@@ -37,7 +37,7 @@
   </div>
 
   <div id="csl-table2">
-    <% if csl_feedbacks.first.csl_title.to_s.include? "(2020)" %>
+    <% if !csl_feedbacks.nil? and csl_feedbacks.first.csl_title.to_s.include? "(2020)" %>
         <table id="csl_evaluation2" style="width: 100%;" class="table table-condensed table-striped table-hover ls_reports_filter spreadsheet-body center" >
           <tr bgcolor="F2DBD6">
             <th>Block Title</th>

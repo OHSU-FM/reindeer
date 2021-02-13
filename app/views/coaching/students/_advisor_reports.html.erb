@@ -1,0 +1,24 @@
+<div id="detail-reports">
+  <table class="responsive nowrap table table-hover" >
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th style="text-align:center"># of Meetings/Appointments </th>
+      </tr>
+    <thead>
+    <tbody>
+      <% meetings.each do |key, data| %>
+          <tr>
+              <% full_name, permission_group_title = hf_get_full_name(key) %>
+              <td><%= full_name %> - <%= permission_group_title %></td>
+              <td align="center"><%= data %></td>
+          </tr>
+      <% end %>
+      <tr>
+        <td align="right"><b>Total</b></td>
+        <td align="center"><%= meetings.values.sum %></td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

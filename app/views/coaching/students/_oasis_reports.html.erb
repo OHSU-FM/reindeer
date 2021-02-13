@@ -1,0 +1,24 @@
+<br />
+<div id="container-fluid">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <span class="float: left" >
+             <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true, style: "float: left; display: block") do %>
+                <%= label_tag :Advisor %>
+                <%= select_tag :id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "All Advisors",
+                 prompt: "Please Select an Advisor" %>
+                 <%= submit_tag "Go", name: 'advisor-reports-btn' %>
+              <% end %>
+          </span>
+      </div>
+    </div>
+
+    <div id="advisor-reports">
+      <% if !@advisor.nil? %>
+        <%= render partial: "advisor_reports", locals: {advisor: @advisor} %>
+      <% end %>
+    </div>
+
+  </div>
+</div>

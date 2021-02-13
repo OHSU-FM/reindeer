@@ -59,11 +59,12 @@ class FomExamsController < ApplicationController
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
+
        @comp_keys = FomExam.comp_keys
        student  = User.find(session[:user_id])
        @student_email = student.email
        @student_full_name = student.full_name
-       @coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
+       #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
 

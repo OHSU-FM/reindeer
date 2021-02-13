@@ -48,7 +48,7 @@
           <%= nav_link_to("Home", main_app.root_path, class: "dashboard-link") %>
         <% end %>
 
-        <% if ['admin', 'dean'].include? current_user.coaching_type %>
+        <% if ['admin', 'dean'].include? current_user.coaching_type  %>
           <div style="" class="btn-group btn navbar-btn navbar-left">
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">EG Review<b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">

@@ -44,6 +44,16 @@ module Coaching
       end
     end
 
+    def advisor_reports
+
+byebug
+
+      @meetings = Meeting.where(advisor_id: params[:id]).where.not(m_status: 'No Show').group(:user_id).count if params[:id].present?
+      respond_to do |format|
+        format.js { render action: 'advisor_reports', status: 200 }
+      end
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
@@ -57,7 +67,7 @@ module Coaching
         @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
-        @advisors = Advisor.all
+        @advisors = Advisor.where(status: 'Active')
         @events = Event.where('start_date > ?', DateTime.now).order(:id )
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])

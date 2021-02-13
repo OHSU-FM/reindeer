@@ -15,6 +15,18 @@ $ ->
     $('#cs-detail').addClass('show-detail')
     $('#loading-spinner').show()
 
+
+disable_input_fields = () ->
+  coaching_type = $('.goals-header').data('coaching-type')
+  #alert 'coaching_type (goals.coffee): ' + coaching_type
+  $('#cs-detail *').prop 'disabled', false  #enable all unless it is a student
+  if coaching_type == 'student'
+    $('.MyCheckBox').prop('disabled', false)  # enable as student can modify
+    $('.MyCheckBoxAdvisorDiscussed').prop('disabled', true)
+    $('.MyCheckBoxAdvisorOutcomes').prop('disabled', true)
+    $("input[type=text]").prop('disabled', true)
+    $('.updateAdvisorNotes').prop('disabled', true)
+
 $(document).on 'click', '#SaveMeeting', (e) ->
 #$(document).on 'change', '.status-picker', (e) ->
   detailDiv = $(e.target).closest('div.show-detail')
@@ -48,19 +60,6 @@ $(document).on 'click', '#SaveMeeting', (e) ->
       data_array.push $(this).val()
       return
     data_array
-
-  disable_input_fields = () ->
-    coaching_type = $('.goals-header').data('coaching-type')
-    #alert 'coaching_type (goals.coffee): ' + coaching_type
-    $('#cs-detail *').prop 'disabled', false  #enable all unless it is a student
-    if coaching_type == 'student'
-      #$('.MyCheckBox').prop('disabled', true)  # enable as student can modify
-      $('.MyCheckBoxAdvisorDiscussed').prop('disabled', true)
-      $('.MyCheckBoxAdvisorOutcomes').prop('disabled', true)
-      $("input[type=text]").prop('disabled', true)
-      $('.updateAdvisorNotes').prop('disabled', true)
-
-  #console.log("outcomes: " + checked_advisor_outcomes)
 
   if $(e.target).attr('data-goalId')
     objectId = $(e.target).attr('data-goalId')
@@ -136,7 +135,7 @@ $.fn.clear_previous_errors = () ->
   return
 
 $(document).ready ->
-
+  disable_input_fields()
   ua = window.navigator.userAgent;
   is_ie = /MSIE|Trident/.test(ua);
   if ( is_ie )
@@ -159,7 +158,5 @@ $(document).ready ->
   $('.panel-collapse').on 'hide.bs.collapse', ->
     $(this).siblings('.panel-heading').removeClass 'active'
     return
-
-
 
   return
