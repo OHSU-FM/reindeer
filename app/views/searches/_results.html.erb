@@ -34,10 +34,9 @@
                   <% course_code = block["course_code"] %>
                   <% if !course_code.include? "DISABLED" %>
                     <% session[:attach_id] = -1 %>
-                    <% session[:course_code] = course_code %>
-                    <% session[:user_id] = result.id %>
+
                     <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
-                            display_fom_fom_exams_path(course_code: course_code), target: '_blank') %> <br>
+                            display_fom_fom_exams_path(course_code: course_code, sid: result.sid), target: '_blank') %> <br>
                   <% else %>
                      <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
                   <% end %>

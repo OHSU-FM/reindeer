@@ -54,21 +54,22 @@ class FomExamsController < ApplicationController
 
   def display_fom
 
-    if session[:user_id].present?  #current_user.admin_or_higher?
-      if session[:user_id] == current_user.id or current_user.coaching_type == 'dean' or
+    if params[:sid].present?  #current_user.admin_or_higher?
+      if params[:sid] == current_user.sid or current_user.coaching_type == 'dean' or
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
 
+
        @comp_keys = FomExam.comp_keys
-       student  = User.find(session[:user_id])
+       student  = User.find_by(sid: params[:sid])
        @student_email = student.email
        @student_full_name = student.full_name
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
 
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(session[:user_id], session[:attach_id], student.permission_group_id, @course_code )
+       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], student.permission_group_id, @course_code )
 
        @failed_comps = hf_scan_failed_score(@comp_exams)
        block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
