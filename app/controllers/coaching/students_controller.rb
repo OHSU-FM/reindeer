@@ -45,8 +45,13 @@ module Coaching
     end
 
     def advisor_reports
+      if params[:id].present? and params[:id] != 'All'
+        @meetings = Meeting.where(advisor_id: params[:id]).where.not(m_status: 'No Show').group(:user_id).count
+      elsif params[:id].present? and params[:id] == 'All'
+        @all_advisor_flag = true
+        @meetings = Meeting.where.not(advisor_id: nil).where.not(m_status: 'No Show').order(:advisor_id).group(:advisor_id).count
+      end
 
-      @meetings = Meeting.where(advisor_id: params[:id]).where.not(m_status: 'No Show').group(:user_id).count if params[:id].present?
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
       end

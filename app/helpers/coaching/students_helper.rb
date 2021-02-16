@@ -106,5 +106,7 @@ module Coaching::StudentsHelper
       return user.full_name, permission_group_title
   end
 
-
+  def hf_get_advisor_name(advisor_id)
+    return Advisor.find(advisor_id).name 
+  end
 end
