@@ -83,7 +83,7 @@ $(document).ready ->
 
   $('#myInput').on 'keyup', ->
     value = $(this).val().toLowerCase()
-    $('#all_events_table tr').filter ->
+    $('#all_events_table tr').not('thead tr').filter ->
       $(this).toggle $(this).text().toLowerCase().indexOf(value) > -1
       return
     return

@@ -71,14 +71,13 @@ Rails.application.routes.draw do
     #post "/fom_exams/display_fom",  controller: "fom_exams", action: "display_form", to: 'fom_exams#display_fom'
   #end
 
-resource :fom_exams do
-    member do
-      post 'send_alerts'
-      get 'send_alerts'
-      post 'display_fom'
-    end
-end
-
+  resource :fom_exams do
+      collection do
+        post 'send_alerts'
+        get 'send_alerts'
+        post 'display_fom'
+      end
+  end
 
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -175,6 +174,7 @@ end
   match "/404", to: "errors#file_not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
+  match '*unmatched', to: 'application#route_not_found', via: :all
 
   get "pages/*id", to: "high_voltage/pages#show", as: :page, format: false
 

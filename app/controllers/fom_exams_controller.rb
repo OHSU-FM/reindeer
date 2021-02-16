@@ -61,6 +61,7 @@ class FomExamsController < ApplicationController
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
 
        @comp_keys = FomExam.comp_keys
+
        student  = User.find_by(uuid: params[:uuid])
        @student_email = student.email
        @student_full_name = student.full_name
@@ -81,6 +82,8 @@ class FomExamsController < ApplicationController
     respond_to do |format|
       format.html
     end
+
+
   end
 
  private
