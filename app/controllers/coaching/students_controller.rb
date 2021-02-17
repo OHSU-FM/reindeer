@@ -70,7 +70,7 @@ module Coaching
         @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
-        @advisors = Advisor.where(status: 'Active')
+        @advisors = Advisor.where(status: 'Active').order(:name)
         @events = Event.where('start_date > ?', DateTime.now).order(:id )
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
