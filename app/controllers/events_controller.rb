@@ -9,10 +9,11 @@ class EventsController < ApplicationController
     #@events = Event.where('start_date > ?', DateTime.now)
     advisor = Advisor.find_by(email: current_user.email)
     if !advisor.nil?
-      @events = Event.where(advisor_id: advisor.id).order(start_date: :desc).paginate(:page => params[:page], :per_page => 10)
+      @events = Event.where(advisor_id: advisor.id).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
     else
       @events = Event.where('start_date > ?', DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
     end
+
     @events.each do |event|
       if !event.user_id.nil?
         full_name = event.user.full_name  #hf_full_name (event.id)
@@ -82,7 +83,7 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
-    @advisors = Advisor.all
+    @advisors = Advisor.where(status: 'Active')
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]

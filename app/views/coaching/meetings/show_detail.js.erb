@@ -1,7 +1,8 @@
-$('#cs-detail').addClass('show-detail')
-$('#cs-detail').html("<%= j render partial: 'show_detail', locals: { meeting: @meeting } %>")
+$("#cs-detail").addClass("show-detail");
+$("#cs-detail").html("<%= j render partial: 'show_detail', locals: { meeting: @meeting } %>");
+
 $("tr#meetingId-<%= @meeting.id %>").addClass("active").siblings().removeClass('active');
-roomNumber = $("#room-identifier-meeting").data("room-number")
+roomNumber = $("#room-identifier-meeting").data("room-number");
 window.cableCreate(roomNumber);
 
 // to disable all input field
@@ -10,7 +11,7 @@ var coaching_type = $(".goals-header").data("coaching-type");
 //alert("coaching_type: " + coaching_type );
 $('#cs-detail *').prop('disabled', false);  //enable unless is a student
 if (coaching_type == 'student') {
-  $('.MyCheckBox').prop('disabled', true);
+  $('.MyCheckBox').prop('disabled', false);
   $('.MyCheckBoxAdvisorDiscussed').prop('disabled', true);
   $('.MyCheckBoxAdvisorOutcomes').prop('disabled', true);
   $("input[type=text]").prop('disabled', true);

@@ -10,12 +10,20 @@ module Coaching::MeetingsHelper
   end
 
   def hf_get_advisor(advisor_id)
-    if !advisor_id.nil?
-      advisor = Advisor.find_by(id: advisor_id)
-      return advisor.name + " / " + advisor.advisor_type
-    else
+    if advisor_id.to_s == ""
       return "N/A"
     end
+
+    if !advisor_id.nil?
+      advisor = Advisor.find_by(id: advisor_id)
+      if !advisor.nil?
+        return advisor.name + " / " + advisor.advisor_type
+      else
+        return "N/A"
+      end
+    end 
+
+
   end
 
   def hf_format_subjects(subjects)
@@ -24,6 +32,9 @@ module Coaching::MeetingsHelper
   end
 
   def hf_get_advisor_name(advisor_id)
+    if advisor_id.to_s == ""
+      return ""
+    end
     advisor = Advisor.find_by(id: advisor_id)
     if !advisor.nil?
       return advisor.name

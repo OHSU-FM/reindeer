@@ -34,7 +34,7 @@
           <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <h4><font color="#4c0946"><%= meeting.advisor_type %> Advisor Discussed (check all that apply): </font></h4>
+                <h4><font color="#4c0946"><%= meeting.advisor_type.to_s %> Advisor Discussed (check all that apply): </font></h4>
               </a>
             </h4>
           </div>
@@ -43,9 +43,12 @@
               <div>
                 <% if meeting.advisor_type == 'Career' %>
                   <% advisor_subjects = hf_career_advisor_discussed_for_select %>
+                <% elsif meeting.advisor_type == "Academic" %>
+                  <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
                 <% else %>
                   <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
                 <% end %>
+
                 <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
                   <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
                   <b> <%= b.text %> </b> <br />
@@ -65,7 +68,7 @@
           <div class="panel-heading" role="tab" id="headingThree">
             <h4 class="panel-title">
               <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  <h4><font color="#4c0946"><%= meeting.advisor_type %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category %></font></h4>
+                  <h4><font color="#4c0946"><%= meeting.advisor_type.to_s %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category.to_s %></font></h4>
               </a>
             </h4>
           </div>
@@ -79,6 +82,7 @@
                   <% else %>
                       <% advisor_outcomes = hf_meeting_ipas_for_select %>
                   <% end %>
+
                   <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
                     <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
                     <b> <%= b.text %> </b> <br />
@@ -115,9 +119,9 @@
   <div><i>Status: </i><%= select_tag "m_status", options_for_select(["Scheduled", "Completed", "Meeting Canceled", "Rescheduled", "No Show"],
      meeting.m_status), class: "status-picker", data: { meetingId: meeting.id } %>
   </div>
-  <div><i>Advisor Type: <b><%= meeting.advisor_type %> </b></i></div>
+  <div><i>Advisor Type: <b><%= meeting.advisor_type.to_s %> </b></i></div>
   <div><i>Advisor: <b><%= hf_get_advisor_name(meeting.advisor_id) %> </b></i></div>
-  <% start_date, end_date = hf_get_appt_dates(meeting.event_id) %>
+  <% start_date = hf_get_start_time(meeting.event_id) %>
   <div><i>Appt Start Date: <%= start_date %></i></div>
   <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %>
 </div>

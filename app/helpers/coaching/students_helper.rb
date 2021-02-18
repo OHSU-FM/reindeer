@@ -21,7 +21,7 @@ module Coaching::StudentsHelper
   end
 
   def hf_meeting_tags_for_select
-    return [["Academic Advising"],
+    return [["meeting"], ["introduction"], ["Academic Advising"],
               ["Goal Setting/Updating"],
               ["Wellness Check"],
               ["Monitoring EPAs"],
@@ -107,6 +107,6 @@ module Coaching::StudentsHelper
   end
 
   def hf_get_advisor_name(advisor_id)
-    return Advisor.find(advisor_id).name 
+    return Advisor.find(advisor_id).name
   end
 end

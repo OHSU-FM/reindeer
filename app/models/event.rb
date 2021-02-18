@@ -3,7 +3,7 @@ class Event < ApplicationRecord
   belongs_to :advisor
   belongs_to :user, inverse_of: :events
 
-  WillPaginate.per_page = 10
+  #WillPaginate.per_page = 10
 
 
   def self.enumerate_hours(start_date, end_date)
