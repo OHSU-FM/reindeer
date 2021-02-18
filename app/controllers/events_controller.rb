@@ -83,7 +83,7 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
-    @advisors = Advisor.where(status: 'Active')
+    @advisors = Advisor.where(status: 'Active').order(:name)
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]

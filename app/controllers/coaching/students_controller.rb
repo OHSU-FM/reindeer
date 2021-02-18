@@ -46,10 +46,10 @@ module Coaching
 
     def advisor_reports
       if params[:id].present? and params[:id] != 'All'
-        @meetings = Meeting.where(advisor_id: params[:id]).where.not(m_status: 'No Show').group(:user_id).count
+        @meetings = Meeting.where(advisor_id: params[:id]).group(:user_id).count
       elsif params[:id].present? and params[:id] == 'All'
         @all_advisor_flag = true
-        @meetings = Meeting.where.not(advisor_id: nil).where.not(m_status: 'No Show').order(:advisor_id).group(:advisor_id).count
+        @meetings = Meeting.where.not(advisor_id: nil).order(:advisor_id).group(:advisor_id).count
       end
 
       respond_to do |format|
@@ -70,7 +70,8 @@ module Coaching
         @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
-        @advisors = Advisor.where(status: 'Active').order(:name)
+        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name)
+
         @events = Event.where('start_date > ?', DateTime.now).order(:id )
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])

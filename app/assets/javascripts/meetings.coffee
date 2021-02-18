@@ -9,7 +9,7 @@ $ ->
         if advisors.hasOwnProperty(key)
           #alert advisors[key].name
           if advisors[key].advisor_type == advisorType
-            $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+            $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
     $('#coaching_meeting_advisor_id').val('')
