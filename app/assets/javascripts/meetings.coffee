@@ -18,6 +18,7 @@ $ ->
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
   $('#newMeetingModal').draggable handle: '.modal-header'
+  $("#meeting-submit").prop("disabled", true);    
   $ ->
     # $('#coaching_meeting_advisor_id').change ->
     #   selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
@@ -40,7 +41,10 @@ $(document).ready ->
       ).hide()
       tr_length = $('#EventsTable tbody tr:visible').length
       if tr_length == 0
+        $("#meeting-submit").prop("disabled", true);
         alert('Please select another advisor!!')
+      else
+        $("#meeting-submit").prop("disabled", false);
       return
 
 
