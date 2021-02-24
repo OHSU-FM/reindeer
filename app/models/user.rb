@@ -235,7 +235,18 @@ class User < ActiveRecord::Base
       field :cohort
       field :spec_program
       field :sid
+      field :coaching_type, :enum do
+          enum do
+            [['student'],['dean']]
+          end
+      end
+      field :subscribed, :enum do
+          enum do
+            [['Yes', true],['No', false]]
+          end
+      end
     end
+
 
     # Should be read only
     group :sign_in_details do

@@ -1,6 +1,6 @@
 class FomExam < ApplicationRecord
   belongs_to :user
-  belongs_to :user_only_fetch_email, -> {select("users.id, users.email, users.full_name")}, class_name: 'User', foreign_key: 'user_id'
+  #belongs_to :user_only_fetch_email, -> {select("users.id, users.email, users.full_name")}, class_name: 'User', foreign_key: 'user_id'
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
@@ -45,7 +45,7 @@ class FomExam < ApplicationRecord
          if row["comp1_dropped_quiz"] == 'nil'
            row["comp1_dropped_quiz"] = nil
            row["comp1_dropped_score"] = nil
-         end 
+         end
          row_hash = {}
          row_hash = row.to_hash
          row_hash.delete("email")

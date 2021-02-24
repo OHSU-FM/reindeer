@@ -7,7 +7,8 @@ class FomExamsController < ApplicationController
   include ArtifactsHelper
 
   def index
-    @artifacts = Artifact.where(user_id: params[:user_id])
+    user = User.find_by(uuid: params[:uuid])
+    @artifacts = Artifact.where(user_id: user.id)
   end
 
   def list_all_blocks
@@ -38,15 +39,43 @@ class FomExamsController < ApplicationController
   def send_alerts
     if params[:uniq_cohort].present?
       fom_label = FomLabel.last
-      @user_ids = FomExam.where(permission_group_id: params[:uniq_cohort], course_code: fom_label.course_code).pluck(:user_id)
-    elsif params[:email_message].present? #ajax
+
+      @tso_ids = User.where(subscribed: true).where.not(permission_group_id: params[:uniq_cohort]).order(:id).pluck(:id)
+      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:id).pluck(:id)
+      @user_ids = @tso_ids + @cohort_ids
+
+    elsif params[:email_message].present? # from ajax  call here
         @email_message = JSON.parse(params[:email_message])
-        FomExamMailer.notify_student(@user_ids, @email_message).now
-#byebug
+        @email_ids = @email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
+
+        @email_ids.each do |email_id|
+          email_id.each do |key, value|
+            if value != 'checkAll'
+              user_mailer = User.find(value.to_i)
+              FomExamMailer.notify_student(user_mailer, @email_message).deliver_later
+            end
+        end
+        end
     end
 
     respond_to do |format|
       format.js {render action: 'send_alerts', status: 200}
+      format.html
+    end
+  end
+
+  def unsubscribe
+    @user = User.find_by(uuid: params[:id])
+    @user.subscribed = false
+    #byebug
+    if @user.update(user_params)
+      flash[:notice] = 'Subscription Cancelled!'
+      redirect_to root_url
+    else
+      flash[:alert] = 'There was a problem'
+      render :unsubscribe
+    end
+    respond_to do |format|
       format.html
     end
 
@@ -87,5 +116,9 @@ class FomExamsController < ApplicationController
   end
 
  private
+
+ def user_params
+  params.require(:user).permit(:subscribed)
+end
 
 end

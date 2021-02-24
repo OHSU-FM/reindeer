@@ -6,13 +6,13 @@ $("#checkAll").change(function () {
 
 $('#SendAlerts').click(function(){
   var email_message = [];
-  var skip_emails = [];
+  var valid_emails = [];
   alert ('button is clicked');
 
-  $("input:checkbox:not(:checked)").each(function () {
-     skip_emails.push({user_id: $(this).val()});
+  $("input:checkbox(:checked)").each(function () {
+     valid_emails.push({user_id: $(this).val()});
   });
-  email_message.push({skip_email: skip_emails});
+  email_message.push({valid_emails: valid_emails});
 
   var from = $("#from").val();
   email_message.push({from: from});

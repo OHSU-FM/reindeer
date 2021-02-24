@@ -29,16 +29,22 @@ $(document).ready ->
       $('#EventsTable').show()
       selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
       selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text()
-      selection = selectedAdvisorText   #selectedAdvisorType + " Advisor - " + selectedAdvisorText
+      selection = selectedAdvisorText.split(" - ")#selectedAdvisorType + " Advisor - " + selectedAdvisorText
       #
       dataset = $('#EventsTable tbody').find('tr')
       # show all rows first
       dataset.show()
       # filter the rows that should be hidden
       dataset.filter((index, item) ->
-        $(item).find('td:nth-child(2)').text().indexOf(selection) == -1  # find in 2nd col
+        $(item).find('td:nth-child(2)').text().indexOf(selection[0]) == -1  # find in 2nd col
       ).hide()
+      tr_length = $('#EventsTable tbody tr:visible').length
+      if tr_length == 0
+        alert('Please select another advisor!!')
       return
+
+
+
 
     academicPrimary = [
       "Goal Setting/Updated IPAS"

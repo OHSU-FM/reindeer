@@ -66,6 +66,7 @@ Rails.application.configure do
   host = 'mail.ohsu.edu' #replace with your own url
   config.action_mailer.default_url_options = { host: host }
   config.action_mailer.raise_delivery_errors = true
+  #config.action_mailer.default_url_options = { host: 'https://redei.ohsu.edu' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

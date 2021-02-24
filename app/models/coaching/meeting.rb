@@ -9,7 +9,7 @@ class Coaching::Meeting < ApplicationRecord
   has_one :room, as: :discussable
   has_one :event
   has_one :advisor
-  validates_presence_of :subject, :date, :m_status, :location
+  validates_presence_of :subject, :date, :m_status, :location, :event_id
   validates :m_status, inclusion: { in: VALID_STATUSES }
 
   after_initialize :set_default_values, :set_default_values_for_meeting

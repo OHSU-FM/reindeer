@@ -67,15 +67,12 @@ Rails.application.routes.draw do
     end
   end
 
-  #resources :user do
-    #post "/fom_exams/display_fom",  controller: "fom_exams", action: "display_form", to: 'fom_exams#display_fom'
-  #end
-
   resource :fom_exams do
       collection do
         post 'send_alerts'
         get 'send_alerts'
-        post 'display_fom'
+        get 'display_fom'
+        get 'unsubscribe'
       end
   end
 
@@ -108,12 +105,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  # namespace :coaching do
-  #   get "/load_ipas_ipps",  controller: "meetings", action: "load_ipas_ipps"
-  # end
-
-
 
   # resources :searches, param: :search, only: [:index] do
   #   member do
@@ -174,7 +165,7 @@ Rails.application.routes.draw do
   match "/404", to: "errors#file_not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
-  match '*unmatched', to: 'application#route_not_found', via: :all
+  #match '*unmatched', to: 'application#route_not_found', via: :all   # this will break the activestorage url_for(document) - make the document not viewable.
 
   get "pages/*id", to: "high_voltage/pages#show", as: :page, format: false
 

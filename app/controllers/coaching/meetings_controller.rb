@@ -4,7 +4,7 @@ module Coaching
     helper  :all
 
     def create
-      @advisors = Advisor.all
+      @advisors = Advisor.where(status: 'Active').order(:name)
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
       Event.find(@meeting.event_id).update(user_id: @meeting.user_id)

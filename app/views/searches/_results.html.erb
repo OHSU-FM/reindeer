@@ -36,7 +36,7 @@
                     <% session[:attach_id] = -1 %>
 
                     <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
-                            display_fom_fom_exams_path(course_code: course_code, uuid: result.uuid), method: :post,  target: '_blank') %> <br>
+                            display_fom_fom_exams_path(course_code: course_code, uuid: result.uuid), method: :get,  target: '_blank') %> <br>
                   <% else %>
                      <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
                   <% end %>
