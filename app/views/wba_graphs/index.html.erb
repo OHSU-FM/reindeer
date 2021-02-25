@@ -26,28 +26,6 @@
           </div>
       </div>
     </div>
-    <div id="student_entrust" class="tab-pane fade">
-      <div class="center-div">
-          <div class="form-group">
-             <b>Cohort</b> <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
-                prompt: "Please Select Cohort" %>
-            <b>Student</b> <%= select_tag :user_id, options_for_select(@cohort_students.collect{|s| [s.full_name, s.id]}, selected: params[:user_id]),
-                prompt: "Please Select a Student" %>
-            <button type="button" class="btn btn-md btn-success" onclick="window.print();">Print to File/PDF to Save Data</button>
-          </div>
-          <div class="container">
-            <div id="entrustment">
-                <%= render partial: "get_entrustment_data" %>
-            </div>
-          </div>
 
-        </div>
-      </div>
-      <div id="review_comments" class="tab-pane fade">
-
-        <% if !@clinical_data.nil? %>
-          <%= render partial: "narrative_comments", locals: {clinical_data: @clinical_data, preceptor_data: @preceptorship_data, csl_data: @csl_data, epa_code: 'N/A'} %>
-        <% end %>
-      </div>
   </div>
 </div>

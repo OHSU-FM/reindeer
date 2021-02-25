@@ -66,9 +66,8 @@ class FomExamsController < ApplicationController
 
   def unsubscribe
     @user = User.find_by(uuid: params[:id])
-    @user.subscribed = false
-    #byebug
-    if @user.update(user_params)
+
+    if @user.update(subscribed: false)
       flash[:notice] = 'Subscription Cancelled!'
       redirect_to root_url
     else
