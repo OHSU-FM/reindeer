@@ -1,5 +1,4 @@
 class FomExamsController < ApplicationController
-
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!
 
@@ -116,8 +115,5 @@ class FomExamsController < ApplicationController
 
  private
 
- def user_params
-  params.require(:user).permit(:subscribed)
-end
 
 end

@@ -240,13 +240,9 @@ class User < ActiveRecord::Base
             [['student'],['dean']]
           end
       end
-      field :subscribed, :enum do
-          enum do
-            [['Yes', true],['No', false]]
-          end
-      end
-    end
+      field :subscribed
 
+    end
 
     # Should be read only
     group :sign_in_details do

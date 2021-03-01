@@ -8,7 +8,9 @@ module Coaching
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
       Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
-      EventMailer.notify_student(@meeting).deliver_later
+      if send_email_flag["OASIS"]["send_email"] ==  true
+        EventMailer.notify_student(@meeting).deliver_later
+      end
 
       respond_to do |format|
         if @meeting.save
@@ -32,19 +34,6 @@ module Coaching
         format.js { render action: 'get_events', status: :ok }
       end
     end
-
-    # def load_ipas_ipps
-    #
-    #   if params[:adviceCategory] == 'IPAS'
-    #     @load_advice_subjects = hf_meeting_ipas_for_select
-    #   else
-    #     @load_advice_subjects = hf_meeting_ipps_for_select
-    #   end
-    #
-    #   respond_to do |format|
-    #     format.js
-    #   end
-    # end
 
     def edit
       @meeting = Meeting.find params[:id]
@@ -85,6 +74,11 @@ module Coaching
     end
 
     private
+
+    def send_email_flag
+      send_email_flag ||= YAML.load_file("config/OASIS_SendMail.yml")
+      return send_email_flag
+    end
 
     def meeting_params
       params.require(:coaching_meeting)
