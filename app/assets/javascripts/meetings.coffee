@@ -18,7 +18,7 @@ $ ->
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
   $('#newMeetingModal').draggable handle: '.modal-header'
-  $("#meeting-submit").prop("disabled", true);    
+  $("#meeting-submit").prop("disabled", true);
   $ ->
     # $('#coaching_meeting_advisor_id').change ->
     #   selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
@@ -46,9 +46,6 @@ $(document).ready ->
       else
         $("#meeting-submit").prop("disabled", false);
       return
-
-
-
 
     academicPrimary = [
       "Goal Setting/Updated IPAS"
@@ -91,61 +88,34 @@ $(document).ready ->
         $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
         return
 
+    $('#EventsTable tr').hide()
+    $("#filtered_by_days").find("option").css("color", "#337ab7")
+    $("#filtered_by_days").change ->
+      $('#EventsTable').show()
+      selectedFilteredValue = $('#filtered_by_days option:selected').val()
+      console.log('selectedFilteredValue: ' + selectedFilteredValue)
+      selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
+      modDate = Date.today().addDays(selectedFilteredValue)
+      dataset = $('#EventsTable tbody').find('tr')
+      dataset.show()
+      # filter the rows that should be hidden
+      dataset.each ->
+        row = $(this)
+        colAdvisor = row.find('td').eq(1).text().split(" - ")
+        colDate = row.find('td').eq(2).text().split(" - ")
+        #show all rows by default
+        show = true
+        #if from date is valid and row date is less than from date, hide the row
+        newDate = new Date(modDate)
+        orgDate = new Date(colDate[0])
+        if  (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
+          #console.log("modDate: " + modDate + "  table date: " + colDate[0])
+          show = true
+        else
+          show = false
 
-# ipas = [
-#   "Peer Tutoring"
-#   "Provost’s Student Learning Support Specialist"
-#   "Student Health & Wellness Center"
-#   "Office of Student Access / Explore accommodations"
-#   "Financial / Debt Mgr"
-#   "UME curricular leader (block, thread, course, or clinical experience director)"
-#   "Other OASIS advisor"
-#   "UME Student Affairs"
-#   "Other (text box)"
-# ]
-#
-# ipps = [
-#   "Dept-based Residency Specialty Advisor connection"
-#   "Online resources explored / encouraged (Careers in Med, Sakai, etc)"
-#   "Student Health & Wellness Center"
-#   "Office of Student Access / Explore accommodations"
-#   "Financial / Debt Mgr"
-#   "UME curricular leader (course or clinical experience director)"
-#   "Other OASIS advisor"
-#   "UME Student Affairs"
-#   "Other (text box)"
-# ]
-#
-# $ ->
-#   $('#coaching_meeting_advice_category').change ->
-#     adviceCategory = @value
-#     #alert adviceCategory
-#     if adviceCategory == 'IPAS'
-#       data = ipas
-#     else
-#       data = ipps
-#     # I'm expecting your data will be similar to this
-#     nbsp = '&nbsp'
-#     $('#coaching_meeting_subjects').empty()
-#     $.each data, (index) ->
-#       $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
-#       return
-#   return
-#
-# $ ->
-#   $('#coaching_meeting_advisor_type').change ->
-#   advisorType = @value
-#
-#   if advisorType == 'Career'
-#     data = ipps
-#   else
-#     data = ipas
-#   nbsp = '&nbsp'
-#   $('#coaching_meeting_subjects').empty()
-#   $.each data, (index) ->
-#     $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
-#     return
-# return
-
-
-  #radioVal = $("#myform input[type='radio']:checked").val()
+        if show
+          row.show()
+        else
+          row.hide()
+        return

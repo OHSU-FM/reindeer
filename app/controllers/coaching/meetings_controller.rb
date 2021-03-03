@@ -29,12 +29,6 @@ module Coaching
       end
     end
 
-    def get_events
-      respond_to do |format|
-        format.js { render action: 'get_events', status: :ok }
-      end
-    end
-
     def edit
       @meeting = Meeting.find params[:id]
 

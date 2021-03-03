@@ -64,13 +64,11 @@ class FomExamsController < ApplicationController
   end
 
   def unsubscribe
-    @user = User.find_by(uuid: params[:id])
-
-    if @user.update(subscribed: false)
-      flash[:notice] = 'Subscription Cancelled!'
+    if User.find_by(uuid: params[:id]).update(subscribed: false)
+      flash[:alert] = 'Your FoM Subscription was Cancelled!'
       redirect_to root_url
     else
-      flash[:alert] = 'There was a problem'
+      flash[:alert] = 'There was a problem!'
       render :unsubscribe
     end
     respond_to do |format|

@@ -94,6 +94,8 @@ GEM
     concurrent-ruby (1.1.7)
     crass (1.0.6)
     csv_hasher (0.1.0)
+    datejs-rails (2.0.1)
+      railties (>= 3.1)
     debug_inspector (0.0.3)
     descriptive-statistics (2.2.0)
     devise (4.6.2)
@@ -424,6 +426,7 @@ DEPENDENCIES
   coffee-rails
   composite_primary_keys
   csv_hasher
+  datejs-rails
   descriptive-statistics
   devise (~> 4.6.2)
   devise_ldap_authenticatable

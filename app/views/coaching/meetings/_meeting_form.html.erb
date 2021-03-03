@@ -20,6 +20,8 @@
 <div class="form-group">
   <div class="control-label panel panel-primary col-sm-10 col-sm-offset-2">
     <div class="panel-heading">
+      <%= label_tag "Display Previous Appointments" %>
+      <%= select_tag :filtered_by_days, options_for_select([["As to today", 0], [30,-30], [60,-60], [90,-90]]), {style: "color:purple", include_blank: "---" } %>
       <h3 class="panel-title">Available Appointments</h3>
     </div>
     <div class="panel-body scrollable-panel">

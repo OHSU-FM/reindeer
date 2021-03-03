@@ -82,6 +82,14 @@ class EventsController < ApplicationController
     end
   end
 
+  def get_events
+    @advisor_events = Event.where(advisor_id: params[:advisor_id])
+    byebug
+    respond_to do |format|
+      format.js {render action: 'get_events', status: 200}
+    end
+  end
+
   def create_batch_appointments
     @advisors = Advisor.where(status: 'Active').order(:name)
     if params[:advisor_type].present?
@@ -124,6 +132,6 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:title, :description, :start_date, :end_date, :user_id)
+      params.require(:event).permit(:title, :description, :start_date, :end_date, :user_id, :advisor_id)
     end
 end

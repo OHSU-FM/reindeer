@@ -14,6 +14,7 @@
 //= require jquery.min.js
 //= require jquery-ui
 //= require rails-ujs
+//= require date
 // turbolinks is commented out..
 // require turbolinks
 //= require calendar
