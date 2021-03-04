@@ -29,16 +29,35 @@ $(document).ready ->
     $('#coaching_meeting_advisor_id').change ->
       $('#EventsTable').show()
       selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
-      selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text()
-      selection = selectedAdvisorText.split(" - ")#selectedAdvisorType + " Advisor - " + selectedAdvisorText
-      #
+      selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
+          #
       dataset = $('#EventsTable tbody').find('tr')
       # show all rows first
+      modDate = Date.today().addDays(0)
       dataset.show()
       # filter the rows that should be hidden
-      dataset.filter((index, item) ->
-        $(item).find('td:nth-child(2)').text().indexOf(selection[0]) == -1  # find in 2nd col
-      ).hide()
+      dataset.each ->
+        row = $(this)
+        colAdvisor = row.find('td').eq(1).text().split(" - ")
+        colDate = row.find('td').eq(2).text().split(" - ")
+        #show all rows by default
+        show = true
+        #if from date is valid and row date is less than from date, hide the row
+        newDate = new Date(modDate)
+        orgDate = new Date(colDate[0])
+        if  (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
+          #console.log("modDate: " + modDate + "  table date: " + colDate[0])
+          show = true
+        else
+          show = false
+
+        if show
+          row.show()
+        else
+          row.hide()
+        return
+
+
       tr_length = $('#EventsTable tbody tr:visible').length
       if tr_length == 0
         $("#meeting-submit").prop("disabled", true);
