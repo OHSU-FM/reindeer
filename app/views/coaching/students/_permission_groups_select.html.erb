@@ -14,5 +14,17 @@
         <% end %>
       </div>
     <% end %>
+    <a href="#your_student" class="list-group-item" data-toggle="collapse"><h4><i>Your Students</i></h4></a>
+    <div class="list-group collapse" id="your_student">
+      <% @advisor_students.each do |student_id| %>
+        <% student = User.find(student_id) %>
+        <div class="list-group-item student-with-goals">
+          <%= link_to "#{student.full_name}:
+                #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
+                coaching_student_path(student) %>
+        </div>
+      <% end %>
+    </div>
   </ul>
+
 </div>

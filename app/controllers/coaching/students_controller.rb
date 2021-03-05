@@ -73,16 +73,22 @@ module Coaching
         @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name)
 
         #@events = Event.where('start_date > ?', DateTime.now).order(:id )
-        @events = Event.where('start_date > ?', Date.today-60).order(:start_date)      
+        @events = Event.where('start_date > ?', Date.today-60).order(:start_date)
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')
 
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).where.not(user_id: [nil, ""]).order(:id)
+        advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name").first
+        if !advisor.nil?
+          advisor_events = Event.where(advisor_id: advisor.id)
+          @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
+        else
+          @advisor_students = []
+        end
 
         if current_user.student? && @student != current_user
-
           redirect_to root_path and return
         elsif current_user.coach?
           @cohorts = current_user.cohorts.where("title NOT LIKE ?", "%Med18%").order('title DESC')
@@ -94,7 +100,6 @@ module Coaching
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
-
            if !advisor.nil?
              @students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).order(:id)
