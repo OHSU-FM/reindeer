@@ -1,5 +1,5 @@
 
-<%= simple_form_for(@event) do |f| %>
+<%= simple_form_for(@event, html: { class: 'form-horizontal' },wrapper: :horizontal_form) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
@@ -11,6 +11,6 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, "Update Appointment" %>
   </div>
 <% end %>

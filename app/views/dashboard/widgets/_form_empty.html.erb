@@ -22,7 +22,7 @@
                   <% events.sort_by(&:start_date).each do |event| %>
                     <tr>
                       <% if current_user.coaching_type == 'dean' %>
-                          <td><%= User.find(event.user_id).full_name %></td>
+                        <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
                       <% else %>
                           <td><%= event.description %></td>
                       <% end %>

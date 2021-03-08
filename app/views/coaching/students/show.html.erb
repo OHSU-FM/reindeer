@@ -55,6 +55,8 @@
     <div class="tab-pane" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">
       <div class="table-controls">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMeetingModal" id="newMeetingButton">Create New Appointment</button>
+        <%= link_to("<span style='font-size:16px'><i>Clinical Phase Dataset (>= Med20)</i></span>".html_safe,
+            user_competencies_path(user_id: @student.id), class: "link-to-text-color", target: '_blank') %><br>
 
         <%= form_tag search_meetings_coaching_student_path(@student), method: :post, remote: true, class: "search-bar" do %>
           <%= text_field_tag :meeting_search, params[:meeting_search], placeholder: "Search" %>

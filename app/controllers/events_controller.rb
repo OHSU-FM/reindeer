@@ -84,7 +84,6 @@ class EventsController < ApplicationController
 
   def get_events
     @advisor_events = Event.where(advisor_id: params[:advisor_id])
-    byebug
     respond_to do |format|
       format.js {render action: 'get_events', status: 200}
     end
@@ -95,7 +94,8 @@ class EventsController < ApplicationController
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
-      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date])
+      @time_slot = params[:time_slot]
+      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot])
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }

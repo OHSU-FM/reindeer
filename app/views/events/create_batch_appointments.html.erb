@@ -14,6 +14,8 @@
 
   <%= label_tag :Advisor %>
   <%= select_tag :advisor, options_for_select([], selected: params[:advisor]), include_blank: "---" , required: true  %> <br />
+  <%= label_tag "Time Slot by Mins" %>
+  <%= select_tag :time_slot, options_for_select(["15", "30", "45", "60"], selected: params[:time_slot]),  include_blank: "---", required: true %> <br />
   <%= label_tag :StartDate %>
   <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now, minute_step: 30)%><input type="text" id="start_weekday" name="start_weekday" disabled><br />
   <%= label_tag :EndDate %>

@@ -13,11 +13,13 @@
       </tr>
     </thead>
     <% i = 0 %>
+    <% time_slot = @time_slot.to_i %>
     <% @appointments.each do |appointment| %>
         <tr>
+
           <% i = i + 1 %>
           <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
-          <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+45.minutes).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
+          <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
           <% advisor_name = @advisors.collect{|a| a.name if a.id.to_s == params[:advisor]}.compact.first %>
           <% advisor_id = @advisors.collect{|a| a.id if a.id.to_s == params[:advisor]}.compact.first %>
           <td><%= @advisor_type %></td>
