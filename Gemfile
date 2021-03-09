@@ -161,4 +161,4 @@ gem 'bullet', group: 'development'
 gem 'font-awesome-sass', '~> 4.4.0'
 gem "font-awesome-rails"
 gem "will_paginate", "~> 3.0.6"
-gem 'datejs-rails'
+gem 'datejs-rails', "~> 2.0.1"
