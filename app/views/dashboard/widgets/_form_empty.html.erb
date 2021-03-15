@@ -22,12 +22,15 @@
                   <% events.sort_by(&:start_date).each do |event| %>
                     <tr>
                       <% if current_user.coaching_type == 'dean' %>
-                        <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
+                        <% if !event.user.nil? %>
+                            <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
+                            <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                            <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                        <% end %>
                       <% else %>
                           <td><%= event.description %></td>
                       <% end %>
-                      <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
-                      <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+
                     </tr>
                   <% end %>
                 </table>

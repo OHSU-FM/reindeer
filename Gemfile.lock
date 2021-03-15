@@ -426,7 +426,7 @@ DEPENDENCIES
   coffee-rails
   composite_primary_keys
   csv_hasher
-  datejs-rails
+  datejs-rails (~> 2.0.1)
   descriptive-statistics
   devise (~> 4.6.2)
   devise_ldap_authenticatable

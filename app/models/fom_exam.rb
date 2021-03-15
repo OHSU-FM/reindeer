@@ -1,6 +1,6 @@
 class FomExam < ApplicationRecord
   belongs_to :user
-  #belongs_to :user_only_fetch_email, -> {select("users.id, users.email, users.full_name")}, class_name: 'User', foreign_key: 'user_id'
+  belongs_to :user_only_fetch_email, -> {select("users.id, users.email, users.full_name")}, class_name: 'User', foreign_key: 'user_id'
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
@@ -11,7 +11,7 @@ class FomExam < ApplicationRecord
 
   def self.to_csv
       CSV.generate do |csv|
-        csv << ['user_id', 'email', 'full_name'] + column_names
+        csv << column_names + ['user_id', 'email', 'full_name']
         all.each do |result|
           csv << result.attributes.values_at(*column_names) + result.user_only_fetch_email.attributes.values
         end
