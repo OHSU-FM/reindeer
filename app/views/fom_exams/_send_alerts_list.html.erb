@@ -1,14 +1,24 @@
 <div class="form-group">
+<%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
+<%= select_tag :uniq_cohort, options_for_select([["Med24",18], ["Med23", 17]], selected: params[:uniq_cohort]),
+    prompt: "Please Select a Cohort" %> <br />
+</div>
+<div class="form-group">
   <%= label_tag :from, 'From', class: "control-label col-sm-2" %>
   <%= text_field_tag 'from', '', size: 50, value: 'headinge@ohsu.edu' %> <br />
 </div>
 <div class="form-group">
   <%= label_tag :subject, 'Subject', class: "control-label col-sm-2" %>
-  <%= text_area_tag 'subject', nil, rows: 2, cols: 100 %>
+  <%= text_field_tag 'subject', nil, size: 75, value: "re: REDEI FoM Assessment Update" %>
 </div>
 <div class="form-group">
   <%= label_tag :body_message, 'Body Message', class: "control-label col-sm-2" %>
-  <%= text_area_tag 'body_message', nil, rows: 10, cols: 100 %>
+  <textarea id="body_message" name="body_message" rows="5" cols="75">
+    Your scores are viewable on REDEI. <br /><br />
+    Thank you,<br /><br />
+    Leslie A. Haedinger, MS (haedinge@ohsu.edu)<br />
+  </textarea>
+
 </div>
 
   <% if !user_ids.nil? %>
@@ -17,7 +27,7 @@
         <%= check_box_tag "checkAll", "checkAll", false %> Check All
         <%= button_tag "Sent Alerts", id: "SendAlerts" %>
         <table class="table table-hover"  >
-          <%# <% user_ids = user_ids.sort %> %>
+
           <% i = 0 %>
           <% while i <= user_ids.count-1 %>
             <tr>
@@ -31,9 +41,7 @@
                 <% end %>
               </td>
               <% i += 1 %>
-
               <% if (i) < user_ids.count %>
-
                   <% user = User.where(id: user_ids[i]).select(:id, :full_name, :email).first %>
                   <% id = user.id %>
                   <td><%= user.full_name %> </td>
@@ -45,9 +53,15 @@
                   </td>
                   <% i += 1 %>
               <% end %>
-
             </tr>
-
+          <% end %>
+          <% cohort_ids.each do |id| %>
+            <tr>
+              <% user = User.where(id: id).select(:id, :full_name, :email).first %>
+              <td><%= user.full_name %> </td>
+              <td><%= user.email %> </td>
+              <td></td>
+            </tr>
           <% end %>
         </table>
       </div>

@@ -36,24 +36,35 @@ class FomExamsController < ApplicationController
   end
 
   def send_alerts
+
     if params[:uniq_cohort].present?
-      fom_label = FomLabel.last
-
       @tso_ids = User.where(subscribed: true).where.not(permission_group_id: params[:uniq_cohort]).order(:id).pluck(:id)
-      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:id).pluck(:id)
-      @user_ids = @tso_ids + @cohort_ids
+      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).limit(5).order(:id).pluck(:id)
 
-    elsif params[:email_message].present? # from ajax  call here
-        @email_message = JSON.parse(params[:email_message])
-        @email_ids = @email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
+      @user_ids = @tso_ids 
 
-        @email_ids.each do |email_id|
-          email_id.each do |key, value|
-            if value != 'checkAll'
-              user_mailer = User.find(value.to_i)
-              FomExamMailer.notify_student(user_mailer, @email_message).deliver_later
-            end
-        end
+elsif params[:email_message].present? # from ajax  call here
+        email_message = JSON.parse(params[:email_message])
+        uniq_cohort = email_message.select{|e| e if e["uniq_cohort"]}.first["uniq_cohort"]
+        @tso_ids = User.where(subscribed: true).where.not(permission_group_id: uniq_cohort).order(:id).pluck(:id)
+        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).limit(5).order(:id).pluck(:id)
+
+        @email_ids = email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
+        @from = email_message.select{|e| e if e["from"]}.first["from"]
+        @subject = email_message.select{|e| e if e["subject"]}.first["subject"]
+        body_message = email_message.select{|e| e if e["body_message"]}.first["body_message"]
+
+        user_ids = @email_ids.map{|x| x["user_id"]}
+        user_ids = user_ids + @cohort_ids
+
+        user_ids.each do |id|
+          if id != 'checkAll'
+            user = User.find(id.to_i)
+            hello = "Hello " + user.full_name.split(", ").last + "<br /><br />"
+            @body_message = hello + body_message
+            #@FomExamMailer.notify_student(user_mailer, @email_message).deliver_later
+            ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver
+          end
         end
     end
 

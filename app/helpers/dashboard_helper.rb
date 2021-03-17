@@ -35,7 +35,7 @@ module DashboardHelper
         end
       end
       return events_array
-    elsif current_user.coaching_type == 'dean' and meetings.empty?
+    elsif current_user.coaching_type == 'dean' #and meetings.empty?
         advisor = Advisor.find_by(email: current_user.email)
         if advisor.nil?
           return []

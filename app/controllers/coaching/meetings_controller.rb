@@ -9,7 +9,10 @@ module Coaching
       @meeting = Meeting.create meeting_params
       Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
       if send_email_flag["OASIS"]["send_email"] ==  true
-        EventMailer.notify_student(@meeting).deliver_later
+        event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
+        if !event.empty?
+          EventMailer.notify_student(@meeting).deliver_later
+        end 
       end
 
       respond_to do |format|

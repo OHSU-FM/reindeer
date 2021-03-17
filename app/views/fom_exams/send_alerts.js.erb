@@ -1,4 +1,4 @@
-$('#send-alerts-list').html("<%= j render partial: 'fom_exams/send_alerts_list', locals: { user_ids: @user_ids} %>");
+$('#send-alerts-list').html("<%= j render partial: 'fom_exams/send_alerts_list', locals: { user_ids: @user_ids, cohort_ids: @cohort_ids} %>");
 
 $("#checkAll").change(function () {
     $("input:checkbox").prop('checked', $(this).prop("checked"));
@@ -18,10 +18,13 @@ $('#SendAlerts').click(function(){
   email_message.push({from: from});
 
   var subject = $("#subject").val();
-  email_message.push({subject: subject})
+  email_message.push({subject: subject});
 
   var body_message = $("#body_message").val();
   email_message.push({body_message: body_message});
+
+  var uniq_cohort = $("#uniq_cohort").val();
+  email_message.push({uniq_cohort: uniq_cohort});
 
   $.ajax({
     type: 'post',

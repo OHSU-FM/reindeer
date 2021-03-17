@@ -19,6 +19,7 @@ $(document).ready ->
   console.log("Inside Meetings Coffee!")
   $('#newMeetingModal').draggable handle: '.modal-header'
   $("#meeting-submit").prop("disabled", true);
+
   $ ->
     # $('#coaching_meeting_advisor_id').change ->
     #   selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
@@ -127,8 +128,8 @@ $(document).ready ->
         #if from date is valid and row date is less than from date, hide the row
         newDate = new Date(modDate)
         orgDate = new Date(colDate[0])
+
         if  (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
-          #console.log("modDate: " + modDate + "  table date: " + colDate[0])
           show = true
         else
           show = false
@@ -137,4 +138,10 @@ $(document).ready ->
           row.show()
         else
           row.hide()
+
+        tr_length = $('#EventsTable tbody tr:visible').length
+        if (tr_length == 0)
+          $("#meeting-submit").prop("disabled", true)
+        else
+          $("#meeting-submit").prop("disabled", false)
         return

@@ -16,6 +16,23 @@
                 <%= render partial: "ls_reports/spreadsheet/cpx_data" %>
               </div>
           </div>
+        <% elsif !@comp.nil? %>
+          <% @comp.each do |cd| %>
+            <% if cd["course_name"].include? "CPX" %>
+              <div class="panel panel-default">
+                  <div class="panel-body">
+                    <table class="table table-striped">
+                      <tr><th>CourseName</th><td style="color:blue"><%= cd["course_name"] %></td></tr>
+                      <tr><th>StartDt</th><td><%= cd["start_date"] %></td></tr>
+                      <tr><th>EndDt</th><td><%= cd["end_date"] %></td></tr>
+                      <tr><th>Evaluator</th><td><%= cd["submit_date"] %></td></tr>
+                      <tr><th>FinalGrade</th><td><%= hf_final_grade2(cd['final_grade']) %></td></tr>
+                      <tr><th>MSPE</th><td><%= cd["mspe"] %></td></tr>
+                    </table>
+                  </div>
+              </div>
+            <% end %>
+          <% end %>
         <% end %>
     </div>
   </div>
