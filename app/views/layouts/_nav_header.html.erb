@@ -63,7 +63,13 @@
         <% end %>
 
         <% if ['admin', 'dean'].include? current_user.coaching_type %>
-            <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
+            <div style="" class="btn-group btn navbar-btn navbar-left">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">WBA Graph/Report<b class="caret"></b></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
+                <%= nav_link_to('WBA Report', wba_graphs_wba_report_path, method: :get, target: '_blank') %>
+              </ul>
+            </div>
         <% end %>
 
         <% if can? :list, LimeSurvey %>

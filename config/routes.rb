@@ -17,7 +17,8 @@ Rails.application.routes.draw do
   get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
   get 'cds_reports', to: 'cds_reports#index'
   get 'wba_graphs/index', to: 'wba_graphs#index'
-  get 'wba_graphs/show', to: 'wba_graphs#show'
+  get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
+
 
   resources :epas
 
