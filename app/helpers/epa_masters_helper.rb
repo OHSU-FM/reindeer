@@ -257,7 +257,13 @@ module EpaMastersHelper
 
   def hf_process_cohort (cohort, code)
     CohortMspe.table_name = "#{cohort.downcase}_mspes"
-    students = CohortMspe.all
+    if CohortMspe.table_exists?
+      students = CohortMspe.all
+    else
+      permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
+      students = User.where(permission_group_id: permission_group.id)
+
+    end
     if code=='EPA'
       epas_data = process_epa(students)
     else
