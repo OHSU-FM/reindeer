@@ -73,8 +73,8 @@ class Competency < ApplicationRecord
       all_blocks_results = Competency.execute_sql(all_blocks_user_sql)
 
       category_labels = all_blocks_results.rows.transpose.first  ## grab the block name
-      all_blocks_class_mean = rearrange_data(all_blocks_class_mean_results.to_hash)
-      all_blocks = rearrange_data(all_blocks_results.to_hash)
+      all_blocks_class_mean = rearrange_data(all_blocks_class_mean_results.to_a)
+      all_blocks = rearrange_data(all_blocks_results.to_a)
 
       return all_blocks, all_blocks_class_mean, category_labels
 

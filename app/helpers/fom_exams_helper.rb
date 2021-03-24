@@ -45,7 +45,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     comp_keys = FomExam.comp_keys
     hash_components.each do |comp|
       comp_keys.each do |comp_key|
-        value = comp.map{|key, value| value if key.include? comp_key and value.to_f < 70.0}.compact
+        value = comp.map{|key, value| value if key.include? comp_key and value.to_d < 70.00}.compact
         if !value.empty?
           failed_comp.push comp_key
         end
