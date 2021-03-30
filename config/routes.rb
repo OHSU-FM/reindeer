@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :events do
     collection do
       get 'create_batch_appointments', action: :create_batch_appointments, controller: 'events', to: 'events#create_batch_appointments'
+      get 'create_random_appointments', to: 'events#create_random_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
     end
   end
