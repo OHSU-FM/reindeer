@@ -14,7 +14,8 @@
     </thead>
     <% @comp.each do |cd| %>
       <% if !cd["course_name"].include? "730" and !cd["course_name"].include? "731" and !cd["course_name"].include? "770" and
-            !cd["course_name"].include? "INTS" and !cd["course_name"].include? "TRAN" and !cd["course_name"].include? "SCHI" 
+            !cd["course_name"].include? "INTS" and !cd["course_name"].include? "TRAN" and !cd["course_name"].include? "SCHI" and
+            !cd["course_name"].include? "FoM" and !cd["course_name"].include? "CPX" 
             %>
           <tr>
             <td><%= cd["course_name"] %></td>
