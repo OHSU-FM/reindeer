@@ -52,6 +52,20 @@ $ ->
   return
 
 appointments = []
+next = 1;
+window.addFormField = ->
+  addto = "#startDate" + next;
+  next = next + 1;
+  newIn = '<br /><input type="datetime-local" autocomplete="off" class="span3" id="startDate' + next + '" name="startDate' + next + '" ><button id="b'+next+'" onClick="$(this).prev().remove();$(this).remove();" class="btn btn-warning" type="button">Remove</button>';
+  newInput = $(newIn);
+  console.log(addto);
+  $(addto).after(newInput);
+  if(next>1)
+      $("button#b"+next).after(newInput);
+  #$("#field" + next).attr('data-source',$(addto).attr('data-source'));
+  $("#count").val(next);
+
+
 $(document).ready ->
   yyyy = $("#start_date_start_date_1i").val()
   mm = $("#start_date_start_date_2i").val()

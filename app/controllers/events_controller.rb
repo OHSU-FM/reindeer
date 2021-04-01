@@ -100,8 +100,27 @@ class EventsController < ApplicationController
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }
       end
-      #Time.at(@appointments.first).utc.strftime("%m/%d/%Y %T %p")
+    end
+  end
 
+  def create_random_appointments
+    @advisors = Advisor.where(status: 'Active').order(:name)
+    @advisor = Advisor.find_by(email: current_user.email)
+    if params[:time_slot].present?
+      @time_slot = params[:time_slot]
+      if @advisor.nil?
+        @advisor = Advisor.find_by(id: params[:advisor])
+      end
+      #params[:advisor] = @advisor.id.to_s  # need the advisor id for display_batch_appointments, and th id need to be string
+      @advisor_type = @advisor.advisor_type
+      # gahter up all the startDates in the params controller
+      startDates = params.as_json.to_hash.map{|key, val| val if key.include? "startDate"}.compact  #
+
+      @appointments = Event.reformat_startDate(startDates, @time_slot)
+      respond_to do |format|
+        #format.html
+        format.js { render action: 'display_batch_appointments', status: 200 }
+      end
     end
   end
 
