@@ -134,7 +134,7 @@ class FomExam < ApplicationRecord
     sql = sql.delete_suffix(", ")
     results = FomExam.execute_sql(sql + " from fom_exams, users where users.id = fom_exams.user_id and fom_exams.user_id = ? and fom_exams.course_code = ? and fom_exams.permission_group_id=?
                         order by users.full_name ASC",  user_id.to_i, course_code, permission_group_id.to_i).to_a
-    byebug
+
 
     # sql = sql.delete_suffix(", ") + " from fom_exams, users where users.id = fom_exams.user_id and " +
     #                                 " fom_exams.user_id = " + user_id + " and fom_exams.course_code = " + "'" + course_code + "' and "  +
