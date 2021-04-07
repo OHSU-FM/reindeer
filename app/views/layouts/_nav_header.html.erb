@@ -1,16 +1,10 @@
 
-<div id="nav-bar" class="navbar navbar-default <%= navbar_css_class %> navbar-fixed-top" role="navigation">
+<div id="nav-bar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
 
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-links">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
 
       <%= image_tag Settings.site.logo_header, alt: Settings.site.name_html, :size=>"50x50" %>
       <%= link_to auto_path do %>
@@ -43,21 +37,23 @@
       </div>
     </div>
     <div id="nav-links" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav pull-right">
+      <ul class="nav navbar-nav ml-auto">
         <% if can? :crud, Dashboard %>
-          <%= nav_link_to("Home", main_app.root_path, class: "dashboard-link") %>
+          <%= link_to("Home", main_app.root_path, class: "dashboard-link") %>
         <% end %>
 
         <% if ['admin', 'dean'].include? current_user.coaching_type  %>
-          <div style="" class="btn-group btn navbar-btn navbar-left">
-             <a href="#" class="dropdown-toggle" data-toggle="dropdown">EG Review<b class="caret"></b></a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-              <%= nav_link_to("EG-Review", epa_masters_path,  target: '_blank') %>
-              <%= nav_link_to('EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank') %>
-              <%= nav_link_to('EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank') %>
-              <%= nav_link_to('EPA-Q/A-Report', epa_qa_epa_masters_path, method: :get, target: '_blank') %>
-              <%= nav_link_to('WBA/EPA-Report', wba_epa_epa_masters_path, method: :get, target: '_blank') %>
-            </ul>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              EG Review
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <%= link_to "EG-Review", epa_masters_path, target: '_blank', class: "dropdown-item" %>
+              <%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank', class: "dropdown-item" %>
+              <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
+              <%= link_to 'EPA-Q/A-Report', epa_qa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
+              <%= link_to 'WBA/EPA-Report', wba_epa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
+            </div>
           </div>
 
         <% end %>
@@ -66,36 +62,36 @@
             <div style="" class="btn-group btn navbar-btn navbar-left">
                <a href="#" class="dropdown-toggle" data-toggle="dropdown">WBA Graph/Report<b class="caret"></b></a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <%= nav_link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
-                <%= nav_link_to('WBA Report', wba_graphs_wba_report_path, method: :get, target: '_blank') %>
+                <%= link_to("WBA Graphs", wba_graphs_index_path, target: '_blank') %>
+                <%= link_to('WBA Report', wba_graphs_wba_report_path, method: :get, target: '_blank') %>
               </ul>
             </div>
         <% end %>
 
         <% if can? :list, LimeSurvey %>
           <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
-            <%= nav_link_to(hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank')  %>
+            <%= link_to(hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank')  %>
           <% end %>
 
           <% if current_user.coaching_type == "coach" and params[:slug].present? %>
               <% temp_pk = params[:slug] + "@ohsu.edu" %>
               <% clinical_phase_sid = hf_get_clinical_phase_sid(temp_pk) %>
               <% if !clinical_phase_sid.nil? %>
-                  <%= nav_link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: clinical_phase_sid, pk: temp_pk),
+                  <%= link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: clinical_phase_sid, pk: temp_pk),
                      target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
               <% end %>
           <% end %>
 
-          <%= nav_link_to("OASIS System", coaching_index_path(email: @pk), target: '_blank')  %>
+          <%= link_to("OASIS System", coaching_index_path(email: @pk), target: '_blank')  %>
           <% if current_user.coaching_type == 'student' %>
-             <%= nav_link_to "Your Datasets", search_searches_path(current_user) %>
+             <%= link_to "Your Datasets", search_searches_path(current_user) %>
           <%# <% else %>
               <%# <%= render partial: "layouts/dropdown_menu_for_students" %>
           <% end %>
 
-          <%# <%= nav_link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
+          <%# <%= link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
           <% if current_user.coach_or_higher? %>
-            <%= nav_link_to "Student Assessments", student_assessments_path(user: current_user) %>
+            <%= link_to "Student Assessments", student_assessments_path(user: current_user) %>
           <% end %>
 
         <% end %>
@@ -109,12 +105,12 @@
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu">
-              <%= nav_link_to('<i class="fa fa-external-link-square"></i> Lime'.html_safe,
+              <%= link_to('<i class="fa fa-external-link-square"></i> Lime'.html_safe,
               "#{Settings.lime_url}/admin",
               :target=>'_blank') if can? :read, :lime_survey_website %>
-              <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank') if can? :access, :rails_admin %>
-              <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank') if can? :access, :rails_admin %>
-              <%= nav_link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank') if can? :access, :rails_admin %>
+              <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank') if can? :access, :rails_admin %>
+              <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank') if can? :access, :rails_admin %>
+              <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank') if can? :access, :rails_admin %>
 
               <li role="separator" class="divider"></li>
 

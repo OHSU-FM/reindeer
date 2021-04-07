@@ -27,7 +27,7 @@ class EpaMaster < ApplicationRecord
           	where epa_masters.id = epa_reviews.reviewable_id and
           	     badge_decision1 <> badge_decision2 and
           		  users.id = epa_masters.user_id and
-          		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_hash
+          		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
 
     #results = ActiveRecord::Base.connection.exec_query(sql)
     return results
@@ -41,7 +41,7 @@ class EpaMaster < ApplicationRecord
           	where epa_masters.id = epa_reviews.reviewable_id and
           	     badge_decision1 = 'Badge' and badge_decision2 = 'Badge' and
           		  users.id = epa_masters.user_id and
-          		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_hash
+          		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
 
     #results = ActiveRecord::Base.connection.exec_query(sql)
     return results
