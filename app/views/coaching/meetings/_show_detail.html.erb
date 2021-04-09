@@ -7,7 +7,7 @@
           <div class="panel-heading active" role="tab" id="headingOne">
             <h4 class="panel-title">
               <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                <h4><font color="#4c0946">Primary Reason for Appointment (check all that apply): </font></h4>
+                <h5><font color="#4c0946">Primary Reason for Appointment (check all that apply): </font></h5>
               </a>
             </h4>
           </div>
@@ -34,7 +34,7 @@
           <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
               <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <h4><font color="#4c0946"><%= meeting.advisor_type.to_s %> Advisor Discussed (check all that apply): </font></h4>
+                <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Advisor Discussed (check all that apply): </font></h5>
               </a>
             </h4>
           </div>
@@ -68,7 +68,7 @@
           <div class="panel-heading" role="tab" id="headingThree">
             <h4 class="panel-title">
               <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  <h4><font color="#4c0946"><%= meeting.advisor_type.to_s %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category.to_s %></font></h4>
+                  <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category.to_s %></font></h5>
               </a>
             </h4>
           </div>

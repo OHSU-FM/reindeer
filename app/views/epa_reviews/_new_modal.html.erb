@@ -1,23 +1,30 @@
-
-
-  <div id="newEpaReviewModal" class="modal" role="dialog"  data-backdrop="static">
-    <div class="modal-dialog modal-lg" style="width:2200px; height:1100px;">
+  <div  id="newEpaReviewModal" class="modal" tabindex="-1" >
+    <div class="modal-dialog modal-lg modal-dialog-centered"  style="max-width: 1950px!important;" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <a href="#close" class="close" data-dismiss="modal" >X</a>
-          <h4 class="modal-title modal-text-align-center" ><b><%= controller.action_name.capitalize %> Review: </b>
-              <%= @epa_review_epa %> - <%= hf_epa_desc_with_color(@epa_review_epa) %></h4>
+          <h4 class="modal-title ml-auto mr-auto" ><b><%= controller.action_name.capitalize %> Review: </b>
+              <%= @epa_review_epa %> - <%= hf_epa_desc_with_color(@epa_review_epa) %>
+          </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
         </div>
           <div class="modal-body">
               <!-- Nav tabs -->
-              <ul class="nav nav-pills">
-                  <li  class="active"><a data-toggle="tab" href="#EGReviewTab" ><b>EG Review</b></a></li>
-                  <li ><a data-toggle="tab" href="#EvidenceTab" ><b>Evidence</b></a></li>
-                  <li ><a data-toggle="tab" href="#SummaryTab" ><b>Other</b></a></li>
+              <ul id="EGReviewTabs" class="nav nav-pills" role="tablist">
+                  <li class="bold-italic nav-item waves-effect waves-light">
+                    <a class="nav-link active" data-toggle="tab" id="EGReview-Tab" href="#EGReviewTab"  role="tab" aria-controls="EGReviewTab" aria-selected="false" ><b>EG Review</b></a>
+                  </li>
+                  <li class="bold-italic nav-item waves-effect waves-light">
+                    <a class="nav-link" data-toggle="tab" id="Evidence-Tab" href="#EvidenceTab" role="tab" aria-controls="EvidenceTab" aria-selected="false"><b>Evidence</b></a>
+                  </li>
+                  <li class="bold-italic nav-item waves-effect waves-light">
+                    <a class="nav-link" data-toggle="tab" id="Summary-Tab" href="#SummaryTab" role="tab" aria-controls="SummaryTab" aria-selected="false" ><b>Other</b></a>
+                  </li>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
-                  <div id="EGReviewTab" class="tab-pane fade in active">
+                  <div id="EGReviewTab" class="tab-pane fade active show" role="tabpanel" aria-labelledby="EGReview-Tab">
                     <% if !@reviewable.nil? %>
                         <% if @reviewable.epa_reviews.count > 0  %>
                            <%= render partial: "epa_reviews/list_reviewable" %>
@@ -27,7 +34,7 @@
                     <%= render partial: "epa_reviews/form" %>
                   </div>
 
-                  <div id="SummaryTab" class="tab-pane fade" >
+                  <div id="SummaryTab" class="tab-pane fade" role="tabpanel" aria-labelledby="Summary-Tab">
                     <div class="center-div">
                       <div class="inner-div">
                           <% wba_epa_student = hf_series_data_student("EPA", @user_id, false) %>
@@ -45,7 +52,7 @@
                     </div>
                   </div>
 
-                  <div id="EvidenceTab" class="tab-pane fade" >
+                  <div id="EvidenceTab" class="tab-panel fade" role="tabpanel" aria-labelledby="Evidence-Tab" >
                     <% if @percent_complete.keys.first.include? 'epa' %>
                       <% epa_idx = @epa_review_epa.downcase %>
                     <% else %>
