@@ -90,6 +90,23 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     end
   end
 
+  def hf_export_fom_block permission_group_id, course_code
+    fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
+    row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
+    sql = "select users.full_name, "
+    row_to_hash.each do |fieldname, val|  # build sql using form label record --> customized headers
+      if fieldname != 'permission_group_id'
+        val = val.gsub(" ", "")
+        sql += fieldname + ', '  #"#{key}, "
+      end
+    end
+    sql = sql.delete_suffix(", ")
+    results = FomExam.execute_sql(sql + " from fom_exams, users where users.id = fom_exams.user_id  and fom_exams.course_code = " + "'#{course_code}'" +
+              " and fom_exams.permission_group_id=" + "#{permission_group_id} " + " order by users.full_name ASC").to_a
+
+    return results
+  end
+
   def hf_create_graph(component, class_data, avg_data,  categories)
 
     student_name = class_data.first["full_name"]  # processing student Alver

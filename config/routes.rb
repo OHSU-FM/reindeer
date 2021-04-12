@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
   get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
   get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
-
+  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams'
 
   resources :user do
     resources :preceptor_evals,  only: [:index] do

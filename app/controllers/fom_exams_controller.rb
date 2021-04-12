@@ -1,4 +1,5 @@
 class FomExamsController < ApplicationController
+  layout 'full_width_extra_large'
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!
 
@@ -19,13 +20,23 @@ class FomExamsController < ApplicationController
 
   def export_block
     if params[:permssion_group_id].present? and params[:course_code].present?
-      @export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
-      send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
+      @export_block = hf_export_fom_block(params[:permssion_group_id], params[:course_code])
+      #@export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
+      @file_name = "fom_exam_#{params[:course_code]}"
+      create_file @export_block, @file_name
+      #send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
     end
     respond_to do |format|
       format.html
     end
   end
+
+  def download_file
+      if params[:file_name].present?
+        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+      end
+  end
+
 
   def process_csv
     # @artifacts.first.documents.first.download --> works
@@ -41,9 +52,9 @@ class FomExamsController < ApplicationController
       @tso_ids = User.where(subscribed: true).where.not(permission_group_id: params[:uniq_cohort]).order(:id).pluck(:id)
       @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).limit(5).order(:id).pluck(:id)
 
-      @user_ids = @tso_ids 
+      @user_ids = @tso_ids
 
-elsif params[:email_message].present? # from ajax  call here
+    elsif params[:email_message].present? # from ajax  call here
         email_message = JSON.parse(params[:email_message])
         uniq_cohort = email_message.select{|e| e if e["uniq_cohort"]}.first["uniq_cohort"]
         @tso_ids = User.where(subscribed: true).where.not(permission_group_id: uniq_cohort).order(:id).pluck(:id)
@@ -123,6 +134,17 @@ elsif params[:email_message].present? # from ajax  call here
   end
 
  private
+
+ def create_file (in_data, in_file)
+   file_name = "#{Rails.root}/tmp/#{in_file}"
+
+   CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+     csvfile << in_data.first.keys.map{|c| c.titleize}
+     in_data.each do |row|
+       csvfile << row.values
+     end
+   end
+ end
 
 
 end

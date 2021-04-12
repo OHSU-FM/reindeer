@@ -4,7 +4,7 @@ source "https://rubygems.org"
 # Main
 ##############################
 gem "bundler", '~>2.0'
-gem 'rails', '~> 6.1.0' #'~> 5.2.2.1'
+gem 'rails', '~> 6.1.3' #'~> 5.2.2.1'
 gem "rdoc"
 #gem 'pg', '~>0.21'
 

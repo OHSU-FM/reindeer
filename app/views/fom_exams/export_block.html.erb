@@ -1,1 +1,23 @@
-<h4> Exporting Block </h4>
+<span>
+  <h4 style="text-align:center"> FoM Block: <%= params[:course_code] %> Report
+    <%= link_to ('<i class="fa fa-download"></i>').html_safe, fom_exams_download_file_path(file_name: @file_name) %>
+  </h4>
+</span>
+<table id="fomTable" class="table table-hover table-striped table-light responsive" >
+  <thead class="thead-dark">
+    <tr>
+      <% @export_block.first.keys.each do |key| %>
+        <th style="text-align:left"><%= key %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <body>
+  <% @export_block.each do |data| %>
+    <tr>
+      <% data.values.each do |val| %>
+        <td> <%= val %> </td>
+      <% end %>
+    </tr>
+  <% end %>
+  </body>
+</table>
