@@ -26,7 +26,7 @@ module Coaching
       @goal = Goal.find params[:id]
 
       respond_to do |format|
-        if @goal.update_attributes(goal_update_params)
+        if @goal.update(goal_update_params)
           format.js { render action: 'update', status: :ok }
         else
           format.js { render json: { error: @goal.errors }, status: :unprocessable_entity }

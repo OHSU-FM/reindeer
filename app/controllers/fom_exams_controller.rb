@@ -1,5 +1,4 @@
 class FomExamsController < ApplicationController
-  layout 'full_width_extra_large'
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!
 
@@ -27,7 +26,7 @@ class FomExamsController < ApplicationController
       #send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
     end
     respond_to do |format|
-      format.html
+      format.html {render  layout: 'full_width_extra_large'}
     end
   end
 

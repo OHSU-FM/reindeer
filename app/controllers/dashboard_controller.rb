@@ -62,7 +62,7 @@ class DashboardController < ApplicationController
     authorize! :update, @dash
 
     respond_to do |format|
-      if @dash.update_attributes(dashboard_params)
+      if @dash.update(dashboard_params)
         format.html{ render action: :show}
         format.json{ render json: { dash: @dash }, status: :ok }
       else

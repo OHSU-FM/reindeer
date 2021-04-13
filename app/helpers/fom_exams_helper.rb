@@ -34,7 +34,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     return str_warning if coaching_type == "student"
     failed_comps.each do |fcomp|
       if fcomp.include? comp
-        return "glyphicon glyphicon-warning-sign"
+        return "fa fa-exclamation-triangle"
       end
     end
     return str_warning

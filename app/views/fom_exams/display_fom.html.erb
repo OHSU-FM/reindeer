@@ -1,86 +1,84 @@
+  <% if !@comp_keys.nil? and @comp_keys.include? "NOT AUTHORIZED"  %>
+      <h3><%= @comp_keys %></h3>
+  <% else %>
+    <!-- Page Header -->
+    <div class="card">
+      <div class="card-header text-center">
+        <span><h4>FoM Assessments - <%= @block_desc %></h4></span>
+      </div>
+      <div class="card-body">
+        <div class="flex flex-column mb-5 mt-4 faq-section">
+          <div class="row">
+            <div class="col-md-12">
+              <div id="accordion">
 
-
-<% if !@comp_keys.nil? and @comp_keys.include? "NOT AUTHORIZED"  %>
-    <h3><%= @comp_keys %></h3>
-<% else %>
-  <!-- Page Header -->
-  <div class="card">
-    <div class="card-header text-center">
-      <span><h4>FoM Assessments - <%= @block_desc %></h4></span>
-    </div>
-    <div class="card-body">
-      <div class="flex flex-column mb-5 mt-4 faq-section">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="accordion">
-
-                <div class="card">
-                  <div class="card-header" role="tab" id="HeadingStudentInfo">
-                    <h5 class="mb-0" >
-                      <a role="button" data-toggle="collapse" href="#StudentInfo" aria-expanded="false" aria-controls="studenInfo">
-                                        Student Information - <b><%= @student_full_name %></b>
-                      </a>
-                    </h5>
-                  </div>
-                  <div id="StudentInfo" class="collapse" data-parent="#accordion" aria-labelledby="HeadingStudentInfo">
-                    <div class="card-body">
-                      <table class="responsive nowrap table table-hover" >
-                        <tbody>
-                          <tr>
-                            <td>Student</td><th><%= @student_full_name %></th>
-                          </tr>
-                          <tr>
-                            <td>Student Email</td><th><%= @student_email %></th>
-                          </tr>
-                          <tr>
-                            <td>Student UID</td><th><%= @student_uid %></th>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <div class="card">
+                    <div class="card-header" role="tab" id="HeadingStudentInfo">
+                      <h5 class="mb-0" >
+                        <a role="button" data-toggle="collapse" href="#StudentInfo" aria-expanded="false" aria-controls="studenInfo">
+                                          Student Information - <b><%= @student_full_name %></b>
+                        </a>
+                      </h5>
                     </div>
-                  </div>
-                </div>
-                <% @comp_keys.each do |comp| %>
-                    <div class="card">
-                      <div class="card-header" role="tab" id="Heading<%= comp %>">
-                        <h5 class="mb-0">
-                          <a role="button" data-toggle="collapse" href="#collapse_<%= comp %>"  aria-expanded="false" aria-controls="collapse_<%= comp %>" >
-                            <%= hf_component_desc(comp) %>
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapse_<%= comp %>" class="collapse" data-parent="#accordion" aria-labelledby="Heading<%= comp %>">
-                        <div class="card-body">
-                          <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers ) %>
-                          <%= high_chart("#{comp}_graph", comp_graph) %>
-                          <% if comp == 'comp1_wk' %>
-                            <br />
-                            Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
-                            Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
-                          <% end %>
-
-                          </div>
+                    <div id="StudentInfo" class="collapse" data-parent="#accordion" aria-labelledby="HeadingStudentInfo">
+                      <div class="card-body">
+                        <table class="responsive nowrap table table-hover" >
+                          <tbody>
+                            <tr>
+                              <td>Student</td><th><%= @student_full_name %></th>
+                            </tr>
+                            <tr>
+                              <td>Student Email</td><th><%= @student_email %></th>
+                            </tr>
+                            <tr>
+                              <td>Student UID</td><th><%= @student_uid %></th>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
-                <% end %>
-                <div class="card">
-                  <div class="card-header" role="tab" id="HeadingAttachment">
-                    <h5 class="mb-0">
-                      <a class="collapsed" role="button" data-toggle="collapse" href="#collapse_attachment" aria-expanded="false" aria-controls="collapse_attachment"> Attachment(s)
-                      </a>
-                    </h5>
                   </div>
-                  <div id="collapse_attachment" class="collapse" data-parent="#accordion" aria-labelledby="HeadingAttachment">
-                    <div class="card-body">
-                      <%= render partial: 'artifacts/shelf_artifacts' %>
+                  <% @comp_keys.each do |comp| %>
+                      <div class="card">
+                        <div class="card-header" role="tab" id="Heading<%= comp %>">
+                          <h5 class="mb-0">
+                            <a role="button" data-toggle="collapse" href="#collapse_<%= comp %>"  aria-expanded="false" aria-controls="collapse_<%= comp %>" >
+                              <%= hf_component_desc(comp) %>&nbsp;&nbsp;<div class="<%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type) %>" style="color:red"></div>
+                            </a>
+                          </h5>
+                        </div>
+                        <div id="collapse_<%= comp %>" class="collapse" data-parent="#accordion" aria-labelledby="Heading<%= comp %>">
+                          <div class="card-body">
+                            <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers ) %>
+                            <%= high_chart("#{comp}_graph", comp_graph) %>
+                            <% if comp == 'comp1_wk' %>
+                              <br />
+                              Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
+                              Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
+                            <% end %>
+
+                            </div>
+                        </div>
+                      </div>
+                  <% end %>
+                  <div class="card">
+                    <div class="card-header" role="tab" id="HeadingAttachment">
+                      <h5 class="mb-0">
+                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapse_attachment" aria-expanded="false" aria-controls="collapse_attachment"> Attachment(s)
+                        </a>
+                      </h5>
+                    </div>
+                    <div id="collapse_attachment" class="collapse" data-parent="#accordion" aria-labelledby="HeadingAttachment">
+                      <div class="card-body">
+                        <%= render partial: 'artifacts/shelf_artifacts' %>
+                      </div>
                     </div>
                   </div>
-                </div>
+              </div>
             </div>
           </div>
+         </div>
         </div>
-       </div>
       </div>
-    </div>
 
-<% end %>
+  <% end %>
