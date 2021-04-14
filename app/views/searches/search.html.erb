@@ -1,7 +1,6 @@
 <%= render 'layouts/nav_header' %>
-<br /><br />
+<br />
 <div id="search-results">
   <%= render "results" %>
 </div>
-
 <%= render :partial=>'shared/modal_spinner2', :locals=>{:modal_id=>'modal-dataset', :message=>'Loading Dataset'}%>

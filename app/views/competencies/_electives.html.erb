@@ -3,9 +3,9 @@
     <thead>
       <tr>
         <th scope="col">CourseName</th>
-        <th scope="col">StartDt</th>
-        <th scope="col">EndDt</th>
-        <th scope="col">SubmitDt</th>
+        <th style="width: 5%" scope="col">StartDt</th>
+        <th style="width: 5%" scope="col">EndDt</th>
+        <th style="width: 5%" scope="col">SubmitDt</th>
         <th scope="col">Evaluator</th>
         <th scope="col">FinalGrade</th>
         <th scope="col">ProfConcern</th>
@@ -14,7 +14,7 @@
     </thead>
     <% @comp.each do |cd| %>
       <% if !cd["course_name"].include? "730" and !cd["course_name"].include? "731" and !cd["course_name"].include? "770" and
-            !cd["course_name"].include? "INTS" and !cd["course_name"].include? "TRAN" and !cd["course_name"].include? "SCHI" 
+            !cd["course_name"].include? "INTS" and !cd["course_name"].include? "TRAN" and !cd["course_name"].include? "SCHI"
             %>
           <tr>
             <td><%= cd["course_name"] %></td>

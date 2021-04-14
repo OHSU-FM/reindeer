@@ -1,6 +1,6 @@
 class SearchesController < ApplicationController
   include SearchesHelper
-  #layout 'full_width_height_margins'
+  #layout 'full_width'
 
   def search
 
