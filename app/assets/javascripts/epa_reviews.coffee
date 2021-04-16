@@ -5,3 +5,5 @@
 
 $(document).ready ->
   console.log('Inside epa_reviews!!')
+  $('#WbaDetailTable').DataTable 'ordering': true
+  $('.dataTables_length').addClass 'bs-select'

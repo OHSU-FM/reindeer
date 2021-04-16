@@ -61,24 +61,35 @@
 
                     <div class="row">
                       <div class="col-sm-4">
-                        <div id='WbaInfo'> <%= render partial: "wba_info", locals: {epa: @epa_review_epa, wba: @wba["#{@epa_review_epa}"], qa_percent: @percent_complete[epa_idx]} %></div>
+                            <div id='WbaInfo'> <%= render partial: "wba_info", locals: {epa: @epa_review_epa, wba: @wba["#{@epa_review_epa}"], qa_percent: @percent_complete[epa_idx]} %></div>
                       </div>
                       <div class="col-sm-4">
-                        <% wba_clinical_assessor_pie = hf_series_data_student("Clinical Assessor", @user_id, true) %>
-                        <% if !wba_clinical_assessor_pie.nil? %>
-                          <%= high_chart("wba_clinical_assessor_pie_graph", wba_clinical_assessor_pie) %>
-                        <% end %>
+                        <div clas="card">
+                          <div class="card-body">
+                            <% wba_clinical_assessor_pie = hf_series_data_student("Clinical Assessor", @user_id, true) %>
+                            <% if !wba_clinical_assessor_pie.nil? %>
+                              <%= high_chart("wba_clinical_assessor_pie_graph", wba_clinical_assessor_pie) %>
+                            <% end %>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                      <%= render partial: 'wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
-
+                    <div clas="card">
+                      <div class="card-body">
+                        <%= render partial: 'wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
+                      </div>
+                    </div>
+                    <div clas="card">
+                      <div class="card-body">
                       <%= render partial: "narrative_comments",
                           locals: {clinical_data: @clinical_data,
                                    comp: @comp,
                                    preceptor_data: @preceptorship_data,
                                    csl_data: @csl_data,
                                    epa_code: @epa_review_epa } %>
+
+                     </div>
+                   </div>
                   </div>
 
                   <div class="modal-footer">
