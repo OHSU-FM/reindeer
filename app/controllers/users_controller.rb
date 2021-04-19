@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   layout 'full_width_margins'
 
+  def index
+    @user = User.find_by(username: params[:username].to_s)
+    authorize! :read, @user
+  end
+
   def show
     @user = User.find_by(username: params[:username].to_s)
     authorize! :read, @user

@@ -1,8 +1,6 @@
 <H4>Collapsible EPA Section </h4>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% if !@student_epa.blank? %>
-
-
     <% for i in 1..13 do %>
       <% epa_code = "epa#{i}" %>
       <% epa = hf_epa_level3_detail(@comp, i.to_s, "3") %>
@@ -30,8 +28,8 @@
 
                   </div>
 
-                  <div id="EPA-Progress-<%= i %>" class="progress" data-amount = "<%= @student_epa[epa_code] %>" >
-                        <div id="EPA-<%= i %>" class="amount" style="width: <%= 100-@student_epa[epa_code] %>%"> </div>
+                  <div id="EPA-Progress-<%= i %>" class="comp-progress" comp-data-amount = "<%= @student_epa[epa_code] %>" >
+                        <div id="EPA-<%= i %>" class="comp-amount" style="width: <%= 100-@student_epa[epa_code] %>% font-size: medium"> </div>
                   </div>
 
                 </a>

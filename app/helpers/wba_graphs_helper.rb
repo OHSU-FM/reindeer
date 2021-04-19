@@ -477,7 +477,7 @@ module WbaGraphsHelper
         f.series(type: 'pie',
                 name: 'Total No of DataPoints',
                 data: pie_data,
-                center: [210,130], size: 150, showInLegend: false
+                center: [210,130], size: 160, showInLegend: false
         )
 
 

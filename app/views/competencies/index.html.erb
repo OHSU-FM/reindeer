@@ -1,23 +1,60 @@
+<br />
+<br />
 <div class="container-fluid">
-   <ul id="MainTabs2" class="nav nav-tabs">
+   <ul id="MainTabs2" class="nav nav-tabs" role="tablist">
 
-       <li class="bold-italic"><a data-toggle="tab" href="#fom" style="background-color:#97BC72">FoM Blocks</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#Preceptorship" style="background-color:#28B5AB">Preceptorship</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#scholarly" style="background-color:#68C7AB">Scholarly Project</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#transition" style="background-color:#98C7AB">Transition Courses</a></li>
-       <li class="active bold-italic"><a data-toggle="tab" href="#core" style="background-color:#FEC8D8">Core Experiences</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#elective" style="background-color:#DAF7A6">Electives</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#intersessions" style="background-color:#AAG7A6">Intersessions</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#nbme" style="background-color:#FAF7A6">National Board Exams/CPX</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9">All Courses</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#competency" style="background-color:#E0BBE4">Competencies</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#epa" style="background-color:#FEC8F8">EPAs/WBAs/Badges</a></li>
-       <li class="bold-italic"><a data-toggle="tab" href="#official" style="background-color:#BEC8F8">Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span></a></li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="fom-tab" data-toggle="tab" href="#fom" style="background-color:#97BC72" role="tab" aria-controls="fom" aria-selected="false">FoM Blocks
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="Preceptorship-tab" data-toggle="tab" href="#Preceptorship" style="background-color:#28B5AB" role="tab" aria-controls="Preceptorship" aria-selected="false">Preceptorship
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="scholarly-tab" data-toggle="tab" href="#scholarly" style="background-color:#68C7AB" role="tab" aria-controls="scholarly" aria-selected="false">Scholarly Project
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="transition-tab" data-toggle="tab" href="#transition" style="background-color:#98C7AB" role="tab" aria-controls="transition" aria-selected="false">Transition Courses
+         </a>
+       </li>
+       <li class="active bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link actove" id="core-tab" data-toggle="tab" href="#core" style="background-color:#FEC8D8" role="tab" aria-controls="core" aria-selected="true">Core Experiences
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="elective-tab" data-toggle="tab" href="#elective" style="background-color:#DAF7A6" role="tab" aria-controls="elective" aria-selected="false">Electives
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="intersessions-tab" data-toggle="tab" href="#intersessions" style="background-color:#AAG7A6" role="tab" aria-controls="intersessions" aria-selected="false">Intersessions
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="nbme-tab" data-toggle="tab" href="#nbme" style="background-color:#FAF7A6" role="tab" aria-controls="nbme" aria-selected="false">National Board Exams/CPX
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="all_clinical-tab" data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9" role="tab" aria-controls="all_clinical" aria-selected="false">All Courses</a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="competency-tab" data-toggle="tab" href="#competency" style="background-color:#E0BBE4" role="tab" aria-controls="competency" aria-selected="false">Competencies
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="epa-tab" data-toggle="tab" href="#epa" style="background-color:#FEC8F8" role="tab" aria-controls="epa" aria-selected="false">EPAs/WBAs/Badges
+         </a>
+       </li>
+       <li class="bold-italic nav-item waves-effect waves-light">
+         <a class="nav-link" id="official-tab" data-toggle="tab" href="#official" style="background-color:#BEC8F8" role="tab" aria-controls="official" aria-selected="false">Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span>
+         </a>
+       </li>
 
 
    </ul>
   <div class="tab-content">
-    <div id="fom" class="tab-pane fade">
+    <div id="fom" class="tab-pane fade" id="fom" role="tabpanel"  aria-labelledby="fom-tab">
         <%= render partial: "fom_blocks" %>
         <div class="panel panel-default">
             <div class="panel-body"><h4>CSL Formative Feedback</h4></div>
@@ -32,19 +69,19 @@
         </div>
 
     </div>
-    <div id="Preceptorship" class="tab-pane fade">
+    <div id="Preceptorship" class="tab-pane fade" id="Preceptorship" role="tabpanel"  aria-labelledby="Preceptorship-tab">
       <%= render partial: "preceptorships" %>
     </div>
 
-    <div id="scholarly" class="tab-pane fade">
+    <div id="scholarly" class="tab-pane fade" id="scholarly" role="tabpanel"  aria-labelledby="scholarly-tab">
       <%= render partial: "scholarly_project" %>
     </div>
 
-    <div id="transition" class="tab-pane fade">
+    <div id="transition" class="tab-pane fade" id="transition" role="tabpanel"  aria-labelledby="transition-tab">
       <%= render partial: "transition" %>
     </div>
 
-    <div id="core" class="tab-pane active fade in">
+    <div id="core" class="tab-pane fade active show" id="core" role="tabpanel"  aria-labelledby="core-tab">
       <div class="center-div">
           <% if !@comp.nil? %>
             <%= render partial: "core_courses" %>
@@ -54,7 +91,7 @@
         </div>
     </div>
 
-    <div id="elective" class="tab-pane fade">
+    <div id="elective" class="tab-pane fade" id="elective" role="tabpanel"  aria-labelledby="elective-tab">
       <% if !@comp.nil? %>
         <%= render partial: "electives" %>
       <% else %>
@@ -62,11 +99,11 @@
       <% end %>
     </div>
 
-    <div id="intersessions" class="tab-pane fade">
+    <div id="intersessions" class="tab-pane fade" id="intersessions" role="tabpanel"  aria-labelledby="intersessions-tab">
       <%= render partial: "intersessions" %>
     </div>
 
-    <div id="nbme" class="tab-pane fade">
+    <div id="nbme" class="tab-pane fade" id="nbme" role="tabpanel"  aria-labelledby="nbme-tab">
       <% if !@usmle_exams.blank? %>
         <%= render partial: "nbme" %>
       <% else %>
@@ -74,11 +111,11 @@
       <% end %>
     </div>
 
-    <div id="all_clinical" class="tab-pane fade">
+    <div id="all_clinical" class="tab-pane fade" id="all_clinical" role="tabpanel"  aria-labelledby="all_clinical-tab">
       <%= render partial: "all_clinical" %>
     </div>
 
-    <div id="competency" class="tab-pane fade">
+    <div id="competency" class="tab-pane fade" id="competency" role="tabpanel"  aria-labelledby="competency-tab">
       <div class="container-fluid">
           <div class="center-div">
             <div class="inner-div">
@@ -95,7 +132,7 @@
       </div>
     </div>
 
-    <div id="epa" class="tab-pane fade">
+    <div id="epa" class="tab-pane fade" id="epa" role="tabpanel"  aria-labelledby="epa-tab">
       <div class="center-div">
         <div class="inner-div">
             <% if !@epas.blank?  %>
@@ -118,7 +155,7 @@
         </div>
       </div>
     </div>
-    <div id="official" class="tab-pane fade">
+    <div id="official" class="tab-pane fade" id="official" role="tabpanel"  aria-labelledby="official-tab">>
         <div id="Progress Board">
             <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
         </div>

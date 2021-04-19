@@ -1,6 +1,6 @@
 class SearchesController < ApplicationController
   include SearchesHelper
-  #layout 'full_width_height_margins'
+  #layout 'full_width'
 
   def search
 
@@ -20,7 +20,7 @@ class SearchesController < ApplicationController
         coach_search
     elsif !params[:search].downcase.include? "med18"
       @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search", search: @parameter)
+      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter)
 
     else
       @student_year = hf_student_year(params[:search])

@@ -1,44 +1,25 @@
+<br />
 <h4>Entrustment Review Module</h4>
 
 <div id="container-fluid">
     <% if can? :crud, Dashboard %>
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <div class="row">
-              <span class="float-left">
-                 <%= form_tag(epa_masters_path, method: "get") do %>
-                   <%= label_tag :Cohort %>
-                   <%= select_tag :uniq_cohort, options_for_select(@uniq_cohorts, selected: params[:uniq_cohort]),
-                       prompt: "Please Select a Cohort", onchange: "this.form.submit();"  %>
-                   <% if !@eg_cohorts.blank? %>
-                     <%= label_tag :Student %>
-                     <%= select_tag :email, options_for_select(@eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
-                         prompt: "Please Select a Student", onchange: "this.form.submit();" %>
+        <div class="card">
+          <div class="card-body card-body-color">
+            <div class="form-row">
+                 <%= simple_form_for(epa_masters_path, html: {class: "form-inline"}, method: "get") do %>
+                   <div class="form-group col-sx-2">
+                     <label for="cohort" class="control-label">Cohort:&nbsp;</label>
+                     <%= select_tag :uniq_cohort, options_for_select(@uniq_cohorts, selected: params[:uniq_cohort]),
+                         prompt: "Please Select a Cohort", onchange: "this.form.submit(); ", class: 'form-control'  %>
+                    </div>
+                     <% if !@eg_cohorts.blank? %>
+                       <div class="form-group col-sx-10">
+                         <label for="student" class="control-label">&nbsp;&nbsp;Student:&nbsp;</label>
+                         <%= select_tag :email, options_for_select(@eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
+                             prompt: "Please Select a Student", onchange: "this.form.submit();", class: 'form-control' %>
+                        </div>
+                     <% end %>
                    <% end %>
-                 <% end %>
-                  </span>
-                  <span>
-                    <% if !@users.nil? %>
-                        <% if @users.count > 1 %>
-                            <div class="panel panel-default", style="float: right; display: inline-block">
-                              <div class="panel-heading">
-                                  <h4 class="panel-title">Search Results </h4>
-                              </div>
-                              <div class="panel-body">
-                                      <% @users.sort_by {|user| user.full_name}.each do |u| %>
-                                         <%= link_to "#{u.full_name} - #{u.id}".html_safe, epa_masters_path(user_id: "#{u.id}")  %><br />
-                                      <% end %>
-                              </div>
-                            </div>
-                        <% elsif @users.empty? %>
-                          <div class="panel panel-default">
-                            <div class="panel-body">
-                               <i><b>Not Found in User Table!</b></i>
-                            </div>
-                          </div
-                        <% end %>
-                    <% end %>
-                  </span>
             </div>
           </div>
         </div>

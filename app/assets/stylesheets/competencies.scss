@@ -10,7 +10,7 @@
 .center-div
 {
      margin: auto;
-     max-width: 1600px;
+     //max-width: 1600px;
 }
 .inner-div
 {
@@ -138,6 +138,7 @@ background-color:#caf4dd !important
   text-align: center;
   line-height: 31px;
   font-weight: bold;
+  font-size: 1rem
 }
 
 .comp-progress:before {
@@ -151,6 +152,7 @@ background-color:#caf4dd !important
   text-align: center;
   line-height: 31px;
   font-weight: bold;
+  font-size: 1rem;
 }
 
 .panel-default > .panel-heading-backgroud-color {

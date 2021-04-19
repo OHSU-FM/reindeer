@@ -1,30 +1,47 @@
 <div class="flex-child">
-  <ul class="list-group list-group-root">
+  <div id="accordion">
     <% @permission_groups.sort.each do |group| %>
-      <a href="#<%= group.id %>" class="list-group-item" data-toggle="collapse"><%= group.title %></a>
+      <div class="card">
+        <div class="card-header" id="#<%= group.id %>">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse<%= group.id %>" aria-expanded="true" aria-controls="collapse<%= group.id %>">
+              <%= group.title %>
+            </button>
+          </h5>
+        </div>
+        <div id="collapse<%= group.id %>" class="collapse" aria-labelledby="#<%= group.id %>" data-parent="#accordion">
+          <div class="card-body">
+            <% students = User.where(permission_group_id: group.id) %>
+            <% students.sort_by{|u| [u.full_name]}.each do |student| %>
 
-      <div class="list-group collapse" id="<%= group.id %>">
-        <% students = User.where(permission_group_id: group.id) %>
-        <% students.sort_by{|u| [u.full_name]}.each do |student| %>
-          <div class="list-group-item student-with-goals">
-            <%= link_to "#{student.full_name}:
-                  #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
-                  coaching_student_path(student) %>
+                <%= link_to "#{student.full_name}:
+                      #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
+                      coaching_student_path(student) %> <br />
+
+            <% end %>
           </div>
-        <% end %>
+        </div>
       </div>
     <% end %>
-    <a href="#your_student" class="list-group-item" data-toggle="collapse"><h4><i>Your Students</i></h4></a>
-    <div class="list-group collapse" id="your_student">
-      <% @advisor_students.each do |student_id| %>
-        <% student = User.find(student_id) %>
-        <div class="list-group-item student-with-goals">
-          <%= link_to "#{student.full_name}:
-                #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
-                coaching_student_path(student) %>
-        </div>
-      <% end %>
-    </div>
-  </ul>
 
+    <div class="card">
+      <div class="card-header" id="YourStudents">
+        <h5 class="mb-0">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseYourstudents" aria-expanded="true" aria-controls="collapseYourstudents">
+            <h4><i>Your Students</i><h4>
+          </button>
+        </h5>
+      </div>
+      <div id="collapseYourstudents" class="collapse show" aria-labelledby="#YourStudents" data-parent="#accordion">
+        <div class="card-body">
+          <% @advisor_students.each do |student_id| %>
+            <% student = User.find(student_id) %>
+            <%= link_to "#{student.full_name}:
+                  #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
+                  coaching_student_path(student) %> <br />
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

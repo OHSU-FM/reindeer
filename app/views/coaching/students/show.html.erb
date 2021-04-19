@@ -1,6 +1,8 @@
+
 <div id="cs-goals-nav">
   <div class="flex-child">
-    <div id="cs-sidebar-toggle"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span></div>
+    <br />
+    <div id="cs-sidebar-toggle"><span class="fa fa-bars" aria-hidden="true"></span></div>
   </div>
 
   <% if current_user.coach? %>
@@ -11,9 +13,8 @@
 </div>
 
 <div id="cs-goals-main">
-
+  <br />
   <% if current_user.coach_or_higher? %>
-
     <div id="cs-student-select">
       <%= render partial: "student_select" %>
     </div>
@@ -36,7 +37,6 @@
         <a class="nav-link" id="oasis-tab" data-toggle="tab" href="#oasis" role="tab" aria-controls="oasis" aria-selected="false"><b>OASIS Reports</b></a>
       </li>
     <% end %>
-
   </ul>
 
   <div class="tab-content" style="height: 50%;">
@@ -73,9 +73,7 @@
     <div class="tab-pane fade" id="oasis" role="tabpanel" aria-labelledby="oasis-tab">
         <%= render partial: "oasis_reports"  %>
     </div>
-
   </div>
-
 </div>
 
 <div id="cs-detail">

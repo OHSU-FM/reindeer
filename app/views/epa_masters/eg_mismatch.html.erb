@@ -1,8 +1,8 @@
 
 <div class="container" >
-      <div class='row'><br />
-        <div class="panel panel-default">
-          <div class="panel-body">
+      <br />
+        <div class="card">
+          <div class="card-body">
             <%= form_tag(eg_mismatch_epa_masters_path, method: "get", id: 'eg_mismatch_form') do %>
               <div class="form-group navbar-form navbar-left">
                  <b>Cohort </b> <%= select_tag :cohort, options_for_select(@permission_groups.sort.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]), include_blank: '--',
@@ -10,7 +10,7 @@
               </div>
           </div>
         </div>
-      </div>
+
       <% if !@epa_masters.nil? and !@epa_masters.include? "No Mismatch"%>
         <div class="container">
           <div id="eg_mismatch">
@@ -21,7 +21,4 @@
         <h3><%= @epa_masters %></h3>
       <% end %>
     <% end %>
-
-
-
 </div>

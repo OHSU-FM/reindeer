@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_18_222348) do
+ActiveRecord::Schema.define(version: 2021_03_24_190121) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,7 +34,14 @@ ActiveRecord::Schema.define(version: 2021_02_18_222348) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "advisors", force: :cascade do |t|
@@ -195,6 +202,7 @@ ActiveRecord::Schema.define(version: 2021_02_18_222348) do
     t.integer "df", null: false
     t.decimal "t", null: false
     t.decimal "alpha", default: "0.05", null: false
+    t.check_constraint "df >= 1", name: "critical_values_df_check"
   end
 
   create_table "csl_evals", force: :cascade do |t|
@@ -423,13 +431,13 @@ ActiveRecord::Schema.define(version: 2021_02_18_222348) do
     t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
-  create_table "ipe_courses", primary_key: "course_id", id: :string, limit: 10, force: :cascade do |t|
+  create_table "ipe_courses", primary_key: "course_id", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "course_code", limit: 20, null: false
     t.string "course_name", limit: 50
     t.index ["course_code"], name: "ipe_courses_course_code_key", unique: true
   end
 
-  create_table "med21_mspes", primary_key: "sid", id: :string, limit: 10, force: :cascade do |t|
+  create_table "med21_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.index ["email"], name: "med21_mspe_email_key", unique: true
@@ -767,6 +775,7 @@ ActiveRecord::Schema.define(version: 2021_02_18_222348) do
     t.index ["version_note_id"], name: "index_versions_on_version_note_id"
   end
 
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "artifacts", "users"
   add_foreign_key "cohorts", "users"
   add_foreign_key "competencies", "permission_groups"

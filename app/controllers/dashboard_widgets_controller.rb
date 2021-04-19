@@ -39,7 +39,7 @@ class DashboardWidgetsController < ApplicationController
         authorize! :update, @dash
 
         respond_to do |format|
-            if @dash.update_attributes(params[:dashboard])
+            if @dash.update(params[:dashboard])
                 format.html{ render :action=>:index}
                 format.json{ render :json=>{:dash=>@dash},
                     :status=>:ok

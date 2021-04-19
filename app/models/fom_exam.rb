@@ -133,7 +133,8 @@ class FomExam < ApplicationRecord
 
     sql = sql.delete_suffix(", ")
     results = FomExam.execute_sql(sql + " from fom_exams, users where users.id = fom_exams.user_id and fom_exams.user_id = ? and fom_exams.course_code = ? and fom_exams.permission_group_id=?
-                        order by users.full_name ASC",  user_id.to_i, course_code, permission_group_id.to_i).to_hash
+                        order by users.full_name ASC",  user_id.to_i, course_code, permission_group_id.to_i).to_a
+
 
     # sql = sql.delete_suffix(", ") + " from fom_exams, users where users.id = fom_exams.user_id and " +
     #                                 " fom_exams.user_id = " + user_id + " and fom_exams.course_code = " + "'" + course_code + "' and "  +
@@ -148,7 +149,7 @@ class FomExam < ApplicationRecord
     sql_avg = sql_avg.delete_suffix(", ")
     results_avg ||= FomExam.execute_sql(sql_avg + " from fom_exams, users where fom_exams.permission_group_id = ?
                                                    and users.id = fom_exams.user_id and fom_exams.course_code = ?",
-                                                   permission_group_id.to_i, course_code).to_hash
+                                                   permission_group_id.to_i, course_code).to_a
 
     return results, results_avg,  row_to_hash
 

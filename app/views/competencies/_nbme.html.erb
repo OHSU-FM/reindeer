@@ -2,8 +2,8 @@
   <div class="row">
     <div class="column">
       <% if !@usmle_exams.empty? %>
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
               <%= render partial: "usmle_exams" %>
             </div>
           </div>
@@ -11,16 +11,16 @@
     </div>
     <div class="column">
         <% if !@cpx_data_new.nil? %>
-          <div class="panel panel-default">
-              <div class="panel-body">
+          <div class="card">
+              <div class="card-body">
                 <%= render partial: "ls_reports/spreadsheet/cpx_data" %>
               </div>
           </div>
         <% elsif !@comp.nil? %>
           <% @comp.each do |cd| %>
             <% if cd["course_name"].include? "CPX" %>
-              <div class="panel panel-default">
-                  <div class="panel-body">
+              <div class="card">
+                  <div class="card-body">
                     <table class="table table-striped">
                       <tr><th>CourseName</th><td style="color:blue"><%= cd["course_name"] %></td></tr>
                       <tr><th>StartDt</th><td><%= cd["start_date"] %></td></tr>
@@ -38,8 +38,8 @@
   </div>
 </div>
 <% if !@comp.nil? %>
-  <div class="panel panel-default">
-      <div class="panel-body">
+  <div class="card">
+      <div class="card-body">
         <h4>Clinical Subject Exams(Shelf Exams)</h4>
         <table class="table table-striped">
           <thead>

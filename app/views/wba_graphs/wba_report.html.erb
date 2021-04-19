@@ -1,7 +1,7 @@
 <div class="container" >
-  <div class='row'><br />
-    <div class="panel panel-default">
-      <div class="panel-body">
+
+    <div class="card">
+      <div class="card-body">
         <%= form_tag(wba_graphs_wba_report_path, method: "get", id: 'wba_report_form') do %>
           <div class="form-group navbar-form navbar-left">
             <b>Cohort </b> <%= select_tag :permission_group_id, options_for_select(@permission_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
@@ -12,7 +12,7 @@
 
     </div>
 
-  </div>
+
 
   <% if !@wba_report.blank? %>
       <%= render partial: 'detail_wba_report' %>

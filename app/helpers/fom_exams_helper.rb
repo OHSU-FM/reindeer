@@ -34,7 +34,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     return str_warning if coaching_type == "student"
     failed_comps.each do |fcomp|
       if fcomp.include? comp
-        return "glyphicon glyphicon-warning-sign"
+        return '<div class="fa fa-exclamation-triangle" style="color:red"> </div>'
       end
     end
     return str_warning
@@ -45,7 +45,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     comp_keys = FomExam.comp_keys
     hash_components.each do |comp|
       comp_keys.each do |comp_key|
-        value = comp.map{|key, value| value if key.include? comp_key and value.to_f < 70.0}.compact
+        value = comp.map{|key, value| value if key.include? comp_key and value.to_d < 70.00}.compact
         if !value.empty?
           failed_comp.push comp_key
         end
@@ -88,6 +88,23 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
     else
       return false
     end
+  end
+
+  def hf_export_fom_block permission_group_id, course_code
+    fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
+    row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
+    sql = "select users.full_name, "
+    row_to_hash.each do |fieldname, val|  # build sql using form label record --> customized headers
+      if fieldname != 'permission_group_id'
+        val = val.gsub(" ", "")
+        sql += fieldname + ', '  #"#{key}, "
+      end
+    end
+    sql = sql.delete_suffix(", ")
+    results = FomExam.execute_sql(sql + " from fom_exams, users where users.id = fom_exams.user_id  and fom_exams.course_code = " + "'#{course_code}'" +
+              " and fom_exams.permission_group_id=" + "#{permission_group_id} " + " order by users.full_name ASC").to_a
+
+    return results
   end
 
   def hf_create_graph(component, class_data, avg_data,  categories)

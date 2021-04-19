@@ -12,7 +12,7 @@ module Coaching
         event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
         if !event.empty?
           EventMailer.notify_student(@meeting).deliver_later
-        end 
+        end
       end
 
       respond_to do |format|
@@ -48,7 +48,7 @@ module Coaching
     def update
       @meeting = Meeting.find params[:id]
       respond_to do |format|
-        if @meeting.update_attributes(meeting_update_params)
+        if @meeting.update(meeting_update_params)
           format.js { render action: 'update', status: :ok }
         else
           format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }

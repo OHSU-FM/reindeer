@@ -47,7 +47,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  BetterErrors::Middleware.allow_ip! '127.0.0.1'
+  #BetterErrors::Middleware.allow_ip! '127.0.0.1'
 
   # Enable this (as false) in order to see the error pages in a dev environment
   #config.consider_all_requests_local = false

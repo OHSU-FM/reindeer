@@ -17,6 +17,21 @@ window.$(".modal-dialog").draggable({
     handle: ".modal-header"
 });
 
+$("a[href='#EvidenceTab']").on('shown.bs.tab', function(e) {
+     var rowCount = $('#WbaDetailTable tr').length;
+     if (rowCount > 2)
+       $('#WbaDetailTable').DataTable();
+});
+
+$("a[href='#SummaryTab']").on('shown.bs.tab', function(e) {
+     console.log('shown - after the tab has been shown');
+     var rowCount = $('#CollapsibleWbaTable tr').length;
+     if (rowCount > 2)
+       $('#CollapsibleWbaTable').DataTable();
+});
+
+
+
 function localStorageAjax() {
 
   $.ajax({
@@ -83,6 +98,7 @@ $('#review-form').bind('ajax:success', function() {
   }
 
 });
+
 
 $('#epa_review_badge_decision1').change(
     function() {
@@ -161,10 +177,10 @@ if (badge_decision1 === "Badge" && badge_decision2 === "Badge") {
 	$('#col-reviewer1').addClass("visible");
 	$('#col-reviewer2').addClass("visible");
 } else if (reviewer1 === full_name) {
-					$('#col-reviewer2').removeClass("visible").addClass("hidden");
+					$('#col-reviewer2').removeClass("visible").addClass("invisible");
 					$('#col-reviewer1').addClass("visible");
 } else if (reviewer2 === full_name) {
-					$('#col-reviewer1').removeClass("visible").addClass("hidden");
+					$('#col-reviewer1').removeClass("visible").addClass("invisible");
 					$('#col-reviewer2').addClass("visible");
 // } else if (general_comm1 == "" && general_comm2 != "") {
 // 									$('#col-reviewer2').removeClass("visible").addClass("hidden");

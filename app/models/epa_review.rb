@@ -82,7 +82,7 @@ class EpaReview < ApplicationRecord
 	           where epa_masters.id = epa_reviews.reviewable_id and
 		           epa_masters.user_id = #{user_id}"
 
-      result ||= EpaReview.execute_sql(sql).to_hash
+      result ||= EpaReview.execute_sql(sql).to_a
 
       return result.first["max"].to_date.strftime('%F')
 

@@ -11,8 +11,8 @@
               </div>
               <div id="collapseWBA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingWBA">
                   <div class="panel-body">
-                    <table class="table borderless table-condensed table-striped">
-                        <tr>
+                    <table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped">
+                        <thead>
                           <th>EPA</th>
                           <th>SubmitDate</th>
                           <th>ClinicalDiscipline</th>
@@ -24,7 +24,7 @@
                           <th>Involvment</th>
                           <th>Feedback</th>
                           <th>EncounterComplex</th>
-                        </tr>
+                        </thead>
                         <% if !@epas.blank? %>
                           <% @epas.each do |e| %>
                             <tr>

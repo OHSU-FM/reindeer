@@ -1,4 +1,4 @@
-<div id="CompDomain<%= comp_domain %>" class="tab-pane fade in active">
+<div id="CompDomain<%= comp_domain %>" class="tab-pane fade active show">
      <table class="table borderless table-condensed table-striped table-hover">
         <tr>
             <th>Competency</th>
@@ -34,7 +34,7 @@
                   <td style="text-align:center"><font color="blue"><b><%= assessors[k] %><b></font></td>
 
                   <% if rem <=0 %>
-                     <td style="text-align:center"><font color="green"><span class="glyphicon glyphicon-thumbs-up"></span>!!</font></td>
+                     <td style="text-align:center"><font color="green"><span class="fa fa-thumbs-up"></span>!!</font></td>
                   <% else %>
                       <td style="text-align:center">
                         <b> <%= rem %> </b>
