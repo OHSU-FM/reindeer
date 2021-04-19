@@ -19,14 +19,6 @@
   max-width: 1400px;
 }
 
-.hidden>div {
-	display:none;
-}
-
-.visible>div {
-	display:block;
-}
-
 mark,
 .mark {
   font-weight: bold;
@@ -66,4 +58,10 @@ pull-right{
  }
  .card-body-color {
   background-color: #201f712e;
+}
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
 }
