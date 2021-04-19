@@ -17,6 +17,21 @@ window.$(".modal-dialog").draggable({
     handle: ".modal-header"
 });
 
+$("a[href='#EvidenceTab']").on('shown.bs.tab', function(e) {
+     var rowCount = $('#WbaDetailTable tr').length;
+     if (rowCount > 2)
+       $('#WbaDetailTable').DataTable();
+});
+
+$("a[href='#SummaryTab']").on('shown.bs.tab', function(e) {
+     console.log('shown - after the tab has been shown');
+     var rowCount = $('#CollapsibleWbaTable tr').length;
+     if (rowCount > 2)
+       $('#CollapsibleWbaTable').DataTable();
+});
+
+
+
 function localStorageAjax() {
 
   $.ajax({
@@ -83,6 +98,7 @@ $('#review-form').bind('ajax:success', function() {
   }
 
 });
+
 
 $('#epa_review_badge_decision1').change(
     function() {

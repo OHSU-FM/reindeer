@@ -45,9 +45,11 @@
                           <% if !wba_clinical_assessor.nil? %>
                             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
                           <% end %>
-
-                        <%= render partial: "competencies/collapsible_wba_details" %>
-                        <%= render partial: "competencies/collapsible_epas" %>
+                          <div clas="card">
+                            <div class="card-body">
+                              <%= render partial: "competencies/collapsible_wba_details" %>
+                            </div>
+                          </div>
                       </div>
                     </div>
                   </div>
