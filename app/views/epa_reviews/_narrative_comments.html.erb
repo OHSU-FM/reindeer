@@ -40,11 +40,12 @@
                     <% i = 0 %>
                     <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
-                          <% if @most_recent_review_date >= cd["created_at"].strftime('%F') %>
-                            <tr style="background-color:#EFF1A2">
+                          <% if  cd["created_at"].strftime('%F') > @lastReviewEndDate and (Date.today < @nextReviewEndDate.to_date) %>
+                            <tr style="background-color:#E0FFFF">
                           <% else %>
-                            <tr>
+                            <tr sytle="background-color:white">
                           <% end %>
+
                             <td><%= cd["course_name"] %></td>
                             <td><%= cd["evaluator"] %></td>
                             <td>

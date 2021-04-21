@@ -1,5 +1,5 @@
 class EpaReviewsController < ApplicationController
-  before_action :authenticate_user!, :find_reviewable, :load_reasons # :load_eg_members
+  before_action :authenticate_user!, :find_reviewable, :load_reasons, :load_review_dates # :load_eg_members
 
   include CompetenciesHelper
   include ArtifactsHelper
@@ -195,8 +195,9 @@ class EpaReviewsController < ApplicationController
     @today_date = Time.new.strftime("%m/%d/%Y")
     load_eg_members(@user)
 
-    @most_recent_review_date = EpaReview.get_max_date(user_id)
-
+    #@most_recent_review_date = EpaReview.get_max_date(user_id)
+    @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
+    @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
@@ -237,6 +238,11 @@ class EpaReviewsController < ApplicationController
 
      def load_reasons
        @eg_reasons ||= EgReason.all.select(:reason).to_a.map{|r| r.reason}
+     end
+
+     def load_review_dates
+           @badge_review_dates ||= YAML.load_file("config/badgeReleaseDate.yml")
+
      end
 
 end
