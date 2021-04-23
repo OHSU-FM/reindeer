@@ -1,4 +1,4 @@
-<H4>Collapsible Competencies Section </h4>
+<H4 style="color:Purple;">Collapsible Competencies Section </h4>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% if !@student_epa.nil? %>
     <% comp_domain = hf_comp_domain %>
@@ -15,7 +15,6 @@
                           <div id="progress-<%= key %>" class = "comp-progress" comp-data-amount = "<%= comp_domain_ave %>" >
                                 <div id="competency-<%= key %>" class="comp-amount" style="width: <%= 100-comp_domain_ave %>%"> </div>
                           </div>
-
                     </span>
                   </div>
 
