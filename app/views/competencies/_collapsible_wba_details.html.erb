@@ -18,6 +18,7 @@
                           <th>ClinicalDiscipline</th>
                           <th>ClinicalSetting</th>
                           <th>ClincialAssessor</th>
+                          <th>Other Role</th>
                           <th>AssessorName</th>
                           <th>AttendingFaculty?</th>
                           <th>TimesWithSupervisor</th>
@@ -33,6 +34,7 @@
                                 <td><%= e.clinical_discipline %></td>
                                 <td><%= e.clinical_setting %></td>
                                 <td><%= e.clinical_assessor %></td>
+                                <td><%= e.other_role %></td>
                                 <td><%= e.assessor_name %></td>
                                 <td style="text-align:center"><%= e.attending_faculty.nil? ? "" : 'Yes' %>
                                 <td><%= e.no_of_times_with_super %></td>
