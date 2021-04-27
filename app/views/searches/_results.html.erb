@@ -1,5 +1,5 @@
-<div class="container">
-<h3>Search Result</h3>
+
+<h4  style="color:blue;">Search Result</h4>
   <% if !@results.nil? %>
     <table class="table table-hover main-table table-light responsive-lg">
       <thead>
@@ -9,6 +9,7 @@
           <th>UID </th>
           <th>Permission Group</th>
           <th>Program Status</th>
+          <th>Matriculated Date</th>
           <th>DataSets</th>
         </tr>
       </thead>
@@ -21,6 +22,11 @@
           <td> <%= result.sid.to_s %></td>
           <td> <%= result.permission_group.title.to_s %></td>
           <td> <%= result.spec_program %></td>
+          <% if !result.matriculated_date.nil? %>
+            <td> <%= result.matriculated_date.strftime("%F") %></td>
+          <% else %>
+            <td></td>
+          <% end %>
 
           <td>
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
@@ -73,4 +79,3 @@
     <% hf_write_hash(@temp_hash) %>
 
   <% end %>
-</div>

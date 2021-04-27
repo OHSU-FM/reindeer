@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_22_181643) do
+ActiveRecord::Schema.define(version: 2021_04_26_211158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -738,6 +738,7 @@ ActiveRecord::Schema.define(version: 2021_04_22_181643) do
     t.string "sid"
     t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
     t.boolean "subscribed", default: false, null: false
+    t.date "matriculated_date"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sid"], name: "index_users_on_sid", unique: true
