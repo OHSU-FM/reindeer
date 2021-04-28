@@ -20,7 +20,6 @@ $(document).ready ->
   FoundSADean = false
   $('#StudentAffairsDean').hide()
   $('#newMeetingModal').draggable handle: '.modal-header'
-  $("#meeting-submit").prop("disabled", true);
 
   $ ->
     # $('#coaching_meeting_advisor_id').change ->
@@ -37,10 +36,10 @@ $(document).ready ->
         $('#AppointmentCard').hide()
         $("#meeting-submit").prop("disabled", true);
         FoundSADean = true
+        return
       else
         $('#StudentAffairsDean').hide()
         $('#AppointmentCard').show()
-        $("#meeting-submit").prop("disabled", false);
         FoundSADean = false
 
       $('#EventsTable').show()
@@ -73,15 +72,14 @@ $(document).ready ->
           row.hide()
         return
 
-        if FoundSADean == false
-          tr_length = $('#EventsTable tbody tr:visible').length
-          if (tr_length == 0)
-            $("#meeting-submit").prop("disabled", true);
-            alert('Please select another advisor!!')
-          else
-            $("#meeting-submit").prop("disabled", false);
+      tr_length = $('#EventsTable tbody tr:visible').length
+      if (tr_length == 0)
+        $("#meeting-submit").prop("disabled", true);
+        alert('Please select another advisor that has appointments!!')
+      else
+        $("#meeting-submit").prop("disabled", false);
 
-        return
+      return
 
 
     wellnessPrimary = [

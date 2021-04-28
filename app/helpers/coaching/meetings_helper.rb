@@ -21,7 +21,7 @@ module Coaching::MeetingsHelper
       else
         return "N/A"
       end
-    end 
+    end
 
 
   end
@@ -86,6 +86,12 @@ module Coaching::MeetingsHelper
 
   end
 
+  def hf_wellness_primary_for_select
+    [
+      ["Wellness Visit"]
+    ]
+  end
+
   def hf_academic_advisor_discussed_for_select
     [
       ["Meet & Greet (Introduction)"],
@@ -110,6 +116,13 @@ module Coaching::MeetingsHelper
         ["Individual Plan for Professional Success (iPPS)"],
         ["Other (text box)"]
       ]
+  end
+
+  def hf_wellness_advisor_discussed_for_select
+    [
+      ["Wellness Visit"]
+    ]
+
   end
 
   def hf_meeting_ipas_for_select
@@ -139,7 +152,4 @@ module Coaching::MeetingsHelper
       ["Other (text box)"]
     ]
   end
-
-
-
 end
