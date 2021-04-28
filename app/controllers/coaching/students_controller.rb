@@ -80,10 +80,12 @@ module Coaching
 
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).where.not(user_id: [nil, ""]).order(:id)
-        advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name").first
+        advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name, advisors.advisor_type").first
+
         if !advisor.nil?
           advisor_events = Event.where(advisor_id: advisor.id)
           @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
+          @advisor_type = advisor.advisor_type
         else
           @advisor_students = []
         end

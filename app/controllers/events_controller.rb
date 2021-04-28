@@ -2,6 +2,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   include EventsHelper
+  include AdvisorsHelper
 
   # GET /events
   # GET /events.json

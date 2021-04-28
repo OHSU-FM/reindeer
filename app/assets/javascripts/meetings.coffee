@@ -17,6 +17,8 @@ $ ->
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  FoundSADean = false
+  $('#StudentAffairsDean').hide()
   $('#newMeetingModal').draggable handle: '.modal-header'
   $("#meeting-submit").prop("disabled", true);
 
@@ -28,6 +30,19 @@ $(document).ready ->
     #   alert("selectedAdvisorId & Type: " + selectedAdvisorId + " - " + selectedAdvisorType )
     $('#EventsTable tr').hide()
     $('#coaching_meeting_advisor_id').change ->
+      advisor_name = $('#coaching_meeting_advisor_id option:selected').text()
+      #alert('advisor_name: ' + advisor_name)
+      if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
+        $('#StudentAffairsDean').show()
+        $('#AppointmentCard').hide()
+        $("#meeting-submit").prop("disabled", true);
+        FoundSADean = true
+      else
+        $('#StudentAffairsDean').hide()
+        $('#AppointmentCard').show()
+        $("#meeting-submit").prop("disabled", false);
+        FoundSADean = false
+
       $('#EventsTable').show()
       selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
       selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
@@ -58,14 +73,20 @@ $(document).ready ->
           row.hide()
         return
 
+        if FoundSADean == false
+          tr_length = $('#EventsTable tbody tr:visible').length
+          if (tr_length == 0)
+            $("#meeting-submit").prop("disabled", true);
+            alert('Please select another advisor!!')
+          else
+            $("#meeting-submit").prop("disabled", false);
 
-      tr_length = $('#EventsTable tbody tr:visible').length
-      if tr_length == 0
-        $("#meeting-submit").prop("disabled", true);
-        alert('Please select another advisor!!')
-      else
-        $("#meeting-submit").prop("disabled", false);
-      return
+        return
+
+
+    wellnessPrimary = [
+      "Wellness Visit"
+    ]
 
     academicPrimary = [
       "Goal Setting/Updated IPAS"
@@ -100,6 +121,8 @@ $(document).ready ->
       #alert("advisor_type: " + advisorType)
       if advisorType == 'Academic'
         data = academicPrimary
+      else if advisorType == 'Wellness'
+        data = wellnessPrimary
       else
         data = careerPrimary
       nbsp = '&nbsp'

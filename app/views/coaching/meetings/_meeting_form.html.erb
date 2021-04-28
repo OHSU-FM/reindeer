@@ -1,8 +1,8 @@
-<%= form_for Coaching::Meeting.new, html: {class: "form-horizontal", id: "MeetingForm"}, remote: true do |f| %>
+<%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
 
 <div class="form-group">
   <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-  <%= f.select :advisor_type, options_for_select(["Academic", "Career"]),
+  <%= f.select :advisor_type, options_for_select(["Academic", "Career", "Wellness"]),
     { include_blank: "---" }, required: true %>
 </div>
 
@@ -17,35 +17,46 @@
       { include_blank: "---" }, required: true %> <br />
 </div>
 
-<div class="form-group">
-  <div class="control-label panel panel-primary col-sm-10 col-sm-offset-2">
-    <div class="panel-heading">
-      <%= label_tag "Display Previous Appointments" %>
-      <%= select_tag :filtered_by_days, options_for_select([["As to today", 0], [30,-30], [60,-60]]), {style: "color:purple", include_blank: "---" } %>
-      <h3 class="panel-title">Available Appointments</h3>
-    </div>
-    <div class="panel-body scrollable-panel">
-      <%= render partial: "coaching/students/all_events", locals: {f: f}  %>
-    </div>
+<div class="card text-center" id="StudentAffairsDean">
+  <div class="card-body card-body-color">
+    To set up a meeting to talk with your Student Affairs Dean, please refer to the Bridge Scheduling System: <b>https://bridge.ohsu.edu/edu/sites/ume/SitePages/Home.aspx</b> <br />and click on Scheduling Requests.
   </div>
 </div>
-
-  <div class="form-group">
-    <%= f.label :subject, "Primary Reason(s)", class: "control-label col-sm-4" %><br />
-    <div class="col-sm-6" id='coaching_meeting_subjects'>
-
+<br />
+<div class="card" id="AppointmentCard">
+  <div class="card-body">
+    <div class="form-group">
+      <div class="control-label panel panel-primary">
+        <div class="panel-heading">
+          <%= label_tag "Display Previous Appointments", nil, class: "control-label col-sm-4"%>
+          <%= select_tag :filtered_by_days, options_for_select([["As to today", 0], [30,-30], [60,-60]]), {style: "color:purple", include_blank: "---" } %>
+          <hr>
+          <h4 class="panel-title">Available Appointments</h4>
+        </div>
+        <div class="panel-body scrollable-panel">
+          <%= render partial: "coaching/students/all_events", locals: {f: f}  %>
+        </div>
+      </div>
     </div>
+      <hr>
+      <div class="form-group">
+        <b><%= f.label :subject, "Primary Reason(s)", class: "control-label col-sm-4" %></b><br />
+        <div class="col-sm-6" id='coaching_meeting_subjects'>
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
+        <%= f.text_area :notes, class: "col-sm-6" %>
+      </div>
+
+    <%= f.hidden_field :user_id, value: student.id %>
+    <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
+    <%= f.hidden_field :location, value: 'Phone/Webex' %>
   </div>
-
-  <div class="form-group">
-    <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
-    <%= f.text_area :notes, class: "col-sm-6" %>
-  </div>
-
-  <%= f.hidden_field :user_id, value: student.id %>
-  <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
-  <%= f.hidden_field :location, value: 'Phone/Webex' %>
-
+</div>
+<br />
   <div class="form-group">
     <div class="control-label col-sm-4">
       <%= f.submit "Save", class: 'btn btn-primary', id: 'meeting-submit' %>

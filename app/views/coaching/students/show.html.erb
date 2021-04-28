@@ -26,13 +26,19 @@
     <li class="nav-item active">
       <a class="nav-link" id="appointments-tab" data-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="true"><b>Appointments</b></a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false"><b>Meetings</b></a>
-    </li>
+
+    <% if @advisor_type == "Wellness" %>
+  
+    <% else %>
+      <li class="nav-item">
+        <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false"><b>Meetings</b></a>
+      </li>
+    <% end %>
+
     <li class="nav-item">
       <a class="nav-link" id="artifacts-tab" data-toggle="tab" href="#artifacts" role="tab" aria-controls="artifacts" aria-selected="false"><b>IPAS/IPPS Docs</b></a>
     </li>
-    <% if current_user.dean_or_higher? and ['chungp', 'bumstedt', 'chomina'].include? current_user.username %>
+    <% if current_user.dean_or_higher? and ['chungp', 'bumstedt', 'chomina', 'cantone', 'schneibe'].include? current_user.username %>
       <li class="nav-item">
         <a class="nav-link" id="oasis-tab" data-toggle="tab" href="#oasis" role="tab" aria-controls="oasis" aria-selected="false"><b>OASIS Reports</b></a>
       </li>

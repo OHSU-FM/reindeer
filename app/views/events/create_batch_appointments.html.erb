@@ -4,7 +4,7 @@
 <%= form_tag(create_batch_appointments_events_path, method: 'get', remote: true) do %>
 
   <%= label_tag :Type_Of_Advisor %>
-  <%= select_tag :advisor_type, options_for_select(["Academic", "Career"], selected: params[:advisor_type]), include_blank: "---",
+  <%= select_tag :advisor_type, options_for_select(["Academic", "Career", "Wellness"], selected: params[:advisor_type]), include_blank: "---",
        required: true  %> <br />
 
   <div hidden>
