@@ -16,7 +16,7 @@
 
         <div id="SearchPlaceHolder">
           <div id="SearchInputForm">
-            <% if current_user.coaching_type != 'student' %>
+            <% if current_user.coaching_type != 'student' and current_user.spec_program !='Wellness' %>
               <%= form_tag(search_searches_path, method: "get",  class: 'navbar-form navbar-left', id: 'SearchForm') do %>
                 <span>
                   <div class="input-group">
@@ -35,7 +35,7 @@
               <%= link_to "Home", main_app.root_path, class: "dashboard-link btn btn-link" %>
             <% end %>
 
-            <% if ['admin', 'dean'].include? current_user.coaching_type  %>
+            <% if ['admin', 'dean'].include? current_user.coaching_type and current_user.spec_program !='Wellness' %>
               <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   EG Review
@@ -50,7 +50,7 @@
               </div>
             <% end %>
 
-            <% if ['admin', 'dean'].include? current_user.coaching_type %>
+            <% if ['admin', 'dean'].include? current_user.coaching_type and current_user.spec_program !='Wellness'%>
                 <div class="dropdown">
                   <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     WBA Graph/Report
@@ -62,7 +62,7 @@
             <% end %>
 
             <% if can? :list, LimeSurvey %>
-              <% if ['student', 'admin', 'dean'].include? current_user.coaching_type %>
+              <% if ['student', 'admin', 'dean'].include? current_user.coaching_type and current_user.spec_program !='Wellness'%>
                 <%= link_to hf_badge("Upload Documents", @no_of_docs), artifacts_path, target: '_blank', class: "btn btn-link" %>
               <% end %>
               <% if current_user.coaching_type == "coach" and params[:slug].present? %>
@@ -82,7 +82,7 @@
               <% end %>
 
               <%# <%= link_to('Reports', main_app.ls_reports_path, class: 'ls_reports-link')%>
-              <% if current_user.coach_or_higher? %>
+              <% if current_user.coach_or_higher? and current_user.spec_program !='Wellness' %>
                 <%= link_to "Student Assessments", student_assessments_path(user: current_user), class: "btn btn-link" %>
               <% end %>
             <% end %>
