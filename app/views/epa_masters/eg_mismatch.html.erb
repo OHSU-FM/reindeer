@@ -2,11 +2,15 @@
 <div class="container" >
       <br />
         <div class="card">
-          <div class="card-body">
+          <div class="card-body card-body-color">
             <%= form_tag(eg_mismatch_epa_masters_path, method: "get", id: 'eg_mismatch_form') do %>
               <div class="form-group navbar-form navbar-left">
-                 <b>Cohort </b> <%= select_tag :cohort, options_for_select(@permission_groups.sort.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]), include_blank: '--',
-                    prompt: "Please Select  Cohort", onchange: "this.form.submit();" %>
+                 <b>Cohort </b> <%= select_tag :cohort, options_for_select(@permission_groups.sort.collect{|s| [s.title, s.id]}, selected: params[:cohort]), include_blank: '--',
+                    prompt: "Please Select a Cohort", required: true, id: "misMatchCohortId" %>
+
+                 <b>EG Member </b> <%= select_tag :eg_member, options_for_select(@uniq_eg_members, selected: params[:eg_member]), include_blank: '--',
+                    prompt: "Please Select an EG Member", id: "misMatchEGMember" %>
+                  <%= submit_tag "Go" %>
               </div>
           </div>
         </div>

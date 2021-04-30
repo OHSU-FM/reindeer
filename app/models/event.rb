@@ -8,7 +8,7 @@ class Event < ApplicationRecord
     i = 1
     date_hash = {}
     startDates.each do |startDate|
-      if !startDate.nil?
+      if startDate != ""
         date_hash.store("Date #{i}", startDate.to_datetime.utc.strftime("%m/%d/%Y %T %p"))
         i = i + 1
       end

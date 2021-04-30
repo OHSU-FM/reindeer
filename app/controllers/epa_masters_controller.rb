@@ -131,13 +131,15 @@ class EpaMastersController < ApplicationController
   end
 
   def eg_mismatch
-    if params[:cohort].present?
-      @epa_masters = EpaMaster.get_epa_mismatch params[:cohort]
+    if params[:cohort].present? and params[:eg_member].present?
+      @epa_masters = EpaMaster.get_epa_mismatch params[:cohort], params[:eg_member]
       if !@epa_masters.empty?
         create_file @epa_masters, "eg_mismatch.txt"
       else
         @epa_masters = "No Mismatch Record Found!"
       end
+    else
+       #flash.now[:alert] = "Please Sekect a Cohort!"
     end
     respond_to do |format|
       format.html
@@ -218,6 +220,7 @@ class EpaMastersController < ApplicationController
     def load_eg_cohorts
       @all_cohorts ||= hf_load_eg_cohorts
       @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
+      @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.uniq.flatten.compact
     end
 
     def create_file (in_data, in_file)

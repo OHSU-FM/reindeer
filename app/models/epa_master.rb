@@ -15,7 +15,7 @@ class EpaMaster < ApplicationRecord
     connection.exec_query(send(:sanitize_sql_array, sql_array))
   end
 
-  def self.get_epa_mismatch permission_group_id
+  def self.get_epa_mismatch permission_group_id, eg_member
     # sql = "select em.id, em.user_id, users.full_name, em.epa, em.status, em.status_date " +
     #       "from epa_masters em, users " +
     #       "where users.id = em.user_id order by users.full_name, em.epa ASC"
@@ -24,10 +24,11 @@ class EpaMaster < ApplicationRecord
           review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
           review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
           	FROM public.epa_reviews, epa_masters, users
-          	where epa_masters.id = epa_reviews.reviewable_id and
+          	where (epa_reviews.reviewer1 = ? or epa_reviews.reviewer2  = ? ) and
+                 epa_masters.id = epa_reviews.reviewable_id and
           	     badge_decision1 <> badge_decision2 and
           		  users.id = epa_masters.user_id and
-          		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
+          		  users.permission_group_id = ? order by full_name, epa", eg_member, eg_member, permission_group_id).to_a
 
     #results = ActiveRecord::Base.connection.exec_query(sql)
     return results
