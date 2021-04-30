@@ -220,7 +220,7 @@ class EpaMastersController < ApplicationController
     def load_eg_cohorts
       @all_cohorts ||= hf_load_eg_cohorts
       @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
-      @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.uniq.flatten.compact
+      @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort 
     end
 
     def create_file (in_data, in_file)
