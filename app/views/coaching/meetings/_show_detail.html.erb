@@ -26,8 +26,10 @@
                 <% end %>
 
                   <%= collection_check_boxes(:meeting, :subject, select_options, :first, :first, checked: meeting.subject) do |b| %>
-                    <%= b.check_box(checked: true, class: 'MyCheckBox') %>
-                    <b> <%= b.text %> </b> <br />
+                    <label>
+                      <%= b.check_box(checked: true, class: 'MyCheckBox') %>
+                      <b> <%= b.text %> </b>
+                    </label><br />
                   <% end %>
               </div>
             </div>
@@ -55,8 +57,10 @@
                 <% end %>
 
                 <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
-                  <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
-                  <b> <%= b.text %> </b> <br />
+                  <label>
+                    <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
+                    <b> <%= b.text %> </b>
+                  </label> <br />
                <% end %>
                <% if meeting.advisor_type == "Academic" %>
                   <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
@@ -91,8 +95,10 @@
                   <% end %>
 
                   <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
-                    <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
-                    <b> <%= b.text %> </b> <br />
+                    <label>
+                      <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
+                      <b> <%= b.text %> </b>
+                    </label><br />
                  <% end %>
               </div>
                <% if meeting.advisor_type == "Academic" %>

@@ -1,6 +1,6 @@
 <%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
 
-  <% if !advisor_type.nil? %>
+  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic') %>
     <div hidden>
       <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
       </div>
@@ -18,7 +18,7 @@
     <%= f.hidden_field :m_status, value: 'Completed' %>
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body card-body-color">
         Time Slot by Mins
         <select name="time_slot" id="time_slot">
             <option value="30">30</option>
@@ -28,7 +28,7 @@
         <br />
         <div class="control-group" id="fields">
            <label class="control-label" for="field1">Create Start Date</label>
-            <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local">
+            <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
     </div>
 
     <div class="card" id="DiscussedCard">
-      <div class="card-body">
+      <div class="card-body card-body-color"">
           <div class="form-group">
             <b><%= f.label :subject, "Advisor Disussed (Check all the applp):", class: "control-label col-md-6" %></b><br />
 
@@ -80,7 +80,7 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body">
           <div class="form-group">
-            <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-6" %></b>
+            <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
           </div>
 
           <% if advisor_type == 'Academic' %>
@@ -106,23 +106,26 @@
           <% else %>
             <%= f.text_field :academic_outcomes_other,   id: 'academic_outcomes_other'  %>
           <% end %>
-
-          <div class="form-group">
-            <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
-            <%= f.text_area :notes, class: "col-sm-6" %>
-          </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body card-body-color">
         <div class="form-group">
-          <b><%= f.label :subject, "Advisor Meeting Documentation:", class: "control-label col-md-6" %></b>
+          <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
+          <%= f.text_area :notes, class: "col-sm-6" %>
         </div>
-        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%' %>
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-body card-body-color2">
+        <div class="form-group">
+          <b><%= f.label :subject, "Advisor Meeting Documentation:", class: "control-label col-md-6" %></b>
+        </div>
+        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%', required: true %>
+      </div>
+    </div>
 
   <% else %>
 
@@ -177,7 +180,7 @@
     </div>
     <br />
     <div class="card" id="OtherCard">
-      <div class="card-body">
+      <div class="card-body card-body-color">
           <div class="form-group">
             <b><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></b><br />
             <div  id='coaching_meeting_subjects'>

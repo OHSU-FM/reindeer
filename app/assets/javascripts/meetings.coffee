@@ -50,6 +50,10 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $('#newMeetingModal').on 'shown.bs.modal', ->
+    $('#startDate1').focus()
+    return
+
   advisorType = $(".advisors-type").data("advisor_type")
   console.log("advisor_type: " + advisorType)
   if advisorType == 'Academic'
