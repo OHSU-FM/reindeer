@@ -86,6 +86,7 @@ module Coaching
           advisor_events = Event.where(advisor_id: advisor.id)
           @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
           @advisor_type = advisor.advisor_type
+          @advisor_id = advisor.id
         else
           @advisor_students = []
         end
