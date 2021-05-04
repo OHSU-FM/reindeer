@@ -96,11 +96,14 @@ class EventsController < ApplicationController
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
       @time_slot = params[:time_slot]
+      session[:advisor_type] = @advisor_type
+      session[:advisor] = @advisor
       @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot])
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }
       end
+
     end
   end
 
@@ -127,6 +130,7 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
+
     @appointments.each do |appointment|
       data = appointment.split("|")
       title = data[0].split(" - ").first
@@ -135,7 +139,6 @@ class EventsController < ApplicationController
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
       Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
-
     end
 
     respond_to do |format|

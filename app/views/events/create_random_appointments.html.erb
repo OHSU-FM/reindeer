@@ -1,40 +1,39 @@
 <h4>Create Random Appointments</h4>
-<hr>
+<div class="card">
+  <div class="card-body card-body-color2">
+    <%= form_tag(create_random_appointments_events_path, method: 'get', remote: true) do %>
+      <%= label_tag :Advisor %>
+      <% if @advisor.nil? %>
+        <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: params[:id]) %><br />
+      <% else %>
+        <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: @advisor.id) %><br />
+      <% end %>
 
-<%= form_tag(create_random_appointments_events_path, method: 'get', remote: true) do %>
+      <%= label_tag "Time Slot by Mins:" %>
+      <select name="time_slot" id="time_slot">
+          <option value="30">30</option>
+          <option value="45" selected>45</option>
+          <option value="60">60</option>
+      </select><br />
 
-<%= label_tag :Advisor %>
-<% if @advisor.nil? %>
-  <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: params[:id]) %><br />
-<% else %>
-  <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: @advisor.id) %><br />
-<% end %>
-
-  <%= label_tag "Time Slot by Mins:" %>
-  <select name="time_slot" id="time_slot">
-      <option value="30">30</option>
-      <option value="45" selected>45</option>
-      <option value="60">60</option>
-  </select><br />
-
-  <input type="hidden" name="count" value="1" />
-  <div class="panel panel-default">
-  <div class="panel-body">
-    <div class="control-group" id="fields">
-       <label class="control-label" for="field1">Create Start Dates</label>
-       <div class="controls" id="profs">
-         <div class="input-append">
-           <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local"/><button id="b1" onClick="addFormField()" class="btn btn-info" type="button">Add Date</button>
-         </div>
-         <br /><b>Press Add Date button to add another Start Date field :)</b>
-       </div>
-    </div>
+      <input type="hidden" name="count" value="1" />
+      <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="control-group" id="fields">
+           <label class="control-label" for="field1">Create Start Dates</label>
+           <div class="controls" id="profs">
+             <div class="input-append">
+               <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local"/><button id="b1" onClick="addFormField()" class="btn btn-info" type="button">Add Date</button>
+             </div>
+             <br /><b>Press Add Date button to add another Start Date field :)</b>
+           </div>
+        </div>
+      </div>
+      </div>
+      <%= submit_tag "Go" %>
+    <% end %>
   </div>
-  </div>
-  <%= submit_tag "Go" %>
-
-<% end %>
-
+</div>
 <div id="appt-table"></div>
 
 <%= render partial: 'detail_appointments'  %>

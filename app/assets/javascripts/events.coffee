@@ -102,24 +102,18 @@ $(document).ready ->
       return
     return
 
+  $('#all_events_table').DataTable 'ordering': true
+  $('.dataTables_length').addClass 'bs-select'
 
-    # alert("Start_Date: " + yyyy + "/" + mm + "/" + dd )
-    # dayInformation = String(moment(yyyy+"-"+mm+"-"+dd))
-    # alert(dayInformation)
-
-  #$('#calendar').fullCalendar({ });
-  # $('#SaveAll').click ->
-  #   $.each $('input[name=\'checkbox\']:checked'), ->
-  #     appointments.push $(this).val()
-  #     return
-  #   #console.log("appointments: " + appointments)
-  #   #console.log("JSON: " + JSON.stringify(appointments))
-  #   $.ajax
-  #     url: '/events/save_all'
-  #     type: 'get'
-  #     data: appointments: JSON.stringify(appointments)
-  #     dataType: 'json'
-  #     success: (data) ->
-  #       alert 'All Appointments were successfully saved!'
-  #       window.location = '/events'
-  #       return
+  # advisorType = $('#advisor_type').val()
+  # if (advisorType != '')
+  #   $('div[data-advisors]' ).each ->
+  #     advisors = $(this).data('advisors')
+  #     for key of advisors
+  #       if advisors.hasOwnProperty(key)
+  #         #alert advisors[key].name
+  #         if advisors[key].advisor_type == advisorType
+  #           $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+  #     #alert JSON.stringify(advisor)
+  #     #$(this).text(advisor)
+  # return

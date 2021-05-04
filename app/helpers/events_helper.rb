@@ -1,5 +1,11 @@
 module EventsHelper
 
+  def hf_get_advisors advisor_type
+    @advisors = Advisor.where(advisor_type: advisor_type)
+
+    return @advisors.map{|a| [a.name, a.id]}
+  end
+
   def format_date_yyyymmdd(in_date)
     # in_date format mm/dd/yyyy
     temp_date = in_date.split("/")
