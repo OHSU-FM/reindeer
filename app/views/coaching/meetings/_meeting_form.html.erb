@@ -19,15 +19,16 @@
 
     <div class="card">
       <div class="card-body card-body-color">
-        Time Slot by Mins
-        <select name="time_slot" id="time_slot">
-            <option value="30">30</option>
-            <option value="45" selected>45</option>
-            <option value="60">60</option>
-        </select>
-        <br />
+
         <div class="control-group" id="fields">
-           <label class="control-label" for="field1">Appointment Date</label>
+          <label class="control-label col-sm-3"> Time Slot by Mins</label>
+          <select name="time_slot" id="time_slot"  >
+              <option value="30">30</option>
+              <option value="45" selected>45</option>
+              <option value="60">60</option>
+          </select>
+          <br />
+           <label class="control-label col-sm-3" for="field1">Appointment Date</label>
             <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
         </div>
       </div>

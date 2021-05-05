@@ -125,6 +125,7 @@ module CompetenciesHelper
   end
 
   def hf_final_grade2 json_str
+
     begin
       arry = JSON.parse(json_str)
       return arry["Grade"]
