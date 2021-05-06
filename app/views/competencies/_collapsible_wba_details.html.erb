@@ -11,20 +11,22 @@
               </div>
               <div id="collapseWBA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingWBA">
                   <div class="panel-body">
-                    <table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped dataTable">
-                        <thead class="filters">
-                          <th>EPA</th>
-                          <th>SubmitDate</th>
-                          <th>ClinicalDiscipline</th>
-                          <th>ClinicalSetting</th>
-                          <th>ClincialAssessor</th>
-                          <th>Other Role</th>
-                          <th>AssessorName</th>
-                          <th>AttendingFaculty?</th>
-                          <th>TimesWithSupervisor</th>
-                          <th>Involvment</th>
-                          <th>Feedback</th>
-                          <th>EncounterComplex</th>
+                    <table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true" ">
+                        <thead>
+                          <tr class="filters">
+                            <th>EPA</th>
+                            <th>SubmitDate</th>
+                            <th>ClinicalDiscipline</th>
+                            <th>ClinicalSetting</th>
+                            <th>ClincialAssessor</th>
+                            <th>Other Role</th>
+                            <th>AssessorName</th>
+                            <th>AttendingFaculty?</th>
+                            <th>TimesWithSupervisor</th>
+                            <th>Involvment</th>
+                            <th>Feedback</th>
+                            <th>EncounterComplex</th>
+                          </tr>
                         </thead>
                         <% if !@epas.blank? %>
                           <% @epas.each do |e| %>

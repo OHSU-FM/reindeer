@@ -156,7 +156,7 @@ Rails.application.routes.draw do
 
   get "ls_files/:sid/:row_id/:qid/:name", to: "ls_files#show", constraints: { name: /[^\/]+/ }, as: :lime_file
 
-  root to: "dashboards#index"
+  root to: "dashboard#index"
 
   # Error routing
   get "errors/file_not_found"

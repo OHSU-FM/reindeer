@@ -290,6 +290,7 @@ $(document).ready ->
     graph_sub_title = @selected_student
     options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
     window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
+    console.log ("before EPA - graph_target: " + graph_target)
 
     window.chart2 = []
     i = 0
@@ -302,10 +303,13 @@ $(document).ready ->
         graph_sub_title = @selected_student
         options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates, @total_wba_count)
         window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
-        #window.chart2[i] = Highcharts.chart(options)
 
-    graph_target = "data-visualization-AdHocAllEPACount"
-    graph_title = "Number of WBAs Per EPA"
-    graph_sub_title = @selected_student
-    options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data, @total_wba_count)
-    window.chart4 = Highcharts.chart($.extend(true, null, theme_light, options))
+
+    # this graph does not work due to drilldown
+    #----------------------------------------------
+    # graph_target = "data-visualization-AdHocAllEPACount"
+    # graph_title = "Number of WBAs Per EPA"
+    # graph_sub_title = @selected_student
+    # options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data, @total_wba_count)
+    # window.chart4 = Highcharts.chart($.extend(true, null, theme_light, options))
+    # console.log ("after EPA - graph_target: " + graph_target)

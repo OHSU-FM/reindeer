@@ -48,7 +48,7 @@ class CompetenciesController < ApplicationController
 
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
-
+byebug
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
        gon.epa_evaluators = @epa_evaluators
