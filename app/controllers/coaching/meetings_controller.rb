@@ -32,6 +32,7 @@ module Coaching
 
       respond_to do |format|
         if @meeting.save
+          flash[:notice] = 'Appointment/Meeting saved successfully!'
           format.js { render action: 'show', status: :created }
         else
           format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
