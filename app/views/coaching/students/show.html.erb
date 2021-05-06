@@ -28,7 +28,7 @@
     </li>
 
     <% if @advisor_type == "Wellness" %>
-  
+
     <% else %>
       <li class="nav-item">
         <a class="nav-link" id="meetings-tab" data-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false"><b>Meetings</b></a>
@@ -52,6 +52,9 @@
           <% if current_user.dean_or_higher? %>
             <%= nav_link_to "Appointments", events_path, target: '_blank' %>
             <%= nav_link_to "Advisors", advisors_path, target: '_blank' %>
+            <% if @advisor_type == "Wellness" %>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMeetingModal" id="newMeetingButton">Create Retro-Appointment</button>
+            <% end %>
           <% end %>
           <%= render partial: "appointments" %>
         </div>

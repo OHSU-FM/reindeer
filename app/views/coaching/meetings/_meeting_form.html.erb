@@ -128,6 +128,58 @@
       </div>
     </div>
 
+  <% elsif (!advisor_type.nil?) and (advisor_type  == 'Wellness') %> 
+      <div hidden>
+        <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
+        </div>
+      </div>
+
+      Advisor Name: <b><%= current_user.full_name %></b><br />
+      Advisor Type: <b><%= advisor_type %></b>
+      <%= f.hidden_field :advisor_id, value: advisor_id%>
+      <%= f.hidden_field :advisor_type, value: advisor_type%>
+      <br />
+
+      <%= f.hidden_field :user_id, value: student.id %>
+      <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
+      <%= f.hidden_field :location, value: 'Phone/Webex/Email/Retro-Appt' %>
+      <%= f.hidden_field :m_status, value: 'Completed' %>
+
+      <div class="card">
+        <div class="card-body card-body-color">
+
+          <div class="control-group" id="fields">
+            <label class="control-label col-sm-3"> Time Slot by Mins</label>
+            <select name="time_slot" id="time_slot"  >
+                <option value="30">30</option>
+                <option value="45" selected>45</option>
+                <option value="60">60</option>
+            </select>
+            <br />
+             <label class="control-label col-sm-3" for="field1">Appointment Date</label>
+              <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="OtherCard">
+        <div class="card-body">
+            <div class="form-group">
+              <b><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></b><br />
+              <div  id='coaching_meeting_subjects'>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+      <div class="card-body card-body-color">
+        <div class="form-group">
+          <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
+          <%= f.text_area :notes, class: "col-sm-6" %>
+        </div>
+      </div>
+    </div>
+
   <% else %>
 
     <div hidden>
@@ -198,9 +250,6 @@
       </div>
     </div>
   <% end %>
-
-
-
 
   <br />
   <div class="form-group">
