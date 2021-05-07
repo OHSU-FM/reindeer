@@ -158,6 +158,8 @@ Rails.application.routes.draw do
 
   root to: "dashboard#index"
 
+  #root to: redirect('/dashboard', status: 302)
+
   # Error routing
   get "errors/file_not_found"
   get "errors/unprocessable"

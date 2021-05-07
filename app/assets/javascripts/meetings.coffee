@@ -84,16 +84,27 @@ $(document).ready ->
       #alert('advisor_name: ' + advisor_name)
       if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
         $('#StudentAffairsDean').show()
+        $('#WellnessAdvisor').hide()
         $('#AppointmentCard').hide()
         $('#OtherCard').hide()
         $("#meeting-submit").prop("disabled", true);
         FoundSADean = true
         return
+      else if advisor_name.includes("Furnari")
+          $('#WellnessAdvisor').show()
+          $('#StudentAffairsDean').hide()
+          $('#AppointmentCard').hide()
+          $('#OtherCard').hide()
+          $("#meeting-submit").prop("disabled", true);
+          FoundSADean = true
+          return
       else
         $('#StudentAffairsDean').hide()
+        $('#WellnessAdvisor').hide()
         $('#AppointmentCard').show()
         $('#OtherCard').show()
         FoundSADean = false
+        return
 
       $('#EventsTable').show()
       selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
