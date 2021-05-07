@@ -39,3 +39,13 @@
 @import 'events';
 @import 'advisors';
 @import 'coaching_meetings';
+.alert {
+  left: 0;
+  margin: auto; // Centers alert component
+  position: absolute; // So that it will display relative to the entire page
+  right: 0;
+  text-align: center; // Centers 'Alert Test' text
+  top: 5em;
+  width: 40%;
+  z-index: 1; // Displays over app and bootstrap Navbar
+}
