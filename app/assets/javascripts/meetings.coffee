@@ -70,6 +70,7 @@ $(document).ready ->
 
   FoundSADean = false
   $('#StudentAffairsDean').hide()
+  $('#WellnessAdvisor').hide()  
   $('#newMeetingModal').draggable handle: '.modal-header'
 
   $ ->
