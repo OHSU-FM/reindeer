@@ -239,17 +239,19 @@ $(function() {
              var reviewer1 = $('#epa_review_reviewer1').val();
              var epa = $("#epa").val();
 
+             const formatYmd = date => date.toISOString().slice(0, 10);
+             var todayDate = formatYmd(new Date());      // 2020-05-06
 
              if (epa == key) {
                if (fullName === reviewer1) {
                  var GeneralComment1 =  $("#epa_review_general_comments1").val();
                  var lineFeed = GeneralComment1 === '' ? "" : "\n";
-                 $("#epa_review_general_comments1").val(GeneralComment1 + lineFeed + course_code + ": " + selectedText);
+                 $("#epa_review_general_comments1").val(GeneralComment1 + lineFeed + todayDate + ": " + course_code + ": " + selectedText);
                }
                else {
                  var GeneralComment2 =  $("#epa_review_general_comments2").val();
                  var lineFeed = GeneralComment2 === '' ? "" : "\n";
-                 $("#epa_review_general_comments2").val(GeneralComment2 + lineFeed + course_code + ": " + selectedText);
+                 $("#epa_review_general_comments2").val(GeneralComment2 + lineFeed + todayDate + ": " + course_code + ": " + selectedText);
                }
 
              }

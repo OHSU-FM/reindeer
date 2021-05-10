@@ -107,8 +107,8 @@ class EpaReviewsController < ApplicationController
 
     str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
 
-    @epa_review.evidence1 = str_complete + str_wba if @epa_review.evidence1.blank?
-    @epa_review.evidence2 = str_complete + str_wba if @epa_review.evidence2.blank?
+    @epa_review.evidence1 = str_complete + str_wba # commented this out as we want to grap & replace the new data --> if @epa_review.evidence1.blank?
+    @epa_review.evidence2 = str_complete + str_wba # commented this out as we want to grap & replace the new data --> if @epa_review.evidence2.blank?
 
     @epa_review.reviewer1 = @eg_full_name1 if @epa_review.reviewer1.blank?
     @epa_review.reviewer2 = @eg_full_name2 if @epa_review.reviewer2.blank?
