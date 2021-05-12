@@ -17,32 +17,6 @@ class EpaMastersController < ApplicationController
       load_epa_masters
     end
 
-    # if params[:search].present?
-    #   @selected_user = nil
-    #   @parameter = params[:search].downcase
-    #   #@results = User.where("lower(full_name) LIKE :search", search: @parameter)
-    #   @users = User.where("lower(full_name) LIKE ? and coaching_type = ? ", "%#{@parameter}%", "student")
-    #   if !@users.empty? and @users.count == 1
-    #     @epa_masters = @users.first.epa_masters.order(:id)
-    #     @full_name = @users.first.full_name
-    #     if @epa_masters.empty?
-    #       user_id = @users.first.id
-    #       email = @users.first.email
-    #       create_epas user_id, email
-    #       @epa_masters = EpaMaster.where(user_id: user_id).order(:id)
-    #     end
-    #   end
-    #   respond_to do |format|
-    #     format.js { render partial: 'search-results' and return}
-    #     format.html
-    #   end
-    # elsif params[:user_id].present?
-    #   @user = User.find(params[:user_id])
-    #   load_epa_masters
-    # elsif params[:email].present?
-    #   @user = User.find_by(email: params[:email])
-    #   load_epa_masters
-    # end
   end
 
   def load_epa_masters
@@ -220,7 +194,8 @@ class EpaMastersController < ApplicationController
     def load_eg_cohorts
       @all_cohorts ||= hf_load_eg_cohorts
       @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
-      @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort 
+      @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort
+      @uniq_eg_members = ["All"] + @uniq_eg_members
     end
 
     def create_file (in_data, in_file)

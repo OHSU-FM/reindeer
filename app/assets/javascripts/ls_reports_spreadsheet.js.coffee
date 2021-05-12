@@ -975,7 +975,7 @@ $(document).ready ->
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = ["Comp1", "Comp2", "Comp3", "Comp4", "Comp5"]
         @code = 'allblocks'
-        @graph_target = ""
+        @graph_target = "data-visualization-" + "allblocks"
         comp_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @comp_class_mean, @code, @series_name)
 
       else if currentTab.includes("Preceptorship")
@@ -987,7 +987,7 @@ $(document).ready ->
         @series_name = if gon.series_name? then gon.series_name else ''
         @xAxis_category = ""
         @code = 'preceptorship'
-        @graph_target = ""
+        @graph_target = "data-visualization-" + @code
         precept_graph = create_graph(@graph_target, @xAxis_category, @series_data_2, @series_data_2_nc, @precept_class_mean, @code, @series_name)
       else if not currentTab.includes("EPA-Graph")
         return unless gon?

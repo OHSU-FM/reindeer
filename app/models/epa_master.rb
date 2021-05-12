@@ -19,16 +19,26 @@ class EpaMaster < ApplicationRecord
     # sql = "select em.id, em.user_id, users.full_name, em.epa, em.status, em.status_date " +
     #       "from epa_masters em, users " +
     #       "where users.id = em.user_id order by users.full_name, em.epa ASC"
-
-    results ||= EpaMaster.execute_sql("SELECT users.full_name, epa_reviews.epa,
-          review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
-          review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
-          	FROM public.epa_reviews, epa_masters, users
-          	where (epa_reviews.reviewer1 = ? or epa_reviews.reviewer2  = ? ) and
-                 epa_masters.id = epa_reviews.reviewable_id and
-          	     badge_decision1 <> badge_decision2 and
-          		  users.id = epa_masters.user_id and
-          		  users.permission_group_id = ? order by full_name, epa", eg_member, eg_member, permission_group_id).to_a
+    if eg_member == "All"
+      results ||= EpaMaster.execute_sql("SELECT users.full_name, epa_reviews.epa,
+            review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
+            review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
+            	FROM public.epa_reviews, epa_masters, users
+            	where epa_masters.id = epa_reviews.reviewable_id and
+            	     badge_decision1 <> badge_decision2 and
+            		  users.id = epa_masters.user_id and
+            		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
+    else
+      results ||= EpaMaster.execute_sql("SELECT users.full_name, epa_reviews.epa,
+            review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
+            review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
+            	FROM public.epa_reviews, epa_masters, users
+            	where (epa_reviews.reviewer1 = ? or epa_reviews.reviewer2  = ? ) and
+                   epa_masters.id = epa_reviews.reviewable_id and
+            	     badge_decision1 <> badge_decision2 and
+            		  users.id = epa_masters.user_id and
+            		  users.permission_group_id = ? order by full_name, epa", eg_member, eg_member, permission_group_id).to_a
+    end
 
     #results = ActiveRecord::Base.connection.exec_query(sql)
     return results
