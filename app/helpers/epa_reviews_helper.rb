@@ -6,19 +6,24 @@ module EpaReviewsHelper
              3 => "I directed them from time to time",
              4 => "I was available just in case"}
 
+   WBA_DEF2 = {1 => "Level 1",
+               2 => "Level 2",
+               3 => "Level 3",
+               4 => "Level 4"}
+
 
   EPA_KEYWORDS = {
-            "EPA1" => ["history", "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+            "EPA1" => ['history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
             "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
-            "EPA3" => ["interpret", "cost-effective", "labs", "test", "screening test"],
+            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic"],
             "EPA4" => ["orders",  "prescription"],
             "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
             "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
-            "EPA7" => ["clinical question", "evidence", "patient care", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
-            "EPA8" => ["handover", "handoff", "transition"],  # "Give or receive a patient handover to transition care responsibility",
+            "EPA7" => ["clinical question", "evidence", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
+            "EPA8" => ["handover", "handoff", "transition", "transition of care"],  # "Give or receive a patient handover to transition care responsibility",
             "EPA9" => ["team", "interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
             "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
-            "EPA11" => ["informed consent", "shared decision making"],  # "Obtain informed consent for tests and/or procedures",
+            "EPA11" => ["consent","informed consent", "shared decision making", "procedures"],  # "Obtain informed consent for tests and/or procedures",
             "EPA12" => ["procedure", "technical skills","technical", "IV", "venipuncture", "bladder catheterization", "bag-valve mask ventilation", "suture", "laceration repair"],  #"Perform general procedures of a physician ",
             "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety", "project"] # "Identify system failures and contribute to a culture of safety and improvement"
   }
@@ -58,7 +63,7 @@ module EpaReviewsHelper
   HIGHLIGHT_WORDS = ["presentation"]
 
   def hf_wba_instance_def(code)
-    return WBA_DEF[code]
+    return WBA_DEF2[code]
   end
 
   def hf_epa_desc_with_color(epa_code)
@@ -66,6 +71,30 @@ module EpaReviewsHelper
     epa_color = EPA_COLORS[epa_code]
     desc = '<span style="color:' + epa_color + '">' + epa_desc + '</span>'.html_safe
     return desc.html_safe
+  end
+
+  def hf_hightlight_all_epas comp
+    comp.each do |cd|
+      EPA_DESC.each do |key, value|
+
+        keywords = EPA_KEYWORDS[key]
+        epa_color = EPA_COLORS[key]
+        epa_code = key
+        if cd["mspe"].to_s != ""
+          cd["mspe"] = cd["mspe"].gsub(/\b(#{keywords.join("|")})\b/i,
+                  '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>')
+        else
+          break
+        end
+        if cd["feedback"].to_s != ""
+          cd["feedback"] = cd["feedback"].gsub(/\b(#{keywords.join("|")})\b/i,
+                  '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>')
+        else
+          break
+        end
+      end
+    end
+    return comp
   end
 
   def hf_highlight(text, epa_code)
@@ -77,7 +106,7 @@ module EpaReviewsHelper
     keywords = EPA_KEYWORDS[epa_code]
     epa_color = EPA_COLORS[epa_code]
     text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
-              '<span style="color:' + "#{epa_color}" + '"><b>\1</span></b>').html_safe
+              '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
 
     return text_marked.html_safe
   end

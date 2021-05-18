@@ -176,6 +176,7 @@ class EpaReviewsController < ApplicationController
       @comp_hash3 = hf_load_all_comp2(@comp, 3)
       @comp_hash2 = hf_load_all_comp2(@comp, 2)
       @comp_hash1 = hf_load_all_comp2(@comp, 1)
+      @comp = hf_hightlight_all_epas(@comp)
 
       @comp_data_clinical = hf_average_comp2 (@comp_hash3)
       @percent_complete ||= hf_epa2(@comp_data_clinical)

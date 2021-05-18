@@ -22,6 +22,8 @@
           <%= f.label :badge_decision1, 'Badge Decision', class: "control-label col-sm-2" %>
           <%= f.select :badge_decision1, ["Not Yet", "Badge", "Deny"], {}, { class: "form-control" } %>
         </div>
+
+
         <div class="form-group">
           <%= f.label :reason1, 'Reason', class: "control-label col-sm-2" %>
           <%= f.select :reason1, @eg_reasons, {}, {class: "form-control"}  %>
@@ -40,7 +42,7 @@
         </div>
         <div class="form-group">
           <%= f.label 'Comments to Student', class: "control-label"  %>
-          <%= f.select :student_comments1, EpaReview.comments_to_student, {:prompt => "..."}, {class: 'form-control'}  %>
+          <%= f.select :student_comments1, EpaReview.comments_to_student, {include_blank: true, prompt: 'Please select a comment...'}, {class: 'form-control'}  %>
         </div>
       </div>
 
@@ -80,7 +82,7 @@
         </div>
         <div class="form-group">
           <%= f.label 'Comments to Student', class: "control-label" %>
-          <%= f.select :student_comments2, EpaReview.comments_to_student, {:prompt => "..."}, {class: 'form-control'}  %>
+          <%= f.select :student_comments2, EpaReview.comments_to_student, {include_blank: true, prompt: 'Please select a comment...'}, {lass: 'form-control'}  %>
         </div>
       </div>
 

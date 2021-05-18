@@ -56,9 +56,9 @@
                             <% i = i + 1 %>
                             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
                             <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
-                              <%= hf_highlight(cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " "), epa_code) %></span></td>
+                              <%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ").html_safe %></span></td>
                             <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
-                              <%= hf_highlight(cd["mspe"].to_s.gsub("{cr}{newline}", ""), epa_code) %></span></td>
+                              <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
                             <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
 
                           </tr>

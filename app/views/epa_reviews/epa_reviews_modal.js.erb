@@ -30,8 +30,6 @@ $("a[href='#SummaryTab']").on('shown.bs.tab', function(e) {
        $('#CollapsibleWbaTable').DataTable();
 });
 
-
-
 function localStorageAjax() {
 
   $.ajax({
@@ -99,20 +97,29 @@ $('#review-form').bind('ajax:success', function() {
 
 });
 
-
 $('#epa_review_badge_decision1').change(
     function() {
       var badge_decision1 = $('#epa_review_badge_decision1').val(); // $( "#myselect option:selected" ).text();
       if (badge_decision1 == "Deny") {
 				$('#epa_review_trust1').empty();
-				var newOption = $('<option value="Distrust">Distrust</option><option value="Question Trust">Question Trust</option>');
+				var newOption = $('<option value="Distrust" selected>Distrust</option><option value="Question Trust">Question Trust</option>');
 	      $('#epa_review_trust1').append(newOption);
+        $('#epa_review_student_comments1').val('');
 
       }
       else if (badge_decision1 == "Badge") {
 				$('#epa_review_trust1	').empty();
-				var newOption = $('<option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+				var newOption = $('<option value="Grounded" selected>Grounded</option><option value="Presumptive">Presumptive</option>');
 	      $('#epa_review_trust1').append(newOption);
+        $('#epa_review_reason1').val('Met minimum requirements');
+        $('#epa_review_student_comments1').val('Congratulations! Evidence supports badging you for this EPA.');
+      }
+      else if (badge_decision1 == "Not Yet") {
+				$('#epa_review_trust1	').empty();
+				var newOption = $('<option value="" selected></option><option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+	      $('#epa_review_trust1').append(newOption);
+        $('#epa_review_reason1').val('Requires at least 3 MSPE comments or at least 4 WBAs with level 4');
+        $('#epa_review_student_comments1').val('You are making progress towards completing this EPA - continue to look for experiences.');
       }
     }
 );
@@ -122,14 +129,25 @@ $('#epa_review_badge_decision2').change(
 		var badge_decision2 = $('#epa_review_badge_decision2').val(); // $( "#myselect option:selected" ).text();
 		if (badge_decision2 == "Deny") {
 			$('#epa_review_trust2').empty();
-			var newOption = $('<option value="Distrust">Distrust</option><option value="Question Trust">Question Trust</option>');
+			var newOption = $('<option value="Distrust" selected>Distrust</option><option value="Question Trust">Question Trust</option>');
 			$('#epa_review_trust2').append(newOption);
+      $('#epa_review_student_comments2').val('');
 		}
 		else if (badge_decision2 == "Badge") {
 		 $('#epa_review_trust2').empty();
-		 var newOption = $('<option value="Grounded">Grounded</option><option value="Presumptive">Presumptive</option>');
+		 var newOption = $('<option value="Grounded" selected>Grounded</option><option value="Presumptive">Presumptive</option>');
 		 $('#epa_review_trust2').append(newOption);
+     $('#epa_review_reason2').val('Met minimum requirements');
+     $('#epa_review_student_comments2').val('Congratulations! Evidence supports badging you for this EPA.');
 		}
+    else if (badge_decision2 == "Not Yet") {
+		 $('#epa_review_trust2').empty();
+		 var newOption = $('<option value="" selected></option><option value="Grounded" selected>Grounded</option><option value="Presumptive">Presumptive</option>');
+		 $('#epa_review_trust2').append(newOption);
+     $('#epa_review_reason2').val('Requires at least 3 MSPE comments or at least 4 WBAs with level 4');
+     $('#epa_review_student_comments2').val('You are making progress towards completing this EPA - continue to look for experiences.');
+		}
+
 	}
 );
 
@@ -179,9 +197,12 @@ if (badge_decision1 === "Badge" && badge_decision2 === "Badge") {
 } else if (reviewer1 === full_name) {
 					$('#col-reviewer2').removeClass("visible").addClass("invisible");
 					$('#col-reviewer1').addClass("visible");
+          $('#epa_review_review_date1').datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
+          //$( "#datepicker" ).datepicker({dateFormat:"yy/mm/dd"}).datepicker("setDate",new Date());
 } else if (reviewer2 === full_name) {
 					$('#col-reviewer1').removeClass("visible").addClass("invisible");
 					$('#col-reviewer2').addClass("visible");
+          $('#epa_review_review_date2').datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
 // } else if (general_comm1 == "" && general_comm2 != "") {
 // 									$('#col-reviewer2').removeClass("visible").addClass("hidden");
 // 									$('#col-reviewer1').addClass("visible");
@@ -238,6 +259,10 @@ $(function() {
              var fullName = $('#full_name').data('full_name');
              var reviewer1 = $('#epa_review_reviewer1').val();
              var epa = $("#epa").val();
+             var epa_remove = epa + ": ";
+
+             selectedText = selectedText.replace(epa_remove, "");
+
 
              const formatYmd = date => date.toISOString().slice(0, 10);
              var todayDate = formatYmd(new Date());      // 2020-05-06
@@ -256,10 +281,12 @@ $(function() {
 
              }
              else {
-               var epa_hash = {}
+               var epa_hash = {};
+               var epa_remove2 = key + ": ";
+               selectedText = selectedText.replace(epa_remove2, "");
                epa_hash["epa"] = key;
-               epa_hash["full_name"] = fullName;;
-               epa_hash["comments"] =  course_code + ": " + selectedText;
+               epa_hash["full_name"] = fullName;
+               epa_hash["comments"] =  todayDate + ": " + course_code + ": " + selectedText;
                epa_hash["email"] = byEmail
                // console.log("epa_hash: " + JSON.stringify(epa_hash));
                // console.log('ByEmail - inside contextMenu: ' + byEmail)
