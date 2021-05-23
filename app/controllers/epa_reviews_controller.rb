@@ -42,7 +42,7 @@ class EpaReviewsController < ApplicationController
     @epa_review.epa = @epa_master.epa
     @epa_review_epa = @epa_review.epa
 
-    @decision_option = ["Grounded", "Presumptive"]
+    @decision_option = ["Grounded", "Presumptive", "Distrust", "Questioned Trust", "No Decision"]
     @decision_option2 = @decision_option
     get_evidence @user_id
 
@@ -54,12 +54,18 @@ class EpaReviewsController < ApplicationController
     @epa_review.reviewer2 = @eg_full_name2.first
     @epa_review.reason1 = @eg_reasons.second
     @epa_review.reason2 = @eg_reasons.second
+    @epa_review.badge_decision1 = 'Not Yet'
+    @epa_review.badge_decision2 = 'Not Yet'
+    @epa_review.trust1 = 'No Decision'
+    @epa_review.trust2 = 'No Decision'
+    @epa_review.student_comments1 = 'You are making progress towards completing this EPA - continue to look for experiences.'
+    @epa_review.student_comments2 = 'You are making progress towards completing this EPA - continue to look for experiences.'    
 
     epa_idx = @epa_review_epa.downcase
     # str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
     #                "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
-     str_complete = @percent_complete[@epa_review_epa.downcase].to_s + " -> QA Completion %" +  "\r"  +
-                    @wba["#{@epa_review_epa}"].sum.to_s + " -> Total No of WBA" + "\r".html_safe
+     str_complete = "QA Completion: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
+              "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s +  "\r".html_safe
 
     str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
     @epa_review.evidence1 = str_complete + str_wba
@@ -76,24 +82,17 @@ class EpaReviewsController < ApplicationController
   # GET /epa_reviews/1/edit
   def edit
     @epa_review = EpaReview.find(params[:id])
-    if @epa_review.badge_decision1 == 'Not Yet'
-      @decision_option = []
-    elsif @epa_review.badge_decision1 == 'Badge'
-      @decision_option = ["Grounded", "Presumptive"]
-    else
-      @decision_option = ["Distrust", "Questioned Trust"]
-    end
-
-    if @epa_review.badge_decision2 == 'Not Yet'
-      @decision_option2 = []
-    elsif @epa_review.badge_decision2 == 'Badge'
-      @decision_option2 = ["Grounded", "Presumptive"]
-    else
-      @decision_option2 = ["Distrust", "Questioned Trust"]
-    end
+    @decision_option = ["Grounded", "Presumptive", "Distrust", "Questioned Trust", "No Decision"]
+    @decision_option2 = ["Grounded", "Presumptive", "Distrust", "Questioned Trust", "No Decision"]
+    # if @epa_review.badge_decision2 == 'Not Yet'
+    #   @decision_option2 = []
+    # elsif @epa_review.badge_decision2 == 'Badge'
+    #   @decision_option2 = ["Grounded", "Presumptive"]
+    # else
+    #   @decision_option2 = ["Distrust", "Questioned Trust"]
+    # end
 
     @epa_review_epa = @epa_review.epa
-
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
 
@@ -102,8 +101,8 @@ class EpaReviewsController < ApplicationController
 
     # str_complete = "QA Completion %: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
     #                "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
-   str_complete = @percent_complete[@epa_review_epa.downcase].to_s + " -> QA Completion %" +  "\r"  +
-            @wba["#{@epa_review_epa}"].sum.to_s + " -> Total No of WBA" + "\r".html_safe
+   str_complete = "QA Completion: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
+            "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s +  "\r".html_safe
 
     str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
 

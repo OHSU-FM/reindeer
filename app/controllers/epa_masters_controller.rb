@@ -164,10 +164,15 @@ class EpaMastersController < ApplicationController
       epa_master.epa_reviews.where(epa: epa_master.epa).first_or_create do |review|
         review.epa = epa_master.epa
         review.review_date1 = DateTime.now
+        review.review_date2 = DateTime.now
         review.badge_decision1 = "Not Yet"
-        review.reason1 = "Required at least 3 MSPE comments or at least 4 WBAs with level 4"
         review.badge_decision2 = "Not Yet"
-        review.reason2 = "Required at least 3 MSPE comments or at least 4 WBAs with level 4"
+        review.trust1 = 'No Decision'
+        review.trust2 = 'No Decision'
+        review.reason1 ='Have not met the minimum requirements'
+        review.reason2 ='Have not met the minimum requirements'
+        review.student_comments1 = 'You are making progress towards completing this EPA - continue to look for experiences.'
+        review.student_comments2 = 'You are making progress towards completing this EPA - continue to look for experiences.'
         review.reviewer1 = eg_full_name1
         review.reviewer2 = eg_full_name2
       end

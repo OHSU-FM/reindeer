@@ -91,3 +91,11 @@
     /* symbol for "collapsed" panels */
     content: "\f067";
 }
+input[type="radio"]:not(:checked)+ label {
+    font-weight: normal;
+    color: black;
+}
+
+input[type="radio"]:checked + label {
+    color: green;
+}
