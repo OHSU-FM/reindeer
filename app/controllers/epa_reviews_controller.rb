@@ -59,7 +59,7 @@ class EpaReviewsController < ApplicationController
     @epa_review.trust1 = 'No Decision'
     @epa_review.trust2 = 'No Decision'
     @epa_review.student_comments1 = 'You are making progress towards completing this EPA - continue to look for experiences.'
-    @epa_review.student_comments2 = 'You are making progress towards completing this EPA - continue to look for experiences.'    
+    @epa_review.student_comments2 = 'You are making progress towards completing this EPA - continue to look for experiences.'
 
     epa_idx = @epa_review_epa.downcase
     # str_complete = "QA Completion %: " +  @percent_complete[epa_idx].to_s + "\r"  +
@@ -73,7 +73,7 @@ class EpaReviewsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
+      format.js {render template: 'epa_reviews/epa_reviews_modal'}
     end
 
     #return
@@ -113,7 +113,7 @@ class EpaReviewsController < ApplicationController
     @epa_review.reviewer2 = @eg_full_name2 if @epa_review.reviewer2.blank?
     respond_to do |format|
       format.html
-      format.js {render template: 'epa_reviews/epa_reviews_modal.js.erb'}
+      format.js {render template: 'epa_reviews/epa_reviews_modal'}
     end
 
   end
