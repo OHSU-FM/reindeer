@@ -124,7 +124,7 @@ $(document).ready ->
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
     modDate = Date.today().addDays(1)
     dataset = $('#EventsTable tbody').find('tr')
-    dataset.show()
+    #dataset.show()
     # filter the rows that should be hidden
     dataset.each ->
       row = $(this)
@@ -132,7 +132,7 @@ $(document).ready ->
       colDate = row.find('td').eq(2).text().split(" - ")
       #show all rows by default
       #show = true
-      row.show()
+      #row.show()
       #if from date is valid and row date is less than from date, hide the row
       newDate = new Date(modDate)
       orgDate = new Date(colDate[0])
