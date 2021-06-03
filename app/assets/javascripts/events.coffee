@@ -94,7 +94,6 @@ $(document).ready ->
     $("#end_weekday").val(dateName(yyyy, mm, dd))
     #alert(dateName(yyyy, mm, dd))
 
-
   $('#myInput').on 'keyup', ->
     value = $(this).val().toLowerCase()
     $('#all_events_table tr').not('thead tr').filter ->
@@ -102,18 +101,8 @@ $(document).ready ->
       return
     return
 
-  $('#all_events_table').DataTable 'ordering': true
-  $('.dataTables_length').addClass 'bs-select'
+  # $('#all_events_table').DataTable 'ordering': true
+  # $('.dataTables_length').addClass 'bs-select'
 
-  # advisorType = $('#advisor_type').val()
-  # if (advisorType != '')
-  #   $('div[data-advisors]' ).each ->
-  #     advisors = $(this).data('advisors')
-  #     for key of advisors
-  #       if advisors.hasOwnProperty(key)
-  #         #alert advisors[key].name
-  #         if advisors[key].advisor_type == advisorType
-  #           $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
-  #     #alert JSON.stringify(advisor)
-  #     #$(this).text(advisor)
-  # return
+  $('#all_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
+  #alert('searchValue: ' + $('#searchValue').val())

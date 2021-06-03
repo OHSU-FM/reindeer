@@ -225,10 +225,7 @@
         <div class="form-group">
           <div class="control-label panel panel-primary">
             <div class="panel-heading">
-              <%= label_tag "Display Previous Appointments", nil, class: "control-label col-sm-4"%>
-              <%= select_tag :filtered_by_days, options_for_select([["As to today", 0], [30,-30], [60,-60]]), {style: "color:purple", include_blank: "---" } %>
-              <hr>
-              <h4 class="panel-title">Available Appointments</h4>
+                <h4 class="panel-title">Available Appointments</h4>
             </div>
             <div class="panel-body scrollable-panel">
               <%= render partial: "coaching/students/all_events", locals: {f: f}  %>

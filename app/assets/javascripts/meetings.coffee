@@ -70,132 +70,82 @@ $(document).ready ->
 
   FoundSADean = false
   $('#StudentAffairsDean').hide()
-  $('#WellnessAdvisor').hide()  
+  $('#WellnessAdvisor').hide()
   $('#newMeetingModal').draggable handle: '.modal-header'
 
-  $ ->
-    # $('#coaching_meeting_advisor_id').change ->
-    #   selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
-    #   selectedAdvisorId = $('#coaching_meeting_advisor_id option:selected').val()
-    #   selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text()
-    #   alert("selectedAdvisorId & Type: " + selectedAdvisorId + " - " + selectedAdvisorType )
-    $('#EventsTable tr').hide()
-    $('#coaching_meeting_advisor_id').change ->
-      advisor_name = $('#coaching_meeting_advisor_id option:selected').text()
-      #alert('advisor_name: ' + advisor_name)
-      if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
-        $('#StudentAffairsDean').show()
-        $('#WellnessAdvisor').hide()
+  $('#coaching_meeting_advisor_type').change ->
+    advisorType = $('#coaching_meeting_advisor_type').val()
+    #alert("advisor_type: " + advisorType)
+    if advisorType == 'Academic'
+      data = academicPrimary
+    else if advisorType == 'Wellness'
+      data = wellnessPrimary
+    else
+      data = careerPrimary
+    nbsp = '&nbsp'
+    $('#coaching_meeting_subjects').empty()
+    $.each data, (index) ->
+      $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
+      return
+
+    #$('#EventsTable tr').hide()
+  # $("#filtered_by_days").find("option").css("color", "#337ab7")
+  # $("#filtered_by_days").change ->
+  $('#EventsTable').hide()
+  $('#coaching_meeting_advisor_id').change ->
+    $('#EventsTable').show()
+    # selectedFilteredValue = $('#filtered_by_days option:selected').val()
+    # console.log('selectedFilteredValue: ' + selectedFilteredValue)
+    advisor_name = $('#coaching_meeting_advisor_id option:selected').text()
+    #alert('advisor_name: ' + advisor_name)
+    if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
+      $('#StudentAffairsDean').show()
+      $('#WellnessAdvisor').hide()
+      $('#AppointmentCard').hide()
+      $('#OtherCard').hide()
+      $("#meeting-submit").prop("disabled", true);
+      FoundSADean = true
+      return
+    else if advisor_name.includes("Furnari")
+        $('#WellnessAdvisor').show()
+        $('#StudentAffairsDean').hide()
         $('#AppointmentCard').hide()
         $('#OtherCard').hide()
         $("#meeting-submit").prop("disabled", true);
         FoundSADean = true
         return
-      else if advisor_name.includes("Furnari")
-          $('#WellnessAdvisor').show()
-          $('#StudentAffairsDean').hide()
-          $('#AppointmentCard').hide()
-          $('#OtherCard').hide()
-          $("#meeting-submit").prop("disabled", true);
-          FoundSADean = true
-          return
+    else
+      $('#StudentAffairsDean').hide()
+      $('#WellnessAdvisor').hide()
+      $('#AppointmentCard').show()
+      $('#OtherCard').show()
+      FoundSADean = false
+
+    selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
+    modDate = Date.today().addDays(1)
+    dataset = $('#EventsTable tbody').find('tr')
+    dataset.show()
+    # filter the rows that should be hidden
+    dataset.each ->
+      row = $(this)
+      colAdvisor = row.find('td').eq(1).text().split(" - ")
+      colDate = row.find('td').eq(2).text().split(" - ")
+      #show all rows by default
+      #show = true
+      row.show()
+      #if from date is valid and row date is less than from date, hide the row
+      newDate = new Date(modDate)
+      orgDate = new Date(colDate[0])
+
+      if (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
+        row.show()
       else
-        $('#StudentAffairsDean').hide()
-        $('#WellnessAdvisor').hide()
-        $('#AppointmentCard').show()
-        $('#OtherCard').show()
-        FoundSADean = false
-        return
-
-      $('#EventsTable').show()
-      selectedAdvisorType = $('#coaching_meeting_advisor_type option:selected').val()
-      selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
-          #
-      dataset = $('#EventsTable tbody').find('tr')
-      # show all rows first
-      modDate = Date.today().addDays(0)
-      dataset.show()
-      # filter the rows that should be hidden
-      dataset.each ->
-        row = $(this)
-        colAdvisor = row.find('td').eq(1).text().split(" - ")
-        colDate = row.find('td').eq(2).text().split(" - ")
-        #show all rows by default
-        show = true
-        #if from date is valid and row date is less than from date, hide the row
-        newDate = new Date(modDate)
-        orgDate = new Date(colDate[0])
-        if  (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
-          #console.log("modDate: " + modDate + "  table date: " + colDate[0])
-          show = true
-        else
-          show = false
-
-        if show
-          row.show()
-        else
-          row.hide()
-        return
+        row.hide()
 
       tr_length = $('#EventsTable tbody tr:visible').length
       if (tr_length == 0)
-        $("#meeting-submit").prop("disabled", true);
+        $("#meeting-submit").prop("disabled", true)
         alert('Please select another advisor that has appointments!!')
       else
-        $("#meeting-submit").prop("disabled", false);
-
+        $("#meeting-submit").prop("disabled", false)
       return
-
-
-    $('#coaching_meeting_advisor_type').change ->
-      advisorType = $('#coaching_meeting_advisor_type').val()
-      #alert("advisor_type: " + advisorType)
-      if advisorType == 'Academic'
-        data = academicPrimary
-      else if advisorType == 'Wellness'
-        data = wellnessPrimary
-      else
-        data = careerPrimary
-      nbsp = '&nbsp'
-      $('#coaching_meeting_subjects').empty()
-      $.each data, (index) ->
-        $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
-        return
-
-    $('#EventsTable tr').hide()
-    $("#filtered_by_days").find("option").css("color", "#337ab7")
-    $("#filtered_by_days").change ->
-      $('#EventsTable').show()
-      selectedFilteredValue = $('#filtered_by_days option:selected').val()
-      console.log('selectedFilteredValue: ' + selectedFilteredValue)
-      selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
-      modDate = Date.today().addDays(selectedFilteredValue)
-      dataset = $('#EventsTable tbody').find('tr')
-      dataset.show()
-      # filter the rows that should be hidden
-      dataset.each ->
-        row = $(this)
-        colAdvisor = row.find('td').eq(1).text().split(" - ")
-        colDate = row.find('td').eq(2).text().split(" - ")
-        #show all rows by default
-        show = true
-        #if from date is valid and row date is less than from date, hide the row
-        newDate = new Date(modDate)
-        orgDate = new Date(colDate[0])
-
-        if  (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
-          show = true
-        else
-          show = false
-
-        if show
-          row.show()
-        else
-          row.hide()
-
-        tr_length = $('#EventsTable tbody tr:visible').length
-        if (tr_length == 0)
-          $("#meeting-submit").prop("disabled", true)
-        else
-          $("#meeting-submit").prop("disabled", false)
-        return

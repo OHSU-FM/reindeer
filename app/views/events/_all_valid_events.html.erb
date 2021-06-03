@@ -1,5 +1,7 @@
 <p style="color:purple"><b><i>Search the table for Names (lastName, firstName):</b></i></p>
 <!-- <input class="form-control" id="myInput" type="text" placeholder="LastName, FirstName..."> -->
+ <input type="hidden" id="searchValue" value='<%= "#{@advisor_name}" %>'>
+
  <% # =will_paginate @events %>
 <table class="responsive nowrap table table-hover" data-toggle="table" id="all_events_table" data-sort="true" data-url="<%= url_for(format: :json) %>">
   <thead class="filters">
@@ -10,7 +12,7 @@
       <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
   </thead>
 
-  <% @events.each do |event| %>
+  <% @events.each do |event| %>  
     <tr>
       <% if event.user_id.nil? %>
         <td><%= event.title %></td>

@@ -7,13 +7,16 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    #@events = Event.where('start_date > ?', DateTime.now)
+    # advisor wants to see other advisor's appointment
+    @events = Event.where('start_date > ?', DateTime.now)  #.order(start_date: :desc)
     advisor = Advisor.find_by(email: current_user.email)
     if !advisor.nil?
-      @events = Event.where(advisor_id: advisor.id).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
-    else
-      @events = Event.where('start_date > ?', DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
+      @advisor_name = advisor.name
     end
+    #   @events = Event.where('advisor_id=? and start_date > ?', advisor.id, DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
+    # else
+    #   @events = Event.where('start_date > ?', DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
+    # end
 
     @events.each do |event|
       if !event.user_id.nil?

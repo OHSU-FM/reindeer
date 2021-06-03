@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "@rails/webpacker": "^3.6.0",
+    "@rails/webpacker": "^5.4.0",
     "coffeescript": "1.12.7"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.7.2"
   }
 }
