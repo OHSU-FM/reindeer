@@ -164,4 +164,3 @@ gem 'font-awesome-sass', '~> 4.4.0'
 gem "font-awesome-rails"
 gem 'will_paginate', '~> 3.1'
 gem 'datejs-rails', "~> 2.0.1"
-gem 'add_to_calendar'
