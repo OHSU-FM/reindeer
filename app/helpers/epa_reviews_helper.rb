@@ -83,14 +83,10 @@ module EpaReviewsHelper
         if cd["mspe"].to_s != ""
           cd["mspe"] = cd["mspe"].gsub(/\b(#{keywords.join("|")})\b/i,
                   '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>')
-        else
-          break
         end
         if cd["feedback"].to_s != ""
           cd["feedback"] = cd["feedback"].gsub(/\b(#{keywords.join("|")})\b/i,
                   '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>')
-        else
-          break
         end
       end
     end
