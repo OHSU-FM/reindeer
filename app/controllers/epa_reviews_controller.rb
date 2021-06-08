@@ -196,9 +196,13 @@ class EpaReviewsController < ApplicationController
     load_eg_members(@user)
 
     #@most_recent_review_date = EpaReview.get_max_date(user_id)
-    @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
-    @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
-
+    if @user.permission_group_id == 16
+      @lastReviewEndDate = @badge_review_dates["Med22Badge"]["lastReviewEndDate"]
+      @nextReviewEndDate = @badge_review_dates["Med22Badge"]["nextReviewEndDate"]
+    elsif @user.permission_group_id == 13
+      @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
+      @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
+    end
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
