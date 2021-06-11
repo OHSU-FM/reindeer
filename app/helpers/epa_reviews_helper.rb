@@ -15,7 +15,7 @@ module EpaReviewsHelper
   EPA_KEYWORDS = {
             "EPA1" => ['history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
             "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
-            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic"],
+            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans"],
             "EPA4" => ["orders",  "prescription"],
             "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
             "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
