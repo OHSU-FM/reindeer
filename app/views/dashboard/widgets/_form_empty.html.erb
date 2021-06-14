@@ -65,21 +65,23 @@
             <table class="table table-hover" >
               <tr>
                 <th>Cohort</th>
-                <th>Max</th>
-                <th>Min</th>
-                <th>Ave</th>
-                <th>Median</th>
+                <th style="text-align:center">Max</th>
+                <th style="text-align:center">Min</th>
+                <th style="text-align:center">Ave</th>
+                <th style="text-align:center">Median</th>
               </tr>
               <body>
-                <% stats.each do |key, stat| %>
-                  <tr>
-                    <td><%= key %></td>
+                <% if !stats.nil? %>
+                  <% stats.each do |key, stat| %>
+                    <tr>
+                      <td><%= key %></td>
 
-                    <% stat.each do |dd| %>
-                      <td><%= dd.round(2) %></td>
-                    <% end %>
+                      <% stat.each do |dd| %>
+                        <td style="text-align:center"><%= dd.round %></td>
+                      <% end %>
 
-                  </tr>
+                    </tr>
+                  <% end %>
                 <% end %>
 
               </body>

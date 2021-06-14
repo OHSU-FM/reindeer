@@ -29,10 +29,10 @@ module SearchesHelper
       arr = result.rows.flatten  # the array is sorted DESC
       #max = arr.first
       #min = arr.last
-      ave = arr.sum.fdiv(arr.size)
-      med = median(arr)
+      ave = arr.sum.fdiv(arr.size).round
+      med = median(arr).round
       return ave, med, cohort_title
-    elsif user.coaching_type == 'dean'
+    elsif user.coaching_type == 'dean' or user.coaching_type == 'admin'
       cohorts = PermissionGroup.where("id >= ? and id <> 15", 13).order(:title)
       cohorts_stat = {}
       stat = []
@@ -43,8 +43,8 @@ module SearchesHelper
           arr = result.rows.flatten  # the array is sorted DESC
           stat << arr.first
           stat << arr.last
-          stat << arr.sum.fdiv(arr.size)
-          stat << median(arr)
+          stat << arr.sum.fdiv(arr.size).round
+          stat << median(arr).round
           cohorts_stat.store(title, stat)
         end
         stat = []
