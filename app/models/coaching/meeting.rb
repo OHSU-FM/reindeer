@@ -17,7 +17,7 @@ class Coaching::Meeting < ApplicationRecord
   paginates_per 6
 
   def self.search term
-    self.where("subject like ? OR notes like ?", "%#{term}%", "%#{term}%")
+    self.where("array_to_string(subject, ',') like ? OR notes like ?", "%#{term}%", "%#{term}%")
   end
 
 

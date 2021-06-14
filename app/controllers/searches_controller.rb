@@ -1,4 +1,5 @@
 class SearchesController < ApplicationController
+  before_action :authenticate_user!
   include SearchesHelper
   layout 'full_width_csl'
 
@@ -55,7 +56,7 @@ class SearchesController < ApplicationController
     if @parameter == "*"
       load_all_students(cohorts)
     else
-        if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23', 'med24'].include? @parameter
+        if !['med18', 'med19', 'med20', 'med21', 'med22', 'med23', 'med24', 'med25'].include? @parameter
           cohorts.each do |cohort|
             user = User.find_by("cohort_id = ? and full_name LIKE ?",  "#{cohort.id}", "#{@parameter.capitalize}%")
             @results.push user if !user.nil?

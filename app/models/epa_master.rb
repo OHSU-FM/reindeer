@@ -3,6 +3,26 @@ class EpaMaster < ApplicationRecord
   has_many   :epa_reviews, as: :reviewable,  dependent: :destroy
   accepts_nested_attributes_for :epa_reviews
 
+  def self.update_not_yet_and_grounded_epas(cohort_group)  #pemission_group looks like 'Med22'
+    permission_group_id = PermissionGroup.where("title like ?", "%#{cohort_group}%").first.id
+
+    result = EpaMaster.execute_sql("update epa_reviews set badge_decision1='Badge'
+       from  epa_masters, users
+	     where epa_masters.id = epa_reviews.reviewable_id and
+          trust1='Grounded' and badge_decision1='Not Yet' and
+		      users.id = epa_masters.user_id and
+		      users.permission_group_id=?", permission_group_id).to_a
+
+    result2 = EpaMaster.execute_sql("update epa_reviews set badge_decision2='Badge'
+       from  epa_masters, users
+	     where epa_masters.id = epa_reviews.reviewable_id and
+          trust2='Grounded' and badge_decision2='Not Yet' and
+		      users.id = epa_masters.user_id and
+		      users.permission_group_id=?", permission_group_id).to_a
+
+
+  end
+
   def badged?
      if (self.status == "Badge")
        return true

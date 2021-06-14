@@ -63,16 +63,25 @@ module Coaching::StudentsHelper
   end
 
   def hf_get_label (current_user)
-    if  current_user.coaching_type == 'student'
-      return " #{current_user.full_name} - #{hf_get_cohort(current_user)}"
-    elsif current_user.coaching_type == 'admin' and params[:email].present?
-      @student = User.find_by("email = ?", params[:email])
-      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
-    elsif current_user.coaching_type == 'dean' and params[:slug].present?
-      @student = User.find_by("username = ?", params[:slug])
-      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
-    else
-      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
+    # if  current_user.coaching_type == 'student'
+    #   return " #{current_user.full_name} - #{hf_get_cohort(current_user)}"
+    # elsif current_user.coaching_type == 'admin' and params[:email].present?
+    #   @student = User.find_by("email = ?", params[:email])
+    #   return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
+    # elsif current_user.coaching_type == 'dean' and params[:slug].present?
+    #   @student = User.find_by("username = ?", params[:slug])
+    #   return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
+    # else
+    #   return "Student: #{@student.full_name} - #{hf_get_cohort(@student)}"
+    # end
+
+    if params[:slug].present?
+      student = User.find_by("username = ?", params[:slug])
+      no_of_wbas = student.epas.where.not(involvement: 0).count.to_s
+      no_of_badges = student.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(student)).count.to_s
+      return ("Student: #{@student.full_name} - #{hf_get_cohort(@student)} " +
+             "<span style='font-size:20px;color:black'> (Total # of WBAs: <b>#{no_of_wbas}</b> " +
+             "out of 100 & Total # of Badges Awarded: <b>#{no_of_badges}</b> out of 13)</span>").html_safe
     end
   end
 
