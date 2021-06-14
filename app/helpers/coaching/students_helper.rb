@@ -79,9 +79,9 @@ module Coaching::StudentsHelper
       student = User.find_by("username = ?", params[:slug])
       no_of_wbas = student.epas.where.not(involvement: 0).count.to_s
       no_of_badges = student.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(student)).count.to_s
-      return "Student: #{@student.full_name} - #{hf_get_cohort(@student)} " +
+      return ("Student: #{@student.full_name} - #{hf_get_cohort(@student)} " +
              "<span style='font-size:20px;color:black'> (Total # of WBAs: <b>#{no_of_wbas}</b> " +
-             "out of 100 & Total # of Badges Awarded: <b>#{no_of_badges}</b> out of 13)</span>".html_safe
+             "out of 100 & Total # of Badges Awarded: <b>#{no_of_badges}</b> out of 13)</span>").html_safe
     end
   end
 
