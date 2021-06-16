@@ -121,6 +121,50 @@ $('#epa_review_badge_decision1').change(
     }
 );
 
+$("#epa_review_trust1_grounded, #epa_review_trust1_presumptive").change(
+  function() {
+    if ($("#epa_review_trust1_grounded").is(":checked") || $("#epa_review_trust1_presumptive").is(":checked") ) {
+       $(".badge_decision1_badge").prop("checked", "checked");
+       $(".reason1_met_min").prop("checked", "checked");
+       $(".student_comments1_congrats").prop("checked", "checked");
+
+    }
+  }
+)
+$("#epa_review_trust1_distrust, #epa_review_trust1_questioned_trust").change(
+  function() {
+    if ($("#epa_review_trust1_distrust").is(":checked") || $("#epa_review_trust1_questioned_trust").is(":checked") ) {
+       $(".badge_decision1_deny").prop("checked", "checked");
+       $(".reason1_have_not_met_min").prop("checked", "checked");
+       $(".student_comments1_work_towards").prop("checked", "checked");
+
+    }
+  }
+)
+
+$("#epa_review_trust2_distrust, #epa_review_trust2_questioned_trust").change(
+  function() {
+    if ($("#epa_review_trust2_distrust").is(":checked") || $("#epa_review_trust2_questioned_trust").is(":checked") ) {
+       $(".badge_decision2_deny").prop("checked", "checked");
+       $(".reason2_have_not_met_min").prop("checked", "checked");
+       $(".student_comments2_work_towards").prop("checked", "checked");
+
+    }
+  }
+)
+
+
+$("#epa_review_trust2_grounded, #epa_review_trust2_presumptive").change(
+  function() {
+    if ($("#epa_review_trust2_grounded").is(":checked") || $("#epa_review_trust2_presumptive").is(":checked") ) {
+       $(".badge_decision2_badge").prop("checked", "checked");
+       $(".reason2_met_min").prop("checked", "checked");
+       $(".student_comments2_congrats").prop("checked", "checked");
+
+    }
+  }
+)
+
 $('#epa_review_badge_decision2').change(
 	function() {
     if ($(".badge_decision2_badge").is(":checked")) {

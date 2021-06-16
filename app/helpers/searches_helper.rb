@@ -11,7 +11,8 @@ module SearchesHelper
               from epas, users
               where involvement <> 0 and
                    users.id = epas.user_id and
-                   users.permission_group_id = ' + permission_group_id.to_s + '
+                   users.spec_program <>' + "'OMFS'" + ' and ' +
+                   'users.permission_group_id = ' + permission_group_id.to_s + '
               group by
                 user_id
               order by count DESC')
