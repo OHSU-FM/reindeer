@@ -78,11 +78,6 @@
                     </div>
                     <div clas="card">
                       <div class="card-body">
-                        <%= render partial: 'wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
-                      </div>
-                    </div>
-                    <div clas="card">
-                      <div class="card-body">
                       <%= render partial: "narrative_comments",
                           locals: {clinical_data: @clinical_data,
                                    comp: @comp,
@@ -92,6 +87,12 @@
 
                      </div>
                    </div>
+                   <div clas="card">
+                     <div class="card-body">
+                       <%= render partial: 'wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
+                     </div>
+                   </div>
+
                   </div>
 
                   <div class="modal-footer">

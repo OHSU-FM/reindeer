@@ -30,7 +30,7 @@
                         'data-target' => '#mymodal-epa-review', class: "fa fa-plus"}%> &nbsp;&nbsp;
                   <% end %>
 
-                  <%= link_to '-Edit', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
+                  <%= link_to '-Review', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
                       'data-target' => '#mymodal-epa-review', class: "button-primary fa fa-edit"}  %> &nbsp;&nbsp;
                   <%= link_to '-Delete', epa_review_path(id: review.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_review fa fa-trash' %>
               <% end %>

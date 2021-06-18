@@ -19,6 +19,7 @@
                       <th scope="col">ProfConcern</th>
                       <th scope="col">Feedback</th>
                       <th scope="col">MSPE Comment</th>
+                      <th scope="col" style="width: 6%">Created Date</th>
                     </tr>
                   </thead>
                   <% if !clinical_data.blank? %>
@@ -31,7 +32,7 @@
                             <td><%= cd["ProfConcerns"] %></td>
                             <td><%= hf_highlight(cd["feedback"], epa_code) %></td>
                             <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
-
+                            <td><%= hf_highlight(cd["created_at"], epa_code) %></td>
                           </tr>
                       <% end %>
                     <% end %>

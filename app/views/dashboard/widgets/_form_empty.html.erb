@@ -50,11 +50,16 @@
     <div class="xwidget-resize-hook">
         <br />
         <% if current_user.coaching_type == 'student'%>
-          <h5><font color="purple">As of today, you have achieved: </font></h5>
+          <h4><font color="purple">EPA Badging/Entrustment</font></h4>
+          <hr>
+          <h5><font color="black">As of today, you have earned:</font></h5>
           <hr>
           Total # of WBAs (all levels) : <b><%= current_user.epas.where.not(involvement: 0).count.to_s %> </b>out of <b>100</b><br />
           Total # of Badges Awarded : <b><%= current_user.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(current_user)).count.to_s %> </b>out of <b>13</b>
-          <br /><br />
+          <br />
+          <hr>
+          <h5><font color="black">Class earnings:</font></h5>
+          <hr>
             <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
             <%= cohort_title %> WBA Average: <b><%= ave %></b><br />
             <%= cohort_title %> WBA Median&nbsp;: <b><%= med %></b>
