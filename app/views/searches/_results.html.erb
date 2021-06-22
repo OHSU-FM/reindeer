@@ -16,6 +16,7 @@
         </tr>
       </thead>
       <% @temp_hash = {} %>
+
       <% @results.each do |result| %>
         <% @pk = result.email %>
         <tr>
@@ -52,9 +53,10 @@
 
 
             <% cohort = hf_exists_in_PreceptorEval(result.id) %>
+
             <% if !cohort.blank? %>
-              <%= link_to("<b>#{cohort}:Foundation of Medicine: Preceptorship Evaluations (Beta!)</b>".html_safe,
-                      user_preceptor_evals_path(user_id: result.id, permission_group_id: result.permission_group_id),  target: '_blank') %> <br>
+              <%= link_to("<b>#{cohort}:Foundation of Medicine: Preceptorship Evaluations</b>".html_safe,
+                      preceptor_eval_path(uuid: result.uuid),  target: '_blank') %> <br>
             <% end %>
 
             <% if hf_has_csl_feedbacks(result.id) %>

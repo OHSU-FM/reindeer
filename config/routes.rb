@@ -64,10 +64,10 @@ Rails.application.routes.draw do
   get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
   get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams'
 
-  resources :user do
-    resources :preceptor_evals,  only: [:index] do
-    end
-  end
+  #resources :user do
+  resources :preceptor_evals,  only: [:show], param: :uuid
+  #   end
+  # end
 
   resource :fom_exams do
       collection do
