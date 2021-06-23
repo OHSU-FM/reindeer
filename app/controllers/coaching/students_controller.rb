@@ -78,7 +78,6 @@ module Coaching
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')
 
-        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
         @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).where.not(user_id: [nil, ""]).order(:id)
         advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name, advisors.advisor_type").first
 
