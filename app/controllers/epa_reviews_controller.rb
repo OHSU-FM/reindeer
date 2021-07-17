@@ -170,6 +170,11 @@ class EpaReviewsController < ApplicationController
     if (@comp = Competency.where(user_id: @user.id).order(submit_date: :desc)).empty?
       @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
       @percent_complete ||= hf_epa_class_mean(@clinical_data)
+
+      ## for OMFS students, they have no core courses
+      if @percent_complete.uniq.first == 0
+        @percent_complete = EpaReview.epa_init
+      end
     else
       @comp = @comp.map(&:attributes)
       @comp_hash3 = hf_load_all_comp2(@comp, 3)

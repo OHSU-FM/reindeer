@@ -8,6 +8,7 @@ class FomExamsController < ApplicationController
   def index
     user = User.find_by(uuid: params[:uuid])
     @artifacts = Artifact.where(user_id: user.id)
+
   end
 
   def list_all_blocks
@@ -120,6 +121,8 @@ class FomExamsController < ApplicationController
        @failed_comps = hf_scan_failed_score(@comp_exams)
        block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
        @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
+       ## don't display remediation data for now
+       #@remeds = FomRemed.where(user_id: student.id)  #, block: block_code)
      else
        @comp_keys = ' **** You NOT AUTHORIZED to view this account! ***'
      end
@@ -128,7 +131,6 @@ class FomExamsController < ApplicationController
     respond_to do |format|
       format.html
     end
-
 
   end
 

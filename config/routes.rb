@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :fom_remeds
   resources :advisors
 
   resources :events do

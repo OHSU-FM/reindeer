@@ -29,14 +29,17 @@ class CompetenciesController < ApplicationController
     else
       if params[:user_id].present? and  !(@comp = Competency.where(user_id: params[:user_id]).order(start_date: :desc)).empty?
         @selected_user = User.where(id: params[:user_id]).first
-        full_name = @selected_user.full_name
         email = @selected_user.email
-        permission_group_id = @selected_user.permission_group_id
-        load_competencies(permission_group_id, full_name)
+        # full_name = @selected_user.full_name
+        # permission_group_id = @selected_user.permission_group_id
+        load_competencies(@selected_user.permission_group_id, @selected_user.full_name)
       else
         @selected_user = User.where(id: params[:user_id]).first
         email = @selected_user.email
-        @comp = nil
+        @comp = hf_get_archive_competency(@selected_user.id, @selected_user.permission_group_id)
+        if !@comp.empty?
+          load_competencies(@selected_user.permission_group_id, @selected_user.full_name)
+        end
       end
     end
 

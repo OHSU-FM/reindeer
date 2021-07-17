@@ -29,6 +29,11 @@ class User < ActiveRecord::Base
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
   has_many :competencies, dependent: :destroy
+  has_many :med18_competencies, inverse_of: :user, dependent: :destroy
+  has_many :med19_competencies, inverse_of: :user, dependent: :destroy
+  has_many :med20_competencies, inverse_of: :user, dependent: :destroy
+  has_many :med20_competencies, inverse_of: :user, dependent: :destroy
+
   has_one  :cpx, dependent: :destroy
   has_many :usmle_exams, dependent: :destroy
   has_many :epa_masters, dependent: :destroy
@@ -38,6 +43,7 @@ class User < ActiveRecord::Base
   has_many :preceptor_assesses, dependent: :destroy
   has_one :advisor, foreign_key: :email, dependent: :destroy
   has_many :events, inverse_of: :user, dependent: :destroy
+  has_many :fom_remeds, inverse_of: :user, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 

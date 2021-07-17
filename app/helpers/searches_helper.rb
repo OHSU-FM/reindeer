@@ -24,15 +24,22 @@ module SearchesHelper
   def hf_wba_stats(user)
 
     if user.coaching_type == 'student'
+      # re-get user records as permission_group_id was pointed to Med21 --> Not sure why!
+      user = User.find(user.id)
       cohort_title = user.permission_group.title[/(?<=\().*?(?=\))/]  # to extract cohort Med21
       permission_group_id = user.permission_group_id
       result = get_stats(permission_group_id)
-      arr = result.rows.flatten  # the array is sorted DESC
-      #max = arr.first
-      #min = arr.last
-      ave = arr.sum.fdiv(arr.size).round
-      med = median(arr).round
-      return ave, med, cohort_title
+
+      if result.rows.empty?
+          return nil, nil, cohort_title
+      else
+        arr = result.rows.flatten  # the array is sorted DESC
+        #max = arr.first
+        #min = arr.last
+        ave = arr.sum.fdiv(arr.size).round
+        med = median(arr).round
+        return ave, med, cohort_title
+      end
     elsif user.coaching_type == 'dean' or user.coaching_type == 'admin'
       cohorts = PermissionGroup.where("id >= ? and id <> 15", 13).order(:title)
       cohorts_stat = {}

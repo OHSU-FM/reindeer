@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @fom_remed.user_id %>
+</p>
+
+<p>
+  <strong>Block:</strong>
+  <%= @fom_remed.block %>
+</p>
+
+<%= link_to 'Edit', edit_fom_remed_path(@fom_remed) %> |
+<%= link_to 'Back', fom_remeds_path %>

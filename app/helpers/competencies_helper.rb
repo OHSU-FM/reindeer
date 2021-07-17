@@ -87,6 +87,21 @@ module CompetenciesHelper
 
 
   #===================================================================================================================================================================
+  def hf_get_archive_competency (user_id, permssion_group_id)
+    if Med18Competency.table_exists? and !(comp = Med18Competency.where(user_id: user_id).order(start_date: :desc)).empty?
+      return comp
+    elsif Med19Competency.table_exists? and !(comp = Med19Competency.where(user_id: user_id).order(start_date: :desc)).empty?
+      return comp
+    elsif Med20Competency.table_exists? and !(comp = Med20Competency.where(user_id: user_id).order(start_date: :desc)).empty?
+      return comp
+    elsif Med21Competency.table_exists? and !(comp = Med21Competency.where(user_id: user_id).order(start_date: :desc)).empty?
+      return comp
+    else
+      return nil
+    end
+
+  end
+
   def hf_attribute_def(in_key)
     if in_key.include? "Attribute"
       return ATTRIBUTES_DEF[in_key]

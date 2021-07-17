@@ -74,7 +74,7 @@ module Coaching
 
         #@events = Event.where('start_date > ?', DateTime.now).order(:id )
         @events = Event.where('start_date > ?', Date.today).order(:start_date)
-        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
+        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')
 

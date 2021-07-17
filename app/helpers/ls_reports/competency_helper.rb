@@ -686,6 +686,7 @@ module LsReports::CompetencyHelper
         class_mean_epa[i] = 0
       end
     end
+
     return class_mean_epa
   end
 end

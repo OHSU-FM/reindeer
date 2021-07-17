@@ -278,7 +278,7 @@ $(function() {
 
              var m = "clicked: " + key;
              var selectedText = window.getSelection().toString();
-             var parentid = window.getSelection().anchorNode.parentElement.id;
+             var parentid = window.getSelection().focusNode.parentElement.id;   //anchorNode.parentElement.id;
              var course_name = $('#' + parentid).data('course-name').split("]");
              var course_code = course_name[0].replace("[", "");
              var formAction = $('#review-form').attr('action');
@@ -290,7 +290,6 @@ $(function() {
              var epa_remove = epa + ": ";
 
              selectedText = selectedText.replace(epa_remove, "");
-
 
              const formatYmd = date => date.toISOString().slice(0, 10);
              var todayDate = formatYmd(new Date());      // 2020-05-06
@@ -316,8 +315,8 @@ $(function() {
                epa_hash["full_name"] = fullName;
                epa_hash["comments"] =  todayDate + ": " + course_code + ": " + selectedText;
                epa_hash["email"] = byEmail
-               // console.log("epa_hash: " + JSON.stringify(epa_hash));
-               // console.log('ByEmail - inside contextMenu: ' + byEmail)
+               //console.log("epa_hash: " + JSON.stringify(epa_hash));
+               //console.log('ByEmail - inside contextMenu: ' + byEmail)
                epa_json.push(epa_hash);
 
              }
@@ -336,6 +335,6 @@ $(function() {
      });
 
      $('.context-menu-one').on('click', function(e){
-         //console.log('clicked', this);
+         console.log('clicked', this);
      })
  });

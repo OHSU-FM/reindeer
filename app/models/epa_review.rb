@@ -2,6 +2,13 @@ class EpaReview < ApplicationRecord
     has_one :epa_reason
     belongs_to :reviewable, polymorphic: true
 
+    def self.epa_init
+      epa = {}
+      for i in 1..13
+        epa["epa#{i}"] = 0
+      end
+      return epa
+    end
 
     def self.comments_to_student
       return [
