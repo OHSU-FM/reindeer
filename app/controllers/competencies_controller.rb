@@ -102,7 +102,7 @@ class CompetenciesController < ApplicationController
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
         @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
-        if @comp_unfiltered.nil?
+        if @comp_unfiltered.empty?
           # get it from archived tables
           group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
           table_name = "#{group_title}Competency".constantize
