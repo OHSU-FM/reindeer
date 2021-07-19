@@ -98,12 +98,26 @@ class CompetenciesController < ApplicationController
 
     @comp_data_clinical = hf_average_comp2 (@comp_hash3)
 
-    @comp_class_mean = Competency.load_class_mean(permission_group_id)
-    if @comp_class_mean.nil?
-      @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
-      @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
-      Competency.create_class_mean(@comp_class_mean, permission_group_id)
+    if [3,5,6,13].include? permission_group_id
+      @comp_class_mean = Competency.load_class_mean(permission_group_id)
+      if @comp_class_mean.nil?
+        group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
+        table_name = "#{group_title}Competency".constantize
+        @comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
+        Competency.create_class_mean(@comp_class_mean, permission_group_id)
+      end
+    else
+      @comp_class_mean = Competency.load_class_mean(permission_group_id)
+      if @comp_class_mean.nil?
+        @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
+        Competency.create_class_mean(@comp_class_mean, permission_group_id)
+      end
     end
+
+
+
 
     @chart ||= hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
     @student_epa ||= hf_epa2(@comp_data_clinical)
