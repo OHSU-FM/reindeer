@@ -65,18 +65,18 @@ module SearchesHelper
 
   end
 
-  def hf_releaseDate(user)
+  def hf_releaseDate(in_user)
     @badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
 
-    if user.permission_group_id = 13
+    if in_user.permission_group_id == 13
       return @badge_release_date["Med21Badge"]["releaseDate"]
-    elsif user.permission_group_id = 16
+    elsif in_user.permission_group_id == 16
       return @badge_release_date["Med22Badge"]["releaseDate"]
-    elsif user.permission_group_id = 17
+    elsif in_user.permission_group_id == 17
       return @badge_release_date["Med23Badge"]["releaseDate"]
-    elsif user.permission_group_id = 18
+    elsif in_user.permission_group_id == 18
       return @badge_release_date["Med24Badge"]["releaseDate"]
-    elsif user.permission_group_id = 19
+    elsif in_user.permission_group_id == 19
       return @badge_release_date["Med25Badge"]["releaseDate"]
     else
 

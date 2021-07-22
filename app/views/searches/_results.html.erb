@@ -32,7 +32,6 @@
           <% end %>
           <td style="text-align:center;color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td>
           <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
-
           <td>
             <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
             <%= link_to("<b>Clinical Phase Dataset NEW! (>= Med20)</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>

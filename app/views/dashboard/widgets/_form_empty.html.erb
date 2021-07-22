@@ -61,8 +61,8 @@
           <h5><font color="black">Class earnings:</font></h5>
           <hr>
             <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
-            <%= cohort_title %> WBA Average: <b><%= ave %></b><br />
-            <%= cohort_title %> WBA Median&nbsp;: <b><%= med %></b>
+            <%= cohort_title %> WBA Average: <b><%= ave.nil? ? 'N/A' : ave %><b><br />
+            <%= cohort_title %> WBA Median&nbsp;: <b><%= med.nil? ? 'N/A' : med %></b>
           <hr>
         <% else %>
             <% stats = hf_wba_stats(current_user) %>
