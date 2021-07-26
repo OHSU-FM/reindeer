@@ -37,7 +37,7 @@ class CompetenciesController < ApplicationController
         @selected_user = User.where(id: params[:user_id]).first
         email = @selected_user.email
         @comp = hf_get_archive_competency(@selected_user.id, @selected_user.permission_group_id)
-        if !@comp.empty?
+        if !@comp.nil?
           load_competencies(@selected_user.permission_group_id, @selected_user.full_name)
         end
       end

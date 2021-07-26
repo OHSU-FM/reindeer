@@ -1,4 +1,4 @@
-<H4>Collapsible EPA Section </h4>
+<H4 style="color:purple;">Collapsible EPA Section </h4>
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <% if !@student_epa.blank? %>
     <% for i in 1..13 do %>
@@ -6,7 +6,7 @@
       <% epa = hf_epa_level3_detail(@comp, i.to_s, "3") %>
       <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingEPA<%= i %>">
-              <h4 class="panel-title">
+              <h5 class="panel-title">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
                     <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
@@ -32,7 +32,7 @@
                   </div>
 
                 </a>
-              </h4>
+              </h5>
           </div>
 
           <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
@@ -46,6 +46,41 @@
       </div>
     <% end %>
   <% else %>
-    <h4> No EPA/Competencies Data FOUND! </h4>
+    <h5 style="color:orange;"> No EPA/Competencies Data FOUND! </h5>
+    <hr>
+    <% for i in 1..13 do %>
+      <% epa_code = "epa#{i}" %>
+      <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingEPA<%= i %>">
+              <h5 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
+                  <div class="labels">
+                    <span><b>EPA<%= i %></b> - <%= hf_get_epa_desc2("EPA#{i}") %>
+                      <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
+                        [Badge Status:
+                        <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
+                              <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
+                              <%= image_tag ("epa/EPA#{i}"), size: "20x20" %>
+                        <% else %>
+                              <span style="color:blue;"> <%= @student_badge_info["EPA#{i}"]["status"] %></span>]
+                              <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
+                        <% end %>
+                      <% else %>
+
+                              <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
+                      <% end %>
+                    </span>
+                  </div>
+                </a>
+              </h5>
+          </div>
+
+          <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
+              <div class="panel-body">
+                  <%= render partial: "competencies/detail_badge_display", locals: {i: i, epa: epa} %>
+              </div>
+          </div>
+      </div>
+    <% end %>
   <% end %>
 </div>
