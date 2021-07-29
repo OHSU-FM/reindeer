@@ -1,7 +1,8 @@
 <p> Hello <%= @meeting_mailer.user.full_name.split(", ").last %>, <br /><br />
 
-  The above appointment has been created.  Please be prepared to meet with <br />
-  <%= @event_mailer.description %> on <%= @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %>. <br /> <br />
+  The appointment has been created.  Please be prepared to meet with <br />
+  <%= @event_mailer.description %> on <%= @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %>. <br />
+  You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.<br /> <br />
 
   Thanks!  <br /><br />
 
