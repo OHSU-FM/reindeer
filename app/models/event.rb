@@ -33,8 +33,9 @@ class Event < ApplicationRecord
                   end_date["end_date(3i)"] + " " +
                   end_date["end_date(4i)"] + ":" +
                   end_date["end_date(5i)"]
+    time_slot = time_slot.to_i + 15
 
-    (start_date.to_s.to_datetime.utc.to_i .. end_date.to_s.to_datetime.utc.to_i).step(time_slot.to_i*60) do |date|
+    (start_date.to_s.to_datetime.utc.to_i .. end_date.to_s.to_datetime.utc.to_i).step(time_slot*60) do |date|
        date_array.store("Date #{i}", Time.at(date).utc.strftime("%m/%d/%Y %T %p"))
        #puts "time: "  + Time.at(date).utc.strftime("%m/%d/%Y %T %p")
        i = i + 1
