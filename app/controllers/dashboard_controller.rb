@@ -12,7 +12,7 @@ class DashboardController < ApplicationController
     @dash = Dashboard.includes(:dashboard_widgets)
       .where(user_id: current_user.id).first_or_initialize
     if current_user.coaching_type == 'student'
-      @meetings = Coaching::Meeting.where(user_id: current_user.id).where.not(event_id: [nil, ""])
+      @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
     else
       @meetings = []
     end
