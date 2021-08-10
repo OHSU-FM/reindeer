@@ -43,7 +43,7 @@ module DashboardHelper
         meetings = Coaching::Meeting.where(advisor_id: advisor.id)
         events_array = []
         meetings.each do |meeting|
-          events = Event.where("id = ? and start_date > ?", meeting.event_id, DateTime.now).where.not(user_id: [nil, ''])
+          events = Event.where("id = ? and start_date > ? and user_id is not NULL", meeting.event_id, DateTime.now)
           if !events.empty?
             events_array.push events.first
             if events_array.count == 8

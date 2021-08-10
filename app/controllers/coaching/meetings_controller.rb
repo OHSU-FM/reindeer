@@ -74,7 +74,9 @@ module Coaching
 
     def destroy
       @meeting = Meeting.find params[:id]
+      EventMailer.notify_student_advisor_appt_cancel(@meeting).deliver_later
       Event.find(@meeting.event_id).update(user_id: nil)  # release back to the queue
+
       #redirect_to coaching_index_path && return unless current_user.admin_or_higher?
 
       respond_to do |format|

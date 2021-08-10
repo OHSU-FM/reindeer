@@ -1,0 +1,12 @@
+<p> Hello <%= @meeting_mailer.user.full_name.split(", ").last %>, <br /><br />
+
+  The appointment has been canceled with  <br />
+  <%= @event_mailer.description %> on <%= @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %>. <br /> <br />
+
+  Thanks!  <br /><br />
+
+  OASIS Team <br />
+  Erika Chomina <br />
+  OASIS Program Manager <br />
+  OHSU School of Medicine|UME <br />
+  chomina@ohsu.edu</p>
