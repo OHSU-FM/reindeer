@@ -98,11 +98,12 @@ module Coaching
           @students = @student.cohort.users
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
-          @cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
+          #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15)
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
-           @students = @cohorts.map(&:users).flatten
+           @students = @permission_groups.map(&:users).flatten
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).order(:id)
