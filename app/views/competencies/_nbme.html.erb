@@ -1,7 +1,7 @@
  <div class="container-fluid">
   <div class="row">
     <div class="column">
-      <% if !@usmle_exams.empty? %>
+      <% if !@usmle_exams.empty?  or !@hss_exams.empty? %>
         <div class="card">
             <div class="card-body">
               <%= render partial: "usmle_exams" %>
@@ -40,7 +40,7 @@
 <% if !@comp.nil? %>
   <div class="card">
       <div class="card-body">
-        <h4>Clinical Subject Exams(Shelf Exams)</h4>
+        <h4>Clinical Subject Exams (Self-Assessment Exams)</h4>
         <table class="table table-striped">
           <thead>
             <tr>

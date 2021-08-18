@@ -49,7 +49,10 @@ epa_codes = (category_code) ->
   else if category_code == "OASIS Documents"
             cat_array = []
             cat_array.push {id: "IPAS", value: "IPAS"}
-            cat_array.push {id: "IPPS", value: "IPPS"}                     
+            cat_array.push {id: "IPPS", value: "IPPS"}
+  else if category_code == "Exemplary Professionalism"
+            cat_array = []
+            cat_array.push {id: "Exemplary Professionalism", value: "Exemplary Professionalism"}                        
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}

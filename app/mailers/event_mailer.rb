@@ -7,9 +7,10 @@ class EventMailer < ApplicationMailer
       emails = []
       emails << student_email
       emails << cc_email
+      subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
+      log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
 
-
-      mail(to: emails, from: "chomina@ohsu.edu", subject: "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}")
+      mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
 
   end
 
@@ -22,7 +23,24 @@ class EventMailer < ApplicationMailer
       emails << student_email
       emails << cc_email
 
-      mail(to: emails, from: "chomina@ohsu.edu", subject: "Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled.")
+      subject_msg = "Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
+
+      log_emails(emails, "Cancel Appointment: ", @event_mailer, @meeting_mailer)
+
+      mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
 
   end
+
+  def log_emails (to_emails, message, event_mailer, subject_msg)
+    filename = "#{Rails.root}/log/email_notifications.log"
+    File.open(filename,"a") do |f|
+      f.write("===========================================================================\n")
+      f.write(message + "\n")
+      f.write("Emails sent on " + Time.now.strftime("%d/%m/%Y %H:%M") + "\n")
+      f.write("Emails: " + to_emails.inspect + "\n")
+      f.write("subject: " + subject_msg + "\n")
+      f.write("===========================================================================\n")
+    end
+  end
+
 end

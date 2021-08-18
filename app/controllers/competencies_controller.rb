@@ -77,7 +77,8 @@ class CompetenciesController < ApplicationController
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
-     @usmle_exams = UsmleExam.where(user_id: @selected_user.id).order(:exam_type, :no_attempts)
+     @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)
+     @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_type, :no_attempts)
      @student_badge_info = hf_get_badge_info(@selected_user.id)
 
 

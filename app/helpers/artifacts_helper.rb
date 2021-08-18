@@ -1,6 +1,6 @@
 module ArtifactsHelper
 
-  ARTIFACT_CATEGORY = ["FoM", "Clinical", "EPA-Artifacts", "Scholarly Project", "Progress Board", "Grade Dispute", "MSPE", "Preceptorship Contract", "Other"]
+  ARTIFACT_CATEGORY = ["FoM", "Clinical", "Exemplary Professionalism", "EPA-Artifacts", "Scholarly Project", "Progress Board", "Grade Dispute", "MSPE", "Preceptorship Contract", "Other"]
 
   def hf_category
     return ARTIFACT_CATEGORY
@@ -32,7 +32,7 @@ module ArtifactsHelper
       if artifact_title == "Preceptorship Contract"
         official_docs = Artifact.where(user_id: selected_user.id, title: artifact_title).order(:created_at)
       else
-        official_docs = Artifact.where(user_id: selected_user.id, title: ["Progress Board", "Other", "MPSE", "Grade Dispute"]).order(:created_at)
+        official_docs = Artifact.where(user_id: selected_user.id, title: ["Exemplary Professionalism","Progress Board", "Other", "MPSE", "Grade Dispute"]).order(:created_at)
       end
 
       #official_docs = artifacts_student.select{|a| a.title == "Progress Board" or a.title == "Grade Dispute" or a.title = "MSPE" or  a.title == "Other"}

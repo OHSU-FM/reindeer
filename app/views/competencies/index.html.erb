@@ -104,7 +104,7 @@
     </div>
 
     <div id="nbme" class="tab-pane fade" id="nbme" role="tabpanel"  aria-labelledby="nbme-tab">
-      <% if !@usmle_exams.blank? %>
+      <% if !@usmle_exams.empty? or !@hss_exams.empty? %>
         <%= render partial: "nbme" %>
       <% else %>
         <h4> No NBME/Shelf data FOUND! </h4>
