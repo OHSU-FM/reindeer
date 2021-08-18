@@ -1,5 +1,6 @@
 class EventMailer < ApplicationMailer
-  def notify_student (meeting)
+  def notify_student (meeting, method)
+
       @event_mailer = Event.find(meeting.event_id)
       @meeting_mailer = meeting
       student_email = meeting.user.email # student email
@@ -10,8 +11,18 @@ class EventMailer < ApplicationMailer
       end
       emails << student_email
       emails << cc_email
-      subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
-      log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
+      if method == "Create"
+        subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
+        @body_msg = "The appointment has been created.  Please be prepared to meet with <br />" +
+                     @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".<br />"
+                     "You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.<br /> <br />"
+        log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
+      elsif method == 'Cancel'
+        subject_msg = "Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
+        @body_msg =  "The appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +
+                      "has been canceled. <br /> <br /> "
+        log_emails(emails, "Cancel Appointment: ", @event_mailer, subject_msg)
+      end
 
       mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
 
@@ -28,7 +39,7 @@ class EventMailer < ApplicationMailer
       emails << cc_email
       if student_email == 'bettybogus'
         student_email = 'chungp@ohsu.edu'
-      end 
+      end
       subject_msg = "Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
 
       log_emails(emails, "Cancel Appointment: ", @event_mailer, @meeting_mailer)

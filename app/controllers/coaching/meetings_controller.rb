@@ -25,7 +25,7 @@ module Coaching
         if send_email_flag["OASIS"]["send_email"] ==  true
           event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
           if !event.empty?
-            EventMailer.notify_student(@meeting).deliver_later
+            EventMailer.notify_student(@meeting, "Create").deliver_later
           end
         end
       end
@@ -75,12 +75,11 @@ module Coaching
     def destroy
       @meeting = Meeting.find params[:id]
 
-      Event.find(@meeting.event_id).update(user_id: nil)  # release back to the queue
-
-      #redirect_to coaching_index_path && return unless current_user.admin_or_higher?
-
       respond_to do |format|
-        EventMailer.notify_student_advisor_appt_cancel(@meeting).deliver_later
+        if send_email_flag["OASIS"]["send_email"] ==  true
+          EventMailer.notify_student(@meeting, "Cancel").deliver_now  #notify_student_advisor_appt_cancel(@meeting).deliver_later
+        end
+        Event.find(@meeting.event_id).update(user_id: nil)  # release back to the queue
         if @meeting.destroy
           format.js { render action: 'destroy', status: :ok }
         else

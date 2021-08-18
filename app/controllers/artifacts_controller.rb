@@ -21,7 +21,7 @@ class ArtifactsController < ApplicationController
   # GET /artifacts/new
   def new
     @artifact = Artifact.new
-    @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
+    @student_groups = PermissionGroup.select(:id, :title).where(" id >= ? and id <> ?", 16, 15).order(:title)
     @cohort_students = []
     if params[:permission_group_id].present?
       @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
