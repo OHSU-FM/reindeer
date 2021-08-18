@@ -13,9 +13,9 @@ class EventMailer < ApplicationMailer
       emails << cc_email
       if method == "Create"
         subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
-        @body_msg = "The appointment has been created.  Please be prepared to meet with <br />" +
-                     @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".<br />"
-                     "You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.<br /> <br />"
+        @body_msg = "The appointment has been created.  Please be prepared to meet with " +
+                     @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".<br />" +
+                     "You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.<br />"
         log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
       elsif method == 'Cancel'
         subject_msg = "Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
