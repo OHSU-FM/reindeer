@@ -5,6 +5,9 @@ class EventMailer < ApplicationMailer
       student_email = meeting.user.email # student email
       cc_email = Advisor.find_by(id: meeting.advisor_id).email  # advisor email
       emails = []
+      if student_email == 'bettybogus'
+        student_email = 'chungp@ohsu.edu'
+      end
       emails << student_email
       emails << cc_email
       subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
@@ -20,9 +23,12 @@ class EventMailer < ApplicationMailer
       student_email = meeting.user.email # student email
       cc_email = Advisor.find_by(id: meeting.advisor_id).email  # advisor email
       emails = []
+
       emails << student_email
       emails << cc_email
-
+      if student_email == 'bettybogus'
+        student_email = 'chungp@ohsu.edu'
+      end 
       subject_msg = "Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
 
       log_emails(emails, "Cancel Appointment: ", @event_mailer, @meeting_mailer)
