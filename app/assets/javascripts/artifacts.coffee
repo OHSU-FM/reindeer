@@ -52,12 +52,13 @@ epa_codes = (category_code) ->
             cat_array.push {id: "IPPS", value: "IPPS"}
   else if category_code == "Exemplary Professionalism"
             cat_array = []
-            cat_array.push {id: "Exemplary Professionalism", value: "Exemplary Professionalism"}                        
+            cat_array.push {id: "Exemp-Prof", value: "Exemplary Professionalism"}
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}
           cat_array.push {id: "FoM CSV File", value: "FoM CSV File"}
         else
+          console.log("else logic --> category_code: " + category_code)
           return []
 
   return cat_array

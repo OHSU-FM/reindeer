@@ -1,69 +1,62 @@
-<div class="form-group">
-<%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
-<%= select_tag :uniq_cohort, options_for_select([["Med24",18], ["Med23", 17]], selected: params[:uniq_cohort]),
-    prompt: "Please Select a Cohort" %> <br />
-</div>
-<div class="form-group">
-  <%= label_tag :from, 'From', class: "control-label col-sm-2" %>
-  <%= text_field_tag 'from', '', size: 50, value: 'headinge@ohsu.edu' %> <br />
-</div>
-<div class="form-group">
-  <%= label_tag :subject, 'Subject', class: "control-label col-sm-2" %>
-  <%= text_field_tag 'subject', nil, size: 75, value: "re: REDEI FoM Assessment Update" %>
-</div>
-<div class="form-group">
-  <%= label_tag :body_message, 'Body Message', class: "control-label col-sm-2" %>
-  <textarea id="body_message" name="body_message" rows="5" cols="75">
-    Your scores are viewable on REDEI. <br /><br />
-    Thank you,<br /><br />
-    Leslie A. Haedinger, MS (haedinge@ohsu.edu)<br />
-  </textarea>
+<div class="container bg-light">
+  <br />
+  <div class="form-group">
+  <%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
+  <%= text_field_tag 'uniq_cohort', '', value: params[:uniq_cohort], disabled: true %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :from, 'From', class: "control-label col-sm-2" %>
+    <%= text_field_tag 'from', '', size: 50, value: 'haedinge@ohsu.edu' %> <br />
+  </div>
+  <div class="form-group">
+    <%= label_tag :subject, 'Subject', class: "control-label col-sm-2" %>
+    <%= text_field_tag 'subject', nil, size: 75, value: "re: REDEI FoM Assessment Update" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :body_message, 'Body Message', class: "control-label col-sm-2" %>
+    <textarea id="body_message" name="body_message" rows="15" cols="100">
 
-</div>
+      Your Fundamentals (FUND) week 4 score is viewable on REDEI.  Your week 4 Examsoft includes 1 Histology points, if earned, so the the total exam was out of <b>32 points. </b><br /><br />
+
+      The Teaching Services Office (TSO) will release the exam shortly in Examsoft for your reference. To access Examsoft go to https://ei.examsoft.com/GKWeb/login/ohsumed and log in. <br /><br />
+
+      If you have any questions, please contact me. <br /><br />
+
+      Thank you,<br /><br />
+      Leslie A. Haedinger, MS (haedinge@ohsu.edu)<br /><br />
+
+    </textarea>
+  </div>
 
   <% if !user_ids.nil? %>
-    <div class="panel panel-default">
-      <div class="panel-body">
         <%= check_box_tag "checkAll", "checkAll", false %> Check All
-        <%= button_tag "Sent Alerts", id: "SendAlerts" %>
-        <table class="table table-hover"  >
+        <%= button_tag "Sent Alerts", id: "SendAlerts", class: "btn btn-primary" %>
 
-          <% i = 0 %>
-          <% while i <= user_ids.count-1 %>
-            <tr>
-              <% user = User.where(id: user_ids[i]).select(:id, :full_name, :email).first %>
-              <% id = user.id %>
-              <td><%= user.full_name %> </td>
-              <td><%= user.email %> </td>
-              <td><%= label_tag do %>
-                  <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
-                  Send Alert
-                <% end %>
-              </td>
-              <% i += 1 %>
-              <% if (i) < user_ids.count %>
-                  <% user = User.where(id: user_ids[i]).select(:id, :full_name, :email).first %>
-                  <% id = user.id %>
-                  <td><%= user.full_name %> </td>
-                  <td><%= user.email %> </td>
-                  <td><%= label_tag do %>
-                      <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
-                      Send Alert
-                    <% end %>
-                  </td>
-                  <% i += 1 %>
-              <% end %>
-            </tr>
-          <% end %>
-          <% cohort_ids.each do |id| %>
-            <tr>
-              <% user = User.where(id: id).select(:id, :full_name, :email).first %>
-              <td><%= user.full_name %> </td>
-              <td><%= user.email %> </td>
-              <td></td>
-            </tr>
-          <% end %>
-        </table>
-      </div>
-    </div>
+          <table class="table table-hover table-striped table-info" >
+            <% user_ids.each do |user_id| %>
+              <tr>
+                <% user = User.where(id: user_id).select(:id, :full_name, :email).first %>
+                <% id = user.id %>
+                <td><%= user.full_name %> </td>
+                <td><%= user.email %> </td>
+                <td><%= label_tag do %>
+                    <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
+                    Send Alert
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+
+            <% cohort_ids.each do |id| %>
+              <tr>
+                <% user = User.where(id: id).select(:id, :full_name, :email).first %>
+                <td><%= user.full_name %> </td>
+                <td><%= user.email %> </td>
+                <td></td>
+              </tr>
+            <% end %>
+          </table>
+
+
   <% end %>
+</div>

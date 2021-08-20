@@ -27,3 +27,21 @@ body {
   background-size: 100% 100%;
   background-image: image-url('blue-and-silver-stethoscope-48603.jpg');
 }
+
+table {
+    border-collapse: collapse;
+    overflow-x: scroll;
+}
+
+thead, tbody {
+    display: block;
+}
+tbody {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 30vh;
+}
+
+.container{
+width:100%;
+}
