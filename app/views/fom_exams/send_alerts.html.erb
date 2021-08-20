@@ -1,14 +1,15 @@
-<h3> FoM - Send Alerts </h3>
 
-<%= form_for(send_alerts_fom_exams_path, action: 'send_alerts', remote: true, method: 'Get', html: { class: 'form-horizontal' },wrapper: :horizontal_form) do %>
-    <div class="form-group">
-      <%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
-      <%= select_tag :uniq_cohort, options_for_select([["Med24",18], ["Med23", 17]], selected: params[:uniq_cohort]),
-          prompt: "Please Select a Cohort" %> <br />
-    <%= submit_tag 'Go', :name => 'commit'%>
-    </div>
+  <h4> FoM - Send Alerts </h4><br />
 
-<% end %>
+  <%= form_for(send_alerts_fom_exams_path, action: 'send_alerts', remote: true, method: 'Get', html: { class: 'form-horizontal' },wrapper: :horizontal_form) do %>
+      <div class="form-inline">
+        <%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
+        <%= select_tag :uniq_cohort, options_for_select([["Med24", 18],["Med25", 19]], selected: params[:uniq_cohort]),
+            prompt: "Please Select a Cohort" %> &nbsp; &nbsp;
+      <%= submit_tag 'Submit', :name => 'commit'%>
+      </div>
+
+  <% end %>
 
 <hr>
 
