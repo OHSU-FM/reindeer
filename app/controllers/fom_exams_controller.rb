@@ -50,14 +50,14 @@ class FomExamsController < ApplicationController
 
     if params[:uniq_cohort].present?
       @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).limit(5).order(:id).pluck(:id)
+      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:id).pluck(:id)
       @user_ids = @tso_ids
 
     elsif params[:email_message].present? # from ajax  call here
         email_message = JSON.parse(params[:email_message])
         uniq_cohort = email_message.select{|e| e if e["uniq_cohort"]}.first["uniq_cohort"]
         @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).limit(5).order(:id).pluck(:id)
+        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).order(:id).pluck(:id)
 
         @email_ids = email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
         @from = email_message.select{|e| e if e["from"]}.first["from"]
@@ -76,6 +76,7 @@ class FomExamsController < ApplicationController
             ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver
           end
         end
+        flash[:alert] = "You have sent out #{user_ids.count} emails!"
     end
 
     respond_to do |format|

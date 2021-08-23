@@ -7,7 +7,6 @@ $("#checkAll").change(function () {
 $('#SendAlerts').click(function(){
   var email_message = [];
   var valid_emails = [];
-  alert ('button is clicked');
 
   $("input:checkbox(:checked)").each(function () {
      valid_emails.push({user_id: $(this).val()});
@@ -32,7 +31,7 @@ $('#SendAlerts').click(function(){
     url: '/fom_exams/send_alerts',
     data: {email_message: JSON.stringify(email_message)},
     success: function(data) {
-      alert('Send Alerts Data is Valid!');
+      // #alert('Sending out alerts completed successfully!');
     },
     error: function(request,error) {
       alert("Request Reviews: "+JSON.stringify(request));
