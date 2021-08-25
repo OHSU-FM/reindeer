@@ -1,6 +1,6 @@
 class FomExamsController < ApplicationController
   protect_from_forgery prepend: true, with: :exception
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :get_tso_emails
 
   include FomExamsHelper
   include ArtifactsHelper
@@ -37,7 +37,6 @@ class FomExamsController < ApplicationController
       end
   end
 
-
   def process_csv
     # @artifacts.first.documents.first.download --> works
     if !hf_check_label_file(params[:attach_id])
@@ -47,17 +46,16 @@ class FomExamsController < ApplicationController
   end
 
   def send_alerts
-
     if params[:uniq_cohort].present?
       @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:id).pluck(:id)
+      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).limit(5).order(:full_name).pluck(:id)
       @user_ids = @tso_ids
 
     elsif params[:email_message].present? # from ajax  call here
         email_message = JSON.parse(params[:email_message])
         uniq_cohort = email_message.select{|e| e if e["uniq_cohort"]}.first["uniq_cohort"]
         @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).order(:id).pluck(:id)
+        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).limit(5).order(:full_name).pluck(:id)
 
         @email_ids = email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
         @from = email_message.select{|e| e if e["from"]}.first["from"]
@@ -76,7 +74,16 @@ class FomExamsController < ApplicationController
             ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver
           end
         end
-        flash[:alert] = "You have sent out #{user_ids.count} emails!"
+
+        hello = "Hello " + @tso_emails.first["Jane"]["name"].split(", ").last + ",<br /><br />"
+        @body_message = hello + body_message
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.first["Jane"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+
+        hello = "Hello " + @tso_emails.second["Mary"]["name"].split(", ").last + ",<br /><br />"
+        @body_message = hello + body_message
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["Mary"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+
+        flash[:send_alert] = "You have sent out #{user_ids.count} emails!"
     end
 
     respond_to do |format|
@@ -135,6 +142,11 @@ class FomExamsController < ApplicationController
   end
 
  private
+
+ def get_tso_emails
+   @tso_emails ||= YAML.load_file("config/sendAlertEmails.yml")
+
+ end
 
  def create_file (in_data, in_file)
    file_name = "#{Rails.root}/tmp/#{in_file}"

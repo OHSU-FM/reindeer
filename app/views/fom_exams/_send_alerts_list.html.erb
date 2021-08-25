@@ -10,27 +10,28 @@
   </div>
   <div class="form-group">
     <%= label_tag :subject, 'Subject', class: "control-label col-sm-2" %>
-    <%= text_field_tag 'subject', nil, size: 75, value: "re: REDEI FoM Assessment Update" %>
+    <%= text_field_tag 'subject', nil, size: 75, value: "REDEI Grades" %>
   </div>
   <div class="form-group">
     <%= label_tag :body_message, 'Body Message', class: "control-label col-sm-2" %>
     <textarea id="body_message" name="body_message" rows="15" cols="100">
 
-      Your Fundamentals (FUND) week 4 score is viewable on REDEI.  Your week 4 Examsoft includes 1 Histology points, if earned, so the the total exam was out of <b>32 points. </b><br /><br />
+Your Fundamentals (FUND) week 4 score is viewable on REDEI.  Your week 4 Examsoft includes 1 Histology points, if earned, so the the total exam was out of <b>32 points. </b><br /><br />
 
-      The Teaching Services Office (TSO) will release the exam shortly in Examsoft for your reference. To access Examsoft go to https://ei.examsoft.com/GKWeb/login/ohsumed and log in. <br /><br />
+The Teaching Services Office (TSO) will release the exam shortly in Examsoft for your reference. To access Examsoft go to https://ei.examsoft.com/GKWeb/login/ohsumed and log in. <br /><br />
 
-      If you have any questions, please contact me. <br /><br />
+If you have any questions, please contact me. <br /><br />
 
-      Thank you,<br /><br />
-      Leslie A. Haedinger, MS (haedinge@ohsu.edu)<br /><br />
+Thank you,<br /><br />
+Leslie A. Haedinger, MS (haedinge@ohsu.edu)<br /><br />
+**If you would like to unsubscribe from this email alert, Please email Leslie Haedinger or Patrick Chung directly. Thank you.** <br /> <br />
 
     </textarea>
   </div>
 
   <% if !user_ids.nil? %>
         <%= check_box_tag "checkAll", "checkAll", false %> Check All
-        <%= button_tag "Sent Alerts", id: "SendAlerts", class: "btn btn-primary" %>
+        <%= button_tag "Send Alerts", id: "SendAlerts", class: "btn btn-primary" %>
 
           <table class="table table-hover table-striped table-info" >
             <% user_ids.each do |user_id| %>
@@ -46,6 +47,18 @@
                 </td>
               </tr>
             <% end %>
+
+            <tr>
+              <td><b><%= @tso_emails.first["Jane"]["name"] %></b></td>
+              <td><%= @tso_emails.first["Jane"]["email"] %> </td>
+              <td></td>
+            </tr>
+
+            <tr><i>
+              <td><b><%= @tso_emails.second["Mary"]["name"] %></b></td>
+              <td><%= @tso_emails.second["Mary"]["email"] %> </td>
+              <td></td>
+            </tr>
 
             <% cohort_ids.each do |id| %>
               <tr>

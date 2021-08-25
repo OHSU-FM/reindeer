@@ -78,7 +78,10 @@ module Coaching
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')
 
-        @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).where.not(user_id: [nil, ""]).order(:id)
+        if current_user.coaching_type == 'student'
+          @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).order(:id)
+        end
+
         advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name, advisors.advisor_type").first
 
         if !advisor.nil?
@@ -106,8 +109,9 @@ module Coaching
            @students = @permission_groups.map(&:users).flatten
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
-             @event_students = Event.where('start_date > ? and advisor_id = ?', DateTime.now, advisor.id).where.not(user_id: [nil, ""]).order(:id)
+             @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id)
            else
+             @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id)
              @students = @permission_groups.map(&:users).flatten
            end
         end

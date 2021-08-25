@@ -1,5 +1,9 @@
 
-  <h4> FoM - Send Alerts </h4><br />
+  <h5> FoM - Send Alerts 
+  <% if can? :crud, Dashboard %>
+    <%= link_to 'Home',  auto_path, class: "btn btn-link"  %>
+  <% end %>
+  </h5><br />
 
   <%= form_for(send_alerts_fom_exams_path, action: 'send_alerts', remote: true, method: 'Get', html: { class: 'form-horizontal' },wrapper: :horizontal_form) do %>
       <div class="form-inline">
@@ -14,3 +18,5 @@
 <hr>
 
 <div id="send-alerts-list"></div>
+
+<%= flash[:send_alert] %>

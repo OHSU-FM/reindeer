@@ -45,7 +45,5 @@ class CdsReportsController < ApplicationController
     @cohorts = Cohort.all.order('title ASC').includes(:users)
     @student_groups = PermissionGroup.where(" title like ?", "%Student%").order('title DESC')
 
-
-
   end
 end

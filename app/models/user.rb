@@ -247,6 +247,7 @@ class User < ActiveRecord::Base
           end
       end
       field :subscribed
+      field :matriculated_date
 
     end
 

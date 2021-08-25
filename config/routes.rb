@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     collection do
       get 'create_batch_appointments', action: :create_batch_appointments, controller: 'events', to: 'events#create_batch_appointments'
       get 'create_random_appointments', to: 'events#create_random_appointments'
+      get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
     end
   end

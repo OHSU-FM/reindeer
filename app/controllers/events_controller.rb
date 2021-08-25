@@ -131,6 +131,25 @@ class EventsController < ApplicationController
     end
   end
 
+  def list_past_valid_appointments
+    if params[:start_date].present? and params[:end_date].present?
+      @advisor = Advisor.find_by(email: current_user.email)
+      start_date = params[:start_date]   #.to_datetime.strftime("%Y/%m/%d")
+      end_date = params[:end_date]
+      if @advisor.nil?
+        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL", start_date, end_date).order(:user_id, :start_date)      
+      else
+        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL and advisor_id=?", start_date, end_date, @advisor.id).order(:user_id, :start_date)
+      end
+
+    end
+    respond_to do |format|
+      format.html
+      format.js { render action: 'display_past_valid_appointments', status: 200 }
+    end
+
+  end
+
   def save_all
     @appointments = JSON.parse(params[:appointments])
 
@@ -143,7 +162,6 @@ class EventsController < ApplicationController
       advisor_id = data[3].to_i
       Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
     end
-
     respond_to do |format|
       format.html { redirect_to action: "index", notice: 'Apppointments were successfully created.' }
       format.json
