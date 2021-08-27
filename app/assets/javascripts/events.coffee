@@ -67,6 +67,7 @@ window.addFormField = ->
 
 
 $(document).ready ->
+
   yyyy = $("#start_date_start_date_1i").val()
   mm = $("#start_date_start_date_2i").val()
   dd = $("#start_date_start_date_3i").val()
@@ -102,7 +103,11 @@ $(document).ready ->
     return
 
   # $('#all_events_table').DataTable 'ordering': true
-  # $('.dataTables_length').addClass 'bs-select'
+  #$('.dataTables_length').addClass 'bs-select'
 
   $('#all_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
+  #$('#pass_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
+
+  $('#pass_events_table').DataTable()
+  $('.dataTables_length').addClass 'bs-select'
   #alert('searchValue: ' + $('#searchValue').val())

@@ -48,14 +48,14 @@ class FomExamsController < ApplicationController
   def send_alerts
     if params[:uniq_cohort].present?
       @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).limit(5).order(:full_name).pluck(:id)
+      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:full_name).pluck(:id)
       @user_ids = @tso_ids
 
     elsif params[:email_message].present? # from ajax  call here
         email_message = JSON.parse(params[:email_message])
         uniq_cohort = email_message.select{|e| e if e["uniq_cohort"]}.first["uniq_cohort"]
         @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).limit(5).order(:full_name).pluck(:id)
+        @cohort_ids = User.where(permission_group_id: uniq_cohort, subscribed: true).order(:full_name).pluck(:id)
 
         @email_ids = email_message.select{|e| e if e["valid_emails"]}.first["valid_emails"]
         @from = email_message.select{|e| e if e["from"]}.first["from"]

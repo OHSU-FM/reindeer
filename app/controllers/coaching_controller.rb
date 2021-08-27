@@ -22,14 +22,15 @@ class CoachingController < ApplicationController
       else
         advisor = Advisor.find_by(email: current_user.email)
         if !advisor.nil?
-          @last_student = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
+          @last_student = Event.where('advisor_id = ? and user_id is not NULL', advisor.id).includes(:user).map(&:user).flatten.uniq!
+
           if !@last_student.nil?
             redirect_to coaching_student_path @last_student.last  #Coaching::Meeting.last.user
           else
-            redirect_to coaching_student_path Coaching::Meeting.last.user
+            redirect_to coaching_student_path current_user
           end
         else
-          redirect_to coaching_student_path Coaching::Meeting.last.user
+          redirect_to coaching_student_path current_user  #Coaching::Meeting.last.user
         end
       end
     else
