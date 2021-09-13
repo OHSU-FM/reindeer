@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_193512) do
+ActiveRecord::Schema.define(version: 2021_09_13_133809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -438,6 +438,26 @@ ActiveRecord::Schema.define(version: 2021_06_25_193512) do
     t.index ["user_id"], name: "index_fom_remeds_on_user_id"
   end
 
+  create_table "formative_feedbacks", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "block_code"
+    t.string "csa_code"
+    t.string "response_id"
+    t.date "submit_date"
+    t.string "q1"
+    t.string "q2"
+    t.string "q3"
+    t.string "q4"
+    t.string "q5"
+    t.string "q6"
+    t.string "q7"
+    t.string "q8"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["response_id"], name: "index_formative_feedbacks_on_response_id"
+    t.index ["user_id"], name: "index_formative_feedbacks_on_user_id"
+  end
+
   create_table "goals", id: :serial, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -454,6 +474,216 @@ ActiveRecord::Schema.define(version: 2021_06_25_193512) do
     t.string "course_code", limit: 20, null: false
     t.string "course_name", limit: 50
     t.index ["course_code"], name: "ipe_courses_course_code_key", unique: true
+  end
+
+  create_table "med18_competencies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.string "student_uid"
+    t.string "email"
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "ics8", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "mk4", limit: 2
+    t.integer "mk5", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pbli4", limit: 2
+    t.integer "pbli5", limit: 2
+    t.integer "pbli6", limit: 2
+    t.integer "pbli7", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pcp4", limit: 2
+    t.integer "pcp5", limit: 2
+    t.integer "pcp6", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd3", limit: 2
+    t.integer "pppd4", limit: 2
+    t.integer "pppd5", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd7", limit: 2
+    t.integer "pppd8", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "pppd10", limit: 2
+    t.integer "pppd11", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic3", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
+    t.index ["permission_group_id"], name: "index_med18_competencies_on_permission_group_id"
+    t.index ["user_id"], name: "index_med18_competencies_on_user_id"
+  end
+
+  create_table "med19_competencies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.string "student_uid"
+    t.string "email"
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "ics8", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "mk4", limit: 2
+    t.integer "mk5", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pbli4", limit: 2
+    t.integer "pbli5", limit: 2
+    t.integer "pbli6", limit: 2
+    t.integer "pbli7", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pcp4", limit: 2
+    t.integer "pcp5", limit: 2
+    t.integer "pcp6", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd3", limit: 2
+    t.integer "pppd4", limit: 2
+    t.integer "pppd5", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd7", limit: 2
+    t.integer "pppd8", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "pppd10", limit: 2
+    t.integer "pppd11", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic3", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
+    t.index ["permission_group_id"], name: "index_med19_competencies_on_permission_group_id"
+    t.index ["user_id"], name: "index_med19_competencies_on_user_id"
+  end
+
+  create_table "med21_competencies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.string "student_uid"
+    t.string "email"
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "ics8", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "mk4", limit: 2
+    t.integer "mk5", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pbli4", limit: 2
+    t.integer "pbli5", limit: 2
+    t.integer "pbli6", limit: 2
+    t.integer "pbli7", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pcp4", limit: 2
+    t.integer "pcp5", limit: 2
+    t.integer "pcp6", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd3", limit: 2
+    t.integer "pppd4", limit: 2
+    t.integer "pppd5", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd7", limit: 2
+    t.integer "pppd8", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "pppd10", limit: 2
+    t.integer "pppd11", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic3", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
+    t.index ["permission_group_id"], name: "index_med21_competencies_on_permission_group_id"
+    t.index ["user_id"], name: "index_med21_competencies_on_user_id"
   end
 
   create_table "med21_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
@@ -805,6 +1035,10 @@ ActiveRecord::Schema.define(version: 2021_06_25_193512) do
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "fom_exams", "users"
+  add_foreign_key "formative_feedbacks", "users"
+  add_foreign_key "med18_competencies", "permission_groups"
+  add_foreign_key "med19_competencies", "permission_groups"
+  add_foreign_key "med21_competencies", "permission_groups"
   add_foreign_key "preceptor_assesses", "users"
   add_foreign_key "preceptor_evals", "users"
   add_foreign_key "role_aggregates", "lime_surveys", column: "lime_survey_sid", primary_key: "sid", name: "lime_survey_sid_fk", on_delete: :cascade

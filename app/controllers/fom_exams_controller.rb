@@ -4,6 +4,7 @@ class FomExamsController < ApplicationController
 
   include FomExamsHelper
   include ArtifactsHelper
+  include CompetenciesHelper
 
   def index
     user = User.find_by(uuid: params[:uuid])
@@ -128,6 +129,9 @@ class FomExamsController < ApplicationController
        @failed_comps = hf_scan_failed_score(@comp_exams)
        block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
        @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
+       formative_feedbacks= FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes) ## med23 preceptor evaluations
+       @formative_feedbacks = hf_collect_values(formative_feedbacks)
+
        ## don't display remediation data for now
        #@remeds = FomRemed.where(user_id: student.id)  #, block: block_code)
      else

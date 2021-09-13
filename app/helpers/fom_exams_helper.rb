@@ -20,12 +20,34 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
 
 }
 
+## Questin labels for formative feedback
+LABELS = {
+  "q1" => "Student Name",
+  "q2" => "Facilitator Name",
+  "q3" => "Please comment on any kudos you have for this student.",
+  "q4" => "Please provide any comments on areas this student needs to work on.",
+  "q5" => "Chief concern noted either before HPI or as part of introductory sentence, framed by the patient's most pertinent history.",
+  "q6" => "The HPI starts with a clear patient introduction including patient's age, sex, and the chief complaint. The chief complaint is framed by their pertinent active medical problems, the reason for seeking care, and includes the time course.",
+  "q7" => "Presents a focused physical exam. Begins with vitals, general appearance, and pertinent PE findings (no need to include non-pertinent normal findings).",
+  "q8" => "H&P proposes either a diagnostic or therapeutic plan."
+}
+
+
   def hf_get_block_desc(in_code)
     return BLOCKS[in_code]
   end
 
   def hf_component_desc(in_code)
     return COMPONENT_DESC[in_code]
+  end
+
+  def hf_formative_feedback_labels(in_q)
+     label = LABELS[in_q]
+     if label.nil?
+       return in_q
+     else
+       return label
+     end 
   end
 
   def hf_check_failed_comp(comp, failed_comps, coaching_type)
