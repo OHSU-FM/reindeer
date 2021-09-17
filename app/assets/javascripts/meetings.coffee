@@ -123,9 +123,17 @@ $(document).ready ->
 
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
     modDate = Date.today().addDays(1)
+
+    rowCount = $("#EventsTable tr").not('thead tr').length;
+    console.log('rowCount: ' + rowCount)
+
+    if (rowCount == 0)
+      $("#meeting-submit").prop("disabled", true)
+      alert('No Appointment Found! Please select another advisor that has appointments!!')
+      return
+      #dataset.show()
+      # filter the rows that should be hidden
     dataset = $('#EventsTable tbody').find('tr')
-    #dataset.show()
-    # filter the rows that should be hidden
     dataset.each ->
       row = $(this)
       colAdvisor = row.find('td').eq(1).text().split(" - ")
@@ -137,15 +145,17 @@ $(document).ready ->
       newDate = new Date(modDate)
       orgDate = new Date(colDate[0])
 
-      if (newDate < orgDate) && (colAdvisor[1] == selectedAdvisorText[0])
+      if (colAdvisor[1] == selectedAdvisorText[0])
         row.show()
       else
         row.hide()
 
       tr_length = $('#EventsTable tbody tr:visible').length
+      console.log ("tr_length: " + tr_length)
       if (tr_length == 0)
         $("#meeting-submit").prop("disabled", true)
         alert('Please select another advisor that has appointments!!')
+        return false
       else
         $("#meeting-submit").prop("disabled", false)
-      return
+    return
