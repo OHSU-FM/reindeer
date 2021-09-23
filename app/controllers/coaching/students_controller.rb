@@ -48,9 +48,9 @@ module Coaching
       if params[:id].present? and params[:id] == 'Graphs'
         @oasis_graphs_flag = true
         @events = Event.where("user_id is not NULL and advisor_id is not null")
-        weekdays=@events.map{|e| e.start_date.strftime("%A")}.sort
+        weekdays = @events.map{|e| e.start_date.strftime("%A")}.sort
         @weekdays_sorted = weekdays.tally
-        hours=@events.map{|e| e.start_date.strftime("%I %p")}.sort
+        hours = @events.map{|e| e.start_date.strftime("%I %p")}.sort
         @hours_sorted = hours.tally
 
       end

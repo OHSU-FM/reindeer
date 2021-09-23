@@ -122,9 +122,20 @@ module Coaching::StudentsHelper
       return user.full_name, permission_group_title
   end
 
-  def hf_get_advisor_name(advisor_id)
-    return Advisor.find(advisor_id).name
+  def hf_get_advisor_name(meetings)
+
+    new_meetings = {}
+
+    meetings.each do |key, value|
+      new_meetings.store("#{Advisor.find(key).name}", value)
+    end
+
+    new_meetings.delete("Coach")
+
+    return new_meetings.sort_by(&:zip)
+
   end
+
 
   def hf_create_oasis_weekdays_graph(weekdays_sorted)
 
@@ -203,8 +214,14 @@ module Coaching::StudentsHelper
 
     am_hash = hours_sorted.select{|key, val| val if key.include? "AM"}
     pm_hash = hours_sorted.select{|key, val| val if key.include? "PM"}
-    selected_categories = am_hash.keys + pm_hash.keys
-    hours_series = am_hash.values + pm_hash.values
+    pm12_hash = hours_sorted.select{|key, val| val if key.include? "12 PM"}
+
+
+    selected_categories = (am_hash.keys + pm12_hash.keys +  pm_hash.keys)
+    hours_series = (am_hash.values + pm12_hash.values + pm_hash.values)
+
+    selected_categories.pop  #remove the last item, 12pm  as it is redundant
+    hours_series.pop         #remove the last item value (12pm) as it is redundant
 
     title =  "Appointments by Hours" + '<br ><b>' + "(n = #{tot_count})" + '</b>'
     chart = LazyHighCharts::HighChart.new('graph') do |f|

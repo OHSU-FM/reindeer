@@ -10,16 +10,18 @@
             </tr>
           <thead>
           <tbody>
-            <% meetings.each do |key, data| %>
+            <% new_meetings = hf_get_advisor_name(meetings) %>
+            <% tot_count = 0 %>
+            <% new_meetings.each do |key, data| %>
                 <tr>
-                    <% advisor_name = hf_get_advisor_name(key) %>
-                    <td><%= advisor_name %> </td>
+                    <td><%= key %> </td>
                     <td align="center"><%= data %></td>
+                    <% tot_count += data %>
                 </tr>
             <% end %>
             <tr>
               <td align="right"><b>Total</b></td>
-              <td align="center"><%= meetings.values.sum %></td>
+              <td align="center"><%= tot_count %></td>
             </tr>
           </tbody>
         <% else %>
