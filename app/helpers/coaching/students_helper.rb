@@ -4,6 +4,9 @@ module Coaching::StudentsHelper
   # @param {Cohort} cohort
   # @param {User} student
   # @return {Boolean}
+
+  WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
   def hf_active_cohort? cohort, student
     student.cohort == cohort
   end
@@ -84,7 +87,7 @@ module Coaching::StudentsHelper
                "<span style='font-size:20px;color:black'> (Total # of WBAs: <b>#{no_of_wbas}</b> " +
                "out of 100 & Total # of Badges Awarded: <b>#{no_of_badges}</b> out of 13)</span>").html_safe
       else
-        return "" 
+        return ""
       end
     end
   end
@@ -121,5 +124,144 @@ module Coaching::StudentsHelper
 
   def hf_get_advisor_name(advisor_id)
     return Advisor.find(advisor_id).name
+  end
+
+  def hf_create_oasis_weekdays_graph(weekdays_sorted)
+
+    tot_count = weekdays_sorted.values.sum
+    weekdays_series = []
+    WEEKDAYS.each do |weekday|
+      weekdays_series.push weekdays_sorted["#{weekday}"]
+    end
+    selected_categories = WEEKDAYS
+    height = 400
+
+    title =  "Appointments by Weekdays" + '<br ><b>' + "(n = #{tot_count})" + '</b>'
+
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: title)
+      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.xAxis(categories: selected_categories,
+        labels: {
+              style:  {
+                          fontWeight: 'bold',
+                          color: '#000000'
+                      }
+                }
+      )
+      f.series(name: "Weekday", yAxis: 0, data: weekdays_series)
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      f.colors(['#4572A7',
+                '#AA4643',
+                '#89A54E',
+                '#80699B',
+                '#3D96AE',
+                '#DB843D',
+                '#92A8CD',
+                '#A47D7C',
+                '#B5CA92'])
+
+      f.yAxis [
+         { tickInterval: 20,
+           title: {text: "<b>No of Appointments</b>", margin: 20}
+         }
+      ]
+      f.plot_options(
+        column: {
+            colorByPoint: true,
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "column",
+                width: 800, height: height,
+                plotBorderWidth: 0,
+                borderWidth: 0,
+                plotShadow: false,
+                borderColor: '',
+                plotBackgroundImage: ''
+              })
+    end
+
+    return chart
+
+  end
+
+  def hf_create_oasis_hours_graph(hours_sorted)
+
+    tot_count = hours_sorted.values.sum
+    height = 400
+
+    am_hash = hours_sorted.select{|key, val| val if key.include? "AM"}
+    pm_hash = hours_sorted.select{|key, val| val if key.include? "PM"}
+    selected_categories = am_hash.keys + pm_hash.keys
+    hours_series = am_hash.values + pm_hash.values
+
+    title =  "Appointments by Hours" + '<br ><b>' + "(n = #{tot_count})" + '</b>'
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: title)
+      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.xAxis(categories: selected_categories,
+        labels: {
+              style:  {
+                          fontWeight: 'bold',
+                          color: '#000000'
+                      }
+                }
+      )
+      f.series(name: "By Hours", yAxis: 0, data: hours_series)
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      f.colors(['#4572A7',
+                '#AA4643',
+                '#89A54E',
+                '#80699B',
+                '#3D96AE',
+                '#DB843D',
+                '#92A8CD',
+                '#A47D7C',
+                '#B5CA92'])
+
+      f.yAxis [
+         { tickInterval: 20,
+           title: {text: "<b>No of Appointments</b>", margin: 20}
+         }
+      ]
+      f.plot_options(
+        column: {
+            colorByPoint: true,
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "column",
+                width: 800, height: height,
+                plotBorderWidth: 0,
+                borderWidth: 0,
+                plotShadow: false,
+                borderColor: '',
+                plotBackgroundImage: ''
+              })
+    end
+
+    return chart
+
   end
 end

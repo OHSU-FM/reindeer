@@ -1,46 +1,49 @@
 <div id="detail-reports">
-  <table class="responsive nowrap table table-hover" >
-    <% if @all_advisor_flag %>
-      <thead>
-        <tr>
-          <th>Advisor</th>
-          <th style="text-align:center"># of Meetings/Appointments </th>
-        </tr>
-      <thead>
-      <tbody>
-        <% meetings.each do |key, data| %>
+  <div class="row justify-content-center">
+    <div class="col-auto">
+      <table class="responsive nowrap table table-hover" >
+        <% if @all_advisor_flag %>
+          <thead>
             <tr>
-                <% advisor_name = hf_get_advisor_name(key) %>
-                <td><%= advisor_name %> </td>
-                <td align="center"><%= data %></td>
+              <th>Advisor</th>
+              <th style="text-align:center"># of Meetings/Appointments </th>
             </tr>
-        <% end %>
-        <tr>
-          <td align="right"><b>Total</b></td>
-          <td align="center"><%= meetings.values.sum %></td>
-        </tr>
-      </tbody>
-    <% else %>
-      <thead>
-        <tr>
-          <th>Student</th>
-          <th style="text-align:center"># of Meetings/Appointments </th>
-        </tr>
-      <thead>
-      <tbody>
-        <% meetings.each do |key, data| %>
+          <thead>
+          <tbody>
+            <% meetings.each do |key, data| %>
+                <tr>
+                    <% advisor_name = hf_get_advisor_name(key) %>
+                    <td><%= advisor_name %> </td>
+                    <td align="center"><%= data %></td>
+                </tr>
+            <% end %>
             <tr>
-                <% full_name, permission_group_title = hf_get_full_name(key) %>
-                <td><%= full_name %> - <%= permission_group_title %></td>
-                <td align="center"><%= data %></td>
+              <td align="right"><b>Total</b></td>
+              <td align="center"><%= meetings.values.sum %></td>
             </tr>
+          </tbody>
+        <% else %>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th style="text-align:center"># of Meetings/Appointments </th>
+            </tr>
+          <thead>
+          <tbody>
+            <% meetings.each do |key, data| %>
+                <tr>
+                    <% full_name, permission_group_title = hf_get_full_name(key) %>
+                    <td><%= full_name %> - <%= permission_group_title %></td>
+                    <td align="center"><%= data %></td>
+                </tr>
+            <% end %>
+            <tr>
+              <td align="right"><b>Total</b></td>
+              <td align="center"><%= meetings.values.sum %></td>
+            </tr>
+          </tbody>
         <% end %>
-        <tr>
-          <td align="right"><b>Total</b></td>
-          <td align="center"><%= meetings.values.sum %></td>
-        </tr>
-      </tbody>
-    <% end %>
-
-  </table>
+      </table>
+    </div>
+  </div>
 </div>

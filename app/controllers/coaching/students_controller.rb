@@ -44,6 +44,22 @@ module Coaching
       end
     end
 
+    def oasis_graphs
+      if params[:id].present? and params[:id] == 'Graphs'
+        @oasis_graphs_flag = true
+        @events = Event.where("user_id is not NULL and advisor_id is not null")
+        weekdays=@events.map{|e| e.start_date.strftime("%A")}.sort
+        @weekdays_sorted = weekdays.tally
+        hours=@events.map{|e| e.start_date.strftime("%I %p")}.sort
+        @hours_sorted = hours.tally
+
+      end
+
+      respond_to do |format|
+        format.js { render action: 'oasis_graphs', status: 200 }
+      end
+    end
+
     def advisor_reports
       if params[:id].present? and params[:id] != 'All'
         @meetings = Meeting.where(advisor_id: params[:id]).group(:user_id).count

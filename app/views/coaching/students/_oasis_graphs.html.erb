@@ -1,0 +1,21 @@
+<br >
+<div id="oasis-graphs2">
+  <div class="row justify-content-center">
+    <div class="col-auto">
+        <div class="card">
+           <div class="card-body">
+              <% weekdays_graph ||= hf_create_oasis_weekdays_graph(@weekdays_sorted) %>
+              <%= high_chart("weekdays_graph", weekdays_graph) %>
+          </div>
+        </div>
+    </div>
+    <div class="col-auto">
+        <div class="card">
+           <div class="card-body">
+              <% hours_graph ||= hf_create_oasis_hours_graph(@hours_sorted) %>
+              <%= high_chart("hours_graph", hours_graph) %>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

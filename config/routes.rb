@@ -94,6 +94,7 @@ Rails.application.routes.draw do
         post 'completed_goals'
         post 'search_meetings'
         post 'advisor_reports'
+        post 'oasis_graphs'
       end
     end
 
