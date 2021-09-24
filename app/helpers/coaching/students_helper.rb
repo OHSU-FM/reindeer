@@ -123,6 +123,9 @@ module Coaching::StudentsHelper
   end
 
   def hf_get_advisor_name(meetings)
+    if meetings.is_a? Integer
+      return Advisor.find(meetings).name
+    end
 
     new_meetings = {}
 

@@ -103,6 +103,7 @@ background-color:#caf4dd !important
   background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
   background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
   background: linear-gradient(to right, rgba(199, 38, 0, 1) 0%, rgba(255, 106, 84, 100), rgba(255, 238, 84, 100), rgba(0, 240, 0, 1) 100%);
+  filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled=false)");
 }
 
 .amount {

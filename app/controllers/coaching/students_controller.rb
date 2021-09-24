@@ -65,7 +65,7 @@ module Coaching
         @meetings = Meeting.where(advisor_id: params[:id]).group(:user_id).count
       elsif params[:id].present? and params[:id] == 'All'
         @all_advisor_flag = true
-        @meetings = Meeting.where.not(advisor_id: nil).order(:advisor_id).group(:advisor_id).count
+        @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL").order(:advisor_id).group(:advisor_id).count
       end
 
       respond_to do |format|
