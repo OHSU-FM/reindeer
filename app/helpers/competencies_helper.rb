@@ -185,19 +185,22 @@ module CompetenciesHelper
 
   def hf_format_final_grade json_str
     begin
-      arry = JSON.parse(json_str)
+      grade_arry = JSON.parse(json_str)
       long_str = ""
-      long_str += "<table style='width:180px'>"
-      arry.each do |key, value|
-        key = key.split(": ").second
-        if key.nil?
-          key = "Grade"
-        end
-        long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td></tr>"
-      end
-      long_str += "</table>"
+      #long_str += "<table style='width:180px'>"
 
-      return long_str
+      grade_arry.each do |key, val|
+        long_str += "#{key.rjust(40)} -> #{val}<br />"
+
+        # key = key.split(": ").second
+        # if key.nil?
+        #   key = "Grade"
+        # end
+        # long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td></tr>"
+      end
+      #long_str += "</table>"
+
+      return   long_str
     rescue
       return json_str
     end

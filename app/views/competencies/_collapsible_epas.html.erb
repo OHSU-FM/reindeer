@@ -22,23 +22,19 @@
                       <% else %>
                               <%= image_tag ("epa/EPA#{i}"), size: "20x20", class: "opaque-image" %>
                       <% end %>
-
                     </span>
                   </div>
 
                   <div id="EPA-Progress-<%= i %>" class="comp-progress" comp-data-amount = "<%= @student_epa[epa_code] %>" >
-                        <div id="EPA-<%= i %>" class="comp-amount" style="width: <%= 100-@student_epa[epa_code] %>% font-size: medium"> </div>
+                        <div id="EPA-<%= i %>" class="comp-amount" style="width: <%= 100-@student_epa[epa_code] %>%"> </div>
                   </div>
-
                 </a>
               </h5>
           </div>
 
           <div id="collapseEPA<%= i %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEPA<%= i %>">
               <div class="panel-body">
-
-                  <%= render partial: "competencies/detail_badge_display", locals: {i: i, epa: epa} %>
-
+                <%= render partial: "competencies/detail_badge_display", locals: {i: i, epa: epa} %>
                 <%= render partial: "competencies/epa_assessors", locals: {:i => i, :epa => epa, :assessors => hf_epa_asessors} %>
               </div>
           </div>
