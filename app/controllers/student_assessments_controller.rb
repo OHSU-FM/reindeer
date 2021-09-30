@@ -17,13 +17,6 @@ class StudentAssessmentsController < ApplicationController
       @results.push User.find_by(email: params[:email])
     end
 
-    # if request.xhr?
-    #   respond_to do |format|
-    #     format.json {
-    #       render json: {cohort_students: @cohort_students}
-    #     }
-    #   end
-    # end
     render :show
   end
 
@@ -35,14 +28,19 @@ class StudentAssessmentsController < ApplicationController
     render :show
   end
 
-
   private
 
   def load_cohorts_menu
       if current_user.coaching_type == 'coach'
         @cohorts_menu ||= current_user.cohorts.where("permission_group_id >= ?", 13).order(:title)
       elsif current_user.dean_or_higher?
-          @cohorts_menu ||= PermissionGroup.where("id >= ? and id <> 15", 13).order(:title).uniq
+         if current_user.spec_program == 'PhD'
+           @students ||= User.where("spec_program like 'MD/PhD%'").select(:id, :email, :username, :full_name).order(:full_name)
+         elsif current_user.spec_program == 'MPH'
+           @students ||= User.where("spec_program like 'MD/MPH%'").select(:id, :email, :username, :full_name).order(:full_name)
+         else
+           @cohorts_menu ||= PermissionGroup.where("id >= ? and id <> 15", 13).order(:title).uniq
+         end
       end
   end
 

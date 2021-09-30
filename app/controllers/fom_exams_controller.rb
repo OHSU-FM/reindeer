@@ -1,4 +1,5 @@
 class FomExamsController < ApplicationController
+  layout 'full_width_csl'
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!, :get_tso_emails
 

@@ -102,6 +102,14 @@ module CompetenciesHelper
 
   end
 
+  def hf_total_count_comp(comp, code_arry=[])
+    tot_count = 0
+    code_arry.each do |code|
+      tot_count += comp.select{|c| c["course_name"] if c["course_name"].include? code }.count
+    end
+    return tot_count
+  end
+
   def hf_attribute_def(in_key)
     if in_key.include? "Attribute"
       return ATTRIBUTES_DEF[in_key]
@@ -182,24 +190,13 @@ module CompetenciesHelper
        return ave
   end
 
-
   def hf_format_final_grade json_str
     begin
       grade_arry = JSON.parse(json_str)
       long_str = ""
-      #long_str += "<table style='width:180px'>"
-
       grade_arry.each do |key, val|
-        long_str += "#{key.rjust(40)} -> #{val}<br />"
-
-        # key = key.split(": ").second
-        # if key.nil?
-        #   key = "Grade"
-        # end
-        # long_str += "<tr><td style='text-align:left'>#{key}</td><td>#{value}</td></tr>"
+          long_str += "#{key.rjust(40)} -> #{val}<br />"
       end
-      #long_str += "</table>"
-
       return   long_str
     rescue
       return json_str
