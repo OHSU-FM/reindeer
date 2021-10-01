@@ -133,6 +133,7 @@ $(document).ready ->
       return
       #dataset.show()
       # filter the rows that should be hidden
+    tr_length = 0
     dataset = $('#EventsTable tbody').find('tr')
     dataset.each ->
       row = $(this)
@@ -145,17 +146,19 @@ $(document).ready ->
       newDate = new Date(modDate)
       orgDate = new Date(colDate[0])
 
+      #console.log('selectedAdvisorText: ' + selectedAdvisorText[0] + ' --> colAdvisor: ' + colAdvisor[1])
       if (colAdvisor[1] == selectedAdvisorText[0])
         row.show()
       else
         row.hide()
 
-      tr_length = $('#EventsTable tbody tr:visible').length
-      console.log ("tr_length: " + tr_length)
-      if (tr_length == 0)
-        $("#meeting-submit").prop("disabled", true)
-        alert('Please select another advisor that has appointments!!')
-        return false
-      else
-        $("#meeting-submit").prop("disabled", false)
+    tr_length = $('#EventsTable tbody tr:visible').length
+      #console.log ("tr_length: " + tr_length)
+    console.log("tr_length: " + tr_length)
+    if (tr_length == 0)
+      $("#meeting-submit").prop("disabled", true)
+      alert('Please select another advisor that has appointments!!')
+      #return false
+    else
+      $("#meeting-submit").prop("disabled", false)
     return

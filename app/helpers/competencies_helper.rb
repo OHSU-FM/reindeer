@@ -103,9 +103,16 @@ module CompetenciesHelper
   end
 
   def hf_total_count_comp(comp, code_arry=[])
+    if comp.nil?
+      return 0
+    end
     tot_count = 0
+    temp_arry = []
     code_arry.each do |code|
-      tot_count += comp.select{|c| c["course_name"] if c["course_name"].include? code }.count
+      temp_arry = comp.select{|c| c["course_name"] if c["course_name"].include? code }
+      if !temp_arry.nil?
+        tot_count += temp_arry.count
+      end
     end
     return tot_count
   end

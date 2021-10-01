@@ -47,7 +47,7 @@ LABELS = {
        return in_q
      else
        return label
-     end 
+     end
   end
 
   def hf_check_failed_comp(comp, failed_comps, coaching_type)
@@ -182,7 +182,7 @@ LABELS = {
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1000, height: height,
+                width: 1100, height: height,
                 plotBorderWidth: 0,
                 borderWidth: 0,
                 plotShadow: false,
