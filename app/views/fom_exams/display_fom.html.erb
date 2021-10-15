@@ -1,6 +1,7 @@
 <br />
-  <% if !@comp_keys.nil? and @comp_keys.include? "NOT AUTHORIZED"  %>
-      <h3><%= @comp_keys %></h3>
+  <% if !@comp_keys.nil? and (@comp_keys.include? "disabled" or  @comp_keys.include? "NOT AUTHORIZED") %>
+      <br />
+      <h4><%= @comp_keys %></h4>
   <% else %>
     <!-- Page Header -->
     <div class="card">
@@ -65,16 +66,16 @@
                         </div>
                         <div id="collapse_<%= comp %>" class="collapse" data-parent="#accordion" aria-labelledby="Heading<%= comp %>">
                           <div class="card-body">
-
-                              <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers ) %>
+                            <% if @comp_exams != nil %>
+                              <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers )%>
                               <%= high_chart("#{comp}_graph", comp_graph) %>
 
-                            <% if comp == 'comp1_wk' %>
-                              <br />
-                              Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
-                              Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
-                            <% end %>
-
+                              <% if comp == 'comp1_wk' %>
+                                <br />
+                                Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
+                                Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
+                              <% end %>
+                             <% end %>
                             </div>
                         </div>
                       </div>

@@ -16,7 +16,7 @@ BLOCKS = {  '1-FUND' => "Fundamentals",
             "4-CPR"  => "Cardiopulmonary & Renal",
             "5-HODI" => "Hormones & Digestion",
             "6-NSF"  => "Nervous System & Function",
-            "-DEVH" => "Developing Human"
+            "7-DEVH" => "Developing Human"
 
 }
 

@@ -10,7 +10,7 @@ class EpaMastersController < ApplicationController
   def index
 
     if params[:uniq_cohort].present? and params[:uniq_cohort] == 'CaseStudies'
-      @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] }      
+      @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] }
     elsif
       @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
       EpaMaster.update_not_yet_and_grounded_epas(params[:uniq_cohort])
@@ -100,6 +100,18 @@ class EpaMastersController < ApplicationController
      end
      render :wba_epa
   end
+
+  def wba_clinical  #get clinical assessor data/count
+    if params[:cohort].present?
+        @wba_clinical_data = hf_process_cohort(params[:cohort], "ClinicalAssessor")
+        create_file @wba_clinical_data, "wba_clinical_assessor.txt"
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :wba_clinical
+  end
+
 
   def download_file
       if params[:file_name].present?

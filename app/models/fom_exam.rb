@@ -100,7 +100,7 @@ class FomExam < ApplicationRecord
     connection.exec_query(send(:sanitize_sql_array, sql_array))
   end
 
-  def self.exec_raw_sql user_id, attachment_id, permission_group_id, course_code
+  def self.exec_raw_sql user_id, attachment_id, permission_group_id, course_code, block_enabled
     row_to_hash = {}
     if attachment_id.to_i != -1
       CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t") do |row|
@@ -116,7 +116,14 @@ class FomExam < ApplicationRecord
         end
       end
     else # attachment_id = -1 get fom label from table fom_labels
-      fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
+      if block_enabled == false
+        fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code, block_enabled: block_enabled).first
+        if fom_label.nil?
+          return nil, nil, nil  #the block is being disable
+        end
+      else
+        fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first        
+      end
       row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
       sql = "select users.full_name, "
       sql_avg = "select "

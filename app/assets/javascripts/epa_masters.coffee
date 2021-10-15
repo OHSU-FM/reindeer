@@ -6,6 +6,7 @@ $(document).ready ->
   $('#EpaQaTable').DataTable 'ordering': true
   $('.dataTables_length').addClass 'bs-select'
   $('#WbaEpaTable').DataTable 'ordering': true
+  $('#wbaClinicalTable').DataTable 'ordering': true
   $('#WbaDetailTable').DataTable 'ordering': true
   $('.dataTables_length').addClass 'bs-select'
   $('#misMatchEGMember').change ->

@@ -124,14 +124,20 @@ class FomExamsController < ApplicationController
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
+       if ['dean', 'admin'].include? current_user.coaching_type
+         block_enabled = true ## always visible
+       end
+       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], student.permission_group_id, @course_code, block_enabled )
+       if @comp_exams != nil
 
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], student.permission_group_id, @course_code )
-
-       @failed_comps = hf_scan_failed_score(@comp_exams)
-       block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
-       @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-       formative_feedbacks= FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes) ## med23 preceptor evaluations
-       @formative_feedbacks = hf_collect_values(formative_feedbacks)
+         @failed_comps = hf_scan_failed_score(@comp_exams)
+         block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
+         @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
+         formative_feedbacks= FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes) ## med23 preceptor evaluations
+         @formative_feedbacks = hf_collect_values(formative_feedbacks)
+       else
+         @comp_keys =  '*** This Block is being disabled temporary!! ***'
+       end
 
        ## don't display remediation data for now
        #@remeds = FomRemed.where(user_id: student.id)  #, block: block_code)

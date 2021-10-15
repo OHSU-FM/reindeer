@@ -255,17 +255,49 @@ module EpaMastersHelper
     return data
   end
 
+  def count_wba_clinical(wbas, sid, full_name, uniq_assessors)
+    wba_hash = {}
+    wba_hash["StudentId"] = sid
+    wba_hash["Student Name"] = full_name
+    tot_count = 0
+    uniq_assessors.each do |assessor|
+      wba_count = 0
+      wba_count = wbas.collect{|w| w.clinical_assessor if w.clinical_assessor.include? assessor}.compact.count
+      tot_count += wba_count
+      wba_hash.store(assessor, wba_count)
+    end
+    wba_hash["TotalCount"] = tot_count
+    return wba_hash
+  end
+
+  def process_wba_clinical(students, uniq_assessors)
+    data = []
+    students.each do |student|
+      user = User.find_by(sid: student.sid)
+      if !user.nil?
+        wbas = Epa.where(user: user.id).select(:id, :user_id, :clinical_assessor)
+        student_wba = count_wba_clinical(wbas, student.sid, student.full_name, uniq_assessors)
+        data.push student_wba
+      end
+    end
+    return data
+  end
+
   def hf_process_cohort (cohort, code)
     CohortMspe.table_name = "#{cohort.downcase}_mspes"
     if CohortMspe.table_exists?
       students = CohortMspe.all
+      students = students.sort_by(&:full_name)
     else
       permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
-      students = User.where(permission_group_id: permission_group.id)
+      students = User.where(permission_group_id: permission_group.id).select(:id, :sid, :email, :full_name).order(:full_name)
 
     end
     if code=='EPA'
       epas_data = process_epa(students)
+    elsif code == 'ClinicalAssessor'
+      uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
+      wpa_clinical = process_wba_clinical(students, uniq_assessors)
     else
       wpa_data = process_wba(students)
     end

@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get 'eg_badged', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_badged'
       get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
       get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
+      get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
       get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters'
     end
 
