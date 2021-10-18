@@ -255,10 +255,11 @@ module EpaMastersHelper
     return data
   end
 
-  def count_wba_clinical(wbas, sid, full_name, uniq_assessors)
+  def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
     wba_hash = {}
     wba_hash["StudentId"] = sid
     wba_hash["Student Name"] = full_name
+    wba_hash["Matriculated Date"] = matriculated_date
     tot_count = 0
     uniq_assessors.each do |assessor|
       wba_count = 0
@@ -276,7 +277,7 @@ module EpaMastersHelper
       user = User.find_by(sid: student.sid)
       if !user.nil?
         wbas = Epa.where(user: user.id).select(:id, :user_id, :clinical_assessor)
-        student_wba = count_wba_clinical(wbas, student.sid, student.full_name, uniq_assessors)
+        student_wba = count_wba_clinical(wbas, student.sid, student.full_name, user.matriculated_date, uniq_assessors)
         data.push student_wba
       end
     end
