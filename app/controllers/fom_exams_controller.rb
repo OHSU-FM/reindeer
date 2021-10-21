@@ -119,6 +119,12 @@ class FomExamsController < ApplicationController
        @comp_keys = FomExam.comp_keys
 
        student  = User.find_by(uuid: params[:uuid])
+       cohort = PermissionGroup.find(student.permission_group_id).title.delete('()').split(" ").last.downcase
+       if cohort <= 'med22'
+         table_name_prefix = cohort + "_"
+       else
+         table_name_prefix = ""
+       end
        @student_email = student.email
        @student_full_name = student.full_name
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
@@ -127,7 +133,7 @@ class FomExamsController < ApplicationController
        if ['dean', 'admin'].include? current_user.coaching_type
          block_enabled = true ## always visible
        end
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], student.permission_group_id, @course_code, block_enabled )
+       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], student.permission_group_id, @course_code, block_enabled, table_name_prefix)
        if @comp_exams != nil
 
          @failed_comps = hf_scan_failed_score(@comp_exams)

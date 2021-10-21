@@ -13,14 +13,21 @@ class SearchesController < ApplicationController
     elsif current_user.spec_program == "PhD"
       #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
       @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program='MD/PhD'", search: @parameter)
+      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program like 'MD/PhD%'", search: @parameter)
       if @results.blank?
         redirect_to(root_path, alert: "No records found for #{params[:search]}")
       end
     elsif current_user.spec_program == "MPH"
       #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
       @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program='MD/MPH'", search: @parameter)
+      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program like 'MD/MPH%'", search: @parameter)
+      if @results.blank?
+        redirect_to(root_path, alert: "No records found for #{params[:search]}")
+      end
+
+    elsif current_user.spec_program == "Wy'east"
+      @parameter = params[:search].downcase + "%"
+      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program like 'MD/Wy%'", search: @parameter)
       if @results.blank?
         redirect_to(root_path, alert: "No records found for #{params[:search]}")
       end

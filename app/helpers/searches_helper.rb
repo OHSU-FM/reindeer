@@ -86,6 +86,9 @@ module SearchesHelper
   def hf_exists_in_FomExam(user_id)
     block_array = []
     blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+    if blocks.empty?
+      blocks = Med22FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+    end
     blocks.each do |block|
       block_hash = {}
       if current_user.dean_or_higher?

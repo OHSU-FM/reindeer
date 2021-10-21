@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_13_133809) do
+ActiveRecord::Schema.define(version: 2021_10_20_133838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -690,6 +690,69 @@ ActiveRecord::Schema.define(version: 2021_09_13_133809) do
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
     t.index ["email"], name: "med21_mspe_email_key", unique: true
+  end
+
+  create_table "med22_fom_exams", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "permission_group_id"
+    t.string "course_code"
+    t.datetime "submit_date"
+    t.decimal "comp1_wk1"
+    t.decimal "comp1_wk2"
+    t.decimal "comp1_wk3"
+    t.decimal "comp1_wk4"
+    t.decimal "comp1_wk5"
+    t.decimal "comp1_wk6"
+    t.decimal "comp1_wk7"
+    t.decimal "comp1_wk8"
+    t.decimal "comp1_wk9"
+    t.decimal "comp1_wk10"
+    t.decimal "comp1_wk11"
+    t.decimal "comp1_wk12"
+    t.decimal "comp1_dropped_score"
+    t.string "comp1_dropped_quiz"
+    t.decimal "comp2a_hss1"
+    t.decimal "comp2a_hss2"
+    t.decimal "comp2a_hss3"
+    t.decimal "comp2a_hss4"
+    t.decimal "comp2a_hss5"
+    t.decimal "comp2a_hss6"
+    t.decimal "comp2a_hss7"
+    t.decimal "comp2a_hssavg"
+    t.decimal "comp2b_bss1"
+    t.decimal "comp2b_bss2"
+    t.decimal "comp2b_bss3"
+    t.decimal "comp2b_bss4"
+    t.decimal "comp2b_bss5"
+    t.decimal "comp2b_bss6"
+    t.decimal "comp2b_bss7"
+    t.decimal "comp2b_bss8"
+    t.decimal "comp2b_bss9"
+    t.decimal "comp2b_bssavg"
+    t.decimal "comp3_final1"
+    t.decimal "comp3_final2"
+    t.decimal "comp3_final3"
+    t.decimal "comp4_nbme"
+    t.decimal "comp5a_hss1"
+    t.decimal "comp5a_hss2"
+    t.decimal "comp5a_hss3"
+    t.decimal "comp5a_hssavg"
+    t.decimal "comp5b_bss1"
+    t.decimal "comp5b_bss2"
+    t.decimal "comp5b_bss3"
+    t.decimal "comp5b_bss4"
+    t.decimal "comp5b_bss5"
+    t.decimal "comp5b_bssavg"
+    t.decimal "summary_comp1"
+    t.decimal "summary_comp2a"
+    t.decimal "summary_comp2b"
+    t.decimal "summary_comp3"
+    t.decimal "summary_comp4"
+    t.decimal "summary_comp5a"
+    t.decimal "summary_comp5b"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "permission_group_id", "course_code"], name: "by_med22_user_permission_group_course_code", unique: true
   end
 
   create_table "medhub_period_ids", id: false, force: :cascade do |t|

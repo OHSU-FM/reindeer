@@ -33,11 +33,13 @@ class StudentAssessmentsController < ApplicationController
   def load_cohorts_menu
       if current_user.coaching_type == 'coach'
         @cohorts_menu ||= current_user.cohorts.where("permission_group_id >= ?", 13).order(:title)
-      elsif current_user.dean_or_higher?
+      elsif current_user.dean_or_higher?  # Thease are users with Dean access
          if current_user.spec_program == 'PhD'
            @students ||= User.where("spec_program like 'MD/PhD%'").select(:id, :email, :username, :full_name).order(:full_name)
          elsif current_user.spec_program == 'MPH'
            @students ||= User.where("spec_program like 'MD/MPH%'").select(:id, :email, :username, :full_name).order(:full_name)
+         elsif current_user.spec_program == "Wy'east"
+           @students ||= User.where("spec_program like 'MD/Wy%'").select(:id, :email, :username, :full_name).order(:full_name)         
          else
            @cohorts_menu ||= PermissionGroup.where("id >= ? and id <> 15", 13).order(:title).uniq
          end

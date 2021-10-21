@@ -100,7 +100,7 @@ class FomExam < ApplicationRecord
     connection.exec_query(send(:sanitize_sql_array, sql_array))
   end
 
-  def self.exec_raw_sql user_id, attachment_id, permission_group_id, course_code, block_enabled
+  def self.exec_raw_sql user_id, attachment_id, permission_group_id, course_code, block_enabled, table_name_prefix
     row_to_hash = {}
     if attachment_id.to_i != -1
       CSV.parse(ActiveStorage::Attachment.find(attachment_id).download, headers: true, col_sep: "\t") do |row|
@@ -122,7 +122,7 @@ class FomExam < ApplicationRecord
           return nil, nil, nil  #the block is being disable
         end
       else
-        fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first        
+        fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
       end
       row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
       sql = "select users.full_name, "
@@ -139,8 +139,12 @@ class FomExam < ApplicationRecord
     end
 
     sql = sql.delete_suffix(", ")
-    results = FomExam.execute_sql(sql + " from fom_exams, users where users.id = fom_exams.user_id and fom_exams.user_id = ? and fom_exams.course_code = ? and fom_exams.permission_group_id=?
-                        order by users.full_name ASC",  user_id.to_i, course_code, permission_group_id.to_i).to_a
+    results = FomExam.execute_sql(sql + " from " + table_name_prefix + "fom_exams, users " +
+      "where users.id = " + table_name_prefix + "fom_exams.user_id and " +
+      table_name_prefix + "fom_exams.user_id = ? and " +
+      table_name_prefix + "fom_exams.course_code = ? and " +
+      table_name_prefix + "fom_exams.permission_group_id=? " +
+      "order by users.full_name ASC",  user_id.to_i, course_code, permission_group_id.to_i).to_a
 
 
     # sql = sql.delete_suffix(", ") + " from fom_exams, users where users.id = fom_exams.user_id and " +
@@ -154,9 +158,10 @@ class FomExam < ApplicationRecord
     # results_avg ||= ActiveRecord::Base.connection.exec_query(sql_avg).to_hash
 
     sql_avg = sql_avg.delete_suffix(", ")
-    results_avg ||= FomExam.execute_sql(sql_avg + " from fom_exams, users where fom_exams.permission_group_id = ?
-                                                   and users.id = fom_exams.user_id and fom_exams.course_code = ?",
-                                                   permission_group_id.to_i, course_code).to_a
+    results_avg ||= FomExam.execute_sql(sql_avg + " from " +  table_name_prefix +
+      "fom_exams, users where " + table_name_prefix + "fom_exams.permission_group_id = ? " +
+       "and users.id = " + table_name_prefix + "fom_exams.user_id and " + 
+       table_name_prefix + "fom_exams.course_code = ?", permission_group_id.to_i, course_code).to_a
 
     return results, results_avg,  row_to_hash
 
