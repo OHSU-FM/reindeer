@@ -8,9 +8,9 @@ class FomExamsController < ApplicationController
   include CompetenciesHelper
 
   def index
-    user = User.find_by(uuid: params[:uuid])
-    @artifacts = Artifact.where(user_id: user.id)
-
+    # user = User.find_by(uuid: params[:uuid])
+    # @artifacts = Artifact.where(user_id: user.id)
+    @artifacts = User.find_by(uuid: params[:uuid]).artifacts
   end
 
   def list_all_blocks
