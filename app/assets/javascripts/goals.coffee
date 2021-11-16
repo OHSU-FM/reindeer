@@ -38,6 +38,7 @@ $(document).on 'click', '#SaveMeeting', (e) ->
   updatedCareerOutcomesOther = $('#career_outcomes_other').val()
   updatedAcademicDiscussedOther = $('#academic_discussed_other').val()
   updatedAcademicOutcomesOther = $('#academic_outcomes_other').val()
+  updatedStudyResourcesOther = $('#study_resources_other').val()
 
   # checked_subjects is an array
   checked_subjects = do ->
@@ -61,6 +62,13 @@ $(document).on 'click', '#SaveMeeting', (e) ->
       return
     data_array
 
+  checked_study_resources = do ->
+    data_array = []
+    $('.MyCheckBoxStudyResources:checked').each ->
+      data_array.push $(this).val()
+      return
+    data_array
+
   if $(e.target).attr('data-goalId')
     objectId = $(e.target).attr('data-goalId')
     controller = "goals"
@@ -69,11 +77,12 @@ $(document).on 'click', '#SaveMeeting', (e) ->
     objectId = $(e.target).attr('data-meetingId')
     controller = "meetings"
     data = { m_status: newStatus, notes: updatedNotes, advisor_notes: updatedAdvisorNotes, subject: checked_subjects, \
-            advisor_discussed: checked_advisor_discussed, advisor_outcomes: checked_advisor_outcomes, \
+            advisor_discussed: checked_advisor_discussed, advisor_outcomes: checked_advisor_outcomes, study_resources: checked_study_resources, \
             career_discussed_other: updatedCareerDiscussedOther, \
             career_outcomes_other: updatedCareerOutcomesOther, \
             academic_discussed_other: updatedAcademicOutcomesOther, \
-            academic_outcomes_other: updatedAcademicOutcomesOther }
+            academic_outcomes_other: updatedAcademicOutcomesOther, \
+            study_resources_other: updatedStudyResourcesOther }
   #alert("meetingId: " + objectId + " m_status:" + newStatus)
   xhr = $.ajax({
     url: "/coaching/" + controller + "/" + objectId

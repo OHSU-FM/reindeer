@@ -1,7 +1,7 @@
 <div class="detail-header">
   <div class="detail-section">
 
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
 
           <div class="panel-heading active" role="tab" id="headingOne">
@@ -35,15 +35,40 @@
             </div>
           </div>
         </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="headingFour">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <h5><font color="#4c0946"><i>Study Resources (check all that apply): </i></font></h5>
+              </a>
+            </h4>
+          </div>
+          <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+            <div class="panel-body">
+                <%= collection_check_boxes(:meeting, :study_resources, hf_academic_study_resources_for_select, :first, :first, checked: meeting.study_resources) do |b| %>
+                  <label>
+                    <%= b.check_box(checked: true, class: 'MyCheckBoxStudyResources') %>
+                    <b> <%= b.text %> </b>
+                  </label> <br />
+               <% end %>
+
+              <%= text_field_tag :study_resources_other, meeting.study_resources_other, id: 'study_resources_other' %>
+
+            </div>
+          </div>
+        </div>
+
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingTwo">
             <h4 class="panel-title">
-              <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Advisor Discussed (check all that apply): </font></h5>
               </a>
             </h4>
           </div>
-          <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
             <div class="panel-body">
               <div>
                 <% if meeting.advisor_type == 'Career' %>
@@ -73,6 +98,8 @@
             </div>
           </div>
         </div>
+
+
         <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingThree">
             <h4 class="panel-title">

@@ -53,7 +53,8 @@
               <% advisor_subjects = hf_career_advisor_discussed_for_select %>
             <% elsif advisor_type == "Academic" %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
-              <% elsif advisor_type == "Wellness" %>
+              <% advisor_study_resources = hf_academic_study_resources_for_select %>
+            <% elsif advisor_type == "Wellness" %>
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
@@ -66,8 +67,20 @@
               </label> <br />
            <% end %>
 
+
+
            <% if advisor_type == "Academic" %>
               <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
+              <hr>
+
+              <i><%= f.label :subject, "Study Resource(s)", class: "control-label col-md-6" %></i><br />
+              <%= collection_check_boxes(:coaching_meeting, :study_resources, advisor_study_resources, :first, :first, checked: nil) do |b| %>
+                <label>
+                  <%= b.check_box(checked: false, class: 'MyCheckBoxStudyResources') %>
+                  <%= b.text %>
+                </label> <br />
+             <% end %>
+             <%= f.text_field :study_resources_other, id: 'academic_study_resources_other' %>
            <% elsif advisor_type == "Career" %>
               <%= f.text_field :career_discussed_other,  id: 'career_discussed_other' %>
            <% else %>
@@ -239,9 +252,22 @@
     <div class="card" id="OtherCard">
       <div class="card-body card-body-color">
           <div class="form-group">
-            <b><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></b><br />
+            <i><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></i><br />
             <div  id='coaching_meeting_subjects'>
             </div>
+          </div>
+          <hr>
+          <i><%= f.label :subject, "Study Resource(s)", class: "control-label col-md-6" %></i><br />
+          <% advisor_study_resources = hf_academic_study_resources_for_select %>
+          <%= collection_check_boxes(:coaching_meeting, :study_resources, advisor_study_resources, :first, :first, checked: nil) do |b| %>
+            <label>
+              <%= b.check_box(checked: false, class: 'MyCheckBoxStudyResources') %>
+              <%= b.text %>
+            </label> <br />
+
+         <% end %>
+          <div class="form-group">
+            <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
           </div>
           <div class="form-group">
             <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_162851) do
+ActiveRecord::Schema.define(version: 2021_11_12_152220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -783,6 +783,8 @@ ActiveRecord::Schema.define(version: 2021_10_27_162851) do
     t.string "career_discussed_other"
     t.string "career_outcomes_other"
     t.text "advisor_notes"
+    t.text "study_resources", default: [], array: true
+    t.string "study_resources_other"
     t.index ["advisor_id", "id"], name: "index_meetings_on_advisor_id_and_id", unique: true
     t.index ["event_id", "id"], name: "index_meetings_on_event_id_and_id", unique: true
     t.index ["user_id"], name: "index_meetings_on_user_id"

@@ -193,7 +193,7 @@ $paper:    #D5D5D5;
     box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
   }
 
-  div.dfield_with_errors { display: inline }.etail-header {
+  div.dfield_with_errors { display: inline }.detail-header {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
@@ -203,26 +203,26 @@ $paper:    #D5D5D5;
 
   div.detail-section {
     display: inline;
-    width: 90%;
+    width: 100%;
 
     h4 {
       color: $paper;
       background-color: $dusty;
-      padding-left: 20px;
+      padding-left: 10px;
       padding-right: 10px;
       padding-top: 10px;
       padding-bottom: 10px;
     }
 
     div {
-      font-size: 16px;
+      font-size: 14px;
       padding-left: 0px;  // control the panel title block
       padding-right: 0px;
     }
   }
 }
 
-@media all and (max-width: 840px) {
+@media all and (max-width: 1200px) {
   .container-flex { flex-direction: column; }
 
   .container-flex #cs-goals-main,

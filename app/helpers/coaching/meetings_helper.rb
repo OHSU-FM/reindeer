@@ -152,4 +152,18 @@ module Coaching::MeetingsHelper
       ["Other (text box)"]
     ]
   end
+
+  def hf_academic_study_resources_for_select
+    [
+      ["Live Lecture"],
+      ["Recorded OHSU Lecture"],
+      ["Textbook"],
+      ["Anki"],
+      ["Boards & Beyond"],
+      ["Pathoma"],
+      ["NBME Questions"],
+      ["UWORLD/other board prep questions"],
+      ["Other (text box)"]
+    ]
+  end
 end

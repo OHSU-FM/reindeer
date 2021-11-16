@@ -50,6 +50,21 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+
+  $("#coaching_meeting_study_resources_other_text_box").change ->
+    if $(this).prop('checked')
+      $("#coaching_meeting_study_resources_other").prop("disabled", false)
+    else
+      $("#coaching_meeting_study_resources_other").prop("disabled", true)
+    return
+
+  #$("#coaching_meeting_study_resources_other_text_box").change ->
+  if $("#meeting_study_resources_other_text_box").prop('checked')
+    $("#study_resources_other").prop("disabled", false)
+  else
+    $("#study_resources_other").prop("disabled", true)
+  #return
+
   $('#newMeetingModal').on 'shown.bs.modal', ->
     $('#startDate1').focus()
     return
@@ -85,7 +100,7 @@ $(document).ready ->
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
-      $('#coaching_meeting_subjects').append '<input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '<br/>'
+      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
     #$('#EventsTable tr').hide()

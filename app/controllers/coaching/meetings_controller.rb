@@ -98,16 +98,16 @@ module Coaching
     def meeting_params
       params.require(:coaching_meeting)
       .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id,  :academic_discussed_other, :academic_outcomes_other,
-        :career_discussed_other, :career_outcomes_other, :advisor_notes,
-        subject: [], advisor_outcomes: [], advisor_discussed: [])
+        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes,
+        subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [] )
       # .permit( :notes,  :date, :m_status, :user_id, :advisor_type,
       #   :advisor_id, :event_id)
     end
 
     def meeting_update_params
       params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :event_id, :academic_discussed_other, :academic_outcomes_other,
-        :career_discussed_other, :career_outcomes_other, :advisor_notes,
-        subject: [], advisor_outcomes: [], advisor_discussed: [])
+        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes,
+        subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [])
     end
   end
 end

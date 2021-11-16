@@ -11,7 +11,7 @@
         </div>
         <div id="collapse<%= group.id %>" class="collapse" aria-labelledby="#<%= group.id %>" data-parent="#accordion">
           <div class="card-body">
-            <% students = User.where(permission_group_id: group.id) %>
+            <% students = User.where(permission_group_id: group.id).where.not(full_name: nil) %>
             <% students.sort_by{|u| [u.full_name]}.each do |student| %>
 
                 <%= link_to "#{student.full_name}:
