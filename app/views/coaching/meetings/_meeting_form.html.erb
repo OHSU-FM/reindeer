@@ -256,19 +256,26 @@
             <div  id='coaching_meeting_subjects'>
             </div>
           </div>
-          <hr>
-          <i><%= f.label :subject, "Study Resource(s)", class: "control-label col-md-6" %></i><br />
-          <% advisor_study_resources = hf_academic_study_resources_for_select %>
-          <%= collection_check_boxes(:coaching_meeting, :study_resources, advisor_study_resources, :first, :first, checked: nil) do |b| %>
-            <label>
-              <%= b.check_box(checked: false, class: 'MyCheckBoxStudyResources') %>
-              <%= b.text %>
-            </label> <br />
 
-         <% end %>
-          <div class="form-group">
-            <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
+          <div id="study_resources">
+           <hr>
+            <i><%= f.label :subject, "Study Resource(s)", class: "control-label col-md-6" %></i><br />
+            <% advisor_study_resources = hf_academic_study_resources_for_select %>
+            <%= collection_check_boxes(:coaching_meeting, :study_resources, advisor_study_resources, :first, :first, checked: nil) do |b| %>
+              <label>
+                <%= b.check_box(checked: false, class: 'MyCheckBoxStudyResources') %>
+                <%= b.text %>
+              </label> <br />
+            <% end %>
+            <div class="form-group">
+              <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
+            </div>
           </div>
+
+
+
+
+
           <div class="form-group">
             <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
             <%= f.text_area :notes, class: "col-sm-6" %>

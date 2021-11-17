@@ -16,6 +16,18 @@ $ ->
   return
 
 
+studyResources = [
+      ["Live Lecture"],
+      ["Recorded OHSU Lecture"],
+      ["Textbook"],
+      ["Anki"],
+      ["Boards & Beyond"],
+      ["Pathoma"],
+      ["NBME Questions"],
+      ["UWORLD/other board prep questions"],
+      ["Other (text box)"]
+]
+
 wellnessPrimary = [
   "Wellness Visit"
 ]
@@ -59,6 +71,7 @@ $(document).ready ->
     return
 
   #$("#coaching_meeting_study_resources_other_text_box").change ->
+
   if $("#meeting_study_resources_other_text_box").prop('checked')
     $("#study_resources_other").prop("disabled", false)
   else
@@ -93,15 +106,26 @@ $(document).ready ->
     #alert("advisor_type: " + advisorType)
     if advisorType == 'Academic'
       data = academicPrimary
+      # to hide study Resources
+      $('#study_resources').show()
     else if advisorType == 'Wellness'
       data = wellnessPrimary
+      $('#study_resources').hide()
     else
       data = careerPrimary
+      $('#study_resources').hide()
+      
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
       $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
+
+    # $('#study_resources').empty()
+    # $.each data_study, (index) ->
+    #   $('#study_resources').append '<label><input type=\'checkbox\' name=\'coaching_meeting[study_resources][]\' value=\'' + data_study[index] + '\' />' + nbsp + data_study[index] + '</label><br/>'
+    #   return
+
 
     #$('#EventsTable tr').hide()
   # $("#filtered_by_days").find("option").css("color", "#337ab7")

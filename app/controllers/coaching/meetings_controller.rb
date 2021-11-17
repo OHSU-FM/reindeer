@@ -9,8 +9,9 @@ module Coaching
       @meeting = Meeting.create meeting_params
 
       if params[:time_slot].present? and params[:startDate1].present?
-        @meeting.advisor_discussed.delete_if(&:blank?)
-        @meeting.advisor_outcomes.delete_if(&:blank?)
+        #@meeting.advisor_discussed.delete_if(&:blank?)    # 11/16/2021 - comment these 2 lines f code, hopefully, it will eliminate the error of Meeting serialization
+        #@meeting.advisor_outcomes.delete_if(&:blank?)
+
         # create Event record & advisor is creating a retro appointments/meetings
         end_date = (params[:startDate1].to_datetime + params[:time_slot].to_i.minutes).utc.strftime("%Y/%m/%d %I:%M %p - %A")
         start_date = params[:startDate1].to_datetime.utc.strftime("%Y/%m/%d %I:%M %p - %A")
