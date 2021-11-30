@@ -75,10 +75,21 @@ class CompetenciesController < ApplicationController
      end
 
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
+     @mock_artifacts = hf_get_mock(@pk, "Mock Step 1")
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
-     @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)
+
+     found_rec = FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id)
+     if found_rec.nil?
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)
+     elsif found_rec.visible == false
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type not like ?", @selected_user.id, "%Mock%").order(:exam_type, :no_attempts)
+     else
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)       
+     end
+
      @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_type, :no_attempts)
+
      @student_badge_info = hf_get_badge_info(@selected_user.id)
 
 

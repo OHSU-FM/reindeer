@@ -23,12 +23,6 @@ epa_codes = (category_code) ->
           while i <= 3
             cat_array.push {id: CLINICAL[i], value: CLINICAL[i]}
             i++
-  else if category_code == 'Scholarly Project'
-          cat_array = []
-          cat_array.push {id: "Proposal", value: "Proposal"}
-          cat_array.push {id: "Capstone", value: "Capstone"}
-          cat_array.push {id: "Final Report", value: "Final Report"}
-          cat_array.push {id: "Other", value: "Other"}
   else if category_code == "Progress Board"
           cat_array = []
           cat_array.push {id: "Progress Board Letter", value: "Progress Board Letter"}
@@ -41,18 +35,27 @@ epa_codes = (category_code) ->
             cat_array.push {id: "MSPE Draft", value: "MSPE Draft"}
             cat_array.push {id: "MSPE Final", value: "MSPE Final"}
             cat_array.push {id: "MSPE Supplement", value: "MSPE Supplement"}
+  else if category_code == "NBME"
+            cat_array = []
+            cat_array.push {id: "HSS", value: "HSS"}
+  else if category_code == "OASIS Documents"
+            cat_array = []
+            cat_array.push {id: "IPAS", value: "IPAS"}
+            cat_array.push {id: "IPPS", value: "IPPS"}
   else if category_code == "Preceptorship Contract"
             cat_array = []
             cat_array.push {id: "Contract 1", value: "Contract 1"}
             cat_array.push {id: "Contract 2", value: "Contract 2"}
             cat_array.push {id: "Contract 3", value: "Contract 3"}
-  else if category_code == "OASIS Documents"
-            cat_array = []
-            cat_array.push {id: "IPAS", value: "IPAS"}
-            cat_array.push {id: "IPPS", value: "IPPS"}
   else if category_code == "Exemplary Professionalism"
             cat_array = []
             cat_array.push {id: "Exemp-Prof", value: "Exemplary Professionalism"}
+  else if category_code == 'Scholarly Project'
+          cat_array = []
+          cat_array.push {id: "Proposal", value: "Proposal"}
+          cat_array.push {id: "Capstone", value: "Capstone"}
+          cat_array.push {id: "Final Report", value: "Final Report"}
+          cat_array.push {id: "Other", value: "Other"}
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}

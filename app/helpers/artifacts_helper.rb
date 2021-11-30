@@ -1,6 +1,6 @@
 module ArtifactsHelper
 
-  ARTIFACT_CATEGORY = ["FoM", "Clinical", "Exemplary Professionalism", "EPA-Artifacts", "Scholarly Project", "Progress Board", "Grade Dispute", "MSPE", "Preceptorship Contract", "Other"]
+  ARTIFACT_CATEGORY = ["FoM", "Clinical", "Exemplary Professionalism", "EPA-Artifacts", "Progress Board", "Grade Dispute", "MSPE", "NBME", "Preceptorship Contract", "Scholarly Project", "Other"]
 
   def hf_category
     return ARTIFACT_CATEGORY
@@ -39,10 +39,35 @@ module ArtifactsHelper
       official_docs.each do |doc|
         no_docs = no_docs + doc.documents.count
       end
-      shelf_artifacts = Artifact.where(user_id: selected_user.id, content: "Shelf Exams") #artifacts_student.select{|a| a.content == "Shelf Exams"}
+      shelf_artifacts = Artifact.where(user_id: selected_user.id, content: "Shelf Exams").or(Artifact.where(user_id: selected_user.id, content: "HSS"))#artifacts_student.select{|a| a.content == "Shelf Exams"}
 
       return official_docs, no_docs, shelf_artifacts
     end
   end
+
+  def hf_get_mock(pk, artifact_title)
+    selected_user = User.find_by(email: pk)
+    if selected_user.nil?
+      return nil
+    else
+      mock_artifacts = Artifact.where(user_id: selected_user.id, content: artifact_title) #artifacts_student.select{|a| a.content == "Shelf Exams"}
+      return mock_artifacts
+    end
+
+  end
+
+  def hf_file_visible(code)
+    if ["dean", "admin"].include?  current_user.coaching_type
+      return true
+    end
+
+     if FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id, code: code).visible
+       return true
+     else
+       return false
+     end
+
+ end
+
 
 end

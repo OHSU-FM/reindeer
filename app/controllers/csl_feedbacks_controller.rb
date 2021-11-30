@@ -12,9 +12,9 @@ class CslFeedbacksController < ApplicationController
      @cohort_students = current_user.cohorts.where("title like ?", "%#{session[:cohort]}%").first.users.order('full_name ASC')
      @csl_feedbacks = CslFeedback.where(user_id: @cohort_students[0].id).order(:submit_date)
    else
-     @students = CslFeedback.where(cohorts: session[:cohort]).includes(:owner).all
-     @cohort_students = @students.map(&:owner).uniq.sort_by{|c| c.full_name}
-     @csl_feedbacks = CslFeedback.where(user_id: session[:user_id]).order(:submit_date)
+     # @students = CslFeedback.where(cohorts: session[:cohort]).includes(:owner).all
+     # @cohort_students = @students.map(&:owner).uniq.sort_by{|c| c.full_name}
+     @csl_feedbacks = CslFeedback.where(user_id: params[:user_id]).order(:submit_date)
     end
     if request.xhr?
       respond_to do |format|

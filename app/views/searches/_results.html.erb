@@ -61,7 +61,7 @@
             <% if hf_has_csl_feedbacks(result.id) %>
               <% session[:user_id] = result.id %>
               <% session[:cohort] = cohort_title(result.permission_group_id) %>
-              <%= link_to('<i><b>CSL Feedbacks from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path, target: '_blank') %>
+              <%= link_to('<i><b>CSL Feedback from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(user_id: result.id), target: '_blank') %>
               <br>
 
             <% end %>
