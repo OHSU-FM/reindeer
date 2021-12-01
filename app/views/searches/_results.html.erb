@@ -69,10 +69,10 @@
             <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if dataset.split("~").last.include? "Core Clinical/Electives" %>
-                   <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
+                   <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
                       class: "modal-click", 'data-target': '#modal-dataset' %> <br>
               <% else %>
-                    <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset), :ls_report], sid: sid, pk: @pk),
+                    <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
                        class: "modal-click", 'data-target': '#modal-dataset' %> <br>
               <% end %>
             <% end %>

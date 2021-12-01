@@ -46,7 +46,7 @@
                   <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EPA-Q/A Report', epa_qa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'WBA/EPA Report', wba_epa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to 'WBA/Clinical Assessor Report', wba_clinical_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>              
+                  <%= link_to 'WBA/Clinical Assessor Report', wba_clinical_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                 </div>
               </div>
             <% end %>
@@ -70,7 +70,7 @@
                   <% temp_pk = params[:slug] + "@ohsu.edu" %>
                   <% clinical_phase_sid = hf_get_clinical_phase_sid(temp_pk) %>
                   <% if !clinical_phase_sid.nil? %>
-                      <%= link_to "Clinical Phase", polymorphic_path(['spreadsheet', :ls_report], sid: clinical_phase_sid, pk: temp_pk),
+                      <%= link_to "Clinical Phase", polymorphic_path(["spreadsheet".to_sym, :ls_report], sid: clinical_phase_sid, pk: temp_pk),
                          target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
                   <% end %>
               <% end %>
