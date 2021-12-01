@@ -3,6 +3,8 @@ class ArtifactsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_artifact, only: [:show, :edit, :update, :destroy, :move]
 
+  include ArtifactsHelper
+
 
   # GET /artifacts
   def index
@@ -10,7 +12,11 @@ class ArtifactsController < ApplicationController
       @user_id = params[:user_id]
       @artifacts = Artifact.where(user_id: params[:user_id])
     else
-      @artifacts = Artifact.where(user_id: current_user.id)
+      if (hf_file_visible("Mock Step 1") == true) 
+        @artifacts = Artifact.where(user_id: current_user.id)
+      else
+          @artifacts = Artifact.where("user_id = ? and content not like ?", current_user.id, "%Mock%")
+      end
     end
   end
 
