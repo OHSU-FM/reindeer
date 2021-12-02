@@ -1,0 +1,78 @@
+
+<% if !@preceptor_evals.empty? %>
+  <h4> Preceptorship Evaluations - <%= @student_name %></h4>
+  <div class="table-responsive-sm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Preceptor</th>
+          <th scope="col">SubmitDate</th>
+          <th scope="col">Term</th>
+          <th scope="col">Grade</th>
+          <th scope="col">ProfessionalConcerns</th>
+          <th scope="col">ConcernComments</th>
+          <th scope="col">MSPEComments</th>
+          <th scope="col">Comments</th>
+
+        </tr>
+      </thead>
+        <% @preceptor_evals.each do |pd| %>
+          <tr>
+            <td><%= pd["preceptor_name"] %></td>
+            <td><%= pd["submit_date"] %></td>
+            <td><%= pd["term"] %></td>
+            <td><%= pd["grade"] %></td>
+            <td><%= pd["professional_concerns"] %></td>
+            <td><%= pd["concern_comments"] %></td>
+            <td><%= pd["mspe_comments"] %></td>
+            <td><%= pd["comments"] %></td>
+          </tr>
+        <% end %>
+    </table>
+  </div>
+  <hr>
+  <div class="table-responsive-sm">
+    <table class="table">
+      <thead><tr>
+        <th scope="col">SubmitDate</th>
+
+        <th scope="col">ICS1</th>
+        <th scope="col">ICS2</th>
+        <th scope="col">ICS4</th>
+        <th scope="col">ICS6</th>
+        <th scope="col">ICS7</th>
+        <th scope="col">PBLI1</th>
+        <th scope="col">PBLI8</th>
+        <th scope="col">PPPD1</th>
+        <th scope="col">PPPD2</th>
+        <th scope="col">PPPD6</th>
+        <th scope="col">PPPD9</th>
+        <th scope="col">SBPIC2</th>
+        <th scope="col">SBPIC4</th>
+        <th scope="col">SBPIC5</th>
+      </thead></tr>
+      <% @preceptor_evals.each do |pd| %>
+        <tr>
+          <td><%= pd["submit_date"] %></td>
+
+          <td bgcolor="<%= hf_background_color(pd["ics1"]) %>"><%= hf_decode_preceptor_comp3(pd["ics1"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["ics2"]) %>"><%= hf_decode_preceptor_comp3(pd["ics2"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["ics4"]) %>"><%= hf_decode_preceptor_comp3(pd["ics4"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["ics6"]) %>"><%= hf_decode_preceptor_comp3(pd["ics6"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["ics7"]) %>"><%= hf_decode_preceptor_comp3(pd["ics7"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["pbli1"]) %>"><%= hf_decode_preceptor_comp3(pd["pbli1"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["pbli8"]) %>"><%= hf_decode_preceptor_comp3(pd["pbli8"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["pppd1"]) %>"><%= hf_decode_preceptor_comp3(pd["pppd1"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["pppd2"]) %>"><%= hf_decode_preceptor_comp3(pd["pppd2"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["pppd6"]) %>"><%= hf_decode_preceptor_comp3(pd["pppd6"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["pppd9"]) %>"><%= hf_decode_preceptor_comp3(pd["pppd9"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["sbpic2"]) %>"><%= hf_decode_preceptor_comp3(pd["sbpic2"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["sbpic4"]) %>"><%= hf_decode_preceptor_comp3(pd["sbpic4"]) %></td>
+          <td bgcolor="<%= hf_background_color(pd["sbpic5"]) %>"><%= hf_decode_preceptor_comp3(pd["sbpic5"]) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+<% else %>
+  <h5> No Preceptor Evaluation Found! </h5>
+<% end %>

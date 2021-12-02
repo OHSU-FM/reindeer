@@ -26,10 +26,26 @@ class User < ActiveRecord::Base
 
   has_one :dashboard, dependent: :destroy
 
-  has_one :competency, dependent: :destroy
-
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
+  has_many :competencies, dependent: :destroy
+  has_many :med18_competencies, inverse_of: :user, dependent: :destroy
+  has_many :med19_competencies, inverse_of: :user, dependent: :destroy
+  has_many :med20_competencies, inverse_of: :user, dependent: :destroy
+  has_many :med20_competencies, inverse_of: :user, dependent: :destroy
+
+  has_one  :cpx, dependent: :destroy
+  has_many :usmle_exams, dependent: :destroy
+  has_many :epa_masters, dependent: :destroy
+  has_many :fom_exams, dependent: :destroy
+  has_many :med22_fom_exams, dependent: :destroy
+  has_many :fom_labels
+  has_many :preceptor_evals, dependent: :destroy
+  has_many :preceptor_assesses, dependent: :destroy
+  has_one :advisor, foreign_key: :email, dependent: :destroy
+  has_many :events, inverse_of: :user, dependent: :destroy
+  has_many :fom_remeds, inverse_of: :user, dependent: :destroy
+  has_many :formative_feedbacks, inverse_of: :user, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -142,7 +158,7 @@ class User < ActiveRecord::Base
   def display_name name=full_name
     comma_re = /^\s*(\w{1,20} *[^,]*)+,\s+(\w{1,20}\s*)+$/ # last, first
     if name.nil?
-      username
+      username  belongs_to :user
     elsif comma_re === name
       name.split(", ").reverse.join(" ")
     else
@@ -225,6 +241,16 @@ class User < ActiveRecord::Base
       field :password_confirmation
       field :is_ldap
       field :cohort
+      field :spec_program
+      field :sid
+      field :coaching_type, :enum do
+          enum do
+            [['student'],['dean']]
+          end
+      end
+      field :subscribed
+      field :matriculated_date
+
     end
 
     # Should be read only
@@ -258,6 +284,8 @@ class User < ActiveRecord::Base
         inline_add false
       end
 
+      field :prev_permission_group_id
+
       field :user_externals, :has_many_association
       field :explain_survey_access do
         partial 'users/field_explain_survey_access'
@@ -287,7 +315,7 @@ class User < ActiveRecord::Base
     end
 
     list do
-      include_fields :id, :username, :email, :permission_group,  :is_ldap, :can_dashboard, :can_chart,
+      include_fields :id, :username, :email, :permission_group, :is_ldap, :can_dashboard, :can_chart,
         :admin, :superadmin
       exclude_fields :lime_user, :password, :password_confirmation, :explain_survey_access,
         :user_externals, :current_sign_in_at, :sign_in_count, :permission_ls_groups,

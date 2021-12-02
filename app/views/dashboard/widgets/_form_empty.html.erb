@@ -1,54 +1,108 @@
 <% return unless dash.dashboard_widgets.count == 0 %>
 
 <li class="gs-w gs-w-no-resize" style="padding:0 20px;"
-        data-col="1" data-row="1"
-        data-sizey="1" data-min-sizey="1" data-max-sizey="1"
+        data-col="3" data-row="1"
+        data-sizey="2.3" data-min-sizey="2" data-max-sizey="2.3"
         data-sizex="2" data-min-sizex="2" data-max-sizex="2" >
-    <div class="widget-resize-hook">
-        <h3>Welcome to <%= Settings.site.name %></h3>
-        <p>
-            You haven't added anything to your dashboard yet.
-        </p>
-        <br/>
-        <%= link_to ls_reports_path, :class=>'btn btn-success' do %>
-            View Reports
-            <i class="fa fa-external-link"></i>
-        <% end %>
+    <div class="widget">
+        <br />
+        <h4><font color="purple">Scheduled Appointment(s)</font></h4>
+             <% events = hf_get_events(@meetings) %>
+             <% if !events.nil? %>
+                <table class="table table-hover"  >
+                  <tr>
+                    <% if current_user.coaching_type == 'dean' %>
+                        <th data-data="student">Student</th>
+                    <% else %>
+                        <th data-data="advisor">Advisor</th>
+                    <% end %>
+                    <th data-data="start_date">Start date</th>
+                    <th data-data="end_date">End date</th>
+                  </tr>
+                  <% events.sort_by(&:start_date).each do |event| %>
+                    <tr>
+                      <% if current_user.coaching_type == 'dean' %>
+                        <% if !event.user.nil? %>
+                            <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
+                            <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                            <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                        <% end %>
+                      <% else %>
+                          <% advisor = event.description.split(" - ").second %>
+                          <td><%= link_to(advisor, coaching_student_path(event.user), target: '_blank') %></td>
+                          <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                          <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                      <% end %>
+
+                    </tr>
+                  <% end %>
+                </table>
+            <% else %>
+                <h4> *** No Appointments Found! *** </h4>
+            <% end %>
+
+          <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
+              I Want to Schedule an Appointment
+              <i class="fa fa-external-link"></i>
+          <% end %>
+
     </div>
 </li>
 
-<li data-col="3" data-row="1" data-sizex="3" data-sizey="1" data-min-sizex="2" class="gs-w" style="padding:0 20px;">
+<li data-col="3" data-row="1" data-sizex="3" data-sizey="2.3" data-min-sizex="2" class="gs-w" style="padding:0 20px;">
     <div class="xwidget-resize-hook">
-        <h3>This is <em>your</em> dashboard!</h3>
-        <p>A place where you can store things to look at later. You can also resize and move items around on your dashboard.</p>
-        <br/>
-        <a class="btn btn-large btn-success" href="javascript:void(0);" onclick="javascript:introJs().start();">Take a tour!</a>
+        <br />
+        <% if current_user.coaching_type == 'student'%>
+          <h4><font color="purple">EPA Badging/Entrustment</font></h4>
+          <hr>
+          <h5><font color="black">As of today, you have earned:</font></h5>
+          <% if current_user.matriculated_date.strftime("%Y").to_i <= 2017 %>
+            <% wba_req = 50 %>
+          <% elsif current_user.matriculated_date.strftime("%Y").to_i == 2018 %>
+            <%= wba_req = 75 %>
+          <% else %>
+            <% wba_req = 100 %>
+          <% end %>
+          <hr>
+
+          Total # of WBAs (all levels) : <b><%= current_user.epas.where.not(involvement: 0).count.to_s %> </b>out of <b><%= wba_req.to_s %></b><br />
+          Total # of Badges Awarded : <b><%= current_user.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(current_user)).count.to_s %> </b>out of <b>13</b>
+          <br />
+          <hr>
+          <h5><font color="black">Class earnings:</font></h5>
+          <hr>
+            <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
+            <%= cohort_title %> WBA Average: <b><%= ave.nil? ? 'N/A' : ave %><b><br />
+            <%= cohort_title %> WBA Median&nbsp;: <b><%= med.nil? ? 'N/A' : med %></b>
+          <hr>
+        <% else %>
+            <% stats = hf_wba_stats(current_user) %>
+            <h5><font color="purple">WBA Statistics</font></h5>
+            <table class="table table-hover" >
+              <tr>
+                <th>Cohort</th>
+                <th style="text-align:center">Max</th>
+                <th style="text-align:center">Min</th>
+                <th style="text-align:center">Ave</th>
+                <th style="text-align:center">Median</th>
+              </tr>
+              <body>
+                <% if !stats.nil? %>
+                  <% stats.each do |key, stat| %>
+                    <tr>
+                      <td><%= key %></td>
+
+                      <% stat.each do |dd| %>
+                        <td style="text-align:center"><%= dd.round %></td>
+                      <% end %>
+
+                    </tr>
+                  <% end %>
+                <% end %>
+
+              </body>
+            </table>
+        <% end %>
+
     </div>
-</li>
-
-<li class="gs-w gs-w-no-resize" style="padding:20px 35px;"
-        data-step="3"
-        data-intro="Charts and other graphical items can be enlarged and viewed separately when double clicked."
-        data-position="right"
-        data-col="2" data-row="2"
-        data-sizey="1" data-min-sizey="1" data-max-sizey="1"
-        data-sizex="1" data-min-sizex="1" data-max-sizex="1" >
-        <div class="widget-content">
-            <div class="chart-visualization">
-                <ul class="list-inline">
-                    <li>
-                        <i class="fa fa-smile-o" style="font-size:150px;"></i>
-                    </li>
-                    <li>
-                        <div class="hide-unless-modal">
-                            <div class="bs-callout bs-callout-info" id="callout-alerts-dismiss-plugin">
-                                <h4>Save interesting pieces of information for later!</h4>
-                                <p>When you add something to your dashboard you can double-click/tap on it to enlarge the information</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
 </li>

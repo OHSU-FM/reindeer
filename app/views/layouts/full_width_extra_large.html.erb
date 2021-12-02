@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<%= render :partial=>'layouts/head' %>
+<body id="<%= controller_name %>" class="layout-full-width <%= current_user_theme %>"
+    <%= render 'layouts/nav_header' %>
+    <%= yield :charts_js %> <!-- Rails -->
+
+  <div class="container-fluid bg-light text-dark">
+    <div class="col-xl">
+      <body id="<%= controller_name %>"
+            class="layout-full-width <%= current_user_theme %>"
+        <%= render 'shared/messages' %>
+        <%= yield %>
+      </body>
+    </div>
+
+    <!-- /.container -->
+
+        <hr>
+        <footer>
+            <div class="row">
+                <div class="col-xl">
+                </div>
+            </div>
+        </footer>
+
+  </div>
+    <!-- /.container -->
+
+
+</html>

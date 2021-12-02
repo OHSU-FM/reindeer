@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  helper :all
+ helper :all
+
   before_action :authenticate_user!
   before_action :dynamic_destroy, only: :update
   helper_method :auto_path
@@ -33,6 +34,10 @@ class ApplicationController < ActionController::Base
       format.html { render 'errors/not_authorized', status: 403, layout: 'full_width_margins' }
       format.js { render json: { message: 'Not Authorized' }, status: 403 }
     end
+  end
+
+  def route_not_found
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
   end
 
   private

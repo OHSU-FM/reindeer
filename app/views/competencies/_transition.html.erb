@@ -1,0 +1,40 @@
+<% if !@comp.nil? %>
+  <div class="table-responsive-sm">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">CourseName</th>
+          <th style="width: 5%" scope="col">StartDt</th>
+          <th style="width: 5%" scope="col">EndDt</th>
+          <th style="width: 5%" scope="col">SubmitDt</th>
+          <th scope="col">Evaluator</th>
+          <th scope="col">FinalGrade</th>
+          <th scope="col">ProfConcern</th>
+          <th scope="col">MSPE</th>
+        </tr>
+      </thead>
+      <% @comp.each do |cd| %>
+
+        <% if cd["course_name"].include? "TRAN 703" or cd["course_name"].include? "TRAN 704" %>
+            <tr>
+              <td><%= cd["course_name"] %></td>
+              <td><%= cd["start_date"] %></td>
+              <td><%= cd["end_date"] %></td>
+              <td><%= cd["submit_date"] %></td>
+              <td><%= cd["evaluator"] %></td>
+              <td>
+                <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a></span>
+
+              </td>
+              <td><%= cd["prof_concerns"] %></td>
+              <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+
+            </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+<% else %>
+  <h4> No Competency/EPA Data Found! </h4>
+<% end %>

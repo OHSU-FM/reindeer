@@ -1,0 +1,20 @@
+<div class="container" >
+  <br /> <br />
+    <div class="card">
+      <div class="card-body">
+        <%= form_tag(wba_epa_epa_masters_path, method: "get", id: 'wba_epa_form') do %>
+          <div class="form-group navbar-form navbar-left">
+             <b>Cohort </b> <%= select_tag :cohort, options_for_select(["Med21", "Med22", "Med23", "Med24"], selected: params[:cohort]), include_blank: '--',
+                prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+
+      <% if !@wba_epa_data.blank? %>
+        <%= render partial: 'detail_wba_epa', locals: {cohort: params[:cohort]} %>
+      <% end %>
+
+
+</div>

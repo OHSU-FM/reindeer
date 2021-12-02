@@ -86,11 +86,11 @@
     tr.color {
       background-color: #ecfff3;
     }
-    
+
     body#data, body#reports{
         form a {
             border-bottom: solid 1px #ccc;
-        } 
+        }
     }
     .arrow {
       padding-top: 1.35em;
@@ -127,23 +127,22 @@
 
     .arrow .toggle-img{
       height: 25px;
-      width: 25px;     
+      width: 25px;
     }
     .arrow-open{
       background-image: image-url('arrow-open.png');
-      background-repeat: no-repeat; 
+      background-repeat: no-repeat;
     }
     .arrow-closed{
       background-image: image-url('arrow-closed.png');
-      background-repeat: no-repeat; 
+      background-repeat: no-repeat;
     }
 
    .report thead{
-    background-color: #FFF;   
+    background-color: #FFF;
     }
 
     span.link{
         text-decoration:underline;
         &:hover{cursor: pointer; cursor: hand;}
     }
-

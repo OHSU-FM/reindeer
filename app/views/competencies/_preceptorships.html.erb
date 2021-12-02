@@ -1,0 +1,61 @@
+<% if !@preceptorship_data.blank? %>
+  <div class="table-responsive-sm">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Preceptor</th>
+          <th scope="col">SubmitDate</th>
+          <th scope="col">Grade</th>
+          <th scope="col">ICS1</th>
+          <th scope="col">ICS2</th>
+          <th scope="col">ICS4</th>
+          <th scope="col">ICS6</th>
+          <th scope="col">ICS7</th>
+          <th scope="col">PBLI1</th>
+          <th scope="col">PBLI8</th>
+          <th scope="col">PPPD1</th>
+          <th scope="col">PPPD2</th>
+          <th scope="col">PPPD6</th>
+          <th scope="col">PPPD9</th>
+          <th scope="col">SBPIC2</th>
+          <th scope="col">SBPIC4</th>
+          <th scope="col">SBPIC5</th>
+          <th scope="col">MSPE</th>
+          <th scope="col">Comment</th>
+
+        </tr>
+      </thead>
+
+        <% @preceptorship_data.each do |pd| %>
+          <tr>
+            <td><%= pd["PreceptorName"] %></td>
+            <td><%= pd["SubmitDate"] %></td>
+            <td><%= pd["Grade"] %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["ICS1"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["ICS2"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["ICS4"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["ICS6"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["ICS7"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["PBLI1"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["PBLI8"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["PPPD1"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["PPPD2"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["PPPD6"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["PPPD9"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["SBPIC2"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["SBPIC4"]) %></td>
+            <td><%= hf_decode_preceptor_comp2(pd["SBPIC5"]) %></td>
+            <td><%= pd["MSPE"] %></td>
+            <td><%= pd["Comment"] %></td>
+
+          </tr>
+        <% end %>
+    </table>
+  </div>
+<% end %>
+
+<%= render partial: "preceptor_assesses" %>
+
+<% @preceptor_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Preceptorship Contract") %>
+<% @shelf_artifacts = @preceptor_docs %>
+<%= render partial: 'artifacts/shelf_artifacts' %>

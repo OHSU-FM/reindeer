@@ -1,0 +1,22 @@
+
+  <h5> FoM - Send Alerts 
+  <% if can? :crud, Dashboard %>
+    <%= link_to 'Home',  auto_path, class: "btn btn-link"  %>
+  <% end %>
+  </h5><br />
+
+  <%= form_for(send_alerts_fom_exams_path, action: 'send_alerts', remote: true, method: 'Get', html: { class: 'form-horizontal' },wrapper: :horizontal_form) do %>
+      <div class="form-inline">
+        <%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
+        <%= select_tag :uniq_cohort, options_for_select([["Med24", 18],["Med25", 19]], selected: params[:uniq_cohort]),
+            prompt: "Please Select a Cohort" %> &nbsp; &nbsp;
+      <%= submit_tag 'Submit', :name => 'commit'%>
+      </div>
+
+  <% end %>
+
+<hr>
+
+<div id="send-alerts-list"></div>
+
+<%= flash[:send_alert] %>

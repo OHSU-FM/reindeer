@@ -1,0 +1,24 @@
+
+  <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+    <thead>
+      <tr>
+        <th data-data="Student">Student</th>
+        <th data-data="Advisor">Advisor</th>
+        <th data-data="start_date">Start date</th>
+        <th data-data="end_date">End date</th>
+
+      </tr>
+    </thead>
+
+    <% if !@event_students.nil? %>
+      <% @event_students.each do |event| %>
+        <tr>
+          <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
+          <td><%= event.description %></td>
+          <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
+          <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p - %A")%></td>
+
+        </tr>
+      <% end %>
+    <% end %>
+  </table>

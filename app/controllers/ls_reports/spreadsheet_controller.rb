@@ -7,6 +7,7 @@ class LsReports::SpreadsheetController < LsReports::BaseController
   include LsReports::CslevalHelper
   include SearchesHelper
   include EpasHelper
+  include ArtifactsHelper
 
   ##
   # show lime_survey
@@ -25,24 +26,18 @@ class LsReports::SpreadsheetController < LsReports::BaseController
 
     @response_sets = hf_flatten_response_sets @lime_survey
     @rs_data = hf_transpose_response_sets @response_sets
-
-
-
     @rs_data.sort_by!{|obj| obj["StartDt"]}
     @rs_questions = hf_transpose_questions @response_sets
-
     @response_sets_unfiltered = hf_flatten_response_sets @lime_survey_unfiltered
     @rs_data_unfiltered = hf_transpose_response_sets @response_sets_unfiltered
-
-    #@rs_questions_unfiltered = hf_transpose_questions @response_sets_unfiltered
     @rs_questions_unfiltered = @rs_questions
+
+
     @comp_domain_desc = hf_comp_domain_desc
-
     @non_clinical_course_arry = hf_get_non_clinical_courses
-
     @comp_hash3_nc = hf_load_all_competencies_nc(@rs_data, "3")
-    @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
 
+    @comp_hash3 = hf_load_all_competencies(@rs_data, "3")
     @comp_hash2 = hf_load_all_competencies(@rs_data, "2")
     @comp_hash1 = hf_load_all_competencies(@rs_data, "1")
     @comp_hash0 = hf_load_all_competencies(@rs_data, "0")
@@ -109,14 +104,20 @@ class LsReports::SpreadsheetController < LsReports::BaseController
       end
     end
 
-    @cpx_data = hf_get_cpx(@survey)
+    @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
+    if @not_found_cpx
+      @cpx_data = hf_get_cpx(@survey)
+    end
     @usmle_data = hf_get_usmle(@survey)
     @shelf_attachments = hf_get_shelf_attachments(@survey)
 
     @preceptor_view = @preceptorship.flatten
-    @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
+    @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@pk)
     @csl_evals = hf_get_csl_evals(@survey, @pk)
+    if @csl_evals.empty?
+      @csl_feedbacks = CslFeedback.where(user_id: @selected_user_id).order(:submit_date)
+    end
 
 
   end

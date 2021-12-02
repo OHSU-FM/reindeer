@@ -228,15 +228,57 @@ div.precept-header {
     display: table;
     clear: both;
 }
-.column {
+.column1 {
   float: left;
-  padding: 10px;
-
+  width: 50%;
+  padding: 20px;
+  height: 370px; /* Should be removed. Only for demonstration */
 }
+
 .left {
   width: 40%;
 }
 
 .right {
   width: 60%;
+}
+
+.figure {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img-circle {
+  border-radius: 70%;
+}
+.modal-dialog-centered .modal-content {
+  width: 100%;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 15%;
+  height: 3%;
+}
+
+.opaque-image {
+  opacity: 0.5;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 22px;
+  height: 220px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }

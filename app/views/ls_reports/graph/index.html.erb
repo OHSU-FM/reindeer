@@ -12,6 +12,7 @@
     </tr>
   </thead>
   <tbody>
+    
     <% @role_aggregates.sort.each do |role| %>
     <tr>
         <td><%= link_to role.lime_survey.lime_surveys_languagesettings.first.surveyls_title, role_aggregate_path(role), :class=>"modal-click", 'data-target'=>'#modal-dataset' %></td>
@@ -21,6 +22,7 @@
         <td><%= role.last_updated.last %></td>
     </tr>
     <% end %>
+
   </tbody>
   </table>
 </div>

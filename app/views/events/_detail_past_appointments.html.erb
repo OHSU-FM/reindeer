@@ -1,0 +1,24 @@
+<% if !@appointments.nil? %>
+  <table id="past_events_table" class="responsive nowrap table table-hover " data-toggle="table" data-sort="true" data-url="<%= url_for(format: :json) %>">
+    <thead class="filters">
+      <tr>
+        <th data-data="user_id">Student</th>
+        <th data-data="description">Description</th>
+        <th data-data="start_date">Start date</th>
+        <th data-data="end_date">End date</th>
+      </tr>
+    </thead>
+
+    <% @appointments.each do |appointment| %>
+        <tr>
+          <% student = appointment.user %>
+          <td><%= link_to(student.full_name, coaching_student_path(student), target: '_blank') %></td>
+          <td><%= appointment.description %> </td>
+          <td><%= appointment.start_date  %></td>
+          <td><%= appointment.end_date %></td>
+        </tr>
+    <% end %>
+
+  </table>
+
+<% end %>

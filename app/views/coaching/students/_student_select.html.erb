@@ -1,8 +1,11 @@
+<b> Student </b>
 <select id="student-select" onchange="window.location=this.value">
   <% if !@students.nil? %>
-      <% if !current_user.admin_or_higher? %>
+      <% if current_user.coaching_type == 'dean' %>
+        <% @students = @students.select{|s| s if !s["full_name"].nil? } %>
         <% @students = @students.sort_by{|s| s["full_name"]} %>
       <% end %>
+      <option disabled selected value> -- select a student -- </option>
       <% @students.each do |student| %>
         <option value=<%= student.login %> <%= "selected='selected'" if student == @student %>><%= student.full_name %></option>
       <% end %>

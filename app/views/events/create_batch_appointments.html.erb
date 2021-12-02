@@ -1,0 +1,30 @@
+<h4>Create Available Appointments</h4>
+<hr>
+<div class="card">
+  <div class="card-body card-body-color">
+    <%= form_tag(create_batch_appointments_events_path, method: 'get', remote: true) do %>
+
+      <div class="form-group">
+          <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2" %>
+          <%= select_tag :advisor_type, options_for_select(["Academic", "Career", "Wellness"], selected: session[:advisor_type]), include_blank: "---",
+               required: true  %> <br />
+          <div hidden>
+            <div class="advisors-details" data-advisors="<%= @advisors.to_json %>">
+            </div>
+          </div>
+          <%= label_tag :Advisor, nil, class: "control-label col-md-2" %>
+          <%= select_tag :advisor, options_for_select(hf_get_advisors(session[:advisor_type]), selected: session[:advisor]), include_blank: "---" , required: true  %> <br />
+          <%= label_tag "Time Slot by Mins", nil, class: "control-label col-md-2" %>
+          <%= select_tag :time_slot, options_for_select(["15", "30", "45", "60"], selected: '45'),  include_blank: "---", required: true %> <br />
+          <%= label_tag :StartDate , nil, class: "control-label col-md-2"%>
+          <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now, minute_step: 30)%><input type="text" id="start_weekday" name="start_weekday" disabled><br />
+          <%= label_tag :EndDate, nil, class: "control-label col-md-2" %>
+          <%= datetime_select("end_date", "end_date", ampm: true,  default: 6.hours.from_now, minute_step: 30) %><input type="text" id="end_weekday" name="end_weekday" disabled> <br />
+          <%= submit_tag "Go" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div id="appt-table"></div>
+
+<%= render partial: 'detail_appointments'  %>

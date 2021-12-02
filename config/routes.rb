@@ -1,9 +1,86 @@
 Rails.application.routes.draw do
+
+  resources :fom_remeds
+  resources :advisors
+
+  resources :events do
+    collection do
+      get 'create_batch_appointments', action: :create_batch_appointments, controller: 'events', to: 'events#create_batch_appointments'
+      get 'create_random_appointments', to: 'events#create_random_appointments'
+      get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
+      get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
+    end
+  end
+  #get 'student_assessments/index'
+  resource :student_assessments, param: :slug, only: [:show]
+  get '/student_assessments/search'
+
+  get '/csl_feedbacks/index'
+  get '/csl_feedbacks/get_csl_feedback'
+  get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
   get 'cds_reports', to: 'cds_reports#index'
+  get 'wba_graphs/index', to: 'wba_graphs#index'
+  get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
+
+
+  resources :epas
+
+  resources :epa_reviews do
+    collection do
+      post 'local_storage'
+    end
+  end
+
+  resources :epa_masters do
+    collection  do
+      get 'search_student'
+      get 'eg_mismatch', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_mismatch'
+      get 'eg_badged', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_badged'
+      get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
+      get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
+      get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters'
+    end
+
+  end
+  #get 'epa_masters/eg_report', controller: "epa_masters", action: :eg_report, to: "epa_masters#eg_report"
+  resources :courses
+  resources :usmle_exams
+  get '/csl_feedbacks/index'
+  get '/csl_feedbacks/get_csl_feedback'
+  get '/csl_feedbacks/:cohort/:email/:block', action: :show, controller: "csl_feedbacks", to: "csl_feedbacks#show"
+
+  get 'cds_reports', to: 'cds_reports#index'
+  get 'cds_reports/past_due', to: 'cds_reports#past_due'
+  get 'cds_reports/by_subject', to: 'cds_reports#by_subject'
   get 'wba_graphs/index', to: 'wba_graphs#index'
   get 'wba_graphs/show', to: 'wba_graphs#show'
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
-  resources :epas
+
+  resources :user do
+    resources :competencies, param: :user_id, only: [:index]
+  end
+
+  get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+  get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+  get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+  get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
+  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams'
+
+  #resources :user do
+  resources :preceptor_evals,  only: [:show], param: :uuid
+  #   end
+  # end
+
+  resource :fom_exams do
+      collection do
+        post 'send_alerts'
+        get 'send_alerts'
+        get 'display_fom'
+        get 'unsubscribe'
+      end
+  end
+
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
      member do
@@ -17,6 +94,8 @@ Rails.application.routes.draw do
         post 'search_goals'
         post 'completed_goals'
         post 'search_meetings'
+        post 'advisor_reports'
+        post 'oasis_graphs'
       end
     end
 
@@ -83,6 +162,8 @@ Rails.application.routes.draw do
 
   root to: "dashboard#index"
 
+  #root to: redirect('/dashboard', status: 302)
+
   # Error routing
   get "errors/file_not_found"
   get "errors/unprocessable"
@@ -92,6 +173,7 @@ Rails.application.routes.draw do
   match "/404", to: "errors#file_not_found", via: :all
   match "/422", to: "errors#unprocessable", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
+  #match '*unmatched', to: 'application#route_not_found', via: :all   # this will break the activestorage url_for(document) - make the document not viewable.
 
   get "pages/*id", to: "high_voltage/pages#show", as: :page, format: false
 

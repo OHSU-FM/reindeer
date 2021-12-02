@@ -1,0 +1,27 @@
+$('#appt-table').html("<%= j render partial: 'events/detail_appointments', locals: { appointments: @appointments } %>");
+
+$('#check_all').click(function () {
+    $('input:checkbox').prop('checked', this.checked);
+});
+
+var appointments = [];
+$('#SaveAll').click(function () {
+  $.each($("input[name='checkbox']:checked"), function (K, V) {
+      appointments.push(V.value);
+  });
+
+ $.ajax({
+   url: '/events/save_all',
+   type: 'get',
+   data: {appointments: JSON.stringify(appointments)},
+   dataType: 'json',
+   success: function(data) {
+     alert('All Appointments were successfully saved!');
+     window.location = '/events/create_batch_appointments';
+   },
+   error: function(request,error) {
+     alert("Request Reviews: "+JSON.stringify(request));
+   }
+ });
+
+});

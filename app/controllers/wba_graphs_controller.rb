@@ -1,69 +1,40 @@
 class WbaGraphsController < ApplicationController
-  include WbaGraphsHelper
   layout 'full_width_csl'
   before_action :authenticate_user!
-
+  before_action :set_resources
+  include WbaGraphsHelper
+  include EpasHelper
+  include EpaReviewsHelper
 
   def index
-
-    #
-    # @wba = Epa.all
-    # @epa = @wba.group(:epa).count.sort_by{|k,v| v}.reverse
-    # #@categories = @epa.map{|k,v| k}
-    # @data = @epa.map{|k,v| v}
-
     if params[:category_id].present?
       @chart = hf_series_data(params[:category_id])
-    elsif params[:emai].present?
-        puts "it has emai: " + email
+    elsif params[:email].present?
+        puts "it has email: " + email
     end
-
-    @student_groups = PermissionGroup.select(:id, :title).where("title Like ?", "%Students%").order(:title)
-    @cohort_students = []
-    if params[:permission_group_id].present?
-      @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
-    end
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: {cohort_students: @cohort_students}
-        }
-      end
-    else
-      respond_to do |format|
-        format.html
-      end
-    end
-
     @most_fours, @total_count_fours = most_fours
     @most_ones, @total_count_ones = most_ones
+    respond_to do |format|
+      format.html
+    end
     #@med21_cohort = User.select(:email, :full_name).where(permission_group_id: 13).order(:full_name)
   end
 
-  def get_entrustment_data
-    if params[:user_id].present?
-      @user = User.select(:id, :email, :full_name, :permission_group_id).where(id: params[:user_id])
-      @clinical_data = hf_get_clinical_dataset(@user, 'Clinical')
-      @percent_complete = hf_epa_class_mean(@clinical_data)
-      @preceptorship_data = hf_get_clinical_dataset(@user, 'Preceptorship')
-      @wba = hf_get_wbas(@user.first.id)
-      @csl_data = hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
-      @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.first.email, "Progress Board")
-      @today_date = Time.new.strftime("%m/%d/%Y")
-    end
-    if request.xhr?
-      respond_to do |format|
-          format.js {render action: "get_entrustment_data", status: :ok }
-      end
-    else
-      respond_to do |format|
-        format.html
-      end
-    end
+  def wba_report
 
+    if params[:permission_group_id].present?
+      @wba_report = User.where(permission_group_id: params[:permission_group_id]).order(:full_name).includes(:epas)
+      create_file @wba_report, "wba_report.txt"
+    end
+    respond_to do |format|
+      format.html
+    end
   end
 
-  def show
+  def download_file
+      if params[:file_name].present?
+        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+      end
   end
 
   private
@@ -71,9 +42,7 @@ class WbaGraphsController < ApplicationController
     array_fours ||= Epa.where(involvement: 4).select(:involvement).group(:assessor_name).count
     sorted = array_fours.sort_by{|k,v| v}.reverse
     total_count_fours = Epa.where(assessor_name: "#{sorted[0].first}").count
-
     return sorted[0], total_count_fours
-
   end
 
   def most_ones
@@ -81,7 +50,22 @@ class WbaGraphsController < ApplicationController
     sorted = array_fours.sort_by{|k,v| v}.reverse
     total_count_ones = Epa.where(assessor_name: "#{sorted[0].first}").count
     return sorted[0], total_count_ones
+  end
 
+  def set_resources
+        @permission_groups = PermissionGroup.where('id >= ?', 16)  #greater than med22 for preceptorship WBA
+  end
+
+  def create_file (in_data, in_file)
+    file_name = "#{Rails.root}/tmp/#{in_file}"
+    CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+      csvfile << Epa.column_names.map{|c| c.titleize}
+      in_data.each do |user|
+        user.epas.each do |epa|
+          csvfile << epa.attributes.values
+        end
+      end
+    end
   end
 
 

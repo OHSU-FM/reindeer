@@ -1,11 +1,14 @@
+
 <table class="table borderless table-condensed modal-text-align-center table-striped table-hover">
   <thead>
     <tr>
+      <th>EPA</th>
       <th>SubmitDate</th>
       <th>ClinicalDiscipline</th>
       <th>ClinicalSetting</th>
       <th>ClincialAssessor</th>
-      <th>AssessorName</th>s
+      <th>AssessorName</th>
+      <th>AttendingFaculty?</th>
       <th>TimesWithSupervisor</th>
       <th>Involvment</th>
       <th>Feedback</th>
@@ -15,11 +18,13 @@
   <% @epas.each do |e| %>
     <tr>
       <% if e.epa == "EPA#{idx_epa}" %>
+        <td>EPA<%= idx_epa.to_s %></td>
         <td><%= e.submit_date.strftime("%F") %></td>
         <td><%= e.clinical_discipline %></td>
         <td><%= e.clinical_setting %></td>
         <td><%= e.clinical_assessor %></td>
         <td><%= e.assessor_name %></td>
+        <td><%= e.attending_faculty.nil? ? "" : 'Yes' %>
         <td><%= e.no_of_times_with_super %></td>
         <td><%= e.involvement %></td>
         <td><%= e.more_independent %></td>
@@ -27,5 +32,4 @@
       <% end %>
     </tr>
   <% end %>
-
 </table>

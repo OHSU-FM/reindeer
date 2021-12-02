@@ -1,0 +1,167 @@
+{
+  "_args": [
+    [
+      "jquery-contextmenu",
+      "/home/patrick/source/reindeer"
+    ]
+  ],
+  "_from": "jquery-contextmenu@latest",
+  "_hasShrinkwrap": false,
+  "_id": "jquery-contextmenu@2.9.2",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/jquery-contextmenu",
+  "_nodeVersion": "12.16.3",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/jquery-contextmenu_2.9.2_1589378752933_0.3018384459416428"
+  },
+  "_npmUser": {
+    "email": "info@swis.nl",
+    "name": "swis"
+  },
+  "_npmVersion": "6.14.4",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "jquery-contextmenu",
+    "raw": "jquery-contextmenu",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/jquery-contextmenu/-/jquery-contextmenu-2.9.2.tgz",
+  "_shasum": "f9dc362e45871dda2e50fa45de2243e917446ced",
+  "_shrinkwrap": null,
+  "_spec": "jquery-contextmenu",
+  "_where": "/home/patrick/source/reindeer",
+  "author": {
+    "name": "Björn Brala",
+    "url": "http://www.swis.nl"
+  },
+  "browserslist": [
+    "Android 2.3",
+    "Android >= 4",
+    "Chrome >= 20",
+    "Explorer >= 8",
+    "Firefox >= 24",
+    "Opera >= 12",
+    "Safari >= 6",
+    "iOS >= 6"
+  ],
+  "bugs": {
+    "url": "https://github.com/swisnl/jQuery-contextMenu/issues"
+  },
+  "contributors": [
+    {
+      "name": "Rodney Rehm",
+      "url": "http://rodneyrehm.de"
+    },
+    {
+      "name": "Addy Osmani",
+      "url": "https://github.com/addyosmani"
+    },
+    {
+      "name": "Christiaan Baartse",
+      "url": "https://github.com/christiaan"
+    }
+  ],
+  "dependencies": {
+    "jquery": "^3.5.0"
+  },
+  "description": "Management facility for context menus. Developed for a large number of triggering objects. HTML5 Polyfill",
+  "devDependencies": {
+    "doctoc": "^1.3.1",
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "~2.6.0",
+    "gulp-consolidate": "^0.2.0",
+    "gulp-csscomb": "^3.0.8",
+    "gulp-csslint": "^1.0.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-dest": "^0.2.3",
+    "gulp-htmlcomb": "^0.2.0",
+    "gulp-iconfont": "^10.0.1",
+    "gulp-jscs": "^4.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-load-plugins": "^2.0.1",
+    "gulp-qunit": "^2.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0",
+    "jshint": "^2.9.4",
+    "karma": "^5.0.2",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-qunit": "^4.0.0",
+    "karma-sauce-launcher": "4.1.3",
+    "lodash": "^4.17.5",
+    "pump": "^3.0.0",
+    "qunit": "^2.0.1",
+    "qunitjs": "^2.0.1",
+    "wdio-dot-reporter": "^0.0.10",
+    "wdio-mocha-framework": "^0.6.2",
+    "wdio-sauce-service": "^0.4.8",
+    "wdio-selenium-standalone-service": "^0.0.12",
+    "webdriverio": "^6.1.3"
+  },
+  "directories": {},
+  "dist": {
+    "fileCount": 36,
+    "integrity": "sha512-6S6sH/08owDStC/7zNwcN366yR0ydX6PmMB0RnjLRQOp7Nc/rqwEHglshfHrrw2kdTev97GXwRXrayDUmToIOw==",
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJeu/7ICRA9TVsSAnZWagAAfQIP+wfsneAf0j6EX5O5iixD\nc+DMrrdbPrHp41WTrfx8884Drsb3W92xurQg5QlHzFwCt40HlaAlbe94Ai3/\nUbbWf21/RI20CDxrrL8fbAWrszyq5cKNCmtlFD/fAr+Zuj3ZsOo4Lw7zjqtG\n3I54KxOc3SQ7f04uqBFhKL1sXjTHSGLut2gBWlCtqAYmvvzN2lnMAz8Juaow\nIxaY8eCOQyiunHtiUfBMuJBMgJZiw3wSuWKnXDu5qC/uG9L4O0x7+1lwnyiU\nmU6x3mF5tCVOJePJPeoXjvq1Itr9QA+L6yJ/V5ZX4qYaACjHpX/6orYB1r5w\nSazBDlFY10yxUiRLpIKeedpPa26ReL34giLisRw72lT1gxk1OWDNvM/w0Y4L\npAF0GfuDsC3+4Ey4GUW/kZITgsU/3xdn7YJNXxe5TGGutu19yOhkfJxE8Kqd\nEsIO9nRwws5YAPvpVAUuLIo4Lua/+EKFwt0tquHMK89sgHJ/NXkzd8LlMP95\n/mh3QcRjxLdGI3vD96NJElWBJdBNvyWWTrpSOErgu2j6P9oMHK/eyS9k4wx4\nbsSjaib8ujXZKo48wWP0I7MvR77O10w91p8VAfio2+ujjiywJmR+/6H8UBZe\nQ+BZUfSs3mkQvLGeKRy5QwFMxRX/qetWXc+4QonBK6cGO2R+4t6+FcQkOwol\nsTVN\r\n=KfvU\r\n-----END PGP SIGNATURE-----\r\n",
+    "shasum": "f9dc362e45871dda2e50fa45de2243e917446ced",
+    "tarball": "https://registry.npmjs.org/jquery-contextmenu/-/jquery-contextmenu-2.9.2.tgz",
+    "unpackedSize": 490384
+  },
+  "gitHead": "b755eecb04c3963b87e9bb59ef7f17cecaf50fa1",
+  "homepage": "http://swisnl.github.io/jQuery-contextMenu/",
+  "keywords": [
+    "context menu",
+    "context-menu",
+    "contextmenu",
+    "ecosystem:jquery",
+    "html5 context menu",
+    "html5 context-menu",
+    "html5 contextmenu",
+    "html5 menu",
+    "jquery-plugin",
+    "menu"
+  ],
+  "license": "MIT",
+  "main": "dist/jquery.contextMenu.js",
+  "maintainers": [
+    {
+      "name": "rodneyrehm",
+      "email": "rodney.rehm@medialize.de"
+    },
+    {
+      "name": "swis",
+      "email": "info@swis.nl"
+    }
+  ],
+  "name": "jquery-contextmenu",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "jquery": ">=1.8.2"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/swisnl/jQuery-contextMenu.git"
+  },
+  "scripts": {
+    "test": "npm run test-unit",
+    "test-accept": "wdio wdio.conf.js",
+    "test-sauce": "./node_modules/karma/bin/karma start karma-saucelabs.conf.js",
+    "test-unit": "./node_modules/karma/bin/karma start"
+  },
+  "title": "jQuery.contextMenu()",
+  "version": "2.9.2"
+}

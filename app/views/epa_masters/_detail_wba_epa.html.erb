@@ -1,0 +1,27 @@
+<br />
+<span>
+  <h4 style="text-align:center"> # of WBAs per EPA Report
+  <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: 'wba_epa.txt') %>
+  </h4>
+</span>
+
+<table id="WbaEpaTable" class="table table-hover table-striped responsive" data-sort="true" >
+  <thead>
+    <tr class="filters">
+      <% @wba_epa_data.first.keys.each do |key| %>
+        <th style="text-align:left"><%= key.upcase %></th>
+      <% end %>
+    </tr>
+  </thead>
+    <% @wba_epa_data.each do |wba| %>
+      <tr>
+        <% wba.each do |key, val| %>
+          <% if key.include? "EPA" or key.include? "Total" %>
+            <td style="text-align:center"> <%= val %> </td>
+          <% else %>
+            <td> <%= val %> </td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+</table>

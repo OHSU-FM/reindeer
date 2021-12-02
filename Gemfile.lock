@@ -1,38 +1,54 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (5.2.2.1)
-      actionpack (= 5.2.2.1)
+    actioncable (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailer (5.2.2.1)
-      actionpack (= 5.2.2.1)
-      actionview (= 5.2.2.1)
-      activejob (= 5.2.2.1)
+    actionmailbox (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activestorage (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      mail (>= 2.7.1)
+    actionmailer (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      actionview (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (5.2.2.1)
-      actionview (= 5.2.2.1)
-      activesupport (= 5.2.2.1)
-      rack (~> 2.0)
+    actionpack (6.1.4.1)
+      actionview (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      rack (~> 2.0, >= 2.0.9)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.2.2.1)
-      activesupport (= 5.2.2.1)
+      rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actiontext (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activestorage (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      nokogiri (>= 1.8.5)
+    actionview (6.1.4.1)
+      activesupport (= 6.1.4.1)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    activejob (5.2.2.1)
-      activesupport (= 5.2.2.1)
+      rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    activejob (6.1.4.1)
+      activesupport (= 6.1.4.1)
       globalid (>= 0.3.6)
-    activemodel (5.2.2.1)
-      activesupport (= 5.2.2.1)
+    activemodel (6.1.4.1)
+      activesupport (= 6.1.4.1)
     activemodel-serializers-xml (1.0.2)
       activemodel (> 5.x)
       activesupport (> 5.x)
       builder (~> 3.1)
+<<<<<<< HEAD
     activerecord (5.2.2.1)
       activemodel (= 5.2.2.1)
       activesupport (= 5.2.2.1)
@@ -41,29 +57,67 @@ GEM
       actionpack (= 5.2.2.1)
       activerecord (= 5.2.2.1)
       marcel (~> 0.3.1)
+=======
+    activerecord (6.1.4.1)
+      activemodel (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+    activestorage (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      marcel (~> 1.0.0)
+      mini_mime (>= 1.1.0)
+>>>>>>> dev/redei-portal_v5
     activestorage-validator (0.1.5)
       rails (>= 5.2.0)
-    activesupport (5.2.2.1)
+    activesupport (6.1.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
+<<<<<<< HEAD
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
+=======
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
+    addressable (2.8.0)
+      public_suffix (>= 2.0.2, < 5.0)
+>>>>>>> dev/redei-portal_v5
     autoprefixer-rails (10.3.3.0)
       execjs (~> 2)
     awesome_print (1.9.2)
     bcrypt (3.1.16)
+<<<<<<< HEAD
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+=======
+    better_errors (2.9.1)
+      coderay (>= 1.0.0)
+      erubi (>= 1.0.0)
+      rack (>= 0.9.0)
+    binding_of_caller (1.0.0)
+      debug_inspector (>= 0.0.1)
+    bootstrap (4.6.1)
+      autoprefixer-rails (>= 9.1.0)
+      popper_js (>= 1.14.3, < 2)
+      sassc-rails (>= 2.0.0)
+>>>>>>> dev/redei-portal_v5
     builder (3.2.4)
     bullet (6.1.5)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
+<<<<<<< HEAD
+=======
+    byebug (11.1.3)
+>>>>>>> dev/redei-portal_v5
     cancancan (3.3.0)
     capybara (3.36.0)
       addressable
@@ -85,11 +139,19 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     commonjs (0.2.7)
+<<<<<<< HEAD
     composite_primary_keys (11.2.0)
       activerecord (~> 5.2.1)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     csv_hasher (0.1.0)
+=======
+    concurrent-ruby (1.1.9)
+    crass (1.0.6)
+    csv_hasher (0.1.0)
+    datejs-rails (2.0.1)
+      railties (>= 3.1)
+>>>>>>> dev/redei-portal_v5
     debug_inspector (1.1.0)
     descriptive-statistics (2.2.0)
     devise (4.8.0)
@@ -125,6 +187,15 @@ GEM
     fugit (1.5.2)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
+<<<<<<< HEAD
+=======
+    fullcalendar (3.9.0)
+      momentjs-rails (~> 2.20.1)
+    fullcalendar-rails (3.9.0.0)
+      jquery-rails (>= 4.0.5, < 5.0.0)
+      jquery-ui-rails (>= 5.0.2)
+      momentjs-rails (>= 2.9.0)
+>>>>>>> dev/redei-portal_v5
     globalid (1.0.0)
       activesupport (>= 5.0)
     gon (6.4.0)
@@ -155,13 +226,26 @@ GEM
       railties (>= 3.1)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
+<<<<<<< HEAD
+=======
+    icalendar (2.7.1)
+      ice_cube (~> 0.16)
+    ice_cube (0.16.4)
+    jbuilder (2.11.3)
+      activesupport (>= 5.0.0)
+>>>>>>> dev/redei-portal_v5
     jquery-datatables (1.10.20)
     jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    jquery-ui-rails (5.0.5)
+    jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+<<<<<<< HEAD
+=======
+    jquery_context_menu-rails (0.0.4)
+      jquery-rails
+>>>>>>> dev/redei-portal_v5
     json (2.6.1)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
@@ -175,15 +259,26 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+<<<<<<< HEAD
+=======
+    launchy (2.5.0)
+      addressable (~> 2.7)
+>>>>>>> dev/redei-portal_v5
     lazy_high_charts (1.6.1)
       hash-deep-merge
     less (2.6.0)
       commonjs (~> 0.2.7)
-    less-rails (2.8.0)
-      actionpack (>= 4.0)
+    less-rails (5.0.0)
+      actionpack (>= 5.0)
       less (~> 2.6.0)
+<<<<<<< HEAD
       sprockets (> 2, < 4)
       tilt
+=======
+      sprockets (~> 3.0)
+    letter_opener (1.7.0)
+      launchy (~> 2.2)
+>>>>>>> dev/redei-portal_v5
     libv8-node (16.10.0.0-x86_64-linux)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -199,6 +294,7 @@ GEM
     lumberjack (1.2.8)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+<<<<<<< HEAD
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     matrix (0.4.2)
@@ -206,10 +302,20 @@ GEM
     mimemagic (0.3.10)
       nokogiri (~> 1)
       rake
+=======
+    marcel (1.0.2)
+    matrix (0.4.2)
+    method_source (1.0.0)
+>>>>>>> dev/redei-portal_v5
     mini_mime (1.1.2)
     mini_racer (0.5.0)
       libv8-node (~> 16.10.0.0)
     minitest (5.14.4)
+<<<<<<< HEAD
+=======
+    momentjs-rails (2.20.1)
+      railties (>= 3.1)
+>>>>>>> dev/redei-portal_v5
     multi_json (1.15.0)
     nenv (0.3.0)
     nested_form (0.3.2)
@@ -247,18 +353,20 @@ GEM
       rack (>= 1.1)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rails (5.2.2.1)
-      actioncable (= 5.2.2.1)
-      actionmailer (= 5.2.2.1)
-      actionpack (= 5.2.2.1)
-      actionview (= 5.2.2.1)
-      activejob (= 5.2.2.1)
-      activemodel (= 5.2.2.1)
-      activerecord (= 5.2.2.1)
-      activestorage (= 5.2.2.1)
-      activesupport (= 5.2.2.1)
-      bundler (>= 1.3.0)
-      railties (= 5.2.2.1)
+    rails (6.1.4.1)
+      actioncable (= 6.1.4.1)
+      actionmailbox (= 6.1.4.1)
+      actionmailer (= 6.1.4.1)
+      actionpack (= 6.1.4.1)
+      actiontext (= 6.1.4.1)
+      actionview (= 6.1.4.1)
+      activejob (= 6.1.4.1)
+      activemodel (= 6.1.4.1)
+      activerecord (= 6.1.4.1)
+      activestorage (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
+      bundler (>= 1.15.0)
+      railties (= 6.1.4.1)
       sprockets-rails (>= 2.0.0)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
@@ -285,19 +393,28 @@ GEM
       remotipart (~> 1.3)
       sassc-rails (>= 1.3, < 3)
     rails_layout (1.0.42)
-    railties (5.2.2.1)
-      actionpack (= 5.2.2.1)
-      activesupport (= 5.2.2.1)
+    railties (6.1.4.1)
+      actionpack (= 6.1.4.1)
+      activesupport (= 6.1.4.1)
       method_source
+<<<<<<< HEAD
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
+=======
+      rake (>= 0.13)
+      thor (~> 1.0)
+>>>>>>> dev/redei-portal_v5
     rake (13.0.6)
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rdoc (6.3.3)
     redcarpet (3.5.1)
+<<<<<<< HEAD
     redis (3.3.5)
+=======
+    redis (4.1.4)
+>>>>>>> dev/redei-portal_v5
     regexp_parser (2.1.1)
     remotipart (1.4.4)
     request_store (1.5.0)
@@ -326,6 +443,10 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
+<<<<<<< HEAD
+=======
+    ruby-prof (1.4.3)
+>>>>>>> dev/redei-portal_v5
     rufus-scheduler (3.8.0)
       fugit (~> 1.1, >= 1.1.6)
     sass (3.7.4)
@@ -356,14 +477,22 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+<<<<<<< HEAD
     statistics2 (0.54)
     temple (0.8.2)
     thor (1.1.0)
     thread_safe (0.3.6)
+=======
+    stackprof (0.2.17)
+    statistics2 (0.54)
+    temple (0.8.2)
+    thor (1.1.0)
+>>>>>>> dev/redei-portal_v5
     tilt (2.0.10)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
+<<<<<<< HEAD
     twitter-bootstrap-rails (4.0.0)
       actionpack (~> 5.0, >= 5.0.1)
       execjs (~> 2.7)
@@ -371,6 +500,15 @@ GEM
       railties (~> 5.0, >= 5.0.1)
     tzinfo (1.2.9)
       thread_safe (~> 0.1)
+=======
+    twitter-bootstrap-rails (3.2.2)
+      actionpack (>= 3.1)
+      execjs (>= 2.2.2, >= 2.2)
+      less-rails (>= 2.5.0)
+      railties (>= 3.1)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+>>>>>>> dev/redei-portal_v5
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     uniform_notifier (1.14.2)
@@ -382,8 +520,13 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
+<<<<<<< HEAD
+=======
+    will_paginate (3.3.1)
+>>>>>>> dev/redei-portal_v5
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   x86_64-linux
@@ -393,36 +536,48 @@ DEPENDENCIES
   autoprefixer-rails
   awesome_print
   binding_of_caller
-  bootstrap-sass (~> 3.3.7)
+  bootstrap (~> 4.0)
   bullet
+<<<<<<< HEAD
   bundler
+=======
+  bundler (~> 2.0)
+  byebug
+>>>>>>> dev/redei-portal_v5
   cancancan
   capybara
   cocoon
   coffee-rails
-  composite_primary_keys
   csv_hasher
+  datejs-rails (~> 2.0.1)
   descriptive-statistics
-  devise
+  devise (~> 4.7, >= 4.7.3)
   devise_ldap_authenticatable
   exception_notification
   factory_bot_rails
   faker
   font-awesome-rails
   font-awesome-sass (~> 4.4.0)
+  fullcalendar
+  fullcalendar-rails
   gon
   guard
   guard-rspec
   high_voltage
   highcharts-rails
+  icalendar
+  jbuilder (~> 2.5)
   jquery-datatables
   jquery-rails
-  jquery-ui-rails (~> 5.0, >= 5.0.5)
-  json
+  jquery-ui-rails (~> 6.0.1)
+  jquery_context_menu-rails
+  json (~> 2.5, >= 2.5.1)
   kaminari
   lazy_high_charts
+  letter_opener
   lograge
   mini_racer
+  momentjs-rails
   nested_form_fields
   paper_trail
   pg
@@ -430,7 +585,7 @@ DEPENDENCIES
   popper_js (~> 1.14.3)
   puma
   rack-mini-profiler
-  rails (~> 5.2.2.1)
+  rails (~> 6.1.3)
   rails-controller-testing
   rails-perftest
   rails-ujs (~> 0.1.0)
@@ -438,7 +593,7 @@ DEPENDENCIES
   rails_layout
   rdoc
   redcarpet
-  redis (~> 3.2)
+  redis (~> 4.1.0)
   rspec-rails
   rufus-scheduler
   sass
@@ -452,6 +607,7 @@ DEPENDENCIES
   uglifier
   webrick
   whenever
+  will_paginate (~> 3.1)
 
 BUNDLED WITH
    2.2.15

@@ -1,38 +1,294 @@
-<%= form_for Coaching::Meeting.new, html: {class: "form-horizontal", id: "MeetingForm"}, remote: true do |f| %>
+<%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
 
-  <div class="form-group">
-    <%= f.label :subject, "Subject(s):", class: "control-label col-sm-4" %><br />
-    <div class="col-sm-6">
-      <%= f.collection_check_boxes(:subject, hf_meeting_tags_for_select, :first, :first, required: true) do |c| %>
-          <%= c.check_box %>
-          <b> <%= c.text %> </b> <br />
-         <% end %>
-
+  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic') %>
+    <div hidden>
+      <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
+      </div>
     </div>
 
-  </div>
+    Advisor Name: <b><%= current_user.full_name %></b><br />
+    Advisor Type: <b><%= advisor_type %></b>
+    <%= f.hidden_field :advisor_id, value: advisor_id%>
+    <%= f.hidden_field :advisor_type, value: advisor_type%>
+    <br />
 
-  <div class="form-group">
-    <%= f.label :location, 'Contact Type', class: "control-label col-sm-4" %>
-    <%= f.select :location,
-      options_for_select(["In Person", "Phone", "Text", "Email", "Skype/Facetime"]),
-      { include_blank: "---" },
-      required: true
-    %>
-  </div>
+    <%= f.hidden_field :user_id, value: student.id %>
+    <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
+    <%= f.hidden_field :location, value: 'Phone/Webex/Email/Retro-Appt' %>
+    <%= f.hidden_field :m_status, value: 'Completed' %>
 
-  <div class="form-group">
-    <%= f.label :notes, 'Meeting Summary', class: "control-label col-sm-4" %>
-    <%= f.text_area :notes, class: "col-sm-6" %>
-  </div>
+    <div class="card">
+      <div class="card-body card-body-color">
 
-  <div class="form-group">
-    <%= f.label :date, class: "control-label col-sm-4" %>
-    <%= f.date_field :date, required: true %>
-  </div>
+        <div class="control-group" id="fields">
+          <label class="control-label col-sm-3"> Time Slot by Mins</label>
+          <select name="time_slot" id="time_slot"  >
+              <option value="30">30</option>
+              <option value="45" selected>45</option>
+              <option value="60">60</option>
+          </select>
+          <br />
+           <label class="control-label col-sm-3" for="field1">Appointment Date</label>
+            <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
+        </div>
+      </div>
+    </div>
 
-  <%= f.hidden_field :user_id, value: student.id %>
+    <div class="card" id="OtherCard">
+      <div class="card-body">
+          <div class="form-group">
+            <b><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></b><br />
+            <div  id='coaching_meeting_subjects'>
+            </div>
+          </div>
+      </div>
+    </div>
 
+    <div class="card" id="DiscussedCard">
+      <div class="card-body card-body-color"">
+          <div class="form-group">
+            <b><%= f.label :subject, "Advisor Disussed (Check all the applp):", class: "control-label col-md-6" %></b><br />
+
+            <% if advisor_type == 'Career' %>
+              <% advisor_subjects = hf_career_advisor_discussed_for_select %>
+            <% elsif advisor_type == "Academic" %>
+              <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
+              <% advisor_study_resources = hf_academic_study_resources_for_select %>
+            <% elsif advisor_type == "Wellness" %>
+                <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
+            <% else %>
+              <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
+            <% end %>
+
+            <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
+              <label>
+                <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorDiscussed') %>
+                <%= b.text %>
+              </label> <br />
+           <% end %>
+
+
+
+           <% if advisor_type == "Academic" %>
+              <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
+              <hr>
+
+              <i><%= f.label :subject, "Study Resource(s)", class: "control-label col-md-6" %></i><br />
+              <%= collection_check_boxes(:coaching_meeting, :study_resources, advisor_study_resources, :first, :first, checked: nil) do |b| %>
+                <label>
+                  <%= b.check_box(checked: false, class: 'MyCheckBoxStudyResources') %>
+                  <%= b.text %>
+                </label> <br />
+             <% end %>
+             <%= f.text_field :study_resources_other, id: 'academic_study_resources_other' %>
+           <% elsif advisor_type == "Career" %>
+              <%= f.text_field :career_discussed_other,  id: 'career_discussed_other' %>
+           <% else %>
+              <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
+           <% end %>
+
+          </div>
+      </div>
+    </div>
+
+    <div class="card" id="DiscussedCard">
+      <div class="card-body">
+          <div class="form-group">
+            <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
+          </div>
+
+          <% if advisor_type == 'Academic' %>
+              <% advisor_outcomes = hf_meeting_ipas_for_select %>
+          <% elsif advisor_type == 'Career'  %>
+              <% advisor_outcomes = hf_meeting_ipps_for_select %>
+          <% elsif advisor_type == 'Wellness'  %>
+              <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
+          <% else %>
+              <% advisor_outcomes = hf_meeting_ipas_for_select %>
+          <% end %>
+
+          <%= collection_check_boxes(:coaching_meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: nil) do |b| %>
+            <label>
+              <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorOutcomes') %>
+              <%= b.text %>
+            </label> <br />
+         <% end %>
+         <% if advisor_type == "Academic" %>
+            <%= f.text_field :academic_outcomes_other,  id: 'academic_outcomes_other' %>
+          <% elsif advisor_type == "Career" %>
+              <%= f.text_field :career_outcomes_other, id: 'career_outcomes_other' %>
+          <% else %>
+            <%= f.text_field :academic_outcomes_other,   id: 'academic_outcomes_other'  %>
+          <% end %>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body card-body-color">
+        <div class="form-group">
+          <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
+          <%= f.text_area :notes, class: "col-sm-6" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body card-body-color2">
+        <div class="form-group">
+          <b><%= f.label :subject, "Advisor Meeting Documentation:", class: "control-label col-md-6" %></b>
+        </div>
+        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%', required: true %>
+      </div>
+    </div>
+
+  <% elsif (!advisor_type.nil?) and (advisor_type  == 'Wellness') %>
+      <div hidden>
+        <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
+        </div>
+      </div>
+
+      Advisor Name: <b><%= current_user.full_name %></b><br />
+      Advisor Type: <b><%= advisor_type %></b>
+      <%= f.hidden_field :advisor_id, value: advisor_id%>
+      <%= f.hidden_field :advisor_type, value: advisor_type%>
+      <br />
+
+      <%= f.hidden_field :user_id, value: student.id %>
+      <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
+      <%= f.hidden_field :location, value: 'Phone/Webex/Email/Retro-Appt' %>
+      <%= f.hidden_field :m_status, value: 'Completed' %>
+
+      <div class="card">
+        <div class="card-body card-body-color">
+
+          <div class="control-group" id="fields">
+            <label class="control-label col-sm-3"> Time Slot by Mins</label>
+            <select name="time_slot" id="time_slot"  >
+                <option value="30">30</option>
+                <option value="45" selected>45</option>
+                <option value="60">60</option>
+            </select>
+            <br />
+             <label class="control-label col-sm-3" for="field1">Appointment Date</label>
+              <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="OtherCard">
+        <div class="card-body">
+            <div class="form-group">
+              <b><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></b><br />
+              <div  id='coaching_meeting_subjects'>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+      <div class="card-body card-body-color">
+        <div class="form-group">
+          <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
+          <%= f.text_area :notes, class: "col-sm-6" %>
+        </div>
+      </div>
+    </div>
+
+  <% else %>
+
+    <div hidden>
+      <div class="advisors-details" data-advisors="<%= @advisors.sort_by(&:name).to_json %>">
+      </div>
+    </div>
+
+    <div class="card" id="AdvisorCard">
+      <div class="card-body">
+        <div class="form-group">
+          <%= f.label :advisor_type, class: "control-label col-sm-4" %>
+          <%= f.select :advisor_type, options_for_select(["Academic", "Career", "Wellness"]),
+            { include_blank: "---" }, required: true %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :advisor, class: "control-label col-sm-4" %>
+          <%= f.select :advisor_id, options_for_select([]),
+              { include_blank: "---" }, required: true %> <br />
+        </div>
+
+        <%= f.hidden_field :user_id, value: student.id %>
+        <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
+        <%= f.hidden_field :location, value: 'Phone/Webex' %>
+      </div>
+    </div>
+
+    <div class="card text-center" id="StudentAffairsDean">
+      <div class="card-body card-body-color">
+        To set up a meeting to talk with your Student Affairs Dean, please refer to the Bridge Scheduling System: <b>https://bridge.ohsu.edu/edu/sites/ume/SitePages/Home.aspx</b> <br />and click on Scheduling Requests.
+      </div>
+    </div>
+    <br />
+
+    <div class="card text-center" id="WellnessAdvisor">
+      <div class="card-body card-body-color">
+        To meet with Dr. Furnari, please email her directly at <b>furnari@ohsu.edu</b>. Thank you.      </div>
+    </div>
+    <br />
+
+    <div class="card" id="AppointmentCard">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="control-label panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">Available Appointments</h4>
+            </div>
+            <div class="panel-body scrollable-panel">
+              <%= render partial: "coaching/students/all_events", locals: {f: f}  %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <br />
+    <div class="card" id="OtherCard">
+      <div class="card-body card-body-color">
+          <div class="form-group">
+            <i><%= f.label :subject, "Primary Reason(s)", class: "control-label col-md-6" %></i><br />
+            <div  id='coaching_meeting_subjects'>
+            </div>
+          </div>
+
+          <div id="study_resources">
+           <hr>
+            <i><%= f.label :subject, "Study Resource(s)", class: "control-label col-md-6" %></i><br />
+            <% advisor_study_resources = hf_academic_study_resources_for_select %>
+            <%= collection_check_boxes(:coaching_meeting, :study_resources, advisor_study_resources, :first, :first, checked: nil) do |b| %>
+              <label>
+                <%= b.check_box(checked: false, class: 'MyCheckBoxStudyResources') %>
+                <%= b.text %>
+              </label> <br />
+            <% end %>
+            <div class="form-group">
+              <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="form-group">
+            <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
+            <%= f.text_area :notes, class: "col-sm-6" %>
+          </div>
+
+          <%= f.hidden_field :user_id, value: student.id %>
+          <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
+          <%= f.hidden_field :location, value: 'Phone/Webex' %>
+      </div>
+    </div>
+  <% end %>
+
+  <br />
   <div class="form-group">
     <div class="control-label col-sm-4">
       <%= f.submit "Save", class: 'btn btn-primary', id: 'meeting-submit' %>

@@ -1,9 +1,15 @@
 {
-  "dependencies": {
-    "@rails/webpacker": "^3.0.2",
-    "coffeescript": "1.12.7"
+  "name": "reindeer",
+  "version": "1.0.0",
+  "description": "REDEI_V6",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "lib": "lib"
   },
-  "devDependencies": {
-    "webpack-dev-server": "^2.9.4"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
 }

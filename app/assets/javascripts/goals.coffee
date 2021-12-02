@@ -16,11 +16,29 @@ $ ->
     $('#loading-spinner').show()
 
 
-$(document).on 'change', '.status-picker', (e) ->
+disable_input_fields = () ->
+  coaching_type = $('.goals-header').data('coaching-type')
+  #alert 'coaching_type (goals.coffee): ' + coaching_type
+  $('#cs-detail *').prop 'disabled', false  #enable all unless it is a student
+  if coaching_type == 'student'
+    $('.MyCheckBox').prop('disabled', false)  # enable as student can modify
+    $('.MyCheckBoxAdvisorDiscussed').prop('disabled', true)
+    $('.MyCheckBoxAdvisorOutcomes').prop('disabled', true)
+    $("input[type=text]").prop('disabled', true)
+    $('.updateAdvisorNotes').prop('disabled', true)
+
+$(document).on 'click', '#SaveMeeting', (e) ->
+#$(document).on 'change', '.status-picker', (e) ->
   detailDiv = $(e.target).closest('div.show-detail')
-  newStatus = e.target.value
+  newStatus = $('.status-picker').val()   #e.target.value
   updatedDesc = $('.updateDesc').val()
-  updatedNotes = $('.updateNotes').val()
+  updatedNotes = $('.updateStudentNotes').val()
+  updatedAdvisorNotes = $('.updateAdvisorNotes').val()
+  updatedCareerDiscussedOther = $('#career_discussed_other').val()
+  updatedCareerOutcomesOther = $('#career_outcomes_other').val()
+  updatedAcademicDiscussedOther = $('#academic_discussed_other').val()
+  updatedAcademicOutcomesOther = $('#academic_outcomes_other').val()
+  updatedStudyResourcesOther = $('#study_resources_other').val()
 
   # checked_subjects is an array
   checked_subjects = do ->
@@ -30,8 +48,26 @@ $(document).on 'change', '.status-picker', (e) ->
       return
     data_array
 
+  checked_advisor_discussed = do ->
+    data_array = []
+    $('.MyCheckBoxAdvisorDiscussed:checked').each ->
+      data_array.push $(this).val()
+      return
+    data_array
 
-  console.log("checked_subjects: " + checked_subjects)
+  checked_advisor_outcomes = do ->
+    data_array = []
+    $('.MyCheckBoxAdvisorOutcomes:checked').each ->
+      data_array.push $(this).val()
+      return
+    data_array
+
+  checked_study_resources = do ->
+    data_array = []
+    $('.MyCheckBoxStudyResources:checked').each ->
+      data_array.push $(this).val()
+      return
+    data_array
 
   if $(e.target).attr('data-goalId')
     objectId = $(e.target).attr('data-goalId')
@@ -40,8 +76,14 @@ $(document).on 'change', '.status-picker', (e) ->
   else
     objectId = $(e.target).attr('data-meetingId')
     controller = "meetings"
-    data = { m_status: newStatus, notes: updatedNotes, subject: checked_subjects }
-
+    data = { m_status: newStatus, notes: updatedNotes, advisor_notes: updatedAdvisorNotes, subject: checked_subjects, \
+            advisor_discussed: checked_advisor_discussed, advisor_outcomes: checked_advisor_outcomes, study_resources: checked_study_resources, \
+            career_discussed_other: updatedCareerDiscussedOther, \
+            career_outcomes_other: updatedCareerOutcomesOther, \
+            academic_discussed_other: updatedAcademicOutcomesOther, \
+            academic_outcomes_other: updatedAcademicOutcomesOther, \
+            study_resources_other: updatedStudyResourcesOther }
+  #alert("meetingId: " + objectId + " m_status:" + newStatus)
   xhr = $.ajax({
     url: "/coaching/" + controller + "/" + objectId
     method: "PUT",
@@ -52,7 +94,11 @@ $(document).on 'change', '.status-picker', (e) ->
       detailDiv.addClass('grayed-out')
   }).done((d) ->
     show_detail_message 'success', "Successfully updated status"
+    alert("Successfully saved!")
+    disable_input_fields()
+
   ).fail((e, request) ->
+    alert("error: " + JSON.stringify(e))
     $('div#cs-detail *').prop("disabled", false); # re enable all children
     detailDiv.removeClass('grayed-out')
     show_detail_message 'error', "Sorry, something's gone wrong..."
@@ -98,6 +144,7 @@ $.fn.clear_previous_errors = () ->
   return
 
 $(document).ready ->
+  disable_input_fields()
   ua = window.navigator.userAgent;
   is_ie = /MSIE|Trident/.test(ua);
   if ( is_ie )
@@ -113,4 +160,12 @@ $(document).ready ->
   if activeTab
     console.log ("activeTab: " + activeTab)
     $('#myTab a[href="' + activeTab + '"]').tab 'show'
+
+  $('.panel-collapse').on 'show.bs.collapse', ->
+    $(this).siblings('.panel-heading').addClass 'active'
+    return
+  $('.panel-collapse').on 'hide.bs.collapse', ->
+    $(this).siblings('.panel-heading').removeClass 'active'
+    return
+
   return

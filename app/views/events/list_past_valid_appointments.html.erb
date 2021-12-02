@@ -1,0 +1,16 @@
+<h5>List Past Valid Appointments</h5>
+<hr>
+<div class="card">
+  <div class="card-body card-body-color">
+    <%= form_tag(list_past_valid_appointments_events_path, param: [:start_date, :end_date], method: 'get', remote: true) do %>
+      <div class="form-group">
+        <label class="control-label" for="date">Start Date</label>
+        <input id="start_date" name="start_date" placeholder="YYYY/MM/DD" type="text" required/>
+        <label class="control-label" for="date">End Date</label>
+        <input id="end_date" name="end_date" placeholder="YYYY/MM/DD" type="text" required/>
+          <%= submit_tag "Go" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div id="display_past_valid_appointments"></div>

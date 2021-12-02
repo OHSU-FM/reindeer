@@ -1,0 +1,37 @@
+<div class="container">
+    <% if !@csl_evals2.nil? %>
+          <% @csl_evals2.each  do |evals| %>
+            <div class="row">
+                <% evals.each do |data| %>
+                      <% data.second.each do |data2| %>
+                        <div  class="col-sm-6">
+                          <table id="csl_evaluation" style="width: 100%;" class="table table-condensed table-striped table-hover spreadsheet-body center">
+
+                              <tr><th style="text-align:right;"><b><%= evals.first.first %> </b></th></tr>
+                              <tr>
+                                <td width="40%" style="text-align:right;">Feedback</td>
+                                <td width="10%"><em><b><font color="blue"><%= data2["feedback"].to_s %></font></b></em> </td>
+                              </tr>
+                              <% data2.each do |k, val| %>
+                                  <tr>
+
+                                    <% if !decode_csl_def(k).nil? %>
+                                        <td width="40%" style="text-align:right;"><%= decode_csl_def(k) %></td>
+                                        <td width="10%"><em><b><%= decode_csl_eval(val.to_s).html_safe %></b></em> </td>
+
+                                    <% elsif !["id", "csl_title", "feedback"].include? k %>
+                                        <td width="40%" style="text-align:right;"><%= k %></td>
+                                        <td width="10%"><em><b><%= val.to_s %></b></em> </td>
+                                    <% end %>
+                                  </tr>
+                              <% end %>
+                          </table>
+                        </div>
+                      <% end %>
+                <% end %>
+             </div>
+          <% end %>
+    <% else %>
+      <h4> No CSL Narrative Feedbacks! </h4>
+    <% end %>
+</div>

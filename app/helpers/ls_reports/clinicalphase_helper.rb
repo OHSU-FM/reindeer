@@ -17,7 +17,7 @@ module LsReports::ClinicalphaseHelper
   }
 
   BLOCKS = {  'FUND' => "Fundamentals",
-              'BLHD' => "Blood & Host Defence",
+              'BLHD' => "Blood & Host Defense",
               'SBM'  => "Skin, Bones & Musculature",
               "CARE" => "Cardiopulmonary & Renal",
               "CPR"  => "Cardiopulmonary & Renal",
@@ -407,7 +407,6 @@ module LsReports::ClinicalphaseHelper
       when "770E"
         return "PEDI"
       when "770F"
-
         return "PSYC"
       when "770G"
         return "SURG"
@@ -551,6 +550,16 @@ module LsReports::ClinicalphaseHelper
     return cpx
   end
 
+  def hf_get_new_cpx (email)
+    cpx = Cpx.find_by(email: email)
+    if cpx.nil?
+      return nil, true, nil
+    end
+    cpx_data = JSON.parse(cpx.cpx_data)
+    cpx_artifacts = Artifact.find_by(user_id: cpx.user_id, content: 'CPX')
+    return cpx_data, false, cpx_artifacts    # return false meant it found cpx data
+  end
+
   def hf_get_cpx in_survey
     #SA:Med18:National Board Licensing Exams:USMLE Exams
     rr = get_dataset(in_survey, "Clinical Phase", "Clinical Performance Exam (CPX)")
@@ -624,21 +633,6 @@ module LsReports::ClinicalphaseHelper
     end
   end
 
-  def hf_get_artifacts (pk, artifact_title)
-    selected_user = User.find_by(email: pk)
-    if selected_user.nil?
-      return nil,0
-    else
-      no_docs = 0
-      artifacts_student = Artifact.where(user_id: selected_user.id)
-      official_docs = artifacts_student.select{|a| a.title == "Progress Board" or a.title == "Other"}
-      official_docs.each do |doc|
-        no_docs = no_docs + doc.documents.count
-      end
-      shelf_artifacts = artifacts_student.select{|a| a.content == "Shelf Exams"}
 
-      return artifacts_student, no_docs, shelf_artifacts
-    end
-  end
 
 end

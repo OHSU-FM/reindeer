@@ -26,7 +26,7 @@
   <div class="column right" >
     <table  style="width: 30%;"class="table table-condensed spreadsheet-body">
       <tr><td> <a class="Precept-FoM" href="#Preceptorship-FoM">Preceptorship Evaluations</a> <td></tr>
-      <% if !@csl_evals.empty? %>
+      <% if !@csl_evals.nil? %>
         <tr> <td><a class="CSLEvals-FoM" href="#csl_evaluation">CSL Narrative Assessment Evaluations</a> </td></tr>
       <% end %>
     </table>
@@ -34,7 +34,6 @@
 
 </div>
 
-<body>
  <div class="container-fluid">
 
     <ul id="MainTabs" class="nav nav-tabs">
@@ -109,7 +108,11 @@
               <div class="precept-header" >Preceptorship Information </div>
               <%= render partial: 'preceptorship_data'%>
               <div class="CSLEvals-FoM" id="csl_evaluation"><h3>All CSL Narrative Evaluations </h3></div>
-              <%= render partial: 'csl_evals' %>
+              <% if !@csl_feedbacks.nil? %>
+                <%= render partial: 'csl_feedbacks' %>
+              <% else %>
+                <%= render partial: 'csl_evals' %>
+              <% end %>
         </div>
 
 
@@ -130,7 +133,8 @@
                              <%= render :partial=>'ls_reports/spreadsheet/content_static_data', :locals=>{:x=>x} %>
                           <% end %>
                         </tr>
-                     <% end %>
+
+                      <% end %>
                 </tbody>
               </table>
         </div>
@@ -302,7 +306,7 @@
                             </span>
                         </td>
                         <td>
-                            <span><h4><p><font color="green">&emsp;Qualified Assessors/Work Based Assessments Overall Progress</font></p></h4>
+                            <span><h4><p><font color="green">&emsp;EPA Overall Progress</font></p></h4>
                             </span>
                             <span>
                                 <!-- Commented the progress graph out by Tracy request on 9/25/2018-->
@@ -330,7 +334,9 @@
                                 <span>
                                     <h4><font color="purple">
                                         <%= epa_desc["EPA#{i}"] %>
-                                    </font></h4>
+                                        </font>
+                                        <% #= render partial: 'ls_reports/spreadsheet/display_small_badge', locals: {i: i} %>
+                                    </h4>
                                 </span>
                                 <span>
                                     <!-- Commented the progress graph out by Tracy request on 9/25/2018 -->
@@ -352,7 +358,7 @@
 
     </div>
   </div>
-</body>
+
 
 <div style="height:450px;width:200px;"></div>
 <!-- Bumper for scroll-spy-->

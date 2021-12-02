@@ -1,0 +1,164 @@
+
+<br />
+<div class="card">
+<div class="card-body card-body-color" >
+  <%= simple_form_for @epa_review, html: {class: "form-horizontal", id: "review-form"}, remote: true  do |f| %>
+      <%= f.hidden_field :reviewable_id, id: "reviewable_id" %>
+      <%= f.hidden_field :reviewable_type, id: "reviewable_type"%>
+      <%= f.hidden_field :epa, id: "epa" %>
+    <div class="row">
+     <div class="col-sm-6" id="col-reviewer1">
+        <div class="form-group">
+          <%= f.label :review_date1,  'Review Date', class: "control-label col-sm-2" %>
+          <%= f.date_field :review_date1, html5: {selected: true}, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label :reviewer1, 'Reviewer', class: "control-label col-sm-2" %>
+          <%= f.text_field :reviewer1,   html5: {selected: true}, class: 'form-control' %>
+          <%= content_tag "div", id: "full_name", 'data-full_name' => current_user.full_name do %><% end %>
+        </div>
+        <div class="form-group", id="epa_review_badge_decision1">
+          <%= f.label :badge_decision1, 'Badge Decision', class: "control-label col-sm-2" %>
+          <%= f.radio_button :badge_decision1, 'Not Yet', class: "badge_decision1_not_yet" %>
+          <%= f.label :badge_decision1, "Not Yet", value: 'Not Yet' %>&nbsp;&nbsp;
+          <%= f.radio_button :badge_decision1, 'Badge', class: "badge_decision1_badge" %>
+          <%= f.label :badge_decision1, "Badge", value: 'Badge' %>&nbsp;&nbsp;
+          <%= f.radio_button :badge_decision1, 'Deny', class: "badge_decision1_deny" %>
+          <%= f.label :badge_decision1, "Deny", value: 'Deny' %>&nbsp;&nbsp;
+        </div>
+
+        <div class="form-group">
+          <%= f.label :reason1, 'Reason', class: "control-label col-sm-2" %><br />&nbsp;&nbsp;
+          <!-- <%= f.select :reason1, @eg_reasons, {}, {class: "form-control"}  %> -->
+
+          <%= f.radio_button :reason1, @eg_reasons.first, class: "reason1_met_min" %>
+          <%= f.label :reason1, @eg_reasons.first, value: @eg_reasons.first %><br />&nbsp;&nbsp;
+          <%= f.radio_button :reason1, @eg_reasons.second, class: "reason1_have_not_met_min" %>
+          <%= f.label :reason1, @eg_reasons.second, value: @eg_reasons.second %><br />
+        </div>
+
+          <div class="form-group", id="epa_review_trust1">
+            &nbsp;&nbsp;
+            <%= f.label :trust1, 'Trust', class: "control-label" %>&nbsp;&nbsp;
+            <!-- <%= f.select :trust1, @decision_option,  {}, {class: 'form-control'} %> -->
+            <%= f.radio_button :trust1, @decision_option.first %>
+            <%= f.label :trust1, @decision_option.first, value: @decision_option.first %>&nbsp;&nbsp;
+            <%= f.radio_button :trust1, @decision_option.second %>
+            <%= f.label :trust1, @decision_option.second, value: @decision_option.second %>&nbsp;&nbsp;
+            <%= f.radio_button :trust1, @decision_option.third %>
+            <%= f.label :trust1, @decision_option.third, value: @decision_option.third %>&nbsp;&nbsp;
+            <%= f.radio_button :trust1, @decision_option[3] %>
+            <%= f.label :trust1, @decision_option[3], value: @decision_option[3] %>&nbsp;&nbsp;
+            <%= f.radio_button :trust1, @decision_option[4] %>
+            <%= f.label :trust1, @decision_option[4], value: @decision_option[4] %>&nbsp;&nbsp;
+          </div>
+
+        <div class="form-group">
+          <%= f.label 'Evidence', class: "control-label col-sm-2" %>
+          <%= f.text_area :evidence1, cols:80, rows: 6, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label 'Internal Comments', class: "control-label" %>
+          <%= f.text_area :general_comments1, cols:80, rows: 5, html5: true, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.label 'Comments to Student', class: "control-label"  %><br />&nbsp;&nbsp;
+  <!-- <%= f.select :student_comments1, EpaReview.comments_to_student, {include_blank: true, prompt: 'Please select a comment...'}, {class: 'form-control'}  %> -->
+          <%= f.radio_button :student_comments1, EpaReview.comments_to_student.first, Class: "student_comments1_congrats" %>
+          <%= f.label :student_comments1, EpaReview.comments_to_student.first, value: EpaReview.comments_to_student.first %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments1, EpaReview.comments_to_student.second, class: "student_comments1_making_progress" %>
+          <%= f.label :student_comments1, EpaReview.comments_to_student.second, value: EpaReview.comments_to_student.second %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments1, EpaReview.comments_to_student.third, class: "student_comments1_work_towards" %>
+          <%= f.label :student_comments1, EpaReview.comments_to_student.third, value: EpaReview.comments_to_student.third %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments1, EpaReview.comments_to_student.last, class: "student_comments1_no_comment" %>
+          <%= f.label :student_comments1, EpaReview.comments_to_student.last, value: EpaReview.comments_to_student.last%><br />
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-actions">
+              <%= f.submit "Save Changes", class: "btn-primary center-block", id: "SubmitReview" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6" id="col-reviewer2">
+        <div class="form-group">
+          <%= f.label :review_date2,  'Review Date', class: "control-label col-sm-2" %>
+          <%= f.date_field :review_date2,  html5: true, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :reviewer2, 'Reviewer', class: "control-label col-sm-2" %>
+          <%= f.text_field :reviewer2,  html5: {selected: true}, class: 'form-control'  %>
+        </div>
+
+        <div class="form-group" id="epa_review_badge_decision2">
+          <%= f.label :badge_decision2, 'Badge Decision', class: "control-label col-sm-2" %>
+          <%= f.radio_button :badge_decision2, 'Not Yet', class: "badge_decision2_not_yet" %>
+          <%= f.label :badge_decision2, "Not Yet", value: 'Not Yet' %>&nbsp;&nbsp;
+          <%= f.radio_button :badge_decision2, 'Badge', class: "badge_decision2_badge" %>
+          <%= f.label :badge_decision2, "Badge", value: 'Badge' %>&nbsp;&nbsp;
+          <%= f.radio_button :badge_decision2, 'Deny', class: "badge_decision2_deny" %>
+          <%= f.label :badge_decision2, "Deny", value: 'Deny' %>&nbsp;&nbsp;
+        </div>
+        <div class="form-group">
+          <%= f.label :reason2, 'Reason', class: "control-label col-sm-2" %><br />&nbsp;&nbsp;
+          <%= f.radio_button :reason2, @eg_reasons.first, class: "reason2_met_min" %>
+          <%= f.label :reason2, @eg_reasons.first, value: @eg_reasons.first %><br />&nbsp;&nbsp;
+          <%= f.radio_button :reason2, @eg_reasons.second, class: "reason2_have_not_met_min" %>
+          <%= f.label :reason2, @eg_reasons.second, value: @eg_reasons.second %><br />
+         </div>
+
+        <div class="form-group" id="epa_review_trust2">
+          &nbsp;&nbsp;
+          <%= f.label :trust2, 'Trust', class: "control-label" %>&nbsp;&nbsp;
+          <!-- <%= f.select :trust1, @decision_option,  {}, {class: 'form-control'} %> -->
+          <%= f.radio_button :trust2, @decision_option.first %>
+          <%= f.label :trust2, @decision_option.first, value: @decision_option.first %>&nbsp;&nbsp;
+          <%= f.radio_button :trust2, @decision_option.second %>
+          <%= f.label :trust2, @decision_option.second, value: @decision_option.second %>&nbsp;&nbsp;
+          <%= f.radio_button :trust2, @decision_option.third %>
+          <%= f.label :trust2, @decision_option.third, value: @decision_option.third %>&nbsp;&nbsp;
+          <%= f.radio_button :trust2, @decision_option[3] %>
+          <%= f.label :trust2, @decision_option[3], value: @decision_option[3] %>&nbsp;&nbsp;
+          <%= f.radio_button :trust2, @decision_option[4] %>
+          <%= f.label :trust2, @decision_option[4], value: @decision_option[4] %>&nbsp;&nbsp;
+        </div>
+
+        <div class="form-group">
+          <%= f.label 'Evidence', class: "control-label col-sm-2" %>
+          <%= f.text_area :evidence2, cols:80, rows: 6, class: "form-control"  %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label 'Internal Comments', class: "control-label" %>
+          <%= f.text_area :general_comments2, cols:80, rows: 5, class: "form-control"  %>
+        </div>
+        <div class="form-group">
+          <%= f.label 'Comments to Student', class: "control-label" %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.first, Class: "student_comments2_congrats" %>
+          <%= f.label :student_comments2, EpaReview.comments_to_student.first, value: EpaReview.comments_to_student.first %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.second, class: "student_comments2_congrats_making_progress" %>
+          <%= f.label :student_comments2, EpaReview.comments_to_student.second, value: EpaReview.comments_to_student.second %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.third, class: "student_comments2_work_towards" %>
+          <%= f.label :student_comments2, EpaReview.comments_to_student.third, value: EpaReview.comments_to_student.third %><br />&nbsp;&nbsp;
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.last, class: "student_comments1_no_comment" %>
+          <%= f.label :student_comments2, EpaReview.comments_to_student.last, value: EpaReview.comments_to_student.last%><br />
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-actions">
+              <%= f.submit "Save Changes", class: "btn-primary center-block", id: "SubmitReview2" %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+  </div>
+
+  <% end %>

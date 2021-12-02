@@ -1,0 +1,30 @@
+<br />
+<div class="containter-fluid"
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+            <% if !@epa_masters.nil? %>
+              <div id="epa-masters-table">
+                <h3>Badging EPAs - <%= @full_name %> </h3>
+                <table class="responsive nowrap table table-hover" >
+                  <thead>
+                    <tr>
+                      <th data-data="epa">EPA</th>
+                      <th data-data="status">Status</th>
+                      <th data-data="EntrustmentReviews">Entrustment Reviews</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if !@epa_masters.nil? %>
+                      <% @epa_masters.each do |epa_master| %>
+                          <%= render partial: "epa_masters/epa_masters_row", locals: { epa_master: epa_master } %>
+                      <% end %>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
+            <% end %>
+        </div>
+      </div>
+    </div>
+</div>

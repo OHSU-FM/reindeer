@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+  include LsReportsHelper
   layout 'full_width'
 
   def index
@@ -10,6 +11,11 @@ class DashboardController < ApplicationController
     #@surveys = current_user.lime_surveys_by_most_recent(5)
     @dash = Dashboard.includes(:dashboard_widgets)
       .where(user_id: current_user.id).first_or_initialize
+    if current_user.coaching_type == 'student'
+      @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
+    else
+      @meetings = []
+    end
     authorize! :read, @dash
     do_gon
 
@@ -56,7 +62,7 @@ class DashboardController < ApplicationController
     authorize! :update, @dash
 
     respond_to do |format|
-      if @dash.update_attributes(dashboard_params)
+      if @dash.update(dashboard_params)
         format.html{ render action: :show}
         format.json{ render json: { dash: @dash }, status: :ok }
       else

@@ -1,0 +1,45 @@
+<br />
+<div class="container">
+  <h5> FoM Exams Index </h5>
+  <%= link_to 'Send out Alerts', send_alerts_fom_exams_path(), method: 'post', target: :_blank %>
+
+    <table class="table table-condensed table-hover spreadsheet-body" style="background-color:#FEF9F4;">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Content</th>
+          <th>UserID</th>
+          <th>Artifacts/Documents</th>
+        </tr>
+      </thead>
+
+      <% if !@artifacts.blank? %>
+        <% @artifacts.each do |artifact| %>
+            <tr>
+              <td><%= artifact.title %></td>
+              <td><%= artifact.content %> </td>
+              <td><%= artifact.user_id.to_s %></td>
+              <td><table class="responsive table table-hover">
+                <% if artifact.documents.attached? %>
+                  <% artifact.documents.each do |document| %>
+                    <tr>
+                      <td> <%= document.filename %> </td>
+                      <td>
+                        <%= link_to 'View', url_for(document), target: :_blank %>
+                        /
+                        <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                        /
+                        <%= link_to 'Process', fom_exams_process_csv_path(attach_id: artifact.documents.first) %>
+
+
+                      </td>
+                    </tr>
+                  <% end %>
+                <% end %>
+               </table>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+    </table>
+</div>

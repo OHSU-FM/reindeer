@@ -1,0 +1,19 @@
+
+<div class="container" >
+      <br />
+        <div class="card">
+          <div class="card-body">
+            <%= form_tag(eg_badged_epa_masters_path, method: "get", id: 'eg_badged_form') do %>
+              <div class="form-group navbar-form navbar-left">
+                 <b>Cohort </b> <%= select_tag :cohort, options_for_select(@permission_groups.sort.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]), include_blank: '--',
+                    prompt: "Please Select  Cohort", onchange: "this.form.submit();" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+      <br />
+      <% if !@epa_badged_count.nil? %>
+            <%= render partial: 'detail_eg_badged' %>
+      <% end %>
+</div>

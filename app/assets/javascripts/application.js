@@ -14,11 +14,17 @@
 //= require jquery.min.js
 //= require jquery-ui
 //= require rails-ujs
+//= require date
+// turbolinks is commented out..
+// require turbolinks
+//= require calendar
 //= require popper
-//= require bootstrap-sprockets
+//= require select2
 //= require jquery_mods
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
+//= require jquery.contextMenu.js
+//= require bootstrap-sprockets
 //= require bootstrap-notify.js
 //= require notify.js
 //= require intro.js
@@ -52,7 +58,6 @@
 //= require sessions.js
 //= require animations.js
 //= require form-utils.js
-//= require select2
 //= require simplemde.min
 //= require nested_form_fields
 //= require goals
@@ -66,7 +71,18 @@
 //= require ls_reports_spreadsheet.js
 //= require searches.js
 //= require students.js
+//= require epa_masters.js
+//= require epa_reviews.js
 //= require cds_reports
 //= require wba_graphs
-// turbolinks is commented out..
-// require turbolinks
+//= require csl_feedbacks
+//= require fom_exams
+//= require competencies
+//=  require jquery-contextmenu/dist/jquery.contextMenu.js
+//=  require jquery-contextmenu/dist/jquery.ui.position.js
+//=  require jquery-contextmenu/dist/jquery.contextMenu.min.js
+//=  require jquery-contextmenu/dist/jquery.ui.position.min.js
+//= require moment
+//= require fullcalendar
+//= require events
+//= require meetings

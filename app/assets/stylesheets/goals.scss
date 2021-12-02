@@ -47,7 +47,7 @@ $paper:    #D5D5D5;
   .student-with-goals {
     font-size: 14px;
     color: white;
-    
+
   }
 
   .list-group.list-group-root > .list-group > .list-group-item {
@@ -186,14 +186,14 @@ $paper:    #D5D5D5;
   &.show-detail {
     flex: 1 6 auto;
     order: 3;
-    width: 555px;
+    width: 1200px;
     transition: width 0.3s ease-in;
     -webkit-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
     -moz-box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
     box-shadow: -5px 0px 5px 0px rgba(0,0,0,0.32);
   }
 
-  div.dfield_with_errors { display: inline }.etail-header {
+  div.dfield_with_errors { display: inline }.detail-header {
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 10px;
@@ -203,25 +203,26 @@ $paper:    #D5D5D5;
 
   div.detail-section {
     display: inline;
+    width: 100%;
 
     h4 {
       color: $paper;
       background-color: $dusty;
-      padding-left: 20px;
+      padding-left: 10px;
       padding-right: 10px;
       padding-top: 10px;
       padding-bottom: 10px;
     }
 
     div {
-      font-size: 16px;
-      padding-left: 5px;
-      padding-right: 5px;
+      font-size: 14px;
+      padding-left: 0px;  // control the panel title block
+      padding-right: 0px;
     }
   }
 }
 
-@media all and (max-width: 640px) {
+@media all and (max-width: 1200px) {
   .container-flex { flex-direction: column; }
 
   .container-flex #cs-goals-main,
@@ -278,3 +279,42 @@ $paper:    #D5D5D5;
 .field_with_errors {
    display: inline
  }
+
+.panel-heading {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+ .panel-title > a:before {
+     float: right !important;
+     font-family: FontAwesome;
+     content:"\f068";
+     padding-right: 5px;
+ }
+ .panel-title > a.collapsed:before {
+     float: right !important;
+     content:"\f067";
+ }
+ .panel-title > a:hover,
+ .panel-title > a:active,
+ .panel-title > a:focus  {
+     text-decoration:none;
+ }
+
+ .link-to-text-color {
+   background-color: #D8A7B1;
+   font-weight: bold;
+ }
+
+ .card-body-color2 {
+  background-color: #201f712e;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0.0rem;
+}
+
+.card-body-color {
+ background-color: #D8BFD8;
+}

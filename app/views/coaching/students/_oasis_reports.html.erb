@@ -1,0 +1,27 @@
+<div id="container">
+    <br />
+    <div class="form-row">
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <%= link_to "All Advisors", advisor_reports_coaching_student_path(id: "All"), method: :post, remote: true %> &nbsp; |  &nbsp;
+            <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;
+            <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
+                <%= label_tag :Advisor %>
+                <%= select_tag :id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
+                    prompt: "Please Select an Advisor" %>
+                 <%= submit_tag "Go", name: 'advisor-reports-btn' %>
+            <% end %>
+
+    </div>
+  <div id="advisor-reports">
+    <% if !@advisor.nil? %>
+      <%= render partial: "advisor_reports", locals: {advisor: @advisor} %>
+    <% end %>
+  </div>
+
+  <div id="oasis-graphs">
+    <% if @oasis_graphs_flag %>
+      <% render partial: "oasis_graphs" %>
+    <% end %>
+  </div>
+
+</div>

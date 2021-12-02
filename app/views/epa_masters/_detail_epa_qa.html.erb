@@ -1,0 +1,24 @@
+<br />
+<span>
+  <h4 style="text-align:center"> Detail EPA Q/A (%) Report
+    <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: 'epa_qa.txt') %>
+  </h4>
+</span>
+
+<table id="EpaQaTable" class="table table-hover table-striped responsive" data-sort="true" >
+  <thead>
+    <tr class="filters">
+      <% @epa_qa_data.first.keys.each do |key| %>
+        <th style="text-align:left"><%= key.upcase %></th>
+      <% end %>
+    </tr>
+  </thead>
+    <% @epa_qa_data.each do |qa| %>
+      <tr>
+        <% qa.each do |key, val| %>
+          <td> <%= val %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+
+</table>

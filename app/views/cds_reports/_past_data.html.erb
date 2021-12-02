@@ -7,7 +7,7 @@
    <tr>
       <% n = 0 %>
       <% temp_sub = subjects[v] %>
-       <td><%= hf_proper_label(subjects[v]).html_safe %> </td>
+       <td><%= sanitize hf_proper_label(subjects[v]).html_safe %> </td>
        <% past_data_sub = past_data.map{|k,val| val[temp_sub]} %>
        <% past_data_sub.each do |data| %>
            <% if !cohorts[n].nil? %>

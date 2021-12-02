@@ -1,0 +1,49 @@
+<tr>
+  <td><%= epa_master.epa %></td>
+  <% if epa_master.badged? %>
+    <td><%= image_tag ("epa/#{epa_master.epa}.png"), size: "100x80", class: "img-responsive" , data: {imagezoom: "true" } %> <br />
+        Award Date: <b><%= hf_format_date(epa_master.status_date) %></b><br />
+        Expiration date: <b><%= hf_format_date(epa_master.expiration_date) %></b>
+    </td>
+  <% else %>
+    <td><%= image_tag ("epa/#{epa_master.epa}.png"), size: "100x80", class: "img-responsive opaque-image" %></td>
+  <% end %>
+
+  <td>
+
+    <table>
+        <% epa_master.epa_reviews.each do |review| %>
+        <tr>
+          <td><h5><span>
+              <% str_html1, str_html2 = hf_redact_text(review, current_user) %>
+              <%= str_html1.blank? ? '' : (str_html1.to_s + ' | ').html_safe %>
+              <%= str_html2.to_s.html_safe %> &nbsp;&nbsp;
+              </span>
+
+              <% if epa_master.badged? %>
+                <%= link_to '-View', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
+                    'data-target' => '#mymodal-epa-review', class: "button-primary fa fa-eye"}  %> &nbsp;&nbsp;
+              <% else %>
+
+                  <% if !str_html1.empty? and !str_html2.empty? %>
+                    <%= link_to '-Add', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
+                        'data-target' => '#mymodal-epa-review', class: "fa fa-plus"}%> &nbsp;&nbsp;
+                  <% end %>
+
+                  <%= link_to '-Review', edit_epa_review_path(id: review.id), {remote: true, controller: 'epa_reviews', action: :edit,
+                      'data-target' => '#mymodal-epa-review', class: "button-primary fa fa-edit"}  %> &nbsp;&nbsp;
+                  <%= link_to '-Delete', epa_review_path(id: review.id), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_review fa fa-trash' %>
+              <% end %>
+              </h5>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+      <% if epa_master.epa_reviews.blank? %>
+        <h5>
+          <%= link_to 'Review', new_epa_review_path(epa_master_id: epa_master.id), {remote: true, controller: 'epa_reviews', action: :new,
+             'data-target' => '#mymodal-epa-review', class: "fa fa-plus"} %>
+        </h5>
+      <% end %>
+    </td>
+</tr>

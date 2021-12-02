@@ -1,6 +1,6 @@
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog modal-xl" role="document" >
   <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header" id="newMeetingModal">
       <h4 class="modal-title title-inline" id="newMeetingModalLabel">New Meeting - <b><font color="blue"><%= hf_get_label(current_user) %> </font></b> </h4>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -9,7 +9,7 @@
 
     <div class="modal-body row modal-meeting">
       <div class="container col-sm-10">
-        <%= render partial: "coaching/meetings/meeting_form", locals: { student: @student } %>
+        <%= render partial: "coaching/meetings/meeting_form", locals: { student: @student, advisor_type: @advisor_type, advisor_id: @advisor_id} %>
       </div>
     </div>
     <div class="modal-footer">

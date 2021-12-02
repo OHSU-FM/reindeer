@@ -1,0 +1,24 @@
+
+  <table>
+    <tr>
+      <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date)  #current_user.coaching_type != "student" %>
+          <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
+                <td><%= image_tag ("epa/EPA#{i}"), size: "100x80",  class: "img-responsive" , data: {imagezoom: "true" }%></td>
+                <td>&nbsp;&nbsp;</td>
+                <td>
+                  Status: <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span><br >
+                  Award Date: <b><%= hf_format_date(@student_badge_info["EPA#{i}"]["status_date"]) %></b><br />
+                  Expiration date: <b><%= hf_format_date(@student_badge_info["EPA#{i}"]["expiration_date"]) %></b><br />
+                  Comments: <%= @student_badge_info["EPA#{i}"]["student_comments"].join(", ") %>
+                </td>
+          <% else %>
+                <td><%= image_tag ("epa/EPA#{i}"), size: "100x80", class: "opaque-image" ,  data: {imagezoom: "true" }%> </td>
+                <td>&nbsp;&nbsp;</td>
+                <td>
+                    Status: <span style="color:blue;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span><br>
+                    Comments: <%= @student_badge_info["EPA#{i}"]["student_comments"] %>
+                </td>
+          <% end %>
+        <% end %>
+    </tr>
+  </table>

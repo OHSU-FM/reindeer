@@ -1,0 +1,23 @@
+<% if lowIndex == 11 %>
+  <td></td>
+<% end %>
+<% for k in lowIndex..upperIndex %>
+  <td class="centered-cell">
+    <% epa_badge = @epa_badges[k-1]["EPA#{k}"] %>
+    <% if @review_date[k-1]["EPA#{k}"] != "" %>
+      <% if @review_date[k-1]["EPA#{k}"].include? "No Badge" %>
+        <% temp_str = @review_date[k-1]["EPA#{k}"].split("|") %>
+        <%= image_tag ("#{epa_badge}"), size: "200x240", class: "opaque-image" %> <br />
+        <span class="centered-cell">Status: <b><%= temp_str[0] %> </b> </span><br />
+        <span class="centered-cell">Review Date: <b><%= temp_str[1] %> </b> </span><br />
+        <span class="centered-cell">Comment: <b><%= temp_str[2] %> </b> </span><br />
+      <% else %>
+        <%= image_tag ("#{epa_badge}") %> <br />
+        <span class="centered-cell">Award Date: <%= @review_date[k-1]["EPA#{k}"] %> </span>
+      <% end %>
+
+    <% else %>
+        <%= image_tag ("#{epa_badge}"), class: "opaque-image", size: "200x240" %>
+    <% end %>
+  </td>
+<% end %>

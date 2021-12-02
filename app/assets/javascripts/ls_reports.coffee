@@ -36,6 +36,7 @@ $(document).ready ->
   # Refresh page on change
   $('select.select_a_link').change ->
     $('#modal_nav_reports').modal('show');
+    console.log ("Inside ls_reports.coffee: Onchange!")
     window.location = @options[@selectedIndex].value
     return
 

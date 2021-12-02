@@ -7,11 +7,13 @@
  *
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
+ * @import "jquery.contextMenu";
  */
+@import 'fullcalendar';
 @import 'jquery-ui';
-@import 'bootstrap-sprockets';
 @import 'bootstrap';
 @import 'select2';
+@import 'select2-bootstrap';
 @import 'bootstrap-callouts';
 @import 'introjs';
 @import 'animations';
@@ -32,3 +34,18 @@
 @import "datatables";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "jquery-contextmenu/dist/jquery.contextMenu";
+@import "jquery-contextmenu/dist/jquery.contextMenu.min.css";
+@import 'events';
+@import 'advisors';
+@import 'coaching_meetings';
+.alert {
+  left: 0;
+  margin: auto; // Centers alert component
+  position: absolute; // So that it will display relative to the entire page
+  right: 0;
+  text-align: center; // Centers 'Alert Test' text
+  top: 5em;
+  width: 40%;
+  z-index: 1; // Displays over app and bootstrap Navbar
+}

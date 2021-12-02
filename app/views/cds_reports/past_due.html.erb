@@ -1,0 +1,52 @@
+<div class="row">
+  <br />
+  <h4> &nbsp; &nbsp; Past Due CDS Report
+  <% if !@start_date.nil? %>
+    <%= "from #{@start_date} to #{@end_date}" %>
+  <% end %>
+  </h4>
+  <%= form_tag(cds_reports_past_due_path, method: "get",  class: 'navbar-form navbar-left', id: 'PastDueForm') do %>
+    <%= radio_button_tag 'student_goal_meeting', 'Meetings', params[:student_goal_meeting] == "Meetings" %> Meetings &nbsp;
+    <%= radio_button_tag 'student_goal_meeting', 'Goals', params[:student_goal_meeting] == "Goals" %> Goals &nbsp; &nbsp; &nbsp;
+    <label>Pass Due Start Date: </label>
+    <input type="date" id="startDate" name="startDate" placeholder=""/>
+    <label>End Date: </label>
+    <input type="date" id="endDate" name="endDate" placeholder=""/>
+
+    <%= submit_tag 'Submit', id: 'Submit' %>
+  <% end %>
+
+
+</div>
+
+<% @past_due_hash = hf_get_past_due(@start_date, @end_date, @student_goal_meeting, @cohorts) %>
+
+<div class="row">
+  <% if !@past_due_hash.nil? %>
+    <% @past_due_hash.each do |index, students|  %>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading<%= index %>">
+            <h4 class="panel-title">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="false" aria-controls="collapse<%= index %>">
+                 <%= sanitize "#{index} Students with No <b><i>#{@student_goal_meeting}</i></b> in the Past <b><i>#{@past_due_mons}</i></b> Months (Total: #{students.count})".html_safe %>
+              </a>
+            </h4>
+        </div>
+        <div id="collapse<%= index %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%= index %>">
+            <div class="panel-body">
+              <table width="50%" align="center" class="responsive table-striped table-hover">
+                <tbody>
+                  <% students.each do |student| %>
+                    <tr>
+                      <td style="width:20%"><%= student.split("|").first %></td>
+                      <td style="width:20%"><%= student.split("|").second %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

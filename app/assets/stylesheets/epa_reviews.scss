@@ -1,0 +1,67 @@
+// Place all the styles related to the epa_reviews controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.modal-text-align-center {
+    text-align: center;
+}
+.modal-title {
+  margin-right: -49px;
+}
+.center-div
+{
+     margin: auto;
+     max-width: 1600px;
+}
+.inner-div
+{
+  margin: auto;
+  max-width: 1400px;
+}
+
+mark,
+.mark {
+  font-weight: bold;
+  background-color: blue;
+  color: black;
+}
+
+span, .marked {
+  color: red;
+  background-color: blue;
+}
+
+.redact {
+  background-color: rgba(0,0,0,1);
+  padding: 1% 2%;
+  min-width: 50%;
+  -webkit-transition: background-color 500ms ease-out;
+  -moz-transition: background-color 500ms ease-out;
+  -o-transition: background-color 500ms ease-out;
+  transition: background-color 500ms ease-out;
+}
+pull-right{
+  float: right;
+}
+
+.bootstrap-select .dropdown-menu {
+  max-width: 100px;
+}
+.bootstrap-select .dropdown-menu span.text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.control-label{
+   color: purple !important;
+ }
+ .card-body-color {
+  background-color: #201f712e;
+}
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
+}

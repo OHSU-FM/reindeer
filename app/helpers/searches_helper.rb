@@ -1,5 +1,125 @@
 module SearchesHelper
 
+  def median(ary)
+    middle = ary.size/2
+    sorted = ary.sort_by{ |a| a }
+    ary.size.odd? ? sorted[middle] : (sorted[middle]+sorted[middle-1])/2.0
+  end
+
+  def get_stats (permission_group_id)
+    result = ActiveRecord::Base.connection.exec_query('select count(user_id)
+              from epas, users
+              where involvement <> 0 and
+                   users.id = epas.user_id and
+                   users.spec_program <>' + "'OMFS'" + ' and ' +
+                   'users.permission_group_id = ' + permission_group_id.to_s + '
+              group by
+                user_id
+              order by count DESC')
+
+    return result
+  end
+
+
+  def hf_wba_stats(user)
+
+    if user.coaching_type == 'student'
+      # re-get user records as permission_group_id was pointed to Med21 --> Not sure why!
+      user = User.find(user.id)
+      cohort_title = user.permission_group.title[/(?<=\().*?(?=\))/]  # to extract cohort Med21
+      permission_group_id = user.permission_group_id
+      result = get_stats(permission_group_id)
+
+      if result.rows.empty?
+          return nil, nil, cohort_title
+      else
+        arr = result.rows.flatten  # the array is sorted DESC
+        #max = arr.first
+        #min = arr.last
+        ave = arr.sum.fdiv(arr.size).round
+        med = median(arr).round
+        return ave, med, cohort_title
+      end
+    elsif user.coaching_type == 'dean' or user.coaching_type == 'admin'
+      cohorts = PermissionGroup.where("id >= ?", 16).order(:title)
+      cohorts_stat = {}
+      stat = []
+      cohorts.each do |cohort|
+        title = cohort.title[/(?<=\().*?(?=\))/]
+        result = get_stats(cohort.id)
+        if !result.empty?
+          arr = result.rows.flatten  # the array is sorted DESC
+          stat << arr.first
+          stat << arr.last
+          stat << arr.sum.fdiv(arr.size).round
+          stat << median(arr).round
+          cohorts_stat.store(title, stat)
+        end
+        stat = []
+
+      end
+
+      return cohorts_stat
+
+    end
+
+  end
+
+  def hf_releaseDate(in_user)
+    @badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
+
+    if in_user.permission_group_id == 13
+      return @badge_release_date["Med21Badge"]["releaseDate"]
+    elsif in_user.permission_group_id == 16
+      return @badge_release_date["Med22Badge"]["releaseDate"]
+    elsif in_user.permission_group_id == 17
+      return @badge_release_date["Med23Badge"]["releaseDate"]
+    elsif in_user.permission_group_id == 18
+      return @badge_release_date["Med24Badge"]["releaseDate"]
+    elsif in_user.permission_group_id == 19
+      return @badge_release_date["Med25Badge"]["releaseDate"]
+    else
+
+   end
+  end
+
+  def hf_exists_in_FomExam(user_id)
+    block_array = []
+    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+    if blocks.empty?
+      blocks = Med22FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+    end
+    blocks.each do |block|
+      block_hash = {}
+      if current_user.dean_or_higher?
+        block_hash.store("course_code", block.course_code)
+      elsif FomLabel.find_by(permission_group_id: block.permission_group_id, course_code: block.course_code).block_enabled
+          block_hash.store("course_code", block.course_code)
+      else
+          block_hash.store("course_code", block.course_code + " - DISABLED!")
+      end
+      cohort = PermissionGroup.find(block.permission_group_id).title.delete('()').split(" ").last
+
+      block_hash.store("permission_group_id", block.permission_group_id)
+      block_hash.store("cohort", cohort)
+      block_array.push block_hash
+    end
+    return block_array
+  end
+
+  def hf_exists_in_PreceptorEval(user_id)
+    preceptor_evals = PreceptorEval.where(user_id: user_id)
+    if preceptor_evals.empty?
+      return nil
+    else
+      permission_group_id = preceptor_evals.first.permission_group_id
+      cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last
+
+      return cohort
+    end
+
+  end
+
   def probe_dataset(lime_survey)
     student_data = []
     student_email_col = lime_survey.student_email_column
@@ -107,6 +227,15 @@ module SearchesHelper
 
   def hf_student_year(in_code)
     return "20" + in_code.downcase.split('med').second
+  end
+
+  def hf_competency_exists(user_id)
+    comp = Competency.find_by(user_id: user_id)
+    if comp.nil?
+        return false
+    else
+      return true
+    end
   end
 
 end

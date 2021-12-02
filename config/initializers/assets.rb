@@ -1,3 +1,5 @@
+
+Rails.application.config.assets.paths << Rails.root.join("node_modules")
 Rails.application.config.assets.precompile += %w( print.css
     assignment/*
     assignment_assignment_groups.css
@@ -17,6 +19,7 @@ Rails.application.config.assets.precompile += %w( print.css
     ls_reports_filter.css ls_reports_filter.css
     reports.css   reports.js
     charts.css    charts.js
+    Chart.bundle.js
     dashboard.css dashboard.js
     ls_reports_spreadsheet.css
     devise_sessions.css
@@ -34,6 +37,24 @@ Rails.application.config.assets.precompile += %w( print.css
     searches.css
     artifacts.css
     epa_graphs.js
+    chartkick.js
+    epa_masters.css
+    epa_reviews.css
+    epa_master.js
+    epa_reviews.js
+    wba_graphs.css
     cds_reports.css
     wba_graphs.css
-    )
+    csl_feedbacks.css
+    competencies.css
+    courses.css
+    epa_masters.css
+    epa_reviews.css
+    fom_exams.css
+    preceptor_evals.css
+    student_assessments.css
+    events.css
+    advisors.css
+    jquery.contextmenu/dist/jquery.contextMenu.css
+    jquery.contextmenu/dist/jquery.contextMenu.js
+   )

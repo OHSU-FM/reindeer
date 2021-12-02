@@ -9,6 +9,58 @@ module LsReports::CslevalHelper
                       '888' => '<font color="blue">Missing</font>',
                       '' => "Missing"}
 
+ DECODE_CSL_DEF = {
+                     'c1' => 'Attends regularly and is well prepared for sessions',
+                     'c2' => 'Explains reasoning processes clearly and effectively with regard to solving problems, basic mechanisms, concepts, etc.',
+                     'c3' => 'Demonstrates respect, compassion and empathy.',
+                     'c4' => 'Seeks to understand others views.',
+                     'c5' => 'Takes initiative and provides leadership.',
+                     'c6' => 'Shares information/resources',
+                     'c7' => 'Seeks appropriate responsibility. Identifies tasks and completes them efficiently and thoroughly.',
+                     'c8' => 'Seeks feedback from peers and instructors and puts it to good use.',
+                     'c9' => 'Small group behavior is appropriate.'
+
+ }
+
+def hf_csl_feedbacks (email)
+  csl_feedbacks = User.where(email: email).first.csl_feedbacks
+  return csl_feedbacks
+end
+
+
+
+ def decode_csl_def (incode)
+   return DECODE_CSL_DEF[incode]
+ end
+
+ def create_csl_hash(csl_evals, in_csl)
+   temp_array = []
+   csl_data = {}
+   my_hash = Hash.new {|h,k| h[k] = [] }
+   evals = csl_evals.select{|c| c.csl_title == in_csl}
+
+   evals.each do |e|
+      csl_data = {in_csl => e.attributes}
+      my_hash[in_csl].push e.attributes
+      temp_array.push csl_data
+   end
+
+   return my_hash
+
+ end
+
+ def hf_new_csl_evals(pk)
+   csl_evals = User.find_by(email: pk).csl_evals.select(:selected_student,:submit_date, :instructor, :feedback,
+                :c1, :c2, :c3, :c4, :c5, :c6, :c7, :c8, :c9, :csl_title).order(:submit_date)
+   csl_titles = csl_evals.map{|c| c.csl_title}.uniq
+   csl_array = []
+   csl_titles.each do |title|
+     csl_array.push create_csl_hash(csl_evals, title)
+   end
+   return csl_array
+ end
+
+
   def decode_csl_eval (incode)
     return DECODE_CSL_EVAL[incode]
   end
@@ -72,13 +124,9 @@ module LsReports::CslevalHelper
     session[:search].each do |data|
       sid = data.split("~").first
       survey_title = data.split("~").second
-
       rr_survey = LimeSurvey.where(sid: sid).includes(:lime_groups)
-
       #survey = LimeSurveysLanguagesetting.select(:surveyls_survey_id, :surveyls_title).where(surveyls_survey_id: sid)
       limegroups = rr_survey.first.lime_groups.includes(:lime_questions)
-
-
       #lq = limegroups.first.lime_questions
       student_email_col = rr_survey.first.student_email_column
       #col_name = get_col_name(lq, "StudentEmail")

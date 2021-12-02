@@ -1,0 +1,39 @@
+<h1>Advisors</h1>
+
+<table class="responsive nowrap table table-hover" id="dttb-advisors" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  <thead>
+    <tr>
+      <th data-data="type">Type</th>
+      <th data-data="name">Name</th>
+      <th data-data="email">Email</th>
+      <th data-data="status">Status</th>
+      <th data-data="title">Title</th>
+      <th data-data="Specialty">Specialty</th>
+      <th data-data="created_at">Created At</th>
+      <th data-data="updated_at">Updated At</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+    </tr>
+  </thead>
+  <% @advisors.sort_by(&:advisor_type).each do |advisor| %>
+    <tr>
+      <td><%= advisor.advisor_type %></td>
+      <td><%= advisor.name %></td>
+      <td><%= advisor.email %></td>
+      <td><%= advisor.status %></td>
+      <td><%= advisor.title %></td>
+      <td><%= advisor.specialty %></td>
+      <td><%= advisor.created_at.strftime("%m/%d/%Y %T %p") %></td>
+      <td><%= advisor.updated_at.strftime("%m/%d/%Y %T %p")%></td>
+      <td><%= link_to 'Show', advisor %> /
+        <%= link_to 'Edit', edit_advisor_path(advisor) %> /
+        <%= link_to 'Destroy', advisor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+    </tr>
+  <% end %>
+
+
+</table>
+
+<br>
+
+<%= link_to 'New Advisor', new_advisor_path %>

@@ -1,0 +1,77 @@
+ <div class="container-fluid">
+  <div class="row">
+    <div class="column">
+      <% if !@usmle_exams.empty?  or !@hss_exams.empty? %>
+        <div class="card">
+            <div class="card-body">
+              <%= render partial: "usmle_exams" %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+    <div class="column">
+        <% if !@cpx_data_new.nil? %>
+          <div class="card">
+              <div class="card-body">
+                <%= render partial: "ls_reports/spreadsheet/cpx_data" %>
+              </div>
+          </div>
+        <% elsif !@comp.nil? %>
+          <% @comp.each do |cd| %>
+            <% if cd["course_name"].include? "CPX" %>
+              <div class="card">
+                  <div class="card-body">
+                    <table class="table table-striped">
+                      <tr><th>CourseName</th><td style="color:blue"><%= cd["course_name"] %></td></tr>
+                      <tr><th>StartDt</th><td><%= cd["start_date"] %></td></tr>
+                      <tr><th>EndDt</th><td><%= cd["end_date"] %></td></tr>
+                      <tr><th>Evaluator</th><td><%= cd["submit_date"] %></td></tr>
+                      <tr><th>FinalGrade</th><td><%= hf_final_grade2(cd['final_grade']) %></td></tr>
+                      <tr><th>MSPE</th><td><%= cd["mspe"] %></td></tr>
+                    </table>
+                  </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+    </div>
+  </div>
+</div>
+<% if !@comp.nil? %>
+  <div class="card">
+      <div class="card-body">
+        <h4>Clinical Subject Exams (Self-Assessment Exams)</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">CourseName</th>
+              <th scope="col">StartDt</th>
+              <th scope="col">EndDt</th>
+              <th scope="col">SubmitDt</th>
+              <th scope="col">Evaluator</th>
+              <th scope="col">FinalGrade</th>
+            </tr>
+          </thead>
+          <% @comp.each do |cd| %>
+            <% if cd["course_name"].include? "770" %>
+                <tr>
+                  <td><%= cd["course_name"] %></td>
+                  <td><%= cd["start_date"] %></td>
+                  <td><%= cd["end_date"] %></td>
+                  <td><%= cd["submit_date"] %></td>
+                  <td><%= cd["evaluator"] %></td>
+                  <td>
+                    <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+                        title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_get_threshold(cd["course_name"]).to_s + hf_final_grade2(cd['final_grade']) %></span></a>
+
+                  </td>
+                </tr>
+            <% end %>
+          <% end %>
+        </table>
+      </div>
+  </div>
+<% end %>
+
+<% @shelf_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Clinical") %>
+<%= render partial: 'artifacts/shelf_artifacts' %>

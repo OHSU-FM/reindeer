@@ -11,3 +11,7 @@ ActiveRecord::SchemaDumper.ignore_tables = [
   /p4_/,
   /^#{LimeExt.table_prefix}/
 ]
+
+ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
+  html_tag.html_safe
+end

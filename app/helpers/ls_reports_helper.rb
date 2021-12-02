@@ -4,6 +4,38 @@ module LsReportsHelper
     (full_desc ? strip_tags(question.question) : question.title.titleize).html_safe
   end
 
+  def hf_has_csl_feedbacks(user_id)
+    if CslFeedback.where(user_id: user_id).exists?
+        return true
+    else
+      return false
+    end
+  end
+
+  def hf_csl_feedbacks_title(ra_title, csl_feedbacks_title)
+    title = nil
+    if ra_title.include? "CPR"
+      ra_title = ra_title + "/HODI"
+    end
+    ra_title = ra_title.split("-").last
+    #puts "ra_title: " + ra_title
+    csl_feedbacks_title.each do |csl|
+      if (csl.include? ra_title) and (csl.include? "Mid-Term")
+            title = "CSL Narrative Assessment Evaluation " + csl
+            return title
+      elsif (csl.include? ra_title) and (csl.include? "End of Term")
+            title =  "CSL Narrative Assessment Evaluation " + csl
+            return title
+      elsif csl.include? ra_title
+            title =  csl
+            return title
+      else
+        title = nil
+      end
+    end
+    return title
+  end
+
 
   class AccessDenied < Exception; end
 
@@ -59,6 +91,12 @@ module LsReportsHelper
   #{}"C": "Coaching Feedback",
 
   # needed for menu generation and translation
+  # "EPA&C": "EPAs & Competencies",
+  # "TE": "Teacher Evaluations",
+  # "CE": "Course Evaluations",
+  # "P/LSE": "Preceptor/Learning Setting Evaluation",
+  # "C": "Coaching Feedback",
+
   MENU_HEADERS = {
                    "SA": "Student Assessment",
                    "C": "Coaching Feedback",
@@ -75,7 +113,6 @@ module LsReportsHelper
         MENU_HEADERS.keys.include? title.split(":").first
       }.sort
     else
-
       filtered_titles ||= in_user.lime_surveys_languagesettings.map{|s|
         s.surveyls_title
       }.select{|title|
@@ -178,8 +215,8 @@ module LsReportsHelper
       add_permission_group_filters
       add_all_param_filters
       do_titles
-      #Rails.logger.info lime_survey.lime_data.query
-      #Rails.logger.info lime_survey_unfiltered.lime_data.query
+      Rails.logger.info lime_survey.lime_data.query
+      Rails.logger.info lime_survey_unfiltered.lime_data.query
     end
 
     def user; @user; end
@@ -229,8 +266,8 @@ module LsReportsHelper
     ##
     # Load LimeSurvey and associations
     def get_lime_survey sid
-        cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
-        result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
+      cache_key = "filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(lime_survey_sid: sid).pluck(:updated_at).first.to_i}"
+      result = Rails.cache.fetch(cache_key, race_condition_ttl: 10) do
         # Load resource and pre-load associations
         LimeSurvey.includes(:role_aggregate,
                             lime_groups: [

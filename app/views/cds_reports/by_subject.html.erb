@@ -1,0 +1,47 @@
+<h4> By Meeting Subject Report -- Working Progress! </h4>
+
+  <%= form_tag(cds_reports_by_subject_path, method: "get",  class: 'navbar-form navbar-left', id: 'PastDueForm') do %>
+    Cohort <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
+        prompt: "Please Select Cohort", onchange: "this.form.submit();" %>
+    <% if !@uniq_subjects.nil? %>
+      Meeting Subject <%= select_tag :subject, options_for_select(@uniq_subjects, selected: params[:subject]),
+          prompt: "Please Select Subject", onchange: "this.form.submit();" %>
+    <% end %>
+
+  <% end %>
+  <br /><br />
+  <hr>
+  <% if !@selected_users.blank? and !@subject.blank? %>
+    <% subjects = hf_get_user_subjects(@selected_users, @subject) %>
+    <b><h4>Total Records: <%= subjects.count %></h4></b>
+    <hr>
+    <div class="table-responsive-sm">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Student</th>
+            <th scope="col">Coach</th>
+            <th scope="col">Submject</th>
+            <th scope="col">MeetingDate</th>
+            <th scope="col">Location</th>
+            <th scope="col">MeetingStatus</th>
+            <th score="col">Notes</th>
+            <th scope="col">CreatedAt</th>
+          </tr>
+        </thead>
+        <% subjects.each do |subject| %>
+              <tr>
+                <td><%= hf_get_full_name(subject.user_id) %></td>
+                <td><%= hf_get_cohort_info(subject.user_id) %></td>
+                <td><%= subject.subject%></td>
+                <td><%= subject.date%></td>
+                <td><%= subject.location %></td>
+                <td><%= subject.m_status %></td>
+                <td><%= subject.notes %></td>
+                <td><%= subject.created_at %></td>
+              </tr>
+        <% end %>
+      </table>
+    </div>
+
+  <% end %>

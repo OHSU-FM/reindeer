@@ -1,17 +1,17 @@
 source "https://rubygems.org"
-
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ##############################
 # Main
 ##############################
-gem "bundler"
-gem 'rails', '~> 5.2.2.1'
+gem "bundler", '~>2.0'
+gem 'rails', '~> 6.1.3' #'~> 5.2.2.1'
 gem "rdoc"
 #gem 'pg', '~>0.21'
 
 # Database
 gem 'pg'
-gem "composite_primary_keys"
-gem "redis", "~>3.2"
+#gem "composite_primary_keys"
+gem "redis", "~>4.1.0"
 
 # Record Versioning
 gem "paper_trail"
@@ -28,7 +28,8 @@ gem "rails_admin"
 gem "settingslogic"
 
 gem "cancancan"
-gem "devise"
+#gem "devise", "~> 4.6.2"
+gem 'devise', '~> 4.7', '>= 4.7.3'
 # LDAP
 gem "devise_ldap_authenticatable"
 # Prevent Excessive log file information
@@ -37,15 +38,20 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
+gem 'bootstrap', '~> 4.0'
+gem "jbuilder", '~> 2.5'
 gem "popper_js", "~> 1.14.3"
-gem "bootstrap-sass", '~> 3.3.7'
+#gem "bootstrap-sass", '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-gem 'jquery-ui-rails', '~> 5.0', '>= 5.0.5'
+gem 'jquery-ui-rails', '~> 6.0.1'
 gem "jquery-rails"
-#gem "jquery-ui-rails"
-
+gem "jquery_context_menu-rails"
+gem "momentjs-rails"
+gem "fullcalendar-rails"
+gem "fullcalendar"
+#gem 'webpacker', '~> 3.5'
 # CSS / js
 # Random bug:
 # Error encountered while saving cache (".....") can't dump anonymous class
@@ -60,7 +66,7 @@ gem 'kaminari'
 # UI: Charts
 ##############################
 
-gem "json"
+gem 'json', '~> 2.5', '>= 2.5.1'
 gem "gon"
 
 ##############################
@@ -97,13 +103,14 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "faker"
   gem 'rails-controller-testing'
+  gem 'letter_opener'
 end
 
 group :test, :development do
   if RUBY_VERSION =~ /^1.9.3/
     # Better error messages in development
     gem "better_errors", "~> 1.1"
-  elsif RUBY_VERSION =~ /^2./
+  elsif RUBY_VERSION =~ /^3./
     gem "byebug"
     gem "better_errors"
     gem "stackprof"
@@ -155,3 +162,6 @@ gem 'activestorage-validator', '~> 0.1.0'
 gem 'bullet', group: 'development'
 gem 'font-awesome-sass', '~> 4.4.0'
 gem "font-awesome-rails"
+gem 'will_paginate', '~> 3.1'
+gem 'datejs-rails', "~> 2.0.1"
+gem 'icalendar'

@@ -11,9 +11,12 @@ module EdnaConsole
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token
 
+    config.assets.paths << Rails.root.join("node_modules")
+
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
     config.exceptions_app = self.routes
+    config.action_mailer.smtp_settings = { enable_starttls_auto: false  }
 
     #How to silence "I18n.enforce_available_locales" deprecation warnings
     config.i18n.enforce_available_locales = false
@@ -68,6 +71,7 @@ module EdnaConsole
 
     # Setup automatic code generator configuration
     # E.g. $ rails g model WhipperSnapper
+
     config.generators do |g|
       g.test_framework :rspec, spec: true, fixture: false
       g.integration_tool :rspec

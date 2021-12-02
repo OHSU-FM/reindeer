@@ -272,7 +272,6 @@ module LsReports::CompetencyHelper
 
   end
 
-
   # nc means non-clinical courses
   def hf_load_all_competencies_nc(rs_data, level)
     comp_hash = {}
@@ -687,6 +686,7 @@ module LsReports::CompetencyHelper
         class_mean_epa[i] = 0
       end
     end
+
     return class_mean_epa
   end
 end

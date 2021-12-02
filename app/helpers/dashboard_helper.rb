@@ -17,9 +17,45 @@ module DashboardHelper
 
   def hf_badge(text, no_of_docs)
     badge = content_tag :span, no_of_docs, class: 'badge badge-warning'
-    text = raw "#{text} #{badge}" if no_of_docs
+    fa_icon = content_tag :i, "", class: "fa fa-upload", style: "color:#7A7F7C"
+    text = raw "#{fa_icon } #{text} #{badge}"
     return text
 
   end
+
+  def hf_get_events(meetings)
+    if current_user.coaching_type == 'student'
+      events_array = []
+      if meetings.nil?
+        return events_array
+      end
+      meetings.each do |meeting|
+        events = Event.where("id = ? and start_date > ?", meeting.event_id, DateTime.now)
+        if !events.empty?
+          events_array.push events.first
+        end
+      end
+      return events_array
+    elsif current_user.coaching_type == 'dean' #and meetings.empty?
+        advisor = Advisor.find_by(email: current_user.email)
+        if advisor.nil?
+          return []
+        end
+        meetings = Coaching::Meeting.where(advisor_id: advisor.id)
+        events_array = []
+        meetings.each do |meeting|
+          events = Event.where("id = ? and start_date > ? and user_id is not NULL", meeting.event_id, DateTime.now)
+          if !events.empty?
+            events_array.push events.first
+            if events_array.count == 8
+              return events_array
+            end
+          end
+        end
+        return events_array
+
+    end
+  end
+
 
 end

@@ -1,0 +1,16 @@
+<p> Hello <%= @user_mailer.full_name.split(", ").last %>, <br /><br />
+
+  <%= raw @body_message %>
+
+  <br />
+
+  Thanks!  <br /><br />
+
+  Assessment Team <br />
+  Leslie Haedinger <br />
+  Assessment Program Manager <br />
+  OHSU School of Medicine|UME <br />
+  haedinge@ohsu.edu</p> <br /><br />
+
+  Click on the following link to unsubscribe: <br />
+  <%= link_to "Unsubscribe", unsubscribe_fom_exams_url(id: @user_mailer.uuid), method: 'get', target: :_blank %>

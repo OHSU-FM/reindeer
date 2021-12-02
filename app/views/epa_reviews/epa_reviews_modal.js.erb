@@ -1,0 +1,340 @@
+'use strict';
+
+$(window).on('beforeunload', function(){
+    socket.close();
+});
+
+//const queryString = window.location.search;
+//console.log(queryString);
+var urlParams = new URLSearchParams(window.location.search);
+var byEmail = urlParams.get('email');
+var byName = urlParams.get('search');
+
+window.$("#mymodal-epa-review").html("<%= j render 'new_modal' %>");
+window.$("#newEpaReviewModal").modal('show');
+window.$(".modal-dialog").draggable({
+    handle: ".modal-header"
+});
+
+$("a[href='#EvidenceTab']").on('shown.bs.tab', function(e) {
+     var rowCount = $('#WbaDetailTable tr').length;
+     if (rowCount > 2)
+       $('#WbaDetailTable').DataTable();
+});
+
+$("a[href='#SummaryTab']").on('shown.bs.tab', function(e) {
+     console.log('shown - after the tab has been shown');
+     var rowCount = $('#CollapsibleWbaTable tr').length;
+     if (rowCount > 2)
+       $('#CollapsibleWbaTable').DataTable();
+});
+
+function localStorageAjax() {
+
+  $.ajax({
+     url : '/epa_reviews/local_storage',
+     type : 'post',
+     dataType:'json',
+     data: {epa_json: epa_json},
+     success : function(epa_json) {
+         //alert('Data: '+ JSON.stringify(data));
+         //alert("local_storage ajax is a success!\n"+JSON.stringify(epa_json));
+         refreshEpaMasterAjax();
+
+     },
+     error : function(request,error)
+     {
+         alert("Request Reviews: "+JSON.stringify(request));
+     }
+  });
+
+}
+
+function refreshEpaMasterAjax() {
+  if (byName == null) {
+		var UrlParam = 'email';
+		var Param = byEmail;
+		var dataParam = {email: byEmail}
+	}
+	else {
+		var UrlParam = 'search';
+		var Param = byName;
+		var dataParam = {search: byName}
+	}
+
+ 	$.ajax({
+ 		url : '/epa_masters?' + UrlParam + '=' + Param,
+ 		type : 'GET',
+ 		dataType:'script',
+ 		data: dataParam,
+ 		success : function(data) {
+ 				//alert('Data: '+ JSON.stringify(data));
+ 				console.log("epa_masters ajax is a success!")
+
+ 		},
+ 		error : function(request,error)
+ 		{
+ 				alert("Request: "+JSON.stringify(request));
+ 		}
+  });
+}
+
+// to check make sure the previous ajax call is completed and successful.
+$('#review-form').bind('ajax:success', function() {
+
+  $('#newEpaReviewModal').modal('hide');
+  // console.log("After Modal Hide ***");
+	// console.log('email: ' + byEmail);
+	// console.log('search: ' + byName);
+
+  if (epa_json.length === 0) {
+    refreshEpaMasterAjax();
+  }
+  else {
+    localStorageAjax();
+  }
+
+});
+
+if (($(".badge_decision1_badge").is(":checked")) && ($(".badge_decision2_badge").is(":checked")))
+  $("#review-form :input").prop("disabled", true);
+
+$('#epa_review_badge_decision1').change(
+    function() {
+      if ($(".badge_decision1_badge").is(":checked")) {
+        $(".reason1_met_min").prop("checked", "checked");
+        $("#epa_review_trust1_grounded").prop("checked", "checked");
+        $(".student_comments1_congrats").prop("checked", "checked");
+
+      }
+     else if ($(".badge_decision1_deny").is(":checked")) {
+        $(".reason_have_not_met_min").prop("checked", "checked");
+        $("#epa_review_trust1_distrust").prop("checked", "checked");
+        $(".student_comments1_work_towards").prop("checked", "checked");
+
+      }
+      else if ($(".badge_decision1_not_yet").is(":checked")) {
+        $(".reason1_have_not_met_min").prop("checked", "checked");
+        $("#epa_review_trust1_no_decision").prop("checked", "checked");
+        $(".student_comments1_making_progress").prop("checked", "checked");
+      }
+    }
+);
+
+$("#epa_review_trust1_grounded, #epa_review_trust1_presumptive").change(
+  function() {
+    if ($("#epa_review_trust1_grounded").is(":checked") || $("#epa_review_trust1_presumptive").is(":checked") ) {
+       $(".badge_decision1_badge").prop("checked", "checked");
+       $(".reason1_met_min").prop("checked", "checked");
+       $(".student_comments1_congrats").prop("checked", "checked");
+
+    }
+  }
+)
+$("#epa_review_trust1_distrust, #epa_review_trust1_questioned_trust").change(
+  function() {
+    if ($("#epa_review_trust1_distrust").is(":checked") || $("#epa_review_trust1_questioned_trust").is(":checked") ) {
+       $(".badge_decision1_deny").prop("checked", "checked");
+       $(".reason1_have_not_met_min").prop("checked", "checked");
+       $(".student_comments1_work_towards").prop("checked", "checked");
+
+    }
+  }
+)
+
+$("#epa_review_trust2_distrust, #epa_review_trust2_questioned_trust").change(
+  function() {
+    if ($("#epa_review_trust2_distrust").is(":checked") || $("#epa_review_trust2_questioned_trust").is(":checked") ) {
+       $(".badge_decision2_deny").prop("checked", "checked");
+       $(".reason2_have_not_met_min").prop("checked", "checked");
+       $(".student_comments2_work_towards").prop("checked", "checked");
+
+    }
+  }
+)
+
+
+$("#epa_review_trust2_grounded, #epa_review_trust2_presumptive").change(
+  function() {
+    if ($("#epa_review_trust2_grounded").is(":checked") || $("#epa_review_trust2_presumptive").is(":checked") ) {
+       $(".badge_decision2_badge").prop("checked", "checked");
+       $(".reason2_met_min").prop("checked", "checked");
+       $(".student_comments2_congrats").prop("checked", "checked");
+
+    }
+  }
+)
+
+$('#epa_review_badge_decision2').change(
+	function() {
+    if ($(".badge_decision2_badge").is(":checked")) {
+      $(".reason2_met_min").prop("checked", "checked");
+      $("#epa_review_trust2_grounded").prop("checked", "checked");
+      $(".student_comments2_congrats").prop("checked", "checked");
+
+    }
+   else if ($(".badge_decision2_deny").is(":checked")) {
+      $(".reason2_have_not_met_min").prop("checked", "checked");
+      $("#epa_review_trust2_distrust").prop("checked", "checked");
+      $(".student_comments2_work_towards").prop("checked", "checked");
+
+    }
+    else if ($(".badge_decision2_not_yet").is(":checked")) {
+      $(".reason2_have_not_met_min").prop("checked", "checked");
+      $("#epa_review_trust2_no_decision").prop("checked", "checked");
+      $(".student_comments2_making_progress").prop("checked", "checked");
+    }
+
+	}
+);
+
+var values = {};
+$.each($("#review-form").serializeArray(), function (i, field) {
+    values[field.name] = field.value;
+});
+
+//Value Retrieval Function
+var getValue = function (valueName) {
+    return values[valueName];
+};
+
+//Retrieve the Values
+
+var reviewer1 = getValue("epa_review[reviewer1]");
+var reviewer2 = getValue("epa_review[reviewer2]");
+var full_name = $('#full_name').data('full_name');
+var badge_decision1 = getValue("epa_review[badge_decision1]");
+var badge_decision2 = getValue("epa_review[badge_decision2]");
+
+var general_comm1 = getValue("epa_review[general_comments1]");
+var general_comm2 = getValue("epa_review[general_comments2]");
+var review_date2  = getValue("epa_review[review_date2]");
+if (review_date2 === "") {
+  $('#epa_review_review_date2').css('background-color', '#ffff00');
+}
+
+console.log('full_name: ' + full_name);
+console.log("badge_decision1: " + badge_decision1);
+console.log("badge_decision2: " + badge_decision2);
+// console.log("gen comm1: "  + general_comm1);
+// console.log("gen comm2: " + general_comm2);
+
+if (badge_decision1 === "Badge" && badge_decision2 === "Badge") {
+	$('#col-reviewer1').addClass("visible");
+	$('#col-reviewer2').addClass("visible");
+} else if (reviewer1 === full_name) {
+					$('#col-reviewer2').removeClass("visible").addClass("invisible");
+					$('#col-reviewer1').addClass("visible");
+          $('#epa_review_review_date1').datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
+          //$( "#datepicker" ).datepicker({dateFormat:"yy/mm/dd"}).datepicker("setDate",new Date());
+} else if (reviewer2 === full_name) {
+					$('#col-reviewer1').removeClass("visible").addClass("invisible");
+					$('#col-reviewer2').addClass("visible");
+          $('#epa_review_review_date2').datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
+// } else if (general_comm1 == "" && general_comm2 != "") {
+// 									$('#col-reviewer2').removeClass("visible").addClass("hidden");
+// 									$('#col-reviewer1').addClass("visible");
+}
+
+
+
+var epa_json = []
+var EpaArray = ["EPA1", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13"]
+var contextMenuItems = {};
+for (var i = 0, l = EpaArray.length; i < l; i++) {
+    contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "fa-copy" };
+}
+contextMenuItems["sep1"] = "---------";
+contextMenuItems["paste"] = {name: "Paste", icon: "fa-paste"};
+var epa = $("#epa").val();
+var reviewable_id = $("#reviewable_id").val();
+
+function reloadContextMenuItems(epa) {
+  //var epa = $("#epa").val();
+  contextMenuItems[epa] = {name: epa +" - Reviewing!", icon: "fa-copy" };
+  console.log("epa selected: " + epa)
+  return contextMenuItems
+}
+
+
+$(function() {
+  $('#course_name').mouseup(function(){
+    $(this).after("Mouse button released.");
+    var course_name = $('#course_name').data('course-name')
+   });
+
+     $.contextMenu({
+         selector: '.context-menu-one',
+            //items: reloadContextMenuItems(epa),
+            build: function($triggerElement, e){
+                    var epa = $("#epa").val();
+                    return {
+                        //callback: function(){},
+                        items: reloadContextMenuItems(epa)
+                    }
+           },
+
+         callback: function(key, options) {
+
+             var m = "clicked: " + key;
+             var selectedText = window.getSelection().toString();
+             var parentid = window.getSelection().focusNode.parentElement.id;   //anchorNode.parentElement.id;
+             var course_name = $('#' + parentid).data('course-name').split("]");
+             var course_code = course_name[0].replace("[", "");
+             var formAction = $('#review-form').attr('action');
+
+             var reviewable_id = $("#reviewable_id").val();
+             var fullName = $('#full_name').data('full_name');
+             var reviewer1 = $('#epa_review_reviewer1').val();
+             var epa = $("#epa").val();
+             var epa_remove = epa + ": ";
+
+             selectedText = selectedText.replace(epa_remove, "");
+
+             const formatYmd = date => date.toISOString().slice(0, 10);
+             var todayDate = formatYmd(new Date());      // 2020-05-06
+
+             if (epa == key) {
+               if (fullName === reviewer1) {
+                 var GeneralComment1 =  $("#epa_review_general_comments1").val();
+                 var lineFeed = GeneralComment1 === '' ? "" : "\n";
+                 $("#epa_review_general_comments1").val(GeneralComment1 + lineFeed + todayDate + ": " + course_code + ": " + selectedText);
+               }
+               else {
+                 var GeneralComment2 =  $("#epa_review_general_comments2").val();
+                 var lineFeed = GeneralComment2 === '' ? "" : "\n";
+                 $("#epa_review_general_comments2").val(GeneralComment2 + lineFeed + todayDate + ": " + course_code + ": " + selectedText);
+               }
+
+             }
+             else {
+               var epa_hash = {};
+               var epa_remove2 = key + ": ";
+               selectedText = selectedText.replace(epa_remove2, "");
+               epa_hash["epa"] = key;
+               epa_hash["full_name"] = fullName;
+               epa_hash["comments"] =  todayDate + ": " + course_code + ": " + selectedText;
+               epa_hash["email"] = byEmail
+               //console.log("epa_hash: " + JSON.stringify(epa_hash));
+               //console.log('ByEmail - inside contextMenu: ' + byEmail)
+               epa_json.push(epa_hash);
+
+             }
+
+             // window.console && console.log(m) || alert(m + '\nparentid: ' + parentid + '\ncourse_code: ' + course_code + '\nselectedText: ' + selectedText +
+             //        "\nformAction: " + formAction +
+             //        "\nepa: " + epa +
+             //        "\nreviewable_id: " + reviewable_id +
+             //        "\nfull_name: " + fullName
+             //    );
+
+
+         }
+
+
+     });
+
+     $('.context-menu-one').on('click', function(e){
+         console.log('clicked', this);
+     })
+ });

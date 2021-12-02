@@ -21,7 +21,7 @@ module LimeExt::LimeStat
             :title,
             :q_text,
             :sub_stats,
-            :question, 
+            :question,
             :response_set
 
 
@@ -105,7 +105,7 @@ module LimeExt::LimeStat
 
   class DescriptiveStatistics
         attr_reader :confidence_level, :mean, :median, :standard_deviation,
-                        :sum, :range, :n, :standard_deviation, :standard_error, :alpha, :crit_p, 
+                        :sum, :range, :n, :standard_deviation, :standard_error, :alpha, :crit_p,
                                     :df, :crit_v, :margin_of_error, :confidence_interval
 
 
@@ -134,15 +134,15 @@ module LimeExt::LimeStat
       @n = data.count
       # Confidence Interval of Mean
       # http://stattrek.com/estimation/confidence-interval.aspx
-      @standard_deviation = stats.standard_deviation
-      return if @standard_deviation.nil?
-      @standard_error = @standard_deviation / Math.sqrt(@n)
-      @alpha = 1 - (@confidence_level/100)
-      @crit_p = 1 - @alpha/2
-      @df = @n - 1
-      @crit_v = Statistics2.tdist(@df, @crit_p)
-      @margin_of_error = @crit_v * @standard_error
-      @confidence_interval = [@mean - @margin_of_error, @mean + @margin_of_error]
+      # @standard_deviation = stats.standard_deviation
+      # return if @standard_deviation.nil?
+      # @standard_error = @standard_deviation / Math.sqrt(@n)
+      # @alpha = 1 - (@confidence_level/100)
+      # @crit_p = 1 - @alpha/2
+      # @df = @n - 1
+      # @crit_v = Statistics2.tdist(@df, @crit_p)
+      # @margin_of_error = @crit_v * @standard_error
+      # @confidence_interval = [@mean - @margin_of_error, @mean + @margin_of_error]
     end
 
   end
@@ -214,8 +214,8 @@ module LimeExt::LimeStat
       # count occurrences or include? if is array
       is_array = data.first.respond_to?('each')
       @frequency = data.count{|val| is_array ? val.include?(code) : val == code}
-      @pk_frequency = count_unique_related(@role_aggregate.pk_fieldname, data)
-      @agg_frequency = count_unique_related(@role_aggregate.agg_fieldname, data)
+      # @pk_frequency = count_unique_related(@role_aggregate.pk_fieldname, data)
+      # @agg_frequency = count_unique_related(@role_aggregate.agg_fieldname, data)
       @percent = (@frequency.to_f / @total) * 100
       @percent = 0 if @total == 0
     end

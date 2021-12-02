@@ -1,0 +1,33 @@
+<br />
+<span>
+  <h4 style="text-align:center"> Detail WBA Report
+    <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: 'wba_report.txt') %>
+  </h4>
+</span>
+<table id="WbaReportTable"class="table table-hover table-striped responsive">
+  <thead>
+    <tr class="filters">
+        <th>Student Name</th>
+        <th>EPA</th>
+        <th>Involvment</th>
+        <th>Submit Date</<th></th>
+        <th>Clinical Assessor</th>
+        <th>Assessor Name </th>
+        <th>Attending Faculty</th>
+
+    </tr>
+  </thead>
+  <% @wba_report.each do |user| %>
+    <% user.epas.each do |wba| %>
+      <tr>
+          <td><%= wba.student_assessed %></td>
+          <td><%= wba.epa %></td>
+          <td><%= wba.involvement %></td>
+          <td><%= wba.submit_date %></td>
+          <td><%= wba.clinical_assessor %></td>
+          <td><%= wba.assessor_name %></td>
+          <td><%= wba.attending_faculty%></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

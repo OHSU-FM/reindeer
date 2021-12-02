@@ -5,6 +5,7 @@ Rails.application.configure do
   config.lograge.enabled = true
   # Reload files in the lib directory
   config.autoload_paths += %W(#{config.root}/lib/edna_console)
+  config.assets.paths << Rails.root.join("node_modules")
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -20,7 +21,9 @@ Rails.application.configure do
   config.action_controller.include_all_helpers = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -33,8 +36,9 @@ Rails.application.configure do
   # number of complex assets.
   #config.assets.compress = true
   #config.assets.compile = true
-  #config.assets.digest = false
+  #config.assets.digest = true
   config.assets.debug = true
+  #config.assets.check_precompiled_asset = false
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
@@ -43,9 +47,9 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  BetterErrors::Middleware.allow_ip! '127.0.0.1'
-  
-  # Enable this (as false) in order to see the error pages in a dev environment 
+  #BetterErrors::Middleware.allow_ip! '127.0.0.1'
+
+  # Enable this (as false) in order to see the error pages in a dev environment
   #config.consider_all_requests_local = false
    # config.after_initialize do
    #   Bullet.enable = true
@@ -65,7 +69,7 @@ Rails.application.configure do
 
 
 config.after_initialize do
-  Bullet.enable = false 
+  Bullet.enable = false
   #Bullet.sentry = true
   Bullet.alert = true
   Bullet.bullet_logger = true
