@@ -61,7 +61,8 @@ module ArtifactsHelper
       return true
     end
 
-     if FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id, code: code).visible
+     record_found = FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id, code: code)
+     if (!record_found.nil?) and (record_found.visible)
        return true
      else
        return false

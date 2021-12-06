@@ -17,7 +17,7 @@
               <% role_aggregates.each do |title, ra| %>
                 <li>
                   <%= link_to title,
-                    polymorphic_path([ra.default_view, :ls_report], sid: ra.lime_survey_sid, pk: (@pk.nil? ? "_" : @pk)),
+                    polymorphic_path([ra.default_view.to_sym, :ls_report], sid: ra.lime_survey_sid, pk: (@pk.nil? ? "_" : @pk)),
                     class: "modal-click", 'data-target' => '#modal-report' %>
                 </li>
               <% end %>
@@ -45,7 +45,7 @@
             <br/>
             <select id="pk_selector" name="pk_selector" class="select_a_link form-control input-sm">
               <% @pk_enum.each do |key, val|%>
-                <option value="<%= polymorphic_path([@view_type, :ls_report], pk: val, agg: @agg)%>"
+                <option value="<%= polymorphic_path([@view_type.to_sym, :ls_report], pk: val, agg: @agg)%>"
                   <%= @pk == val ? 'selected="selected"' : '' %>><%= key %></option>
               <% end %>
             </select>
@@ -58,7 +58,7 @@
             <br/>
             <select id="agg_selector" class="select_a_link form-control input-sm">
               <% @agg_enum.each do |key, val|%>
-                <option value="<%= polymorphic_path([@view_type, :ls_report], agg: val, pk: (@pk.nil? ? (val == '' ? '' : '_') : '_'))%>"
+                <option value="<%= polymorphic_path([@view_type.to_sym, :ls_report], agg: val, pk: (@pk.nil? ? (val == '' ? '' : '_') : '_'))%>"
                   <%= @agg == val ? 'selected="selected"' : '' %>><%= key %></option>
               <% end %>
             </select>
