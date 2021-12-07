@@ -61,7 +61,7 @@
 //= require simplemde.min
 //= require nested_form_fields
 //= require goals
-//= require cable
+// require cable  commented out on 12/6/2021
 //= require datatables
 //= require artifacts
 //= require epa_graphs.js

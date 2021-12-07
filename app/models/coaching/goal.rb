@@ -12,7 +12,8 @@ class Coaching::Goal < ApplicationRecord
   validates :competency_tag, inclusion: { in: VALID_COMPETENCY_TAGS }
   validates :g_status, inclusion: { in: VALID_STATUSES }
 
-  after_initialize :set_default_values, :set_default_values_for_room
+  after_initialize :set_default_values
+  #:set_default_values_for_room
 
   scope :completed, -> { where(g_status: "Completed") }
 

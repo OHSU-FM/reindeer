@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
 
   validate :ldap_cannot_update_password
 
-  after_initialize :set_default_values
+  #after_initialize :set_default_values
 
   def ldap_cannot_update_password
     if is_ldap? && encrypted_password_changed?
