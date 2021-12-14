@@ -61,33 +61,27 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-    <div class="gridster fade-in three"
-      data-step="2"
-      data-position="top"
-      data-intro="These are your dashboard items (widgets).
-      Individual items on the dashboard can be moved around, resized and arranged in any way that
-      you see fit">
-      <ul>
-
-        <%= render partial: "dashboard/widgets/form_empty", :locals=>{:dash=>@dash} %>
-
-        <% @w_counter = 0 %>
-        <%= f.fields_for :dashboard_widgets, :id=>'widget-fields' do |widget| %>
-          <% @w_counter += 1 %>
-          <% begin %>
-            <%= render :partial=>"dashboard/widgets/form", :locals=>{:f=>widget, :dash=>@dash} %>
-          <% rescue LsReportsHelper::AccessDenied => e %>
-            <%= render :partial=>"dashboard/widgets/form_access_denied", :locals=>{:f=>widget, :dash=>@dash} %>
-          <% rescue Dashboard::WidgetExpired => e %>
-            <% widget.object.destroy %>
-          <% end %>
-        <!-- After render -->
-        <% end %>
-        <!-- < % if @surveys.present? %>  -->
-        <!--  < %= render partial: "dashboard/widgets/recent_surveys", locals: {dash: @dash} %> -->
-        <!-- < % end %> -->
-
-      </ul>
+    <div class="row">
+      <div class="column">
+        <div class="card">
+            <%= render partial: 'dashboard/wba_data' %>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+            <%= render partial: 'dashboard/appt_schedule' %>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+            This is a test!
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+            This is a test!
+        </div>
+      </div>
     </div>
   </div>
 <% end %>

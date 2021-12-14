@@ -28,9 +28,9 @@ class DashboardController < ApplicationController
 
   def show
     @dash = Dashboard.find(params[:id].to_i)
-    @dash.dashboard_widgets.build if @dash.dashboard_widgets.nil?
-    authorize! :read, @dash
-    do_gon
+    # @dash.dashboard_widgets.build if @dash.dashboard_widgets.nil?
+    # authorize! :read, @dash
+    # do_gon
 
     respond_to do |format|
       layout = !(params[:layout] == 'false')

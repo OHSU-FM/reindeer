@@ -1,0 +1,51 @@
+<% if current_user.coaching_type == 'student'%>
+  <h4><font color="purple">EPA Badging/Entrustment</font></h4>
+  <hr>
+  <h5><font color="black">As of today, you have earned:</font></h5>
+  <% if current_user.matriculated_date.strftime("%Y").to_i <= 2017 %>
+    <% wba_req = 50 %>
+  <% elsif current_user.matriculated_date.strftime("%Y").to_i == 2018 %>
+    <%= wba_req = 75 %>
+  <% else %>
+    <% wba_req = 100 %>
+  <% end %>
+  <hr>
+
+  Total # of WBAs (all levels) : <b><%= current_user.epas.where.not(involvement: 0).count.to_s %> </b>out of <b><%= wba_req.to_s %></b><br />
+  Total # of Badges Awarded : <b><%= current_user.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(current_user)).count.to_s %> </b>out of <b>13</b>
+  <br />
+  <hr>
+  <h5><font color="black">Class earnings:</font></h5>
+  <hr>
+    <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
+    <%= cohort_title %> WBA Average: <b><%= ave.nil? ? 'N/A' : ave %><b><br />
+    <%= cohort_title %> WBA Median&nbsp;: <b><%= med.nil? ? 'N/A' : med %></b>
+  <hr>
+<% else %>
+    <% stats = hf_wba_stats(current_user) %>
+    <h5><font color="purple">WBA Statistics</font></h5>
+    <table class="table table-hover" >
+      <tr>
+        <th>Cohort</th>
+        <th style="text-align:center">Max</th>
+        <th style="text-align:center">Min</th>
+        <th style="text-align:center">Ave</th>
+        <th style="text-align:center">Median</th>
+      </tr>
+      <body>
+        <% if !stats.nil? %>
+          <% stats.each do |key, stat| %>
+            <tr>
+              <td><%= key %></td>
+
+              <% stat.each do |dd| %>
+                <td style="text-align:center"><%= dd.round %></td>
+              <% end %>
+
+            </tr>
+          <% end %>
+        <% end %>
+
+      </body>
+    </table>
+<% end %>
