@@ -6,6 +6,18 @@ module ArtifactsHelper
     return ARTIFACT_CATEGORY
   end
 
+  def hf_check_nbme_pdf(shelf_artifacts)
+    no_of_nbme = 0
+    shelf_artifacts.each do |artifact|
+      artifact.documents.each do |document|
+        if document.filename.to_s.include? "NBME"
+          no_of_nbme += 1
+        end
+      end
+    end
+    return no_of_nbme
+  end
+
   def hf_get_fom_artifacts (pk, artifact_title, artifact_content)
     selected_user = User.find_by(email: pk)
     if selected_user.nil?

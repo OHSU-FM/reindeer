@@ -46,7 +46,8 @@
                       <h5 class="mb-0">
                         <a class="collapsed" role="button" data-toggle="collapse" href="#collapse_formative" aria-expanded="false"
                                aria-controls="collapse_formative" style="color:Purple;"><i>Formative Feedback (CSA & OSCE)</i> &nbsp;
-                               <span class="badge badge-danger"><%= @no_official_docs.to_s + " PDFs" %></span>
+                               <% no_of_nbme = hf_check_nbme_pdf(@shelf_artifacts) %>
+                               <span class="badge badge-danger"><%= (@no_official_docs - no_of_nbme).to_s + " PDFs" %></span>
                         </a>
                       </h5>
                     </div>
