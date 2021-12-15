@@ -9,15 +9,15 @@ class DashboardController < ApplicationController
     end
     get_artifacts
     #@surveys = current_user.lime_surveys_by_most_recent(5)
-    @dash = Dashboard.includes(:dashboard_widgets)
-      .where(user_id: current_user.id).first_or_initialize
+    @dash = Dashboard.where(user_id: current_user.id).first_or_initialize  #includes(:dashboard_widgets)
     if current_user.coaching_type == 'student'
       @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
     else
       @meetings = []
     end
     authorize! :read, @dash
-    do_gon
+
+    #do_gon   # disable dashboard_widgets
 
     respond_to do |format|
       layout = !(params[:layout] == 'false')

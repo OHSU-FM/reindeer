@@ -41,23 +41,7 @@
                 </ul>
               </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li style="display:none;">
-                <%= link_to_add_association f, :dashboard_widgets, {
-                  :partial=>'dashboard/widgets/form',
-                  :id=>'dashboard-add'
-                } do %>
-                <i class="fa fa-plus-square-o"></i>
-                Add
-              <% end %>
-            </li>
-            <li style="display:none;">
-              <%= f.button :submit, :id=>'dashboard-save', :class=>'btn navbar-btn' do %>
-                <i class="fa fa-floppy-o"></i>
-                Save
-              <% end %>
-            </li>
-          </ul>
+
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
