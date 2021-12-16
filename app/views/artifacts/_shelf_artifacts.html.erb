@@ -13,21 +13,3 @@
       <% end %>
     <% end %>
 <% end %>
-
-
-<% if !@mock_artifacts.nil? %>
-    <% @mock_artifacts.each do |artifact| %>
-      <% artifact.documents.each do |document| %>
-        <tr>
-          <td>
-            <% if (hf_file_visible("Mock Step 1") == true) and (artifact.content.include? "Mock") %>
-              <%= link_to document.filename, url_for(document), target: :_blank %>
-              /
-              <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
-              <br />
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    <% end %>
-<% end %>
