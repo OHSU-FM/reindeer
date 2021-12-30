@@ -1,0 +1,8 @@
+
+
+      <% failed_exams_hash.each do |key, values| %>
+
+        <% values.each do |key2, val2| %>
+          <small><%= @labels_hash["#{course_code}"]["#{key2}"] %>: <i style="color:red"><%= val2 %> </small></i><br />
+        <% end %>
+      <% end %>

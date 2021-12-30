@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
   include LsReportsHelper
+  include DashboardHelper
   layout 'full_width'
 
   def index
@@ -15,9 +16,14 @@ class DashboardController < ApplicationController
     else
       @meetings = []
     end
+    if current_user.coaching_type != 'student'
+      @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+    end 
+
     authorize! :read, @dash
 
     #do_gon   # disable dashboard_widgets
+
 
     respond_to do |format|
       layout = !(params[:layout] == 'false')
