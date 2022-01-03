@@ -31,6 +31,7 @@
 // require modern-business/modern-business.js
 //= require cocoon
 //= require highcharts
+//= require chartkick
 //= require highcharts/highcharts-more
 //= require highcharts/highcharts-3d.js
 //= require highcharts/modules/annotations

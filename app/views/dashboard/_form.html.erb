@@ -62,6 +62,12 @@
               <%= render partial: 'dashboard/tot_failed_exams' %>
           </div>
         </div>
+      <% else %>
+      <div class="column">
+        <div class="card scroll">
+            <%= render partial: 'dashboard/wba_graph' %>
+        </div>
+      </div>
       <% end %>
       <div class="column">
         <div class="card">

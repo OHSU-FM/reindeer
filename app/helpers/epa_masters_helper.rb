@@ -305,5 +305,13 @@ module EpaMastersHelper
 
   end
 
+  def hf_process_student(student, code)
+    if code == 'WBA'
+      return process_wba(student)
+    else
+      return []
+    end
+  end
+
 
 end

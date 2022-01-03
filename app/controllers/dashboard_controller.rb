@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   include LsReportsHelper
   include DashboardHelper
+  include EpaMastersHelper
   layout 'full_width'
 
   def index
@@ -18,7 +19,11 @@ class DashboardController < ApplicationController
     end
     if current_user.coaching_type != 'student'
       @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
-    end 
+    elsif current_user.coaching_type == 'student'
+      student = User.where(id: current_user.id)
+      @wba_epa_data = hf_process_student(student, 'WBA')
+
+    end
 
     authorize! :read, @dash
 

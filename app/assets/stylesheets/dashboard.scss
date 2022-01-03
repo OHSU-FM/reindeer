@@ -369,3 +369,8 @@ ul, #myUL {
 .active {
   display: block;
 }
+.table th, .table td {
+    padding: 0.25rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
