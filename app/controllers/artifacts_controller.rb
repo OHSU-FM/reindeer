@@ -10,9 +10,14 @@ class ArtifactsController < ApplicationController
   def index
     if !params[:user_id].nil?
       @user_id = params[:user_id]
-      @artifacts = Artifact.where(user_id: params[:user_id])
+      #@artifacts = Artifact.where(user_id: params[:user_id])
+      if (hf_file_visible("Mock Step 1") == true)
+        @artifacts = Artifact.where(user_id: current_user.id)
+      else
+          @artifacts = Artifact.where("user_id = ? and content not like ?", current_user.id, "%Mock%")
+      end
     else
-      if (hf_file_visible("Mock Step 1") == true) 
+      if (hf_file_visible("Mock Step 1") == true)
         @artifacts = Artifact.where(user_id: current_user.id)
       else
           @artifacts = Artifact.where("user_id = ? and content not like ?", current_user.id, "%Mock%")
