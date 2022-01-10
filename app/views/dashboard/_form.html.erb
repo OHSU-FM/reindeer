@@ -63,17 +63,19 @@
           </div>
         </div>
       <% else %>
-      <div class="column">
-        <div class="card scroll">
-            <%= render partial: 'dashboard/wba_graph' %>
+        <div class="column">
+          <div class="card scroll">
+              <%= render partial: 'dashboard/wba_graph' %>
+          </div>
         </div>
-      </div>
       <% end %>
-      <div class="column">
-        <div class="card">
-            Stay tuned!  More data will be displayed here!
+      <% if current_user.coaching_type == 'student' %>
+        <div class="column">
+          <div class="card">
+              <%= render partial: 'dashboard/clinical_assessor_graph' %>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 <% end %>

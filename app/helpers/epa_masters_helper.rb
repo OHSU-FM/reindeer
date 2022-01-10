@@ -308,6 +308,10 @@ module EpaMastersHelper
   def hf_process_student(student, code)
     if code == 'WBA'
       return process_wba(student)
+    elsif code == 'ClinicalAssessor'
+      uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
+      wba_clinical_assessor = process_wba_clinical(student, uniq_assessors)
+      return wba_clinical_assessor
     else
       return []
     end

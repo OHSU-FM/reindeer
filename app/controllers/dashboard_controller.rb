@@ -22,6 +22,7 @@ class DashboardController < ApplicationController
     elsif current_user.coaching_type == 'student'
       student = User.where(id: current_user.id)
       @wba_epa_data = hf_process_student(student, 'WBA')
+      @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
 
     end
 

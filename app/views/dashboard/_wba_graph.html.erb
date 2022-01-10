@@ -1,13 +1,2 @@
-<h5># of WBAs as of <%= Time.now.strftime("%m-%d-%Y") %></h5>
-<table class="table-sm table-hover table-striped" >
-  <tr><small>
-    <td style="width:10px;"><b>EPA</b></td>
-    <td align="center"><b># of WBAs</b></td>
-  </small></tr>
-  <% for i in 1..13 do %>
-    <tr>
-      <td><small><%= "EPA#{i}: " %></small></td>
-      <td align="center"><small><%= @wba_epa_data.first["EPA#{i}"].to_s %></small></td>
-    </tr>
-  <% end %>
-</table>
+<% dashboard_epa_wba_graph ||= hf_create_epa_wba_graph(@wba_epa_data)  %>
+<%= high_chart("dashboard_epa_wba_graph", dashboard_epa_wba_graph) %>

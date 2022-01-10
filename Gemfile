@@ -151,7 +151,7 @@ gem 'rails-ujs', '~> 0.1.0'
 # highchart
 gem "highcharts-rails"
 gem "lazy_high_charts"
-gem 'chartkick'
+#gem 'chartkick'
 #gem 'groupdate'
 #=======================
 # dataTables

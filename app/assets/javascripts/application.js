@@ -16,7 +16,7 @@
 //= require rails-ujs
 //= require date
 // turbolinks is commented out..
-// require turbolinks
+//= require turbolinks
 //= require calendar
 //= require popper
 //= require select2
@@ -31,7 +31,6 @@
 // require modern-business/modern-business.js
 //= require cocoon
 //= require highcharts
-//= require chartkick
 //= require highcharts/highcharts-more
 //= require highcharts/highcharts-3d.js
 //= require highcharts/modules/annotations

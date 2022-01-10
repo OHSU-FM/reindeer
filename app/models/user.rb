@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   belongs_to :cohort
 
   has_many :charts, inverse_of: :user, dependent: :destroy
-  has_many :dashboard_widgets, through: :dashboard
+  #has_many :dashboard_widgets, through: :dashboard  ## disabled dashboard_widgets
   has_many :permission_ls_groups, through: :permission_group
   has_many :question_widgets, dependent: :delete_all
   has_many :user_externals, dependent: :delete_all, inverse_of: :user
