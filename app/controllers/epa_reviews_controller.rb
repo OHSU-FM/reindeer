@@ -207,6 +207,9 @@ class EpaReviewsController < ApplicationController
     elsif @user.permission_group_id == 13
       @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
       @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
+    elsif  @user.permission_group_id == 17
+      @lastReviewEndDate = @badge_review_dates["Med23Badge"]["lastReviewEndDate"]
+      @nextReviewEndDate = @badge_review_dates["Med23Badge"]["nextReviewEndDate"]  
     end
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
