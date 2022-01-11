@@ -16,7 +16,7 @@
 //= require rails-ujs
 //= require date
 // turbolinks is commented out..
-//= require turbolinks
+// require turbolinks
 //= require calendar
 //= require popper
 //= require select2

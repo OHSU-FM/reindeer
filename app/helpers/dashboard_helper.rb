@@ -66,13 +66,13 @@ module DashboardHelper
 
     tot_failed_hash = {}
     fom_exams.each do |exam|
-      comp1 = exam.select{|key, val| val if key.include? "comp1_wk"}.select{|key, val| val if val < 70.0 }
-      comp2a = exam.select{|key, val| val if key.include? "comp2a"}.select{|key, val| val if val < 70.0 }
-      comp2b = exam.select{|key, val| val if key.include? "comp2b" and key.include? "Average" }.select{|key, val| val if val < 70.0 }
-      comp3 = exam.select{|key, val| val if key.include? "comp3_"}.select{|key, val| val if val < 70.0 }
-      comp4 = exam.select{|key, val| val if key.include? "comp4_"}.select{|key, val| val if val < 70.0 }
-      comp5a = exam.select{|key, val| val if key.include? "comp5a_hss"}.select{|key, val| val if val < 70.0 }
-      comp5b = exam.select{|key, val| val if key.include? "comp5b_bss"}.select{|key, val| val if val < 70.0 }
+      comp1 = exam.select{|key, val| val if key.include? "comp1_wk"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp2a = exam.select{|key, val| val if key.include? "comp2a"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp2b = exam.select{|key, val| val if key.include? "comp2b" and key.include? "Average" }.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp3 = exam.select{|key, val| val if key.include? "comp3_"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp4 = exam.select{|key, val| val if key.include? "comp4_"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp5a = exam.select{|key, val| val if key.include? "comp5a_hss"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp5b = exam.select{|key, val| val if key.include? "comp5b_bss"}.select{|key, val| val if val < 70.0 and val != 0.0}
       tot_failed_tests = comp1.count + comp2a.count + comp2b.count + comp3.count + comp4.count + comp5a.count + comp5b.count
       block_hash.store(exam["course_code"], tot_failed_tests)
       tot_failed_tests = 0
@@ -130,20 +130,27 @@ module DashboardHelper
 
   end
 
+  def check_for_scores(exam, param)
+    if param == 'comp2b'
+      return exam.select{|key, val| val if key.include? "comp2b" and key.include? "Average" }.select{|key, val| val if val < 70.0 and val != 0.0}
+    else
+      return exam.select{|key, val| val if key.include? param}.select{|key, val| val if val < 70.0 and val != 0.0}
+    end
+  end
+
 
   def hf_get_failed_exams(fom_exams)
     fom_exams = fom_exams.to_a.map(&:serializable_hash)
     failed_exams_hash = {}
     @labels_hash = {}
     fom_exams.each do |exam|
-      comp1 = exam.select{|key, val| val if key.include? "comp1_wk"}.select{|key, val| val if val < 70.0 }
-      comp2a = exam.select{|key, val| val if key.include? "comp2a"}.select{|key, val| val if val < 70.0 }
-      comp2b = exam.select{|key, val| val if key.include? "comp2b" and key.include? "Average" }.select{|key, val| val if val < 70.0 }
-      comp3 = exam.select{|key, val| val if key.include? "comp3_"}.select{|key, val| val if val < 70.0 }
-      comp4 = exam.select{|key, val| val if key.include? "comp4_"}.select{|key, val| val if val < 70.0 }
-      comp5a = exam.select{|key, val| val if key.include? "comp5a_hss"}.select{|key, val| val if val < 70.0 }
-      comp5b = exam.select{|key, val| val if key.include? "comp5b_bss"}.select{|key, val| val if val < 70.0 }
-
+      comp1 = check_for_scores(exam, 'comp1_wk') #exam.select{|key, val| val if key.include? "comp1_wk"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp2a = check_for_scores(exam, 'comp2a')  #exam.select{|key, val| val if key.include? "comp2a"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp2b = check_for_scores(exam, 'comp2b')  #exam.select{|key, val| val if key.include? "comp2b" and key.include? "Average" }.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp3 = check_for_scores(exam, 'comp3_')  #exam.select{|key, val| val if key.include? "comp3_"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp4 = check_for_scores(exam, 'comp4_')  #exam.select{|key, val| val if key.include? "comp4_"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp5a = check_for_scores(exam, 'comp5a_hss') #exam.select{|key, val| val if key.include? "comp5a_hss"}.select{|key, val| val if val < 70.0 and val != 0.0}
+      comp5b = check_for_scores(exam, 'comp5b_bss') #exam.select{|key, val| val if key.include? "comp5b_bss"}.select{|key, val| val if val < 70.0 and val != 0.0}
 
       failed_exams_hash.store(exam["course_code"], {comp1: comp1, comp2a: comp2a, comp3: comp3, comp4: comp4, comp5a: comp5a, comp5b: comp5b})
       labels = get_FomLabels(exam["permission_group_id"], exam["course_code"])
