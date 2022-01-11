@@ -1,6 +1,6 @@
 <h5><font color="purple">Potential Struggling Students - Med25</font></h5>
 <ul id="myUL">
- <% @tot_failed_arry[0..0].each do |student| %>
+ <% @tot_failed_arry[0..14].each do |student| %>
     <li><span class="caret"><%= student["full_name"].rjust(30) %> <small><i>(Total # of Failed Exams: <b><%= student["TotalFailed"] %></b>)</i></small></span>
       <ul class="nested">
         <% student_sid = @students_array.select{|s| s[student["full_name"]]}.last["sid"] %>

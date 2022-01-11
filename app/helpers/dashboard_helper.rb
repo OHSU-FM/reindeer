@@ -273,11 +273,11 @@ module DashboardHelper
                 '#DB843D',
                 '#92A8CD',
                 '#A47D7C',
-                '#80699B',
-                '#3D96AE',
-                '#DB843D',
-                '#89A54E',
-                '#B5CA92'])
+                '#806888',
+                '#3D9777',
+                '#DB8666',
+                '#89A555',
+                '#B54444'])
 
       f.yAxis [
          { tickInterval: 5,
