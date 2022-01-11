@@ -41,53 +41,41 @@
                 </ul>
               </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li style="display:none;">
-                <%= link_to_add_association f, :dashboard_widgets, {
-                  :partial=>'dashboard/widgets/form',
-                  :id=>'dashboard-add'
-                } do %>
-                <i class="fa fa-plus-square-o"></i>
-                Add
-              <% end %>
-            </li>
-            <li style="display:none;">
-              <%= f.button :submit, :id=>'dashboard-save', :class=>'btn navbar-btn' do %>
-                <i class="fa fa-floppy-o"></i>
-                Save
-              <% end %>
-            </li>
-          </ul>
+
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
-    <div class="gridster fade-in three"
-      data-step="2"
-      data-position="top"
-      data-intro="These are your dashboard items (widgets).
-      Individual items on the dashboard can be moved around, resized and arranged in any way that
-      you see fit">
-      <ul>
-
-        <%= render partial: "dashboard/widgets/form_empty", :locals=>{:dash=>@dash} %>
-
-        <% @w_counter = 0 %>
-        <%= f.fields_for :dashboard_widgets, :id=>'widget-fields' do |widget| %>
-          <% @w_counter += 1 %>
-          <% begin %>
-            <%= render :partial=>"dashboard/widgets/form", :locals=>{:f=>widget, :dash=>@dash} %>
-          <% rescue LsReportsHelper::AccessDenied => e %>
-            <%= render :partial=>"dashboard/widgets/form_access_denied", :locals=>{:f=>widget, :dash=>@dash} %>
-          <% rescue Dashboard::WidgetExpired => e %>
-            <% widget.object.destroy %>
-          <% end %>
-        <!-- After render -->
-        <% end %>
-        <!-- < % if @surveys.present? %>  -->
-        <!--  < %= render partial: "dashboard/widgets/recent_surveys", locals: {dash: @dash} %> -->
-        <!-- < % end %> -->
-
-      </ul>
+    <div class="row">
+      <div class="column">
+        <div class="card">
+            <%= render partial: 'dashboard/appt_schedule' %>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+            <%= render partial: 'dashboard/wba_data' %>
+        </div>
+      </div>
+      <% if current_user.coaching_type != 'student' %>
+        <div class="column">
+          <div class="card scroll">
+              <%= render partial: 'dashboard/tot_failed_exams' %>
+          </div>
+        </div>
+      <% else %>
+        <div class="column">
+          <div class="card scroll">
+              <%= render partial: 'dashboard/wba_graph' %>
+          </div>
+        </div>
+      <% end %>
+      <% if current_user.coaching_type == 'student' %>
+        <div class="column">
+          <div class="card">
+              <%= render partial: 'dashboard/clinical_assessor_graph' %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 <% end %>

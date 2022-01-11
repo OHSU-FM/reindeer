@@ -674,8 +674,18 @@ class @Dashboard.Gui
 ###
 
 $(document).ready ->
-    return if $('body').attr('id') != 'dashboard'
 
+    return if $('body').attr('id') != 'dashboard'
+    
+    toggler = document.getElementsByClassName('caret')
+    i = undefined
+    i = 0
+    while i < toggler.length
+      toggler[i].addEventListener 'click', ->
+        @parentElement.querySelector('.nested').classList.toggle 'active'
+        @classList.toggle 'caret-down'
+        return
+      i++
 
     # Debug ability, add variables to global namespace
     window.dashboards = []

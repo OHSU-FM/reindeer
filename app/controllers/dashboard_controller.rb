@@ -1,5 +1,7 @@
 class DashboardController < ApplicationController
   include LsReportsHelper
+  include DashboardHelper
+  include EpaMastersHelper
   layout 'full_width'
 
   def index
@@ -9,15 +11,25 @@ class DashboardController < ApplicationController
     end
     get_artifacts
     #@surveys = current_user.lime_surveys_by_most_recent(5)
-    @dash = Dashboard.includes(:dashboard_widgets)
-      .where(user_id: current_user.id).first_or_initialize
+    @dash = Dashboard.where(user_id: current_user.id).first_or_initialize  #includes(:dashboard_widgets)
     if current_user.coaching_type == 'student'
       @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
     else
       @meetings = []
     end
+    if current_user.coaching_type != 'student'
+      @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+    elsif current_user.coaching_type == 'student'
+      student = User.where(id: current_user.id)
+      @wba_epa_data = hf_process_student(student, 'WBA')
+      @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
+
+    end
+
     authorize! :read, @dash
-    do_gon
+
+    #do_gon   # disable dashboard_widgets
+
 
     respond_to do |format|
       layout = !(params[:layout] == 'false')
@@ -28,9 +40,9 @@ class DashboardController < ApplicationController
 
   def show
     @dash = Dashboard.find(params[:id].to_i)
-    @dash.dashboard_widgets.build if @dash.dashboard_widgets.nil?
-    authorize! :read, @dash
-    do_gon
+    # @dash.dashboard_widgets.build if @dash.dashboard_widgets.nil?
+    # authorize! :read, @dash
+    # do_gon
 
     respond_to do |format|
       layout = !(params[:layout] == 'false')

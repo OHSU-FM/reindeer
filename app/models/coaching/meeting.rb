@@ -12,7 +12,8 @@ class Coaching::Meeting < ApplicationRecord
   validates_presence_of :subject, :date, :m_status, :location, :event_id
   validates :m_status, inclusion: { in: VALID_STATUSES }
 
-  after_initialize :set_default_values, :set_default_values_for_meeting
+  after_initialize :set_default_values
+    #:set_default_values_for_meeting
 
   paginates_per 6
 
