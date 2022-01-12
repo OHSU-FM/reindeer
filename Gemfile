@@ -11,7 +11,7 @@ gem "rdoc"
 # Database
 gem 'pg'
 #gem "composite_primary_keys"
-#gem "redis", "~>4.1.0"
+gem "redis", "~>4.1.0"
 
 # Record Versioning
 gem "paper_trail"

@@ -57,11 +57,12 @@
         </div>
       </div>
       <% if current_user.coaching_type != 'student' %>
-        <div class="column">
+        <!-- <div class="column">
           <div class="card scroll">
-              <%= render partial: 'dashboard/tot_failed_exams' %>
+              <% # render partial: 'dashboard/tot_failed_exams' %>
+
           </div>
-        </div>
+        </div> -->
       <% else %>
         <div class="column">
           <div class="card scroll">

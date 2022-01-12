@@ -9,7 +9,6 @@
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
          <a class="nav-link" id="Preceptorship-tab" data-toggle="tab" href="#Preceptorship" style="background-color:#fce5cd" role="tab" aria-controls="Preceptorship" aria-selected="false">Preceptorship
-
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
@@ -55,7 +54,7 @@
 
    </ul>
   <div class="tab-content">
-    <div id="fom" class="tab-pane fade" id="fom" role="tabpanel"  aria-labelledby="fom-tab">
+    <div id="fom" class="tab-pane fade" role="tabpanel"  aria-labelledby="fom-tab">
         <%= render partial: "fom_blocks" %>
         <div class="panel panel-default">
             <div class="panel-body"><h4>CSL Formative Feedback</h4></div>
@@ -70,19 +69,19 @@
         </div>
 
     </div>
-    <div id="Preceptorship" class="tab-pane fade" id="Preceptorship" role="tabpanel"  aria-labelledby="Preceptorship-tab">
+    <div id="Preceptorship" class="tab-pane fade" role="tabpanel"  aria-labelledby="Preceptorship-tab">
       <%= render partial: "preceptorships" %>
     </div>
 
-    <div id="scholarly" class="tab-pane fade" id="scholarly" role="tabpanel"  aria-labelledby="scholarly-tab">
+    <div id="scholarly" class="tab-pane fade" role="tabpanel"  aria-labelledby="scholarly-tab">
       <%= render partial: "scholarly_project" %>
     </div>
 
-    <div id="transition" class="tab-pane fade" id="transition" role="tabpanel"  aria-labelledby="transition-tab">
+    <div id="transition" class="tab-pane fade" role="tabpanel"  aria-labelledby="transition-tab">
       <%= render partial: "transition" %>
     </div>
 
-    <div id="core" class="tab-pane fade active show" id="core" role="tabpanel"  aria-labelledby="core-tab">
+    <div id="core" class="tab-pane fade active show" role="tabpanel"  aria-labelledby="core-tab">
       <div class="center-div">
           <% if !@comp.nil? %>
             <%= render partial: "core_courses" %>
@@ -92,7 +91,7 @@
         </div>
     </div>
 
-    <div id="elective" class="tab-pane fade" id="elective" role="tabpanel"  aria-labelledby="elective-tab">
+    <div id="elective" class="tab-pane fade"  role="tabpanel"  aria-labelledby="elective-tab">
       <% if !@comp.nil? %>
         <%= render partial: "electives" %>
       <% else %>
@@ -100,11 +99,11 @@
       <% end %>
     </div>
 
-    <div id="intersessions" class="tab-pane fade" id="intersessions" role="tabpanel"  aria-labelledby="intersessions-tab">
+    <div id="intersessions" class="tab-pane fade" role="tabpanel"  aria-labelledby="intersessions-tab">
       <%= render partial: "intersessions" %>
     </div>
 
-    <div id="nbme" class="tab-pane fade" id="nbme" role="tabpanel"  aria-labelledby="nbme-tab">
+    <div id="nbme" class="tab-pane fade"  role="tabpanel"  aria-labelledby="nbme-tab">
       <% if !@usmle_exams.empty? or !@hss_exams.empty? %>
         <%= render partial: "nbme" %>
       <% else %>
@@ -112,11 +111,11 @@
       <% end %>
     </div>
 
-    <div id="all_clinical" class="tab-pane fade" id="all_clinical" role="tabpanel"  aria-labelledby="all_clinical-tab">
+    <div id="all_clinical" class="tab-pane fade" role="tabpanel"  aria-labelledby="all_clinical-tab">
       <%= render partial: "all_clinical" %>
     </div>
 
-    <div id="competency" class="tab-pane fade" id="competency" role="tabpanel"  aria-labelledby="competency-tab">
+    <div id="competency" class="tab-pane fade" role="tabpanel"  aria-labelledby="competency-tab">
       <div class="container-fluid">
           <div class="center-div">
             <div class="inner-div">
@@ -133,7 +132,7 @@
       </div>
     </div>
 
-    <div id="epa" class="tab-pane fade" id="epa" role="tabpanel"  aria-labelledby="epa-tab">
+    <div id="epa" class="tab-pane fade" role="tabpanel"  aria-labelledby="epa-tab">
       <div class="center-div">
         <div class="inner-div">
             <% if !@epas.blank?  %>
@@ -156,7 +155,7 @@
         </div>
       </div>
     </div>
-    <div id="official" class="tab-pane fade" id="official" role="tabpanel"  aria-labelledby="official-tab">>
+    <div id="official" class="tab-pane fade" role="tabpanel"  aria-labelledby="official-tab">>
         <div id="Progress Board">
             <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
         </div>
