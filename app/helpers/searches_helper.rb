@@ -104,6 +104,8 @@ module SearchesHelper
       block_hash.store("cohort", cohort)
       block_array.push block_hash
     end
+
+
     return block_array
   end
 

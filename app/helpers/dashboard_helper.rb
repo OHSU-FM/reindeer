@@ -169,6 +169,9 @@ module DashboardHelper
     epa_wba_data.first.delete("Matriculated Date")
     epa_wba_data = epa_wba_data.first
     tot_count = epa_wba_data.values.sum
+    if tot_count == 0
+      return []
+    end  
     selected_categories = epa_wba_data.keys
     wba_series = epa_wba_data.values
 
@@ -243,12 +246,17 @@ module DashboardHelper
 
   def hf_create_epa_wba_graph(epa_wba_data)
 
+
     height = 250
     epa_wba_data.first.delete("StudentId")
     epa_wba_data.first.delete("Student Name")
     epa_wba_data.first.delete("TotalCount")
     epa_wba_data = epa_wba_data.first
     tot_count = epa_wba_data.values.sum
+    if tot_count == 0
+      return []
+    end
+
     selected_categories = epa_wba_data.keys
     wba_series = epa_wba_data.values
 

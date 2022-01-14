@@ -629,7 +629,8 @@ theme_dark =
 
 
 $(document).ready ->
-
+    $('.modal-dialog').draggable handle: '.modal-header'
+    
     $('.Precept-FoM').on 'click', ->
       $('.nav-tabs a:first').tab('show')
       setTimeout (->

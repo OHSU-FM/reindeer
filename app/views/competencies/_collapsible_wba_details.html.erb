@@ -21,8 +21,7 @@
                             <th>ClincialAssessor</th>
                             <th>Other Role</th>
                             <th>AssessorName</th>
-                            <th>AttendingFaculty?</th>
-                            <th>TimesWithSupervisor</th>
+                            <th>AttendingFaculty</th>
                             <th>Involvment</th>
                             <th>Feedback</th>
                             <th>EncounterComplex</th>
@@ -39,7 +38,6 @@
                                 <td><%= e.other_role %></td>
                                 <td><%= e.assessor_name %></td>
                                 <td style="text-align:center"><%= e.attending_faculty.nil? ? "" : 'Yes' %>
-                                <td><%= e.no_of_times_with_super %></td>
                                 <td style="text-align:center"><%= e.involvement %></td>
                                 <td><%= e.more_independent %></td>
                                 <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
