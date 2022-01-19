@@ -39,6 +39,13 @@ module Coaching::StudentsHelper
               ["Other"]]
   end
 
+  def hf_advisor(user)
+    if !Advisor.find_by(email: user.email).nil?
+      return true
+    else
+      return false
+    end
+  end
 
   # returns the long form human readable version of a competency tag
   # @param {String} c_tag

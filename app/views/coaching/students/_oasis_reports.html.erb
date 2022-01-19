@@ -1,6 +1,7 @@
 <div id="container">
     <br />
     <div class="form-row">
+      <% if current_user.dean_or_higher? and ['chungp', 'bumstedt', 'chomina', 'cantone', 'schneibe'].include? current_user.username %>
             &nbsp; &nbsp; &nbsp; &nbsp;
             <%= link_to "All Advisors", advisor_reports_coaching_student_path(id: "All"), method: :post, remote: true %> &nbsp; |  &nbsp;
             <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;
@@ -10,6 +11,11 @@
                     prompt: "Please Select an Advisor" %>
                  <%= submit_tag "Go", name: 'advisor-reports-btn' %>
             <% end %>
+      <% elsif hf_advisor(current_user) == true %>
+          &nbsp; &nbsp; &nbsp; &nbsp;
+          <span> <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;
+             <i class="fa fa-hand-o-left" style="color:#FF0000" aria-hidden="true"> &nbsp;Click Here to View Graphs</i> </span>
+      <% end %>
 
     </div>
   <div id="advisor-reports">

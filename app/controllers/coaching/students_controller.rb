@@ -2,10 +2,11 @@ module Coaching
   class StudentsController < ApplicationController
     layout 'coaching_layout'
     before_action :authenticate_user!
+    include DashboardHelper
     authorize_resource only: :show
     before_action :set_resources, only: [:show]
 
-    helper_method :sort_column, :sort_direction
+    helper_method :sort_column, :sort_direction, :oasis_graphs
     helper  :all
     # GET /coaching/students/{student_username}
     def show
@@ -55,6 +56,9 @@ module Coaching
 
       end
 
+      if current_user.coaching_type != 'student'
+        @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+      end
       respond_to do |format|
         format.js { render action: 'oasis_graphs', status: 200 }
       end
@@ -126,6 +130,10 @@ module Coaching
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id)
+             ## aded ib 1/18/2022
+             if current_user.coaching_type != 'student'
+               @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+             end
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id)
              @students = @permission_groups.map(&:users).flatten

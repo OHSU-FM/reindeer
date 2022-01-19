@@ -144,6 +144,16 @@ $.fn.clear_previous_errors = () ->
   return
 
 $(document).ready ->
+
+  toggler = document.getElementsByClassName('caret')
+  i = undefined
+  i = 0
+  while i < toggler.length
+    toggler[i].addEventListener 'click', ->
+      @parentElement.querySelector('.nested').classList.toggle 'active'
+      @classList.toggle 'caret-down'
+      return
+    i++
   disable_input_fields()
   ua = window.navigator.userAgent;
   is_ie = /MSIE|Trident/.test(ua);

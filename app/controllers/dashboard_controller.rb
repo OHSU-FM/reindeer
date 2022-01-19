@@ -17,9 +17,7 @@ class DashboardController < ApplicationController
     else
       @meetings = []
     end
-    if current_user.coaching_type != 'student'
-      @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
-    elsif current_user.coaching_type == 'student'
+    if current_user.coaching_type == 'student'
       student = User.where(id: current_user.id)
       @wba_epa_data = hf_process_student(student, 'WBA')
       @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
