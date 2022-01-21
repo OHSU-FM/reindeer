@@ -44,7 +44,7 @@
         </li>
     <% end %>
 
-    <% if hf_advisor(current_user) == true %>
+    <% if (hf_advisor(current_user) == true %>
         <li class="nav-item">
           <a class="nav-link" id="sensitive-tab" data-toggle="tab" href="#sensitive" role="tab" aria-controls="sensitive" aria-selected="false"><b>Sensitive Data</b></a>
         </li>
@@ -97,11 +97,8 @@
             <%= render partial: "dashboard/tot_failed_exams"  %>
           </div>
         </div>
-
       </div>
     </div>
-
-
   </div>
 </div>
 

@@ -117,7 +117,7 @@ LABELS = {
     row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
     sql = "select users.full_name, "
     row_to_hash.each do |fieldname, val|  # build sql using form label record --> customized headers
-      if fieldname != 'permission_group_id'
+      if fieldname != 'permission_group_id' and !val.nil?
         val = val.gsub(" ", "")
         sql += fieldname + ', '  #"#{key}, "
       end

@@ -127,7 +127,7 @@ module Coaching
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
            @students = @permission_groups.map(&:users).flatten
-           if !advisor.nil?
+           if !advisor.nil? 
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id)
              ## aded ib 1/18/2022

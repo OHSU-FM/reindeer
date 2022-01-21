@@ -1,10 +1,18 @@
 
 Rails.application.config.assets.paths << Rails.root.join("node_modules")
+
+Rails.application.config.assets.paths += [
+  Rails.root.join('vendor', 'assets').to_s
+]
+
+# Precompile additional assets.
+# application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+Rails.application.config.assets.precompile += [
+  Rails.root.join('vendor/assets/javascripts/*').to_s,
+  Rails.root.join('vendor/assets/stylesheets/*').to_s
+]
+
 Rails.application.config.assets.precompile += %w( print.css
-    assignment/*
-    assignment_assignment_groups.css
-    assignment_user_responses.css
-    assignment_user_assignments.css
     comments.css
     form-utils.js
     sync_triggers.js

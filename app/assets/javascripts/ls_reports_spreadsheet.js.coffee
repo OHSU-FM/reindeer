@@ -629,8 +629,9 @@ theme_dark =
 
 
 $(document).ready ->
+
     $('.modal-dialog').draggable handle: '.modal-header'
-    
+
     $('.Precept-FoM').on 'click', ->
       $('.nav-tabs a:first').tab('show')
       setTimeout (->
@@ -882,6 +883,7 @@ $(document).ready ->
     $("[id^=Domain]").draggable handle: '.modal-header'
     $("[id^=EPA]").draggable handle: '.modal-header'
     $("[id^=CourseID]").draggable handle: '.modal-header'
+    $('.modal-backdrop').remove()
 
     $('#ShowAllComp').click ->
         return unless gon?
