@@ -1,6 +1,10 @@
 
 $('#cs-detail').addClass('show-detail');
 $('#cs-detail').html("<%= j render partial: 'show_detail', locals: { goal: @goal } %>");
-$("tr#goalId-<%= @goal.id %>").addClass("active").siblings().removeClass('active');
-roomNumber = $("#room-identifier-goal").data("room-number")
-window.cableCreate(roomNumber);
+
+//commented this out to fix the shrinking table row when clicked on View Detail button
+//$("tr#goalId-<%= @goal.id %>").addClass("active").siblings().removeClass('active');
+
+// disabled ActionCable
+// roomNumber = $("#room-identifier-goal").data("room-number")
+// window.cableCreate(roomNumber);

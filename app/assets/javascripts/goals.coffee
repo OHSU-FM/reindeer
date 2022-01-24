@@ -154,6 +154,7 @@ $(document).ready ->
       @classList.toggle 'caret-down'
       return
     i++
+
   disable_input_fields()
   ua = window.navigator.userAgent;
   is_ie = /MSIE|Trident/.test(ua);
