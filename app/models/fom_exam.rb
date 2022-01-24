@@ -108,13 +108,15 @@ class FomExam < ApplicationRecord
         sql = "select users.full_name, "
         sql_avg = "select "
         row_to_hash.each do |key, val| # build sql using form label record --> customized headers
+  
             val = val.gsub(" ", "")
             sql += "#{key}, "
             if key.match(Regexp.union(PREFIX_KEYS))
               sql_avg += "AVG(#{key}) as avg_#{key}, "
             end
+          end
         end
-      end
+
     else # attachment_id = -1 get fom label from table fom_labels
       if block_enabled == false
         fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code, block_enabled: block_enabled).first
