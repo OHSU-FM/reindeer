@@ -29,6 +29,9 @@
 //= require notify.js
 //= require intro.js
 // require modern-business/modern-business.js
+//= require highcharts/highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/modules/no-data-to-display
 //= require cocoon
 //= require startup.js
 //= require scrollspy.js
