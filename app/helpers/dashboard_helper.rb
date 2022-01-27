@@ -170,8 +170,8 @@ module DashboardHelper
     epa_wba_data = epa_wba_data.first
     tot_count = epa_wba_data.values.sum
     if tot_count == 0
-      return []
-    end  
+      return nil
+    end
     selected_categories = epa_wba_data.keys
     wba_series = epa_wba_data.values
 
@@ -245,8 +245,6 @@ module DashboardHelper
   end
 
   def hf_create_epa_wba_graph(epa_wba_data)
-
-
     height = 250
     epa_wba_data.first.delete("StudentId")
     epa_wba_data.first.delete("Student Name")
@@ -254,7 +252,7 @@ module DashboardHelper
     epa_wba_data = epa_wba_data.first
     tot_count = epa_wba_data.values.sum
     if tot_count == 0
-      return []
+      return nil
     end
 
     selected_categories = epa_wba_data.keys

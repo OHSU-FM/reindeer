@@ -1,5 +1,5 @@
 <% dashboard_clinical_assessor_graph ||= hf_create_clinical_assessor_graph(@wba_clinical_assessor_data)  %>
-<% if !dashboard_clinical_assessor_graph.empty? %>
+<% if !dashboard_clinical_assessor_graph.nil? %>
 <%= high_chart("dashboard_clinical_assessor_graph", dashboard_clinical_assessor_graph) %>
 <% else %>
   <h5> # of WBAs By Clinical Assessor Graph </h5>
