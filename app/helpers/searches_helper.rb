@@ -20,9 +20,17 @@ module SearchesHelper
     return result
   end
 
+  def process_wba_total_count(cohort_id)
+    data = {}
+    students = User.where(permission_group_id: cohort_id)
+    students.each do |student|
+      total_count_wbas = User.find_by(sid: student.sid).epas.count
+      data.store(student.full_name, total_count_wbas)
+    end
+    return data
+  end
 
   def hf_wba_stats(user)
-
     if user.coaching_type == 'student'
       # re-get user records as permission_group_id was pointed to Med21 --> Not sure why!
       user = User.find(user.id)
@@ -46,21 +54,15 @@ module SearchesHelper
       stat = []
       cohorts.each do |cohort|
         title = cohort.title[/(?<=\().*?(?=\))/]
-        result = get_stats(cohort.id)
-        if !result.empty?
-          arr = result.rows.flatten  # the array is sorted DESC
-          stat << arr.first
-          stat << arr.last
-          stat << arr.sum.fdiv(arr.size).round
-          stat << median(arr).round
-          cohorts_stat.store(title, stat)
-        end
+        arr = process_wba_total_count(cohort.id)
+        stat << arr.values.max
+        stat << arr.values.min
+        stat << arr.values.sum.fdiv(arr.size).round
+        stat << median(arr.values).round
+        cohorts_stat.store(title, stat)
         stat = []
-
       end
-
       return cohorts_stat
-
     end
 
   end
@@ -78,6 +80,8 @@ module SearchesHelper
       return @badge_release_date["Med24Badge"]["releaseDate"]
     elsif in_user.permission_group_id == 19
       return @badge_release_date["Med25Badge"]["releaseDate"]
+    elsif in_user.permission_group_id == 20
+      return @badge_release_date["Med26Badge"]["releaseDate"]
     else
 
    end
