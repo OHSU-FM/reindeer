@@ -193,8 +193,8 @@ class EpaReviewsController < ApplicationController
     end
 
     #@student_badge_info = hf_get_badge_info(@user.id)
+    @preceptorship_data  = hf_get_preceptor_assesses_data(@user)
 
-    @preceptorship_data ||= hf_get_clinical_dataset(@user, 'Preceptorship')
     @wba ||= hf_get_wbas(@user.id)
 
     @csl_data ||= hf_get_csl_datasets(@user, 'CSL Narrative Assessment')

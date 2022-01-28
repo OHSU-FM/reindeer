@@ -24,13 +24,8 @@ module SearchesHelper
     data = {}
     students = User.where(permission_group_id: cohort_id)
     students.each do |student|
-      user = User.find_by(sid: student.sid)
-      if !user.nil?
-        student = {}
-        total_count_wbas = Epa.where(user_id: user.id).count
-        data.store(user.full_name, total_count_wbas)
-
-      end
+      total_count_wbas = User.find_by(sid: student.sid).epas.count
+      data.store(student.full_name, total_count_wbas)
     end
     return data
   end

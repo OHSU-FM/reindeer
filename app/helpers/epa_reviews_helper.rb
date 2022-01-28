@@ -116,6 +116,20 @@ module EpaReviewsHelper
     return wba_str
   end
 
+  def hf_get_preceptor_assesses_data(user)
+    precept_data = PreceptorAssess.where(user_id: user.id)
+    if !precept_data.empty?
+      return precept_data
+    else
+      precept_data = PreceptorEval.where(user_id: user.id)
+      if !precept_data.empty?
+        return precept_data
+      else
+        precept_data = hf_get_clinical_dataset(user, 'Preceptorship')
+      end
+    end
+    return precept_data
+  end
 
   # def hf_highlight(text, epa_code)
   #   if epa_code == "N/A"

@@ -91,12 +91,25 @@
                   <th scope="col">Comment</th>
                 </tr>
               </thead>
+
               <% preceptor_data.each do |pd| %>
                 <tr>
-                  <td><%= pd["PreceptorName"] %></td>
-                  <td><%= pd["SubmitDate"] %></td>
-                  <td><%= pd["Grade"] %></td>
-                  <td><%= hf_highlight(pd["Comment"], epa_code) %></td>
+                  <% if !pd["PreceptorName"].nil? %>
+                    <td><%= pd["PreceptorName"] %></td>
+                    <td><%= pd["SubmitDate"] %></td>
+                    <td><%= pd["Grade"] %></td>
+                    <td><%= hf_highlight(pd["Comment"], epa_code) %></td>
+                 <% else %>
+                     <td><%= pd["preceptor_name"] %></td>
+                     <td><%= pd["submit_date"] %></td>
+                     <td><%= pd["grade"] %></td>
+                     <% if !pd["overall_performance"].nil? %>
+                        <td><%= hf_highlight(pd["overall_performance"], epa_code) %></td>
+                     <% else %>
+                        <td><%= hf_highlight(pd["mspe_comments"], epa_code) %></td>
+                     <% end %>
+                 <% end %>
+
                 </tr>
               <% end %>
             </table>
