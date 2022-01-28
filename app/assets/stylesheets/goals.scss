@@ -184,7 +184,8 @@ $paper:    #D5D5D5;
   }
 
   &.show-detail {
-    flex: 1 6 auto;
+    // commnted flex properties on 1/28/2022
+    //flex: 1 6 auto;
     order: 3;
     width: 1200px;
     transition: width 0.3s ease-in;

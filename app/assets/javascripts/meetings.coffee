@@ -58,6 +58,7 @@ careerPrimary = [
   'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'
   'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"'
+  'Scholarship Approval'
 ]
 
 $(document).ready ->
@@ -114,7 +115,7 @@ $(document).ready ->
     else
       data = careerPrimary
       $('#study_resources').hide()
-      
+
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
