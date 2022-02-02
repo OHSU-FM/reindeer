@@ -56,6 +56,9 @@ epa_codes = (category_code) ->
           cat_array.push {id: "Capstone", value: "Capstone"}
           cat_array.push {id: "Final Report", value: "Final Report"}
           cat_array.push {id: "Other", value: "Other"}
+  else if category_code == "TTR"
+          cat_array = []
+          cat_array.push {id: "TTR-OSCE", value: "Transition to Residency - OSCE"}
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}

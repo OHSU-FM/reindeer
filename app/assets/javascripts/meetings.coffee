@@ -47,17 +47,17 @@ academicPrimary = [
 
 careerPrimary = [
   "Goal Setting/Updated IPPS",
-  "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?"
-  "Electives/Rotation Scheduling Advising"
-  "Residency Application (ERAS) General Advice"
-  "Residency Application - Personal Statement Advice"
-  "Residency Application - Letters of Recommendation Advice"
-  "Residency Application – Selecting GME Programs to Apply To"
-  "Residency Application – Interviewing Tips/Best Practices"
-  "Residency Application – Completing My Rank Order List"
-  'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'
-  'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'
-  'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"'
+  "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?",
+  "Electives/Rotation Scheduling Advising",
+  "Residency Application (ERAS) General Advice",
+  "Residency Application - Personal Statement Advice",
+  "Residency Application - Letters of Recommendation Advice",
+  "Residency Application – Selecting GME Programs to Apply To",
+  "Residency Application – Interviewing Tips/Best Practices",
+  "Residency Application – Completing My Rank Order List",
+  'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")',
+  'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency',
+  'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
   'Scholarship Approval'
 ]
 
