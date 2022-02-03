@@ -17,12 +17,7 @@ class ArtifactsController < ApplicationController
           @artifacts = User.find_by(uuid: params[:uuid]).artifacts.where("content not like ?", "%Mock%")
       end
     else
-      if (hf_file_visible("Mock Step 1") == true)
-        @artifacts = User.find_by(uuid: params[:uuid]).artifacts
-      else
-          @@artifacts = Artifact.where("user_id = ? and content not like ?", user.id, "%Mock%")
-          @artifacts = User.find_by(uuid: params[:uuid]).artifacts.where("content not like ?", "%Mock%")
-      end
+      @artifacts = User.find_by(id: current_user.id).artifacts
     end
   end
 
