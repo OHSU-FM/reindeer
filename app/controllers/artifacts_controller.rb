@@ -8,19 +8,20 @@ class ArtifactsController < ApplicationController
 
   # GET /artifacts
   def index
-    if !params[:user_id].nil?
-      @user_id = params[:user_id]
-      #@artifacts = Artifact.where(user_id: params[:user_id])
+    if !params[:uuid].nil?
+      user = User.find_by(uuid: params[:uuid])
       if (hf_file_visible("Mock Step 1") == true)
-        @artifacts = Artifact.where(user_id: current_user.id)
+        @artifacts = User.find_by(uuid: params[:uuid]).artifacts   #Artifact.where(user_id: user.id)
       else
-          @artifacts = Artifact.where("user_id = ? and content not like ?", current_user.id, "%Mock%")
+          #@artifacts = Artifact.where("user_id = ? and content not like ?", user.id, "%Mock%")
+          @artifacts = User.find_by(uuid: params[:uuid]).artifacts.where("content not like ?", "%Mock%")
       end
     else
       if (hf_file_visible("Mock Step 1") == true)
-        @artifacts = Artifact.where(user_id: current_user.id)
+        @artifacts = User.find_by(uuid: params[:uuid]).artifacts
       else
-          @artifacts = Artifact.where("user_id = ? and content not like ?", current_user.id, "%Mock%")
+          @@artifacts = Artifact.where("user_id = ? and content not like ?", user.id, "%Mock%")
+          @artifacts = User.find_by(uuid: params[:uuid]).artifacts.where("content not like ?", "%Mock%")
       end
     end
   end
