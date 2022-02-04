@@ -141,11 +141,22 @@ class EpaMastersController < ApplicationController
     if params[:cohort].present?
       epa_badged = EpaMaster.get_epa_badged params[:cohort]
       @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged
+
     end
     respond_to do |format|
       format.html
     end
     render :eg_badged
+  end
+
+  def badged_graph
+
+    @all_cohorts_badges = EpaMaster.process_all_cohorts(@permission_groups)
+
+    respond_to do |format|
+      format.html
+    end
+
   end
 
   def search_student

@@ -100,27 +100,7 @@ module Coaching::StudentsHelper
   end
 
   def hf_get_cohort student
-    if student.permission_group.title.include? "Med18"
-      return "MD18"
-    elsif student.permission_group.title.include? "Med19"
-      return "MD19"
-    elsif student.permission_group.title.include? "Med20"
-      return "MD20"
-    elsif student.permission_group.title.include? "Med21"
-      return "MD21"
-    elsif student.permission_group.title.include? "Med22"
-      return "MD22"
-    elsif student.permission_group.title.include? "Med23"
-      return "MD23"
-    elsif student.permission_group.title.include? "Med24"
-      return "MD24"
-    elsif student.permission_group.title.include? "Med25"
-      return "MD25"
-    elsif student.permission_group.title.include? "Med26"
-      return "MD26"
-    else
-      return "Invalid Cohort!"
-    end
+    return student.permission_group.title.split(" ").last.gsub(/[()]/, "")
   end
 
   def hf_get_full_name(user_id)
@@ -133,19 +113,14 @@ module Coaching::StudentsHelper
     if meetings.is_a? Integer
       return Advisor.find(meetings).name
     end
-
     new_meetings = {}
-
     meetings.each do |key, value|
       new_meetings.store("#{Advisor.find(key).name}", value)
     end
-
     new_meetings.delete("Coach")
-
     return new_meetings.sort_by(&:zip)
 
   end
-
 
   def hf_create_oasis_weekdays_graph(weekdays_sorted)
 

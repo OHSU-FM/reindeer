@@ -97,4 +97,16 @@ class EpaMaster < ApplicationRecord
 
   end
 
+  def self.process_all_cohorts permission_groups
+    epa_badged_cohorts_hash = {}
+    permission_groups.sort.each do |permission_group|
+      epa_badged = get_epa_badged(permission_group.id)
+      epa_badged_count, student_epa_count = process_epa_badged epa_badged
+      cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
+      epa_badged_cohorts_hash.store(cohort_title, epa_badged_count)
+
+    end
+    return epa_badged_cohorts_hash
+  end
+
 end

@@ -34,8 +34,8 @@
               </tr>
               <% artifact.documents.each do |document| %>
                 <tr>
-                  <td> <%= document.filename %> </td>
-                  <td>
+                  <td style="width: 60%"> <%= document.filename %> </td>
+                  <td style="width: 40%">
                     <%= link_to 'View', url_for(document), target: :_blank  %>
                     /
                     <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>

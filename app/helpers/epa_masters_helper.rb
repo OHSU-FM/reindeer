@@ -317,5 +317,79 @@ module EpaMastersHelper
     end
   end
 
+  def epa_badged_graph(all_cohort_epa_badged_data)
+
+    selected_categories = all_cohort_epa_badged_data["Med21"].keys
+    # epa_series = all_cohort_epa_badged_data["Med21"].values
+    # epa_series2 = all_cohort_epa_badged_data["Med22"].values
+    # epa_series3 = all_cohort_epa_badged_data["Med23"].values
+
+
+    height = 600
+
+    title =  "Number of Badges by EPA" #+ '<br ><b>' + "(n = #{tot_count})" + '</b>'
+
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: title)
+      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.xAxis(categories: selected_categories,
+        labels: {
+              style:  {
+                          fontWeight: 'bold',
+                          color: '#000000'
+                      }
+                }
+      )
+      all_cohort_epa_badged_data.keys[0..-3].each do |key|   # skip the last two cohorts as they have not been badge
+        f.series(name: key, data: all_cohort_epa_badged_data["#{key}"].values)
+      end
+
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      # f.colors(['#4572A7',
+      #           '#AA4643',
+      #           '#89A54E',
+      #           '#80699B',
+      #           '#3D96AE',
+      #           '#DB843D',
+      #           '#92A8CD',
+      #           '#A47D7C',
+      #           '#B5CA92'
+      #           ])
+
+      f.yAxis [
+         { tickInterval: 50,
+           title: {text: "<b>No of Badges Awarded</b>", margin: 20}
+         }
+      ]
+      f.plot_options(
+        column: {
+            colorByPoint: true,
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "column",
+                width: 1600, height: height,
+                plotBorderWidth: 0,
+                borderWidth: 0,
+                plotShadow: false,
+                borderColor: '',
+                plotBackgroundImage: ''
+              })
+    end
+
+    return chart
+
+  end
+
 
 end
