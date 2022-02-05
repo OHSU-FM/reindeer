@@ -23,6 +23,12 @@ module EpaMastersHelper
       table_name = ""
   end
 
+
+  def hf_epa_comp_codes(epa)
+    epa_desc = epa + ": " + "<b>" + hf_get_epa_desc2(epa) + "</b>"
+    return epa_desc + "<br>" + "Competency Code: " + "<b>" + EPA[epa.downcase].to_s.upcase.gsub('"', '') + "</b>"
+  end
+
   def hf_epa_codes
     return EPA_CODES
   end
@@ -323,7 +329,10 @@ module EpaMastersHelper
     # epa_series = all_cohort_epa_badged_data["Med21"].values
     # epa_series2 = all_cohort_epa_badged_data["Med22"].values
     # epa_series3 = all_cohort_epa_badged_data["Med23"].values
-
+    # categories = []
+    # selected_categories.each do |category|
+    #   categories.push '<a href="#" data-toggle="tooltip" title="Some tooltip text!">' + category + '</a>'
+    # end
 
     height = 600
 
@@ -340,9 +349,26 @@ module EpaMastersHelper
                       }
                 }
       )
-      all_cohort_epa_badged_data.keys[0..-3].each do |key|   # skip the last two cohorts as they have not been badge
-        f.series(name: key, data: all_cohort_epa_badged_data["#{key}"].values)
+      all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
+        if all_cohort_epa_badged_data["#{key}"].values.sum != 0
+          f.series(name: key, data: all_cohort_epa_badged_data["#{key}"].values)
+        end
       end
+      pie_data = []
+      all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
+        if all_cohort_epa_badged_data["#{key}"].values.sum != 0
+          series_data = {}
+          series_data.store('name', key)
+          series_data.store('y', all_cohort_epa_badged_data["#{key}"].values.sum )
+          pie_data.push series_data
+        end
+      end
+
+      f.series(type: 'pie',
+              data: pie_data,
+              center: [300,100], size: 150, showInLegend: false
+
+      )
 
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
       # f.colors(['#4572A7',
@@ -362,6 +388,14 @@ module EpaMastersHelper
          }
       ]
       f.plot_options(
+        pie: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
+            }
+        },
+
         column: {
             colorByPoint: true,
             dataLabels: {

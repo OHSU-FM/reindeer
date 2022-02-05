@@ -99,3 +99,9 @@ input[type="radio"]:not(:checked)+ label {
 input[type="radio"]:checked + label {
     color: green;
 }
+.tooltip .tooltip-inner {
+  max-width: 500px !important;
+  background: purple;
+  color: white;
+  border: 2px solid purple;
+}

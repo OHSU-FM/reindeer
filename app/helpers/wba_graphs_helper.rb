@@ -179,6 +179,8 @@ module WbaGraphsHelper
         return 'Med24'
       when 19
         return 'Med25'
+      when 20
+        return 'Med26'
       else
         return nil
     end
