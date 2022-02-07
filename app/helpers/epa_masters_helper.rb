@@ -412,7 +412,11 @@ module EpaMastersHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1600, height: height,
+                scrollablePlotArea: {
+                    minWidth: 1600,
+                    scrollPositionX: 1
+                },
+                height: height,
                 plotBorderWidth: 0,
                 borderWidth: 0,
                 plotShadow: false,
