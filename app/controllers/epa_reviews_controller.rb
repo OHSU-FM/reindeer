@@ -138,7 +138,6 @@ class EpaReviewsController < ApplicationController
   # PATCH/PUT /epa_reviews/1
   def update
     @epa_review = EpaReview.find(params[:id])
-
     respond_to do |format|
       if @epa_review.update(epa_review_params)
         format.html { redirect_to epa_masters_path }
