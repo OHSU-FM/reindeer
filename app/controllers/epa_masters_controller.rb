@@ -150,13 +150,18 @@ class EpaMastersController < ApplicationController
   end
 
   def badged_graph
-
     @all_cohorts_badges = EpaMaster.process_all_cohorts(@permission_groups)
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def wba_epa_graph
+    @all_cohorts_wba_epa = EpaMaster.process_all_cohorts_wba_epa(@permission_groups)
 
     respond_to do |format|
       format.html
     end
-
   end
 
   def search_student

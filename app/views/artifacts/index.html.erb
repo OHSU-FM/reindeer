@@ -24,6 +24,10 @@
             /
             <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
           <% end %>
+          <% if artifact.content.include? "Preceptor Eval CSV File" %>
+            /
+            <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact)  %>
+          <% end %>
         </td>
         <td>
           <table class="responsive nowrap table table-hover" id="artifacts-table2"  >

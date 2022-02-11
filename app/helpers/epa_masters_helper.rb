@@ -323,7 +323,117 @@ module EpaMastersHelper
     end
   end
 
-  def epa_badged_graph(all_cohort_epa_badged_data)
+  def reorder_epas (epa)
+    new_order = {}
+    EPA_CODES.each do |code|
+      data = epa["#{code}"]
+      new_order.store(code, data)
+    end
+    return new_order
+  end
+
+  def hf_wba_epa_graph(all_cohort_wba_epa_data)
+
+    selected_categories = hf_epa_codes
+
+    height = 600
+
+    title =  "Number of WBAs by EPA" + '<br ><b>' + "(Level 4 Only)" + '</b>'
+
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: title)
+      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.xAxis(categories: selected_categories,
+        labels: {
+              style:  {
+                          fontWeight: 'bold',
+                          color: '#000000'
+                      }
+                }
+      )
+      all_cohort_wba_epa_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
+        if all_cohort_wba_epa_data["#{key}"].values.sum != 0 and !all_cohort_wba_epa_data["#{key}"].empty?
+          f.series(name: key, data: reorder_epas(all_cohort_wba_epa_data["#{key}"]).values)
+        end
+      end
+      pie_data = []
+      all_cohort_wba_epa_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
+        if all_cohort_wba_epa_data["#{key}"].values.sum != 0
+          series_data = {}
+          series_data.store('name', key)
+          series_data.store('y', all_cohort_wba_epa_data["#{key}"].values.sum )
+          pie_data.push series_data
+        end
+      end
+
+      f.series(type: 'pie',
+              data: pie_data,
+              center: [300,100], size: 150, showInLegend: false
+
+      )
+
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      # f.colors(['#4572A7',
+      #           '#AA4643',
+      #           '#89A54E',
+      #           '#80699B',
+      #           '#3D96AE',
+      #           '#DB843D',
+      #           '#92A8CD',
+      #           '#A47D7C',
+      #           '#B5CA92'
+      #           ])
+
+      f.colors(['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', 'black', 'purple', 'blue'])
+
+      f.yAxis [
+         { tickInterval: 50,
+           title: {text: "<b>No of WBAs Collected (Level 4)</b>", margin: 20}
+         }
+      ]
+      f.plot_options(
+        pie: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
+            }
+        },
+
+        column: {
+            colorByPoint: true,
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "column",
+                scrollablePlotArea: {
+                    minWidth: 1500,
+                    scrollPositionX: 1
+                },
+                height: height,
+                plotBorderWidth: 0,
+                borderWidth: 1,
+                plotShadow: false,
+                borderColor: '',
+                plotBackgroundImage: ''
+              })
+    end
+
+    return chart
+
+  end
+
+  def hf_epa_badged_graph(all_cohort_epa_badged_data)
 
     selected_categories = all_cohort_epa_badged_data["Med21"].keys
     # epa_series = all_cohort_epa_badged_data["Med21"].values

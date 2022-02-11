@@ -96,6 +96,11 @@ class ArtifactsController < ApplicationController
     move_file_to_user(@artifact)
   end
 
+  def process_preceptor_eval
+    @artifact = Artifact.find(params[:id])
+    @log_results = Artifact.process_preceptor_data(@artifact)
+  end
+
   private
 
     def move_file_to_user(artifact)
