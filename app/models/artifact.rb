@@ -37,7 +37,7 @@ class Artifact < ApplicationRecord
     no_not_updated = 0
     total_count = 0
 
-    CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true) do |row|
+    CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true, col_sep: "\t") do |row|
       yes_updated = true
       total_count += 1
       if !row["email"].blank?
