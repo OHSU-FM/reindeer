@@ -199,6 +199,7 @@ module WbaGraphsHelper
     if surveys.nil?
       return {}
     end
+
     if dataset_type == "All Blocks"
       sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? "#{cohort_title}"}
       return {} if sid_clinical.empty? or sid_clinical.nil?

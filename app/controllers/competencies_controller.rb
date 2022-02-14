@@ -68,8 +68,11 @@ class CompetenciesController < ApplicationController
      @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date)
 
-     if @selected_user.permission_group_id >= 17
+     if @selected_user.permission_group_id >= 16
        @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
+       if @all_blocks.first.second.empty?  # to check component 1 is empty
+          @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
+       end
      else
        @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
      end
@@ -85,7 +88,7 @@ class CompetenciesController < ApplicationController
      elsif found_rec.visible == false
        @usmle_exams = UsmleExam.where("user_id=? and exam_type not like ?", @selected_user.id, "%Mock%").order(:exam_type, :no_attempts)
      else
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)       
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)
      end
 
      @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_type, :no_attempts)
