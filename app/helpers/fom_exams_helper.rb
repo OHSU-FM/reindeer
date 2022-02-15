@@ -31,6 +31,23 @@ LABELS = {
   "q7" => "Presents a focused physical exam. Begins with vitals, general appearance, and pertinent PE findings (no need to include non-pertinent normal findings).",
   "q8" => "H&P proposes either a diagnostic or therapeutic plan."
 }
+#-------------------------------------------------------------------------
+# qualtric Question  --- Database # Question/fieldname
+#   Q11                   Q3
+#   Q12                   Q4
+#   Q3                    Q5
+#   Q13                   Q6
+#-------------------------------------------------------------------------
+LABELS2 = {
+  "q1" => "Student Name",
+  "q2" => "Facilitator Name",
+  "q3" => "Regarding the student's history-taking during this patient encounter, please provide positive feedback and constructive suggestions for improvement.",
+  "q4" => "Regarding the student's examination skills  during this patient encounter, please provide positive feedback and constructive suggestions for improvement.",
+  "q5" => "Regarding the student's discussion skills during this patient encounter, please provide positive feedback and constructive suggestions for improvement.",
+  "q6" => "Do you have any other comments or suggestions for this student? (optional)",
+  "q7" => "",
+  "q8" => ""
+}
 
 
   def hf_get_block_desc(in_code)
@@ -41,8 +58,15 @@ LABELS = {
     return COMPONENT_DESC[in_code]
   end
 
-  def hf_formative_feedback_labels(in_q)
-     label = LABELS[in_q]
+  def hf_formative_feedback_labels(in_q, label_code)
+    if label_code == '_qs1'
+      label = LABELS[in_q]
+    elsif label_code == '_qs2'
+      label = LABELS2[in_q]
+    else
+      return in_q
+    end
+
      if label.nil?
        return in_q
      else
