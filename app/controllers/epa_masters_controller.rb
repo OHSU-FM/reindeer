@@ -89,10 +89,43 @@ class EpaMastersController < ApplicationController
      render :epa_qa
   end
 
+  def average_wba_epa
+    if params[:cohort].present?
+        @cohort = params[:cohort]
+        @start_date = params[:StartDate]
+        @end_date = params[:EndDate]
+        if @start_date == "" and @end_date == ""
+          @start_date = "2016-01-01"  # default date
+          @end_date = "2030-02-18"  #default date
+        elsif @end_date == ""
+          @end_date = "2030-02-18"  #default date
+        end
+
+        @level_epa_wbas_count_hash = hf_count_level_wbas(@start_date, @end_date)
+        @average_level_epa_wbas_hash = hf_average_level_wbas(@cohort, @start_date, @end_date)
+
+        create_file2 @average_level_epa_wbas_hash, "#{@cohort}_average_wba_epa.txt"
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :average_wba_epa
+  end
+
   def wba_epa
     if params[:cohort].present?
-        @wba_epa_data = hf_process_cohort(params[:cohort], "WBA")
+        @cohort = params[:cohort]
+        @start_date = params[:StartDate]
+        @end_date = params[:EndDate]
+        if @start_date == "" and @end_date == ""
+          @start_date = "2016-01-01"  # default date
+          @end_date = "2030-02-18"  #default date
+        elsif @end_date == ""
+          @end_date = "2030-02-18"  #default date
+        end
+        @wba_epa_data = hf_process_cohort(params[:cohort], @start_date, @end_date, "WBA")
         @wba_epa_data = @wba_epa_data.sort_by{ |wba| wba["TotalCount"] }.reverse
+
         create_file @wba_epa_data, "wba_epa.txt"
         respond_to do |format|
           format.html
@@ -243,6 +276,22 @@ class EpaMastersController < ApplicationController
         in_data.each do |row|
           csvfile << row.values
         end
+      end
+    end
+
+    def create_file2 (in_data, in_file)
+      file_name = "#{Rails.root}/tmp/#{in_file}"
+
+      CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+        csvfile << ["StudentId", "Student Name"] + in_data.first["Ave Involvement"].keys #.first.keys.map{|c| c.titleize}
+        in_data.each do |data|
+          epa_values = []
+          epa_values.push data["StudentId"]
+          epa_values.push data["Student Name"]
+          epa_values = epa_values + data["Ave Involvement"].values
+          csvfile << epa_values
+        end
+
       end
     end
 

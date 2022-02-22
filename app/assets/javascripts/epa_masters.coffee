@@ -8,6 +8,7 @@ $(document).ready ->
   $('#WbaEpaTable').DataTable 'ordering': true
   $('#wbaClinicalTable').DataTable 'ordering': true
   $('#WbaDetailTable').DataTable 'ordering': true
+  $('#AveWbaEpaLevelTable').DataTable 'ordering': true
   $('.dataTables_length').addClass 'bs-select'
   $('#misMatchEGMember').change ->
     cohortId = $('#misMatchCohortId').val()

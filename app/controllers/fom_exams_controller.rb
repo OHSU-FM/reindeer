@@ -24,7 +24,7 @@ class FomExamsController < ApplicationController
     if params[:permssion_group_id].present? and params[:course_code].present?
       @export_block = hf_export_fom_block(params[:permssion_group_id], params[:course_code])
       #@export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
-      @file_name = "fom_exam_#{params[:course_code]}"
+      @file_name = "fom_exam_#{params[:course_code]}.txt"
       create_file @export_block, @file_name
       #send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
     end

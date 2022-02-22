@@ -19,6 +19,7 @@ module EpaMastersHelper
           "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
   }
 
+
   class CohortMspe < ActiveRecord::Base
       table_name = ""
   end
@@ -248,16 +249,84 @@ module EpaMastersHelper
 
   end
 
-  def process_wba(students)
+  def reorder_epas(epas)
+    epa_hash = {}
+    for i in 1..13 do
+        epa_hash.store("EPA#{i}", epas["EPA#{i}"])
+    end
+    return epa_hash
+  end
+
+  def total_count_on_wba(level_epa_wbas_count_hash)
+    epa_tot = []
+    for i in 1..13 do
+      epa_tot[i] = 0
+    end
+    level_epa_wbas_count_hash.each do |levels, epas|
+      epas.each do |key, val|
+        if !val.nil?
+          i = key.gsub("EPA", "").to_i
+          epa_tot[i] += val
+        end
+      end
+    end
+    epa_tot_hash = {}
+    for i in 1..13 do
+      epa_tot_hash.store("EPA#{i}", epa_tot[i])
+    end
+    level_epa_wbas_count_hash.store("Total Count", epa_tot_hash)
+    return level_epa_wbas_count_hash
+  end
+
+  def average_on_wba(level_epa_wbas_count_hash, start_date, end_date)
+    epa_average = Epa.where("submit_date >= ? and submit_date <= ?", start_date, end_date).group(:epa).average(:involvement)
+    level_epa_wbas_count_hash.store("Class Mean", reorder_epas(epa_average))
+    return level_epa_wbas_count_hash
+  end
+
+  def hf_average_level_wbas(cohort, start_date, end_date)
+    permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
+    students = User.where(permission_group_id: permission_group.id).select(:id, :sid, :email, :full_name).order(:full_name)
+
+    average_level_epa_wbas_array = []
+
+    students.each do |student|
+      average_level_epa_wbas_hash = {}
+      ave_epa_wbas = Epa.where("submit_date >= ? and submit_date <= ? and user_id=?", start_date, end_date, student.id).group(:epa).average(:involvement)
+      average_level_epa_wbas_hash["StudentId"] = student.sid
+      average_level_epa_wbas_hash["Student Name"] = student.full_name
+      average_level_epa_wbas_hash.store("Ave Involvement", reorder_epas(ave_epa_wbas))
+      average_level_epa_wbas_array.push average_level_epa_wbas_hash
+    end
+
+    return average_level_epa_wbas_array
+  end
+
+  def hf_count_level_wbas(start_date, end_date)
+    level_epa_wbas_count_hash = {}
+    for i in 1..4 do  #Level
+      epas = Epa.where("submit_date >= ? and submit_date <= ? and involvement =?", start_date, end_date, i).group(:epa).count
+      level_epa_wbas_count_hash.store("Level #{i}", reorder_epas(epas))
+    end
+    level_epa_wbas_count_hash = total_count_on_wba(level_epa_wbas_count_hash)
+    level_epa_wbas_count_hash = average_on_wba(level_epa_wbas_count_hash, start_date, end_date)
+
+    return level_epa_wbas_count_hash
+  end
+
+  def process_wba(students, start_date, end_date)
     data = []
     students.each do |student|
       user = User.find_by(sid: student.sid)
       if !user.nil?
-        wbas = Epa.where(user_id: user.id)
+        wbas = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", user.id, start_date, end_date)  # Epa table contains WBAs data
+        # ave_level = Epa.where(user_id: user.id).average(:involvement).to_f
         student_epa = count_wbas(wbas, student.sid, student.full_name)
+        # student_epa.store("Average", ave_level)
         data.push student_epa
       end
     end
+
     return data
   end
 
@@ -290,23 +359,24 @@ module EpaMastersHelper
     return data
   end
 
-  def hf_process_cohort (cohort, code)
+  def hf_process_cohort (cohort, start_date, end_date, code)
     CohortMspe.table_name = "#{cohort.downcase}_mspes"
     if CohortMspe.table_exists?
       students = CohortMspe.all
       students = students.sort_by(&:full_name)
     else
+      # these cohorts do not have MSPE tables, they are never cohorts - not in clinical phase and not ready for EG Review
       permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
       students = User.where(permission_group_id: permission_group.id).select(:id, :sid, :email, :full_name).order(:full_name)
 
     end
     if code=='EPA'
-      epas_data = process_epa(students)
+      epas_data = process_epa(students, start_date, end_date)
     elsif code == 'ClinicalAssessor'
       uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
       wpa_clinical = process_wba_clinical(students, uniq_assessors)
     else
-      wpa_data = process_wba(students)
+      wpa_data = process_wba(students, start_date, end_date)
     end
 
   end
