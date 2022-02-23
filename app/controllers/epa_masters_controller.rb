@@ -80,7 +80,7 @@ class EpaMastersController < ApplicationController
 
   def epa_qa
     if params[:cohort].present?
-        @epa_qa_data = hf_process_cohort(params[:cohort], "EPA")
+        @epa_qa_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "EPA")
         create_file @epa_qa_data, "epa_qa.txt"
         respond_to do |format|
           format.html
@@ -136,7 +136,7 @@ class EpaMastersController < ApplicationController
 
   def wba_clinical  #get clinical assessor data/count
     if params[:cohort].present?
-        @wba_clinical_data = hf_process_cohort(params[:cohort], "ClinicalAssessor")
+        @wba_clinical_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "ClinicalAssessor")
         create_file @wba_clinical_data, "wba_clinical_assessor.txt"
         respond_to do |format|
           format.html

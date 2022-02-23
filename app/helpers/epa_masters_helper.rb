@@ -371,7 +371,7 @@ module EpaMastersHelper
 
     end
     if code=='EPA'
-      epas_data = process_epa(students, start_date, end_date)
+      epas_data = process_epa(students)
     elsif code == 'ClinicalAssessor'
       uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
       wpa_clinical = process_wba_clinical(students, uniq_assessors)
@@ -383,7 +383,8 @@ module EpaMastersHelper
 
   def hf_process_student(student, code)
     if code == 'WBA'
-      return process_wba(student)
+      # process all students - for dashboard - using default dates
+      return process_wba(student, "2016-01-01", "2030-12-31")
     elsif code == 'ClinicalAssessor'
       uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
       wba_clinical_assessor = process_wba_clinical(student, uniq_assessors)
