@@ -330,30 +330,32 @@ module EpaMastersHelper
     return data
   end
 
-  def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
-    wba_hash = {}
-    wba_hash["StudentId"] = sid
-    wba_hash["Student Name"] = full_name
-    wba_hash["Matriculated Date"] = matriculated_date
-    tot_count = 0
-    uniq_assessors.each do |assessor|
-      wba_count = 0
-      wba_count = wbas.collect{|w| w.clinical_assessor if w.clinical_assessor.include? assessor}.compact.count
-      tot_count += wba_count
-      wba_hash.store(assessor, wba_count)
-    end
-    wba_hash["TotalCount"] = tot_count
-    return wba_hash
-  end
+  # def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
+  #   wba_hash = {}
+  #   wba_hash["StudentId"] = sid
+  #   wba_hash["Student Name"] = full_name
+  #   wba_hash["Matriculated Date"] = matriculated_date
+  #   tot_count = 0
+  #   uniq_assessors.each do |assessor|
+  #     wba_count = 0
+  #     wba_count = wbas.collect{|w| w.clinical_assessor if w.clinical_assessor.include? assessor}.compact.count
+  #     tot_count += wba_count
+  #     wba_hash.store(assessor, wba_count)
+  #   end
+  #   wba_hash["TotalCount"] = tot_count
+  #   return wba_hash
+  # end
 
-  def process_wba_clinical(students, uniq_assessors)
+  def process_wba_clinical(students)
     data = []
     students.each do |student|
       user = User.find_by(sid: student.sid)
       if !user.nil?
-        wbas = Epa.where(user: user.id).select(:id, :user_id, :clinical_assessor)
-        student_wba = count_wba_clinical(wbas, student.sid, student.full_name, user.matriculated_date, uniq_assessors)
-        data.push student_wba
+        wbas = Epa.where(user: user.id).group(:clinical_assessor).count
+        wbas["StudentId"] = student.sid
+        wbas["Student Name"] = student.full_name
+        wbas["Matriculated Date"] = student.matriculated_date
+        data.push wbas
       end
     end
     return data
@@ -373,8 +375,7 @@ module EpaMastersHelper
     if code=='EPA'
       epas_data = process_epa(students)
     elsif code == 'ClinicalAssessor'
-      uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
-      wpa_clinical = process_wba_clinical(students, uniq_assessors)
+      wpa_clinical = process_wba_clinical(students)
     else
       wpa_data = process_wba(students, start_date, end_date)
     end
@@ -386,8 +387,7 @@ module EpaMastersHelper
       # process all students - for dashboard - using default dates
       return process_wba(student, "2016-01-01", "2030-12-31")
     elsif code == 'ClinicalAssessor'
-      uniq_assessors = Epa.distinct.pluck(:clinical_assessor).sort
-      wba_clinical_assessor = process_wba_clinical(student, uniq_assessors)
+      wba_clinical_assessor = process_wba_clinical(student)
       return wba_clinical_assessor
     else
       return []

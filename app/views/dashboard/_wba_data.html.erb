@@ -1,10 +1,8 @@
 <% if current_user.coaching_type == 'student'%>
   <h4><font color="purple">EPA Badging/Entrustment</font></h4>
   <h5><font color="black">As of today, you have earned:</font></h5>
-  <% if current_user.matriculated_date.strftime("%Y").to_i <= 2017 %>
+  <% if current_user.matriculated_date.strftime("%Y").to_i <= 2018 %>
     <% wba_req = 50 %>
-  <% elsif current_user.matriculated_date.strftime("%Y").to_i == 2018 %>
-    <% wba_req = 75 %>
   <% else %>
     <% wba_req = 100 %>
   <% end %>
