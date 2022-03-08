@@ -63,6 +63,8 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
+  $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
 
   $("#coaching_meeting_study_resources_other_text_box").change ->
     if $(this).prop('checked')

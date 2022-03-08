@@ -3,12 +3,27 @@
     <div class="form-row">
       <% if current_user.dean_or_higher? and ['chungp', 'bumstedt', 'chomina', 'cantone', 'schneibe'].include? current_user.username %>
             &nbsp; &nbsp; &nbsp; &nbsp;
-            <%= link_to "All Advisors", advisor_reports_coaching_student_path(id: "All"), method: :post, remote: true %> &nbsp; |  &nbsp;
-            <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;
+
+            <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;  |  &nbsp; &nbsp;
             <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
                 <%= label_tag :Advisor %>
-                <%= select_tag :id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
+                <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
                     prompt: "Please Select an Advisor" %>
+
+                    <label for="start">
+                         Start Date:
+                     </label>
+                     <input type="date" name="StartDate"
+                         value="2022-01-01"
+                         min="1997-01-01" max="2030-12-31">
+
+                     <label for="End">
+                           End Date:
+                     </label>
+                     <input type="date" name="EndDate"
+                          value=<%= Date.today.strftime("%Y-%m-%d") %>
+                         min="1997-01-01" max="2030-12-31">
+
                  <%= submit_tag "Go", name: 'advisor-reports-btn' %>
             <% end %>
       <% elsif hf_advisor(current_user) == true %>
@@ -18,6 +33,7 @@
       <% end %>
 
     </div>
+  <br /> <br />
   <div id="advisor-reports">
     <% if !@advisor.nil? %>
       <%= render partial: "advisor_reports", locals: {advisor: @advisor} %>

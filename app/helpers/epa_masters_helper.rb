@@ -330,31 +330,30 @@ module EpaMastersHelper
     return data
   end
 
-  # def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
-  #   wba_hash = {}
-  #   wba_hash["StudentId"] = sid
-  #   wba_hash["Student Name"] = full_name
-  #   wba_hash["Matriculated Date"] = matriculated_date
-  #   tot_count = 0
-  #   uniq_assessors.each do |assessor|
-  #     wba_count = 0
-  #     wba_count = wbas.collect{|w| w.clinical_assessor if w.clinical_assessor.include? assessor}.compact.count
-  #     tot_count += wba_count
-  #     wba_hash.store(assessor, wba_count)
-  #   end
-  #   wba_hash["TotalCount"] = tot_count
-  #   return wba_hash
-  # end
+  def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
+    wba_hash = {}
+    wba_hash["StudentId"] = sid
+    wba_hash["Student Name"] = full_name
+    wba_hash["Matriculated Date"] = matriculated_date
+    tot_count = 0
+    uniq_assessors.each do |assessor|
+      wba_count = 0
+      wba_count = wbas.collect{|w| w.clinical_assessor if w.clinical_assessor.include? assessor}.compact.count
+      tot_count += wba_count
+      wba_hash.store(assessor, wba_count)
+    end
+    wba_hash["TotalCount"] = tot_count
+    return wba_hash
+  end
 
   def process_wba_clinical(students)
     data = []
+    uniq_assessors = Epa.pluck(:clinical_assessor).uniq
     students.each do |student|
       user = User.find_by(sid: student.sid)
       if !user.nil?
-        wbas = Epa.where(user: user.id).group(:clinical_assessor).count
-        wbas["StudentId"] = student.sid
-        wbas["Student Name"] = student.full_name
-        wbas["Matriculated Date"] = student.matriculated_date
+        wbas = Epa.where(user: user.id)
+        wbas = count_wba_clinical(wbas, user.sid, user.full_name, user.matriculated_date, uniq_assessors)
         data.push wbas
       end
     end

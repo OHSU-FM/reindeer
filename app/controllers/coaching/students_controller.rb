@@ -65,9 +65,10 @@ module Coaching
     end
 
     def advisor_reports
-      if params[:id].present? and params[:id] != 'All'
-        @meetings = Meeting.where(advisor_id: params[:id]).group(:user_id).count
-      elsif params[:id].present? and params[:id] == 'All'
+
+      if params[:advisor_id].present? and params[:advisor_id] != 'All'
+        @meetings = Meeting.where(advisor_id: params[:advisor_id]).group(:user_id).count
+      elsif params[:advisor_id].present? and params[:advisor_id] == 'All'
         @all_advisor_flag = true
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL").order(:advisor_id).group(:advisor_id).count
       end
@@ -127,7 +128,7 @@ module Coaching
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
            @students = @permission_groups.map(&:users).flatten
-           if !advisor.nil? 
+           if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id)
              ## aded ib 1/18/2022

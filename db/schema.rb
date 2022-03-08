@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_16_184122) do
+ActiveRecord::Schema.define(version: 2022_02_28_172625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,6 +266,12 @@ ActiveRecord::Schema.define(version: 2022_02_16_184122) do
 
   create_table "data_migrations", id: :serial, force: :cascade do |t|
     t.text "version", null: false
+  end
+
+  create_table "eg_cohorts", force: :cascade do |t|
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "eg_reasons", force: :cascade do |t|
