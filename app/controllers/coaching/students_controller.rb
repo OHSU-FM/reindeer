@@ -66,12 +66,15 @@ module Coaching
 
     def advisor_reports
 
-      if params[:advisor_id].present? and params[:advisor_id] != 'All'
-        @meetings = Meeting.where(advisor_id: params[:advisor_id]).group(:user_id).count
+        if params[:advisor_id].present? and params[:advisor_id] != 'All'
+        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
       elsif params[:advisor_id].present? and params[:advisor_id] == 'All'
         @all_advisor_flag = true
-        @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL").order(:advisor_id).group(:advisor_id).count
+        @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
+                        .order(:advisor_id).group(:advisor_id).count
       end
+
+      byebug
 
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
