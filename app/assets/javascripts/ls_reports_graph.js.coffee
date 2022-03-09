@@ -78,7 +78,7 @@ Array::min=->
             #backgroundColor:'rgba(255, 255, 255, 0.4)'
 
             height: 380,
-            width: 590
+            width: 700
         },
 
         tooltip: {
@@ -206,7 +206,7 @@ Array::min=->
                      legend: {
                             itemStyle: {
                             color: '#000000',
-                            width:'200px',
+                            width:'700px',
                             textOverflow: 'ellipsis',
                             overflow: 'hidden',
                             font: '12px Helvetica'

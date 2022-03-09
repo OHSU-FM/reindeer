@@ -98,11 +98,11 @@ class EpaReviewsController < ApplicationController
 
     get_evidence @user_id
     epa_idx = @epa_review_epa.split("EPA").second.to_i
-
     # str_complete = "QA Completion %: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
     #                "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
    str_complete = "QA Completion: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
             "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s +  "\r".html_safe
+
 
     str_wba = hf_wba_str(@wba["#{@epa_review_epa}"])
 
@@ -138,7 +138,6 @@ class EpaReviewsController < ApplicationController
   # PATCH/PUT /epa_reviews/1
   def update
     @epa_review = EpaReview.find(params[:id])
-
     respond_to do |format|
       if @epa_review.update(epa_review_params)
         format.html { redirect_to epa_masters_path }
@@ -169,7 +168,13 @@ class EpaReviewsController < ApplicationController
 
     if (@comp = Competency.where(user_id: @user.id).order(submit_date: :desc)).empty?
       @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
-      @percent_complete ||= hf_epa_class_mean(@clinical_data)
+      epa_percent_complete ||= hf_epa_class_mean(@clinical_data)
+      @percent_complete = {}
+      i = 1
+      epa_percent_complete.drop(1).each do |epa_val|  ## skip the first item as ti contains the ave. EPA
+        @percent_complete.store("epa#{i}", epa_val)
+        i += 1
+      end
 
       ## for OMFS students, they have no core courses
       if @percent_complete.uniq.first == 0
@@ -187,8 +192,8 @@ class EpaReviewsController < ApplicationController
     end
 
     #@student_badge_info = hf_get_badge_info(@user.id)
+    @preceptorship_data  = hf_get_preceptor_assesses_data(@user)
 
-    @preceptorship_data ||= hf_get_clinical_dataset(@user, 'Preceptorship')
     @wba ||= hf_get_wbas(@user.id)
 
     @csl_data ||= hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
@@ -207,6 +212,9 @@ class EpaReviewsController < ApplicationController
     elsif @user.permission_group_id == 13
       @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
       @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
+    elsif  @user.permission_group_id == 17
+      @lastReviewEndDate = @badge_review_dates["Med23Badge"]["lastReviewEndDate"]
+      @nextReviewEndDate = @badge_review_dates["Med23Badge"]["nextReviewEndDate"]
     end
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)

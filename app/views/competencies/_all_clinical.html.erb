@@ -1,6 +1,6 @@
 <% if !@comp.nil? %>
   <div class="table-responsive-sm">
-    <table class="table table-striped">
+    <table id="CompetencesDetailTable" class="table table-striped" data-sort="true">
       <thead>
         <tr>
           <th scope="col">CourseName</th>
@@ -10,6 +10,7 @@
           <th scope="col">Evaluator</th>
           <th scope="col">FinalGrade</th>
           <th scope="col">ProfConcern</th>
+          <th score="col">FeedBack</th>
           <th scope="col">MSPE</th>
         </tr>
       </thead>
@@ -26,6 +27,7 @@
 
               </td>
               <td><%= cd["prof_concerns"] %></td>
+              <td><%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ") %></td>              
               <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
 
             </tr>

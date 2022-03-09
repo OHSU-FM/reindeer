@@ -116,7 +116,8 @@ $paper:    #D5D5D5;
   .main-table {
     margin: 0px 10px 0px 10px;
     max-width: 98%;
-    padding: 35px 70px 50px 90px;
+    // commented this out on 2/2/2022
+    // padding: 35px 70px 50px 90px;
     > td {
       vertical-align: middle;
     }
@@ -184,7 +185,8 @@ $paper:    #D5D5D5;
   }
 
   &.show-detail {
-    flex: 1 6 auto;
+    // commnted flex properties on 1/28/2022
+    //flex: 1 6 auto;
     order: 3;
     width: 1200px;
     transition: width 0.3s ease-in;
@@ -247,7 +249,7 @@ $paper:    #D5D5D5;
 
   > .search-bar {
     float: right;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   > .complete-checkbox {
@@ -317,4 +319,38 @@ label {
 
 .card-body-color {
  background-color: #D8BFD8;
+}
+
+/* Style the caret/arrow */
+.caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+  transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.nested {
+  display: none;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+  display: block;
+}
+.table th, .table td {
+    padding: 0.25rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
 }

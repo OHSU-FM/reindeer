@@ -24,7 +24,7 @@ class FomExamsController < ApplicationController
     if params[:permssion_group_id].present? and params[:course_code].present?
       @export_block = hf_export_fom_block(params[:permssion_group_id], params[:course_code])
       #@export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
-      @file_name = "fom_exam_#{params[:course_code]}"
+      @file_name = "fom_exam_#{params[:course_code]}.txt"
       create_file @export_block, @file_name
       #send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
     end
@@ -115,11 +115,12 @@ class FomExamsController < ApplicationController
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
+       permission_group_id = params[:permission_group_id]  ## from Search function, required for cohort jumpers.
 
        @comp_keys = FomExam.comp_keys
 
        student  = User.find_by(uuid: params[:uuid])
-       cohort = PermissionGroup.find(student.permission_group_id).title.delete('()').split(" ").last.downcase
+       cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
        if cohort <= 'med22'
          table_name_prefix = cohort + "_"
        else
@@ -133,7 +134,8 @@ class FomExamsController < ApplicationController
        if ['dean', 'admin'].include? current_user.coaching_type
          block_enabled = true ## always visible
        end
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], student.permission_group_id, @course_code, block_enabled, table_name_prefix)
+       ## added permission_group_id from Search function to take care of cohort jumper
+       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
        if @comp_exams != nil
 
          @failed_comps = hf_scan_failed_score(@comp_exams)

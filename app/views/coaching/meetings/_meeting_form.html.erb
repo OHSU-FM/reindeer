@@ -56,6 +56,8 @@
               <% advisor_study_resources = hf_academic_study_resources_for_select %>
             <% elsif advisor_type == "Wellness" %>
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
+            <% elsif advisor_type = 'Diversity Navigator' %>
+                <% advisor_subjects = hf_diversity_navigator_for_select %>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
@@ -66,9 +68,6 @@
                 <%= b.text %>
               </label> <br />
            <% end %>
-
-
-
            <% if advisor_type == "Academic" %>
               <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
               <hr>
@@ -271,10 +270,6 @@
               <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
             </div>
           </div>
-
-
-
-
 
           <div class="form-group">
             <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>

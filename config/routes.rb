@@ -40,6 +40,10 @@ Rails.application.routes.draw do
       get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
       get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
       get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters'
+      get 'badged_graph', action: :badged_graph, controller: 'eg_masters', to: 'epa_masters#badged_graph'
+      get 'wba_epa_graph', action: :wba_epa_graph, controller: 'eg_masters', to: 'epa_masters#wba_epa_graph'
+      get 'average_wba_epa', action: :average_wba_epa, controller: 'eg_masters', to: 'epa_masters#average_wba_epa'
+
     end
 
   end
@@ -86,6 +90,7 @@ Rails.application.routes.draw do
      member do
        delete :delete_document_attachment
        get 'move_files'
+       get 'process_preceptor_eval'
      end
   end
   namespace :coaching do

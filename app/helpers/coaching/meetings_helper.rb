@@ -81,7 +81,9 @@ module Coaching::MeetingsHelper
       ["Residency Application – Completing My Rank Order List"],
       ['Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'],
       ['Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'],
-      ['Alternate Careers Advising – "After graduation, what options besides GME can I explore?"']
+      ['Alternate Careers Advising – "After graduation, what options besides GME can I explore?"'],
+      ['Scholarship Approval']
+
     ]
 
   end
@@ -122,6 +124,13 @@ module Coaching::MeetingsHelper
     [
       ["Wellness Visit"]
     ]
+
+  def hf_diversity_navigator_for_select
+    [
+      ["General"],
+      ["Scholarship Meeting"]
+    ]
+  end
 
   end
 

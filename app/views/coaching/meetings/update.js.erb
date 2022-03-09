@@ -1,10 +1,10 @@
 $('div#cs-detail *').prop("disabled", false); // re enable all children
 $('div#cs-detail').removeClass('grayed-out');
-$("tr#meetingId-<%= @meeting.id %>").replaceWith("<%= j render partial: 'meeting_row', locals: { meeting: @meeting, active_row: true } %>")
-roomNumber = $("#room-identifier-meeting").data("room-number")
-msg = "<%= @meeting.m_status %>" + " Status Updated "
-$("#meeting_comment_room").val(msg)
-e = jQuery.Event("keypress");
-e.which = 13 //choose the one you want
-e.keyCode = 13
-$("#meeting_comment_room").trigger(e);
+$("tr#meetingId-<%= @meeting.id %>").replaceWith("<%= j render partial: 'meeting_row', locals: { meeting: @meeting } %>")
+// roomNumber = $("#room-identifier-meeting").data("room-number")
+// msg = "<%= @meeting.m_status %>" + " Status Updated "
+// $("#meeting_comment_room").val(msg)
+// e = jQuery.Event("keypress");
+// e.which = 13 //choose the one you want
+// e.keyCode = 13
+// $("#meeting_comment_room").trigger(e);

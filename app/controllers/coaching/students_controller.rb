@@ -2,10 +2,11 @@ module Coaching
   class StudentsController < ApplicationController
     layout 'coaching_layout'
     before_action :authenticate_user!
+    include DashboardHelper
     authorize_resource only: :show
     before_action :set_resources, only: [:show]
 
-    helper_method :sort_column, :sort_direction
+    helper_method :sort_column, :sort_direction, :oasis_graphs
     helper  :all
     # GET /coaching/students/{student_username}
     def show
@@ -55,19 +56,23 @@ module Coaching
 
       end
 
+      if current_user.coaching_type != 'student'
+        @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+      end
       respond_to do |format|
         format.js { render action: 'oasis_graphs', status: 200 }
       end
     end
 
     def advisor_reports
-      if params[:id].present? and params[:id] != 'All'
-        @meetings = Meeting.where(advisor_id: params[:id]).group(:user_id).count
-      elsif params[:id].present? and params[:id] == 'All'
-        @all_advisor_flag = true
-        @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL").order(:advisor_id).group(:advisor_id).count
-      end
 
+        if params[:advisor_id].present? and params[:advisor_id] != 'All'
+        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
+      elsif params[:advisor_id].present? and params[:advisor_id] == 'All'
+        @all_advisor_flag = true
+        @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
+                        .order(:advisor_id).group(:advisor_id).count
+      end
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
       end
@@ -78,11 +83,9 @@ module Coaching
       def set_resources
         #@student = User.find_by_username(params[:slug])
         @student = User.where("username = ?", params[:slug]).first
-
         @@student_g = @student
 
         #@goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
-
         @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id
@@ -126,6 +129,10 @@ module Coaching
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id)
+             ## aded ib 1/18/2022
+             if current_user.coaching_type != 'student'
+               @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+             end
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id)
              @students = @permission_groups.map(&:users).flatten

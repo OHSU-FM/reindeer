@@ -32,6 +32,11 @@ wellnessPrimary = [
   "Wellness Visit"
 ]
 
+diversityNavigatorPrimary = [
+  "General"
+  "Scholarship Meeting"
+]
+
 academicPrimary = [
   "Goal Setting/Updated IPAS"
   "General Learning/Study Strategies"
@@ -47,21 +52,24 @@ academicPrimary = [
 
 careerPrimary = [
   "Goal Setting/Updated IPPS",
-  "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?"
-  "Electives/Rotation Scheduling Advising"
-  "Residency Application (ERAS) General Advice"
-  "Residency Application - Personal Statement Advice"
-  "Residency Application - Letters of Recommendation Advice"
-  "Residency Application – Selecting GME Programs to Apply To"
-  "Residency Application – Interviewing Tips/Best Practices"
-  "Residency Application – Completing My Rank Order List"
-  'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'
-  'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'
-  'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"'
+  "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?",
+  "Electives/Rotation Scheduling Advising",
+  "Residency Application (ERAS) General Advice",
+  "Residency Application - Personal Statement Advice",
+  "Residency Application - Letters of Recommendation Advice",
+  "Residency Application – Selecting GME Programs to Apply To",
+  "Residency Application – Interviewing Tips/Best Practices",
+  "Residency Application – Completing My Rank Order List",
+  'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")',
+  'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency',
+  'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
+  'Scholarship Approval'
 ]
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
+  $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
 
   $("#coaching_meeting_study_resources_other_text_box").change ->
     if $(this).prop('checked')
@@ -114,7 +122,7 @@ $(document).ready ->
     else
       data = careerPrimary
       $('#study_resources').hide()
-      
+
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->

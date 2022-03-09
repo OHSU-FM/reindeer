@@ -8,15 +8,16 @@ class ArtifactsController < ApplicationController
 
   # GET /artifacts
   def index
-    if !params[:user_id].nil?
-      @user_id = params[:user_id]
-      @artifacts = Artifact.where(user_id: params[:user_id])
-    else
-      if (hf_file_visible("Mock Step 1") == true) 
-        @artifacts = Artifact.where(user_id: current_user.id)
+    if !params[:uuid].nil?
+      user = User.find_by(uuid: params[:uuid])
+      if (hf_file_visible("Mock Step 1") == true)
+        @artifacts = User.find_by(uuid: params[:uuid]).artifacts   #Artifact.where(user_id: user.id)
       else
-          @artifacts = Artifact.where("user_id = ? and content not like ?", current_user.id, "%Mock%")
+          #@artifacts = Artifact.where("user_id = ? and content not like ?", user.id, "%Mock%")
+          @artifacts = User.find_by(uuid: params[:uuid]).artifacts.where("content not like ?", "%Mock%")
       end
+    else
+      @artifacts = User.find_by(id: current_user.id).artifacts
     end
   end
 
@@ -93,6 +94,11 @@ class ArtifactsController < ApplicationController
   def move_files
     @artifact = Artifact.find(params[:id])
     move_file_to_user(@artifact)
+  end
+
+  def process_preceptor_eval
+    @artifact = Artifact.find(params[:id])
+    @log_results = Artifact.process_preceptor_data(@artifact)
   end
 
   private

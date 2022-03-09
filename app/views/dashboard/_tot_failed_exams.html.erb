@@ -1,0 +1,32 @@
+<% if !@tot_failed_arry.nil? %>
+  <h5><font color="purple">Sensitive Data - Med25</font></h5>
+  <ul id="myUL">
+   <% i = 1 %>
+   <% @tot_failed_arry[0..14].each do |student| %>
+      <li><span class="caret">Student <%= i %> <small><i>(Total # of Failed Exams: <b><%= student["TotalFailed"] %></b>)</i></small></span>
+        <ul class="nested">
+          <% student_sid = @students_array.select{|s| s[student["full_name"]]}.last["sid"] %>
+          <% @student_all_blocks = hf_get_fom_blocks(student_sid) %>
+          <% @failed_exams_hash = hf_get_failed_exams(@student_all_blocks) %>
+          <small>
+            <li><span class="caret"><i>Student</i></span>
+                <ul class="nested">
+                  Student Name: <%= student["full_name"] %>
+                </ul>
+            </li>
+          </small>
+          <% i += 1 %>
+
+          <% @students_array.select{|s| s[student["full_name"]]}.first.values.first.each do |block| %>
+              <li><span class="caret"><small><i><%= block.first %></i>: <%= block.last %></small></span>
+                  <ul class="nested">
+                    <%= render partial: 'dashboard/display_failed_exams', locals: {failed_exams_hash: @failed_exams_hash["#{block.first}"], course_code: block.first} %>
+                  </ul>
+              </li>
+
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

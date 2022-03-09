@@ -33,8 +33,8 @@
           <td style="text-align:center;color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td>
           <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
           <td>
-            <%= nav_link_to("View Artifacts", artifacts_path(user_id: result.id))  %>
-            <%= link_to("<b>Clinical Phase Dataset NEW! (>= Med20)</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
+            <%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid))  %> <br />
+            <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
 
               <%  hf_exists_in_FomExam(result.id).each do |block| %>
                   <% cohort = block["cohort"] %>
@@ -44,7 +44,7 @@
                     <% session[:attach_id] = -1 %>
 
                     <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
-                            display_fom_fom_exams_path(course_code: course_code, uuid: result.uuid), method: :get,  target: '_blank') %> <br>
+                            display_fom_fom_exams_path(permission_group_id:  permission_group_id, course_code: course_code, uuid: result.uuid), method: :get,  target: '_blank') %> <br>
                   <% else %>
                      <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
                   <% end %>
@@ -68,12 +68,9 @@
 
             <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
-               <% if dataset.split("~").last.include? "Core Clinical/Electives" %>
+               <% if !dataset.split("~").last.include? "Core Clinical/Electives" %>
                    <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
-                      class: "modal-click", 'data-target': '#modal-dataset' %> <br>
-              <% else %>
-                    <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
-                       class: "modal-click", 'data-target': '#modal-dataset' %> <br>
+                    class: "modal-click", 'data-target': '#modal-dataset' %> <br>
               <% end %>
             <% end %>
           </td>

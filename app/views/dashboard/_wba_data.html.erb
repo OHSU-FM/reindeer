@@ -1,0 +1,59 @@
+<% if current_user.coaching_type == 'student'%>
+  <h4><font color="purple">EPA Badging/Entrustment</font></h4>
+  <h5><font color="black">As of today, you have earned:</font></h5>
+  <% if current_user.matriculated_date.strftime("%Y").to_i <= 2018 %>
+    <% wba_req = 50 %>
+  <% else %>
+    <% wba_req = 100 %>
+  <% end %>
+  <table class="table table-hover" >
+    <tr>
+      <td align ="right">Total # of WBAs (all levels) : </td>
+      <td><b><%= current_user.epas.where.not(involvement: 0).count.to_s %> </b>out of <b><%= wba_req.to_s %></b></td>
+    </tr>
+    <tr>
+      <td align ="right">Total # of Badges Awarded : </td>
+      <td><b><%= current_user.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(current_user)).count.to_s %> </b>out of <b>13</b> </td>
+    </tr>
+    <tr>
+      <td><h5><font color="black">Class earnings:</font></h5></td><td></td>
+    </tr>
+        <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
+    <tr>
+        <td align ="right"><%= cohort_title %> WBA Average: </td>
+        <td><b><%= ave.nil? ? 'N/A' : ave %></b></td>
+    </tr>
+    </tr>
+        <td align ="right"><%= cohort_title %> WBA Median&nbsp;: </td>
+        <td><b><%= med.nil? ? 'N/A' : med %></b></td>
+   <tr>
+  </table>
+
+<% else %>
+    <% stats = hf_wba_stats(current_user) %>
+    <h5><font color="purple">WBA Statistics</font></h5>
+    <table class="table table-hover" >
+      <tr>
+        <th>Cohort</th>
+        <th style="text-align:center">Max</th>
+        <th style="text-align:center">Min</th>
+        <th style="text-align:center">Ave</th>
+        <th style="text-align:center">Median</th>
+      </tr>
+      <body>
+        <% if !stats.nil? %>
+          <% stats.each do |key, stat| %>
+            <tr>
+              <td><%= key %></td>
+
+              <% stat.each do |dd| %>
+                <td style="text-align:center"><%= dd.round %></td>
+              <% end %>
+
+            </tr>
+          <% end %>
+        <% end %>
+
+      </body>
+    </table>
+<% end %>

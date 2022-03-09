@@ -1,8 +1,10 @@
 <br />
+
 <span>
-  <h4 style="text-align:center"> # of WBAs per EPA Report
+  <h5 style="text-align:center"> # of WBAs per EPA Report - Cohort: <b><%= @cohort %> </b>
   <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: 'wba_epa.txt') %>
-  </h4>
+  </h5>
+  <h6 style="text-align:center"> Start Date: <b><%= @start_date %></b> End Date: <b><%= @end_date %></b></h6>
 </span>
 
 <table id="WbaEpaTable" class="table table-hover table-striped responsive" data-sort="true" >

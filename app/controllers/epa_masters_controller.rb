@@ -80,7 +80,7 @@ class EpaMastersController < ApplicationController
 
   def epa_qa
     if params[:cohort].present?
-        @epa_qa_data = hf_process_cohort(params[:cohort], "EPA")
+        @epa_qa_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "EPA")
         create_file @epa_qa_data, "epa_qa.txt"
         respond_to do |format|
           format.html
@@ -89,10 +89,43 @@ class EpaMastersController < ApplicationController
      render :epa_qa
   end
 
+  def average_wba_epa
+    if params[:cohort].present?
+        @cohort = params[:cohort]
+        @start_date = params[:StartDate]
+        @end_date = params[:EndDate]
+        if @start_date == "" and @end_date == ""
+          @start_date = "2016-01-01"  # default date
+          @end_date = "2030-02-18"  #default date
+        elsif @end_date == ""
+          @end_date = "2030-02-18"  #default date
+        end
+
+        @level_epa_wbas_count_hash = hf_count_level_wbas(@start_date, @end_date)
+        @average_level_epa_wbas_hash = hf_average_level_wbas(@cohort, @start_date, @end_date)
+
+        create_file2 @average_level_epa_wbas_hash, "#{@cohort}_average_wba_epa.txt"
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :average_wba_epa
+  end
+
   def wba_epa
     if params[:cohort].present?
-        @wba_epa_data = hf_process_cohort(params[:cohort], "WBA")
+        @cohort = params[:cohort]
+        @start_date = params[:StartDate]
+        @end_date = params[:EndDate]
+        if @start_date == "" and @end_date == ""
+          @start_date = "2016-01-01"  # default date
+          @end_date = "2030-02-18"  #default date
+        elsif @end_date == ""
+          @end_date = "2030-02-18"  #default date
+        end
+        @wba_epa_data = hf_process_cohort(params[:cohort], @start_date, @end_date, "WBA")
         @wba_epa_data = @wba_epa_data.sort_by{ |wba| wba["TotalCount"] }.reverse
+
         create_file @wba_epa_data, "wba_epa.txt"
         respond_to do |format|
           format.html
@@ -103,7 +136,7 @@ class EpaMastersController < ApplicationController
 
   def wba_clinical  #get clinical assessor data/count
     if params[:cohort].present?
-        @wba_clinical_data = hf_process_cohort(params[:cohort], "ClinicalAssessor")
+        @wba_clinical_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "ClinicalAssessor")
         create_file @wba_clinical_data, "wba_clinical_assessor.txt"
         respond_to do |format|
           format.html
@@ -141,11 +174,27 @@ class EpaMastersController < ApplicationController
     if params[:cohort].present?
       epa_badged = EpaMaster.get_epa_badged params[:cohort]
       @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged
+
     end
     respond_to do |format|
       format.html
     end
     render :eg_badged
+  end
+
+  def badged_graph
+    @all_cohorts_badges = EpaMaster.process_all_cohorts(@permission_groups)
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def wba_epa_graph
+    @all_cohorts_wba_epa = EpaMaster.process_all_cohorts_wba_epa(@permission_groups)
+
+    respond_to do |format|
+      format.html
+    end
   end
 
   def search_student
@@ -213,6 +262,7 @@ class EpaMastersController < ApplicationController
 
     def load_eg_cohorts
       @all_cohorts ||= hf_load_eg_cohorts
+
       @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
       @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort
       @uniq_eg_members = ["All"] + @uniq_eg_members
@@ -226,6 +276,22 @@ class EpaMastersController < ApplicationController
         in_data.each do |row|
           csvfile << row.values
         end
+      end
+    end
+
+    def create_file2 (in_data, in_file)
+      file_name = "#{Rails.root}/tmp/#{in_file}"
+
+      CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+        csvfile << ["StudentId", "Student Name"] + in_data.first["Ave Involvement"].keys #.first.keys.map{|c| c.titleize}
+        in_data.each do |data|
+          epa_values = []
+          epa_values.push data["StudentId"]
+          epa_values.push data["Student Name"]
+          epa_values = epa_values + data["Ave Involvement"].values
+          csvfile << epa_values
+        end
+
       end
     end
 

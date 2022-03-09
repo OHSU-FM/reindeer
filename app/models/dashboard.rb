@@ -5,8 +5,9 @@ class Dashboard < ActiveRecord::Base
   has_paper_trail
 
   belongs_to :user
-  has_many :dashboard_widgets, :inverse_of=>:dashboard, :dependent=>:destroy
-  accepts_nested_attributes_for :dashboard_widgets, :allow_destroy=>true
+  # disabled dashboard_widgets on 12/14/2021
+  # has_many :dashboard_widgets, :inverse_of=>:dashboard, :dependent=>:destroy
+  # accepts_nested_attributes_for :dashboard_widgets, :allow_destroy=>true
   validates_presence_of :user
 
   rails_admin do
@@ -74,4 +75,3 @@ class Dashboard < ActiveRecord::Base
   end
 
 end
-

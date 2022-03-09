@@ -1,5 +1,5 @@
-
-<br /> <br/>
+<% if !@artifacts.nil? %>
+  <br /> <br/>
   <h4> All documents <%= link_to 'Upload Documents', new_artifact_path, class: "btn btn-primary" %> </h4>
 
   <table class="responsive nowrap table table-hover" id="artifacts" >
@@ -24,6 +24,10 @@
             /
             <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
           <% end %>
+          <% if artifact.content.to_s.include? "Preceptor Eval CSV File" %>
+            /
+            <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact)  %>
+          <% end %>
         </td>
         <td>
           <table class="responsive nowrap table table-hover" id="artifacts-table2"  >
@@ -34,15 +38,12 @@
               </tr>
               <% artifact.documents.each do |document| %>
                 <tr>
-                  <td> <%= document.filename %> </td>
-                  <td>
+                  <td style="width: 60%"> <%= document.filename %> </td>
+                  <td style="width: 40%">
                     <%= link_to 'View', url_for(document), target: :_blank  %>
                     /
                     <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
                      <% if ['admin', 'dean'].include? current_user.coaching_type %>
-                        /
-                        <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
-                     <% elsif current_user.id == artifact.user_id %>
                         /
                         <%= link_to 'Purge Doc', delete_document_attachment_artifact_url(document.signed_id), method: :delete, data: {confirm: "Are you sure? "} %>
                      <% end %>
@@ -56,3 +57,7 @@
       <% end %>
     </tbody>
   </table>
+  <% else %>
+    <br /> <br />
+    <h4> No Document or Artifact Found!  </h4>
+  <% end %>

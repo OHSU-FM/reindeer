@@ -1,0 +1,27 @@
+<br />
+<div class="row justify-content-center">
+      <div class="card" >
+         <div class="card-body">
+           <div class="d-flex justify-content-center align-items-center">
+              <% wba_epa_graph ||= hf_wba_epa_graph(@all_cohorts_wba_epa) %>
+              <%= high_chart("wba_epa_graph", wba_epa_graph) %>
+            </div>
+            <br />
+            <div style="text-align:center">
+              <span>
+                <% hf_epa_codes.each do |epa| %>
+                  <a href="#" data-html="true" data-toggle="tooltip" title="<%= hf_epa_comp_codes(epa) %>".html_safe><%= epa %> </a> &nbsp;&nbsp;
+                <% end %>
+              </span>
+              <hr>
+              <span>
+                <% hf_all_comp_codes.each do |comp| %>
+                  <a href="#" data-html="true" data-toggle="tooltip" title="<%= hf_get_comp_def(comp) %>".html_safe><%= comp %> </a> &nbsp;
+                <% end %>
+              </span>
+           </div>
+         </div>
+      </div>
+
+
+</div>

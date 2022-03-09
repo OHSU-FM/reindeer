@@ -97,4 +97,34 @@ class EpaMaster < ApplicationRecord
 
   end
 
+  def self.process_all_cohorts permission_groups
+    epa_badged_cohorts_hash = {}
+    permission_groups.sort.each do |permission_group|
+      epa_badged = get_epa_badged(permission_group.id)
+      epa_badged_count, student_epa_count = process_epa_badged epa_badged
+      cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
+      epa_badged_cohorts_hash.store(cohort_title, epa_badged_count)
+
+    end
+    return epa_badged_cohorts_hash
+  end
+
+  def self.process_all_cohorts_wba_epa(permission_groups)
+    wba_epa_cohorts_hash = {}
+    permission_groups.sort.each do |permission_group|
+      cohort_title = permission_group.title.split(" ").last.gsub(/[()]/, "")
+        results = EpaMaster.execute_sql("select epa, count(epa) as tot_epa
+                                        from epas, users
+                                        where users.id = user_id and
+                                        involvement=4 and
+                                        users.permission_group_id = ?
+                                        group by epa
+                                        order by epa ", permission_group.id)
+
+
+      wba_epa_cohorts_hash.store(cohort_title, results.rows.to_h)
+    end
+    return wba_epa_cohorts_hash
+  end
+
 end

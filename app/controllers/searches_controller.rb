@@ -4,7 +4,6 @@ class SearchesController < ApplicationController
   layout 'full_width_csl'
 
   def search
-
     if current_user.coaching_type == "student"
       @results = []
       @results.push current_user
@@ -39,6 +38,7 @@ class SearchesController < ApplicationController
       @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter)
 
     else
+
       @student_year = hf_student_year(params[:search])
       @class_comp = Competency.order('student_name').where(student_year: @student_year).page(params[:page])
 

@@ -1,0 +1,7 @@
+<% dashboard_epa_wba_graph ||= hf_create_epa_wba_graph(@wba_epa_data)  %>
+<% if !dashboard_epa_wba_graph.nil? %>
+  <%= high_chart("dashboard_epa_wba_graph", dashboard_epa_wba_graph) %>
+<% else %>
+  <h5> # of WBAs by EPA Graph </h5>
+  <h5> No WBAs Found! </h5>
+<% end %>

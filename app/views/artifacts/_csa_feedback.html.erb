@@ -1,0 +1,17 @@
+<% if !@shelf_artifacts.nil? %>
+    <% @shelf_artifacts.each do |artifact| %>
+      <% artifact.documents.each do |document| %>
+        <% if document.filename.to_s.include? "CSA" or document.filename.to_s.include? "OSCE" %>
+          <tr>
+            <td>
+                <%= link_to document.filename, url_for(document), target: :_blank %>
+                /
+                <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                <br />
+            </td>
+          </tr>
+        <% end %>
+
+      <% end %>
+    <% end %>
+<% end %>

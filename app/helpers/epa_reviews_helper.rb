@@ -15,15 +15,16 @@ module EpaReviewsHelper
   EPA_KEYWORDS = {
             "EPA1" => ['history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
             "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
-            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans"],
+            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans",
+                      "assessment", "plan"],
             "EPA4" => ["orders",  "prescription"],
             "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
             "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
             "EPA7" => ["clinical question", "evidence", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
-            "EPA8" => ["handover", "handoff", "transition", "transition of care"],  # "Give or receive a patient handover to transition care responsibility",
+            "EPA8" => ["handover", "handoff", "transition", "transition of care", "Signout"],  # "Give or receive a patient handover to transition care responsibility",
             "EPA9" => ["team", "interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
             "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
-            "EPA11" => ["consent","informed consent", "shared decision making", "procedures"],  # "Obtain informed consent for tests and/or procedures",
+            "EPA11" => ["consent","informed consent", "shared decision making", "procedures", "shared decision"],  # "Obtain informed consent for tests and/or procedures",
             "EPA12" => ["procedure", "technical skills","technical", "IV", "venipuncture", "bladder catheterization", "bag-valve mask ventilation", "suture", "laceration repair"],  #"Perform general procedures of a physician ",
             "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety", "project"] # "Identify system failures and contribute to a culture of safety and improvement"
   }
@@ -115,6 +116,20 @@ module EpaReviewsHelper
     return wba_str
   end
 
+  def hf_get_preceptor_assesses_data(user)
+    precept_data = PreceptorAssess.where(user_id: user.id)
+    if !precept_data.empty?
+      return precept_data
+    else
+      precept_data = PreceptorEval.where(user_id: user.id)
+      if !precept_data.empty?
+        return precept_data
+      else
+        precept_data = hf_get_clinical_dataset(user, 'Preceptorship')
+      end
+    end
+    return precept_data
+  end
 
   # def hf_highlight(text, epa_code)
   #   if epa_code == "N/A"

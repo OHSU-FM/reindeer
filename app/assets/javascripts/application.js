@@ -29,23 +29,10 @@
 //= require notify.js
 //= require intro.js
 // require modern-business/modern-business.js
-//= require cocoon
-//= require highcharts
+//= require highcharts/highcharts
 //= require highcharts/highcharts-more
-//= require highcharts/highcharts-3d.js
-//= require highcharts/modules/annotations
-//= require highcharts/modules/data
-//= require highcharts/modules/stock
-//= require highcharts/modules/drilldown
-//= require highcharts/modules/exporting
-//= require highcharts/modules/funnel
-//= require highcharts/modules/heatmap
 //= require highcharts/modules/no-data-to-display
-//= require highcharts/themes/dark-blue
-//= require highcharts/themes/dark-green
-//= require highcharts/themes/gray
-//= require highcharts/themes/grid
-//= require highcharts/themes/skies
+//= require cocoon
 //= require startup.js
 //= require scrollspy.js
 //= require typeahead.bundle.js
@@ -61,7 +48,7 @@
 //= require simplemde.min
 //= require nested_form_fields
 //= require goals
-//= require cable
+// require cable  commented out on 12/6/2021
 //= require datatables
 //= require artifacts
 //= require epa_graphs.js

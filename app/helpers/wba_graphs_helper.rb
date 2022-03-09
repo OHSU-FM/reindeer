@@ -179,6 +179,8 @@ module WbaGraphsHelper
         return 'Med24'
       when 19
         return 'Med25'
+      when 20
+        return 'Med26'
       else
         return nil
     end
@@ -197,6 +199,7 @@ module WbaGraphsHelper
     if surveys.nil?
       return {}
     end
+
     if dataset_type == "All Blocks"
       sid_clinical = surveys.select{|s| s if s.include? "#{dataset_type}" and s.include? "#{cohort_title}"}
       return {} if sid_clinical.empty? or sid_clinical.nil?
@@ -567,7 +570,7 @@ module WbaGraphsHelper
         f.series(type: 'pie',
                 name: 'Total No of DataPoints',
                 data: pie_data,
-                center: [400,100], size: 150, showInLegend: false
+                center: [600,100], size: 150, showInLegend: false
 
         )
       end

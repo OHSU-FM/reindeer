@@ -95,7 +95,9 @@ $('#review-form').bind('ajax:success', function() {
   }
 
 });
-
+//=======================================================================
+//disable form when badged - users cannot edit
+//=======================================================================
 if (($(".badge_decision1_badge").is(":checked")) && ($(".badge_decision2_badge").is(":checked")))
   $("#review-form :input").prop("disabled", true);
 
@@ -244,8 +246,8 @@ var contextMenuItems = {};
 for (var i = 0, l = EpaArray.length; i < l; i++) {
     contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "fa-copy" };
 }
-contextMenuItems["sep1"] = "---------";
-contextMenuItems["paste"] = {name: "Paste", icon: "fa-paste"};
+///contextMenuItems["sep1"] = "---------";
+//contextMenuItems["save"] = {name: "Save", icon: "fa-save"};
 var epa = $("#epa").val();
 var reviewable_id = $("#reviewable_id").val();
 
@@ -277,9 +279,15 @@ $(function() {
          callback: function(key, options) {
 
              var m = "clicked: " + key;
+
+             console.log ("key clicked: " + m);
              var selectedText = window.getSelection().toString();
              var parentid = window.getSelection().focusNode.parentElement.id;   //anchorNode.parentElement.id;
+
+             console.log("course_name: " + $('#' + parentid).data('course-name'));
+
              var course_name = $('#' + parentid).data('course-name').split("]");
+             //course_name = course_name.split("]");
              var course_code = course_name[0].replace("[", "");
              var formAction = $('#review-form').attr('action');
 
