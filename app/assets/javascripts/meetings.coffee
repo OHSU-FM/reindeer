@@ -32,6 +32,11 @@ wellnessPrimary = [
   "Wellness Visit"
 ]
 
+diversityNavigatorPrimary = [
+  "General"
+  "Scholarship Meeting"
+]
+
 academicPrimary = [
   "Goal Setting/Updated IPAS"
   "General Learning/Study Strategies"

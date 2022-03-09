@@ -73,9 +73,6 @@ module Coaching
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
                         .order(:advisor_id).group(:advisor_id).count
       end
-
-      byebug
-
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
       end
@@ -86,11 +83,9 @@ module Coaching
       def set_resources
         #@student = User.find_by_username(params[:slug])
         @student = User.where("username = ?", params[:slug]).first
-
         @@student_g = @student
 
         #@goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
-
         @meetings = @student.meetings.order('created_at DESC')
         @messages = @student.room.messages.order(:created_at)
         @room_id = @student.room.id

@@ -56,6 +56,8 @@
               <% advisor_study_resources = hf_academic_study_resources_for_select %>
             <% elsif advisor_type == "Wellness" %>
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
+            <% elsif advisor_type = 'Diversity Navigator' %>
+                <% advisor_subjects = hf_diversity_navigator_for_select %>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
