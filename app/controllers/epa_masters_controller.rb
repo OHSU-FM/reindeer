@@ -101,7 +101,7 @@ class EpaMastersController < ApplicationController
           @end_date = "2030-02-18"  #default date
         end
 
-        @level_epa_wbas_count_hash = hf_count_level_wbas(@start_date, @end_date)
+        @level_epa_wbas_count_hash = hf_count_level_wbas(@cohort, @cohort_counts, @start_date, @end_date)
         @average_level_epa_wbas_hash = hf_average_level_wbas(@cohort, @start_date, @end_date)
 
         create_file2 @average_level_epa_wbas_hash, "#{@cohort}_average_wba_epa.txt"
@@ -263,10 +263,21 @@ class EpaMastersController < ApplicationController
     def load_eg_cohorts
       @all_cohorts ||= hf_load_eg_cohorts
 
+      @cohort_counts = {}
+      @all_cohorts.each do |cohort|
+        if @cohort_counts[cohort["cohort"]]
+          @cohort_counts[cohort["cohort"]] += 1
+        else
+          @cohort_counts[cohort["cohort"]] = 1
+        end
+
+      end
+
       @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
       @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort
       @uniq_eg_members = ["All"] + @uniq_eg_members
     end
+
 
     def create_file (in_data, in_file)
       file_name = "#{Rails.root}/tmp/#{in_file}"

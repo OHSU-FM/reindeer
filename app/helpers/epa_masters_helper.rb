@@ -278,9 +278,16 @@ module EpaMastersHelper
     return level_epa_wbas_count_hash
   end
 
-  def average_on_wba(level_epa_wbas_count_hash, start_date, end_date)
-    epa_average = Epa.where("submit_date >= ? and submit_date <= ?", start_date, end_date).group(:epa).average(:involvement)
-    level_epa_wbas_count_hash.store("Class Mean", reorder_epas(epa_average))
+  def average_on_wba(level_epa_wbas_count_hash, cohort_count, permission_group_id, start_date, end_date)
+    epa_average = Epa.joins("inner join users on users.id = epas.user_id and users.permission_group_id=#{permission_group_id}")
+    .where("submit_date >= ? and submit_date <= ?",  start_date, end_date)
+    .group(:epa).count(:epa)
+    #epa_average = Epa.where("submit_date >= ? and submit_date <= ?", start_date, end_date).group(:epa).average(:involvement)
+    epa_average = reorder_epas(epa_average)
+    for i in 1..13 do
+      epa_average["EPA#{i}"] = epa_average["EPA#{i}"].to_f / cohort_count
+    end
+    level_epa_wbas_count_hash.store("Class Mean", epa_average)
     return level_epa_wbas_count_hash
   end
 
@@ -302,14 +309,22 @@ module EpaMastersHelper
     return average_level_epa_wbas_array
   end
 
-  def hf_count_level_wbas(start_date, end_date)
+  def hf_count_level_wbas(cohort, cohort_counts, start_date, end_date)
     level_epa_wbas_count_hash = {}
+    permission_group_id = PermissionGroup.find_by("title like ?", "%#{cohort}%").id
+
     for i in 1..4 do  #Level
-      epas = Epa.where("submit_date >= ? and submit_date <= ? and involvement =?", start_date, end_date, i).group(:epa).count
-      level_epa_wbas_count_hash.store("Level #{i}", reorder_epas(epas))
+      epas = Epa.joins("inner join users on users.id = epas.user_id and users.permission_group_id=#{permission_group_id}")
+      .where("submit_date >= ? and submit_date <= ? and involvement =?",  start_date, end_date, i)
+      .group(:epa).count(:epa)
+        #epas = Epa.where("user_id = ? and submit_date >= ? and submit_date <= ? and involvement =? ", student.id, start_date, end_date, i)
+        level_epa_wbas_count_hash.store("Level #{i}", reorder_epas(epas))
     end
     level_epa_wbas_count_hash = total_count_on_wba(level_epa_wbas_count_hash)
-    level_epa_wbas_count_hash = average_on_wba(level_epa_wbas_count_hash, start_date, end_date)
+    if cohort_counts[cohort].nil?
+      cohort_counts[cohort] = PermissionGroup.find(permission_group_id).users.count
+    end
+    level_epa_wbas_count_hash = average_on_wba(level_epa_wbas_count_hash, cohort_counts[cohort], permission_group_id, start_date, end_date)
 
     return level_epa_wbas_count_hash
   end

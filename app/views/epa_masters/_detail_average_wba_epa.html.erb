@@ -3,7 +3,7 @@
   <div class="col">
     <span>
       <h5 style="text-align:center"> # of WBAs With Involvements per EPA Report - Cohort: <b><%= @cohort %> </b></h5>
-      <h6 style="text-align:center"> Start Date: <b><%= @start_date %></b> End Date: <b><%= @end_date %></b></h6>
+      <h6 style="text-align:center"> Start Date: <b><%= @start_date %></b> End Date: <b><%= @end_date %> </b><%= "(N=#{@cohort_counts[@cohort]})" %></h6>
     </span>
 
     <table id="WbaEpaLevelTable" class="table table-hover table-striped responsive"  >
@@ -22,7 +22,7 @@
             <td><%= key1 %></td>
             <% wba.each do |key, val| %>
                 <% if key1 == 'Class Mean' %>
-                  <td style="text-align:center"> <%= '%.2f' % val %></td>
+                  <td style="text-align:center"> <%= '%.2f' % (val) %></td>
                 <% else %>
                   <td style="text-align:center"> <%= val %></td>
                 <% end %>
@@ -39,7 +39,7 @@
       <h5 style="text-align:center"> Average Involvements per EPA Report - Cohort: <b><%= @cohort %> </b>
         <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: "#{@cohort}_average_wba_epa.txt") %>
       </h5>
-      <h6 style="text-align:center"> Start Date: <b><%= @start_date %></b> End Date: <b><%= @end_date %></b></h6>
+      <h6 style="text-align:center"> Start Date: <b><%= @start_date %></b> End Date: <b><%= @end_date %></b> <%= "(N=#{@cohort_counts[@cohort]})" %></h6>
     </span>
     <table id="AveWbaEpaLevelTable" class="table table-hover table-striped responsive" data-sort="true"  >
       <thead>
