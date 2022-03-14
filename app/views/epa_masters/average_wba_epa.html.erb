@@ -9,16 +9,16 @@
               </label>
 
               <input type="date" name="StartDate"
-                  placeholder="dd-mm-yyyy" value="01-01-2020"
-                  min="1997-01-01" max="2030-12-31">
+                  placeholder="dd-mm-yyyy" value="2019-01-01"
+                  min="2018-01-01" max="2030-12-31">
 
               <label for="End">
                     End Date:
               </label>
 
               <input type="date" name="EndDate"
-                  placeholder="dd-mm-yyyy" value="02-18-2022"
-                  min="1997-01-01" max="2030-12-31">
+                  placeholder="dd-mm-yyyy" value=<%= Date.today.strftime("%Y-%m-%d") %>
+                  min="2018-01-01" max="2030-12-31">
 
              <b>Cohort </b> <%= select_tag :cohort, options_for_select(["Med21", "Med22", "Med23", "Med24", "Med25"], selected: params[:cohort]), include_blank: '--',
                 prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>

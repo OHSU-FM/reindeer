@@ -11,8 +11,10 @@ gem "rdoc"
 # Database
 gem 'pg'
 #gem "composite_primary_keys"
-gem "redis", "~>4.1.0"
-
+# commented redis server out on 3/11/2022
+# To disable ActionCable
+#gem "redis", "~>4.1.0"
+#==============================
 # Record Versioning
 gem "paper_trail"
 # lime survey db interaction
