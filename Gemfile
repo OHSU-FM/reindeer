@@ -4,11 +4,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Main
 ##############################
 gem "bundler", '~>2.0'
-gem 'rails', '~> 6.1.3' #'~> 5.2.2.1'
+gem 'rails', '~>6.1.3' #'~> 5.2.2.1'
 gem "rdoc"
-#gem 'pg', '~>0.21'
-
+gem "psych", "=3.3.1"
+gem 'sprockets', '< 4'
 # Database
+#gem 'pg', '~> 1.3', '>= 1.3.4'
 gem 'pg'
 #gem "composite_primary_keys"
 # commented redis server out on 3/11/2022
