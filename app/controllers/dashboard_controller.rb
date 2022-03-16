@@ -14,21 +14,15 @@ class DashboardController < ApplicationController
     @dash = Dashboard.where(user_id: current_user.id).first_or_initialize  #includes(:dashboard_widgets)
     if current_user.coaching_type == 'student'
       @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
-    else
-      @meetings = []
-    end
-    if current_user.coaching_type == 'student'
       student = User.where(id: current_user.id)
       @wba_epa_data = hf_process_student(student, 'WBA')
       @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
-
+    else
+      @meetings = []
     end
 
     authorize! :read, @dash
-
     #do_gon   # disable dashboard_widgets
-
-
     respond_to do |format|
       layout = !(params[:layout] == 'false')
       format.html{ render layout: layout }

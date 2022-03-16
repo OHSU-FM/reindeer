@@ -438,7 +438,7 @@ module EpaMastersHelper
       )
       all_cohort_wba_epa_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
         if all_cohort_wba_epa_data["#{key}"].values.sum != 0 and !all_cohort_wba_epa_data["#{key}"].empty?
-          f.series(name: key, data: reorder_epas(all_cohort_wba_epa_data["#{key}"]).values)
+          f.series(name: key, yAxis: 0, data: reorder_epas(all_cohort_wba_epa_data["#{key}"]).values)
         end
       end
       pie_data = []
@@ -457,7 +457,7 @@ module EpaMastersHelper
 
       )
 
-      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      #f.colors(["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"])
       # f.colors(['#4572A7',
       #           '#AA4643',
       #           '#89A54E',

@@ -203,7 +203,7 @@
       <div class="card-body">
         <div class="form-group">
           <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_type, options_for_select(["Academic", "Career", "Wellness"]),
+          <%= f.select :advisor_type, options_for_select(@advisor_types),
             { include_blank: "---" }, required: true %>
         </div>
 

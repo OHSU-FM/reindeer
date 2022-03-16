@@ -269,9 +269,16 @@ ActiveRecord::Schema.define(version: 2022_02_28_172625) do
   end
 
   create_table "eg_cohorts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
     t.string "email"
+    t.string "eg_full_name1"
+    t.string "eg_email1"
+    t.string "eg_full_name2"
+    t.string "eg_email2"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_eg_cohorts_on_user_id"
   end
 
   create_table "eg_reasons", force: :cascade do |t|
@@ -1113,6 +1120,7 @@ ActiveRecord::Schema.define(version: 2022_02_28_172625) do
   add_foreign_key "competencies", "users"
   add_foreign_key "csl_evals", "users"
   add_foreign_key "csl_feedbacks", "users"
+  add_foreign_key "eg_cohorts", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "fom_exams", "users"

@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_resources
   before_action :set_event, only: [:show, :edit, :update, :destroy]
 
   include EventsHelper
@@ -137,7 +139,7 @@ class EventsController < ApplicationController
       start_date = params[:start_date]   #.to_datetime.strftime("%Y/%m/%d")
       end_date = params[:end_date]
       if @advisor.nil?
-        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL", start_date, end_date).order(:user_id, :start_date)      
+        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL", start_date, end_date).order(:user_id, :start_date)
       else
         @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL and advisor_id=?", start_date, end_date, @advisor.id).order(:user_id, :start_date)
       end
@@ -172,6 +174,10 @@ class EventsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
+    end
+
+    def set_resources
+      @advisor_types = Advisor.where(status: 'Active').pluck(:advisor_type).uniq
     end
 
     # Only allow a list of trusted parameters through.

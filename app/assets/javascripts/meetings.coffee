@@ -96,6 +96,8 @@ $(document).ready ->
     data = academicPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
+  else if advisorType == 'Diversity Navigator'
+    data = diversityNavigatorPrimary
   else
     data = careerPrimary
   nbsp = '&nbsp'
@@ -118,6 +120,9 @@ $(document).ready ->
       $('#study_resources').show()
     else if advisorType == 'Wellness'
       data = wellnessPrimary
+      $('#study_resources').hide()
+    else if advisorType == 'Diversity Navigator'
+      data = diversityNavigatorPrimary
       $('#study_resources').hide()
     else
       data = careerPrimary

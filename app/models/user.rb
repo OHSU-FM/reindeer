@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
   has_many :messages, dependent: :destroy
   has_one :room, as: :discussable
+  has_one :eg_cohort
 
   has_one :dashboard, dependent: :destroy
 

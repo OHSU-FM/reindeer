@@ -5,6 +5,7 @@ module Coaching
 
     def create
       @advisors = Advisor.where(status: 'Active').order(:name)
+      @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
 
