@@ -21,11 +21,11 @@
         <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
     <tr>
         <td align ="right"><%= cohort_title %> WBA Average: </td>
-        <td><b><%= ave.nil? ? 'N/A' : ave %></b></td>
+        <td><b><%= ave.nil? ? 'N/A' : '%.2f' % ave %></b></td>
     </tr>
     </tr>
         <td align ="right"><%= cohort_title %> WBA Median&nbsp;: </td>
-        <td><b><%= med.nil? ? 'N/A' : med %></b></td>
+        <td><b><%= med.nil? ? 'N/A' : '%.2f' % med %></b></td>
    <tr>
   </table>
 

@@ -148,7 +148,9 @@ class EpaMastersController < ApplicationController
 
   def download_file
       if params[:file_name].present?
-        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+        private_download params[:file_name]
+        # generic_file_name = params[:file_name]
+        # send_file  "#{Rails.root}/tmp/#{generic_file_name}", type: 'text', disposition: 'download'
       end
   end
 
@@ -245,6 +247,10 @@ class EpaMastersController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
+    def private_download in_file
+      send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+    end
 
     def set_resources
       @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)

@@ -279,7 +279,7 @@ module EpaMastersHelper
   end
 
   def average_on_wba(level_epa_wbas_count_hash, cohort_count, permission_group_id, start_date, end_date)
-    epa_average = Epa.joins("inner join users on users.id = epas.user_id and users.permission_group_id=#{permission_group_id}")
+    epa_average = Epa.joins(:user).where("users.permission_group_id=?", permission_group_id.to_s)
     .where("submit_date >= ? and submit_date <= ?",  start_date, end_date)
     .group(:epa).count(:epa)
     #epa_average = Epa.where("submit_date >= ? and submit_date <= ?", start_date, end_date).group(:epa).average(:involvement)

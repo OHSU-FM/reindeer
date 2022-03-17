@@ -35,7 +35,7 @@ class FomExamsController < ApplicationController
 
   def download_file
       if params[:file_name].present?
-        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+         private_download params[:file_name]
       end
   end
 
@@ -161,6 +161,10 @@ class FomExamsController < ApplicationController
   end
 
  private
+
+ def private_download in_file
+    send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+ end
 
  def get_tso_emails
    @tso_emails ||= YAML.load_file("config/sendAlertEmails.yml")

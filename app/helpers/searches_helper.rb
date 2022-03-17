@@ -7,17 +7,19 @@ module SearchesHelper
   end
 
   def get_stats (permission_group_id)
-    result = ActiveRecord::Base.connection.exec_query('select count(user_id)
-              from epas, users
-              where involvement <> 0 and
-                   users.id = epas.user_id and
-                   users.spec_program <>' + "'OMFS'" + ' and ' +
-                   'users.permission_group_id = ' + permission_group_id.to_s + '
-              group by
-                user_id
-              order by count DESC')
+    # result = ActiveRecord::Base.connection.exec_query('select count(user_id)
+    #           from epas, users
+    #           where involvement <> 0 and
+    #                users.id = epas.user_id and
+    #                users.spec_program <>' + "'OMFS'" + ' and ' +
+    #                'users.permission_group_id = ' + permission_group_id.to_s + '
+    #           group by
+    #             user_id
+    #           order by count DESC')
 
-    return result
+    wba_count_hash = Epa.joins(:user).where("users.spec_program<>? and users.permission_group_id=?", 'OMFS', permission_group_id.to_s).group(:user_id).count
+
+    return wba_count_hash
   end
 
   def process_wba_total_count(cohort_id)
@@ -36,16 +38,17 @@ module SearchesHelper
       user = User.find(user.id)
       cohort_title = user.permission_group.title[/(?<=\().*?(?=\))/]  # to extract cohort Med21
       permission_group_id = user.permission_group_id
-      result = get_stats(permission_group_id)
+      wba_count_hash = get_stats(permission_group_id)
 
-      if result.rows.empty?
+      if wba_count_hash.nil?
           return nil, nil, cohort_title
       else
-        arr = result.rows.flatten  # the array is sorted DESC
+        #arr = result.rows.flatten  # the array is sorted DESC
         #max = arr.first
         #min = arr.last
-        ave = arr.sum.fdiv(arr.size).round
-        med = median(arr).round
+        cohort_count = User.where(permission_group_id: permission_group_id).count
+        ave = wba_count_hash.values.sum.to_f/cohort_count.round(2)
+        med = median(wba_count_hash.values).round(2)
         return ave, med, cohort_title
       end
     elsif user.coaching_type == 'dean' or user.coaching_type == 'admin'

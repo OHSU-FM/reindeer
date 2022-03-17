@@ -33,11 +33,16 @@ class WbaGraphsController < ApplicationController
 
   def download_file
       if params[:file_name].present?
-        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+        private_download params[:file_name]
       end
   end
 
   private
+
+  def private_download in_file
+    send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+  end
+
   def most_fours
     array_fours ||= Epa.where(involvement: 4).select(:involvement).group(:assessor_name).count
     sorted = array_fours.sort_by{|k,v| v}.reverse
