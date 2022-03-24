@@ -338,6 +338,7 @@ GEM
       ffi (~> 1.0)
     rdoc (6.3.3)
     redcarpet (3.5.1)
+    redis (4.1.4)
     regexp_parser (2.2.1)
     remotipart (1.4.4)
     request_store (1.5.1)
@@ -489,6 +490,7 @@ DEPENDENCIES
   rails_layout
   rdoc
   redcarpet
+  redis (~> 4.1.0)
   rspec-rails
   ruby-prof
   rufus-scheduler

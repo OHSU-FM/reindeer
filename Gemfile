@@ -14,7 +14,7 @@ gem 'pg'
 #gem "composite_primary_keys"
 # commented redis server out on 3/11/2022
 # To disable ActionCable
-#gem "redis", "~>4.1.0"
+gem "redis", "~>4.1.0"
 #==============================
 # Record Versioning
 gem "paper_trail"
