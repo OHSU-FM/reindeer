@@ -45,6 +45,6 @@ class LsFilesController < ApplicationController
     private
 
     def private_download fpath
-      send_file fpath, type => 'application/pdf', disposition: 'inline', target: "_blank"
+      send_file fpath, type: 'application/pdf', disposition: 'inline', target: "_blank"
     end
 end
