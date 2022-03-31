@@ -3,7 +3,7 @@ module SearchesHelper
   def median(ary)
     middle = ary.size/2
     sorted = ary.sort_by{ |a| a }
-    ary.size.odd? ? sorted[middle] : (sorted[middle]+sorted[middle-1])/2.0
+    ary.size.odd? ? sorted[middle] : (sorted[middle].to_f + sorted[middle-1].to_f)/2.0
   end
 
   def get_stats (permission_group_id)
