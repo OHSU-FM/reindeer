@@ -4,6 +4,10 @@ class EpaMaster < ApplicationRecord
   accepts_nested_attributes_for :epa_reviews
 
   def self.update_not_yet_and_grounded_epas(cohort_group)  #pemission_group looks like 'Med22'
+
+    if cohort_group.nil? or cohort_group.include? 'Case'
+      return
+    end
     permission_group_id = PermissionGroup.where("title like ?", "%#{cohort_group}%").first.id
 
     result = EpaMaster.execute_sql("update epa_reviews set badge_decision1='Badge'

@@ -9,7 +9,7 @@ class EpaMastersController < ApplicationController
   # GET /epa_masters
   def index
 
-    if params[:uniq_cohort].present? and params[:uniq_cohort] == 'CaseStudies'
+    if params[:uniq_cohort].present? and (params[:uniq_cohort] == 'CaseStudies' or params[:uniq_cohort] == 'CaseStudies2')
       @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] }
     elsif
       @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
