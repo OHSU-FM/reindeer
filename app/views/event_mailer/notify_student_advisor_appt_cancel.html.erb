@@ -1,12 +1,16 @@
 <p> Hello <%= @meeting_mailer.user.full_name.split(", ").last %>, <br /><br />
 
-  The appointment with  <br />
+  Your appointment with  <br />
   <%= @event_mailer.description %> on <%= @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %> has been canceled. <br /> <br />
+
+  <h3>**Please double-click on the attachment to add the appointment to your <i>Outlook calendar</i>. <br />
+    Be sure to click <i>Save</i> when exiting.
+  </h3> <br/>
 
   Thanks!  <br /><br />
 
   OASIS Team <br />
-  Erika Chomina <br />
+  Erika Chomina Lenford<br />
   OASIS Program Manager <br />
   OHSU School of Medicine|UME <br />
   chomina@ohsu.edu</p>

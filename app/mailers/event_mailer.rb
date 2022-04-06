@@ -1,4 +1,12 @@
 class EventMailer < ApplicationMailer
+
+  SENDER_SIGN = "Thanks!\n" +
+                "OASIS Team\n" +
+                "Erika Chomina Lenford\n" +
+                "OASIS Program Manager\n" +
+                "OHSU School of Medicine|UME\n" +
+                "chomina@ohsu.edu"
+
   def notify_student (meeting, method)
 
       @event_mailer = Event.find(meeting.event_id)
@@ -6,39 +14,25 @@ class EventMailer < ApplicationMailer
 
       student_email = meeting.user.email # student email
       first_name = meeting.user.full_name.split(", ").last
-      #cc_email = Advisor.find_by(id: meeting.advisor_id).email  # advisor email
+      cc_email = Advisor.find_by(id: meeting.advisor_id).email  # advisor email
       emails = []
       if student_email == 'bettybogus@ohsu.edu'
         student_email = 'chungp@ohsu.edu'
       end
       emails << student_email
-      #emails << cc_email
+      emails << cc_email
       if method == "Create"
         subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
-        @body_msg = "Hello #{first_name}, \n\nThe appointment has been created in REDEI.  Please be prepared to meet with " +
+        @body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
                      @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".\n" +
-                   "You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.\n\n" +
-                   "Thanks! \n\n" +
-                   "OASIS Team\n" +
-                   "Erika Chomina\n" +
-                   "OASIS Program Manager\n" +
-                   "OHSU School of Medicine|UME\n" +
-                    "chomina@ohsu.edu\n"
+                   "You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.\n\n\n"
 
         log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
       elsif method == 'Cancel'
         subject_msg = "Canceled:Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
-        @body_msg =  "Hello #{first_name}, \n\nYour appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +
-                      "has been canceled. \n\n" +
-                      "Thanks! \n\n" +
-                      "OASIS Team\n" +
-                      "Erika Chomina\n" +
-                      "OASIS Program Manager\n" +
-                      "OHSU School of Medicine|UME\n" +
-                      "chomina@ohsu.edu\n"
+        @body_msg =  "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.\n\n"
         log_emails(emails, "Canceled Appointment: ", @event_mailer, subject_msg)
       end
-
 
        ical = Icalendar::Calendar.new
        e = Icalendar::Event.new
@@ -48,8 +42,8 @@ class EventMailer < ApplicationMailer
        #e.end.icalendar_tzid="UTC"
        e.organizer = student_email
        e.uid = "MeetingReques#{meeting.id}"
-       e.summary = subject_msg  #"Testing iCalendar"
-       e.description = @body_msg #{}"Testing icalendar!"
+       e.summary = subject_msg
+       e.description = "Hello " + first_name + ",\n\n" + @body_msg + SENDER_SIGN #{}"Testing icalendar!"
        ical.add_event(e)
        #ical.publish
        ical.to_ical

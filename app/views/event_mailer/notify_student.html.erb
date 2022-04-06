@@ -1,11 +1,15 @@
 <p> Hello <%= @meeting_mailer.user.full_name.split(", ").last %>, <br /><br />
 
-  <%= @body_msg.html_safe %><br />
+  <%= @body_msg.html_safe %><br /><br />
+
+  <h3>**Please double-click on the attachment to add the appointment to your <i>Outlook calendar</i>. <br />
+    Be sure to click <i>Save</i> when exiting.
+  </h3> <br/>
 
   Thanks!  <br /><br />
 
   OASIS Team <br />
-  Erika Chomina <br />
+  Erika Chomina Lenford<br />
   OASIS Program Manager <br />
   OHSU School of Medicine|UME <br />
   chomina@ohsu.edu</p>

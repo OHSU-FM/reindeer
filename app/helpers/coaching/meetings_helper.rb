@@ -124,14 +124,20 @@ module Coaching::MeetingsHelper
     [
       ["Wellness Visit"]
     ]
+  end
 
-  def hf_diversity_navigator_for_select
+  def hf_diversity_navigator_discussed_for_select
     [
       ["General"],
       ["Scholarship Meeting"]
     ]
   end
 
+  def hf_diversity_navigator_for_select
+    [
+      ["General"],
+      ["Scholarship Meeting"]
+    ]
   end
 
   def hf_meeting_ipas_for_select

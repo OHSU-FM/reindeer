@@ -12,7 +12,7 @@ class CompetenciesController < ApplicationController
 
 
   def index
-
+    Rails.application.config.action_view.image_loading = "lazy"
     @non_clinical_course_arry ||= hf_get_non_clinical_courses
 
     if current_user.coaching_type == "student"

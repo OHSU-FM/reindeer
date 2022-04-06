@@ -68,6 +68,14 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+
+  $('#meeting-submit').click ->
+    if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
+      alert("You must check at least one Primary Reasons!")  
+      return
+      #$("#meeting-submit").prop("disabled", true)
+
+
   #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
   $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
 
