@@ -117,14 +117,19 @@ class FomExamsController < ApplicationController
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
        permission_group_id = params[:permission_group_id]  ## from Search function, required for cohort jumpers.
 
-       @comp_keys = FomExam.comp_keys
+
 
        student  = User.find_by(uuid: params[:uuid])
        cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
-       if cohort <= 'med22'
+       if cohort == 'med22'
          table_name_prefix = cohort + "_"
+          @comp_keys = FomExam.comp_keys
+       elsif cohort <= 'med21'
+         table_name_prefix = cohort + "_"
+          @comp_keys = FomExam.comp_keys_med21
        else
          table_name_prefix = ""
+          @comp_keys = FomExam.comp_keys
        end
        @student_email = student.email
        @student_full_name = student.full_name

@@ -9,6 +9,14 @@ COMPONENT_DESC = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Qu
                   'comp5b_bss' => 'Component 5B: Basic Science Skills Assessment',
                   'summary_comp' => 'Summary Data'
                 }
+COMPONENT_DESC_NED21 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
+                  'comp2b_bss' => 'Component 2: Basic Science Skills Assessments',
+                  'comp3_final' => 'Component 3: Final Block Exam',
+                  'comp4_nbme' => 'Component 4: NBME Exam',
+                  'comp5b_bss' => 'Component 5: Basic Science Skills Assessment',
+                  'summary_comp' => 'Summary Data'
+                }
+
 
 BLOCKS = {  '1-FUND' => "Fundamentals",
             '2-BLHD' => "Blood & Host Defense",
@@ -55,7 +63,11 @@ LABELS2 = {
   end
 
   def hf_component_desc(in_code)
-    return COMPONENT_DESC[in_code]
+    if !COMPONENT_DESC[in_code].nil?
+      return COMPONENT_DESC[in_code]
+    else
+      return COMPONENT_DESC_MED21[in_code]
+    end
   end
 
   def hf_formative_feedback_labels(in_q, label_code)

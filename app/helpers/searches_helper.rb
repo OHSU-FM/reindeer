@@ -95,6 +95,9 @@ module SearchesHelper
     blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
     if blocks.empty?
       blocks = Med22FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+      if blocks.empty?
+        blocks = Med21FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+      end
     end
     blocks.each do |block|
       block_hash = {}

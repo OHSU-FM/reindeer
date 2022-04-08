@@ -4,9 +4,14 @@ class FomExam < ApplicationRecord
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
+  PREFIX_KEYS_MED21 = ['comp1_wk', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5b_bss', 'summary_comp']
 
   def self.comp_keys
     return PREFIX_KEYS
+  end
+
+  def self.comp_keys_med21
+    return PREFIX_KEYS_MED21
   end
 
   def self.to_csv
@@ -108,14 +113,19 @@ class FomExam < ApplicationRecord
         sql = "select users.full_name, "
         sql_avg = "select "
         row_to_hash.each do |key, val| # build sql using form label record --> customized headers
-  
             val = val.gsub(" ", "")
             sql += "#{key}, "
-            if key.match(Regexp.union(PREFIX_KEYS))
-              sql_avg += "AVG(#{key}) as avg_#{key}, "
+            if permssion_group_id > 13 # Med21
+              if key.match(Regexp.union(PREFIX_KEYS))
+                sql_avg += "AVG(#{key}) as avg_#{key}, "
+              end
+            else
+              if key.match(Regexp.union(PREFIX_KEYS_MED21))
+                sql_avg += "AVG(#{key}) as avg_#{key}, "
+              end
             end
           end
-        end
+      end
 
     else # attachment_id = -1 get fom label from table fom_labels
       if block_enabled == false
@@ -141,6 +151,7 @@ class FomExam < ApplicationRecord
     end
 
     sql = sql.delete_suffix(", ")
+
     results = FomExam.execute_sql(sql + " from " + table_name_prefix + "fom_exams, users " +
       "where users.id = " + table_name_prefix + "fom_exams.user_id and " +
       table_name_prefix + "fom_exams.user_id = ? and " +
