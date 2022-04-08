@@ -15,6 +15,7 @@ class EventMailer < ApplicationMailer
       student_email = meeting.user.email # student email
       first_name = meeting.user.full_name.split(", ").last
       cc_email = Advisor.find_by(id: meeting.advisor_id).email  # advisor email
+      username = cc_email.split('@').first
       emails = []
       if student_email == 'bettybogus@ohsu.edu'
         student_email = 'chungp@ohsu.edu'
@@ -23,14 +24,22 @@ class EventMailer < ApplicationMailer
       emails << cc_email
       if method == "Create"
         subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
-        @body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
-                     @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".\n" +
-                   "You will receive additional details or a WebEx link from your Advisor before the scheduled appointment.\n\n\n"
+
+        @cal_body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
+                     @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".\\n\\n" +
+                     "Here is the advisor personal WebEx link: \\n" +
+                     "https://ohsu.webex.com/meet/#{username}\\n\\n\\n"
+
+       @body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
+                    @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".<br><br>" +
+                    "Here is the advisor personal WebEx link: <br>" +
+                    "https://ohsu.webex.com/meet/#{username}<br><br><br>"
 
         log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
       elsif method == 'Cancel'
         subject_msg = "Canceled:Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
         @body_msg =  "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.\n\n"
+        @cal_body_msg = @body_msg
         log_emails(emails, "Canceled Appointment: ", @event_mailer, subject_msg)
       end
 
@@ -43,7 +52,7 @@ class EventMailer < ApplicationMailer
        e.organizer = student_email
        e.uid = "MeetingReques#{meeting.id}"
        e.summary = subject_msg
-       e.description = "Hello " + first_name + ",\n\n" + @body_msg + SENDER_SIGN #{}"Testing icalendar!"
+       e.description = "Hello " + first_name + ",\n\n" + @cal_body_msg + SENDER_SIGN #{}"Testing icalendar!"
        ical.add_event(e)
        #ical.publish
        ical.to_ical
