@@ -9,10 +9,11 @@ COMPONENT_DESC = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Qu
                   'comp5b_bss' => 'Component 5B: Basic Science Skills Assessment',
                   'summary_comp' => 'Summary Data'
                 }
-COMPONENT_DESC_NED21 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
+COMPONENT_DESC_MED21 = {'comp1_wk' => 'Component 1: Medical Knowledge (Weekly Tests/Quizzes)',
                   'comp2b_bss' => 'Component 2: Basic Science Skills Assessments',
                   'comp3_final' => 'Component 3: Final Block Exam',
                   'comp4_nbme' => 'Component 4: NBME Exam',
+                  'comp5a_hss' => 'Pathology & Histology',
                   'comp5b_bss' => 'Component 5: Basic Science Skills Assessment',
                   'summary_comp' => 'Summary Data'
                 }
@@ -65,7 +66,11 @@ LABELS2 = {
   def hf_component_desc(in_code)
     if !COMPONENT_DESC[in_code].nil?
       return COMPONENT_DESC[in_code]
-    else
+    end
+  end
+
+  def hf_component_desc2(in_code)
+    if !COMPONENT_DESC_MED21[in_code].nil?
       return COMPONENT_DESC_MED21[in_code]
     end
   end

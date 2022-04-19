@@ -120,12 +120,12 @@ class FomExamsController < ApplicationController
 
 
        student  = User.find_by(uuid: params[:uuid])
-       cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
-       if cohort == 'med22'
-         table_name_prefix = cohort + "_"
+       @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
+       if @cohort == 'med22'
+         table_name_prefix = @cohort + "_"
           @comp_keys = FomExam.comp_keys
-       elsif cohort <= 'med21'
-         table_name_prefix = cohort + "_"
+       elsif @cohort <= 'med21'
+         table_name_prefix = 'med21'+ "_"
           @comp_keys = FomExam.comp_keys_med21
        else
          table_name_prefix = ""
@@ -133,6 +133,7 @@ class FomExamsController < ApplicationController
        end
        @student_email = student.email
        @student_full_name = student.full_name
+       @student_perm_group = student.permission_group_id
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid

@@ -4,7 +4,7 @@ class FomExam < ApplicationRecord
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
-  PREFIX_KEYS_MED21 = ['comp1_wk', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5b_bss', 'summary_comp']
+  PREFIX_KEYS_MED21 = ['comp1_wk', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss','comp5b_bss', 'summary_comp']
 
   def self.comp_keys
     return PREFIX_KEYS
