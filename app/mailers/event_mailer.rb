@@ -22,6 +22,7 @@ class EventMailer < ApplicationMailer
       end
       emails << student_email
       emails << cc_email
+      emails << "bazhaw@ohsu.edu"   ## assist dean assistance
       if method == "Create"
         subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
 

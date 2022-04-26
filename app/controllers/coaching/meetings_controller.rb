@@ -20,7 +20,15 @@ module Coaching
         event = Event.create(title: @meeting.advisor_type, description: @meeting.advisor_type + " - " + current_user.full_name,
           start_date: start_date, end_date: end_date, user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
         @meeting.event_id = event.id
+
       else
+
+        if @meeting.advisor_type == 'Assist Dean'
+          @meeting.advisor_discussed.push "General Visit"
+          @meeting.advisor_outcomes.push "General Visit"
+          @meeting.advisor_notes = "General Visit."
+        end
+
         # student is createing a meeting/appointment record
         Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
 

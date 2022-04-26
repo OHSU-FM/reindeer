@@ -87,8 +87,10 @@ module Coaching
 
         #@goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
         @meetings = @student.meetings.order('created_at DESC')
-        @messages = @student.room.messages.order(:created_at)
-        @room_id = @student.room.id
+        #-- room resource is being disabled
+        #@messages = @student.room.messages.order(:created_at)
+        #@room_id = @student.room.id
+
         @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name)
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
         #@events = Event.where('start_date > ?', DateTime.now).order(:id )

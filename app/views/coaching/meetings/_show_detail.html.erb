@@ -21,8 +21,10 @@
                   <% select_options = hf_academic_primary_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                   <% select_options = hf_wellness_primary_for_select %>
-                  <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
-                    <% select_options = hf_diversity_navigator_for_select %>
+                <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                  <% select_options = hf_diversity_navigator_for_select %>
+                <% elsif meeting.advisor_type == 'Assist Dean'  %>
+                  <% select_options = hf_assist_dean_for_select %>
                 <% else %>
                   <% select_options = hf_meeting_tags_for_select %>
                 <% end %>
@@ -80,6 +82,8 @@
                     <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
                 <% elsif meeting.advisor_type == "Diversity Navigator" %>
                   <% advisor_subjects = hf_diversity_navigator_discussed_for_select %>
+                <% elsif meeting.advisor_type == "Assist Dean" %>
+                  <% advisor_subjects = hf_assist_dean_for_select %>
                 <% end %>
 
                 <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
@@ -118,6 +122,10 @@
                         <% advisor_outcomes = hf_meeting_ipps_for_select %>
                     <% elsif meeting.advisor_type == 'Wellness'  %>
                         <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
+                    <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                        <% advisor_outcomes = hf_diversity_navigator_for_select%>
+                    <% elsif meeting.advisor_type == 'Assist Dean'  %>
+                        <% advisor_outcomes = hf_assist_dean_for_select%>                                                
                     <% else %>
                         <% advisor_outcomes = hf_meeting_ipas_for_select %>
                     <% end %>

@@ -140,6 +140,13 @@ module Coaching::MeetingsHelper
     ]
   end
 
+  def hf_assist_dean_for_select
+    [
+      ["General Visit"]
+    ]
+  end
+
+  
   def hf_meeting_ipas_for_select
     [
       ["Peer Tutoring"],

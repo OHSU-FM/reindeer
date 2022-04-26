@@ -37,6 +37,10 @@ diversityNavigatorPrimary = [
   "Scholarship Meeting"
 ]
 
+assistDeanPrimary = [
+  "General Vist"
+]
+
 academicPrimary = [
   "Goal Setting/Updated IPAS"
   "General Learning/Study Strategies"
@@ -71,7 +75,7 @@ $(document).ready ->
 
   $('#meeting-submit').click ->
     if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
-      alert("You must check at least one Primary Reasons!")  
+      alert("You must check at least one Primary Reasons!")
       return
       #$("#meeting-submit").prop("disabled", true)
 
@@ -106,6 +110,8 @@ $(document).ready ->
     data = wellnessPrimary
   else if advisorType == 'Diversity Navigator'
     data = diversityNavigatorPrimary
+  else if advisorType == 'Assist Dean'
+    data = assistDeanPrimary
   else
     data = careerPrimary
   nbsp = '&nbsp'
@@ -131,6 +137,9 @@ $(document).ready ->
       $('#study_resources').hide()
     else if advisorType == 'Diversity Navigator'
       data = diversityNavigatorPrimary
+      $('#study_resources').hide()
+    else if advisorType == 'Assist Dean'
+      data = assistDeanPrimary
       $('#study_resources').hide()
     else
       data = careerPrimary
@@ -158,15 +167,16 @@ $(document).ready ->
     # console.log('selectedFilteredValue: ' + selectedFilteredValue)
     advisor_name = $('#coaching_meeting_advisor_id option:selected').text()
     #alert('advisor_name: ' + advisor_name)
-    if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
-      $('#StudentAffairsDean').show()
-      $('#WellnessAdvisor').hide()
-      $('#AppointmentCard').hide()
-      $('#OtherCard').hide()
-      $("#meeting-submit").prop("disabled", true);
-      FoundSADean = true
-      return
-    else if advisor_name.includes("Furnari")
+    # Ben & Becca are part of OASIS NOW
+    # if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
+    #   $('#StudentAffairsDean').show()
+    #   $('#WellnessAdvisor').hide()
+    #   $('#AppointmentCard').hide()
+    #   $('#OtherCard').hide()
+    #   $("#meeting-submit").prop("disabled", true);
+    #   FoundSADean = true
+    #   return
+    if advisor_name.includes("Furnari")
         $('#WellnessAdvisor').show()
         $('#StudentAffairsDean').hide()
         $('#AppointmentCard').hide()
