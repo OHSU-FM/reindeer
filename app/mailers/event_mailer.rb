@@ -13,8 +13,11 @@ class EventMailer < ApplicationMailer
       @meeting_mailer = meeting
 
       student_email = meeting.user.email # student email
-      first_name = meeting.user.full_name.split(", ").last
-      cc_email = Advisor.find_by(id: meeting.advisor_id).email  # advisor email
+      full_name = meeting.user.full_name
+      first_name = full_name.split(", ").last
+      advisor = Advisor.find_by(id: meeting.advisor_id) # advisor email
+      advisor_name = advisor.name
+      cc_email = advisor.email
       username = cc_email.split('@').first
       emails = []
       if student_email == 'bettybogus@ohsu.edu'
@@ -22,25 +25,41 @@ class EventMailer < ApplicationMailer
       end
       emails << student_email
       emails << cc_email
-      emails << "bazhaw@ohsu.edu"   ## assist dean assistance
+      @event_mailer.description = @event_mailer.description.split(" - ").first + " - " + "Dr. " + advisor.name
+
+      if advisor.advisor_type == 'Assist Dean'
+        emails << "bazhaw@ohsu.edu"   ## assist dean assistance
+        @event_mailer.description = @event_mailer.description.gsub(' Advisor', '')
+      end
+
+
+
       if method == "Create"
         subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
 
         @cal_body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
                      @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".\\n\\n" +
+                     "Student Name - #{full_name} (#{student_email})\\n" +
+                     "#{@event_mailer.description} (#{cc_email})\\n\\n" +
                      "Here is the advisor personal WebEx link: \\n" +
                      "https://ohsu.webex.com/meet/#{username}\\n\\n\\n"
 
        @body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
                     @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".<br><br>" +
+                    "Student Name - #{full_name} (#{student_email})<br>" +
+                    "#{@event_mailer.description} (#{cc_email})<br><br>" +
                     "Here is the advisor personal WebEx link: <br>" +
                     "https://ohsu.webex.com/meet/#{username}<br><br><br>"
 
         log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
       elsif method == 'Cancel'
         subject_msg = "Canceled:Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
-        @body_msg =  "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.\n\n"
-        @cal_body_msg = @body_msg
+        @body_msg =  "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.<br><br>" +
+            "Student Name - #{full_name} (#{student_email})<br>" +
+            "#{@event_mailer.description} (#{cc_email})<br><br>"
+        @cal_body_msg = "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.\\n\\n" +
+            "Student Name - #{full_name} (#{student_email})\\n" +
+            "#{@event_mailer.description} (#{cc_email})\\n\\n"
         log_emails(emails, "Canceled Appointment: ", @event_mailer, subject_msg)
       end
 
