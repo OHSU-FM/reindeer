@@ -1,38 +1,5 @@
 <h2>Account Information</h2>
 <div class="row">
-    <div class="col-lg-9 col-md-12 main fade-in two">
-        <div class="col-md-5">
-            <%= form_for(@user) do |f| %>
-                <dl class="dl-horizontal" style="padding:10px;">
-                <dt><label for="username">Username</label></dt>
-                <dd><%= @user.username%></dd>
-                <dt><%= f.label :password %></dt>
-                <dd><%= f.password_field :password,
-                    :disabled=>@user.is_ldap?,
-                    :class=>'form-control',
-                    'data-toggle'=>:tooltip,
-                    'data-placement'=>:bottom,
-                    :title=>(@user.is_ldap? ? 'Editing disabled because LDAP network logins are enabled.' : '')%></dd>
-                <dt><%= f.label :password_confirmation %></dt>
-                <dd><%= f.password_field :password_confirmation,
-                    :class=>'form-control',
-                    :disabled=>@user.is_ldap?,
-                    'data-toggle'=>:tooltip,
-                    'data-placement'=>:bottom,
-                    :title=>(@user.is_ldap? ? 'Editing disabled because LDAP network logins are enabled.' : '')%></dd>
-                <dt>Created</dt>
-                <dd><%= @user.created_at.to_date %></dd>
-            </dl>
-            <%= f.submit('Change Password', :class=>'btn btn-primary', disabled: @user.is_ldap?) %>
-            <% end %>
-        </div>
-    </div>
-    <div class="col-lg-3 sidebar fade-in one hidden-md hidden-sm hidden-xs">
-        <%= render :partial=>'users/sidenav'%>
-    </div>
+  
 
 </div>
-
-
-
-

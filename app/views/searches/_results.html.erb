@@ -22,7 +22,12 @@
         <tr>
           <td> <%= result.full_name %></td>
           <td> <%= result.email %></td>
-          <td> <%= result.sid.to_s %></td>
+          <% if ['chungp', 'haedinge', 'petesama'].include? current_user.username %>
+            <td> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
+          <% else %>
+            <td> <%= result.sid.to_s  %></td>
+          <% end %>
+
           <td> <%= result.permission_group.title.to_s %></td>
           <td style="text-align:center"> <%= result.spec_program %></td>
           <% if !result.matriculated_date.nil? %>

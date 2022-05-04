@@ -32,8 +32,6 @@ class EventMailer < ApplicationMailer
         @event_mailer.description = @event_mailer.description.gsub(' Advisor', '')
       end
 
-
-
       if method == "Create"
         subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
 
@@ -60,6 +58,7 @@ class EventMailer < ApplicationMailer
         @cal_body_msg = "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.\\n\\n" +
             "Student Name - #{full_name} (#{student_email})\\n" +
             "#{@event_mailer.description} (#{cc_email})\\n\\n"
+
         log_emails(emails, "Canceled Appointment: ", @event_mailer, subject_msg)
       end
 
@@ -77,6 +76,7 @@ class EventMailer < ApplicationMailer
        #ical.publish
        ical.to_ical
        attachments['calendar.ics'] = ical.to_ical
+
        mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
 
        # mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg, mime_version: '1.0',
