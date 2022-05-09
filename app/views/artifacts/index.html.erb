@@ -24,7 +24,7 @@
             /
             <%= link_to 'Move files', move_files_artifact_path(artifact)  %>
           <% end %>
-          <% if artifact.content.to_s.include? "Preceptor Eval CSV File" %>
+          <% if artifact.content.to_s.include? "Preceptor Eval" %>
             /
             <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact)  %>
           <% end %>

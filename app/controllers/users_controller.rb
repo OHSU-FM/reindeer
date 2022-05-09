@@ -31,8 +31,9 @@ class UsersController < ApplicationController
 
   def save_update_loa
     @user = params[:user]
-      if User.where(sid: @user["sid"]).update(spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
-        prev_permission_group_id: @user["prev_permission_group_id"])
+      if User.where(sid: @user["sid"]).update(usrname: @user["username"], full_name: @user["full_name"], email: @user["email"],
+         spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
+         prev_permission_group_id: @user["prev_permission_group_id"])
         redirect_to main_app.dashboards_path, notice: 'Upldated Student LOA Data!'
       else
         redirect_to main_app.dashboards_path, alert: 'Student LOA data is NOT updated!!'
@@ -41,7 +42,7 @@ class UsersController < ApplicationController
 
   def update_loa
     # allow user to update password (unless ldap)
-    @permission_groups = PermissionGroup.where("title like ?", '%Med2%')
+    @permission_groups = PermissionGroup.where("title like ? ", '%Med2%').sort
     @user = User.find_by(sid: params[:sid].to_s)
     render :update_loa
   end

@@ -1,5 +1,13 @@
 module SearchesHelper
 
+  def hf_get_permission_title(permission_group_id)
+    if permission_group_id.nil?
+      return ""
+    else
+      PermissionGroup.find(permission_group_id).title
+    end
+  end
+
   def median(ary)
     middle = ary.size/2
     sorted = ary.sort_by{ |a| a }

@@ -7,7 +7,8 @@
           <th>Student</th>
           <th>Student Email </th>
           <th>UID </th>
-          <th>Permission Group</th>
+          <th>Curr Cohort</th>
+          <th>Prev Cohort</th>
           <th>Program Status</th>
           <th>Matriculated Date</th>
           <th style="text-align:center"># of WBAs<br />(All Levels)</th>
@@ -22,13 +23,14 @@
         <tr>
           <td> <%= result.full_name %></td>
           <td> <%= result.email %></td>
-          <% if ['chungp', 'haedinge', 'petesama'].include? current_user.username %>
+          <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
             <td> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
           <% else %>
             <td> <%= result.sid.to_s  %></td>
           <% end %>
 
           <td> <%= result.permission_group.title.to_s %></td>
+          <td> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
           <td style="text-align:center"> <%= result.spec_program %></td>
           <% if !result.matriculated_date.nil? %>
             <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
