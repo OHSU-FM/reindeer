@@ -31,13 +31,17 @@ class UsersController < ApplicationController
 
   def save_update_loa
     @user = params[:user]
-      if User.where(sid: @user["sid"]).update(usrname: @user["username"], full_name: @user["full_name"], email: @user["email"],
-         spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
-         prev_permission_group_id: @user["prev_permission_group_id"])
+    if !@user["uuid"].nil?
+      user = User.find_by(uuid: @user["uuid"]).update(full_name: @user["full_name"], spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
+             prev_permission_group_id: @user["prev_permission_group_id"])
+      if user
         redirect_to main_app.dashboards_path, notice: 'Upldated Student LOA Data!'
       else
         redirect_to main_app.dashboards_path, alert: 'Student LOA data is NOT updated!!'
       end
+    else
+      redirect_to main_app.dashboards_path, alert: 'Student LOA data is NOT updated!!'
+    end
   end
 
   def update_loa

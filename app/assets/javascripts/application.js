@@ -31,6 +31,8 @@
 // require modern-business/modern-business.js
 //= require highcharts/highcharts
 //= require highcharts/highcharts-more
+//= require highcharts/modules/exporting.js
+//= require highcharts/modules/accessibility.js
 //= require highcharts/modules/no-data-to-display
 //= require cocoon
 //= require startup.js

@@ -206,62 +206,82 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
   if in_data == undefined
     return
 
-  if build_type = 'GroupCounts'
-    seriesArr = []
-    drilldownSeriesArr = []
-    category = []
-    i = 1;
-    graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + total_wba_count
-    graph_type = 'column'
-    yAxis_params = yAxis_types
-    while i <= 13  # 13 epas
-      name = "EPA" + i
-      temp_array = in_data[i]
-      seriesArr.push {name: name, data: [{name: name, y: temp_array.length, drilldown: name}], color: get_epa_color(i)}
-      drilldownSeriesArr.push {id: name, name: name, type: 'column', data: get_drilldown(epa_evaluators[name]), color: get_epa_color(i)}
-      #[["Mejicano, George",3],["Bumsted, Tracy",4],["Bigioli, Frances",5]]
-      category.push name
-      i++
+  seriesArr = in_data
+  category = []
+  i = 1;
+  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + total_wba_count
+  graph_type = 'packedbubble'
+  height = '60%'
+  category.push ("1 - I did it")
+  category.push ("2 - I talked them through it")
+  category.push ("3 - I directed them from time to time")
+  category.push ("4 - I was available just in case")
+  console.log("category: " + category)
+  #yAxis_params = yAxis_types
+    # while i <= 13  # 13 epas
+    #   name = "EPA" + i
+    #   temp_array = in_data[i]
+    #   seriesArr.push {name: name, data: [{name: name, y: temp_array.length, drilldown: name}], color: get_epa_color(i)}
+    #   drilldownSeriesArr.push {id: name, name: name, type: 'column', data: get_drilldown(epa_evaluators[name]), color: get_epa_color(i)}
+    #   category.push name
+    #   i++
 
-    #console.log("series_data: " + JSON.stringify(seriesArr))
-    #drilldowns_series = [["Mejicano, George",3],["Bumsted, Tracy",4],["Bigioli, Frances",5]]
+  console.log(in_data)
 
   return {
     #global: useUTC: false
     chart:
       renderTo: render_to_target
       type: graph_type
-      plotBackgroundImage: ''
-    title: text: graph_title
-    subtitle: text: graph_sub_title
-    xAxis:
-      categories: category
-      title: text: 'EPAs'
-      #min: 0
-      #type: 'category'
-      labels:
-        enabled: false
+      height: height
 
-    legend:
-      enabled: true
-    yAxis: {
-            gridLineWidth: 0,
-            title: {
-                text: 'Total # of Observations by EPA'
-            }
-        },
+    # title: text: graph_title
+    # subtitle: text: graph_sub_title
+    title: {
+      text: graph_title,
+      margin: 0
+    },
+
+    tooltip: {
+    useHTML: true,
+    pointFormat: '<b>{point.name}</b>'
+    },
+
+    # xAxis:
+    #   categories: category
+    #   labels:
+    #     enabled: false
+    # legend:
+    #   enabled: true
+
     plotOptions: {
-        series: {
-          grouping: true
-          dataLabels: {
-            enabled: true
+        packedbubble: {
+            minSize: '30%',
+            maxSize: '200%',
+            zMin: 0,
+            zMax: 1000,
+            layoutAlgorithm: {
+                splitSeries: false,
+                gravitationalConstant: 0.01
+            },
+            dataLabels: {
+                enabled: true,
+                format: '{point.name} <br> count: {point.value}',
+                filter: {
+                    property: 'y',
+                    operator: '>=',
+                    value: 1
+                },
+                style: {
+                    color: 'black',
+                    textOutline: 'none',
+                    fontWeight: 'normal'
+                }
             }
         }
     },
     series: seriesArr
-    drilldown: {
-            series: drilldownSeriesArr
-    }
+
   }
 
 #=======================================================================================================

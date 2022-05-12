@@ -103,7 +103,7 @@ class EventsController < ApplicationController
       @time_slot = params[:time_slot]
       session[:advisor_type] = @advisor_type
       session[:advisor] = @advisor
-      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot])
+      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type)
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }

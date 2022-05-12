@@ -3,18 +3,14 @@
   <%= simple_form_for(@user, url: save_update_loa_users_path(@user), method: :get, local: true, html: { class: 'form-horizontal' },wrapper: :horizontal_form) do |f| %>
     <%= f.error_notification %>
     <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+    <%= f.hidden_field :sid, value: @user.sid %>
+    <%= f.hidden_field :uuid, value: @user.uuid %>
     <div class="form-group">
       <%= f.input :sid, disabled: true, label: "StudentID (Disabled)", input_html: {style: 'background-color: #D8A7B1'} %>
     </div>
     <div class="form-inputs">
       <div class="form-group">
         <%= f.input :full_name, input_html: {style: 'background-color: #A0E7E5'} %>
-      </div>
-      <div class="form-group">
-        <%= f.input :username %>
-      </div>
-      <div class="form-group">
-        <%= f.input :email %>
       </div>
       <div class="form-group">
         <%= f.input :spec_program, input_html: {style: 'width: 600px; background-color: #B4F8C8'} %>

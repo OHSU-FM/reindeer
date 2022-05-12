@@ -20,6 +20,30 @@ module EpasHelper
     return epa_hash
   end
 
+  def reformatted_data2(results)
+    epa_hash = [{"name" => "Level1", "data" => []},
+                {"name" => "Level2", "data" => []},
+                {"name" => "Level3", "data" => []},
+                {"name" => "Level4", "data" => []}
+              ]
+    for j in 1..4 do
+      for i in 1..13 do
+          count = 0
+          count = results.select{|r| r if r.epa == "EPA#{i}" and r.involvement==j}.count
+          if count != 0
+            data_hash = {}
+            data_hash.store("name", "EPA#{i}")
+            data_hash.store("value", count)
+            epa_hash[j-1]["data"].push data_hash
+          end
+      end
+    end
+
+   return epa_hash
+
+  end
+
+
   def epas_by_evaluators (results)
     epa_evaluators = {}
     selected_dates = []
@@ -56,6 +80,7 @@ module EpasHelper
     if !epas.empty?
       total_wba_count = epas.count
       selected_student = epas.first.student_assessed.split("-").first
+      #epa_hash = reformatted_data(epas)
       epa_hash = reformatted_data(epas)
       epa_evaluators, unique_evaluators, selected_dates = epas_by_evaluators(epas)
       return epas, epa_hash, epa_evaluators, unique_evaluators, selected_dates, selected_student, total_wba_count
