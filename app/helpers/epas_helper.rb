@@ -26,6 +26,7 @@ module EpasHelper
                 {"name" => "Level3", "data" => []},
                 {"name" => "Level4", "data" => []}
               ]
+
     for j in 1..4 do
       for i in 1..13 do
           count = 0
@@ -81,7 +82,7 @@ module EpasHelper
       total_wba_count = epas.count
       selected_student = epas.first.student_assessed.split("-").first
       #epa_hash = reformatted_data(epas)
-      epa_hash = reformatted_data(epas)
+      epa_hash = reformatted_data2(epas)
       epa_evaluators, unique_evaluators, selected_dates = epas_by_evaluators(epas)
       return epas, epa_hash, epa_evaluators, unique_evaluators, selected_dates, selected_student, total_wba_count
     else

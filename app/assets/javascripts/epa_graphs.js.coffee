@@ -201,7 +201,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
   }
 
 #======================================================================================================
-build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, epa_evaluators, total_wba_count) ->
+build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, tot_wba_count) ->
 
   if in_data == undefined
     return
@@ -209,14 +209,12 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
   seriesArr = in_data
   category = []
   i = 1;
-  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + total_wba_count
+  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count
   graph_type = 'packedbubble'
   height = '60%'
-  category.push ("1 - I did it")
-  category.push ("2 - I talked them through it")
-  category.push ("3 - I directed them from time to time")
-  category.push ("4 - I was available just in case")
-  console.log("category: " + category)
+
+  console.log("build_options2 --> tot_wba_count: " + tot_wba_count)
+
   #yAxis_params = yAxis_types
     # while i <= 13  # 13 epas
     #   name = "EPA" + i
@@ -244,7 +242,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
 
     tooltip: {
     useHTML: true,
-    pointFormat: '<b>{point.name}</b>'
+    pointFormat: '<b>{point.name} <br> count: {point.value}</b>'
     },
 
     # xAxis:
@@ -257,7 +255,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
     plotOptions: {
         packedbubble: {
             minSize: '30%',
-            maxSize: '200%',
+            maxSize: '300%',
             zMin: 0,
             zMax: 1000,
             layoutAlgorithm: {
@@ -266,7 +264,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
             },
             dataLabels: {
                 enabled: true,
-                format: '{point.name} <br> count: {point.value}',
+                format: '{point.name}',
                 filter: {
                     property: 'y',
                     operator: '>=',
@@ -304,11 +302,13 @@ $(document).ready ->
     @selected_student = if gon.selected_student? then gon.selected_student else ''
     @total_wba_count = if gon.total_wba_count? then gon.total_wba_count else ''
 
+    console.log("@total_wba_count: " + @total_wba_count)
+
     #==== Display all Ad Hoc graphs
     graph_target = "data-visualization-AdHocAllEPAs"
     graph_title = "All Work Based Assessments"
     graph_sub_title = @selected_student
-    options = build_options(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
+    options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
     window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
     console.log ("before EPA - graph_target: " + graph_target)
 
