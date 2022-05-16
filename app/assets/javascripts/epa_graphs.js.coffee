@@ -12,6 +12,8 @@ theme_light =
     '#DF5353'
     '#7798BF'
     '#aaeeee'
+    '#000080'
+    '#00bfff'
   ]
   chart:
     backgroundColor: '#e8f4ea'
@@ -201,7 +203,7 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
   }
 
 #======================================================================================================
-build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, build_type, selected_dates, tot_wba_count) ->
+build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, graph_type, selected_dates, tot_wba_count) ->
 
   if in_data == undefined
     return
@@ -210,7 +212,7 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
   category = []
   i = 1;
   graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count
-  graph_type = 'packedbubble'
+  graph_type = graph_type
   height = '60%'
 
   console.log("build_options2 --> tot_wba_count: " + tot_wba_count)
@@ -254,17 +256,17 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
 
     plotOptions: {
         packedbubble: {
-            minSize: '30%',
-            maxSize: '300%',
+            minSize: '40%',
+            maxSize: '400%',
             zMin: 0,
             zMax: 1000,
             layoutAlgorithm: {
                 splitSeries: false,
-                gravitationalConstant: 0.01
+                gravitationalConstant: 0.03
             },
             dataLabels: {
                 enabled: true,
-                format: '{point.name}',
+                format: '{point.name} <br>Total: {point.value}',
                 filter: {
                     property: 'y',
                     operator: '>=',
@@ -282,6 +284,68 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
 
   }
 
+#======================================================================================================
+build_options3 = (idx, in_data, render_to_target, graph_title, graph_sub_title, graph_type, selected_dates, tot_wba_count) ->
+
+  if in_data == undefined
+    return
+
+  seriesArr = Object.values(in_data)
+  category = Object.keys(in_data)
+
+  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count
+  graph_type = "column"
+
+  return {
+    chart:
+      renderTo: render_to_target
+      type: graph_type
+
+    # title: text: graph_title
+    # subtitle: text: graph_sub_title
+    title: {
+      text: graph_title,
+      margin: 0
+    },
+
+    # tooltip: {
+    # useHTML: true,
+    # pointFormat: '<b>{point.name} <br> count: {point.value}</b>'
+    # },
+
+    xAxis:
+      categories: category
+      labels:
+        enabled: true
+    legend:
+      enabled: true
+
+    plotOptions: {
+        series: {
+          dataLabels: {
+            enabled: true
+            }
+        }
+    },
+
+    yAxis: {
+            max: window.SeriesMax,
+            min: 0,
+            gridLineWidth: 0,
+            title: {
+                text: 'Total # of WBAs'
+            }
+        },
+
+    series: [{
+        type: 'column',
+        colorByPoint: true,
+        data: seriesArr,
+        showInLegend: false
+    }]
+
+  }
+
 #=======================================================================================================
 $(document).ready ->
     console.log("epa graphs!!")
@@ -296,6 +360,7 @@ $(document).ready ->
     if gon.epa_adhoc == undefined or jQuery.isEmptyObject(gon.epa_adhoc)
       return
     @epa_adhoc_series_data = if gon.epa_adhoc? then gon.epa_adhoc else ''
+    @epa_adhoc_dates = if gon.epa_adhoc_dates? then gon.epa_adhoc_dates else ''
     @epa_evaluators_series_data = if gon.epa_evaluators? then gon.epa_evaluators else ''
     @unique_evalutors = if gon.unique_evaluators? then gon.unique_evalutors else ''
     @selected_dates = if gon.selected_dates? then gon.selected_dates else ''
@@ -308,28 +373,84 @@ $(document).ready ->
     graph_target = "data-visualization-AdHocAllEPAs"
     graph_title = "All Work Based Assessments"
     graph_sub_title = @selected_student
-    options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
-    window.chart3 = Highcharts.chart($.extend(true, null, theme_light, options))
+    window.seriesArray = Object.values(@epa_adhoc_series_data)
+    window.SeriesMax = Math.max.apply(Math, window.seriesArray) + 1
+
+    #options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "packedbubble", @selected_dates, @total_wba_count)
+    window.options = build_options3(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "column", @selected_dates, @total_wba_count)
+    window.chart3 = Highcharts.chart(window.options)
     console.log ("before EPA - graph_target: " + graph_target)
+
+    window.options_line = build_options(i, @epa_adhoc_dates, graph_target, graph_title, graph_sub_title, "Group", @selected_dates, @total_wba_count)
+    #window.chart4 = Highcharts.chart( options_line)
 
     window.chart2 = []
     i = 0
-    for k of @epa_adhoc_series_data
-      if @epa_adhoc_series_data.hasOwnProperty(k)
+    for k of @epa_adhoc_dates
+      if @epa_adhoc_dates.hasOwnProperty(k)
         i++
         graph_target = "data-visualization-EPA" + i
         console.log ("graph_target: " + graph_target)
         graph_title = "Work Based Assessment"
         graph_sub_title = @selected_student
-        options = build_options(i, @epa_adhoc_series_data[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates, @total_wba_count)
+        options = build_options(i, @epa_adhoc_dates[i], graph_target, graph_title, graph_sub_title, "Individual", @selected_dates, @total_wba_count)
         window.chart2[i] = Highcharts.chart($.extend(true, null, theme_light, options))
 
+    $('#inverted').button().click ->
+      window.chart3 = Highcharts.chart($.extend(true, null, theme_light, window.options))
+      window.chart3.update({
+        chart: {
+            inverted: true,
+            polar: false
+        },
+        yAxis: {
+                max: window.SeriesMax,
+                min: 0,
+                gridLineWidth: 0,
+                title: {
+                    text: 'Total # of WBAs'
+                }
+            }
+        });
 
-    # this graph does not work due to drilldown
-    #----------------------------------------------
-    # graph_target = "data-visualization-AdHocAllEPACount"
-    # graph_title = "Number of WBAs Per EPA"
-    # graph_sub_title = @selected_student
-    # options = build_options2(0, @epa_adhoc_series_data, graph_target, graph_title, graph_sub_title, "GroupCounts", @selected_dates, @epa_evaluators_series_data, @total_wba_count)
-    # window.chart4 = Highcharts.chart($.extend(true, null, theme_light, options))
-    # console.log ("after EPA - graph_target: " + graph_target)
+    $('#plain').button().click ->
+      window.chart3 = Highcharts.chart($.extend(true, null, theme_light, window.options))
+      window.chart3.update({
+        chart: {
+            inverted: false,
+            polar: false
+        },
+        yAxis: {
+                max: window.SeriesMax,
+                min: 0,
+                gridLineWidth: 0,
+                title: {
+                    text: 'Total # of WBAs'
+                }
+            }
+    });
+    $('#polar').button().click ->
+      window.chart3 = Highcharts.chart($.extend(true, null, theme_light, window.options))
+      window.chart3.update({
+        chart: {
+            inverted: false,
+            polar: true
+        },
+        yAxis: {
+                max: window.SeriesMax,
+                min: 1,
+                gridLineWidth: 0,
+                title: {
+                    text: ''
+                }
+            },
+    });
+
+    $('#spline').button().click ->
+      window.chart4 = Highcharts.chart($.extend(true, null, theme_light, window.options_line))
+      window.chart4.update({
+        chart: {
+            inverted: false,
+            polar: false
+        }
+    });
