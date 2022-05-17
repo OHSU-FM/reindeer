@@ -1,6 +1,6 @@
 <%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
 
-  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic' or advisor_type = 'Diversity Navigator' or advisor_type = 'Assist Dean') %>
+  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic' or advisor_type == 'Diversity Navigator' or advisor_type == 'Assist Dean' ) %>
     <div hidden>
       <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
       </div>
