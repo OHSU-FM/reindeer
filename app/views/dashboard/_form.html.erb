@@ -20,26 +20,18 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="dashboard-navbar-collapse">
             <ul class="nav navbar-nav">
-              <li class="dropdown"
-                data-step="1"
-                data-position="right"
-                data-intro="Click here to select and change your desktop background">
-                <a id="dashboard-theme" data-toggle="dropdown" class="dropdown-toggle">
-                  Theme
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu radio-select" role="dropdown">
-                  <% @dash.theme_enum.each do |theme| %>
-                    <li <%= (f.object.theme == theme ? 'class="selected"'.html_safe : '') %>>
-                      <i class="fa fa-check"></i>
-                      <%= f.label :theme, :value=>theme do %>
-                        <%= theme.sub('theme-','').gsub('-', ' ') %>
-                        <%= f.radio_button :theme, theme, :class=>"toggle-theme"%>
-                      <% end %>
-                    </li>
-                  <% end %>
+
+
+                <div class="dropdown" id="dashboard-theme">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                <ul class="dropdown-menu" >
+                    <% @dash.theme_enum.each do |theme| %>
+                      <li><%= theme %></li>
+                    <% end %>
+
                 </ul>
-              </li>
+              </div>
+
             </ul>
 
         </div><!-- /.navbar-collapse -->
