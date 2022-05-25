@@ -26,7 +26,6 @@ window.Dashboard.Errors = {};
 $(document).ready ->
 
     return if $('body').attr('id') != 'dashboard'
-
     # toggler =  document.getElementsByClassName('dashboard-theme') # $('#dashboard-theme')   #document.getElementsByClassName('caret')
     # i = undefined
     # i = 0
@@ -42,14 +41,21 @@ $(document).ready ->
     window.dashboards = []
     #window.charts = [];
 
-    $('#dashboard-theme').on 'click', (e) ->
-      optionSelected = $(this)
-      valueSelected  = optionSelected.val()
+    $('#dashboard-theme a').on 'click', (e) ->
+      #optionSelected = $(this)
+      valueSelected  = $(this).text()
       console.log("valueSelected: " + valueSelected)
       window.Dashboard.swap_theme(valueSelected)
+      $.ajax(
+        type: 'PATCH'
+        url: 'dashboard/update'
+        data: {theme: valueSelected}
+        dataType: 'json').done((data) ->
+        console.log ('Background theme updated successfully! ')
+        return
+      ).fail (data) ->
+        alert ("Background theme IS NOT updated!")
       return
-
-
 
     # $(document).on 'cross-tabs:dashboard:theme-changed', (e, val)->
     #     window.Dashboard.swap_theme(val)
@@ -57,8 +63,6 @@ $(document).ready ->
     # Bail unless we have gon data to process
     return unless gon?
     #return unless gon.dashboard_widgets?
-
-
 
     # Create dashboard(s)
     $('.dashboard-container-outer').each ->

@@ -62,11 +62,14 @@ class DashboardController < ApplicationController
   end
 
   def update
-    @dash = Dashboard.find(params[:id].to_i)
-    authorize! :update, @dash
+
+    #@dash = Dashboard.find(params[:id].to_i)
+    #authorize! :update,:create, @dash
+    # params[:theme] comes from ajax call
+    @dash = Dashboard.where(user_id: current_user.id).first_or_create.update(theme: params[:theme])
 
     respond_to do |format|
-      if @dash.update(dashboard_params)
+      if @dash #.update(dashboard_params)
         format.html{ render action: :show}
         format.json{ render json: { dash: @dash }, status: :ok }
       else
