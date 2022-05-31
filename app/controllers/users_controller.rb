@@ -46,7 +46,7 @@ class UsersController < ApplicationController
 
   def update_loa
     # allow user to update password (unless ldap)
-    @permission_groups = PermissionGroup.where("title like ? ", '%Med2%').sort
+    @permission_groups = PermissionGroup.where("title like ? ", '%Student%').sort
     @user = User.find_by(sid: params[:sid].to_s)
     render :update_loa
   end
