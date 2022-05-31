@@ -72,6 +72,16 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+    console.log("radio value: " + @value )
+    dataValue = $("#advisor-" + @value).data('advisor-' + @value).split(" - ")
+    if dataValue[1] == 'Cantone, Rebecca'
+      $("#coaching_meeting_advisor_id").val(8).trigger("chosen:updated")
+    else if dataValue[1] == 'Schneider, Benjamin'
+      $("#coaching_meeting_advisor_id").val(2).trigger("chosen:updated")
+
+    console.log("data-advisor-id: " + dataValue)
+    return
 
   $('#meeting-submit').click ->
     if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
@@ -151,31 +161,13 @@ $(document).ready ->
       $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
-    # $('#study_resources').empty()
-    # $.each data_study, (index) ->
-    #   $('#study_resources').append '<label><input type=\'checkbox\' name=\'coaching_meeting[study_resources][]\' value=\'' + data_study[index] + '\' />' + nbsp + data_study[index] + '</label><br/>'
-    #   return
-
-
-    #$('#EventsTable tr').hide()
-  # $("#filtered_by_days").find("option").css("color", "#337ab7")
-  # $("#filtered_by_days").change ->
   $('#EventsTable').hide()
   $('#coaching_meeting_advisor_id').change ->
     $('#EventsTable').show()
     # selectedFilteredValue = $('#filtered_by_days option:selected').val()
     # console.log('selectedFilteredValue: ' + selectedFilteredValue)
     advisor_name = $('#coaching_meeting_advisor_id option:selected').text()
-    #alert('advisor_name: ' + advisor_name)
-    # Ben & Becca are part of OASIS NOW
-    # if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
-    #   $('#StudentAffairsDean').show()
-    #   $('#WellnessAdvisor').hide()
-    #   $('#AppointmentCard').hide()
-    #   $('#OtherCard').hide()
-    #   $("#meeting-submit").prop("disabled", true);
-    #   FoundSADean = true
-    #   return
+
     if advisor_name.includes("Furnari")
         $('#WellnessAdvisor').show()
         $('#StudentAffairsDean').hide()
@@ -191,7 +183,10 @@ $(document).ready ->
       $('#OtherCard').show()
       FoundSADean = false
 
+    selectedAdvisorType = $("#coaching_meeting_advisor_type option:selected").text()
+    console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
+
     modDate = Date.today().addDays(1)
 
     rowCount = $("#EventsTable tr").not('thead tr').length;
@@ -217,7 +212,11 @@ $(document).ready ->
       orgDate = new Date(colDate[0])
 
       #console.log('selectedAdvisorText: ' + selectedAdvisorText[0] + ' --> colAdvisor: ' + colAdvisor[1])
-      if (colAdvisor[1] == selectedAdvisorText[0])
+      found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
+      console.log("colAdvisor[1]: " + colAdvisor[1])
+      if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
+         row.show()
+      else if (colAdvisor[1] == selectedAdvisorText[0]) && (selectedAdvisorType != "Assist Dean")
         row.show()
       else
         row.hide()

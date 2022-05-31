@@ -47,6 +47,10 @@ class Dashboard < ActiveRecord::Base
     self[:theme] || DEFAULT_THEME
   end
 
+  def get_background_images
+   image_files = Dir.glob("app/assets/images/dashboard/themes/*").map do |f| File.basename f end  
+  end
+
   def first_empty_col
     dashboard_widgets.present? ? dashboard_widgets.map {|w| w.position }.max % 6 + 1 : 1
   end
