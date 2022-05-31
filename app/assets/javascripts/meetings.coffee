@@ -72,15 +72,11 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
-  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
-    console.log("radio value: " + @value )
-    dataValue = $("#advisor-" + @value).data('advisor-' + @value).split(" - ")
-    if dataValue[1] == 'Cantone, Rebecca'
-      $("#coaching_meeting_advisor_id").val(8).trigger("chosen:updated")
-    else if dataValue[1] == 'Schneider, Benjamin'
-      $("#coaching_meeting_advisor_id").val(2).trigger("chosen:updated")
 
-    console.log("data-advisor-id: " + dataValue)
+  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+    advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+    #console.log("data-advisor-id: " + dataValue)
     return
 
   $('#meeting-submit').click ->
@@ -88,7 +84,6 @@ $(document).ready ->
       alert("You must check at least one Primary Reasons!")
       return
       #$("#meeting-submit").prop("disabled", true)
-
 
   #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
   $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
