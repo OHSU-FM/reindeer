@@ -46,11 +46,15 @@ $(document).ready ->
       valueSelected  = $(this).text()
       console.log("valueSelected: " + valueSelected)
       window.Dashboard.swap_theme(valueSelected)
+
+
       $.ajax(
         type: 'PATCH'
         url: 'dashboard/update'
         data: {theme: valueSelected}
         dataType: 'json').done((data) ->
+        #$('body').css('background-image', "url(app/assets/images/dashboard/themes/" + valueSelected + ")")
+        #$('body').css('background-image', 'url(' + "/app/assets/images/dashboard/themes/" + valueSelected + ')')
         console.log ('Background theme updated successfully! ')
         return
       ).fail (data) ->

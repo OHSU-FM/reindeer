@@ -1,7 +1,11 @@
 <br />
   <% if !@comp_keys.nil? and (@comp_keys.include? "disabled" or  @comp_keys.include? "NOT AUTHORIZED") %>
       <br />
-      <h4><%= @comp_keys %></h4>
+      <div class="alert alert-warning alert-dismissible">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Warning!</strong><h5><%= @comp_keys %></h5>
+      </div>
+
   <% else %>
     <!-- Page Header -->
     <div class="card">

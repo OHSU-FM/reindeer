@@ -136,6 +136,11 @@ class FomExam < ApplicationRecord
       else
         fom_label = FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first
       end
+
+      if fom_label.nil?
+        return nil, nil, nil
+      end
+
       row_to_hash = JSON.parse(fom_label.labels).first  # fom_label.labels is a json object
       sql = "select users.full_name, "
       sql_avg = "select "

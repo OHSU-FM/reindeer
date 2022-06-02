@@ -150,7 +150,7 @@ class FomExamsController < ApplicationController
          formative_feedbacks= FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes) ## med23 preceptor evaluations
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
        else
-         @comp_keys =  '*** This Block is being disabled temporary!! ***'
+         @comp_keys =  '*** This Block is being disabled temporary or has not been created just yet!! ***'
        end
 
        ## don't display remediation data for now
