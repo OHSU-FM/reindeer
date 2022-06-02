@@ -37,6 +37,10 @@ diversityNavigatorPrimary = [
   "Scholarship Meeting"
 ]
 
+assistDeanPrimary = [
+  "General Vist"
+]
+
 academicPrimary = [
   "Goal Setting/Updated IPAS"
   "General Learning/Study Strategies"
@@ -68,6 +72,19 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+
+  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+    advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+    #console.log("data-advisor-id: " + dataValue)
+    return
+
+  $('#meeting-submit').click ->
+    if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
+      alert("You must check at least one Primary Reasons!")
+      return
+      #$("#meeting-submit").prop("disabled", true)
+
   #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
   $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
 
@@ -96,6 +113,10 @@ $(document).ready ->
     data = academicPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
+  else if advisorType == 'Diversity Navigator'
+    data = diversityNavigatorPrimary
+  else if advisorType == 'Assist Dean'
+    data = assistDeanPrimary
   else
     data = careerPrimary
   nbsp = '&nbsp'
@@ -119,6 +140,12 @@ $(document).ready ->
     else if advisorType == 'Wellness'
       data = wellnessPrimary
       $('#study_resources').hide()
+    else if advisorType == 'Diversity Navigator'
+      data = diversityNavigatorPrimary
+      $('#study_resources').hide()
+    else if advisorType == 'Assist Dean'
+      data = assistDeanPrimary
+      $('#study_resources').hide()
     else
       data = careerPrimary
       $('#study_resources').hide()
@@ -129,31 +156,14 @@ $(document).ready ->
       $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
-    # $('#study_resources').empty()
-    # $.each data_study, (index) ->
-    #   $('#study_resources').append '<label><input type=\'checkbox\' name=\'coaching_meeting[study_resources][]\' value=\'' + data_study[index] + '\' />' + nbsp + data_study[index] + '</label><br/>'
-    #   return
-
-
-    #$('#EventsTable tr').hide()
-  # $("#filtered_by_days").find("option").css("color", "#337ab7")
-  # $("#filtered_by_days").change ->
   $('#EventsTable').hide()
   $('#coaching_meeting_advisor_id').change ->
     $('#EventsTable').show()
     # selectedFilteredValue = $('#filtered_by_days option:selected').val()
     # console.log('selectedFilteredValue: ' + selectedFilteredValue)
     advisor_name = $('#coaching_meeting_advisor_id option:selected').text()
-    #alert('advisor_name: ' + advisor_name)
-    if advisor_name.includes("Benjamin") or advisor_name.includes("Cantone")
-      $('#StudentAffairsDean').show()
-      $('#WellnessAdvisor').hide()
-      $('#AppointmentCard').hide()
-      $('#OtherCard').hide()
-      $("#meeting-submit").prop("disabled", true);
-      FoundSADean = true
-      return
-    else if advisor_name.includes("Furnari")
+
+    if advisor_name.includes("Furnari")
         $('#WellnessAdvisor').show()
         $('#StudentAffairsDean').hide()
         $('#AppointmentCard').hide()
@@ -168,7 +178,10 @@ $(document).ready ->
       $('#OtherCard').show()
       FoundSADean = false
 
+    selectedAdvisorType = $("#coaching_meeting_advisor_type option:selected").text()
+    console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
+
     modDate = Date.today().addDays(1)
 
     rowCount = $("#EventsTable tr").not('thead tr').length;
@@ -194,7 +207,11 @@ $(document).ready ->
       orgDate = new Date(colDate[0])
 
       #console.log('selectedAdvisorText: ' + selectedAdvisorText[0] + ' --> colAdvisor: ' + colAdvisor[1])
-      if (colAdvisor[1] == selectedAdvisorText[0])
+      found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
+      console.log("colAdvisor[1]: " + colAdvisor[1])
+      if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
+         row.show()
+      else if (colAdvisor[1] == selectedAdvisorText[0]) && (selectedAdvisorType != "Assist Dean")
         row.show()
       else
         row.hide()

@@ -50,6 +50,7 @@ class CreateMed22FomExams < ActiveRecord::Migration[6.1]
      t.decimal :comp5b_bss3
      t.decimal :comp5b_bss4
      t.decimal :comp5b_bss5
+     t.decimal :comp5b_bss6
      t.decimal :comp5b_bssavg
      t.decimal :summary_comp1
      t.decimal :summary_comp2a

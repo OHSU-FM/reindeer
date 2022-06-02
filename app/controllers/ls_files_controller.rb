@@ -38,6 +38,13 @@ class LsFilesController < ApplicationController
         end
         # to download attatment from REDEI
         # :disposition=>'attatment'  --> to ddownload
-        send_file fpath, :filename=>f_inf['name'], :type => 'application/pdf', :disposition=>'inline', :target=>"_blank"
+        #send_file fpath, type => 'application/pdf', disposition: 'inline', target: "_blank"
+        private_download fpath
+    end
+
+    private
+
+    def private_download fpath
+      send_file fpath, type: 'application/pdf', disposition: 'inline', target: "_blank"
     end
 end

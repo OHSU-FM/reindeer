@@ -26,29 +26,43 @@ window.Dashboard.Errors = {};
 $(document).ready ->
 
     return if $('body').attr('id') != 'dashboard'
-
-    toggler = document.getElementsByClassName('caret')
-    i = undefined
-    i = 0
-    while i < toggler.length
-      toggler[i].addEventListener 'click', ->
-        @parentElement.querySelector('.nested').classList.toggle 'active'
-        @classList.toggle 'caret-down'
-        return
-      i++
+    # toggler =  document.getElementsByClassName('dashboard-theme') # $('#dashboard-theme')   #document.getElementsByClassName('caret')
+    # i = undefined
+    # i = 0
+    # console.log("Dashboard Theme toggler Length: " + toggler)
+    # while i <= toggler.length
+    #   toggler[i].addEventListener 'click', ->
+    #     @parentElement.querySelector('.nested').classList.toggle 'active'
+    #     @classList.toggle 'caret-down'
+    #     return
+    #   i++
 
     # Debug ability, add variables to global namespace
     window.dashboards = []
     #window.charts = [];
+    $('#dashboard-theme a').on 'click', (e) ->
+      #optionSelected = $(this)
+      valueSelected  = $(this).text()
+      console.log("valueSelected: " + valueSelected)
 
-    $(document).on 'cross-tabs:dashboard:theme-changed', (e, val)->
-        window.Dashboard.swap_theme(val)
+      $.ajax(
+        type: 'PATCH'
+        url: 'dashboard/update'
+        data: {theme: valueSelected}
+        dataType: 'json').done((data) ->
+        window.Dashboard.swap_theme(valueSelected)
+        console.log ('Background theme updated successfully! ')
+        return
+      ).fail (data) ->
+        alert ("Background theme IS NOT updated!")
+      return
+
+    # $(document).on 'cross-tabs:dashboard:theme-changed', (e, val)->
+    #     window.Dashboard.swap_theme(val)
 
     # Bail unless we have gon data to process
     return unless gon?
     #return unless gon.dashboard_widgets?
-
-
 
     # Create dashboard(s)
     $('.dashboard-container-outer').each ->

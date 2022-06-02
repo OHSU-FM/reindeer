@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
   has_many :meetings, class_name: 'Coaching::Meeting', dependent: :destroy
   has_many :messages, dependent: :destroy
   has_one :room, as: :discussable
+  has_one :eg_cohort
 
   has_one :dashboard, dependent: :destroy
 
@@ -39,6 +40,7 @@ class User < ActiveRecord::Base
   has_many :epa_masters, dependent: :destroy
   has_many :fom_exams, dependent: :destroy
   has_many :med22_fom_exams, dependent: :destroy
+  has_many :med21_fom_exams, dependent: :destroy
   has_many :fom_labels
   has_many :preceptor_evals, dependent: :destroy
   has_many :preceptor_assesses, dependent: :destroy

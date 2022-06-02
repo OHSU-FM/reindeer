@@ -14,21 +14,15 @@ class DashboardController < ApplicationController
     @dash = Dashboard.where(user_id: current_user.id).first_or_initialize  #includes(:dashboard_widgets)
     if current_user.coaching_type == 'student'
       @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
-    else
-      @meetings = []
-    end
-    if current_user.coaching_type == 'student'
       student = User.where(id: current_user.id)
       @wba_epa_data = hf_process_student(student, 'WBA')
       @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
-
+    else
+      @meetings = []
     end
 
     authorize! :read, @dash
-
     #do_gon   # disable dashboard_widgets
-
-
     respond_to do |format|
       layout = !(params[:layout] == 'false')
       format.html{ render layout: layout }
@@ -68,11 +62,14 @@ class DashboardController < ApplicationController
   end
 
   def update
-    @dash = Dashboard.find(params[:id].to_i)
-    authorize! :update, @dash
+
+    #@dash = Dashboard.find(params[:id].to_i)
+    #authorize! :update,:create, @dash
+    # params[:theme] comes from ajax call
+    @dash = Dashboard.where(user_id: current_user.id).first_or_create.update(theme: params[:theme])
 
     respond_to do |format|
-      if @dash.update(dashboard_params)
+      if @dash #.update(dashboard_params)
         format.html{ render action: :show}
         format.json{ render json: { dash: @dash }, status: :ok }
       else

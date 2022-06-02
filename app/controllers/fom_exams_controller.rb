@@ -35,7 +35,7 @@ class FomExamsController < ApplicationController
 
   def download_file
       if params[:file_name].present?
-        send_file  "#{Rails.root}/tmp/#{params[:file_name]}", type: 'text', disposition: 'download'
+         private_download params[:file_name]
       end
   end
 
@@ -117,17 +117,23 @@ class FomExamsController < ApplicationController
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
        permission_group_id = params[:permission_group_id]  ## from Search function, required for cohort jumpers.
 
-       @comp_keys = FomExam.comp_keys
+
 
        student  = User.find_by(uuid: params[:uuid])
-       cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
-       if cohort <= 'med22'
-         table_name_prefix = cohort + "_"
+       @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
+       if @cohort == 'med22'
+         table_name_prefix = @cohort + "_"
+          @comp_keys = FomExam.comp_keys
+       elsif @cohort <= 'med21'
+         table_name_prefix = 'med21'+ "_"
+          @comp_keys = FomExam.comp_keys_med21
        else
          table_name_prefix = ""
+          @comp_keys = FomExam.comp_keys
        end
        @student_email = student.email
        @student_full_name = student.full_name
+       @student_perm_group = student.permission_group_id
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
@@ -144,7 +150,7 @@ class FomExamsController < ApplicationController
          formative_feedbacks= FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes) ## med23 preceptor evaluations
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
        else
-         @comp_keys =  '*** This Block is being disabled temporary!! ***'
+         @comp_keys =  '*** This Block is being disabled temporary or has not been created just yet!! ***'
        end
 
        ## don't display remediation data for now
@@ -161,6 +167,10 @@ class FomExamsController < ApplicationController
   end
 
  private
+
+ def private_download in_file
+    send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+ end
 
  def get_tso_emails
    @tso_emails ||= YAML.load_file("config/sendAlertEmails.yml")

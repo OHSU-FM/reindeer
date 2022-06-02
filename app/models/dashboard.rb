@@ -20,6 +20,13 @@ class Dashboard < ActiveRecord::Base
   end
 
   THEMES = [
+    'theme-crocus',
+    'theme-flora',
+    'theme-halifax',
+    'theme-manhattan',
+    'theme-passion',
+    'theme-spring',
+    'theme-edonias',
     'theme-waterfront-fog',
     'theme-oregon-coast',
     'theme-ncg-2070',
@@ -31,7 +38,8 @@ class Dashboard < ActiveRecord::Base
     'theme-blue-swirl',
     'theme-grid',
     'theme-blue-sky',
-    'theme-black']
+    'theme-black'
+    ]
 
   DEFAULT_THEME = THEMES[0]
 
@@ -45,6 +53,10 @@ class Dashboard < ActiveRecord::Base
 
   def theme
     self[:theme] || DEFAULT_THEME
+  end
+
+  def get_background_images
+   image_files = Dir.glob("app/assets/images/dashboard/themes/*").map do |f| File.basename f end
   end
 
   def first_empty_col

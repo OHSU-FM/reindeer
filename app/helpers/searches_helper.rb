@@ -1,23 +1,33 @@
 module SearchesHelper
 
+  def hf_get_permission_title(permission_group_id)
+    if permission_group_id.nil?
+      return ""
+    else
+      PermissionGroup.find(permission_group_id).title
+    end
+  end
+
   def median(ary)
     middle = ary.size/2
     sorted = ary.sort_by{ |a| a }
-    ary.size.odd? ? sorted[middle] : (sorted[middle]+sorted[middle-1])/2.0
+    ary.size.odd? ? sorted[middle] : (sorted[middle].to_f + sorted[middle-1].to_f)/2.0
   end
 
   def get_stats (permission_group_id)
-    result = ActiveRecord::Base.connection.exec_query('select count(user_id)
-              from epas, users
-              where involvement <> 0 and
-                   users.id = epas.user_id and
-                   users.spec_program <>' + "'OMFS'" + ' and ' +
-                   'users.permission_group_id = ' + permission_group_id.to_s + '
-              group by
-                user_id
-              order by count DESC')
+    # result = ActiveRecord::Base.connection.exec_query('select count(user_id)
+    #           from epas, users
+    #           where involvement <> 0 and
+    #                users.id = epas.user_id and
+    #                users.spec_program <>' + "'OMFS'" + ' and ' +
+    #                'users.permission_group_id = ' + permission_group_id.to_s + '
+    #           group by
+    #             user_id
+    #           order by count DESC')
 
-    return result
+    wba_count_hash = Epa.joins(:user).where("users.spec_program<>? and users.permission_group_id=?", 'OMFS', permission_group_id.to_s).group(:user_id).count
+
+    return wba_count_hash
   end
 
   def process_wba_total_count(cohort_id)
@@ -36,16 +46,17 @@ module SearchesHelper
       user = User.find(user.id)
       cohort_title = user.permission_group.title[/(?<=\().*?(?=\))/]  # to extract cohort Med21
       permission_group_id = user.permission_group_id
-      result = get_stats(permission_group_id)
+      wba_count_hash = get_stats(permission_group_id)
 
-      if result.rows.empty?
+      if wba_count_hash.nil?
           return nil, nil, cohort_title
       else
-        arr = result.rows.flatten  # the array is sorted DESC
+        #arr = result.rows.flatten  # the array is sorted DESC
         #max = arr.first
         #min = arr.last
-        ave = arr.sum.fdiv(arr.size).round
-        med = median(arr).round
+        cohort_count = User.where(permission_group_id: permission_group_id).count
+        ave = wba_count_hash.values.sum.to_f/cohort_count.round(2)
+        med = median(wba_count_hash.values).round(2)
         return ave, med, cohort_title
       end
     elsif user.coaching_type == 'dean' or user.coaching_type == 'admin'
@@ -92,6 +103,9 @@ module SearchesHelper
     blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
     if blocks.empty?
       blocks = Med22FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+      if blocks.empty?
+        blocks = Med21FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+      end
     end
     blocks.each do |block|
       block_hash = {}

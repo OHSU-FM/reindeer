@@ -5,6 +5,7 @@ module Coaching
 
     def create
       @advisors = Advisor.where(status: 'Active').order(:name)
+      @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
 
@@ -19,21 +20,29 @@ module Coaching
         event = Event.create(title: @meeting.advisor_type, description: @meeting.advisor_type + " - " + current_user.full_name,
           start_date: start_date, end_date: end_date, user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
         @meeting.event_id = event.id
-      else
-        # student is createing a meeting/appointment record
-        Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
 
-        if send_email_flag["OASIS"]["send_email"] ==  true
-          event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
-          if !event.empty?
-            EventMailer.notify_student(@meeting, "Create").deliver_later
-          end
+      else
+
+        if @meeting.advisor_type == 'Assist Dean'
+          @meeting.advisor_discussed.push "General Visit"
+          @meeting.advisor_outcomes.push "General Visit"
+          @meeting.advisor_notes = "General Visit."
         end
+
       end
 
       respond_to do |format|
         if @meeting.save
           flash[:aler] = 'Appointment/Meeting saved successfully!'
+          # student is createing a meeting/appointment record
+          Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
+          if send_email_flag["OASIS"]["send_email"] ==  true
+            event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
+            if !event.empty?
+              EventMailer.notify_student(@meeting, "Create").deliver_later
+            end
+          end
+
           format.js { render action: 'show', status: :created }
         else
           format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }

@@ -4,11 +4,13 @@
    <ul id="MainTabs2" class="nav nav-tabs" role="tablist">
 
        <li class="bold-italic nav-item waves-effect waves-light">
-         <a class="nav-link" id="fom-tab" data-toggle="tab" href="#fom" style="background-color:#f4cccc" role="tab" aria-controls="fom" aria-selected="false">FoM Blocks
+         <a class="nav-link" id="fom-tab" data-toggle="tab" href="#fom" style="background-color:#f4cccc" role="tab" aria-controls="fom" aria-selected="false">
+           <%= image_tag("fom.png") %>FoM Blocks
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
-         <a class="nav-link" id="Preceptorship-tab" data-toggle="tab" href="#Preceptorship" style="background-color:#fce5cd" role="tab" aria-controls="Preceptorship" aria-selected="false">Preceptorship
+         <a class="nav-link" id="Preceptorship-tab" data-toggle="tab" href="#Preceptorship" style="background-color:#fce5cd" role="tab" aria-controls="Preceptorship" aria-selected="false">
+           <%= image_tag("preceptor.png", size: "24x24") %>Preceptorship
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
@@ -32,14 +34,17 @@
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
-         <a class="nav-link" id="nbme-tab" data-toggle="tab" href="#nbme" style="background-color:#FAF7A6" role="tab" aria-controls="nbme" aria-selected="false">National Board Exams/CPX
+         <a class="nav-link" id="nbme-tab" data-toggle="tab" href="#nbme" style="background-color:#FAF7A6" role="tab" aria-controls="nbme" aria-selected="false">
+           <%= image_tag("nbme.png", size: "24x24") %>NBME/CPX
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
-         <a class="nav-link" id="all_clinical-tab" data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9" role="tab" aria-controls="all_clinical" aria-selected="false">All Courses</a>
+         <a class="nav-link" id="all_clinical-tab" data-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9" role="tab" aria-controls="all_clinical" aria-selected="false">
+           <%= image_tag("courses.png", size: "24x24") %>All Courses</a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
-         <a class="nav-link" id="competency-tab" data-toggle="tab" href="#competency" style="background-color:#E0BBE4" role="tab" aria-controls="competency" aria-selected="false">Competencies
+         <a class="nav-link" id="competency-tab" data-toggle="tab" href="#competency" style="background-color:#E0BBE4" role="tab" aria-controls="competency" aria-selected="false">
+           <%= image_tag("competency.png", size: "24x24") %>Competencies
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
@@ -132,7 +137,13 @@
       <div class="center-div">
         <div class="inner-div">
             <% if !@epas.blank?  %>
-              <div id="data-visualization-AdHocAllEPAs" style="width: 1200px; height: 400px; margin: 0 auto"></div>
+              <div class="container">
+                <div id="data-visualization-AdHocAllEPAs" ></div>
+                <button id="plain" class="btn btn-primary">Column</button>
+                <button id="inverted" class="btn btn-secondary">Inverted</button>
+                <button id="polar" class="btn btn-success">Polar</button>
+                <button id="spline" class="btn btn-warning">Spline</button>                
+              </div>
               <br>
             <% end %>
 

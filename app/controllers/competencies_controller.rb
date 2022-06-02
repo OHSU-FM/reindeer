@@ -12,7 +12,7 @@ class CompetenciesController < ApplicationController
 
 
   def index
-
+    Rails.application.config.action_view.image_loading = "lazy"
     @non_clinical_course_arry ||= hf_get_non_clinical_courses
 
     if current_user.coaching_type == "student"
@@ -50,10 +50,12 @@ class CompetenciesController < ApplicationController
     @release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
 
     ## getting WPAs
-     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
+     @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
+
 
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
+       gon.epa_adhoc_dates = @epa_hash_dates
        gon.epa_evaluators = @epa_evaluators
        gon.unique_evaluators = @unique_evaluators
        gon.selected_dates = @selected_dates

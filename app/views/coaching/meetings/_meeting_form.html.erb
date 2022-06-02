@@ -1,6 +1,6 @@
 <%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
 
-  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic') %>
+  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic' or advisor_type == 'Diversity Navigator' or advisor_type == 'Assist Dean' ) %>
     <div hidden>
       <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
       </div>
@@ -58,6 +58,8 @@
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
             <% elsif advisor_type = 'Diversity Navigator' %>
                 <% advisor_subjects = hf_diversity_navigator_for_select %>
+            <% elsif advisor_type = 'Assist Dean' %>
+                <% advisor_subjects = hf_assist_dean_for_select%>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
@@ -203,7 +205,7 @@
       <div class="card-body">
         <div class="form-group">
           <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_type, options_for_select(["Academic", "Career", "Wellness"]),
+          <%= f.select :advisor_type, options_for_select(@advisor_types),
             { include_blank: "---" }, required: true %>
         </div>
 

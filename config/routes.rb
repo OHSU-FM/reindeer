@@ -161,7 +161,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :user, controller: :users, param: :username, only: [:show, :update]
+  #resources :users , controller: :users, param: :username, only: [:show, :update]
+  resources :users do
+    collection do
+        get "update_loa", action: :update_loa, to: "users#update_loa#"
+        get "save_update_loa", action: :save_update_loa
+    end
+  end
+
 
   get "ls_files/:sid/:row_id/:qid/:name", to: "ls_files#show", constraints: { name: /[^\/]+/ }, as: :lime_file
 

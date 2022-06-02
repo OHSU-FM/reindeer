@@ -7,7 +7,8 @@
           <th>Student</th>
           <th>Student Email </th>
           <th>UID </th>
-          <th>Permission Group</th>
+          <th>Curr Cohort</th>
+          <th>Prev Cohort</th>
           <th>Program Status</th>
           <th>Matriculated Date</th>
           <th style="text-align:center"># of WBAs<br />(All Levels)</th>
@@ -22,8 +23,14 @@
         <tr>
           <td> <%= result.full_name %></td>
           <td> <%= result.email %></td>
-          <td> <%= result.sid.to_s %></td>
+          <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
+            <td> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
+          <% else %>
+            <td> <%= result.sid.to_s  %></td>
+          <% end %>
+
           <td> <%= result.permission_group.title.to_s %></td>
+          <td> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
           <td style="text-align:center"> <%= result.spec_program %></td>
           <% if !result.matriculated_date.nil? %>
             <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
@@ -35,13 +42,15 @@
           <td>
             <%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid))  %> <br />
             <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
-
+              <% fom_block_array = [] %>
               <%  hf_exists_in_FomExam(result.id).each do |block| %>
                   <% cohort = block["cohort"] %>
                   <% permission_group_id = block["permission_group_id"] %>
                   <% course_code = block["course_code"] %>
                   <% if !course_code.include? "DISABLED" %>
                     <% session[:attach_id] = -1 %>
+
+                    <% fom_block_array.push course_code %>
 
                     <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
                             display_fom_fom_exams_path(permission_group_id:  permission_group_id, course_code: course_code, uuid: result.uuid), method: :get,  target: '_blank') %> <br>
@@ -69,8 +78,10 @@
             <% hf_datasets(result, @temp_hash).each do |dataset| %>
                <% sid = dataset.split("~").first %>
                <% if !dataset.split("~").last.include? "Core Clinical/Electives" %>
-                   <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
-                    class: "modal-click", 'data-target': '#modal-dataset' %> <br>
+                  <% if !fom_block_array.include? dataset.split(":").last %>
+                     <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
+                      class: "modal-click", 'data-target': '#modal-dataset' %> <br>
+                  <% end %>
               <% end %>
             <% end %>
           </td>

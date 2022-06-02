@@ -189,6 +189,26 @@ $('#epa_review_badge_decision2').change(
 
 	}
 );
+$('.student_comments1_congrats').change(
+	function() {
+    if ($(".student_comments1_congrats").is(":checked")) {
+      $("#epa_review_badge_decision1_badge").prop("checked", "checked");
+      $(".reason1_met_min").prop("checked", "checked");
+      $("#epa_review_trust1_grounded").prop("checked", "checked");
+    }
+  }
+);
+
+$('.student_comments2_congrats').change(
+	function() {
+    if ($(".student_comments2_congrats").is(":checked")) {
+      $("#epa_review_badge_decision2_badge").prop("checked", "checked");
+      $(".reason2_met_min").prop("checked", "checked");
+      $("#epa_review_trust2_grounded").prop("checked", "checked");
+    }
+  }
+);
+
 
 var values = {};
 $.each($("#review-form").serializeArray(), function (i, field) {

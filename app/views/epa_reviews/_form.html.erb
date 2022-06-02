@@ -64,7 +64,7 @@
         <div class="form-group">
           <%= f.label 'Comments to Student', class: "control-label"  %><br />&nbsp;&nbsp;
   <!-- <%= f.select :student_comments1, EpaReview.comments_to_student, {include_blank: true, prompt: 'Please select a comment...'}, {class: 'form-control'}  %> -->
-          <%= f.radio_button :student_comments1, EpaReview.comments_to_student.first, Class: "student_comments1_congrats" %>
+          <%= f.radio_button :student_comments1, EpaReview.comments_to_student.first, class: "student_comments1_congrats" %>
           <%= f.label :student_comments1, EpaReview.comments_to_student.first, value: EpaReview.comments_to_student.first %><br />&nbsp;&nbsp;
           <%= f.radio_button :student_comments1, EpaReview.comments_to_student.second, class: "student_comments1_making_progress" %>
           <%= f.label :student_comments1, EpaReview.comments_to_student.second, value: EpaReview.comments_to_student.second %><br />&nbsp;&nbsp;
@@ -137,13 +137,13 @@
         </div>
         <div class="form-group">
           <%= f.label 'Comments to Student', class: "control-label" %><br />&nbsp;&nbsp;
-          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.first, Class: "student_comments2_congrats" %>
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.first, class: "student_comments2_congrats" %>
           <%= f.label :student_comments2, EpaReview.comments_to_student.first, value: EpaReview.comments_to_student.first %><br />&nbsp;&nbsp;
-          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.second, class: "student_comments2_congrats_making_progress" %>
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.second, class: "student_comments2_making_progress" %>
           <%= f.label :student_comments2, EpaReview.comments_to_student.second, value: EpaReview.comments_to_student.second %><br />&nbsp;&nbsp;
           <%= f.radio_button :student_comments2, EpaReview.comments_to_student.third, class: "student_comments2_work_towards" %>
           <%= f.label :student_comments2, EpaReview.comments_to_student.third, value: EpaReview.comments_to_student.third %><br />&nbsp;&nbsp;
-          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.last, class: "student_comments1_no_comment" %>
+          <%= f.radio_button :student_comments2, EpaReview.comments_to_student.last, class: "student_comments2_no_comment" %>
           <%= f.label :student_comments2, EpaReview.comments_to_student.last, value: EpaReview.comments_to_student.last%><br />
         </div>
         <div class="row">

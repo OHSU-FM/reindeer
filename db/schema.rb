@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_28_172625) do
+ActiveRecord::Schema.define(version: 2022_04_05_200959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -275,9 +275,16 @@ ActiveRecord::Schema.define(version: 2022_02_28_172625) do
   end
 
   create_table "eg_cohorts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "permission_group_id"
     t.string "email"
+    t.string "eg_full_name1"
+    t.string "eg_email1"
+    t.string "eg_full_name2"
+    t.string "eg_email2"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_eg_cohorts_on_user_id"
   end
 
   create_table "eg_reasons", force: :cascade do |t|
@@ -707,6 +714,64 @@ ActiveRecord::Schema.define(version: 2022_02_28_172625) do
     t.index ["user_id"], name: "index_med21_competencies_on_user_id"
   end
 
+  create_table "med21_fom_exams", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "permission_group_id"
+    t.string "course_code"
+    t.datetime "submit_date"
+    t.decimal "comp1_wk1"
+    t.decimal "comp1_wk2"
+    t.decimal "comp1_wk3"
+    t.decimal "comp1_wk4"
+    t.decimal "comp1_wk5"
+    t.decimal "comp1_wk6"
+    t.decimal "comp1_wk7"
+    t.decimal "comp1_wk8"
+    t.decimal "comp1_wk9"
+    t.decimal "comp1_wk10"
+    t.decimal "comp1_wk11"
+    t.decimal "comp1_wk12"
+    t.decimal "comp1_dropped_score"
+    t.string "comp1_dropped_quiz"
+    t.decimal "comp2b_bss1"
+    t.decimal "comp2b_bss2"
+    t.decimal "comp2b_bss3"
+    t.decimal "comp2b_bss4"
+    t.decimal "comp2b_bss5"
+    t.decimal "comp2b_bss6"
+    t.decimal "comp2b_bss7"
+    t.decimal "comp2b_bss8"
+    t.decimal "comp2b_bss9"
+    t.decimal "comp2b_bss10"
+    t.decimal "comp2b_bss11"
+    t.decimal "comp2b_bss12"
+    t.decimal "comp3_final1"
+    t.decimal "comp3_final2"
+    t.decimal "comp3_final3"
+    t.decimal "comp4_nbme"
+    t.decimal "comp5a_hss1"
+    t.decimal "comp5a_hss2"
+    t.decimal "comp5a_hss3"
+    t.decimal "comp5a_hss4"
+    t.decimal "comp5a_hss5"
+    t.decimal "comp5b_bss1"
+    t.decimal "comp5b_bss2"
+    t.decimal "comp5b_bss3"
+    t.decimal "comp5b_bss4"
+    t.decimal "comp5b_bss5"
+    t.decimal "comp5b_bss6"
+    t.decimal "comp5b_bss7"
+    t.decimal "summary_comp1"
+    t.decimal "summary_comp2b"
+    t.decimal "summary_comp3"
+    t.decimal "summary_comp4"
+    t.decimal "summary_comp5a"
+    t.decimal "summary_comp5b"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "permission_group_id", "course_code"], name: "by_med21_user_permission_group_course_code", unique: true
+  end
+
   create_table "med21_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
@@ -1119,6 +1184,7 @@ ActiveRecord::Schema.define(version: 2022_02_28_172625) do
   add_foreign_key "competencies", "users"
   add_foreign_key "csl_evals", "users"
   add_foreign_key "csl_feedbacks", "users"
+  add_foreign_key "eg_cohorts", "users"
   add_foreign_key "epa_masters", "users"
   add_foreign_key "epas", "users"
   add_foreign_key "fom_exams", "users"
