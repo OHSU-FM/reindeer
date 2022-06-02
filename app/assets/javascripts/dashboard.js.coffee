@@ -40,21 +40,17 @@ $(document).ready ->
     # Debug ability, add variables to global namespace
     window.dashboards = []
     #window.charts = [];
-
     $('#dashboard-theme a').on 'click', (e) ->
       #optionSelected = $(this)
       valueSelected  = $(this).text()
       console.log("valueSelected: " + valueSelected)
-      window.Dashboard.swap_theme(valueSelected)
-
 
       $.ajax(
         type: 'PATCH'
         url: 'dashboard/update'
         data: {theme: valueSelected}
         dataType: 'json').done((data) ->
-        #$('body').css('background-image', "url(app/assets/images/dashboard/themes/" + valueSelected + ")")
-        #$('body').css('background-image', 'url(' + "/app/assets/images/dashboard/themes/" + valueSelected + ')')
+        window.Dashboard.swap_theme(valueSelected)
         console.log ('Background theme updated successfully! ')
         return
       ).fail (data) ->
