@@ -72,6 +72,7 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  #$('#EventsTable').DataTable()
 
   $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
     advisorID = $("#advisor-" + @value).data('advisor-' + @value)
@@ -184,6 +185,14 @@ $(document).ready ->
 
     modDate = Date.today().addDays(1)
 
+    $('#EventsTable td:nth-child(2)').each ->
+      #console.log ("this: "  + $(this).text())
+      if $(this).text().includes("Cantone")
+        $(this).parent('tr').css 'background-color', '#90EE90'
+      else if $(this).text().includes("Schneider")
+        $(this).parent('tr').css 'background-color', '#B7E9F7'
+      return
+
     rowCount = $("#EventsTable tr").not('thead tr').length;
     console.log('rowCount: ' + rowCount)
 
@@ -208,13 +217,16 @@ $(document).ready ->
 
       #console.log('selectedAdvisorText: ' + selectedAdvisorText[0] + ' --> colAdvisor: ' + colAdvisor[1])
       found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
-      console.log("colAdvisor[1]: " + colAdvisor[1])
+      #console.log("colAdvisor[1]: " + colAdvisor[1])
+
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
          row.show()
       else if (colAdvisor[1] == selectedAdvisorText[0]) && (selectedAdvisorType != "Assist Dean")
         row.show()
       else
         row.hide()
+
+
 
     tr_length = $('#EventsTable tbody tr:visible').length
       #console.log ("tr_length: " + tr_length)
