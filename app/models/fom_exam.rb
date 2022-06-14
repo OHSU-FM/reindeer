@@ -56,6 +56,7 @@ class FomExam < ApplicationRecord
          row_hash.delete("email")
          row_hash.delete("full_name")
          row_hash.delete("sid")
+         row_hash = row_hash.compact
          FomExam.where(user_id: user.id, course_code: row["course_code"], permission_group_id: row["permission_group_id"]).first_or_create.update(row_hash)
          yes_updated = true
 
