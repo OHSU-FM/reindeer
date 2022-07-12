@@ -72,11 +72,24 @@ careerPrimary = [
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $('#EventsTable').hide()
+  $('#show_all_events').click ->
+    $('#EventsTable td:nth-child(2)').each ->
+      dataset = $('#EventsTable tbody').find('tr')
+      dataset.each ->
+        row = $(this)
+        row.show()
+    return
   #$('#EventsTable').DataTable()
 
   $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+    advisorType = $("#advisor-" + @value).data('advisor-type')
+    console.log("advisorType: " + advisorType)
+    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
     advisorID = $("#advisor-" + @value).data('advisor-' + @value)
     $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+
+
     #console.log("data-advisor-id: " + dataValue)
     return
 
@@ -157,7 +170,7 @@ $(document).ready ->
       $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
-  $('#EventsTable').hide()
+  #$('#EventsTable').show()  ## change this on 6/27/2022 to test the datea
   $('#coaching_meeting_advisor_id').change ->
     $('#EventsTable').show()
     # selectedFilteredValue = $('#filtered_by_days option:selected').val()
@@ -183,8 +196,6 @@ $(document).ready ->
     console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
 
-    modDate = Date.today().addDays(1)
-
     $('#EventsTable td:nth-child(2)').each ->
       #console.log ("this: "  + $(this).text())
       if $(this).text().includes("Cantone")
@@ -204,29 +215,26 @@ $(document).ready ->
       # filter the rows that should be hidden
     tr_length = 0
     dataset = $('#EventsTable tbody').find('tr')
+    modDate = Date.today()
+    newDate = new Date(modDate)
     dataset.each ->
       row = $(this)
       colAdvisor = row.find('td').eq(1).text().split(" - ")
       colDate = row.find('td').eq(2).text().split(" - ")
-      #show all rows by default
-      #show = true
-      #row.show()
-      #if from date is valid and row date is less than from date, hide the row
-      newDate = new Date(modDate)
-      orgDate = new Date(colDate[0])
-
-      #console.log('selectedAdvisorText: ' + selectedAdvisorText[0] + ' --> colAdvisor: ' + colAdvisor[1])
+      row.show()
       found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
-      #console.log("colAdvisor[1]: " + colAdvisor[1])
+
 
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
          row.show()
       else if (colAdvisor[1] == selectedAdvisorText[0]) && (selectedAdvisorType != "Assist Dean")
+        # orgDate = new Date(colDate[0])
+        # millisBetween = orgDate - newDate
+        # days = millisBetween / (1000*3600*24)
+        # console.log('date Diff in Days : ' + Math.round(days))
         row.show()
       else
         row.hide()
-
-
 
     tr_length = $('#EventsTable tbody tr:visible').length
       #console.log ("tr_length: " + tr_length)

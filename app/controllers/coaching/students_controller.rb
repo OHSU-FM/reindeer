@@ -93,8 +93,11 @@ module Coaching
 
         @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name)
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
-        #@events = Event.where('start_date > ?', DateTime.now).order(:id )
+
         @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 24.hours).order(:start_date)
+        # @events = Event.where("start_date - INTERVAL '7 hour' > ? and start_date-INTERVAL '7 hour' <= ? and user_id is NULL and advisor_id is NOT NULL",
+        #   DateTime.now + 24.hours, DateTime.now + 8.days).order(:start_date)
+
         @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')

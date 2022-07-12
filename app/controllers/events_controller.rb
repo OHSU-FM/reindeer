@@ -160,12 +160,23 @@ class EventsController < ApplicationController
       title = data[0].split(" - ").first
       description = data[0]
       start_date = hf_format_datetime(data[1].gsub("at ", ""))
+      start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
-      Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+      #Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+      appt = Event.where(title: title, description: description, start_date: start_date2)
+      notice_msg = ''
+
+      if !appt.empty?
+          flash.now[:notice] = "Warming! Duplicate Date/Time Encountered! => #{start_date}"
+      else
+          Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+          notice_msg = 'Apppointments were successfully created!'
+      end
+
     end
     respond_to do |format|
-      format.html { redirect_to action: "index", notice: 'Apppointments were successfully created.' }
+      format.html { redirect_to action: "index", notice: notice_msg}
       format.json
     end
   end

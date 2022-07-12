@@ -21,7 +21,10 @@
           <td><%= event.description %></td>
           <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
           <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p - %A")%></td>
-          <td id='advisor-<%= "#{event.id}" %>' data-start-date="<%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %> " data-advisor-<%= "#{event.id}" %> = "<%= event.advisor_id %>">
+          <% advisor_type = event.description.split(" - ") %>
+          <% advisor_type = advisor_type[0].gsub(" Advisor", "") %>
+          <td id='advisor-<%= "#{event.id}" %>' data-start-date="<%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %> " data-advisor-<%= "#{event.id}" %> = "<%= event.advisor_id %>"
+                data-advisor-type="<%= advisor_type %>">
             <%= f.label :event_id, "select"  %><%= f.radio_button :event_id, "#{event.id}" %></td>
         <% end %>
       </tr>

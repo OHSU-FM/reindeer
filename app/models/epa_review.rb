@@ -36,10 +36,12 @@ class EpaReview < ApplicationRecord
 
           if full_name == epa_review.last.reviewer1
             old_comment = epa_review.last.general_comments1.nil? ? "" : epa_review.last.general_comments1 + "\n"
-            epa_review.update(badge_decision1: 'Not Yet', general_comments1: old_comment + comments)
+            epa_review.update(general_comments1: old_comment + comments)
+            #epa_review.update(badge_decision1: 'Not Yet', general_comments1: old_comment + comments)            
           else
             old_comment = epa_review.last.general_comments2.nil? ? "" : epa_review.last.general_comments2 + "\n"
-            epa_review.update(badge_decision2: 'Not Yet', general_comments2: old_comment + comments)
+            epa_review.update(general_comments2: old_comment + comments)
+          #  epa_review.update(badge_decision2: 'Not Yet', general_comments2: old_comment + comments)
           end
         else
             epa_review.create(review_date1: DateTime.now, reviewer1: eg_full_name1, reviewer2: eg_full_name2, epa: epa, badge_decision1: 'Not Yet', badge_decision2: 'Not Yet', general_comments1: comments)

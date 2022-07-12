@@ -128,6 +128,7 @@ module DashboardHelper
     fom_labels = FomLabel.find_by(permission_group_id: permission_group_id, course_code: course_code)
     return JSON.parse(fom_labels["labels"]).first  ## return as hash array
 
+
   end
 
   def check_for_scores(exam, param)
