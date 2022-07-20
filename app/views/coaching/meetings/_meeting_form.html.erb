@@ -47,8 +47,6 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body card-body-color"">
           <div class="form-group">
-            <b><%= f.label :subject, "Advisor Disussed (Check all the applp):", class: "control-label col-md-6" %></b><br />
-
             <% if advisor_type == 'Career' %>
               <% advisor_subjects = hf_career_advisor_discussed_for_select %>
             <% elsif advisor_type == "Academic" %>
@@ -63,13 +61,17 @@
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
+            <% if advisor_type != 'Diversity Navigator' %>
+              <b><%= f.label :subject, "Advisor Discussed (Check all the applp):", class: "control-label col-md-6" %></b><br />
+              <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
+                <label>
+                  <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorDiscussed') %>
+                  <%= b.text %>
+                </label> <br />
+             <% end %>
+            <% end %>
 
-            <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
-              <label>
-                <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorDiscussed') %>
-                <%= b.text %>
-              </label> <br />
-           <% end %>
+
            <% if advisor_type == "Academic" %>
               <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
               <hr>
@@ -84,8 +86,6 @@
              <%= f.text_field :study_resources_other, id: 'academic_study_resources_other' %>
            <% elsif advisor_type == "Career" %>
               <%= f.text_field :career_discussed_other,  id: 'career_discussed_other' %>
-           <% else %>
-              <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
            <% end %>
 
           </div>
@@ -94,9 +94,7 @@
 
     <div class="card" id="DiscussedCard">
       <div class="card-body">
-          <div class="form-group">
-            <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
-          </div>
+
 
           <% if advisor_type == 'Academic' %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
@@ -104,22 +102,27 @@
               <% advisor_outcomes = hf_meeting_ipps_for_select %>
           <% elsif advisor_type == 'Wellness'  %>
               <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
+          <% elsif advisor_type ==  'Diversity Navigator' %>
+              <% advisor_outcomes = '' %>
           <% else %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
           <% end %>
+          <% if advisor_type != 'Diversity Navigator' %>
 
-          <%= collection_check_boxes(:coaching_meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: nil) do |b| %>
-            <label>
-              <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorOutcomes') %>
-              <%= b.text %>
-            </label> <br />
+            <div class="form-group">
+              <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
+            </div>
+            <%= collection_check_boxes(:coaching_meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: nil) do |b| %>
+              <label>
+                <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorOutcomes') %>
+                <%= b.text %>
+              </label> <br />
+           <% end %>
          <% end %>
          <% if advisor_type == "Academic" %>
             <%= f.text_field :academic_outcomes_other,  id: 'academic_outcomes_other' %>
           <% elsif advisor_type == "Career" %>
               <%= f.text_field :career_outcomes_other, id: 'career_outcomes_other' %>
-          <% else %>
-            <%= f.text_field :academic_outcomes_other,   id: 'academic_outcomes_other'  %>
           <% end %>
       </div>
     </div>
@@ -205,7 +208,7 @@
       <div class="card-body">
         <div class="form-group">
           <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_type, options_for_select(@advisor_types) %>
+          <%= f.select :advisor_type, options_for_select(@advisor_types.sort), required: true %>
         </div>
 
         <div class="form-group">

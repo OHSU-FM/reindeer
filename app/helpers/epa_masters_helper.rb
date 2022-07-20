@@ -19,11 +19,13 @@ module EpaMastersHelper
           "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
   }
 
-
   class CohortMspe < ActiveRecord::Base
       table_name = ""
   end
 
+  def get_colors
+     return GRAPH_COLORS
+  end
 
   def hf_epa_comp_codes(epa)
     epa_desc = epa + ": " + "<b>" + hf_get_epa_desc2(epa) + "</b>"
@@ -486,7 +488,6 @@ module EpaMastersHelper
         },
 
         column: {
-            colorByPoint: true,
             dataLabels: {
                 enabled: true,
                 crop: false,
@@ -544,11 +545,13 @@ module EpaMastersHelper
                       }
                 }
       )
+
       all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
         if all_cohort_epa_badged_data["#{key}"].values.sum != 0
-          f.series(name: key, data: all_cohort_epa_badged_data["#{key}"].values)
+          f.series(type: 'column', name: key, yAxis: 0, data: all_cohort_epa_badged_data["#{key}"].values)
         end
       end
+
       pie_data = []
       all_cohort_epa_badged_data.keys.each do |key|   # skip the last two cohorts as they have not been badge
         if all_cohort_epa_badged_data["#{key}"].values.sum != 0
@@ -590,9 +593,7 @@ module EpaMastersHelper
                 format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
             }
         },
-
         column: {
-            colorByPoint: true,
             dataLabels: {
                 enabled: true,
                 crop: false,
@@ -607,15 +608,7 @@ module EpaMastersHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                scrollablePlotArea: {
-                    minWidth: 1600,
-                    scrollPositionX: 1
-                },
-                height: height,
-                plotBorderWidth: 0,
-                borderWidth: 0,
-                plotShadow: false,
-                borderColor: '',
+                width: 1600, height: height,
                 plotBackgroundImage: ''
               })
     end

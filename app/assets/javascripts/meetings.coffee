@@ -199,9 +199,15 @@ $(document).ready ->
     $('#EventsTable td:nth-child(2)').each ->
       #console.log ("this: "  + $(this).text())
       if $(this).text().includes("Cantone")
-        $(this).parent('tr').css 'background-color', '#90EE90'
+        if $(this).text().includes("Step Delay")
+          $(this).parent('tr').css 'background-color', '#E37383'
+        else
+          $(this).parent('tr').css 'background-color', '#90EE90'
       else if $(this).text().includes("Schneider")
-        $(this).parent('tr').css 'background-color', '#B7E9F7'
+        if $(this).text().includes("Step Delay")
+          $(this).parent('tr').css 'background-color', '#E0b0FF'
+        else
+          $(this).parent('tr').css 'background-color', '#B7E9F7'
       return
 
     rowCount = $("#EventsTable tr").not('thead tr').length;

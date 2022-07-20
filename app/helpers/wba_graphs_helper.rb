@@ -563,6 +563,8 @@ module WbaGraphsHelper
       f.series(name: "2 - I talked them through it", yAxis: 0, data: data_series[1])
       f.series(name: "3 - I directed them from time to time", yAxis: 0, data: data_series[2])
       f.series(name: "4 - I was available just in case", yAxis: 0, data: data_series[3])
+
+
       if in_category == "Clinical Assessor"
         pie_data = prep_data(categories, data_series)
 
