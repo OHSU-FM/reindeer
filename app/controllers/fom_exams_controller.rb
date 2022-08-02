@@ -1,7 +1,7 @@
 class FomExamsController < ApplicationController
   layout 'full_width_csl'
   protect_from_forgery prepend: true, with: :exception
-  before_action :authenticate_user!, :get_tso_emails
+  before_action :authenticate_user!, :get_tso_emails, :set_resources
 
   include FomExamsHelper
   include ArtifactsHelper
@@ -50,7 +50,9 @@ class FomExamsController < ApplicationController
   def send_alerts
     if params[:uniq_cohort].present?
       @tso_ids = User.where(subscribed: true, coaching_type: 'dean').order(:id).pluck(:id)
-      @cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:full_name).pluck(:id)
+      course_code = FomExam.where(permission_group_id: params[:uniq_cohort]).select(:course_code).order(:course_code).distinct.pluck(:course_code).last
+      @cohort_ids = FomExam.where(permission_group_id: params[:uniq_cohort], course_code: course_code).select(:id, :user_id).pluck(:user_id)
+      #@cohort_ids = User.where(permission_group_id: params[:uniq_cohort], subscribed: true).order(:full_name).pluck(:id)
       @user_ids = @tso_ids
 
     elsif params[:email_message].present? # from ajax  call here
@@ -77,13 +79,13 @@ class FomExamsController < ApplicationController
           end
         end
 
-        hello = "Hello " + @tso_emails.first["Jane"]["name"].split(", ").last + ",<br /><br />"
+        hello = "Hello " + @tso_emails.second["TSO1"]["name"].split(", ").last + ",<br /><br />"
         @body_message = hello + body_message
-        ActionMailer::Base.mail(from: @from, to: @tso_emails.first["Jane"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["TSO1"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
 
-        hello = "Hello " + @tso_emails.second["Mary"]["name"].split(", ").last + ",<br /><br />"
+        hello = "Hello " + @tso_emails.second["TSO2"]["name"].split(", ").last + ",<br /><br />"
         @body_message = hello + body_message
-        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["Mary"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["TSO2"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
 
         flash[:send_alert] = "You have sent out #{user_ids.count} emails!"
     end
@@ -116,8 +118,6 @@ class FomExamsController < ApplicationController
        #permission_group_id  = 17 # cohort Med23
        @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
        permission_group_id = params[:permission_group_id]  ## from Search function, required for cohort jumpers.
-
-
 
        student  = User.find_by(uuid: params[:uuid])
        @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
@@ -167,6 +167,10 @@ class FomExamsController < ApplicationController
   end
 
  private
+
+ def set_resources
+   @permission_groups = PermissionGroup.last(3) # get last 3 rows
+ end
 
  def private_download in_file
     send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
