@@ -208,12 +208,12 @@
       <div class="card-body">
         <div class="form-group">
           <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_type, options_for_select(@advisor_types.sort), required: true %>
+          <%= f.select :advisor_type, options_for_select(@advisor_types.sort), required: true, prompt: "Please Select an Advisor Type" %>
         </div>
 
         <div class="form-group">
           <%= f.label :advisor, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_id, options_for_select(@advisors.collect{|a| [a.name, a.id]}), required: true %> <br />
+          <%= f.select :advisor_id, options_for_select(@advisors.collect{|a| [a.name, a.id]}), required: true, prompt: "Please Select an Advisor"  %> <br />
         </div>
 
         <%= f.hidden_field :user_id, value: student.id %>

@@ -262,7 +262,7 @@ module CompetenciesHelper
 
   def hf_get_non_clinical_courses2
     non_clinical_courses_arry = []
-    pathFile = File.join(Rails.root, 'tmp','non_clinical_courses.txt')
+    pathFile = File.join(Rails.root, 'public','non_clinical_courses.txt')
     non_clinical_courses_arry = IO.readlines(pathFile)
     non_clinical_courses_arry.map {|k| k.gsub!("\n", "")}
     return non_clinical_courses_arry

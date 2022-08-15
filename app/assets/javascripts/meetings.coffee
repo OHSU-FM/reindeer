@@ -125,6 +125,8 @@ $(document).ready ->
   console.log("advisor_type: " + advisorType)
   if advisorType == 'Academic'
     data = academicPrimary
+  else if advisorType == 'Career'
+    data = careerPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
   else if advisorType == 'Diversity Navigator'
@@ -132,7 +134,8 @@ $(document).ready ->
   else if advisorType == 'Assist Dean'
     data = assistDeanPrimary
   else
-    data = careerPrimary
+    data = academicPrimary
+
   nbsp = '&nbsp'
   $('#coaching_meeting_subjects').empty()
   $.each data, (index) ->

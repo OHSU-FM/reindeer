@@ -8,6 +8,7 @@ gem 'rails', '~>6.1.3' #'~> 5.2.2.1'
 gem "rdoc"
 gem "psych", "=3.3.1"
 gem 'sprockets', '< 4'
+gem 'bcrypt-ruby'
 # Database
 #gem 'pg', '~> 1.3', '>= 1.3.4'
 gem 'pg'
