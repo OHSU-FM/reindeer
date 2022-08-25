@@ -1,6 +1,5 @@
 class Coaching::Meeting < ApplicationRecord
   has_paper_trail
-
   VALID_STATUSES = ["Scheduled", "Completed", "Meeting Canceled", "No Show", "Rescheduled"]
 
   belongs_to :user, required: true
@@ -21,13 +20,15 @@ class Coaching::Meeting < ApplicationRecord
     self.where("array_to_string(subject, ',') like ? OR notes like ?", "%#{term}%", "%#{term}%")
   end
 
-
   private
 
   def set_default_values
     return unless m_status.nil?
     update(m_status: "Scheduled")
   end
+
+
+
 
   def set_default_values_for_meeting
     return unless room.nil?

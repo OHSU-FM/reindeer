@@ -47,7 +47,7 @@ module DashboardHelper
           events = Event.where("id = ? and start_date > ? and user_id is not NULL", meeting.event_id, DateTime.now)
           if !events.empty?
             events_array.push events.first
-            if events_array.count == 8
+            if events_array.count == 16
               return events_array
             end
           end

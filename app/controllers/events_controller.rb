@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:update]
   before_action :authenticate_user!
   before_action :set_resources
   before_action :set_event, only: [:show, :edit, :update, :destroy]
@@ -32,6 +33,23 @@ class EventsController < ApplicationController
       format.html
     end
   end
+
+  def check_events
+    if params[:event_id]
+      @event = Event.where(id: params[:event_id], user_id: nil)
+      if @event.empty?
+        @event = {"Status" => "Appointment is TAKEN, please select another one!", "event_id" => params[:event_id]}
+      else
+        @event =  {"Status" => "Appointment is AVAILABLE!", "event_id" => params[:event_id]}
+      end
+    end
+
+    respond_to do |format|
+      format.json {render json: @event, status: 200}
+      format.html
+    end
+  end
+
 
 
   # GET /events/1

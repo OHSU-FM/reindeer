@@ -69,9 +69,44 @@ careerPrimary = [
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
   'Scholarship Approval'
 ]
+window.ajaxStatus = ""  #global var
+window.eventIdGlobal = ""
+checkEvent = (event_id) ->
+  $.ajax
+    type: 'GET'
+    url: '/events/check_events'
+    dataType: 'json'
+    data: event_id: event_id
+    success: (response) ->
+      console.log 'success response: ' + JSON.stringify(response)
+      #myObj = JSON.stringify(response)
+      console.log ("Status : " + response.Status)
+      if response.Status.includes('TAKEN')
+        alert "This Appointment is TAKEN, please select another one!!"
+        $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+        ajaxStatus = 'TAKEN'
+      else
+        ajaxStatus = "AVAILABLE"
+    error: (response) ->
+      alert 'Something went WRONG!!'
+      return
+
+
+$(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject][]']", ->
+  if $(this).is(':checked')
+    #alert '${this.value} is checked'
+    $("#meeting-submit").prop("disabled", false)
+    return
+  else
+    # do what you need here
+    $("#meeting-submit").prop("disabled", true)
+  return
+#==================================================================================================================
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $("#meeting-submit").prop("disabled", true)
+
   $('#EventsTable').hide()
   $('#show_all_events').click ->
     $('#EventsTable td:nth-child(2)').each ->
@@ -83,21 +118,34 @@ $(document).ready ->
   #$('#EventsTable').DataTable()
 
   $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
-    advisorType = $("#advisor-" + @value).data('advisor-type')
-    console.log("advisorType: " + advisorType)
-    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
-    advisorID = $("#advisor-" + @value).data('advisor-' + @value)
-    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
-
-
+    event_id = $('input:radio:checked').val()
+    eventIdGlobal = event_id
+    checkEvent(event_id)
+    console.log ('First Check when radio is clicked: ' + ajaxStatus)
+    if ajaxStatus == 'AVAILABLE'
+      advisorType = $("#advisor-" + @value).data('advisor-type')
+      console.log("advisorType: " + advisorType)
+      $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+      advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+      $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
     #console.log("data-advisor-id: " + dataValue)
     return
 
-  $('#meeting-submit').click ->
-    if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
-      alert("You must check at least one Primary Reasons!")
-      return
-      #$("#meeting-submit").prop("disabled", true)
+  # THIS routine does not work!!! Need work!
+  # $('#MeetingForm').on 'submit', (e) ->
+  #   e.preventDefault()
+  #   e.stopImmediatePropagation()
+  #   #checkEvent(eventIdGlobal)
+  #   if ajaxStatus == 'AVAILABLE'
+  #         $('#MeetingForm').get(0).allowDefault = true;
+  #         $('#MeetingForm').unbind('submit').submit()
+
+
+
+    # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
+    #     $("#meeting-submit").prop("disabled", true)
+    #     alert("You must check at least one Primary Reasons!")
+    #     return false
 
   #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
   $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
@@ -139,7 +187,7 @@ $(document).ready ->
   nbsp = '&nbsp'
   $('#coaching_meeting_subjects').empty()
   $.each data, (index) ->
-    $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+    $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
     return
 
   FoundSADean = false
@@ -170,7 +218,7 @@ $(document).ready ->
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
-      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
   #$('#EventsTable').show()  ## change this on 6/27/2022 to test the datea
@@ -253,5 +301,5 @@ $(document).ready ->
       alert('Please select another advisor that has appointments!!')
       #return false
     else
-      $("#meeting-submit").prop("disabled", false)
+      #$("#meeting-submit").prop("disabled", false)
     return

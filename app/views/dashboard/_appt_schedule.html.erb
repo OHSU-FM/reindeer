@@ -1,6 +1,7 @@
 <br />
 <h4><font color="purple">Scheduled Appointment(s)</font></h4>
      <% events = hf_get_events(@meetings) %>
+  
      <% if !events.nil? %>
         <table class="table table-hover"  >
           <tr>
@@ -22,9 +23,11 @@
                 <% end %>
               <% else %>
                   <% advisor = event.description.split(" - ").second %>
-                  <td><%= link_to(advisor, coaching_student_path(event.user), target: '_blank') %></td>
-                  <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
-                  <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <% if !event.user.nil? %>
+                    <td><%= link_to(advisor, coaching_student_path(event.user), target: '_blank') %></td>
+                    <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <% end %>
               <% end %>
 
             </tr>

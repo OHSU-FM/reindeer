@@ -15,6 +15,7 @@ module EdnaConsole
 
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
+    #config.action_controller.default_protect_from_forgery = true
     config.exceptions_app = self.routes
     config.action_mailer.smtp_settings = { enable_starttls_auto: false  }
 
@@ -65,7 +66,7 @@ module EdnaConsole
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
+
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.5'

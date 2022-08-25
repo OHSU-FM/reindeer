@@ -170,7 +170,7 @@ LABELS2 = {
     return results
   end
 
-  def hf_create_graph(component, class_data, avg_data,  categories)
+  def hf_create_graph(component, class_data, avg_data, categories, permission_group)
 
     student_name = class_data.first["full_name"]  # processing student Alver
     student_series = class_data.first.drop(2)  # removed the first 2 items in array
@@ -183,7 +183,11 @@ LABELS2 = {
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
     height = 400
 
-    title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
+    if component == 'comp1_wk' and permission_group >= 20
+      title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'    
+    else
+      title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
+    end
 
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: title)

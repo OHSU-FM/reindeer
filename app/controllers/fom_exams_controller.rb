@@ -79,9 +79,9 @@ class FomExamsController < ApplicationController
           end
         end
 
-        hello = "Hello " + @tso_emails.second["TSO1"]["name"].split(", ").last + ",<br /><br />"
+        hello = "Hello " + @tso_emails.first["TSO1"]["name"].split(", ").last + ",<br /><br />"
         @body_message = hello + body_message
-        ActionMailer::Base.mail(from: @from, to: @tso_emails.second["TSO1"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
+        ActionMailer::Base.mail(from: @from, to: @tso_emails.first["TSO1"]["email"], subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver_now
 
         hello = "Hello " + @tso_emails.second["TSO2"]["name"].split(", ").last + ",<br /><br />"
         @body_message = hello + body_message

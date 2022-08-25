@@ -1,7 +1,8 @@
 module Coaching
   class MeetingsController < ApplicationController
-    include Coaching::MeetingsHelper
+    skip_before_action :verify_authenticity_token
     helper  :all
+    respond_to :html, :json
 
     def create
       @advisors = Advisor.where(status: 'Active').order(:name)
@@ -31,25 +32,26 @@ module Coaching
 
       end
 
-      respond_to do |format|
-        if @meeting.save
-          flash[:aler] = 'Appointment/Meeting saved successfully!'
-          # student is createing a meeting/appointment record
-          Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
-          if send_email_flag["OASIS"]["send_email"] ==  true
-            event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
-            if !event.empty?
-              EventMailer.notify_student(@meeting, "Create").deliver_later
-            end
-          end
+        respond_to do |format|
+            if @meeting.save
+             flash[:alert] = 'Appointment/Meeting saved successfully!'
+              # student is createing a meeting/appointment record
 
-          format.js { render action: 'show', status: :created }
-        else
-          format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
+              Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
+              if send_email_flag["OASIS"]["send_email"] ==  true
+                event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
+                if !event.empty?
+                  EventMailer.notify_student(@meeting, "Create").deliver_later
+                end
+              end
+              format.js { render action: 'show', status: :created }
+            else
+              format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
+            end
         end
-      end
 
     end
+
 
     def show_detail
       @meeting = Meeting.find params[:id]

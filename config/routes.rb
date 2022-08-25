@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get 'create_random_appointments', to: 'events#create_random_appointments'
       get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
+      get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
     end
   end
   #get 'student_assessments/index'
