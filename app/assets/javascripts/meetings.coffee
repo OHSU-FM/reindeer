@@ -73,20 +73,15 @@ window.ajaxStatus = ""  #global var
 window.eventIdGlobal = ""
 checkEvent = (event_id) ->
   $.ajax
+    async: false  #tell the browser to finish the ajax call
     type: 'GET'
     url: '/events/check_events'
     dataType: 'json'
     data: event_id: event_id
     success: (response) ->
       console.log 'success response: ' + JSON.stringify(response)
-      #myObj = JSON.stringify(response)
       console.log ("Status : " + response.Status)
-      if response.Status.includes('TAKEN')
-        alert "This Appointment is TAKEN, please select another one!!"
-        $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
-        ajaxStatus = 'TAKEN'
-      else
-        ajaxStatus = "AVAILABLE"
+      return response.Status
     error: (response) ->
       alert 'Something went WRONG!!'
       return
@@ -120,14 +115,17 @@ $(document).ready ->
   $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
     event_id = $('input:radio:checked').val()
     eventIdGlobal = event_id
-    checkEvent(event_id)
-    console.log ('First Check when radio is clicked: ' + ajaxStatus)
-    if ajaxStatus == 'AVAILABLE'
+    ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+    console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
+    if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
       advisorType = $("#advisor-" + @value).data('advisor-type')
       console.log("advisorType: " + advisorType)
       $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
       advisorID = $("#advisor-" + @value).data('advisor-' + @value)
       $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+    else
+      $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+      alert("The Appointment is NOT AVAILABLE, please select another one!")
     #console.log("data-advisor-id: " + dataValue)
     return
 
