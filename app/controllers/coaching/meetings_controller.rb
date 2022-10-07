@@ -32,6 +32,10 @@ module Coaching
 
       end
 
+      if @meeting.advisor_type.to_s == ""
+        @meeting.advisor_type = Advisor.find_by(id: @meeting.advisor_id).advisor_type
+      end
+
         respond_to do |format|
             if @meeting.save
              flash[:alert] = 'Appointment/Meeting saved successfully!'

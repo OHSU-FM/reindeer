@@ -87,6 +87,7 @@ checkEvent = (event_id) ->
       return
 
 
+
 $(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject][]']", ->
   if $(this).is(':checked')
     #alert '${this.value} is checked'
@@ -97,6 +98,7 @@ $(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject]
     $("#meeting-submit").prop("disabled", true)
   return
 #==================================================================================================================
+modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
@@ -111,34 +113,42 @@ $(document).ready ->
         row.show()
     return
   #$('#EventsTable').DataTable()
-
-  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
-    event_id = $('input:radio:checked').val()
-    eventIdGlobal = event_id
-    ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
-    console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
-    if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
-      advisorType = $("#advisor-" + @value).data('advisor-type')
-      console.log("advisorType: " + advisorType)
-      $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
-      advisorID = $("#advisor-" + @value).data('advisor-' + @value)
-      $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
-    else
-      $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
-      alert("The Appointment is NOT AVAILABLE, please select another one!")
-    #console.log("data-advisor-id: " + dataValue)
+  $('#newMeetingButton').on 'click', ->
+    existMeetingForm = $("#MeetingForm")[0]
+    if (existMeetingForm != null)
+      $("#MeetingForm")[0].reset();
+      $('#coaching_meeting_advisor_id').val("")
+    modalHtml = $('#newMeetingModal').html()
+    #alert("Inside newMeetingButton!")
     return
 
-  # THIS routine does not work!!! Need work!
-  # $('#MeetingForm').on 'submit', (e) ->
-  #   e.preventDefault()
-  #   e.stopImmediatePropagation()
-  #   #checkEvent(eventIdGlobal)
-  #   if ajaxStatus == 'AVAILABLE'
-  #         $('#MeetingForm').get(0).allowDefault = true;
-  #         $('#MeetingForm').unbind('submit').submit()
+  #-- Disabled the code below as it causes subtle errors on 9/9/2022
+  # it supposed to prevent duplicate appointment
+
+  # $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+  #   event_id = $('input:radio:checked').val()
+  #   eventIdGlobal = event_id
+  #   ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+  #   console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
+  #   if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+  #     advisorType = $("#advisor-" + @value).data('advisor-type')
+  #     console.log("advisorType: " + advisorType)
+  #     $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+  #     advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+  #     $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+  #   else
+  #     $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+  #     alert("The Appointment is NOT AVAILABLE, please select another one!")
+  #   #console.log("data-advisor-id: " + dataValue)
+  #   return
 
 
+
+    $('#MeetingForm').on 'submit', (e) ->
+      e.preventDefault
+      if e.result == true
+        alert 'This form was submitted!'
+      return
 
     # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
     #     $("#meeting-submit").prop("disabled", true)

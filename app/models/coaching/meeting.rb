@@ -27,9 +27,6 @@ class Coaching::Meeting < ApplicationRecord
     update(m_status: "Scheduled")
   end
 
-
-
-
   def set_default_values_for_meeting
     return unless room.nil?
     if !self.id.nil?

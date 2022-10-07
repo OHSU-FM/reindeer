@@ -472,7 +472,7 @@ DEPENDENCIES
   php-serialize
   popper_js (~> 1.14.3)
   pry
-  psych (= 3.3.1)
+  psych
   puma
   rack-mini-profiler
   rails (~> 6.1.3)

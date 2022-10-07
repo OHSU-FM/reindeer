@@ -184,7 +184,7 @@ LABELS2 = {
     height = 400
 
     if component == 'comp1_wk' and permission_group >= 20
-      title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'    
+      title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'
     else
       title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
     end
@@ -227,11 +227,13 @@ LABELS2 = {
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1100, height: height,
+                #width: 1100, height: height,
                 plotBorderWidth: 0,
                 borderWidth: 0,
                 plotShadow: false,
                 borderColor: '',
+                minPadding: 0,
+                maxPadding: 0,
                 plotBackgroundImage: ''
               })
     end
