@@ -2,17 +2,18 @@
     <div class="table-responsive-sm">
       <table class="table table-striped">
 
-
         <% @formative_feedbacks.drop(3).each do |key, values| %>
           <tr>
-            <% if @formative_feedbacks["response_id"].to_s.include? "_qs2" %>
-              <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs2') %></i> </td>
-            <% else %>
-              <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs1') %></i> </td>
-            <% end %>
-
               <% values.each do |val| %>
-                <td> <%= val %> </td>
+                <% if !val.nil? %>
+                  <% if @formative_feedbacks["response_id"].to_s.include? "_qs2" %>
+                    <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs2') %></i> </td>
+                  <% else %>
+                    <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs1') %></i> </td>
+                  <% end %>
+                  <td> <b><%= val %></b> </td>
+                <% end %>
+
               <% end %>
           </tr>
         <% end %>

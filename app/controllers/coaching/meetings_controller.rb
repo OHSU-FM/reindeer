@@ -32,8 +32,13 @@ module Coaching
 
       end
 
-      if @meeting.advisor_type.to_s == ""
-        @meeting.advisor_type = Advisor.find_by(id: @meeting.advisor_id).advisor_type
+      ## hidden field on _meeing_form sometime does not save the values
+      if @meeting.advisor_type.to_s == "" or @meeting.advisor_id.nil?
+        @advisor = Advisor.find_by(email: current_user.email)
+        if !@advisor.nil?
+          @meeting.advisor_type = @advisor.advisor_type
+          @meeting.advisor_id = @advisor.id
+        end
       end
 
         respond_to do |format|

@@ -7,9 +7,9 @@
     </div>
 
     Advisor Name: <b><%= current_user.full_name %></b><br />
-    Advisor Type: <b><%= advisor_type %></b>
-    <%= f.hidden_field :advisor_id, value: advisor_id%>
-    <%= f.hidden_field :advisor_type, value: advisor_type%>
+    Advisor Type: <b><%= advisor_type %> (<%= advisor_id %>)</b>
+    <%= f.hidden_field :advisor_id, value: advisor_id %>
+    <%= f.hidden_field :advisor_type, value: advisor_type %>
     <br />
 
     <%= f.hidden_field :user_id, value: student.id %>
@@ -54,9 +54,9 @@
               <% advisor_study_resources = hf_academic_study_resources_for_select %>
             <% elsif advisor_type == "Wellness" %>
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
-            <% elsif advisor_type = 'Diversity Navigator' %>
+            <% elsif advisor_type == 'Diversity Navigator' %>
                 <% advisor_subjects = hf_diversity_navigator_for_select %>
-            <% elsif advisor_type = 'Assist Dean' %>
+            <% elsif advisor_type == 'Assist Dean' %>
                 <% advisor_subjects = hf_assist_dean_for_select%>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>

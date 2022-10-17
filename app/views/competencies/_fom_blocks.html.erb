@@ -32,16 +32,15 @@
           <% while i < @all_blocks["Comp#{j}"].count-1 %>
             <% if @all_blocks["Comp#{j}"][i].to_f >= 70 %>
               <% if (j == 2 or j == 5) and (cohort > "Med21") %>
-                  <td style="text-align:center">HSS: <%= @all_blocks["Comp#{j}"][i] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i]%></b></i> <br>
-                    BSS: <%=
-                     @all_blocks["Comp#{j}"][i+1] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i+1]%></td>
+                  <td style="text-align:center">HSS: <b><%= @all_blocks["Comp#{j}"][i] %></b> / <i><%= @all_blocks_class_mean["Comp#{j}"][i]%></i> <br>
+                    BSS: <b><%= @all_blocks["Comp#{j}"][i+1] %></b> / <i><%= @all_blocks_class_mean["Comp#{j}"][i+1]%></i></td>
                     <% i = i + 2 %>
               <% else %>
-                  <td style="text-align:center"> <%= @all_blocks["Comp#{j}"][i] %> / <b><i><%= @all_blocks_class_mean["Comp#{j}"][i] %></b></i>
+                  <td style="text-align:center"> <b><%= @all_blocks["Comp#{j}"][i] %></b> / <i><%= @all_blocks_class_mean["Comp#{j}"][i] %></i>
                   <%  i += 1 %>
               <% end %>
             <% else %>
-              <td style="text-align:center;color:#FF4B44"><%= @all_blocks["Comp#{j}"][i] %> / <b><i><%=  @all_blocks_class_mean["Comp#{j}"][i] %></b></i></td>
+              <td style="text-align:center;color:#FF4B44"> <b><%= @all_blocks["Comp#{j}"][i] %></b> / <i><%=  @all_blocks_class_mean["Comp#{j}"][i] %></i></td>
               <% i = i + 1 %>
             <% end %>
 
