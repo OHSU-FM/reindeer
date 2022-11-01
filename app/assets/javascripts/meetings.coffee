@@ -8,8 +8,12 @@ $ ->
       for key of advisors
         if advisors.hasOwnProperty(key)
           #alert advisors[key].name
-          if advisors[key].advisor_type == advisorType
+          if advisors[key].advisor_type.includes(advisorType)
             $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+          else if advisorType.includes("Step 1")
+            advisorType = "Academic"
+            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
     $('#coaching_meeting_advisor_id').val('')
@@ -52,6 +56,10 @@ academicPrimary = [
   "USMLE - Step 2 CK"
   "Clinical Skill Assessments – CSAs, OSCEs, CPX"
   "Other"
+]
+
+academicStep1Primary = [
+  "USMLE – Step 1"
 ]
 
 careerPrimary = [
@@ -181,6 +189,8 @@ $(document).ready ->
   console.log("advisor_type: " + advisorType)
   if advisorType == 'Academic'
     data = academicPrimary
+  else if advisorType == 'Academic: Step 1 Advising'
+    data = academicStep1Primary
   else if advisorType == 'Career'
     data = careerPrimary
   else if advisorType == 'Wellness'
@@ -208,7 +218,9 @@ $(document).ready ->
     #alert("advisor_type: " + advisorType)
     if advisorType == 'Academic'
       data = academicPrimary
-      # to hide study Resources
+      $('#study_resources').show()
+    else if advisorType == 'Academic: Step 1 Advising'
+      data = academicStep1Primary
       $('#study_resources').show()
     else if advisorType == 'Wellness'
       data = wellnessPrimary

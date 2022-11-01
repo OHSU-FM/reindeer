@@ -9,6 +9,15 @@ module Coaching::MeetingsHelper
     end
   end
 
+  def hf_get_advisor_type(advisor_id)
+    advisor = Advisor.find_by(id: advisor_id)
+    if !advisor.nil?
+      return advisor.advisor_type
+    else
+      return "N/A"
+    end
+  end
+
   def hf_get_advisor(advisor_id)
     if advisor_id.to_s == ""
       return "N/A"
@@ -65,6 +74,12 @@ module Coaching::MeetingsHelper
       ["USMLE - Step 2 CK"],
       ["Clinical Skill Assessments – CSAs, OSCEs, CPX"],
       ["Other"]
+    ]
+  end
+
+  def hf_academic_primary_step1_for_select
+    [
+      ["USMLE – Step 1"]
     ]
   end
 
@@ -146,7 +161,7 @@ module Coaching::MeetingsHelper
     ]
   end
 
-  
+
   def hf_meeting_ipas_for_select
     [
       ["Peer Tutoring"],

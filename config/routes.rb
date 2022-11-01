@@ -91,7 +91,9 @@ Rails.application.routes.draw do
      member do
        delete :delete_document_attachment
        get 'move_files'
+       get 'step_2_move_files'
        get 'process_preceptor_eval'
+       get 'process_formative_feedback'
      end
   end
   namespace :coaching do

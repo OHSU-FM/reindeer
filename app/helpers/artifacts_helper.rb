@@ -1,7 +1,7 @@
 module ArtifactsHelper
 
   ARTIFACT_CATEGORY = ["FoM", "Clinical", "Exemplary Professionalism", "EPA-Artifacts", "Progress Board", "Grade Dispute",
-    "MSPE", "NBME", "Preceptorship Contract", "Scholarly Project", "TTR", "Preceptor Evals", "FoM Grades", "Other"]
+    "MSPE", "NBME", "Preceptorship Contract", "Scholarly Project", "TTR", "Preceptor Evals", "Formative Feedback", "FoM Grades", "Other"]
 
   def hf_category
     return ARTIFACT_CATEGORY

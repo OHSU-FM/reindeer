@@ -39,6 +39,10 @@ $(document).on 'click', '#SaveMeeting', (e) ->
   updatedAcademicDiscussedOther = $('#academic_discussed_other').val()
   updatedAcademicOutcomesOther = $('#academic_outcomes_other').val()
   updatedStudyResourcesOther = $('#study_resources_other').val()
+  updatedAdvisorType = $('#advisor_type').data("advisor_type")
+
+  console.log("Goal.coffee - advisor_type: " + updatedAdvisorType)
+  console.log("advisor notes: " + updatedAdvisorNotes)
 
   # checked_subjects is an array
   checked_subjects = do ->
@@ -76,7 +80,7 @@ $(document).on 'click', '#SaveMeeting', (e) ->
   else
     objectId = $(e.target).attr('data-meetingId')
     controller = "meetings"
-    data = { m_status: newStatus, notes: updatedNotes, advisor_notes: updatedAdvisorNotes, subject: checked_subjects, \
+    data = { m_status: newStatus, notes: updatedNotes, advisor_notes: updatedAdvisorNotes, subject: checked_subjects, advisor_type: updatedAdvisorType, \
             advisor_discussed: checked_advisor_discussed, advisor_outcomes: checked_advisor_outcomes, study_resources: checked_study_resources, \
             career_discussed_other: updatedCareerDiscussedOther, \
             career_outcomes_other: updatedCareerOutcomesOther, \

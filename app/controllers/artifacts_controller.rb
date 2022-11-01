@@ -96,9 +96,19 @@ class ArtifactsController < ApplicationController
     move_file_to_user(@artifact)
   end
 
+  def step_2_move_files
+    @artifact = Artifact.find(params[:id])
+    step2_move_files_to_user(@artifact)
+  end
+
   def process_preceptor_eval
     @artifact = Artifact.find(params[:id])
-    @log_results = Artifact.process_preceptor_data(@artifact)
+    @log_results = Artifact.process_upload_data(@artifact, 'PreceptorEval')
+  end
+
+  def process_formative_feedback
+    @artifact = Artifact.find(params[:id])
+    @log_results = Artifact.process_upload_data(@artifact, 'FormativeFeedback')
   end
 
   private
@@ -108,7 +118,6 @@ class ArtifactsController < ApplicationController
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
         temp_str = document.filename.to_s.split(" ")
-
         if temp_str.last.include? "Preceptorship"
           full_name = temp_str[0] + " " + temp_str[1]
         else
@@ -121,19 +130,10 @@ class ArtifactsController < ApplicationController
              full_name = last_name + ", " + first_name
           elsif temp_str2.count >= 2
              full_name = temp_str2.first + ", " + temp_str2.second
-          # elsif temp_str2.count == 3
-          #    full_name = temp_str2.first + ", " + temp_str2.second
-          #  elsif temp_str2.count == 4 or
-          #     full_name = temp_str2.first + ", " + temp_str2.second # + ", " + temp_str2.third
           else
              return
            end
          end
-
-
-        #filename = document.filename.to_s.gsub("_", ", ")
-
-        #full_name = temp_str.first + ", " + temp_str.second
 
         @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
@@ -147,8 +147,31 @@ class ArtifactsController < ApplicationController
           end
           document.destroy # remove it from the artifact
         end
-
       end
+    end
+
+    def step2_move_files_to_user(artifact)
+      nbme_match_file = "#{Rails.root}/config/Med26_NBME_Name_Match.txt"
+      row_hash = {}
+      CSV.foreach(nbme_match_file, col_sep: "\t", :headers => true, encoding: "UTF-8") do |row|
+        row_hash.store(row["pdf_file"], row["email"])
+      end
+      artifact.documents.each do |document|
+        email = row_hash[document.filename.to_s]
+        student_user = User.find_by(email: email)
+        if !student_user.nil?
+          temp_artifact = Artifact.find_or_create_by(user_id: student_user.id, content: artifact.content, title: artifact.title) do |a|
+            a.content = artifact.content
+            a.title = artifact.title
+            a.documents.attach(ActiveStorage::Blob.find(document.blob_id))
+          end
+          if !temp_artifact.documents.exists?(blob_id: document.blob_id)
+             temp_artifact.documents.attach(ActiveStorage::Blob.find(document.blob_id))
+          end
+          document.destroy # remove it from the artifact
+        end
+      end
+
     end
 
     # Use callbacks to share common setup or constraints between actions.

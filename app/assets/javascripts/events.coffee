@@ -45,7 +45,10 @@ $ ->
       for key of advisors
         if advisors.hasOwnProperty(key)
           #alert advisors[key].name
-          if advisors[key].advisor_type == advisorType
+          if advisors[key].advisor_type.includes(advisorType)
+            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+          else if advisorType.includes("Step 1")
+            advisorType = "Academic"
             $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
