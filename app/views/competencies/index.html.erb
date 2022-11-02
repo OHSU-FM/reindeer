@@ -48,7 +48,7 @@
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
-         <a class="nav-link" id="epa-tab" data-toggle="tab" href="#epa" style="background-color:#a8e0a6" role="tab" aria-controls="epa" aria-selected="false">EPAs/WBAs/Badges
+         <a class="nav-link" id="epa-tab" data-toggle="tab" href="#epa" style="background-color:#a8e0a6" role="tab" aria-controls="epa" aria-selected="false">EPAs/Badges/WBAs
          </a>
        </li>
        <li class="bold-italic nav-item waves-effect waves-light">
@@ -136,13 +136,16 @@
     <div id="epa" class="tab-pane fade" role="tabpanel"  aria-labelledby="epa-tab">
       <div class="center-div">
         <div class="inner-div">
+          <%= render partial: "collapsible_epas" %>
+          <%= render partial: "collapsible_wba_details" %>
+
             <% if !@epas.blank?  %>
               <div class="container">
                 <div id="data-visualization-AdHocAllEPAs" ></div>
                 <button id="plain" class="btn btn-primary">Column</button>
                 <button id="inverted" class="btn btn-secondary">Inverted</button>
                 <button id="polar" class="btn btn-success">Polar</button>
-                <button id="spline" class="btn btn-warning">Spline</button>                
+                <button id="spline" class="btn btn-warning">Spline</button>
               </div>
               <br>
             <% end %>
@@ -156,9 +159,7 @@
             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
           <% end %>
 
-          <%= render partial: "collapsible_wba_details" %>
 
-          <%= render partial: "collapsible_epas" %>
         </div>
       </div>
     </div>
