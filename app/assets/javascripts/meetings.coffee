@@ -150,8 +150,6 @@ $(document).ready ->
     #console.log("data-advisor-id: " + dataValue)
     return
 
-
-
     $('#MeetingForm').on 'submit', (e) ->
       e.preventDefault
       if e.result == true
@@ -301,14 +299,19 @@ $(document).ready ->
       row.show()
       found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
 
-
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
-         row.show()
-      else if (colAdvisor[1] == selectedAdvisorText[0]) && (selectedAdvisorType != "Assist Dean")
-        # orgDate = new Date(colDate[0])
-        # millisBetween = orgDate - newDate
-        # days = millisBetween / (1000*3600*24)
-        # console.log('date Diff in Days : ' + Math.round(days))
+        row.show()
+      else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic'))
+        # console.log("** colAdvisor[0]: " + colAdvisor[0])
+        # console.log("** selectedAdvisorType: " + selectedAdvisorType)
+        row.show()
+      else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')))
+        row.show()
+      else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')))
+        row.show()
+      else if ((colAdvisor[0].includes('Diversity')) && (selectedAdvisorType.includes('Diversity')))
+        row.show()
+      else if ((colAdvisor[0].includes('Wellness')) && (selectedAdvisorType.includes('Wellness')))
         row.show()
       else
         row.hide()

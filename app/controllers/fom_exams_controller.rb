@@ -147,8 +147,12 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-         formative_feedbacks= FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes) ## med23 preceptor evaluations
+         formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").map(&:attributes)
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
+
+         #@informative_feedbacks = FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes)
+         @informatics_feedbacks = FormativeFeedback.where("user_id=? and block_code=? and csa_code like ?", student.id, block_code, "%Informatics%").map(&:attributes)
+         #@informatics_feedbacks = hf_collect_values(informatics_feedbacks)
        else
          @comp_keys =  '*** This Block is being disabled temporary or has not been created just yet!! ***'
        end

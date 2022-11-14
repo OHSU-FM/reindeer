@@ -178,7 +178,11 @@ class EventsController < ApplicationController
       title = data[0].split(" - ").first
       description = data[0]
       start_date = hf_format_datetime(data[1].gsub("at ", ""))
-      start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+      if Time.now.to_s.include? "-0800"
+        start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
+      else
+        start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+      end
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
       #Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)

@@ -58,6 +58,18 @@ LABELS2 = {
   "q8" => ""
 }
 
+LABELS3 = {
+  "q1" => "Student Name",
+  "q2" => "Facilitator Name",
+  "q3" => "",
+  "q4" => "",
+  "q5" => "",
+  "q6" => "",
+  "q7" => "Informatics Formative Feedback",
+  "q8" => "Attachment File"
+}
+
+
 
   def hf_get_block_desc(in_code)
     return BLOCKS[in_code]
@@ -80,6 +92,8 @@ LABELS2 = {
       label = LABELS[in_q]
     elsif label_code == '_qs2'
       label = LABELS2[in_q]
+    elsif label_code == '_qs3'
+      label = LABELS3[in_q]
     else
       return in_q
     end

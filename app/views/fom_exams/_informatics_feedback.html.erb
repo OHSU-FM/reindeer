@@ -1,0 +1,49 @@
+
+<% if !@informatics_feedbacks.blank? %>
+    <div class="table-responsive-sm">
+      <table class="table table-striped">
+        <% @informatics_feedbacks.each do |feedback| %>
+             <% feedback.drop(3).each do |key, val| %>
+                <% if !val.nil? %>
+                  <% if key == 'q8' %>
+                    <% @shelf_artifacts.each do |artifact| %>
+                      <% artifact.documents.each do |document| %>
+                        <% if document.filename.to_s.include? val %>
+                          <tr>
+                            <td style="text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs3') %></i> </td>
+                            <td> <%= image_tag document%> <td>
+                          <tr>
+                        <% end %>
+                      <%end %>
+                    <% end %>
+                  <% elsif key == 'q7' %>
+                    <tr>
+                      <td style="text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs3') %></i> </td>
+                      <td> <b><%= val.gsub(/\n/, '<br/>').html_safe  %></b> </td>
+                    </tr>
+                      <tr>
+                        <td style="text-align:right;">Disclaimer:</td>
+                        <td style="color:purple"><i>“Please note: all screenshots are from Epic SOM (artificial environment), which <u><b>does not</u></b> contain PHI.”</i></td>
+                      <tr>
+                  <% else %>
+                  <tr>
+                    <td style="text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs3') %></i> </td>
+                    <td><%= val %></td>
+                  <tr>
+                    <% if key == 'updated_at' %>
+                        <tr> <td>  </td></tr>
+                    <% end %>
+                <% end %>
+              <% end %>
+
+            <% end %>
+
+
+        <% end %>
+      </table>
+    </div>
+<% else %>
+  <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No Informatics formative feedback found!
+  <br />
+<% end %>

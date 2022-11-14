@@ -1,17 +1,30 @@
 <% if !@formative_feedbacks.blank? %>
     <div class="table-responsive-sm">
       <table class="table table-striped">
-
         <% @formative_feedbacks.drop(3).each do |key, values| %>
           <tr>
               <% values.each do |val| %>
                 <% if !val.nil? %>
-                  <% if @formative_feedbacks["response_id"].to_s.include? "_qs2" %>
+                  <% if @formative_feedbacks["response_id"].to_s.include? "_qs3" %>
+                  <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs3') %></i> </td>
+                  <% elsif @formative_feedbacks["response_id"].to_s.include? "_qs2" %>
                     <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs2') %></i> </td>
                   <% else %>
                     <td style=text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs1') %></i> </td>
                   <% end %>
-                  <td> <b><%= val %></b> </td>
+                  <% if @formative_feedbacks["response_id"].to_s.include? "_qs3" and key == 'q8' %>
+                    <% @shelf_artifacts.each do |artifact| %>
+                      <% artifact.documents.each do |document| %>
+                        <% if document.filename.to_s == val %>
+                          <td> <%= image_tag document%> <td>
+                        <% end %>
+                      <%end %>
+                    <% end %>
+                  <% elsif key == 'q7' %>
+                    <td> <b><%= val.gsub(/\n/, '<br/>').html_safe  %></b> </td>
+                  <% else %>
+                    <td> <b><%= val %></b> </td>
+                  <% end %>
                 <% end %>
 
               <% end %>
