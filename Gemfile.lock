@@ -489,6 +489,7 @@ DEPENDENCIES
   rufus-scheduler
   sass
   sass-rails (>= 3.2)
+  sassc-rails
   select2-rails
   settingslogic
   simple_form

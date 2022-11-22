@@ -10,7 +10,7 @@ $ ->
           #alert advisors[key].name
           if advisors[key].advisor_type.includes(advisorType)
             $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
-          else if advisorType.includes("Step 1")
+          else if advisorType.includes("Step 1") or advisorType.includes("Remediation") 
             advisorType = "Academic"
             $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
 
@@ -60,6 +60,9 @@ academicPrimary = [
 
 academicStep1Primary = [
   "USMLE – Step 1"
+]
+remediationPrimary = [
+  "Remediation Support"
 ]
 
 careerPrimary = [
@@ -189,6 +192,8 @@ $(document).ready ->
     data = academicPrimary
   else if advisorType == 'Academic: Step 1 Advising'
     data = academicStep1Primary
+  else if advisorType == 'Academic: Remediation Support'
+    data = remediationPrimary
   else if advisorType == 'Career'
     data = careerPrimary
   else if advisorType == 'Wellness'
@@ -219,6 +224,9 @@ $(document).ready ->
       $('#study_resources').show()
     else if advisorType == 'Academic: Step 1 Advising'
       data = academicStep1Primary
+      $('#study_resources').show()
+    else if advisorType == 'Academic: Remediation Support'
+      data = remediationPrimary
       $('#study_resources').show()
     else if advisorType == 'Wellness'
       data = wellnessPrimary
@@ -306,6 +314,8 @@ $(document).ready ->
         # console.log("** selectedAdvisorType: " + selectedAdvisorType)
         row.show()
       else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')))
+        row.show()
+      else if ((colAdvisor[0].includes('Remediation')) && (selectedAdvisorType.includes('Remediation')))
         row.show()
       else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')))
         row.show()

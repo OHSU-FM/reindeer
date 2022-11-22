@@ -50,8 +50,6 @@ class EventsController < ApplicationController
     end
   end
 
-
-
   # GET /events/1
   # GET /events/1.json
   def show
@@ -172,20 +170,24 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
+
     @appointments.each do |appointment|
       data = appointment.split("|")
       title = data[0].split(" - ").first
       description = data[0]
       start_date = hf_format_datetime(data[1].gsub("at ", ""))
-      if Time.now.to_s.include? "-0800"
-        start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
+      localTime = start_date.to_datetime.localtime
+      if localTime.to_s.include? "-0800"
+        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
+        start_date2 = start_date.to_datetime + 8.hours
       else
-        start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+        start_date2 = start_date.to_datetime + 7.hours
       end
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
       #Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
-      appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2.to_datetime)
+      appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
       notice_msg = ''
 
       if !appt.empty?

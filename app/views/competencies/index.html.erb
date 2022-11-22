@@ -133,6 +133,12 @@
       </div>
     </div>
 
+    <div id="official" class="tab-pane fade" role="tabpanel"  aria-labelledby="official-tab">
+        <div id="Progress Board">
+            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+        </div>
+    </div>  
+
     <div id="epa" class="tab-pane fade" role="tabpanel"  aria-labelledby="epa-tab">
       <div class="center-div">
         <div class="inner-div">
@@ -163,11 +169,8 @@
         </div>
       </div>
     </div>
-    <div id="official" class="tab-pane fade" role="tabpanel"  aria-labelledby="official-tab">
-        <div id="Progress Board">
-            <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
-        </div>
-    </div>
+
+
 
   </div>
 </div>

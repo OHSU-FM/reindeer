@@ -47,7 +47,7 @@ $ ->
           #alert advisors[key].name
           if advisors[key].advisor_type.includes(advisorType)
             $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
-          else if advisorType.includes("Step 1")
+          else if advisorType.includes("Step 1") or advisorType.includes("Remediation")
             advisorType = "Academic"
             $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
       #alert JSON.stringify(advisor)
