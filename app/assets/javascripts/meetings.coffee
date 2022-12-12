@@ -3,20 +3,21 @@ $ ->
     advisorType = @value
     #alert advisorType
     $('#coaching_meeting_advisor_id').empty()
+    $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
       for key of advisors
         if advisors.hasOwnProperty(key)
-          #alert advisors[key].name
-          if advisors[key].advisor_type.includes(advisorType)
+          #alert advisors[key].name + ' --> ' + advisors[key].advisor_type
+          if advisorType.includes("Step 1") or advisorType.includes("Remediation")
+            if advisors[key].advisor_type.includes("Academic")
+              $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+          else if advisors[key].advisor_type.includes(advisorType)
             $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
-          else if advisorType.includes("Step 1") or advisorType.includes("Remediation") 
-            advisorType = "Academic"
-            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
 
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
-    $('#coaching_meeting_advisor_id').val('')
+    #$('#coaching_meeting_advisor_id').val('')
   return
 
 
@@ -24,18 +25,31 @@ studyResources = [
       ["Live Lecture"],
       ["Recorded OHSU Lecture"],
       ["Textbook"],
+      ["First Aide to Step 1"],
+      ["Sketchy"],
       ["Anki"],
       ["Boards & Beyond"],
       ["Pathoma"],
       ["NBME Questions"],
-      ["UWORLD/other board prep questions"],
+      ["Amboss Q Bank"],
+      ["UWORLD Qbank/other board prep questions"],
       ["Other (text box)"]
+]
+
+step1Resources = [
+  ["First Aide to Step 1"],
+  ["Sketchy"],
+  ["Anki"],
+  ["Pathoma"],
+  ["Boards and Beyond"],
+  ["Uworld Qbank"],
+  ["Amboss Q Bank"],
+  ["Other (text box)"]
 ]
 
 wellnessPrimary = [
   "Wellness Visit"
 ]
-
 diversityNavigatorPrimary = [
   "General"
   "Scholarship Meeting"
@@ -190,8 +204,10 @@ $(document).ready ->
   console.log("advisor_type: " + advisorType)
   if advisorType == 'Academic'
     data = academicPrimary
+    dataResources = studyResources
   else if advisorType == 'Academic: Step 1 Advising'
     data = academicStep1Primary
+    dataResources = step1Resources
   else if advisorType == 'Academic: Remediation Support'
     data = remediationPrimary
   else if advisorType == 'Career'
@@ -210,6 +226,11 @@ $(document).ready ->
   $.each data, (index) ->
     $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
     return
+  # $('#study_resources').empty()
+  # $.each dataResources, (index) ->
+  #   $('#study_resources').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + dataResources[index] + '\' />' + nbsp + dataResources[index] + '</label><br/>'
+  #   return
+
 
   FoundSADean = false
   $('#StudentAffairsDean').hide()
@@ -222,24 +243,31 @@ $(document).ready ->
     if advisorType == 'Academic'
       data = academicPrimary
       $('#study_resources').show()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Academic: Step 1 Advising'
       data = academicStep1Primary
       $('#study_resources').show()
+      $('#practice_test_scores').show()
     else if advisorType == 'Academic: Remediation Support'
       data = remediationPrimary
       $('#study_resources').show()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Wellness'
       data = wellnessPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Diversity Navigator'
       data = diversityNavigatorPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Assist Dean'
       data = assistDeanPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
     else
       data = careerPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
 
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
@@ -272,7 +300,7 @@ $(document).ready ->
     selectedAdvisorType = $("#coaching_meeting_advisor_type option:selected").text()
     console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
-
+    console.log("selectedAdvisorText: " + selectedAdvisorText[0])
     $('#EventsTable td:nth-child(2)').each ->
       #console.log ("this: "  + $(this).text())
       if $(this).text().includes("Cantone")
@@ -303,25 +331,26 @@ $(document).ready ->
     dataset.each ->
       row = $(this)
       colAdvisor = row.find('td').eq(1).text().split(" - ")
+      console.log("colAdvisor[0]: " + colAdvisor[0] + " colAdvisor[1]: " + colAdvisor[1])
       colDate = row.find('td').eq(2).text().split(" - ")
       row.show()
       found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
 
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
         row.show()
-      else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic'))
+      else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
         # console.log("** colAdvisor[0]: " + colAdvisor[0])
         # console.log("** selectedAdvisorType: " + selectedAdvisorType)
         row.show()
-      else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')))
+      else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
-      else if ((colAdvisor[0].includes('Remediation')) && (selectedAdvisorType.includes('Remediation')))
+      else if ((colAdvisor[0].includes('Remediation')) && (selectedAdvisorType.includes('Remediation')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
-      else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')))
+      else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')) && (colAdvisor[1] == selectedAdvisorText[0]) )
         row.show()
-      else if ((colAdvisor[0].includes('Diversity')) && (selectedAdvisorType.includes('Diversity')))
+      else if ((colAdvisor[0].includes('Diversity')) && (selectedAdvisorType.includes('Diversity')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
-      else if ((colAdvisor[0].includes('Wellness')) && (selectedAdvisorType.includes('Wellness')))
+      else if ((colAdvisor[0].includes('Wellness')) && (selectedAdvisorType.includes('Wellness')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
       else
         row.hide()

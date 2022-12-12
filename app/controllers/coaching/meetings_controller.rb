@@ -5,7 +5,7 @@ module Coaching
     respond_to :html, :json
 
     def create
-      @advisors = Advisor.where(status: 'Active').order(:name)
+      @advisors = Advisor.where(status: 'Active').order(:advisor_type,:name)
       @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
@@ -40,6 +40,11 @@ module Coaching
           @meeting.advisor_id = @advisor.id
         end
       end
+
+      nbme_form_json, uworld_info_json, qbank_info_json = Meeting.convert_to_json(params)
+      @meeting.nbme_form  = nbme_form_json
+      @meeting.uworld_info = uworld_info_json
+      @meeting.qbank_info = qbank_info_json
 
         respond_to do |format|
             if @meeting.save
@@ -121,8 +126,10 @@ module Coaching
     def meeting_params
       params.require(:coaching_meeting)
       .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id,  :academic_discussed_other, :academic_outcomes_other,
-        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes,
-        subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [] )
+        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes, :uworld_info,
+        subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [],
+        nbme_form: [:nbme_form_1, :nbme_score_1, :nbme_date_completed_1, :nbme_form_2, :nbme_score_2, :nbme_date_completed_3, :nbme_form_3, :nbme_score_3, :nbme_date_completed_3],
+        qbank_info: [] )
       # .permit( :notes,  :date, :m_status, :user_id, :advisor_type,
       #   :advisor_id, :event_id)
     end

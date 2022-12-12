@@ -26,7 +26,7 @@
                 <% elsif meeting.advisor_type == 'Academic'  %>
                   <% select_options = hf_academic_primary_for_select %>
                 <% elsif meeting.advisor_type == 'Academic: Step 1 Advising' %>
-                    <% select_options = hf_academic_primary_step1_for_select %>              
+                    <% select_options = hf_academic_primary_step1_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                   <% select_options = hf_wellness_primary_for_select %>
                 <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
@@ -190,6 +190,7 @@
 <div class="detail-section">
   <h4><font color="#4c0946">Student Meeting Documentation</font></h4>
   <div>
-    <%= text_area_tag :notes, meeting.notes, class: "updateStudentNotes", rows: 5, style: 'width:100%' %>
+    <%= text_area_tag :notes, meeting.notes, class: "updateStudentNotes", rows: 3, style: 'width:100%' %>
   </div>
+  <%= render partial: "practice_test_scores", locals: {meeting: meeting} %>
 </div>

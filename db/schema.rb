@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_05_200959) do
+ActiveRecord::Schema.define(version: 2022_12_05_204210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -865,6 +865,9 @@ ActiveRecord::Schema.define(version: 2022_04_05_200959) do
     t.text "advisor_notes"
     t.text "study_resources", default: [], array: true
     t.string "study_resources_other"
+    t.json "nbme_form"
+    t.json "uworld_info"
+    t.json "qbank_info"
     t.index ["advisor_id", "id"], name: "index_meetings_on_advisor_id_and_id", unique: true
     t.index ["event_id", "id"], name: "index_meetings_on_event_id_and_id", unique: true
     t.index ["user_id"], name: "index_meetings_on_user_id"
@@ -1138,6 +1141,39 @@ ActiveRecord::Schema.define(version: 2022_04_05_200959) do
     t.index ["sid"], name: "index_users_on_sid", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
     t.index ["uuid"], name: "index_users_on_uuid", unique: true
+  end
+
+  create_table "users_temp", id: false, force: :cascade do |t|
+    t.integer "id"
+    t.string "email", limit: 255
+    t.string "encrypted_password", limit: 255
+    t.string "reset_password_token", limit: 255
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count"
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip", limit: 255
+    t.string "last_sign_in_ip", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text "p4_program_id"
+    t.text "roles"
+    t.string "full_name", limit: 255
+    t.string "username", limit: 255
+    t.datetime "locked_at"
+    t.boolean "is_ldap"
+    t.integer "permission_group_id"
+    t.integer "cohort_id"
+    t.string "ls_list_state"
+    t.string "coaching_type"
+    t.integer "prev_permission_group_id"
+    t.string "spec_program"
+    t.string "sid"
+    t.uuid "uuid"
+    t.boolean "subscribed"
+    t.date "matriculated_date"
+    t.index ["username"], name: "index_users_temp_username"
   end
 
   create_table "usmle_exams", force: :cascade do |t|

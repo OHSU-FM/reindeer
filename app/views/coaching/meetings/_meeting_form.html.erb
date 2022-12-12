@@ -199,7 +199,7 @@
   <% else %>
 
     <div hidden>
-      <div class="advisors-details" data-advisors="<%= @advisors.sort_by(&:name).to_json %>">
+      <div class="advisors-details" data-advisors="<%= @advisors.to_json %>">
       </div>
     </div>
 
@@ -273,6 +273,30 @@
             <% end %>
             <div class="form-group">
               <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
+            </div>
+            <hr>
+          </div>
+
+          <div id="practice_test_scores">
+            <h5> Practice Test Scores </h5>
+            <div class="form-group">
+                <% for i in 1..3 %>
+                    <%= text_area_tag "nbme_form_#{i}", nil, size: "30x2", placeholder: "NBME Form #" %>
+                    <%= text_area_tag "nbme_score_#{i}", nil, size: "30x2", placeholder: "% Likelihood of Passing"%>
+                    <%= text_area_tag "nbme_date_completed_#{i}", nil, size: "30x2", placeholder: "Date Completed"%>
+                <% end %>
+            </div>
+            <hr>
+            <div class="form-group">
+              <% for i in 1..2 %>
+                  <%= text_area_tag "uworld_score_#{i}", nil, size: "30x2", placeholder: "Uworld Test Score #{i}" %>
+                  <%= text_area_tag "uworld_date_completed_#{i}", nil, size: "30x2", placeholder: "Date completed"%><br />
+              <% end %>
+            </div>
+            <hr>
+            <div class="form-group">
+                <%= text_area_tag "q_bank_no_of_correct_questions", nil, size: "30x2", placeholder: "% of correct questions" %> % Correct over your last 6 random blocks of 40 questions<br/>
+                <%= text_area_tag "q_bank_no_of_questions", nil, size: "30x2", placeholder: "# of Q-bank Questions Completed\r\nQ-bank used"%> # of Q-bank questions completed<br />
             </div>
           </div>
 

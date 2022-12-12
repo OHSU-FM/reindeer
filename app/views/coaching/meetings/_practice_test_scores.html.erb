@@ -1,0 +1,49 @@
+<% if !meeting.nbme_form.nil? %>
+  <h5><font color="#4c0946"> Practice Test Scores </font></h5>
+  <table class="responsive table table-hover" >
+    <thead>
+      <tr>
+        <th>NBME Form</th>
+        <th>% Likelihood of Passing</th>
+        <th>Date Completed</th>
+      </tr>
+    </thead>
+      <% nbme_form_hash = JSON.parse(meeting.nbme_form) %>
+      <% for i in 1..3 %>
+        <tr>
+        <% values = nbme_form_hash.select{|key, val| val if key.include? "_#{i}" }.values %>
+        <% values.each do |val| %>
+          <td><%= val %></td>
+        <% end %>
+        </tr>
+      <% end %>
+  </table>
+  <hr>
+<% end %>
+<% if !meeting.uworld_info.nil? %>
+  <table class="responsive table table-hover" >
+    <thead>
+      <tr>
+        <th>Uworld Practice Test Score</th>
+        <th>Date Completed</th>
+      </tr>
+    </thead>
+    <% uworld_info_hash = JSON.parse(meeting.uworld_info) %>
+    <% for i in 1..2 %>
+      <tr>
+      <% values = uworld_info_hash.select{|key, val| val if key.include? "_#{i}" }.values %>
+      <% values.each do |val| %>
+        <td><%= val %></td>
+      <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <hr>
+<% end %>
+
+<% if !meeting.qbank_info.nil? %>
+  <% qbank_info_hash = JSON.parse(meeting.qbank_info) %>
+  <h6><font color="#4c0946"> Q Bank Performance </font></h6>
+      % Correct over your last 6 random blocks of 40 questions: <b><%= qbank_info_hash["q_bank_no_of_correct_questions"] %></b> <br />
+      # of Q-Bank question completed: <b><%= qbank_info_hash["q_bank_no_of_questions"] %></b>
+<% end %>

@@ -192,14 +192,30 @@ module Coaching::MeetingsHelper
 
   def hf_academic_study_resources_for_select
     [
-      ["Live Lecture"],
-      ["Recorded OHSU Lecture"],
-      ["Textbook"],
+          ["Live Lecture"],
+          ["Recorded OHSU Lecture"],
+          ["Textbook"],
+          ["First Aide to Step 1"],
+          ["Sketchy"],
+          ["Anki"],
+          ["Boards & Beyond"],
+          ["Pathoma"],
+          ["NBME Questions"],
+          ["Amboss Q Bank"],
+          ["UWORLD Qbank/other board prep questions"],
+          ["Other (text box)"]
+    ]
+  end
+
+  def hf_step1_study_resources_for_select
+    [
+      ["First Aide to Step 1"],
+      ["Sketchy"],
       ["Anki"],
-      ["Boards & Beyond"],
       ["Pathoma"],
-      ["NBME Questions"],
-      ["UWORLD/other board prep questions"],
+      ["Boards and Beyond"],
+      ["Uworld Qbank"],
+      ["Amboss Q Bank"],
       ["Other (text box)"]
     ]
   end

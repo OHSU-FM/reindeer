@@ -117,25 +117,30 @@ class ArtifactsController < ApplicationController
 
       artifact.documents.each do |document|
         #artifact_document = document.id #ActiveStorage::Blob.find_signed(params[:id])
-        temp_str = document.filename.to_s.split(" ")
-        if temp_str.last.include? "Preceptorship"
-          full_name = temp_str[0] + " " + temp_str[1]
-        else
-          temp_str2 = temp_str.first.split("_")
-          if temp_str2.count == 1
-             last_name = temp_str2.first
-             temp_str3 = temp_str.second.split("_")
-             last_name = last_name + " " + temp_str3.first
-             first_name = temp_str3.second
-             full_name = last_name + ", " + first_name
-          elsif temp_str2.count >= 2
-             full_name = temp_str2.first + ", " + temp_str2.second
+        if !document.filename.to_s.include? "image00"  ## check to see if it is an image file from informatics feedback so that we can move to it
+          temp_str = document.filename.to_s.split(" ")
+          if temp_str.last.include? "Preceptorship"
+            full_name = temp_str[0] + " " + temp_str[1]
           else
-             return
+            temp_str2 = temp_str.first.split("_")
+            if temp_str2.count == 1
+               last_name = temp_str2.first
+               temp_str3 = temp_str.second.split("_")
+               last_name = last_name + " " + temp_str3.first
+               first_name = temp_str3.second
+               full_name = last_name + ", " + first_name
+            elsif temp_str2.count >= 2
+               full_name = temp_str2.first + ", " + temp_str2.second
+            else
+               return
+             end
            end
-         end
+          @student_user = User.find_by(full_name: full_name)
+        else
+          username = document.filename.to_s.split("_").first
+          @student_user = User.find_by(username: username)
+        end
 
-        @student_user = User.find_by(full_name: full_name)
         if !@student_user.nil?
           temp_artifact = Artifact.find_or_create_by(user_id: @student_user.id, content: artifact.content, title: artifact.title) do |a|
             a.content = artifact.content
