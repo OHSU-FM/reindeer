@@ -1,4 +1,4 @@
-<% if !meeting.nbme_form.nil? %>
+<% if meeting.nbme_form != '{}' %>
   <h5><font color="#4c0946"> Practice Test Scores </font></h5>
   <table class="responsive table table-hover" >
     <thead>
@@ -20,7 +20,7 @@
   </table>
   <hr>
 <% end %>
-<% if !meeting.uworld_info.nil? %>
+<% if meeting.uworld_info != '{}' %>
   <table class="responsive table table-hover" >
     <thead>
       <tr>
@@ -41,7 +41,7 @@
   <hr>
 <% end %>
 
-<% if !meeting.qbank_info.nil? %>
+<% if meeting.qbank_info != '{}' %>
   <% qbank_info_hash = JSON.parse(meeting.qbank_info) %>
   <h6><font color="#4c0946"> Q Bank Performance </font></h6>
       % Correct over your last 6 random blocks of 40 questions: <b><%= qbank_info_hash["q_bank_no_of_correct_questions"] %></b> <br />

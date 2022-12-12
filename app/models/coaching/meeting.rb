@@ -27,11 +27,11 @@ class Coaching::Meeting < ApplicationRecord
 
     params.each do |hash|
       hash.each do |key, val|
-        if key.include? "nbme_"
-          nbme_form << hash
-        elsif key.include? "uworld_"
+        if key.include? "nbme_" and val != ""
+            nbme_form << hash
+        elsif key.include? "uworld_" and val != ""
           uworld_info << hash
-        elsif key.include? "q_bank_"
+        elsif key.include? "q_bank_" and val != ""
           q_bank_info << hash
         end
       end
@@ -40,7 +40,7 @@ class Coaching::Meeting < ApplicationRecord
     ## to remove backslash and the double quotes on the first and the last positions
     nbme_form_json = nbme_form.to_h.to_json
     uworld_info_json = uworld_info.to_h.to_json
-    qbank_info_json = q_bank_info.to_h.to_json 
+    qbank_info_json = q_bank_info.to_h.to_json
 
     return nbme_form_json, uworld_info_json, qbank_info_json
 
