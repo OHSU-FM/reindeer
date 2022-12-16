@@ -74,6 +74,6 @@
 
   </div>
 <% end %>
-
-<% @shelf_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Clinical") %>
-<%= render partial: 'artifacts/shelf_artifacts' %>
+<% #commented out on 12/15/2022, and moved it to _uslme module %>
+<% #@shelf_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Clinical") %>
+<% #= render partial: 'artifacts/shelf_artifacts' %>

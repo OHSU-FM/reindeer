@@ -20,8 +20,10 @@
             </tr>
       <% end %>
   </table>
+  <% @shelf_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Clinical") %>
+  <%= render partial: 'artifacts/shelf_artifacts' %>
 <% end %>
-
+<hr>
 <% if !@usmle_exams.empty? %>
   <h4>USMLE Step Exams</h4> <br />
   <table style="float:left" class="table table-striped">
