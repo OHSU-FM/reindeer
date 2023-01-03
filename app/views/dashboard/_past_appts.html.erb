@@ -1,6 +1,7 @@
 
-<h5><font color="purple">Scheduled Appointment(s)</font></h5>
-     <% events = hf_get_events(@meetings) %>
+<h5><font color="purple">Past Week Appointment(s)</font></h5>
+     <% events = hf_get_past_events(@meetings) %>
+
      <% if !events.nil? %>
         <table class="table table-hover"  >
           <tr>
@@ -35,8 +36,3 @@
     <% else %>
         <h4> *** No Appointments Found! *** </h4>
     <% end %>
-
-  <%= link_to coaching_index_path(email: @pk), target: '_blank', :class=>'btn btn-success' do %>
-      I Want to Schedule an Appointment
-      <i class="fa fa-external-link"></i>
-  <% end %>

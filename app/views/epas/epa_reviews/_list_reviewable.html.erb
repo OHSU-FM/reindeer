@@ -1,0 +1,35 @@
+<div class="modal-body row">
+  <table class="responsive nowrap table table-hover" id="dttb-list-reviewable">
+    <thead>
+      <tr>
+        <th data-data="epa">EPA</th>
+        <th data-data="Review_Date1">Review Date1</th>
+        <th data-data="Reviewer1">Reviewer1</th>
+        <th data-data="BadgeDecision1">Badge Decision1</th>
+        <th data-data="Evidence1">Evidence1</th>
+        <th data-data="Review_Date2">Review Date2</th>
+        <th data-data="Reviewer2">Reviewer2</th>
+        <th data-data="BadgeDecision2">Badge Decision2</th>
+        <th data-data="Evidence2">Evidence2</th>
+      </tr>
+    </thead>
+    <% @reviewable.epa_reviews.each do |review| %>
+
+        <% if !review.reviewer1.nil? %>
+           <tr>
+             <td><%= review.epa %></td>
+             <td><%= review.review_date1 %></td>
+             <td><%= review.reviewer1 %></td>
+             <td><%= review.badge_decision1 %></td>
+             <td><%= review.evidence1 %> </td>
+             <td><%= review.review_date2 %></td>
+             <td><%= review.reviewer2 %></td>
+             <td><%= review.badge_decision2 %></td>
+             <td><%= review.evidence2 %> </td>
+           </tr>
+        <% end %>
+
+    <% end %>
+  </table>
+  <hr>
+</div>

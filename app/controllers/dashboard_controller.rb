@@ -18,6 +18,11 @@ class DashboardController < ApplicationController
       @wba_epa_data = hf_process_student(student, 'WBA')
       @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
     else
+      if Advisor.exists?(email: current_user.email)
+        @yes_advisor = true
+      else
+        @yes_advisor = false
+      end
       @meetings = []
     end
 
