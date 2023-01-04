@@ -278,6 +278,26 @@ function reloadContextMenuItems(epa) {
   return contextMenuItems
 }
 
+function ReviewFormSubmit() {
+      var form = $('#review-form');
+      var actionUrl = form.attr('action');
+      //alert ("Inside ReviewFormSubmit!")
+      $.ajax({
+          type: "POST",
+          url: actionUrl,
+          data: form.serialize(),
+          //dataType: "json",
+          success:function(data){
+ 				       console.log("Saving Reviewing EPA is a success via Ajax!")
+          },
+          error : function(request,error)
+          {
+              alert("Request Reviews ERROR: "+JSON.stringify(request));
+          }
+      });
+
+}
+
 
 $(function() {
   $('#course_name').mouseup(function(){
@@ -297,12 +317,12 @@ $(function() {
            },
 
          callback: function(key, options) {
-
+             var epa_json = [];
              var m = "clicked: " + key;
 
              console.log ("key clicked: " + m);
              var selectedText = window.getSelection().toString();
-             var parentid = window.getSelection().focusNode.parentElement.id;   //anchorNode.parentElement.id;
+             var parentid = window.getSelection().anchorNode.parentElement.id;   //anchorNode.parentElement.id;  focusNode.parentElement.id;
 
              console.log("course_name: " + $('#' + parentid).data('course-name'));
 
@@ -333,7 +353,7 @@ $(function() {
                  var lineFeed = GeneralComment2 === '' ? "" : "\n";
                  $("#epa_review_general_comments2").val(GeneralComment2 + lineFeed + todayDate + ": " + course_code + ": " + selectedText);
                }
-
+               ReviewFormSubmit();
              }
              else {
                var epa_hash = {};
@@ -346,6 +366,23 @@ $(function() {
                //console.log("epa_hash: " + JSON.stringify(epa_hash));
                //console.log('ByEmail - inside contextMenu: ' + byEmail)
                epa_json.push(epa_hash);
+
+               $.ajax({
+                  url : '/epa_reviews/local_storage',
+                  type : 'post',
+                  dataType:'json',
+                  data: {epa_json: epa_json},
+                  success : function(epa_json) {
+                      //alert('Data: '+ JSON.stringify(data));
+                      //alert("local_storage ajax is a success!\n"+JSON.stringify(epa_json));
+                      refreshEpaMasterAjax();
+
+                  },
+                  error : function(request,error)
+                  {
+                      alert("Request Reviews: "+JSON.stringify(request));
+                  }
+               });
 
              }
 
