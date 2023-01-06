@@ -26,7 +26,7 @@
                 <td><%= e.other_role %></td>
                 <td><%= e.assessor_name %></td>
                 <td><%= e.involvement %></td>
-                <td><%= e.more_independent %></td>
+                <td><%= hf_highlight(e.more_independent, e.epa) %></td>
                 <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
               </tr>
             <% end %>

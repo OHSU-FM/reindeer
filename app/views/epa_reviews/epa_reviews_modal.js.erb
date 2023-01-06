@@ -277,7 +277,10 @@ function reloadContextMenuItems(epa) {
   console.log("epa selected: " + epa)
   return contextMenuItems
 }
-
+//======================================================================
+// This function save all data on the reviewing form via Ajax.
+// User can also click on Submit button when get back to reviewing form.
+//=======================================================================
 function ReviewFormSubmit() {
       var form = $('#review-form');
       var actionUrl = form.attr('action');
@@ -297,7 +300,6 @@ function ReviewFormSubmit() {
       });
 
 }
-
 
 $(function() {
   $('#course_name').mouseup(function(){
