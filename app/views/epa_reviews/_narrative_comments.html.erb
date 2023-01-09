@@ -72,7 +72,7 @@
         </div>
 
 
-<input type='hidden' value='' id='txt_id'>
+      <input type='hidden' value='' id='txt_id'>
        <h5>
           <div class="card-header collapsed" data-toggle="collapse" href="#collapseTwo">
             <a class="card-title">
@@ -104,9 +104,9 @@
                      <td><%= pd["submit_date"] %></td>
                      <td><%= pd["grade"] %></td>
                      <% if !pd["overall_performance"].nil? %>
-                        <td><%= hf_highlight(pd["overall_performance"], epa_code) %></td>
+                        <td><span class="context-menu-one" id="<%= epa_code %>" data-course-name="[Preceptorship]"><%= hf_highlight(pd["overall_performance"], epa_code) %></span></td>
                      <% else %>
-                        <td><%= hf_highlight(pd["mspe_comments"], epa_code) %></td>
+                        <td><span class="context-menu-one" id="<%= epa_code %>" data-course-name="[Preceptorship]"><%= hf_highlight(pd["mspe_comments"], epa_code) %><</span></td>
                      <% end %>
                  <% end %>
 
@@ -143,7 +143,7 @@
                         <td><%= data["BlockName"] %></td>
                         <td><%= data["CSLInstructor"].split(":").last %></td>
                         <td><%= data["SelectedStudent"] %></td>
-                        <td><%= hf_highlight(data["Comments"], epa_code) %></td>
+                        <td><span class="context-menu-one" id="<%= epa_code %>" data-course-name="[Narrative Feedback]" ><%= hf_highlight(data["Comments"], epa_code) %></span></td>
                       </tr>
                     <% end %>
                   <% end %>

@@ -326,7 +326,7 @@ $(function() {
              var selectedText = window.getSelection().toString();
              var parentid = window.getSelection().anchorNode.parentElement.id;   //anchorNode.parentElement.id;  focusNode.parentElement.id;
 
-             console.log("course_name: " + $('#' + parentid).data('course-name'));
+             console.log("course_name with parentid: " + $('#' + parentid).data('course-name'));
 
              var course_name = $('#' + parentid).data('course-name').split("]");
              //course_name = course_name.split("]");
