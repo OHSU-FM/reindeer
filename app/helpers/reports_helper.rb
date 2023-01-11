@@ -10,23 +10,15 @@ module ReportsHelper
     average = 0.0
 
     BLOCKS.each do |block|
-
       found_block = summary_data.select{|s| s["course_code"] if s["course_code"] == block}
       if !found_block.empty?
-        student_hash.store(found_block.first["course_code"], found_block.first["average"].to_f)
+        student_hash.store(found_block.first["course_code"] + " Summary", found_block.first["average"].to_f)
         total_score += found_block.first["average"].to_f
       else
-        student_hash.store(block, 0.0)
+        student_hash.store(block + " Summary", 0.0)
       end
-      # summary_data.each do |data|
-      #   if !data["average"].nil?  #data["course_code"] == block and
-      #       student_hash.store(data["course_code"], data["average"])
-      #       total_score += data["average"]
-      #   else
-      #      student_hash.store(block, 0.0)
-      #   end
-      # end
     end
+
     no_of_blocks = summary_data.count
     average = total_score/7.0 #if no_of_blocks != 0
     student_hash.store("Cumulative FoM Average", average.round(2))
@@ -38,18 +30,19 @@ module ReportsHelper
     data_hash = {}
     users.each do |user|
       if user.username != 'bettybogus'
-          summary_data = FomExam.execute_sql("select id, user_id, course_code, summary_comp1, summary_comp2a, summary_comp2b,
-                          summary_comp3, summary_comp4, summary_comp5a, summary_comp5b,
-                          ROUND((SUMMARY_COMP1+SUMMARY_COMP2A+SUMMARY_COMP2B+SUMMARY_COMP3+SUMMARY_COMP4+SUMMARY_COMP5A+SUMMARY_COMP5B)/7::numeric,2) AS Average
-                          from fom_exams where user_id=#{user.id} order by course_code").to_a
+        summary_data = FomExam.execute_sql("select id, user_id, course_code, summary_comp1, summary_comp2a, summary_comp2b,
+                        summary_comp3, summary_comp4, summary_comp5a, summary_comp5b,
+                        ROUND((SUMMARY_COMP1+SUMMARY_COMP2A+SUMMARY_COMP2B+SUMMARY_COMP3+SUMMARY_COMP4+SUMMARY_COMP5A+SUMMARY_COMP5B)/7::numeric,2) AS Average
+                        from fom_exams where user_id=#{user.id} order by course_code").to_a
 
-          # if summary_data.count == 7
-            data_hash = average_summary(summary_data, user)
-            data_array.push data_hash
-          # end
+          data_hash = average_summary(summary_data, user)
+          data_array.push data_hash
       end
     end
-
+    #data_array = data_array.sort_by{ |d| d["Cumulative FoM Average"]}.reverse!
+    # to sort the average in descending order - done in jquery using dataTables features
     return data_array
   end
+
+
 end
