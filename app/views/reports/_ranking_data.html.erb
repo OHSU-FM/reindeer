@@ -1,0 +1,16 @@
+<table id="rankingDataTable" class="table table-hover table-striped responsive" data-sort="true" >
+  <thead>
+    <tr class="filters">
+      <% @ranking_data.first.keys.each do |key| %>
+        <th style="text-align:center"><%= key %></th>
+      <% end %>
+    </tr>
+  </thead>
+    <% @ranking_data.each do |data| %>
+      <tr>
+        <% data.each do |key, val| %>
+            <td style="text-align:center"> <%= val %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+</table>

@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
 
+  get 'reports/index'
   resources :fom_remeds
   resources :advisors
+
+  resources :reports do
+    collection do
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'    
+    end
+  end
 
   resources :events do
     collection do
