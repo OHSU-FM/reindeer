@@ -29,7 +29,7 @@ module ReportsHelper
     end
     no_of_blocks = summary_data.count
     average = total_score/7.0 #if no_of_blocks != 0
-    student_hash.store("Average", average.round(2))
+    student_hash.store("Cumulative FoM Average", average.round(2))
     return student_hash
   end
 

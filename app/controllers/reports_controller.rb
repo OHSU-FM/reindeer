@@ -11,7 +11,6 @@ class ReportsController < ApplicationController
       @ranking_data = hf_get_ranking(@users)
       create_file @ranking_data, "#{@cohort_title}_ranking_data.txt"
     end
-
     respond_to do |format|
       format.html
     end
@@ -21,11 +20,9 @@ class ReportsController < ApplicationController
   def download_file
       if params[:file_name].present?
         private_download params[:file_name]
-        # generic_file_name = params[:file_name]
-        # send_file  "#{Rails.root}/tmp/#{generic_file_name}", type: 'text', disposition: 'download'
+
       end
   end
-
 
   private
 
