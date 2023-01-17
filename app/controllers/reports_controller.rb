@@ -3,6 +3,7 @@ class ReportsController < ApplicationController
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!, :set_resources
   include ReportsHelper
+  include CompetenciesHelper
 
   def index
     if params[:cohort].present?
@@ -17,6 +18,30 @@ class ReportsController < ApplicationController
 
   end
 
+  def competency
+    if params[:cohortChecked].present?
+      @cohortChecked = JSON.parse(params[:cohortChecked])
+      @comp_class_means = {}
+
+      @non_clinical_course_arry ||= hf_get_non_clinical_courses2
+      @cohortChecked.each do |cohort_id|
+        cohort_title = PermissionGroup.find(cohort_id).title.scan(/\((.*)\)/).first.first
+        comp_unfiltered = Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
+        class_mean = hf_competency_class_mean2(comp_unfiltered)
+        #class_mean.store("Cohort", cohort_title)
+        @comp_class_means[cohort_title] = class_mean
+      end
+
+      respond_to do |format|
+        format.html
+        format.js { render action: 'competency_data', status: 200 }
+      end
+
+    end
+
+
+  end
+
   def download_file
       if params[:file_name].present?
         private_download params[:file_name]
@@ -27,7 +52,7 @@ class ReportsController < ApplicationController
   private
 
   def set_resources
-    @permission_groups = PermissionGroup.last(3) # get last 3 rows
+    @permission_groups = PermissionGroup.last(5) # get last 3 rows
   end
 
   def private_download in_file

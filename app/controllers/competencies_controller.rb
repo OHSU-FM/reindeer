@@ -13,7 +13,7 @@ class CompetenciesController < ApplicationController
 
   def index
     Rails.application.config.action_view.image_loading = "lazy"
-    @non_clinical_course_arry ||= hf_get_non_clinical_courses
+    @non_clinical_course_arry ||= hf_get_non_clinical_courses2
 
     if current_user.coaching_type == "student"
       @selected_user = current_user
@@ -121,12 +121,14 @@ class CompetenciesController < ApplicationController
     if [3,5,6,13].include? permission_group_id
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
-        @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
         if @comp_unfiltered.empty?
           # get it from archived tables
           group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
           table_name = "#{group_title}Competency".constantize
-          @comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
+          #@comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
+          @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
         end
 
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
@@ -135,7 +137,8 @@ class CompetenciesController < ApplicationController
     else
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
-        @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
         Competency.create_class_mean(@comp_class_mean, permission_group_id)
       end

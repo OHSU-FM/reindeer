@@ -44,5 +44,75 @@ module ReportsHelper
     return data_array
   end
 
+  def hf_cohorts_comp_graph(comp_class_means)
+    selected_categories = comp_class_means.first.last.keys
+    height = 600
+    title =  "Competency By Cohort(s) Graph" #+ '<br ><b>' + "(n = #{tot_count})" + '</b>'
+
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: title)
+      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.xAxis(categories: selected_categories,
+        labels: {
+              style:  {
+                          fontWeight: 'bold',
+                          color: '#000000'
+                      }
+                }
+      )
+      comp_class_means.keys.each do |key|
+          f.series(type: 'column', name: key, yAxis: 0, data: comp_class_means["#{key}"].values)
+      end
+
+      # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+      # f.colors(['#4572A7',
+      #           '#AA4643',
+      #           '#89A54E',
+      #           '#80699B',
+      #           '#3D96AE',
+      #           '#DB843D',
+      #           '#92A8CD',
+      #           '#A47D7C',
+      #           '#B5CA92'
+      #           ])
+
+      f.yAxis [
+         { min: 0, max: 100,
+           tickInterval: 25,
+           title: {text: "<b>Competency by Percentage (%) </b>", margin: 20}
+         }
+      ]
+      f.plot_options(
+        pie: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                format: '<b>{point.name}</b>:<br>{point.percentage:.1f} %<br>value: {point.y}'
+            }
+        },
+        column: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "column",
+                width: 1800, height: height,
+                plotBackgroundImage: ''
+              })
+    end
+
+    return chart
+
+  end
+
 
 end

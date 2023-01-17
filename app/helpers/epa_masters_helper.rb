@@ -520,7 +520,6 @@ module EpaMastersHelper
   end
 
   def hf_epa_badged_graph(all_cohort_epa_badged_data)
-
     selected_categories = all_cohort_epa_badged_data["Med21"].keys
     # epa_series = all_cohort_epa_badged_data["Med21"].values
     # epa_series2 = all_cohort_epa_badged_data["Med22"].values

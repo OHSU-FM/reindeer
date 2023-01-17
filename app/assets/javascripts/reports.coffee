@@ -6,4 +6,25 @@ $(document).ready ->
   $('.dataTables_length').addClass 'bs-select'
   oTable = $('#rankingDataTable').dataTable()
   oTable.fnSort([9, 'desc'])  # sorting the average column on the table
-  console.log("Inside report.coffee!")
+
+  $('.button').click ->
+    # $('#competencyForm').attr('onsubmit','return true;')
+    cohortChecked = [];
+    $('input:checked.form-check-input').each ->
+      cohortChecked.push $(this).val()
+      return
+    console.log("checked cohort: " + JSON.stringify(cohortChecked))
+
+    $.ajax
+      url: '/reports/competency'
+      type: 'get'
+      data: {cohortChecked: JSON.stringify(cohortChecked)}
+      dataType: 'script'
+      success: (data) ->
+        # alert 'Ajax called Success!'
+        return
+      error: (request, error) ->
+        alert 'Request: ' + JSON.stringify(request)
+        return
+
+  $('#competencyForm').attr('onsubmit','return false;')

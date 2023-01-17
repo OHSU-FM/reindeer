@@ -6,7 +6,8 @@ Rails.application.routes.draw do
 
   resources :reports do
     collection do
-      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'    
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'
+      get 'competency', action: :competency, controller: 'reports'
     end
   end
 

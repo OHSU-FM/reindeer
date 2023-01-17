@@ -61,7 +61,7 @@
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
             <% if advisor_type != 'Diversity Navigator' %>
-              <b><%= f.label :subject, "Advisor Discussed (Check all the applp):", class: "control-label col-md-6" %></b><br />
+              <b><%= f.label :subject, "Advisor Discussed (Check all that apply):", class: "control-label col-md-6" %></b><br />
               <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
                 <label>
                   <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorDiscussed') %>
