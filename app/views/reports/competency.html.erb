@@ -1,0 +1,29 @@
+<br />
+  <div class="card">
+    <div class="card-body">
+      <%= form_tag(competency_reports_path, remote: true, method: "get", id: 'competencyForm') do %>
+        <div class="form-group navbar-form navbar-left">
+          Please Select Cohort(s) for Competency Comparison:
+          <% @permission_groups.each do |group| %>
+            <% cohort = group.title.scan(/\((.*)\)/).first.first %>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="check_<%= cohort %>" value="<%= group.id %>">
+                <label class="form-check-label" for="inlineCheckbox_<%= group.id %>"><%= cohort %></label>
+            </div>
+          <% end %>
+          <%= button_tag " SUBMIT", class: 'button btn btn-primary', html: {autocomplete: 'off'},
+              'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <hr>
+    <div class="card">
+      <div class="card-header">
+        <b>Cohorts Competency Comparison Report</b>
+      </div>
+      <div class="card-body">
+        <div id="competency_data"></div>
+      </div>
+    </div>

@@ -1,10 +1,11 @@
 module Coaching
   class MeetingsController < ApplicationController
-    include Coaching::MeetingsHelper
+    skip_before_action :verify_authenticity_token
     helper  :all
+    respond_to :html, :json
 
     def create
-      @advisors = Advisor.where(status: 'Active').order(:name)
+      @advisors = Advisor.where(status: 'Active').order(:advisor_type,:name)
       @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
       @events = Event.where('start_date > ?', DateTime.now)
       @meeting = Meeting.create meeting_params
@@ -31,25 +32,42 @@ module Coaching
 
       end
 
-      respond_to do |format|
-        if @meeting.save
-          flash[:aler] = 'Appointment/Meeting saved successfully!'
-          # student is createing a meeting/appointment record
-          Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
-          if send_email_flag["OASIS"]["send_email"] ==  true
-            event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
-            if !event.empty?
-              EventMailer.notify_student(@meeting, "Create").deliver_later
-            end
-          end
-
-          format.js { render action: 'show', status: :created }
-        else
-          format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
+      ## hidden field on _meeing_form sometime does not save the values
+      if @meeting.advisor_type.to_s == "" or @meeting.advisor_id.nil?
+        @advisor = Advisor.find_by(email: current_user.email)
+        if !@advisor.nil?
+          @meeting.advisor_type = @advisor.advisor_type
+          @meeting.advisor_id = @advisor.id
         end
       end
 
+      nbme_form_json, uworld_info_json, qbank_info_json = Meeting.convert_to_json(params)
+      @meeting.nbme_form  = nbme_form_json
+      @meeting.uworld_info = uworld_info_json
+      @meeting.qbank_info = qbank_info_json
+
+        respond_to do |format|
+            if @meeting.save
+             flash[:alert] = 'Appointment/Meeting saved successfully!'
+              # student is createing a meeting/appointment record
+
+              Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
+              if send_email_flag["OASIS"]["send_email"] ==  true
+                event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
+
+                # send email to student & advisor if advisor_notes is nil otherwise, it is a retro-appointment
+                if (!event.empty? and @meeting.advisor_notes.blank?) or @meeting.advisor_type == 'Assist Dean'
+                  EventMailer.notify_student(@meeting, "Create").deliver_later
+                end
+              end
+              format.js { render action: 'show', status: :created }
+            else
+              format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
+            end
+        end
+
     end
+
 
     def show_detail
       @meeting = Meeting.find params[:id]
@@ -108,8 +126,10 @@ module Coaching
     def meeting_params
       params.require(:coaching_meeting)
       .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id,  :academic_discussed_other, :academic_outcomes_other,
-        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes,
-        subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [] )
+        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes, :uworld_info,
+        subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [],
+        nbme_form: [:nbme_form_1, :nbme_score_1, :nbme_date_completed_1, :nbme_form_2, :nbme_score_2, :nbme_date_completed_3, :nbme_form_3, :nbme_score_3, :nbme_date_completed_3],
+        qbank_info: [] )
       # .permit( :notes,  :date, :m_status, :user_id, :advisor_type,
       #   :advisor_id, :event_id)
     end

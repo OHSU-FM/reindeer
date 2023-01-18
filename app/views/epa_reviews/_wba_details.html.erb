@@ -15,6 +15,7 @@
           </thead>
 
         <tbody>
+        <% i=0 %>
         <% epas.each do |e| %>
             <% if e.epa == epa_code %>
               <tr>
@@ -26,7 +27,8 @@
                 <td><%= e.other_role %></td>
                 <td><%= e.assessor_name %></td>
                 <td><%= e.involvement %></td>
-                <td><%= e.more_independent %></td>
+                <% i = i + 1 %>
+                <td><spane class="context-menu-one" id="<%= e.epa %>" data-course-name="[WBA]" ><%= hf_highlight(e.more_independent, e.epa) %></span></td>
                 <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
               </tr>
             <% end %>

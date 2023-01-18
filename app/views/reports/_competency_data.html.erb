@@ -1,0 +1,26 @@
+
+<% if !comp_class_means.blank? %>
+  <table id="CompetencyCompareTable" class="table table-hover table-striped table-responsive" data-sort="true" >
+    <thead>
+      <tr class="filters">
+        <th style="text-align:center">Cohort</th>
+        <% comp_class_means.first.last.keys.each do |key| %>
+          <th style="text-align:center"><%= key %></th>
+        <% end %>
+      </tr>
+    </thead>
+      <% comp_class_means.each do |key, data| %>
+        <tr>
+          <td style="text-align:center"> <%= key %> </td>
+          <% data.each do |key, val| %>
+              <td style="text-align:center"> <%= val %> </td>
+          <% end %>
+        </tr>
+      <% end %>
+  </table>
+  <hr>
+    <div class="d-flex flex-auto justify-content-center align-items-center">
+       <% cohorts_comp_graph ||= hf_cohorts_comp_graph(comp_class_means) %>
+       <%= high_chart("cohorts_comp_graph", cohorts_comp_graph) %>
+    </div>
+<% end %>

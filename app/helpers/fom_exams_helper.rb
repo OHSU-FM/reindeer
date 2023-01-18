@@ -58,6 +58,18 @@ LABELS2 = {
   "q8" => ""
 }
 
+LABELS3 = {
+  "q1" => "Student Name",
+  "q2" => "Facilitator Name",
+  "q3" => "",
+  "q4" => "",
+  "q5" => "",
+  "q6" => "",
+  "q7" => "Informatics Formative Feedback",
+  "q8" => "Attachment File"
+}
+
+
 
   def hf_get_block_desc(in_code)
     return BLOCKS[in_code]
@@ -80,6 +92,8 @@ LABELS2 = {
       label = LABELS[in_q]
     elsif label_code == '_qs2'
       label = LABELS2[in_q]
+    elsif label_code == '_qs3'
+      label = LABELS3[in_q]
     else
       return in_q
     end
@@ -170,7 +184,7 @@ LABELS2 = {
     return results
   end
 
-  def hf_create_graph(component, class_data, avg_data,  categories)
+  def hf_create_graph(component, class_data, avg_data, categories, permission_group)
 
     student_name = class_data.first["full_name"]  # processing student Alver
     student_series = class_data.first.drop(2)  # removed the first 2 items in array
@@ -183,7 +197,11 @@ LABELS2 = {
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
     height = 400
 
-    title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
+    if component == 'comp1_wk' and permission_group >= 20
+      title =  hf_component_desc(component) + '<br ><span style="color:red">Formative Feedback</span>' + '<br ><b>' + student_name + '</b>'
+    else
+      title =  hf_component_desc(component) + '<br ><b>' + student_name + '</b>'
+    end
 
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: title)
@@ -223,11 +241,13 @@ LABELS2 = {
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1100, height: height,
+                #width: 1100, height: height,
                 plotBorderWidth: 0,
                 borderWidth: 0,
                 plotShadow: false,
                 borderColor: '',
+                minPadding: 0,
+                maxPadding: 0,
                 plotBackgroundImage: ''
               })
     end

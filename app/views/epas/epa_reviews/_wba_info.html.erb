@@ -1,0 +1,21 @@
+<div clas="card">
+  <div class="card-body">
+    <% if !@wba.blank? %>
+      <br />
+      <h5>QA Complete %: <b style="color:purple"><%= qa_percent %></b></h5>
+      <h5>Total # of WBAs: <b style="color:blue"><%= wba.sum %></b></h5>
+      <table class="responsive table table-hover" style="width:400px">
+        <tr>
+            <th>Instance</th>
+            <th>Total Count</th>
+        </tr>
+        <% for i in 0..3 do %>
+          <tr>
+              <td><%= hf_wba_instance_def(i+1) %></td>
+              <td><%= "#{wba[i]}" %> </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+</div>

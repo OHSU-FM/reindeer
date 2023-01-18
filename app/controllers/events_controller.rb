@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:update]
   before_action :authenticate_user!
   before_action :set_resources
   before_action :set_event, only: [:show, :edit, :update, :destroy]
@@ -33,6 +34,21 @@ class EventsController < ApplicationController
     end
   end
 
+  def check_events
+    if params[:event_id]
+      @event = Event.where(id: params[:event_id], user_id: nil)
+      if @event.empty?
+        @event = {"Status" => "Appointment is TAKEN, please select another one!", "event_id" => params[:event_id]}
+      else
+        @event =  {"Status" => "Appointment is AVAILABLE!", "event_id" => params[:event_id]}
+      end
+    end
+
+    respond_to do |format|
+      format.json {render json: @event, status: 200}
+      format.html
+    end
+  end
 
   # GET /events/1
   # GET /events/1.json
@@ -160,12 +176,30 @@ class EventsController < ApplicationController
       title = data[0].split(" - ").first
       description = data[0]
       start_date = hf_format_datetime(data[1].gsub("at ", ""))
+      localTime = start_date.to_datetime.localtime
+      if localTime.to_s.include? "-0800"
+        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
+        start_date2 = start_date.to_datetime + 8.hours
+      else
+        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+        start_date2 = start_date.to_datetime + 7.hours
+      end
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
-      Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+      #Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+      appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
+      notice_msg = ''
+
+      if !appt.empty?
+          flash.now[:notice] = "Warming! Duplicate Date/Time Encountered! => #{start_date}"
+      else
+          Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+          notice_msg = 'Apppointments were successfully created!'
+      end
+
     end
     respond_to do |format|
-      format.html { redirect_to action: "index", notice: 'Apppointments were successfully created.' }
+      format.html { redirect_to action: "index", notice: notice_msg}
       format.json
     end
   end

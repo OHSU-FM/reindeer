@@ -13,7 +13,7 @@ class CompetenciesController < ApplicationController
 
   def index
     Rails.application.config.action_view.image_loading = "lazy"
-    @non_clinical_course_arry ||= hf_get_non_clinical_courses
+    @non_clinical_course_arry ||= hf_get_non_clinical_courses2
 
     if current_user.coaching_type == "student"
       @selected_user = current_user
@@ -80,20 +80,23 @@ class CompetenciesController < ApplicationController
      end
 
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
-     @mock_artifacts = hf_get_mock(@pk, "Mock Step 1")
+
 
      @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
 
+      @mock_artifacts = hf_get_mock(@pk, "Mock Step 1")
+
      found_rec = FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id)
+
      if found_rec.nil?
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_date, :no_attempts)
      elsif found_rec.visible == false
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type not like ?", @selected_user.id, "%Mock%").order(:exam_type, :no_attempts)
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <> 'HSS' and exam_type not like ?", @selected_user.id, "%Mock%").order(:exam_date, :no_attempts)
      else
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_type, :no_attempts)
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_date, :no_attempts)
      end
 
-     @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_type, :no_attempts)
+     @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_date, :no_attempts)
 
      @student_badge_info = hf_get_badge_info(@selected_user.id)
 
@@ -118,12 +121,14 @@ class CompetenciesController < ApplicationController
     if [3,5,6,13].include? permission_group_id
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
-        @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
         if @comp_unfiltered.empty?
           # get it from archived tables
           group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
           table_name = "#{group_title}Competency".constantize
-          @comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
+          #@comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
+          @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
         end
 
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
@@ -132,7 +137,8 @@ class CompetenciesController < ApplicationController
     else
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
-        @comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
         Competency.create_class_mean(@comp_class_mean, permission_group_id)
       end

@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
 
+  get 'reports/index'
   resources :fom_remeds
   resources :advisors
+
+  resources :reports do
+    collection do
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'
+      get 'competency', action: :competency, controller: 'reports'
+    end
+  end
 
   resources :events do
     collection do
@@ -9,6 +17,7 @@ Rails.application.routes.draw do
       get 'create_random_appointments', to: 'events#create_random_appointments'
       get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
+      get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
     end
   end
   #get 'student_assessments/index'
@@ -90,7 +99,9 @@ Rails.application.routes.draw do
      member do
        delete :delete_document_attachment
        get 'move_files'
+       get 'step_2_move_files'
        get 'process_preceptor_eval'
+       get 'process_formative_feedback'
      end
   end
   namespace :coaching do

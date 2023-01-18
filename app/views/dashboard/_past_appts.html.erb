@@ -1,0 +1,38 @@
+
+<h5><font color="purple">Past Week Appointment(s)</font></h5>
+     <% events = hf_get_past_events(@meetings) %>
+
+     <% if !events.nil? %>
+        <table class="table table-hover"  >
+          <tr>
+            <% if current_user.coaching_type == 'dean' %>
+                <th data-data="student">Student</th>
+            <% else %>
+                <th data-data="advisor">Advisor</th>
+            <% end %>
+            <th data-data="start_date">Start date</th>
+            <th data-data="end_date">End date</th>
+          </tr>
+          <% events.sort_by(&:start_date).each do |event| %>
+            <tr>
+              <% if current_user.coaching_type == 'dean' %>
+                <% if !event.user.nil? %>
+                    <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
+                    <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                <% end %>
+              <% else %>
+                  <% advisor = event.description.split(" - ").second %>
+                  <% if !event.user.nil? %>
+                    <td><%= link_to(advisor, coaching_student_path(event.user), target: '_blank') %></td>
+                    <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                    <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
+                  <% end %>
+              <% end %>
+
+            </tr>
+          <% end %>
+        </table>
+    <% else %>
+        <h4> *** No Appointments Found! *** </h4>
+    <% end %>

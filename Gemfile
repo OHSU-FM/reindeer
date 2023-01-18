@@ -6,8 +6,10 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem "bundler", '~>2.0'
 gem 'rails', '~>6.1.3' #'~> 5.2.2.1'
 gem "rdoc"
-gem "psych", "=3.3.1"
+#gem "psych", "=3.3.1"
+gem "psych"
 gem 'sprockets', '< 4'
+gem 'bcrypt-ruby'
 # Database
 #gem 'pg', '~> 1.3', '>= 1.3.4'
 gem 'pg'
@@ -168,3 +170,4 @@ gem "font-awesome-rails"
 gem 'will_paginate', '~> 3.1'
 gem 'datejs-rails', "~> 2.0.1"
 gem 'icalendar'
+gem 'sassc-rails'

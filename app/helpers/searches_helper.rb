@@ -66,12 +66,14 @@ module SearchesHelper
       cohorts.each do |cohort|
         title = cohort.title[/(?<=\().*?(?=\))/]
         arr = process_wba_total_count(cohort.id)
-        stat << arr.values.max
-        stat << arr.values.min
-        stat << arr.values.sum.fdiv(arr.size).round
-        stat << median(arr.values).round
-        cohorts_stat.store(title, stat)
-        stat = []
+        if !arr.empty?
+          stat << arr.values.max
+          stat << arr.values.min
+          stat << arr.values.sum.fdiv(arr.size).round
+          stat << median(arr.values).round
+          cohorts_stat.store(title, stat)
+          stat = []
+        end
       end
       return cohorts_stat
     end

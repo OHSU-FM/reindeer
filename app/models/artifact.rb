@@ -30,7 +30,7 @@ class Artifact < ApplicationRecord
      return true
   end
 
-  def self.process_preceptor_data (artifact)
+  def self.process_upload_data (artifact, code)
     log_results = []
     row_to_hash = {}
     no_updated = 0
@@ -39,21 +39,29 @@ class Artifact < ApplicationRecord
 
     CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true, col_sep: "\t", encoding: 'cp1252') do |row|
 
-      yes_updated = true
+      #yes_updated = true
       total_count += 1
-      if !row["email"].blank?
+
         yes_updated = false
-        yes_updated = update_preceptor_eval(row)
+        if code == 'PreceptorEval' and !row["email"].blank?
+          yes_updated = update_preceptor_eval(row)
+        elsif code == 'FormativeFeedback' and !row["q1"].blank?
+          yes_updated = update_formative_feedback(row)
+        end
 
         if yes_updated
           no_updated += 1
         else
-          row_to_hash.store(row["full_name"], " --> NOT Updated")
+          if code == 'PreceptorEval'
+            row_to_hash.store(row["full_name"], " --> NOT Updated")
+          elsif code == 'FormativeFeedback'
+            row_to_hash.store(row["q1"], " --> NOT Updated")
+          end
           no_not_updated += 1
           log_results.push row_to_hash
         end
 
-      end
+
     end
     # attachment = ActiveStorage::Attachment.find(artifact.documents.first.id)
     # filename = attachment.blob.filename.to_s
@@ -68,6 +76,63 @@ class Artifact < ApplicationRecord
 
     return log_results
 
+  end
+
+  def self.update_formative_feedback(row)
+    email = row["q1"].split(" - ").last
+    user = User.find_by(email: email)
+    if user.nil?
+      return false
+    else
+      row["user_id"] = user.id
+      row["submit_date"] = format_date(row["submit_date"])
+      row["response_id"] = row["response_id"] + row["question_set2"]
+      row["q3"] = row["q3"].to_s.gsub("'-", "-")
+      row["q4"] = row["q4"].to_s.gsub("'-", "-")
+      row["q5"] = row["q5"].to_s.gsub("'-", "-")
+      row["q6"] = row["q6"].to_s.gsub("'-", "-")
+      #puts row.to_hash
+      row_hash = {}
+      row_hash = row.to_hash
+      row_hash.delete("question_set2")
+      FormativeFeedback.where(response_id: row["response_id"]).first_or_create.update(row_hash)
+
+    end
+    return true
+  end
+
+  def self.process_formative_feedback_data (artifact)
+    log_results = []
+    row_to_hash = {}
+    no_updated = 0
+    no_not_updated = 0
+    total_count = 0
+
+    CSV.parse(ActiveStorage::Attachment.find(artifact.documents.first.id).download, headers: true, col_sep: "\t", encoding: 'cp1252') do |row|
+
+      yes_updated = true
+      total_count += 1
+      if !row["q1"].blank?  # make sure this column is not blank
+        yes_updated = false
+        yes_updated = update_formative_feedback(row)
+
+        if yes_updated
+          no_updated += 1
+        else
+          row_to_hash.store(row["full_name"], " --> NOT Updated")
+          no_not_updated += 1
+          log_results.push row_to_hash
+        end
+
+      end
+    end
+    row_to_hash = {}
+    row_to_hash.store("no_updated", no_updated)
+    row_to_hash.store("no_not_updated", no_not_updated)
+    row_to_hash.store("total_count", total_count)
+    log_results.push row_to_hash
+
+    return log_results
   end
 
 end

@@ -62,6 +62,10 @@ epa_codes = (category_code) ->
   else if category_code == "Preceptor Evals"
           cat_array = []
           cat_array.push {id: "Preceptor Eval Text File", value: "Preceptor Eval Text File"}
+  else if category_code == "Formative Feedback"
+          cat_array = []
+          cat_array.push {id: "Formative Feedback Text File", value: "Formative Feedback Text File"}
+
   else if category_code == "FoM Grades"
           cat_array = []
           cat_array.push {id: "FoM Tab Delimited File", value: "FoM Tab Delimited File"}

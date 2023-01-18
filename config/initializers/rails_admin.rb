@@ -4,6 +4,7 @@ require './lib/rails_admin/config/actions/refresh'
 showable_models = ['Chart', 'Dashboard']
 
 RailsAdmin.config do |config|
+  config.asset_source = :sprockets
   config.actions do
     dashboard do
         statistics false

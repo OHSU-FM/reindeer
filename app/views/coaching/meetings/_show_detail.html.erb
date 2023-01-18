@@ -15,10 +15,18 @@
           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
               <div>
+                <% if meeting.advisor_type.nil?  %>
+                      <% meeting.advisor_type = hf_get_advisor_type(meeting.advisor_id) %>
+                <% end %>
+
+                <div id="advisor_type" data-advisor_type="<%= meeting.advisor_type %>" </div>
+
                 <% if meeting.advisor_type == 'Career' %>
                   <% select_options = hf_career_primary_for_select%>
-                <% elsif meeting.advisor_type == 'Academic'%>
+                <% elsif meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Remediation Support' %>
                   <% select_options = hf_academic_primary_for_select %>
+                <% elsif meeting.advisor_type == 'Academic: Step 1 Advising' %>
+                    <% select_options = hf_academic_primary_step1_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                   <% select_options = hf_wellness_primary_for_select %>
                 <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
@@ -76,7 +84,7 @@
               <div>
                 <% if meeting.advisor_type == 'Career' %>
                   <% advisor_subjects = hf_career_advisor_discussed_for_select %>
-                <% elsif meeting.advisor_type == "Academic" %>
+                <% elsif meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support'%>
                   <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
                 <% elsif meeting.advisor_type == "Wellness" %>
                     <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
@@ -92,7 +100,7 @@
                     <b> <%= b.text %> </b>
                   </label> <br />
                <% end %>
-               <% if meeting.advisor_type == "Academic" %>
+               <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support' %>
                   <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
                <% elsif meeting.advisor_type == "Career" %>
                   <%= text_field_tag :career_discussed_other, meeting.career_discussed_other, id: 'career_discussed_other' %>
@@ -116,7 +124,7 @@
             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
               <div class="panel-body">
                 <div>
-                    <% if meeting.advisor_type == 'Academic' %>
+                    <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
                         <% advisor_outcomes = hf_meeting_ipas_for_select %>
                     <% elsif meeting.advisor_type == 'Career'  %>
                         <% advisor_outcomes = hf_meeting_ipps_for_select %>
@@ -125,7 +133,7 @@
                     <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
                         <% advisor_outcomes = hf_diversity_navigator_for_select%>
                     <% elsif meeting.advisor_type == 'Assist Dean'  %>
-                        <% advisor_outcomes = hf_assist_dean_for_select%>                                                
+                        <% advisor_outcomes = hf_assist_dean_for_select%>
                     <% else %>
                         <% advisor_outcomes = hf_meeting_ipas_for_select %>
                     <% end %>
@@ -137,7 +145,7 @@
                       </label><br />
                    <% end %>
                 </div>
-                 <% if meeting.advisor_type == "Academic" %>
+                 <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
                     <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other' %>
                   <% elsif meeting.advisor_type == "Career" %>
                       <%= text_field_tag :career_outcomes_other, meeting.career_outcomes_other, id: 'career_outcomes_other' %>
@@ -182,6 +190,7 @@
 <div class="detail-section">
   <h4><font color="#4c0946">Student Meeting Documentation</font></h4>
   <div>
-    <%= text_area_tag :notes, meeting.notes, class: "updateStudentNotes", rows: 5, style: 'width:100%' %>
+    <%= text_area_tag :notes, meeting.notes, class: "updateStudentNotes", rows: 3, style: 'width:100%' %>
   </div>
+  <%= render partial: "practice_test_scores", locals: {meeting: meeting} %>
 </div>

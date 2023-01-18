@@ -23,6 +23,24 @@ module DashboardHelper
 
   end
 
+  def hf_get_past_events(meetings)
+    if current_user.coaching_type == 'dean'
+      advisor = Advisor.find_by(email: current_user.email)
+      if advisor.nil?
+        return []
+      end
+      meetings = Coaching::Meeting.where(advisor_id: advisor.id)
+      events_array = []
+      meetings.each do |meeting|
+        events = Event.where("id = ? and start_date > ? and end_date <= ? and user_id is not NULL", meeting.event_id, DateTime.now, 7.days.ago.to_date)
+        if !events.empty?
+          events_array.push events.first
+        end
+      end
+    end
+    return events_array
+  end
+
   def hf_get_events(meetings)
     if current_user.coaching_type == 'student'
       events_array = []
@@ -47,9 +65,10 @@ module DashboardHelper
           events = Event.where("id = ? and start_date > ? and user_id is not NULL", meeting.event_id, DateTime.now)
           if !events.empty?
             events_array.push events.first
-            if events_array.count == 8
-              return events_array
-            end
+            # removed the restriction, max items in array is 16
+            # if events_array.count == 16
+            #   return events_array
+            # end
           end
         end
         return events_array
@@ -127,6 +146,7 @@ module DashboardHelper
   def get_FomLabels(permission_group_id, course_code)
     fom_labels = FomLabel.find_by(permission_group_id: permission_group_id, course_code: course_code)
     return JSON.parse(fom_labels["labels"]).first  ## return as hash array
+
 
   end
 

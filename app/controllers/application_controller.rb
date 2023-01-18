@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :set_cache_buster
   protect_from_forgery with: :exception
 
  helper :all
@@ -41,6 +42,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_cache_buster
+    headers["Cache-Control"] = "no-cache, no-store, must-revalidate" # HTTP 1.1.
+    headers["Pragma"] = "no-cache" # HTTP 1.0.
+    headers["Expires"] = "0" # Proxies.
+  end
 
   def store_current_location
     store_location_for(:user, request.url)

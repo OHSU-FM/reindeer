@@ -38,6 +38,13 @@
       </div><!-- /.container-fluid -->
     </nav>
     <div class="row">
+      <% if @yes_advisor %>
+        <div class="column">
+          <div class="card">
+              <%= render partial: 'dashboard/past_appts' %>
+          </div>
+        </div>
+      <% end %>
       <div class="column">
         <div class="card">
             <%= render partial: 'dashboard/appt_schedule' %>

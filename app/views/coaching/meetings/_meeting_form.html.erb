@@ -1,15 +1,14 @@
 <%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
-
-  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic' or advisor_type == 'Diversity Navigator' or advisor_type == 'Assist Dean' ) %>
+  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic'  or advisor_type == "Academic: Step 1 Advising" or advisor_type == 'Diversity Navigator' or advisor_type == 'Assist Dean' ) %>
     <div hidden>
       <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
       </div>
     </div>
 
     Advisor Name: <b><%= current_user.full_name %></b><br />
-    Advisor Type: <b><%= advisor_type %></b>
-    <%= f.hidden_field :advisor_id, value: advisor_id%>
-    <%= f.hidden_field :advisor_type, value: advisor_type%>
+    Advisor Type: <b><%= advisor_type %> (<%= advisor_id %>)</b>
+    <%= f.hidden_field :advisor_id, value: advisor_id %>
+    <%= f.hidden_field :advisor_type, value: advisor_type %>
     <br />
 
     <%= f.hidden_field :user_id, value: student.id %>
@@ -47,30 +46,32 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body card-body-color"">
           <div class="form-group">
-            <b><%= f.label :subject, "Advisor Disussed (Check all the applp):", class: "control-label col-md-6" %></b><br />
-
             <% if advisor_type == 'Career' %>
               <% advisor_subjects = hf_career_advisor_discussed_for_select %>
-            <% elsif advisor_type == "Academic" %>
+            <% elsif advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising"  %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
               <% advisor_study_resources = hf_academic_study_resources_for_select %>
             <% elsif advisor_type == "Wellness" %>
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
-            <% elsif advisor_type = 'Diversity Navigator' %>
+            <% elsif advisor_type == 'Diversity Navigator' %>
                 <% advisor_subjects = hf_diversity_navigator_for_select %>
-            <% elsif advisor_type = 'Assist Dean' %>
+            <% elsif advisor_type == 'Assist Dean' %>
                 <% advisor_subjects = hf_assist_dean_for_select%>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
+            <% if advisor_type != 'Diversity Navigator' %>
+              <b><%= f.label :subject, "Advisor Discussed (Check all that apply):", class: "control-label col-md-6" %></b><br />
+              <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
+                <label>
+                  <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorDiscussed') %>
+                  <%= b.text %>
+                </label> <br />
+             <% end %>
+            <% end %>
 
-            <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
-              <label>
-                <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorDiscussed') %>
-                <%= b.text %>
-              </label> <br />
-           <% end %>
-           <% if advisor_type == "Academic" %>
+
+           <% if advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising" %>
               <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
               <hr>
 
@@ -84,8 +85,6 @@
              <%= f.text_field :study_resources_other, id: 'academic_study_resources_other' %>
            <% elsif advisor_type == "Career" %>
               <%= f.text_field :career_discussed_other,  id: 'career_discussed_other' %>
-           <% else %>
-              <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
            <% end %>
 
           </div>
@@ -94,32 +93,35 @@
 
     <div class="card" id="DiscussedCard">
       <div class="card-body">
-          <div class="form-group">
-            <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
-          </div>
 
-          <% if advisor_type == 'Academic' %>
+
+          <% if advisor_type == 'Academic' or advisor_type == "Academic: Step 1 Advising" %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
           <% elsif advisor_type == 'Career'  %>
               <% advisor_outcomes = hf_meeting_ipps_for_select %>
           <% elsif advisor_type == 'Wellness'  %>
               <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
+          <% elsif advisor_type ==  'Diversity Navigator' %>
+              <% advisor_outcomes = '' %>
           <% else %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
           <% end %>
+          <% if advisor_type != 'Diversity Navigator' %>
 
-          <%= collection_check_boxes(:coaching_meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: nil) do |b| %>
-            <label>
-              <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorOutcomes') %>
-              <%= b.text %>
-            </label> <br />
+            <div class="form-group">
+              <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
+            </div>
+            <%= collection_check_boxes(:coaching_meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: nil) do |b| %>
+              <label>
+                <%= b.check_box(checked: false, class: 'MyCheckBoxAdvisorOutcomes') %>
+                <%= b.text %>
+              </label> <br />
+           <% end %>
          <% end %>
-         <% if advisor_type == "Academic" %>
+         <% if advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising" %>
             <%= f.text_field :academic_outcomes_other,  id: 'academic_outcomes_other' %>
           <% elsif advisor_type == "Career" %>
               <%= f.text_field :career_outcomes_other, id: 'career_outcomes_other' %>
-          <% else %>
-            <%= f.text_field :academic_outcomes_other,   id: 'academic_outcomes_other'  %>
           <% end %>
       </div>
     </div>
@@ -197,22 +199,23 @@
   <% else %>
 
     <div hidden>
-      <div class="advisors-details" data-advisors="<%= @advisors.sort_by(&:name).to_json %>">
+      <div class="advisors-details" data-advisors="<%= @advisors.to_json %>">
       </div>
     </div>
+
+    <% @advisor_types.push "Academic: Step 1 Advising" %>
+    <% @advisor_types.push "Academic: Remediation Support" %>
 
     <div class="card" id="AdvisorCard">
       <div class="card-body">
         <div class="form-group">
           <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_type, options_for_select(@advisor_types),
-            { include_blank: "---" }, required: true %>
+          <%= f.select :advisor_type, options_for_select(@advisor_types.sort), required: true, prompt: "Please Select an Advisor Type" %>
         </div>
 
         <div class="form-group">
           <%= f.label :advisor, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_id, options_for_select([]),
-              { include_blank: "---" }, required: true %> <br />
+          <%= f.select :advisor_id, options_for_select(@advisors.collect{|a| [a.name, a.id]}), required: true, prompt: "Please Select an Advisor"  %> <br />
         </div>
 
         <%= f.hidden_field :user_id, value: student.id %>
@@ -239,7 +242,7 @@
         <div class="form-group">
           <div class="control-label panel panel-primary">
             <div class="panel-heading">
-                <h4 class="panel-title">Available Appointments</h4>
+                  <h5 class="panel-title">Available Appointments <%#<button type="button" class="btn btn-primary" id="show_all_events">Show ALL</button>%></h5>
             </div>
             <div class="panel-body scrollable-panel">
               <%= render partial: "coaching/students/all_events", locals: {f: f}  %>
@@ -270,6 +273,30 @@
             <% end %>
             <div class="form-group">
               <%= f.text_field :study_resources_other, class: "col-sm-6", size: "25", disabled: false %>
+            </div>
+            <hr>
+          </div>
+
+          <div id="practice_test_scores">
+            <h5> Practice Test Scores </h5>
+            <div class="form-group">
+                <% for i in 1..3 %>
+                    <%= text_area_tag "nbme_form_#{i}", nil, size: "30x2", placeholder: "NBME Form #" %>
+                    <%= text_area_tag "nbme_score_#{i}", nil, size: "30x2", placeholder: "% Likelihood of Passing"%>
+                    <%= text_area_tag "nbme_date_completed_#{i}", nil, size: "30x2", placeholder: "Date Completed"%>
+                <% end %>
+            </div>
+            <hr>
+            <div class="form-group">
+              <% for i in 1..2 %>
+                  <%= text_area_tag "uworld_score_#{i}", nil, size: "30x2", placeholder: "Uworld Test Score #{i}" %>
+                  <%= text_area_tag "uworld_date_completed_#{i}", nil, size: "30x2", placeholder: "Date completed"%><br />
+              <% end %>
+            </div>
+            <hr>
+            <div class="form-group">
+                <%= text_area_tag "q_bank_no_of_correct_questions", nil, size: "30x2", placeholder: "% of correct questions" %> % Correct over your last 6 random blocks of 40 questions<br/>
+                <%= text_area_tag "q_bank_no_of_questions", nil, size: "30x2", placeholder: "# of Q-bank Questions Completed\r\nQ-bank used"%> # of Q-bank questions completed<br />
             </div>
           </div>
 

@@ -27,7 +27,7 @@
                     <td><%= eval.c2 %> </td>
                     <td><%= eval.c2_feedback %> </td>
                     <td><%= eval.feedback_strength %> </td>
-                    <td><%= eval.feedback_improve %> </td>
+                    <td><span class="context-menu-one" id="EPA1" data-course-name="[Narrative Feedback]" ><%= hf_highlight(eval.feedback_improve, 'EPA1') %></span> </td>
                 </tr>
               <% end %>
             <% end %>
@@ -55,7 +55,7 @@
                     <td><%= eval.submit_date %> </td>
                     <td><%= eval.instructor %> </td>
                     <td><%= eval.selected_student %> </td>
-                    <td><%= eval.feedback_strength %> </td>
+                    <td><span class="context-menu-one" id="EPA1" data-course-name="[Narrative Feedback]"><%= hf_highlight(eval.feedback_strength, 'EPA1') %></span> </td>
 
                 </tr>
               <% end %>

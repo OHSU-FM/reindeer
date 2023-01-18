@@ -3,16 +3,21 @@ $ ->
     advisorType = @value
     #alert advisorType
     $('#coaching_meeting_advisor_id').empty()
+    $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
       for key of advisors
         if advisors.hasOwnProperty(key)
-          #alert advisors[key].name
-          if advisors[key].advisor_type == advisorType
+          #alert advisors[key].name + ' --> ' + advisors[key].advisor_type
+          if advisorType.includes("Step 1") or advisorType.includes("Remediation")
+            if advisors[key].advisor_type.includes("Academic")
+              $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+          else if advisors[key].advisor_type.includes(advisorType)
             $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
-    $('#coaching_meeting_advisor_id').val('')
+    #$('#coaching_meeting_advisor_id').val('')
   return
 
 
@@ -20,18 +25,31 @@ studyResources = [
       ["Live Lecture"],
       ["Recorded OHSU Lecture"],
       ["Textbook"],
+      ["First Aide to Step 1"],
+      ["Sketchy"],
       ["Anki"],
       ["Boards & Beyond"],
       ["Pathoma"],
       ["NBME Questions"],
-      ["UWORLD/other board prep questions"],
+      ["Amboss Q Bank"],
+      ["UWORLD Qbank/other board prep questions"],
       ["Other (text box)"]
+]
+
+step1Resources = [
+  ["First Aide to Step 1"],
+  ["Sketchy"],
+  ["Anki"],
+  ["Pathoma"],
+  ["Boards and Beyond"],
+  ["Uworld Qbank"],
+  ["Amboss Q Bank"],
+  ["Other (text box)"]
 ]
 
 wellnessPrimary = [
   "Wellness Visit"
 ]
-
 diversityNavigatorPrimary = [
   "General"
   "Scholarship Meeting"
@@ -54,6 +72,13 @@ academicPrimary = [
   "Other"
 ]
 
+academicStep1Primary = [
+  "USMLE – Step 1"
+]
+remediationPrimary = [
+  "Remediation Support"
+]
+
 careerPrimary = [
   "Goal Setting/Updated IPPS",
   "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?",
@@ -69,21 +94,89 @@ careerPrimary = [
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
   'Scholarship Approval'
 ]
+window.ajaxStatus = ""  #global var
+window.eventIdGlobal = ""
+checkEvent = (event_id) ->
+  $.ajax
+    async: false  #tell the browser to finish the ajax call
+    type: 'GET'
+    url: '/events/check_events'
+    dataType: 'json'
+    data: event_id: event_id
+    success: (response) ->
+      console.log 'success response: ' + JSON.stringify(response)
+      console.log ("Status : " + response.Status)
+      return response.Status
+    error: (response) ->
+      alert 'Something went WRONG!!'
+      return
+
+
+
+$(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject][]']", ->
+  if $(this).is(':checked')
+    #alert '${this.value} is checked'
+    $("#meeting-submit").prop("disabled", false)
+    return
+  else
+    # do what you need here
+    $("#meeting-submit").prop("disabled", true)
+  return
+#==================================================================================================================
+modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $("#meeting-submit").prop("disabled", true)
+
+  $('#EventsTable').hide()
+  $('#show_all_events').click ->
+    $('#EventsTable td:nth-child(2)').each ->
+      dataset = $('#EventsTable tbody').find('tr')
+      dataset.each ->
+        row = $(this)
+        row.show()
+    return
+  #$('#EventsTable').DataTable()
+  $('#newMeetingButton').on 'click', ->
+    existMeetingForm = $("#MeetingForm")[0]
+    if (existMeetingForm != null)
+      $("#MeetingForm")[0].reset();
+      $('#coaching_meeting_advisor_id').val("")
+    modalHtml = $('#newMeetingModal').html()
+    #alert("Inside newMeetingButton!")
+    return
+
+  #-- Disabled the code below as it causes subtle errors on 9/9/2022
+  # it supposed to prevent duplicate appointment
 
   $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+    event_id = $('input:radio:checked').val()
+    eventIdGlobal = event_id
+    #ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+    # console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
+    # if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+    advisorType = $("#advisor-" + @value).data('advisor-type')
+    console.log("advisorType: " + advisorType)
+    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
     advisorID = $("#advisor-" + @value).data('advisor-' + @value)
     $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+    # else
+    #   $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+    #   alert("The Appointment is NOT AVAILABLE, please select another one!")
     #console.log("data-advisor-id: " + dataValue)
     return
 
-  $('#meeting-submit').click ->
-    if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
-      alert("You must check at least one Primary Reasons!")
+    $('#MeetingForm').on 'submit', (e) ->
+      e.preventDefault
+      if e.result == true
+        alert 'This form was submitted!'
       return
-      #$("#meeting-submit").prop("disabled", true)
+
+    # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
+    #     $("#meeting-submit").prop("disabled", true)
+    #     alert("You must check at least one Primary Reasons!")
+    #     return false
 
   #$("#advisor_id").prepend('<option selected="selected" value="All"> All Advisors </option>');
   $("#advisor_id option").eq(1).after($("<option></option>").val("All").text("All Advisors"));
@@ -111,6 +204,14 @@ $(document).ready ->
   console.log("advisor_type: " + advisorType)
   if advisorType == 'Academic'
     data = academicPrimary
+    dataResources = studyResources
+  else if advisorType == 'Academic: Step 1 Advising'
+    data = academicStep1Primary
+    dataResources = step1Resources
+  else if advisorType == 'Academic: Remediation Support'
+    data = remediationPrimary
+  else if advisorType == 'Career'
+    data = careerPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
   else if advisorType == 'Diversity Navigator'
@@ -118,12 +219,18 @@ $(document).ready ->
   else if advisorType == 'Assist Dean'
     data = assistDeanPrimary
   else
-    data = careerPrimary
+    data = academicPrimary
+
   nbsp = '&nbsp'
   $('#coaching_meeting_subjects').empty()
   $.each data, (index) ->
-    $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+    $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
     return
+  # $('#study_resources').empty()
+  # $.each dataResources, (index) ->
+  #   $('#study_resources').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + dataResources[index] + '\' />' + nbsp + dataResources[index] + '</label><br/>'
+  #   return
+
 
   FoundSADean = false
   $('#StudentAffairsDean').hide()
@@ -135,28 +242,40 @@ $(document).ready ->
     #alert("advisor_type: " + advisorType)
     if advisorType == 'Academic'
       data = academicPrimary
-      # to hide study Resources
       $('#study_resources').show()
+      $('#practice_test_scores').hide()
+    else if advisorType == 'Academic: Step 1 Advising'
+      data = academicStep1Primary
+      $('#study_resources').show()
+      $('#practice_test_scores').show()
+    else if advisorType == 'Academic: Remediation Support'
+      data = remediationPrimary
+      $('#study_resources').show()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Wellness'
       data = wellnessPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Diversity Navigator'
       data = diversityNavigatorPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
     else if advisorType == 'Assist Dean'
       data = assistDeanPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
     else
       data = careerPrimary
       $('#study_resources').hide()
+      $('#practice_test_scores').hide()
 
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
-      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
-  $('#EventsTable').hide()
+  #$('#EventsTable').show()  ## change this on 6/27/2022 to test the datea
   $('#coaching_meeting_advisor_id').change ->
     $('#EventsTable').show()
     # selectedFilteredValue = $('#filtered_by_days option:selected').val()
@@ -181,8 +300,20 @@ $(document).ready ->
     selectedAdvisorType = $("#coaching_meeting_advisor_type option:selected").text()
     console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
-
-    modDate = Date.today().addDays(1)
+    console.log("selectedAdvisorText: " + selectedAdvisorText[0])
+    $('#EventsTable td:nth-child(2)').each ->
+      #console.log ("this: "  + $(this).text())
+      if $(this).text().includes("Cantone")
+        if $(this).text().includes("Step Delay")
+          $(this).parent('tr').css 'background-color', '#E37383'
+        else
+          $(this).parent('tr').css 'background-color', '#90EE90'
+      else if $(this).text().includes("Schneider")
+        if $(this).text().includes("Step Delay")
+          $(this).parent('tr').css 'background-color', '#E0b0FF'
+        else
+          $(this).parent('tr').css 'background-color', '#B7E9F7'
+      return
 
     rowCount = $("#EventsTable tr").not('thead tr').length;
     console.log('rowCount: ' + rowCount)
@@ -195,23 +326,31 @@ $(document).ready ->
       # filter the rows that should be hidden
     tr_length = 0
     dataset = $('#EventsTable tbody').find('tr')
+    modDate = Date.today()
+    newDate = new Date(modDate)
     dataset.each ->
       row = $(this)
       colAdvisor = row.find('td').eq(1).text().split(" - ")
+      console.log("colAdvisor[0]: " + colAdvisor[0] + " colAdvisor[1]: " + colAdvisor[1])
       colDate = row.find('td').eq(2).text().split(" - ")
-      #show all rows by default
-      #show = true
-      #row.show()
-      #if from date is valid and row date is less than from date, hide the row
-      newDate = new Date(modDate)
-      orgDate = new Date(colDate[0])
-
-      #console.log('selectedAdvisorText: ' + selectedAdvisorText[0] + ' --> colAdvisor: ' + colAdvisor[1])
+      row.show()
       found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
-      console.log("colAdvisor[1]: " + colAdvisor[1])
+
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
-         row.show()
-      else if (colAdvisor[1] == selectedAdvisorText[0]) && (selectedAdvisorType != "Assist Dean")
+        row.show()
+      else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
+        # console.log("** colAdvisor[0]: " + colAdvisor[0])
+        # console.log("** selectedAdvisorType: " + selectedAdvisorType)
+        row.show()
+      else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')) && (colAdvisor[1] == selectedAdvisorText[0]))
+        row.show()
+      else if ((colAdvisor[0].includes('Remediation')) && (selectedAdvisorType.includes('Remediation')) && (colAdvisor[1] == selectedAdvisorText[0]))
+        row.show()
+      else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')) && (colAdvisor[1] == selectedAdvisorText[0]) )
+        row.show()
+      else if ((colAdvisor[0].includes('Diversity')) && (selectedAdvisorType.includes('Diversity')) && (colAdvisor[1] == selectedAdvisorText[0]))
+        row.show()
+      else if ((colAdvisor[0].includes('Wellness')) && (selectedAdvisorType.includes('Wellness')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
       else
         row.hide()
@@ -224,5 +363,5 @@ $(document).ready ->
       alert('Please select another advisor that has appointments!!')
       #return false
     else
-      $("#meeting-submit").prop("disabled", false)
+      #$("#meeting-submit").prop("disabled", false)
     return

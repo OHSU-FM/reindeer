@@ -38,7 +38,7 @@
             <td></td>
           <% end %>
           <td style="text-align:center;color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td>
-          <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
+          <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
           <td>
             <%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid))  %> <br />
             <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>

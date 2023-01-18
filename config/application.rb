@@ -11,10 +11,11 @@ module EdnaConsole
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token
 
-    config.assets.paths << Rails.root.join("node_modules")
+    config.assets.paths << "#{Rails.root}/app/assets" #Rails.root.join("node_modules")
 
     # Use router as the exception app
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
+    #config.action_controller.default_protect_from_forgery = true
     config.exceptions_app = self.routes
     config.action_mailer.smtp_settings = { enable_starttls_auto: false  }
 
@@ -57,7 +58,7 @@ module EdnaConsole
     # Enable escaping HTML in JSON.
     config.active_support.escape_html_entities_in_json = true
     config.active_support.whitelist_attributes = true
-
+    config.active_record.yaml_column_permitted_classes = [Symbol, Hash, Array, ActiveSupport::HashWithIndifferentAccess]
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
@@ -65,7 +66,7 @@ module EdnaConsole
 
     # Enable the asset pipeline
     config.assets.enabled = true
-    
+
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.5'

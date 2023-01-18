@@ -34,26 +34,6 @@
                     <%= render partial: "epa_reviews/form" %>
                   </div>
 
-                  <div id="SummaryTab" class="tab-pane fade" role="tabpanel" aria-labelledby="Summary-Tab">
-                    <div class="center-div">
-                      <div class="inner-div">
-                          <% wba_epa_student = hf_series_data_student("EPA", @user_id, false) %>
-                          <% if !wba_epa_student.nil? %>
-                             <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
-                          <% end %>
-                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @user_id, false) %>
-                          <% if !wba_clinical_assessor.nil? %>
-                            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
-                          <% end %>
-                          <div clas="card">
-                            <div class="card-body">
-                              <%= render partial: "competencies/collapsible_wba_details" %>
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-
                   <div id="EvidenceTab" class="tab-panel fade" role="tabpanel" aria-labelledby="Evidence-Tab" >
                     <% if @percent_complete.keys.first.include? 'epa' %>
                       <% epa_idx = @epa_review_epa.downcase %>
@@ -92,7 +72,26 @@
                        <%= render partial: 'wba_details', locals: {epa_code: @epa_review_epa, epas: @epas} %>
                      </div>
                    </div>
+                  </div>
 
+                  <div id="SummaryTab" class="tab-pane fade" role="tabpanel" aria-labelledby="Summary-Tab">
+                    <div class="center-div">
+                      <div class="inner-div">
+                          <% wba_epa_student = hf_series_data_student("EPA", @user_id, false) %>
+                          <% if !wba_epa_student.nil? %>
+                             <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
+                          <% end %>
+                          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @user_id, false) %>
+                          <% if !wba_clinical_assessor.nil? %>
+                            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+                          <% end %>
+                          <div clas="card">
+                            <div class="card-body">
+                              <%= render partial: "competencies/collapsible_wba_details" %>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="modal-footer">

@@ -1,0 +1,204 @@
+
+  <div id="accordion" class="accordion" aria-multiselectable="true">
+    <div class="card mb-0">
+        <h5>
+          <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+              <a class="card-title">
+          Clinical Experience Phase Course Comments --> Last Review End Date: <i><%= @lastReviewEndDate %></i>  Next Review End Date: <i><%= @nextReviewEndDate %></i>
+              </a>
+          </div>
+        </h5>
+        <div id="collapseOne" class="card-body collapse" data-parent="#accordion" >
+              <div class="table-responsive-sm">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">CourseName</th>
+                      <th scope="col">Evaluator</th>
+                      <th scope="col">FinalGrade</th>
+                      <th scope="col">ProfConcern</th>
+                      <th scope="col">Feedback</th>
+                      <th scope="col">MSPE Comment</th>
+                      <th scope="col" style="width: 6%">Created Date</th>
+                    </tr>
+                  </thead>
+                  <% if !clinical_data.blank? %>
+                     <% clinical_data.each do |cd| %>
+                      <% if !cd["CourseName"].include? "770" %>
+                          <tr>
+                            <td><%= cd["CourseName"] %></td>
+                            <td><%= cd["Eval"] %></td>
+                            <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
+                            <td><%= cd["ProfConcerns"] %></td>
+                            <td><%= hf_highlight(cd["feedback"], epa_code) %></td>
+                            <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
+                            <td><%= hf_highlight(cd["created_at"], epa_code) %></td>
+                          </tr>
+                      <% end %>
+                    <% end %>
+                  <% else %>
+                    <% comp = comp.sort_by {|c| c["created_at"]}.reverse! %>
+                    <% i = 0 %>
+                    <% comp.each do |cd| %>
+                      <% if !cd["course_name"].include? "770"  %>
+                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate) and (Date.today < @nextReviewEndDate.to_date) %>
+                            <tr style="background-color:#E0FFFF">
+                          <% else %>
+                            <tr sytle="background-color:white">
+                          <% end %>
+
+                            <td><%= cd["course_name"] %></td>
+                            <td><%= cd["evaluator"] %></td>
+                            <td>
+                              <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+                                  title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a>
+
+                            </td>
+                            <% i = i + 1 %>
+                            <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
+                            <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
+                              <%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ").html_safe %></span></td>
+                            <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
+                              <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
+                            <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
+
+                          </tr>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+
+                </table>
+              </div>
+        </div>
+
+
+<input type='hidden' value='' id='txt_id'>
+       <h5>
+          <div class="card-header collapsed" data-toggle="collapse" href="#collapseTwo">
+            <a class="card-title">
+            Foundations of Medicine Phase Preceptorship Comments
+            </a>
+          </div>
+        </h5>
+        <div id="collapseTwo" class="card-body collapse" data-parent="#accordion" >
+          <div class="table-responsive-sm">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Preceptor</th>
+                  <th scope="col">SubmitDate</th>
+                  <th scope="col">Grade</th>
+                  <th scope="col">Comment</th>
+                </tr>
+              </thead>
+
+              <% preceptor_data.each do |pd| %>
+                <tr>
+                  <% if !pd["PreceptorName"].nil? %>
+                    <td><%= pd["PreceptorName"] %></td>
+                    <td><%= pd["SubmitDate"] %></td>
+                    <td><%= pd["Grade"] %></td>
+                    <td><%= hf_highlight(pd["Comment"], epa_code) %></td>
+                 <% else %>
+                     <td><%= pd["preceptor_name"] %></td>
+                     <td><%= pd["submit_date"] %></td>
+                     <td><%= pd["grade"] %></td>
+                     <% if !pd["overall_performance"].nil? %>
+                        <td><%= hf_highlight(pd["overall_performance"], epa_code) %></td>
+                     <% else %>
+                        <td><%= hf_highlight(pd["mspe_comments"], epa_code) %></td>
+                     <% end %>
+                 <% end %>
+
+                </tr>
+              <% end %>
+            </table>
+          </div>
+        </div>
+
+        <h5>
+          <div class="card-header collapsed" data-toggle="collapse" href="#collapseThree">
+            <a class="card-title">
+            Foundations of Medicine Phase CSL Narrative Feedback
+            </a>
+          </div>
+        </h5>
+        <div id="collapseThree" class="card-body collapse" data-parent="#accordion" >
+          <div class="table-responsive-sm">
+            <% if csl_data.empty? %>
+              <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+            <% else %>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">CSL Block Title</th>
+                      <th scope="col">CSL Instructor</th>
+                      <th scope="col">Student</th>
+                      <th scope="col">Feedback</th>
+                    </tr>
+                  </thead>
+                  <% csl_data.each do |csl| %>
+                    <% csl.each do |data| %>
+                      <tr>
+                        <td><%= data["BlockName"] %></td>
+                        <td><%= data["CSLInstructor"].split(":").last %></td>
+                        <td><%= data["SelectedStudent"] %></td>
+                        <td><%= hf_highlight(data["Comments"], epa_code) %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </table>
+            <% end %>
+          </div>
+       </div>
+       <h5>
+         <div class="card-header collapsed" data-toggle="collapse" href="#collapseFour">
+           <a class="card-title">
+               Official Documents <span class="badge badge-warning"><%= @no_official_docs %></span>
+           </a>
+          </div>
+        </h5>
+        <div id="collapseFour" class="card-body collapse" data-parent="#accordion" >
+           <div class="table-responsive-sm">
+              <% if @no_official_docs == 0 %>
+                <h5> No Official Documents Found  ! </h5>
+              <% else %>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Content</th>
+                      <th>UserID</th>
+                      <th>Artifacts/Documents</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <% selected_artifacts = @artifacts_student.select{|a| a if ["Progress Board", "Exemplary Professionalism", "MSPE", "TTR", "Other"].include? a.title } %>
+                  <% selected_artifacts.each do |artifact| %>
+                      <tr>
+                        <td><%= artifact.title %></td>
+                        <td><%= artifact.content %> </td>
+                        <td><%= artifact.user_id.to_s %></td>
+                        <td><table class="responsive table table-hover">
+                          <% if artifact.documents.attached? %>
+                            <% artifact.documents.each do |document| %>
+                              <tr>
+                                <td> <%= document.filename %> </td>
+                                <td>
+                                  <%= link_to 'View', url_for(document), target: :_blank %>
+                                  /
+                                  <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>
+                                </td>
+                              </tr>
+                            <% end %>
+                          <% end %>
+                         </table>
+                        </td>
+                      </tr>
+                  <% end %>
+                </table>
+              <% end %>
+           </div>
+        </div>
+    </div>
+  </div>

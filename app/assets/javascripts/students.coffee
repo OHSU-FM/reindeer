@@ -15,4 +15,5 @@ $(document).ready ->
     if (existMeetingForm != null)
       $("#MeetingForm")[0].reset();
     return
+
   #$('#calendar').fullCalendar({ });
