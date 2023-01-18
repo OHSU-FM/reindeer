@@ -79,7 +79,7 @@ module ReportsHelper
       f.yAxis [
          { min: 0, max: 100,
            tickInterval: 25,
-           title: {text: "<b>Competency by Percentage (%) </b>", margin: 20}
+           title: {text: "<b>Competency (%) </b>", margin: 20}
          }
       ]
       f.plot_options(

@@ -36,10 +36,7 @@ class ReportsController < ApplicationController
         format.html
         format.js { render action: 'competency_data', status: 200 }
       end
-
     end
-
-
   end
 
   def download_file
