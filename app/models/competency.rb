@@ -10,7 +10,7 @@ class Competency < ApplicationRecord
   def self.load_class_mean(permission_group_id)
     today_date = Date.today.to_s
     file_name = "#{Rails.root}/tmp/class_mean_#{permission_group_id}_#{today_date}.json"
-    if File::exists?(file_name)
+    if File.file?(file_name)
       file = File.read(file_name)
       return JSON.parse(file)
     else

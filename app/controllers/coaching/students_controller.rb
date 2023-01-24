@@ -98,7 +98,7 @@ module Coaching
         # @events = Event.where("start_date - INTERVAL '7 hour' > ? and start_date-INTERVAL '7 hour' <= ? and user_id is NULL and advisor_id is NOT NULL",
         #   DateTime.now + 24.hours, DateTime.now + 8.days).order(:start_date)
 
-        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15)
+        #@permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15)
         @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
         @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')
 
@@ -126,7 +126,7 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15)
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15)
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
