@@ -105,13 +105,10 @@ $(document).ready ->
       return
     return
 
-  # $('#all_events_table').DataTable 'ordering': true
-  #$('.dataTables_length').addClass 'bs-select'
-
-  $('#all_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
+  $('#all_events_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
   #$('#pass_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
 
-  $('#pass_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
-  $('#send_invite_table').dataTable 'ordering': true
+  $('#pass_events_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
+  $('#send_invite_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $('.dataTables_length').addClass 'bs-select'
   #alert('searchValue: ' + $('#searchValue').val())
