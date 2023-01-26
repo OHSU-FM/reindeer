@@ -54,20 +54,24 @@
 
   <div class="tab-content" style="height: 50%;">
     <div class="tab-pane fade in active" id="appointments" role="tabpanel" aria-labelledby="appointments-tab">
-      <div class="calendar_container">
-        <div class="container">
-          <% if current_user.dean_or_higher? %>
-            <br />
-            <%= nav_link_to "Appointments", events_path, target: '_blank' %>
-            <%= nav_link_to "Advisors", advisors_path, target: '_blank' %>
-            <% if @advisor_type == "Wellness" %>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMeetingModal" id="newMeetingButton">Create Retro-Appointment</button>
-            <% end %>
-          <% end %>
-          <br />
-          <%= render partial: "appointments" %>
+
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8">
+                  <% if current_user.dean_or_higher? %>
+                    <br />
+                    <%= nav_link_to "Appointments", events_path, target: '_blank' %>
+                    <%= nav_link_to "Advisors", advisors_path, target: '_blank' %>
+                    <% if @advisor_type == "Wellness" %>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newMeetingModal" id="newMeetingButton">Create Retro-Appointment</button>
+                    <% end %>
+                  <% end %>
+                  <br />
+                  <%= render partial: "appointments" %>
+              </div>
+           </div>
         </div>
-      </div>
+
     </div>
 
     <div class="tab-pane" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">

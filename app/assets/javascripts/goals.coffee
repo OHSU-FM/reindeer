@@ -149,6 +149,8 @@ $.fn.clear_previous_errors = () ->
 
 $(document).ready ->
 
+  $('#main_appointments_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
+
   toggler = document.getElementsByClassName('caret')
   i = undefined
   i = 0
