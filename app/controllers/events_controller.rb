@@ -206,6 +206,7 @@ class EventsController < ApplicationController
   end
 
   def resend_calendar_invite
+    Event.fix_event_records
     start_date = Time.now.strftime("%Y/%m/%d")
     @appointments = Event.where("start_date > ? and user_id is not null", start_date).select(:id, :description, :start_date, :end_date, :user_id, :advisor_id, :created_at)
     respond_to do |format|

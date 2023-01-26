@@ -22,13 +22,8 @@
           <td><%= User.find_by(id: appointment.user_id).full_name %> </td>
           <td><%= Advisor.find_by(id: appointment.advisor_id).name %></td>
           <td><%= appointment.description %> </td>
-          <% if appointment.start_date.to_datetime.localtime.to_s.include? "-0800" %>
-            <td><%= (appointment.start_date.to_datetime + 8.hours).strftime("%m/%d/%Y at %I:%M %p - %A")   %></td>
-            <td><%= (appointment.end_date.to_datetime + 8.hours).strftime("%m/%d/%Y at %I:%M %p - %A")  %></td>
-          <% else %>
-            <td><%= (appointment.start_date.to_datetime + 7.hours).strftime("%m/%d/%Y at %I:%M %p - %A")   %></td>
-            <td><%= (appointment.end_date.to_datetime + 7.hours).strftime("%m/%d/%Y at %I:%M %p - %A")  %></td>
-          <% end %>
+          <td><%= (appointment.start_date.to_datetime).strftime("%m/%d/%Y at %I:%M %p - %A")   %></td>
+          <td><%= (appointment.end_date.to_datetime).strftime("%m/%d/%Y at %I:%M %p - %A")  %></td>
           <td><%= (appointment.created_at).strftime("%m/%d/%Y %I:%M %p")  %></td>
           <td><%= link_to 'Resend Invite', resend_invite_events_path(id: appointment.id) %> </td>
         </tr>
