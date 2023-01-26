@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
       get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
+      get 'resend_calendar_invite', action: :resend_calendar_invite, controller: 'events', to: 'events#resend_calendar_invite'
+      get 'resend_invite', action: :resend_invite, controller: 'events', to: 'events#resend_invite'
     end
   end
   #get 'student_assessments/index'

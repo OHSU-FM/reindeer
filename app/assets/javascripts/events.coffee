@@ -111,6 +111,7 @@ $(document).ready ->
   $('#all_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
   #$('#pass_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
 
-  $('#pass_events_table').DataTable()
+  $('#pass_events_table').dataTable 'oSearch': 'sSearch': $('#searchValue').val()
+  $('#send_invite_table').dataTable 'ordering': true
   $('.dataTables_length').addClass 'bs-select'
   #alert('searchValue: ' + $('#searchValue').val())
