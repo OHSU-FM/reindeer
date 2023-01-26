@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  layout 'full_width_margins'
   skip_before_action :verify_authenticity_token, only: [:update]
   before_action :authenticate_user!
   before_action :set_resources
@@ -186,7 +187,7 @@ class EventsController < ApplicationController
       end
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
-      #Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+      #Event.creat  layout 'full_width_csl'e(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
       appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
       notice_msg = ''
 
@@ -218,7 +219,10 @@ class EventsController < ApplicationController
        @meeting = Coaching::Meeting.find_by(event_id: params[:id])
        EventMailer.notify_student(@meeting, "Resend").deliver_later
        @student_name = @meeting.user.full_name
-       @advisor_name = Advisor.find_by(id: @meeting.advisor_id).name
+       @student_email = @meeting.user.email
+       advisor = Advisor.find_by(id: @meeting.advisor_id)
+       @advisor_name = advisor.name
+       @advisor_email = advisor.email
      end
 
 
