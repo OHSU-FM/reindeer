@@ -4,11 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Main
 ##############################
 gem "bundler", '~>2.0'
-<<<<<<< HEAD
 gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
-=======
-gem 'rails', '~>6.1.3' #'~> 5.2.2.1'
->>>>>>> dev/redei-portal_v5
 gem "rdoc", '~> 5.0', '< 6.4.0'
 gem "psych", '< 4'
 gem 'sprockets', '< 4'

@@ -86,24 +86,24 @@ module Coaching
         @@student_g = @student
 
         #@goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
-        @meetings = @student.meetings.order('created_at DESC')
+        @meetings = @student.meetings.order('created_at DESC').load_async
         #-- room resource is being disabled
         #@messages = @student.room.messages.order(:created_at)
         #@room_id = @student.room.id
 
-        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name)
+        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name).load_async
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
 
-        @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date)
+        @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
         # @events = Event.where("start_date - INTERVAL '7 hour' > ? and start_date-INTERVAL '7 hour' <= ? and user_id is NULL and advisor_id is NOT NULL",
         #   DateTime.now + 24.hours, DateTime.now + 8.days).order(:start_date)
 
         #@permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15)
-        @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""])
-        @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents')
+        @appointments = Meeting.where(user_id: @student.id).where.not(event_id: [nil, ""]).load_async
+        @artifacts = Artifact.where(user_id: @student.id, title: 'OASIS Documents').load_async
 
         if current_user.coaching_type == 'student'
-          @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).order(:id)
+          @event_students = Event.where('start_date > ? and user_id = ?', DateTime.now, current_user.id).order(:id).load_async
         end
 
         advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name, advisors.advisor_type").first
@@ -126,20 +126,20 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15)
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15).load_async
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
            @students = @permission_groups.map(&:users).flatten
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
-             @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id)
+             @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id).load_async
              ## aded ib 1/18/2022
              if current_user.coaching_type != 'student'
                @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
              end
            else
-             @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id)
+             @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id).load_async
              @students = @permission_groups.map(&:users).flatten
            end
         end

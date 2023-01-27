@@ -387,7 +387,7 @@ module WbaGraphsHelper
       clinical_assessor = Epa.distinct.pluck(:clinical_assessor).sort
       clinical_assessor_hash = get_involvement_student(clinical_assessor, 'clinical_assessor', params_id)
 
-      if clinical_assessor_hash.values.compact.sum.sum != 0
+      if clinical_assessor_hash.values.flatten.sum != 0
         categories = clinical_assessor_hash.keys
         data_series = clinical_assessor_hash.values.transpose
         if pie_graph
