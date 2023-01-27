@@ -51,7 +51,7 @@ module Coaching
              flash[:alert] = 'Appointment/Meeting saved successfully!'
               # student is createing a meeting/appointment record
 
-              Event.find(@meeting.event_id).update(user_id: @meeting.user_id)
+              Event.find(@meeting.event_id).update(user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
               if send_email_flag["OASIS"]["send_email"] ==  true
                 event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
 
