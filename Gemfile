@@ -45,7 +45,7 @@ gem "lograge"
 gem 'bootstrap'#, '~> 4.0'
 gem "jbuilder", '~> 2.5'
 gem "popper_js", "~> 1.14.3"
-#gem "bootstrap-sass", '~> 3.4.1'
+#gem "bootstrap-sass"   #, '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"

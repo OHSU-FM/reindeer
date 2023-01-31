@@ -24,7 +24,9 @@
                           value=<%= Date.today.strftime("%Y-%m-%d") %>
                          min="1997-01-01" max="2030-12-31">
 
-                 <%= submit_tag "Go", name: 'advisor-reports-btn' %>
+
+                 <%= button_tag " SUBMIT", class: 'button btn btn-primary', html: {autocomplete: 'off'},
+                     'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>
             <% end %>
       <% elsif hf_advisor(current_user) == true %>
           &nbsp; &nbsp; &nbsp; &nbsp;

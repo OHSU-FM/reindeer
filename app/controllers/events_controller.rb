@@ -226,7 +226,9 @@ class EventsController < ApplicationController
        @advisor_email = advisor.email
      end
 
-
+     respond_to do |format|
+       format.html
+     end
   end
 
   private
