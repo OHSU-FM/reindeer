@@ -3,51 +3,53 @@
     <div class="col-auto">
       <div class="card">
          <div class="card-body">
-            <table class="responsive nowrap table table-hover">
-              <% if @all_advisor_flag %>
-                <thead>
-                  <tr>
-                    <th>Advisor</th>
-                    <th style="text-align:center"># of Meetings/Appointments </th>
-                  </tr>
-                <thead>
-                <tbody>
-                  <% new_meetings = hf_get_advisor_name(meetings) %>
-                  <% tot_count = 0 %>
-                  <% new_meetings.each do |key, data| %>
-                      <tr>
-                          <td><%= key %> </td>
-                          <td align="center"><%= data %></td>
-                          <% tot_count += data %>
-                      </tr>
-                  <% end %>
-                  <tr>
-                    <td align="right"><b>Total</b></td>
-                    <td align="center"><%= tot_count %></td>
-                  </tr>
-                </tbody>
-              <% else %>
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th style="text-align:center"># of Meetings/Appointments </th>
-                  </tr>
-                <thead>
-                <tbody>
-                  <% meetings.each do |key, data| %>
-                      <tr>
-                          <% full_name, permission_group_title = hf_get_full_name(key) %>
-                          <td><%= full_name %> - <%= permission_group_title %></td>
-                          <td align="center"><%= data %></td>
-                      </tr>
-                  <% end %>
-                  <tr>
-                    <td align="right"><b>Total</b></td>
-                    <td align="center"><%= meetings.values.sum %></td>
-                  </tr>
-                </tbody>
-              <% end %>
-            </table>
+           <div style="width:500px;overflow:auto; max-height:400px;">
+              <table class="responsive nowrap table table-hover">
+                <% if @all_advisor_flag %>
+                  <thead>
+                    <tr>
+                      <th>Advisor</th>
+                      <th style="text-align:center"># of Meetings/Appointments </th>
+                    </tr>
+                  <thead>
+                  <tbody>
+                    <% new_meetings = hf_get_advisor_name(meetings) %>
+                    <% tot_count = 0 %>
+                    <% new_meetings.each do |key, data| %>
+                        <tr>
+                            <td><%= key %> </td>
+                            <td align="center"><%= data %></td>
+                            <% tot_count += data %>
+                        </tr>
+                    <% end %>
+                    <tr>
+                      <td align="right"><b>Total</b></td>
+                      <td align="center"><%= tot_count %></td>
+                    </tr>
+                  </tbody>
+                <% else %>
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th style="text-align:center"># of Meetings/Appointments </th>
+                    </tr>
+                  <thead>
+                  <tbody>
+                    <% meetings.each do |key, data| %>
+                        <tr>
+                            <% full_name, permission_group_title = hf_get_full_name(key) %>
+                            <td><%= full_name %> - <%= permission_group_title %></td>
+                            <td align="center"><%= data %></td>
+                        </tr>
+                    <% end %>
+                    <tr>
+                      <td align="right"><b>Total</b></td>
+                      <td align="center"><%= meetings.values.sum %></td>
+                    </tr>
+                  </tbody>
+                <% end %>
+              </table>
+            </div>
           </div>
         </div>
     </div>
