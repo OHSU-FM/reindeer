@@ -73,10 +73,15 @@ module Coaching
                         .order(:advisor_id).group(:advisor_id).count
 
         @advisor_types = Advisor.distinct.pluck(:advisor_type).sort
-        @appt_counts = Event.joins(:advisor).
-                        where("events.user_id is not null and events.updated_at >= ? and events.updated_at <= ?",params[:StartDate], params[:EndDate] ).
-                        group(:advisor_type, :name).
-                        order(:advisor_type, :name).count  #return with ["Academic", "Antsey, James"] => 181, ...
+        # @appt_counts = Event.joins(:advisor).
+        #                 where("events.user_id is not null").
+        #                 group(:advisor_type, :name).
+        #                 order(:advisor_type, :name).count  #return with ["Academic", "Antsey, James"] => 181, ...
+
+        @appt_counts = Advisor.where(status: 'Active').joins(:meetings).
+                        where("meetings.user_id is not null and meetings.advisor_id = advisors.id and meetings.created_at >= ? and meetings.created_at <= ?", params[:StartDate], params[:EndDate]).
+                        group(:advisor_type, :name).order(:advisor_type, :name).count
+
 
       end
       respond_to do |format|
