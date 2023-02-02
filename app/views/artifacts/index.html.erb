@@ -27,13 +27,17 @@
             <%= link_to 'Step 2 Move files', step_2_move_files_artifact_path(artifact)  %>
 
           <% end %>
-          <% if artifact.content.to_s.include? "Preceptor Eval" and current_user.coaching_type == 'dean' %>
+          <% if artifact.content.to_s.include? "Preceptor" and (current_user.coaching_type == 'dean' or current_user.coaching_type == 'admin') %>
             /
             <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact)  %>
           <% end %>
           <% if artifact.content.to_s.include? "Formative Feedback" and (current_user.coaching_type == 'dean'  or current_user.coaching_type == 'admin') %>
             /
             <%= link_to 'Process FormativeFeedback', process_formative_feedback_artifact_path(artifact)  %>
+          <% end %>
+          <% if artifact.content.to_s.include? "Excel" and (current_user.coaching_type == 'admin') %>
+            /
+            <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank  %>
           <% end %>
 
         </td>

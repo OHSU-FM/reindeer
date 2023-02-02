@@ -69,6 +69,9 @@ epa_codes = (category_code) ->
   else if category_code == "FoM Grades"
           cat_array = []
           cat_array.push {id: "FoM Tab Delimited File", value: "FoM Tab Delimited File"}
+  else if category_code == "Competency"
+          cat_array = []
+          cat_array.push {id: "Excel", value: "Excel-xlsx"}          
   else if category_code == "Other"
           cat_array = []
           cat_array.push {id: "Misc", value: "Misc"}
