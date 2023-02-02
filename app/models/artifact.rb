@@ -159,7 +159,7 @@ class Artifact < ApplicationRecord
 	end
 
 	def self.get_competencies(row, competency_codes)
-		comp_codes = competency_codes.split(", ")
+		comp_codes = competency_codes.gsub(" ", "").split(",")
 		comp_codes.each do |comp|
 		  comp = comp.downcase
 			row["#{comp}"] = 3
