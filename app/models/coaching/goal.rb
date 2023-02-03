@@ -17,7 +17,7 @@ class Coaching::Goal < ApplicationRecord
 
   scope :completed, -> { where(g_status: "Completed") }
 
-  paginates_per 6
+  paginates_per 10
 
   def self.search term
     self.where("name like ? OR description like ?", "%#{term}%", "%#{term}%")

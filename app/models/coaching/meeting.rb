@@ -13,7 +13,7 @@ class Coaching::Meeting < ApplicationRecord
   after_initialize :set_default_values
     #:set_default_values_for_meeting
 
-  paginates_per 6
+  paginates_per 10
 
   def self.search term
     self.where("array_to_string(subject, ',') like ? OR notes like ?", "%#{term}%", "%#{term}%")

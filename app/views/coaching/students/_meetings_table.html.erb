@@ -13,3 +13,7 @@
     <%= render partial: "meetings_table_loop", locals: { meetings: @meetings } %>
   </tbody>
 </table>
+
+<<div class="pagination-holder">
+  <%= paginate @meetings %>
+</div>

@@ -97,7 +97,7 @@ module Coaching
         @@student_g = @student
 
         #@goals = @student.goals.reorder("#{sort_column} #{sort_direction}").page(params[:page])
-        @meetings = @student.meetings.order('created_at DESC')
+        @meetings = @student.meetings.order('created_at DESC').paginate(page:params[:page], per_page: 20).fast_page
         #-- room resource is being disabled
         #@messages = @student.room.messages.order(:created_at)
         #@room_id = @student.room.id
