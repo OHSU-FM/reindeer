@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
 
   has_one  :cpx, dependent: :destroy
   has_many :usmle_exams, dependent: :destroy
-  has_many :epa_masters, dependent: :destroy
-  has_many :fom_exams, dependent: :destroy
+  has_many :epa_masters, dependent: :destroy, inverse_of: :user
+  has_many :fom_exams, dependent: :destroy, inverse_of: :user
   has_many :med22_fom_exams, dependent: :destroy
   has_many :med21_fom_exams, dependent: :destroy
   has_many :fom_labels

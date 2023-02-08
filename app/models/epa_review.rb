@@ -1,5 +1,5 @@
 class EpaReview < ApplicationRecord
-    has_one :epa_reason
+    #has_one :eg_reason
     belongs_to :reviewable, polymorphic: true
 
     def self.epa_init
@@ -37,7 +37,7 @@ class EpaReview < ApplicationRecord
           if full_name == epa_review.last.reviewer1
             old_comment = epa_review.last.general_comments1.nil? ? "" : epa_review.last.general_comments1 + "\n"
             epa_review.update(general_comments1: old_comment + comments)
-            #epa_review.update(badge_decision1: 'Not Yet', general_comments1: old_comment + comments)            
+            #epa_review.update(badge_decision1: 'Not Yet', general_comments1: old_comment + comments)
           else
             old_comment = epa_review.last.general_comments2.nil? ? "" : epa_review.last.general_comments2 + "\n"
             epa_review.update(general_comments2: old_comment + comments)
