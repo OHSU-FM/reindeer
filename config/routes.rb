@@ -104,6 +104,7 @@ Rails.application.routes.draw do
        get 'step_2_move_files'
        get 'process_preceptor_eval'
        get 'process_formative_feedback'
+       get 'process_comp_excel'
      end
   end
   namespace :coaching do

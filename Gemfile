@@ -172,3 +172,5 @@ gem 'will_paginate', '~> 3.1'
 gem 'datejs-rails', "~> 2.0.1"
 gem 'icalendar'
 gem 'sassc-rails'
+gem 'xsv'
+gem 'fast_page'

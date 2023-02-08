@@ -73,6 +73,7 @@ module Coaching
       @meeting = Meeting.find params[:id]
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
+        
       end
     end
 

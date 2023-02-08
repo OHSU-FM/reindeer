@@ -1,7 +1,31 @@
 class EpaMaster < ApplicationRecord
-  belongs_to :user, inverse_of: :epa_masters
+  belongs_to :user, foreign_key: :user_id, inverse_of: :epa_masters
   has_many   :epa_reviews, as: :reviewable,  dependent: :destroy
   accepts_nested_attributes_for :epa_reviews
+
+  def full_name
+    self.User.find(user_id)
+  end
+
+  rails_admin do
+    list do
+      field :id
+      field :epa do
+        searchable false
+      end
+      field :status do
+        searchable false
+      end
+      field :user do
+        pretty_value do
+          value.full_name
+        end
+        searchable true
+      end
+    end
+    # ...
+  end
+
 
   def self.update_not_yet_and_grounded_epas(cohort_group)  #pemission_group looks like 'Med22'
 

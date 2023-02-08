@@ -149,6 +149,9 @@ GEM
       railties (>= 5.0.0)
     faker (3.1.0)
       i18n (>= 1.8.11, < 2)
+    fast_page (0.1.5)
+      activerecord
+      activesupport
     ffi (1.15.5)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
@@ -376,6 +379,11 @@ GEM
       rspec-mocks (~> 3.11)
       rspec-support (~> 3.11)
     rspec-support (3.12.0)
+<<<<<<< HEAD
+=======
+    ruby-prof (1.4.5)
+    rubyzip (2.3.2)
+>>>>>>> dev/redei-portal_v5
     rufus-scheduler (3.8.2)
       fugit (~> 1.1, >= 1.1.6)
     sass (3.7.4)
@@ -435,6 +443,8 @@ GEM
     will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    xsv (1.2.0)
+      rubyzip (>= 1.3, < 3)
     zeitwerk (2.6.6)
 
 PLATFORMS
@@ -464,6 +474,7 @@ DEPENDENCIES
   exception_notification
   factory_bot_rails
   faker
+  fast_page
   font-awesome-rails
   font-awesome-sass (~> 4.4.0)
   fullcalendar
@@ -518,6 +529,7 @@ DEPENDENCIES
   webrick
   whenever
   will_paginate (~> 3.1)
+  xsv
 
 BUNDLED WITH
    2.4.1
