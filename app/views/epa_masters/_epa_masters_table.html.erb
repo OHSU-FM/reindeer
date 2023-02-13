@@ -5,7 +5,11 @@
         <div class="card-body">
             <% if !@epa_masters.nil? %>
               <div id="epa-masters-table">
-                <h3>Badging EPAs - <%= @full_name %> </h3>
+                <% if @user.spec_program.include? "Paused badging" %>
+                  <h3 style="display: inline-block">Badging EPAs - <%= @full_name %> </h3><h5 style="display: inline-block;color:#FC6C85">&nbsp;&nbsp;[Student Status: <%= @user.spec_program %>]</h5>                
+                <% else %>
+                  <h3 style="display: inline-block">Badging EPAs - <%= @full_name %> </h3><h5 style="display: inline-block">&nbsp;&nbsp;[Student Status: <%= @user.spec_program %>]</h5>
+                <% end %>
                 <table class="responsive nowrap table table-hover" >
                   <thead>
                     <tr>

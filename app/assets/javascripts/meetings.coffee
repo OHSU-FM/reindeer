@@ -127,6 +127,7 @@ modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $('#IndividualAdvisorRpt').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $("#meeting-submit").prop("disabled", true)
 
   $('#EventsTable').hide()

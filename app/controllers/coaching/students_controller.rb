@@ -65,8 +65,11 @@ module Coaching
     end
 
     def advisor_reports
+
+
       if params[:advisor_id].present? and params[:advisor_id] != 'All'
         @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
+        @code = "Aggregate"
       elsif params[:advisor_id].present? and params[:advisor_id] == 'All'
         @all_advisor_flag = true
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
@@ -81,9 +84,12 @@ module Coaching
         @appt_counts = Advisor.where(status: 'Active').joins(:meetings).
                         where("meetings.user_id is not null and meetings.advisor_id = advisors.id and meetings.created_at >= ? and meetings.created_at <= ?", params[:StartDate], params[:EndDate]).
                         group(:advisor_type, :name).order(:advisor_type, :name).count
+      elsif !params[:advisor_id].present?
+        @code = "Individual"
+        @valid_advisor = Advisor.find_by(email: current_user.email)
+        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        end
 
-
-      end
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
       end

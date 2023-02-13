@@ -1,72 +1,74 @@
-<div id="detail-reports">
-  <div class="row justify-content-center">
-    <div class="col-auto">
-      <div class="card">
-         <div class="card-body">
-           <div style="width:500px;overflow:auto; max-height:350px;">
-              <table class="responsive nowrap table table-hover">
-                <% if @all_advisor_flag %>
-                  <thead>
-                    <tr>
-                      <th>Advisor</th>
-                      <th style="text-align:center"># of Meetings/Appointments </th>
-                    </tr>
-                  <thead>
-                  <tbody>
-                    <% new_meetings = hf_get_advisor_name(meetings) %>
-                    <% tot_count = 0 %>
-                    <% new_meetings.each do |key, data| %>
-                        <tr>
-                            <td><%= key %> </td>
-                            <td align="center"><%= data %></td>
-                            <% tot_count += data %>
-                        </tr>
-                    <% end %>
-                    <tr>
-                      <td align="right"><b>Total</b></td>
-                      <td align="center"><%= tot_count %></td>
-                    </tr>
-                  </tbody>
-                <% else %>
-                  <thead>
-                    <tr>
-                      <th>Student</th>
-                      <th style="text-align:center"># of Meetings/Appointments </th>
-                    </tr>
-                  <thead>
-                  <tbody>
-                    <% meetings.each do |key, data| %>
-                        <tr>
-                            <% full_name, permission_group_title = hf_get_full_name(key) %>
-                            <td><%= full_name %> - <%= permission_group_title %></td>
-                            <td align="center"><%= data %></td>
-                        </tr>
-                    <% end %>
-                    <tr>
-                      <td align="right"><b>Total</b></td>
-                      <td align="center"><%= meetings.values.sum %></td>
-                    </tr>
-                  </tbody>
-                <% end %>
-              </table>
+<% if @code == "Individual" %>
+  <%= render partial: "coaching/students/individual_advisor_report", locals: { meetings: meetings }  %>
+<% else %>
+  <div id="detail-reports">
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <div class="card">
+           <div class="card-body">
+             <div style="width:500px;overflow:auto; max-height:350px;">
+                <table class="responsive nowrap table table-hover">
+                  <% if @all_advisor_flag %>
+                    <thead>
+                      <tr>
+                        <th>Advisor</th>
+                        <th style="text-align:center"># of Meetings/Appointments </th>
+                      </tr>
+                    <thead>
+                    <tbody>
+                      <% new_meetings = hf_get_advisor_name(meetings) %>
+                      <% tot_count = 0 %>
+                      <% new_meetings.each do |key, data| %>
+                          <tr>
+                              <td><%= key %> </td>
+                              <td align="center"><%= data %></td>
+                              <% tot_count += data %>
+                          </tr>
+                      <% end %>
+                      <tr>
+                        <td align="right"><b>Total</b></td>
+                        <td align="center"><%= tot_count %></td>
+                      </tr>
+                    </tbody>
+                  <% else %>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th style="text-align:center"># of Meetings/Appointments </th>
+                      </tr>
+                    <thead>
+                    <tbody>
+                      <% meetings.each do |key, data| %>
+                          <tr>
+                              <% full_name, permission_group_title = hf_get_full_name(key) %>
+                              <td><%= full_name %> - <%= permission_group_title %></td>
+                              <td align="center"><%= data %></td>
+                          </tr>
+                      <% end %>
+                      <tr>
+                        <td align="right"><b>Total</b></td>
+                        <td align="center"><%= meetings.values.sum %></td>
+                      </tr>
+                    </tbody>
+                  <% end %>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-    </div>
-    <% if @all_advisor_flag %>
-      <% @advisor_types.each do |type| %>
-        <% advisor_data = @appt_counts.map{|k, v| [k.second, v] if k.first==type}.compact.to_h %>
-          <div class="col-auto">
-              <div class="card">
-                 <div class="card-body">
-                    <% type_graph = "#{type.gsub(" ", "")}_graph" %>
-                    <%= high_chart(type_graph, hf_create_appt_graph(advisor_data, type)) %>
+      </div>
+      <% if @all_advisor_flag %>
+        <% @advisor_types.each do |type| %>
+          <% advisor_data = @appt_counts.map{|k, v| [k.second, v] if k.first==type}.compact.to_h %>
+            <div class="col-auto">
+                <div class="card">
+                   <div class="card-body">
+                      <% type_graph = "#{type.gsub(" ", "")}_graph" %>
+                      <%= high_chart(type_graph, hf_create_appt_graph(advisor_data, type)) %>
+                  </div>
                 </div>
-              </div>
-          </div>
+            </div>
+        <% end %>
       <% end %>
-    <% end %>
-
-
-  </div>
-</div>
+    </div>
+  </div
+<% end %>

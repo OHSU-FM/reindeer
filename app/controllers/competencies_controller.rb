@@ -29,6 +29,8 @@ class CompetenciesController < ApplicationController
     else
       if params[:user_id].present? and  !(@comp = Competency.where(user_id: params[:user_id]).order(start_date: :desc)).empty?
         @selected_user = User.where(id: params[:user_id]).first
+        @spec_program_msg = @selected_user.spec_program  ## contains LOA and Paused badging data
+
         email = @selected_user.email
         # full_name = @selected_user.full_name
         # permission_group_id = @selected_user.permission_group_id

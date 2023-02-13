@@ -12,7 +12,7 @@
                     <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
                       <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
                         [Badge Status:
-                        <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
+                        <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' and !@spec_program_msg.include? "Paused badging" %>
                               <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
                               <%= image_tag ("epa/EPA#{i}"), size: "20x20" %>
                         <% else %>
