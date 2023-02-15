@@ -17,6 +17,7 @@ class CompetenciesController < ApplicationController
 
     if current_user.coaching_type == "student"
       @selected_user = current_user
+      @spec_program_msg = @selected_user.spec_program 
       full_name = current_user.full_name
       email = current_user.email
       permission_group_id = current_user.permission_group_id

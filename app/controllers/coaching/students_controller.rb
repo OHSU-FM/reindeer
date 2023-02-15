@@ -48,7 +48,14 @@ module Coaching
     def oasis_graphs
       if params[:id].present? and params[:id] == 'Graphs'
         @oasis_graphs_flag = true
-        @events = Event.where("user_id is not NULL and advisor_id is not null")
+
+        @valid_advisor = Advisor.find_by(email: current_user.email)
+        if @valid_advisor.nil?
+          @events = Event.where("user_id is not NULL and advisor_id is not null")
+        else
+          @events = Event.where("user_id is not NULL and advisor_id=?", @valid_advisor.id)
+        end
+            
         weekdays = @events.map{|e| e.start_date.strftime("%A")}.sort
         @weekdays_sorted = weekdays.tally
         hours = @events.map{|e| e.start_date.strftime("%I %p")}.sort
@@ -65,8 +72,6 @@ module Coaching
     end
 
     def advisor_reports
-
-
       if params[:advisor_id].present? and params[:advisor_id] != 'All'
         @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
         @code = "Aggregate"
