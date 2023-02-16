@@ -347,7 +347,7 @@ module EpaMastersHelper
     return data
   end
 
-  def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
+  def count_wba_clinical(wbas, sid, full_name, matriculated_date, uniq_assessors)
     wba_hash = {}
     wba_hash["StudentId"] = sid
     wba_hash["Student Name"] = full_name
@@ -367,14 +367,30 @@ module EpaMastersHelper
     data = []
     uniq_assessors = Epa.pluck(:clinical_assessor).uniq
     students.each do |student|
-      user = User.find_by(sid: student.sid)
-      if !user.nil?
-        wbas = Epa.where(user: user.id)
-        wbas = count_wba_clinical(wbas, user.sid, user.full_name, user.matriculated_date, uniq_assessors)
-        data.push wbas
-      end
+          wbas = Epa.where(user_id: student.id)
+          if !student.sid.nil?
+            wbas = count_wba_clinical(wbas, student.sid, student.full_name, student.matriculated_date, uniq_assessors)
+            data.push wbas
+
+          end        
     end
     return data
+  end
+
+  def hf_process_cohort2 (permission_group_id, code)
+
+      # these cohorts do not have MSPE tables, they are never cohorts - not in clinical phase and not ready for EG Review
+
+    students = PermissionGroup.find(permission_group_id).users.select(:id, :sid, :email, :full_name, :matriculated_date).order(:full_name)
+
+    if code=='EPA'
+      epas_data = process_epa(students)
+    elsif code == 'ClinicalAssessor'
+      wpa_clinical = process_wba_clinical(students)
+    else
+      wpa_data = process_wba(students, start_date, end_date)
+    end
+
   end
 
   def hf_process_cohort (cohort, start_date, end_date, code)

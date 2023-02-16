@@ -135,8 +135,8 @@ class EpaMastersController < ApplicationController
   end
 
   def wba_clinical  #get clinical assessor data/count
-    if params[:cohort].present?
-        @wba_clinical_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "ClinicalAssessor")
+    if params[:permission_group_id].present?
+        @wba_clinical_data = hf_process_cohort2(params[:permission_group_id], "ClinicalAssessor")
         create_file @wba_clinical_data, "wba_clinical_assessor.txt"
         respond_to do |format|
           format.html
@@ -253,7 +253,7 @@ class EpaMastersController < ApplicationController
     end
 
     def set_resources
-      @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
+      @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
     end
 
     def set_epa_master

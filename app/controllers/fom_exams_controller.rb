@@ -152,6 +152,8 @@ class FomExamsController < ApplicationController
 
          #@informative_feedbacks = FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes)
          @informatics_feedbacks = FormativeFeedback.where("user_id=? and block_code=? and csa_code like ?", student.id, block_code, "%Informatics%").map(&:attributes)
+
+         #@simcap_feedbacks = FormativeFeedback.where("user_id=? and block_code=? and response_id like ?", student.id, block_code, "SimCap%")
          #@informatics_feedbacks = hf_collect_values(informatics_feedbacks)
        else
          @comp_keys =  '*** This Block is being disabled temporary or has not been created just yet!! ***'
