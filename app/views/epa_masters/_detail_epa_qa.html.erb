@@ -3,6 +3,7 @@
   <h4 style="text-align:center"> Detail EPA Q/A (%) Report
     <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_epa_masters_path(file_name: 'epa_qa.txt') %>
   </h4>
+    <h5 style="text-align:center">Cohort: <%= @cohort_title %></h5>
 </span>
 
 <table id="EpaQaTable" class="table table-hover table-striped responsive" data-sort="true" >

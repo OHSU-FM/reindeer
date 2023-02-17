@@ -30,8 +30,27 @@
             <% end %>
       <% elsif hf_advisor(current_user) == true %>
           &nbsp; &nbsp; &nbsp; &nbsp;
-          <span> <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;
-             <i class="fa fa-hand-o-left" style="color:#FF0000" aria-hidden="true"> &nbsp;Click Here to View Graphs</i> </span>
+             <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp;  &nbsp;  |  &nbsp; &nbsp;
+             <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
+
+                     <label for="start">
+                          Meeting Start Date:
+                      </label>
+                      <input type="date" name="StartDate"
+                          value="2022-01-01"
+                          min="1997-01-01" max="2030-12-31">
+
+                      <label for="End">
+                            End Date:
+                      </label>
+                      <input type="date" name="EndDate"
+                           value=<%= Date.today.strftime("%Y-%m-%d") %>
+                          min="1997-01-01" max="2030-12-31">
+
+                  <%= submit_tag "Submit", name: 'advisor-reports-btn' %>
+             <% end %>
+      <% else %>
+        &nbsp; &nbsp; &nbsp; &nbsp; <h5> You are not authorized to access to this section!" </h5>
       <% end %>
 
     </div>

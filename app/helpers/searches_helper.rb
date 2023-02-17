@@ -34,8 +34,10 @@ module SearchesHelper
     data = {}
     students = User.where(permission_group_id: cohort_id)
     students.each do |student|
-      total_count_wbas = User.find_by(sid: student.sid).epas.count
-      data.store(student.full_name, total_count_wbas)
+      if student.sid != 'U00999999'
+        total_count_wbas = User.find_by(sid: student.sid).epas.count
+        data.store(student.full_name, total_count_wbas)
+      end
     end
     return data
   end
@@ -54,7 +56,7 @@ module SearchesHelper
         #arr = result.rows.flatten  # the array is sorted DESC
         #max = arr.first
         #min = arr.last
-        cohort_count = User.where(permission_group_id: permission_group_id).count
+        cohort_count = User.where(permission_group_id: permission_group_id).count #excludes BettyBogus
         ave = wba_count_hash.values.sum.to_f/cohort_count.round(2)
         med = median(wba_count_hash.values).round(2)
         return ave, med, cohort_title

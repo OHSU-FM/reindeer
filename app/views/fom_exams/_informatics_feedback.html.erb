@@ -8,7 +8,7 @@
                   <% if key == 'q8' %>
                     <% @shelf_artifacts.each do |artifact| %>
                       <% artifact.documents.each do |document| %>
-                        <% if document.filename.to_s.include? val %>
+                        <% if val.split("|").include? document.filename.to_s %>
                           <tr>
                             <td style="text-align:right;"><i> <%= hf_formative_feedback_labels(key, '_qs3') %></i> </td>
                             <td> <%= image_tag document%> <td>

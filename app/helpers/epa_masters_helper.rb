@@ -293,9 +293,8 @@ module EpaMastersHelper
     return level_epa_wbas_count_hash
   end
 
-  def hf_average_level_wbas(cohort, start_date, end_date)
-    permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
-    students = User.where(permission_group_id: permission_group.id).select(:id, :sid, :email, :full_name).order(:full_name)
+  def hf_average_level_wbas(permission_group_id, start_date, end_date)
+    students = User.where(permission_group_id: permission_group_id).select(:id, :sid, :email, :full_name).order(:full_name)
 
     average_level_epa_wbas_array = []
 
@@ -311,9 +310,9 @@ module EpaMastersHelper
     return average_level_epa_wbas_array
   end
 
-  def hf_count_level_wbas(cohort, cohort_counts, start_date, end_date)
+  def hf_count_level_wbas(permission_group_id, cohort, cohort_counts, start_date, end_date)
     level_epa_wbas_count_hash = {}
-    permission_group_id = PermissionGroup.find_by("title like ?", "%#{cohort}%").id
+    #permission_group_id = PermissionGroup.find_by("title like ?", "%#{cohort}%").id
 
     for i in 1..4 do  #Level
       epas = Epa.joins("inner join users on users.id = epas.user_id and users.permission_group_id=#{permission_group_id}")
@@ -334,20 +333,17 @@ module EpaMastersHelper
   def process_wba(students, start_date, end_date)
     data = []
     students.each do |student|
-      user = User.find_by(sid: student.sid)
-      if !user.nil?
-        wbas = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", user.id, start_date, end_date)  # Epa table contains WBAs data
+        wbas = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", student.id, start_date, end_date)  # Epa table contains WBAs data
         # ave_level = Epa.where(user_id: user.id).average(:involvement).to_f
         student_epa = count_wbas(wbas, student.sid, student.full_name)
         # student_epa.store("Average", ave_level)
         data.push student_epa
-      end
-    end
 
+    end
     return data
   end
 
-  def count_wba_clinical(wbas, sid, full_name,matriculated_date, uniq_assessors)
+  def count_wba_clinical(wbas, sid, full_name, matriculated_date, uniq_assessors)
     wba_hash = {}
     wba_hash["StudentId"] = sid
     wba_hash["Student Name"] = full_name
@@ -367,27 +363,19 @@ module EpaMastersHelper
     data = []
     uniq_assessors = Epa.pluck(:clinical_assessor).uniq
     students.each do |student|
-      user = User.find_by(sid: student.sid)
-      if !user.nil?
-        wbas = Epa.where(user: user.id)
-        wbas = count_wba_clinical(wbas, user.sid, user.full_name, user.matriculated_date, uniq_assessors)
-        data.push wbas
-      end
+          wbas = Epa.where(user_id: student.id)
+          if !student.sid.nil?
+            wbas = count_wba_clinical(wbas, student.sid, student.full_name, student.matriculated_date, uniq_assessors)
+            data.push wbas
+
+          end
     end
     return data
   end
 
-  def hf_process_cohort (cohort, start_date, end_date, code)
-    CohortMspe.table_name = "#{cohort.downcase}_mspes"
-    if CohortMspe.table_exists?
-      students = CohortMspe.all
-      students = students.sort_by(&:full_name)
-    else
-      # these cohorts do not have MSPE tables, they are never cohorts - not in clinical phase and not ready for EG Review
-      permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
-      students = User.where(permission_group_id: permission_group.id).select(:id, :sid, :email, :full_name).order(:full_name)
+  def hf_process_cohort2 (permission_group_id, start_date, end_date, code)
+    students = PermissionGroup.find(permission_group_id).users.select(:id, :sid, :email, :full_name, :matriculated_date).order(:full_name)
 
-    end
     if code=='EPA'
       epas_data = process_epa(students)
     elsif code == 'ClinicalAssessor'
@@ -395,8 +383,27 @@ module EpaMastersHelper
     else
       wpa_data = process_wba(students, start_date, end_date)
     end
-
   end
+
+  # def hf_process_cohort (cohort, start_date, end_date, code)
+  #   CohortMspe.table_name = "#{cohort.downcase}_mspes"
+  #   if CohortMspe.table_exists?
+  #     students = CohortMspe.all
+  #     students = students.sort_by(&:full_name)
+  #   else
+  #     # these cohorts do not have MSPE tables, they are never cohorts - not in clinical phase and not ready for EG Review
+  #     permission_group = PermissionGroup.where("title like ?", "%#{cohort}%").first
+  #     students = User.where(permission_group_id: permission_group.id).select(:id, :sid, :email, :full_name).order(:full_name)
+  #
+  #   end
+  #   if code=='EPA'
+  #     epas_data = process_epa(students)
+  #   elsif code == 'ClinicalAssessor'
+  #     wpa_clinical = process_wba_clinical(students)
+  #   else
+  #     wpa_data = process_wba(students, start_date, end_date)
+  #   end
+  # end
 
   def hf_process_student(student, code)
     if code == 'WBA'
@@ -422,11 +429,8 @@ module EpaMastersHelper
   def hf_wba_epa_graph(all_cohort_wba_epa_data)
 
     selected_categories = hf_epa_codes
-
     height = 600
-
     title =  "Number of WBAs by EPA" + '<br ><b>' + "(Level 4 Only)" + '</b>'
-
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: title)
       #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
@@ -615,6 +619,5 @@ module EpaMastersHelper
     return chart
 
   end
-
 
 end
