@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :messages, dependent: :destroy
   has_one :room, as: :discussable
   has_one :eg_cohort
+  has_one :ume_bls
 
   has_one :dashboard, dependent: :destroy
 

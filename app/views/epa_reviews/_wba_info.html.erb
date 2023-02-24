@@ -1,21 +1,34 @@
-<div clas="card">
-  <div class="card-body">
-    <% if !@wba.blank? %>
-      <br />
-      <h5>QA Complete %: <b style="color:purple"><%= qa_percent %></b></h5>
-      <h5>Total # of WBAs: <b style="color:blue"><%= wba.sum %></b></h5>
-      <table class="responsive table table-hover" style="width:400px">
-        <tr>
-            <th>Instance</th>
-            <th>Total Count</th>
-        </tr>
-        <% for i in 0..3 do %>
+
+  <div clas="card mb-0" >
+    <div class="card-body">
+      <% if !@wba.blank? %>
+        <br />
+        <h5>QA Complete %: <b style="color:purple"><%= qa_percent %></b></h5>
+        <h5>Total # of WBAs: <b style="color:blue"><%= wba.sum %></b></h5>
+        <table class="responsive table table-hover" style="width:400px">
           <tr>
-              <td><%= hf_wba_instance_def(i+1) %></td>
-              <td><%= "#{wba[i]}" %> </td>
+              <th>Instance</th>
+              <th>Total Count</th>
           </tr>
-        <% end %>
-      </table>
-    <% end %>
+          <% for i in 0..3 do %>
+            <tr>
+                <td><%= hf_wba_instance_def(i+1) %></td>
+                <td><%= "#{wba[i]}" %> </td>
+            </tr>
+          <% end %>
+        </table>
+      <% end %>
+    </div>
   </div>
-</div>
+
+  <div clas="card mb-0">
+    <div class="card-body">
+      <% if @bls.expiration_date.after? (Date.today) %>
+        BLS Expiration Date: <b style="color:green"><%= @bls.expiration_date %></b> <br />
+      <% else %>
+        BLS Expiration Date: <b style="color:red"><%= @bls.expiration_date %> *** Expired!</b> <br />
+      <% end %>
+
+        BLS Comments: <%= @bls.comments.to_s %>
+    </div>
+  </div>

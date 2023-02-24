@@ -204,6 +204,7 @@ class EpaReviewsController < ApplicationController
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
     @today_date = Time.new.strftime("%m/%d/%Y")
     load_eg_members(@user)
+    @bls = @user.ume_bls
 
     #@most_recent_review_date = EpaReview.get_max_date(user_id)
     if @user.permission_group_id == 16
