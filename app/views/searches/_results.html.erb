@@ -38,12 +38,12 @@
           <% else %>
             <td></td>
           <% end %>
-          <% bls_exp_date = result.ume_bls.expiration_date %>
-          <% if !bls_exp_date.nil? %>
-             <% if bls_exp_date.after? (Date.today) %>
-                 <td style="text-align:center; color:green"> <b><%= bls_exp_date.strftime("%F") %></b></td>
+          <% bls_record = result.ume_bls %>
+          <% if !bls_record.nil? %>
+             <% if bls_record.expiration_date.after? (Date.today) %>
+                 <td style="text-align:center; color:green"> <b><%= bls_record.expiration_date.strftime("%F") %></b></td>
              <% else %>
-                 <td style="text-align:center; color:red"> <b><%= bls_exp_date.strftime("%F") %></b></td>
+                 <td style="text-align:center; color:red"> <b><%= bls_record.expiration_date.strftime("%F") %></b></td>
              <% end %>
           <% else %>
             <td></td>
