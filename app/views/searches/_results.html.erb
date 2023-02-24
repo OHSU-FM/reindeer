@@ -4,13 +4,14 @@
     <table class="table table-hover main-table table-light responsive-lg">
       <thead>
         <tr>
-          <th>Student</th>
-          <th>Student Email </th>
-          <th>UID </th>
-          <th>Curr Cohort</th>
-          <th>Prev Cohort</th>
-          <th>Program Status</th>
-          <th>Matriculated Date</th>
+          <th style="text-align:center">Student</th>
+          <th style="text-align:center">Student Email </th>
+          <th style="text-align:center">UID </th>
+          <th style="text-align:center">Curr Cohort</th>
+          <th style="text-align:center">Prev Cohort</th>
+          <th style="text-align:center">Program Status</th>
+          <th style="text-align:center">Matriculated Date</th>
+          <th style="text-align:center">BLS Exp Date</th>
           <th style="text-align:center"># of WBAs<br />(All Levels)</th>
           <th style="text-align:center"># of Badges<br />Awarded</th>
           <th>DataSets</th>
@@ -21,22 +22,33 @@
       <% @results.each do |result| %>
         <% @pk = result.email %>
         <tr>
-          <td> <%= result.full_name %></td>
-          <td> <%= result.email %></td>
+          <td style="text-align:center"> <%= result.full_name %></td>
+          <td style="text-align:center"> <%= result.email %></td>
           <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
-            <td> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
+            <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
           <% else %>
-            <td> <%= result.sid.to_s  %></td>
+            <td style="text-align:center"> <%= result.sid.to_s  %></td>
           <% end %>
 
-          <td> <%= result.permission_group.title.to_s %></td>
-          <td> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
+          <td style="text-align:center"> <%= result.permission_group.title.to_s %></td>
+          <td style="text-align:center"> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
           <td style="text-align:center"> <%= result.spec_program %></td>
           <% if !result.matriculated_date.nil? %>
             <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
           <% else %>
             <td></td>
           <% end %>
+          <% bls_exp_date = result.ume_bls.expiration_date %>
+          <% if !bls_exp_date.nil? %>
+             <% if bls_exp_date.after? (Date.today) %>
+                 <td style="text-align:center; color:green"> <b><%= bls_exp_date.strftime("%F") %></b></td>
+             <% else %>
+                 <td style="text-align:center; color:red"> <b><%= bls_exp_date.strftime("%F") %></b></td>
+             <% end %>
+          <% else %>
+            <td></td>
+          <% end %>
+
           <td style="text-align:center;color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td>
           <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
           <td>
