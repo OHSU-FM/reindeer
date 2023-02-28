@@ -23,12 +23,15 @@
 
   <div clas="card mb-0">
     <div class="card-body">
-      <% if @bls.expiration_date.after? (Date.today) %>
-        BLS Expiration Date: <b style="color:green"><%= @bls.expiration_date %></b> <br />
-      <% else %>
-        BLS Expiration Date: <b style="color:red"><%= @bls.expiration_date %> *** Expired!</b> <br />
-      <% end %>
-
+      <% if !@bls.nil? %>
+        <% if @bls.expiration_date.after? (Date.today) %>
+          BLS Expiration Date: <b style="color:green"><%= @bls.expiration_date %></b> <br />
+        <% else %>
+          BLS Expiration Date: <b style="color:red"><%= @bls.expiration_date %> *** Expired!</b> <br />
+        <% end %>
         BLS Comments: <%= @bls.comments.to_s %>
+      <% else %>
+        No BLS data!
+      <% end %>
     </div>
   </div>

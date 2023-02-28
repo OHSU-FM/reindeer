@@ -13,7 +13,7 @@ module EpaReviewsHelper
 
 
   EPA_KEYWORDS = {
-            "EPA1" => ['history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+            "EPA1" => ["phsyical", "physical exams", "phsical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
             "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
             "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans",
                       "assessment", "plan"],
@@ -21,7 +21,7 @@ module EpaReviewsHelper
             "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
             "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
             "EPA7" => ["clinical question", "evidence", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
-            "EPA8" => ["handover", "handoff", "transition", "transition of care", "Signout"],  # "Give or receive a patient handover to transition care responsibility",
+            "EPA8" => ["handover", "handoff", "transition", "transition of care", "Signout", "hand offs", "sign offs", "sign outs"],  # "Give or receive a patient handover to transition care responsibility",
             "EPA9" => ["team", "interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
             "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
             "EPA11" => ["consent","informed consent", "shared decision making", "procedures", "shared decision"],  # "Obtain informed consent for tests and/or procedures",
@@ -33,12 +33,12 @@ module EpaReviewsHelper
     "EPA1" => "#4AC24E",  #green shade
     "EPA2" => "#282CC2", # blue shade
     "EPA3" => "#8A18C2", # purple shade
-    "EPA4" => "#C24842", # orange shade
+    "EPA4" => "#ffc34d", # gold color
     "EPA5" => "#C21508", # red shade
     "EPA6" => "#FF00FF", # fushia
     "EPA7" => "#800000", # Maroon
     "EPA8" => "#7F00FF", # violet
-    "EPA9" => "#00FFFF", # Cyan
+    "EPA9" => "#ADD8E6", # lightblue
     "EPA10" => "#FF7F50", # coral
     "EPA11" => "#40E0D0", # Turquoise
     "EPA12" => "#FF00FF", # Magneta

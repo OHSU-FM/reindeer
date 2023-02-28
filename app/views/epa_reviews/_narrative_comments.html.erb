@@ -9,8 +9,7 @@
           </div>
         </h5>
         <div id="collapseOne" class="card-body collapse" data-parent="#accordion" >
-              <div class="table-responsive-sm">
-                <table class="table">
+                <table class="table table-responsive-sm">
                   <thead>
                     <tr>
                       <th scope="col">CourseName</th>
@@ -66,9 +65,7 @@
                       <% end %>
                     <% end %>
                   <% end %>
-
                 </table>
-              </div>
         </div>
 
 
@@ -81,8 +78,7 @@
           </div>
         </h5>
         <div id="collapseTwo" class="card-body collapse" data-parent="#accordion" >
-          <div class="table-responsive-sm">
-            <table class="table">
+            <table class="table table-responsive-sm">
               <thead>
                 <tr>
                   <th scope="col">Preceptor</th>
@@ -113,7 +109,6 @@
                 </tr>
               <% end %>
             </table>
-          </div>
         </div>
 
         <h5>
@@ -124,11 +119,10 @@
           </div>
         </h5>
         <div id="collapseThree" class="card-body collapse" data-parent="#accordion" >
-          <div class="table-responsive-sm">
             <% if csl_data.empty? %>
               <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
             <% else %>
-                <table class="table">
+                <table class="table table-responsive-sm">
                   <thead>
                     <tr>
                       <th scope="col">CSL Block Title</th>
@@ -149,7 +143,7 @@
                   <% end %>
                 </table>
             <% end %>
-          </div>
+
        </div>
        <h5>
          <div class="card-header collapsed" data-toggle="collapse" href="#collapseFour">
@@ -159,11 +153,10 @@
           </div>
         </h5>
         <div id="collapseFour" class="card-body collapse" data-parent="#accordion" >
-           <div class="table-responsive-sm">
               <% if @no_official_docs == 0 %>
                 <h5> No Official Documents Found  ! </h5>
               <% else %>
-                <table class="table">
+                <table class="table table-responsive-sm">
                   <thead>
                     <tr>
                       <th>Title</th>
@@ -179,7 +172,8 @@
                         <td><%= artifact.title %></td>
                         <td><%= artifact.content %> </td>
                         <td><%= artifact.user_id.to_s %></td>
-                        <td><table class="responsive table table-hover">
+                        <td>
+                          <table class="responsive table table-hover">
                           <% if artifact.documents.attached? %>
                             <% artifact.documents.each do |document| %>
                               <tr>
@@ -198,7 +192,6 @@
                   <% end %>
                 </table>
               <% end %>
-           </div>
         </div>
     </div>
   </div>
