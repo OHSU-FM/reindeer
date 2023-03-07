@@ -1,5 +1,5 @@
 class SearchesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :set_resources
   include SearchesHelper
   layout 'full_width_csl'
 
@@ -55,6 +55,13 @@ class SearchesController < ApplicationController
   end
 
   private
+
+
+   def set_resources
+     #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
+     aes_key = AES.key
+     session[:aes_key] = aes_key
+   end
 
   def load_all_students cohorts
     cohorts.each do |cohort|

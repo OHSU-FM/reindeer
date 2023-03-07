@@ -68,6 +68,7 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    aes (0.5.1)
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
     awesome_print (1.9.2)
@@ -443,6 +444,7 @@ PLATFORMS
 
 DEPENDENCIES
   activestorage-validator (~> 0.1.0)
+  aes
   autoprefixer-rails
   awesome_print
   bcrypt-ruby

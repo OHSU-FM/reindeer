@@ -27,9 +27,9 @@
 
     <% for j in 1..5 %>
         <tr>
-          <td style="text-align:center"><%= "Comp#{j}"%></td>
+          <td style="text-align:center"><%= "Comp#{j}"%> - <%= hf_get_block_comp_def("Comp#{j}") %></td>
           <% i = 0 %>
-          <% while i < @all_blocks["Comp#{j}"].count-1 %>
+          <% while i < @all_blocks["Comp#{j}"].count %>
             <% if @all_blocks["Comp#{j}"][i].to_f >= 70 %>
               <% if (j == 2 or j == 5) and (cohort > "Med21") %>
                   <td style="text-align:center">HSS: <b><%= @all_blocks["Comp#{j}"][i] %></b> / <i><%= @all_blocks_class_mean["Comp#{j}"][i]%></i> <br>

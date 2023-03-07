@@ -8,4 +8,23 @@ $(document).ready ->
   # $('#CompetencesDetailTable').DataTable 'ordering': true
   # $('.dataTables_length').addClass 'bs-select'
 
-  return
+  toggler = $(".caret")
+  i = 0
+
+  while i < toggler.length
+    toggler[i].parentElement.querySelector(".nested").classList.toggle("active")
+    toggler[i].classList.toggle("caret-down")
+    console.log ("toggler i: " + i)
+    i++
+
+  i = 0
+  console.log("toggler length: " + toggler.length)
+  while i < toggler.length
+    toggler[i].addEventListener 'click', ->
+      parentElement.querySelector('.nested').classList.toggle 'active'
+      classList.toggle 'caret-down'
+      return
+    i++
+
+
+  # return

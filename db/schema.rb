@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_21_171324) do
+ActiveRecord::Schema.define(version: 2023_03_06_210357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -431,6 +431,8 @@ ActiveRecord::Schema.define(version: 2023_02_21_171324) do
     t.integer "permission_group_id"
     t.decimal "comp2a_hss7"
     t.decimal "comp2b_bss10"
+    t.decimal "comp2b_bss11"
+    t.decimal "comp2b_bss12"
     t.index ["user_id", "permission_group_id", "course_code"], name: "by_user_permission_group_course_code", unique: true
     t.index ["user_id"], name: "index_fom_exams_on_user_id"
   end

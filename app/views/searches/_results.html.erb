@@ -1,106 +1,104 @@
-
-<h4  style="color:blue;">Search Result</h4>
+<div class="container-fluid">
+  <h4  style="color:blue;">Search Result</h4>
   <% if !@results.nil? %>
-    <table class="table table-hover main-table table-light responsive-lg">
-      <thead>
-        <tr>
-          <th style="text-align:center">Student</th>
-          <th style="text-align:center">Student Email </th>
-          <th style="text-align:center">UID </th>
-          <th style="text-align:center">Curr Cohort</th>
-          <th style="text-align:center">Prev Cohort</th>
-          <th style="text-align:center">Program Status</th>
-          <th style="text-align:center">Matriculated Date</th>
-          <th style="text-align:center">BLS Exp Date</th>
-          <th style="text-align:center"># of WBAs<br />(All Levels)</th>
-          <th style="text-align:center"># of Badges<br />Awarded</th>
-          <th>DataSets</th>
-        </tr>
-      </thead>
-      <% @temp_hash = {} %>
+    <% if current_user.username != 'chungp' %>
+      <table class="table table-hover main-table table-light responsive-lg">
+        <thead>
+          <tr>
+            <th style="text-align:center">Student</th>
+            <th style="text-align:center">Student Email </th>
+            <th style="text-align:center">UID </th>
+            <th style="text-align:center">Curr Cohort</th>
+            <th style="text-align:center">Prev Cohort</th>
+            <th style="text-align:center">Program Status</th>
+            <th style="text-align:center">Matriculated Date</th>
+            <th style="text-align:center">BLS Exp Date</th>
+            <th style="text-align:center"># of WBAs<br />(All Levels)</th>
+            <th style="text-align:center"># of Badges<br />Awarded</th>
+            <th>DataSets</th>
+          </tr>
+        </thead>
+        <% @temp_hash = {} %>
 
-      <% @results.each do |result| %>
-        <% @pk = result.email %>
-        <tr>
-          <td style="text-align:center"> <%= result.full_name %></td>
-          <td style="text-align:center"> <%= result.email %></td>
-          <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
-            <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
-          <% else %>
-            <td style="text-align:center"> <%= result.sid.to_s  %></td>
-          <% end %>
+        <% @results.each do |result| %>
+          <% @pk = result.email %>
+          <tr>
+            <td style="text-align:center"> <%= result.full_name %></td>
+            <td style="text-align:center"> <%= result.email %></td>
+            <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
+              <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
+            <% else %>
+              <td style="text-align:center"> <%= result.sid.to_s  %></td>
+            <% end %>
 
-          <td style="text-align:center"> <%= result.permission_group.title.to_s %></td>
-          <td style="text-align:center"> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
-          <td style="text-align:center"> <%= result.spec_program %></td>
-          <% if !result.matriculated_date.nil? %>
-            <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
-          <% else %>
-            <td></td>
-          <% end %>
-          <% bls_record = result.ume_bls %>
-          <% if !bls_record.nil? %>
-             <% if bls_record.expiration_date.after? (Date.today) %>
-                 <td style="text-align:center; color:green"> <b><%= bls_record.expiration_date.strftime("%F") %></b></td>
-             <% else %>
-                 <td style="text-align:center; color:red"> <b><%= bls_record.expiration_date.strftime("%F") %></b></td>
-             <% end %>
-          <% else %>
-            <td></td>
-          <% end %>
+            <td style="text-align:center"> <%= result.permission_group.title.to_s %></td>
+            <td style="text-align:center"> <%= hf_get_permission_title(result.prev_permission_group_id) %></td>
+            <td style="text-align:center"> <%= result.spec_program %></td>
+            <% if !result.matriculated_date.nil? %>
+              <td style="text-align:center"> <%= result.matriculated_date.strftime("%F") %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <% bls_record = result.ume_bls %>
+            <% if !bls_record.nil? %>
+               <% if bls_record.expiration_date.after? (Date.today) %>
+                   <td style="text-align:center; color:green"> <b><%= bls_record.expiration_date.strftime("%F") %></b></td>
+               <% else %>
+                   <td style="text-align:center; color:red"> <b><%= bls_record.expiration_date.strftime("%F") %></b></td>
+               <% end %>
+            <% else %>
+              <td></td>
+            <% end %>
 
-          <td style="text-align:center;color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td>
-          <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
-          <td>
-            <%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid))  %> <br />
-            <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
-              <% fom_block_array = [] %>
-              <%  hf_exists_in_FomExam(result.id).each do |block| %>
-                  <% cohort = block["cohort"] %>
-                  <% permission_group_id = block["permission_group_id"] %>
-                  <% course_code = block["course_code"] %>
-                  <% if !course_code.include? "DISABLED" %>
-                    <% session[:attach_id] = -1 %>
-
-                    <% fom_block_array.push course_code %>
-
-                    <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
-                            display_fom_fom_exams_path(permission_group_id:  permission_group_id, course_code: course_code, uuid: result.uuid), method: :get,  target: '_blank') %> <br>
-                  <% else %>
-                     <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
-                  <% end %>
+            <td style="text-align:center;color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td>
+            <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
+            <td>
+              <%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), target: '_blank')  %> <br />
+              <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
+                <% fom_block_array = [] %>
+                <%  hf_exists_in_FomExam(result.id).each do |block| %>
+                    <% cohort = block["cohort"] %>
+                    <% permission_group_id = block["permission_group_id"] %>
+                    <% course_code = block["course_code"] %>
+                    <% if !course_code.include? "DISABLED" %>
+                      <% session[:attach_id] = -1 %>
+                      <% fom_block_array.push course_code %>
+                      <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
+                              display_fom_fom_exams_path(permission_group_id:  permission_group_id, course_code: AES.encrypt(course_code, session[:aes_key]), uuid: result.uuid), method: :get,  target: '_blank') %> <br>
+                    <% else %>
+                       <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
+                    <% end %>
+                <% end %>
+              <% cohort = hf_exists_in_PreceptorEval(result.id) %>
+              <% if !cohort.blank? %>
+                <%= link_to("<b>#{cohort}:Foundation of Medicine: Preceptorship Evaluations</b>".html_safe,
+                        preceptor_eval_path(uuid: result.uuid),  target: '_blank') %> <br>
               <% end %>
 
-
-            <% cohort = hf_exists_in_PreceptorEval(result.id) %>
-
-            <% if !cohort.blank? %>
-              <%= link_to("<b>#{cohort}:Foundation of Medicine: Preceptorship Evaluations</b>".html_safe,
-                      preceptor_eval_path(uuid: result.uuid),  target: '_blank') %> <br>
-            <% end %>
-
-            <% if hf_has_csl_feedbacks(result.id) %>
-              <% session[:user_id] = result.id %>
-              <% session[:cohort] = cohort_title(result.permission_group_id) %>
-              <%= link_to('<i><b>CSL Feedback from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(user_id: result.id), target: '_blank') %>
-              <br>
-
-            <% end %>
-
-            <% hf_datasets(result, @temp_hash).each do |dataset| %>
-               <% sid = dataset.split("~").first %>
-               <% if !dataset.split("~").last.include? "Core Clinical/Electives" %>
-                  <% if !fom_block_array.include? dataset.split(":").last %>
-                     <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk),
-                      class: "modal-click", 'data-target': '#modal-dataset' %> <br>
-                  <% end %>
+              <% if hf_has_csl_feedbacks(result.id) %>
+                <% session[:user_id] = result.id %>
+                <% session[:cohort] = cohort_title(result.permission_group_id) %>
+                <%= link_to('<i><b>CSL Feedback from Qualtrics</b></i>'.html_safe, csl_feedbacks_index_path(user_id: result.id), target: '_blank') %>
+                <br>
               <% end %>
-            <% end %>
-          </td>
 
-        </tr>
-      <% end %>
-    </table>
-    <% hf_write_hash(@temp_hash) %>
-
+              <% hf_datasets(result, @temp_hash).each do |dataset| %>
+                 <% sid = dataset.split("~").first %>
+                 <% if !dataset.split("~").last.include? "Core Clinical/Electives" %>
+                    <% if !fom_block_array.include? dataset.split(":").last %>
+                       <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk), target: '_blank',
+                        class: "modal-click", 'data-target': '#modal-dataset' %> <br>
+                    <% end %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+      <% hf_write_hash(@temp_hash) %>
+    <% else %>
+      <%= render partial: 'card_results' %>
+      <% hf_write_hash(@temp_hash) %>
+    <% end %>
   <% end %>
+</div>
