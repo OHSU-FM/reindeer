@@ -4,7 +4,7 @@ module SearchesHelper
     if permission_group_id.nil?
       return ""
     else
-      PermissionGroup.find(permission_group_id).title
+      return PermissionGroup.find(permission_group_id).title
     end
   end
 

@@ -34,14 +34,27 @@ class SearchesController < ApplicationController
     elsif current_user.coaching_type == 'coach'
         coach_search
     elsif !params[:search].downcase.include? "med18"
-      @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter)
 
+      if params[:search].first(2) == 'U0'
+        @parameter = params[:search] + "%"
+        @results = User.where("sid LIKE :search and coaching_type='student' and sid is not null", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
+                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+
+      else
+        # if params[:search] == 'Le'
+        #   @parameter = params[:search] + "%"
+        #   @results = User.where("full_name LIKE ? and coaching_type='student'", "Le%").select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
+        #             :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+        #
+        # else
+          @parameter = params[:search].downcase + "%"
+          @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
+                    :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+        # end
+      end
     else
-
       @student_year = hf_student_year(params[:search])
       @class_comp = Competency.order('student_name').where(student_year: @student_year).page(params[:page])
-
       if @class_comp.empty?
         redirect_to(root_path, alert: "No records found for #{params[:search]}")
       else
@@ -49,13 +62,14 @@ class SearchesController < ApplicationController
         @clinical_sid = hf_dataset_sid(params[:search])
       end
     end
+    render :search
     # respond_to do |format|
-    #   format.js { render partial: 'search-results'}
+    #   #format.js { render partial: 'search-results'}
+    #   format.html
     # end
   end
 
   private
-
 
    def set_resources
      #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
@@ -75,6 +89,7 @@ class SearchesController < ApplicationController
     @results = []
     @parameter = params[:search].downcase
     cohorts = current_user.cohorts
+
     if @parameter == "*"
       load_all_students(cohorts)
     else

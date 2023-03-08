@@ -21,7 +21,7 @@
               <%= form_tag(search_searches_path, method: "get",  class: 'navbar-form navbar-left', id: 'SearchForm') do %>
                 <span>
                   <div class="input-group">
-                        <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "Student Last-Name"%>
+                        <%= search_field_tag :search, params[:search], class: "form-control", placeholder: "LastName, FirstName"%>
                         <%= button_tag " SEARCH", class: 'button btn btn-info fa fa-search', style: 'font-size:15px', html: {autocomplete: 'off'},
                             'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> SEARCHING...".html_safe %>
                   </div>
