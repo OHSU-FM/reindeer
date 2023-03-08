@@ -9,30 +9,17 @@ class SearchesController < ApplicationController
       @results.push current_user
     elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
-    elsif current_user.spec_program == "PhD"
+    elsif params[:search] == 'PhD' #current_user.spec_program == "PhD"
+      @parameter = params[:search] + "%"
+      @results = User.where("coaching_type ='student' and spec_program like 'MD/PhD%'")
+    elsif params[:search] == 'MPH' #current_user.spec_program == "MPH"
       #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
-      @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program like 'MD/PhD%'", search: @parameter)
-      if @results.blank?
-        redirect_to(root_path, alert: "No records found for #{params[:search]}")
-      end
-    elsif current_user.spec_program == "MPH"
-      #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
-      @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program like 'MD/MPH%'", search: @parameter)
-      if @results.blank?
-        redirect_to(root_path, alert: "No records found for #{params[:search]}")
-      end
-
-    elsif current_user.spec_program == "Wy'east"
-      @parameter = params[:search].downcase + "%"
-      @results = User.where("lower(full_name) LIKE :search and coaching_type='student' and spec_program like 'MD/Wy%'", search: @parameter)
-      if @results.blank?
-        redirect_to(root_path, alert: "No records found for #{params[:search]}")
-      end
-
-    elsif current_user.coaching_type == 'coach'
-        coach_search
+      @parameter = params[:search] + "%"
+      @results = User.where("coaching_type ='student' and spec_program like 'MD/MPH%'")
+    elsif params[:search] == "Wy'east"  #current_user.spec_program == "Wy'east"
+      @parameter = params[:search] + "%"
+      @results = User.where("coaching_type='student' and spec_program like 'MD/Wy%'")
+    #     coach_search
     elsif !params[:search].downcase.include? "med18"
 
       if params[:search].first(2) == 'U0'
@@ -62,7 +49,10 @@ class SearchesController < ApplicationController
         @clinical_sid = hf_dataset_sid(params[:search])
       end
     end
-    render :search
+    if @results.blank?
+      redirect_to(root_path, alert: "No records found for #{params[:search]}")
+    end
+
     # respond_to do |format|
     #   #format.js { render partial: 'search-results'}
     #   format.html

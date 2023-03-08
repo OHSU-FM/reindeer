@@ -2,7 +2,7 @@
   <% if !@results.nil? %>
     <% if @results.map{|r| r.full_name}.count > 6 %>
       <h4  style="color:blue;">Search Result</h4><h5> --> Please refine your search! (eg => Le, will only search for the last name of Le.)</h5>
-      <table class="table table-hover main-table table-light responsive-lg">
+      <table id="SearchTable" class="table table-hover main-table table-light responsive-lg">
         <thead>
           <tr>
             <th style="text-align:center">Student</th>
