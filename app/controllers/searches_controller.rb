@@ -4,10 +4,10 @@ class SearchesController < ApplicationController
   layout 'full_width_csl'
 
   def search
-    if current_user.coaching_type == "student"
+    if current_user.coaching_type == "student" and params[:search].nil?
       @results = []
       @results.push current_user
-    elsif params[:search] == '?' or params[:search].downcase == 'help'
+    elsif params[:search] == '?' or params[:search].to_s == 'help'
       @results = @help
     elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return

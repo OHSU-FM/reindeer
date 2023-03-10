@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <% if params[:search] == '?' or params[:search].downcase == 'help' %>
+  <% if params[:search] == '?' or (params[:search].to_s == 'help' and !params[:search].nil?) %>
     <%= @results %>
   <% elsif !@results.nil? %>
     <% if @results.map{|r| r.full_name}.count > 6 %>
