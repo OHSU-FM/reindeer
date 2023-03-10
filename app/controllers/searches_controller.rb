@@ -36,6 +36,10 @@ class SearchesController < ApplicationController
           @parameter = params[:search].strip.downcase + "%"
           @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
                     :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+
+              if @results.blank?
+                @results = "<h5>Record NOT found for #{params[:search]}!!</h5>"
+              end
       end
     else
       redirect_to(root_path, alert: "No records found for #{params[:search]}")
