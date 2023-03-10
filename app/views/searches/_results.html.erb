@@ -1,5 +1,7 @@
 <div class="container-fluid">
-  <% if !@results.nil? %>
+  <% if params[:search] == '?' or params[:search].downcase == 'help' %>
+    <%= @results %>
+  <% elsif !@results.nil? %>
     <% if @results.map{|r| r.full_name}.count > 6 %>
       <h4  style="color:blue;">Search Result</h4><h5> --> Please refine your search! (eg => Le, will only search for the last name of Le.)</h5>
       <table id="SearchTable" class="table table-hover main-table table-light responsive-lg">

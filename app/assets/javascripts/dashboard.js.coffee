@@ -40,6 +40,7 @@ $(document).ready ->
     # Debug ability, add variables to global namespace
     window.dashboards = []
     #window.charts = [];
+    $('#search').popover 'title': "Type '?' or help for functionalities. "
     $('#dashboard-theme a').on 'click', (e) ->
       #optionSelected = $(this)
       valueSelected  = $(this).text()

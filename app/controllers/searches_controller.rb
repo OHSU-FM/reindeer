@@ -7,6 +7,8 @@ class SearchesController < ApplicationController
     if current_user.coaching_type == "student"
       @results = []
       @results.push current_user
+    elsif params[:search] == '?' or params[:search].downcase == 'help'
+      @results = @help
     elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
     elsif params[:search] == 'PhD' #current_user.spec_program == "PhD"
@@ -16,38 +18,35 @@ class SearchesController < ApplicationController
       #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type ='student' and spec_program like 'MD/MPH%'")
+    elsif params[:search] == 'MCR' #current_user.spec_program == "MPH"
+      #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
+      @parameter = params[:search] + "%"
+      @results = User.where("coaching_type ='student' and spec_program like '%MCR%'")
     elsif params[:search] == "Wy'east"  #current_user.spec_program == "Wy'east"
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type='student' and spec_program like 'MD/Wy%'")
     #     coach_search
     elsif !params[:search].downcase.include? "med18"
 
-      if params[:search].first(2) == 'U0'
-        @parameter = params[:search] + "%"
+      if params[:search].strip.first(2). == 'U0'
+        @parameter = params[:search].strip + "%"
         @results = User.where("sid LIKE :search and coaching_type='student' and sid is not null", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
                   :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
-
       else
-        # if params[:search] == 'Le'
-        #   @parameter = params[:search] + "%"
-        #   @results = User.where("full_name LIKE ? and coaching_type='student'", "Le%").select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-        #             :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
-        #
-        # else
-          @parameter = params[:search].downcase + "%"
+          @parameter = params[:search].strip.downcase + "%"
           @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
                     :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
-        # end
       end
     else
-      @student_year = hf_student_year(params[:search])
-      @class_comp = Competency.order('student_name').where(student_year: @student_year).page(params[:page])
-      if @class_comp.empty?
-        redirect_to(root_path, alert: "No records found for #{params[:search]}")
-      else
-        @class_mean_exist = true
-        @clinical_sid = hf_dataset_sid(params[:search])
-      end
+      redirect_to(root_path, alert: "No records found for #{params[:search]}")
+      # @student_year = hf_student_year(params[:search])
+      # @class_comp = Competency.order('student_name').where(student_year: @student_year).page(params[:page])
+      # if @class_comp.empty?
+      #   redirect_to(root_path, alert: "No records found for #{params[:search]}")
+      # else
+      #   @class_mean_exist = true
+      #   @clinical_sid = hf_dataset_sid(params[:search])
+      # end
     end
     if @results.blank?
       redirect_to(root_path, alert: "No records found for #{params[:search]}")
@@ -65,6 +64,14 @@ class SearchesController < ApplicationController
      #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
      aes_key = AES.key
      session[:aes_key] = aes_key
+     if File.exist? (Rails.root + "config/search_help.txt")
+       file ||= File.read(Rails.root + "config/search_help.txt")
+       file = file.gsub("\r\n", "")
+       @help = file.html_safe
+     else
+       @help = "<h4>Missing Help File!</h4".html_safe
+     end
+
    end
 
   def load_all_students cohorts

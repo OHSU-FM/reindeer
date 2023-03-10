@@ -2,13 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
+
   $('#student_id').on 'change', (e) ->
     student_id = $(this).val()
     console.log("student id: " + student_id)
     $.ajax
       url: '/csl_feedbacks/get_csl_feedback'
       method: 'GET'
-      dataType: 'script' 
+      dataType: 'script'
       data: user_id: student_id
       error: (xhr, status, error) ->
         console.error 'AJAX Error -> student_id ajax called: ' + status + error

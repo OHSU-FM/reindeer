@@ -38,7 +38,7 @@ module EpaReviewsHelper
     "EPA6" => "#FF00FF", # fushia
     "EPA7" => "#800000", # Maroon
     "EPA8" => "#7F00FF", # violet
-    "EPA9" => "#ADD8E6", # lightblue
+    "EPA9" => "#72c2ce", # darker lightblue
     "EPA10" => "#FF7F50", # coral
     "EPA11" => "#40E0D0", # Turquoise
     "EPA12" => "#FF00FF", # Magneta
