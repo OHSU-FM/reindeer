@@ -101,8 +101,8 @@
                     <% if !course_code.include? "DISABLED" %>
                       <% session[:attach_id] = -1 %>
                       <% fom_block_array.push course_code %>
-                      <%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
-                              display_fom_fom_exams_path(permission_group_id:  permission_group_id, course_code: AES.encrypt(course_code, session[:aes_key]), uuid: result.uuid), method: :get,  target: '_blank') %> <br>
+                      <li><%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
+                              display_fom_fom_exams_path(permission_group_id: AES.encrypt(permission_group_id.to_s, session[:aes_key]), course_code: AES.encrypt(course_code, session[:aes_key] ), uuid: result.uuid), method: :get,  target: '_blank') %> </li>
                     <% else %>
                        <%= sanitize "<b>#{cohort}:Foundation of Medicine: #{course_code}</b><br />".html_safe %>
                     <% end %>

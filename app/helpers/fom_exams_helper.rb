@@ -79,6 +79,7 @@ LABELS3 = {
     decrypted_back = crypt.decrypt_and_verify(encrypted_data)
   end
 
+
   def hf_get_block_desc(in_code)
     return BLOCKS[in_code]
   end

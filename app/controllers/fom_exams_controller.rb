@@ -120,6 +120,7 @@ class FomExamsController < ApplicationController
        @course_code = AES.decrypt(params[:course_code], aes_key) #session[:course_code]  #params[:course_code]
        permission_group_id = AES.decrypt(params[:permission_group_id], aes_key).to_i ## from Search function, required for cohort jumpers.
 
+
        student  = User.find_by(uuid: params[:uuid])
        @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
        if @cohort == 'med22'
@@ -148,6 +149,18 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
+
+
+         if !@shelf_artifacts.empty?
+           if @shelf_artifacts.count == 2 and permission_group_id >= 20
+             @shelf_artifacts = [@shelf_artifacts[1]]
+           else
+             @shelf_artifacts = [@shelf_artifacts[0]]
+           end
+         end
+
+        #@shelf_artifacts = hf_get_nbme_file(@shelf_artifacts, permission_group_id, block_code)
+
          formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").map(&:attributes)
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
 

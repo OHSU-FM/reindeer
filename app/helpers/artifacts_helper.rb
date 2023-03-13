@@ -9,6 +9,9 @@ module ArtifactsHelper
 
   def hf_check_nbme_pdf(shelf_artifacts)
     no_of_nbme = 0
+    # if shelf_artifacts.first.nil?
+    #   return 0
+    # end
     shelf_artifacts.each do |artifact|
       artifact.documents.each do |document|
         if document.filename.to_s.include? "NBME"
