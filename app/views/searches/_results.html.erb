@@ -4,7 +4,7 @@
   <% elsif params[:search] == '?' or (params[:search].to_s == 'help' and !params[:search].nil?) %>
     <%= @results %>
   <% else %>
-    <% if @results.map{|r| r.full_name}.count > 6 %>
+    <% if @results.map{|r| r.full_name}.count > 6 and current_user.username != 'haedinge' %>
       <h4  style="color:blue;">Search Result</h4><h5> --> Please refine your search! (eg => Le, will only search for the last name of Le.)</h5>
       <table id="SearchTable" class="table table-hover main-table table-light responsive-lg">
         <thead>
@@ -20,7 +20,7 @@
         </thead>
       <% @results.each do |result| %>
         <tr>
-          <td style="text-align:center"> <%= result.full_name %></td>
+          <td style="text-align:center"> <%= link_to result.full_name, search_searches_path(search: result.email), target: :blank %></td>
           <td style="text-align:center"> <%= result.email %></td>
           <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
             <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>

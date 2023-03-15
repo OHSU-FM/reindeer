@@ -3,6 +3,13 @@ class SearchesController < ApplicationController
   include SearchesHelper
   layout 'full_width_csl'
 
+  def search_by_email
+    if params[:email].present?
+      @results = User.where(email: params[:email]).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date)
+    end
+  end
+
   def search
     if current_user.coaching_type == "student" and params[:search].nil?
       @results = []
@@ -11,6 +18,9 @@ class SearchesController < ApplicationController
       @results = @help
     elsif params[:search].blank?
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
+    elsif params[:search].include? "@"
+      @results = User.where(email: params[:search]).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
     elsif params[:search] == 'PhD' #current_user.spec_program == "PhD"
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type ='student' and spec_program like 'MD/PhD%'")
