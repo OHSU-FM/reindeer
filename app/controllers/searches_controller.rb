@@ -76,8 +76,11 @@ class SearchesController < ApplicationController
 
    def set_resources
      #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
-     aes_key = AES.key
-     session[:aes_key] = aes_key
+     if session[:aes_key].nil?
+       aes_key = AES.key
+       session[:aes_key] = aes_key
+     end
+
      if File.exist? (Rails.root + "config/search_help.txt")
        file ||= File.read(Rails.root + "config/search_help.txt")
        file = file.gsub("\r\n", "")

@@ -1,5 +1,13 @@
 module SearchesHelper
 
+  def hf_check_aes_key
+    if session[:aes_key].nil?
+      aes_key = AES.key
+      session[:aes_key] = aes_key
+    end
+
+  end
+
   def hf_get_permission_title(permission_group_id)
     if permission_group_id.nil?
       return ""

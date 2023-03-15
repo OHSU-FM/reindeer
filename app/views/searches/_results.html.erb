@@ -100,6 +100,7 @@
                     <% course_code = block["course_code"] %>
                     <% if !course_code.include? "DISABLED" %>
                       <% session[:attach_id] = -1 %>
+                      <% hf_check_aes_key %>
                       <% fom_block_array.push course_code %>
                       <li><%= link_to("<b>#{cohort}:Foundation of Medicine: #{course_code}</b>".html_safe,
                               display_fom_fom_exams_path(permission_group_id: AES.encrypt(permission_group_id.to_s, session[:aes_key]), course_code: AES.encrypt(course_code, session[:aes_key] ), uuid: result.uuid), method: :get,  target: '_blank') %> </li>
@@ -136,7 +137,7 @@
       <% hf_write_hash(@temp_hash) %>
     <% else %>
       <h4  style="color:blue;">Search Result</h4>
-      <%= render partial: 'card_results' %>
+      <%= render partial: 'searches/card_results' %>
       <% hf_write_hash(@temp_hash) %>
     <% end %>
   <% end %>
