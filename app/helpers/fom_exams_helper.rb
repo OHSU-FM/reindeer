@@ -69,6 +69,15 @@ LABELS3 = {
   "q8" => "Attachment File"
 }
 
+  def encrypt_data (crypt, in_data)
+    #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
+    encrypted_data = crypt.encrypt_and_sign(in_data)
+  end
+
+  def decrypt_data (crypt, encrypted_data)
+    #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
+    decrypted_back = crypt.decrypt_and_verify(encrypted_data)
+  end
 
 
   def hf_get_block_desc(in_code)

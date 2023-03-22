@@ -116,8 +116,10 @@ class FomExamsController < ApplicationController
       if params[:uuid] == current_user.uuid or current_user.coaching_type == 'dean' or
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
-       @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
-       permission_group_id = params[:permission_group_id]  ## from Search function, required for cohort jumpers.
+       aes_key = session[:aes_key]
+       @course_code = AES.decrypt(params[:course_code], aes_key) #session[:course_code]  #params[:course_code]
+       permission_group_id = AES.decrypt(params[:permission_group_id], aes_key).to_i ## from Search function, required for cohort jumpers.
+
 
        student  = User.find_by(uuid: params[:uuid])
        @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
@@ -147,6 +149,18 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
+
+
+         if !@shelf_artifacts.empty?
+           if @shelf_artifacts.count == 2 and permission_group_id >= 20
+             @shelf_artifacts = [@shelf_artifacts[1]]
+           else
+             @shelf_artifacts = [@shelf_artifacts[0]]
+           end
+         end
+
+        #@shelf_artifacts = hf_get_nbme_file(@shelf_artifacts, permission_group_id, block_code)
+
          formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").map(&:attributes)
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
 
@@ -176,6 +190,7 @@ class FomExamsController < ApplicationController
 
  def set_resources
    @permission_groups = PermissionGroup.last(3) # get last 3 rows
+   #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
  end
 
  def private_download in_file

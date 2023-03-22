@@ -286,9 +286,72 @@ class Artifact < ApplicationRecord
     	end
     end
     xlsx.close
-
     todayDate = Time.now.strftime("%Y_%m_%d")
     filename = "#{Rails.root}/log/competency_#{todayDate}.log"
+    File.open(filename, 'w') {
+      |f| @log_data.each { |line| f << "\r\n" + line }
+    }
+  end
+
+  def self.insert_blses (row)
+      begin
+        UmeBls.table_name = "ume_blses"
+        uu = User.find_by(sid: row["sid"])
+        if !uu.nil?
+          row["user_id"] = uu.id
+          row_hash = {}
+          row_hash = row.to_hash
+          full_name = uu.full_name
+          row_hash.delete("first_name")
+          row_hash.delete("last_name")
+          row_hash.delete("sid")
+
+          s = UmeBls.where(user_id: uu.id).first_or_create.update(row_hash)
+          # puts "s --> " + s.inspect
+          # puts "user id: " + uu.id.to_s
+          @log_data.push(row["user_id"].to_s + " --> " + full_name.to_s + " is created in UmeBlses table.")
+          return false
+         else
+          @log_data.push(" *** full_name: " + row["last_name"].to_s + ", " + row["first_name"].to_s + " is not found in users table.")
+          return false
+        end
+    end
+  end
+
+  def self.read_bls_excel(artifact)
+    @log_data = []
+    xlsx = Xsv::Workbook.open(ActiveStorage::Attachment.find(artifact.documents.first.id).blob.download)
+    # xlsx = Xsv.open(file)
+    xlsx.sheets.each do |sheet|
+    	if sheet.name != 'Upload'
+    		@log_data.push ("Sheet Name: " + sheet.name)
+    		@log_data.push ("No of rows: " + sheet.count.to_s)
+        last_row = sheet.count-1
+    		row = {}
+    		for r in 1..last_row do
+          #puts sheet[r].inspect
+    			row["last_name"] = sheet[r][0]
+    			row["first_name"] = sheet[r][1]
+          row["sid"] = sheet[r][2]
+          if sheet[r][3].to_s == ""
+            row["expiration_date"] = nil
+          else
+    		  	row["expiration_date"] = sheet[r][3].to_time.strftime("%Y/%m/%d")
+          end
+    			row["comments"] = sheet[r][4]
+    			found_error = insert_blses(row)
+          if found_error
+            break
+            return
+          end
+    		end
+
+    		@log_data.push ("===================================")
+    	end
+    end
+    xlsx.close
+    todayDate = Time.now.strftime("%Y_%m_%d")
+    filename = "#{Rails.root}/log/bls_#{todayDate}.log"
     File.open(filename, 'w') {
       |f| @log_data.each { |line| f << "\r\n" + line }
     }

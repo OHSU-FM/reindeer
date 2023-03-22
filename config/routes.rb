@@ -105,6 +105,7 @@ Rails.application.routes.draw do
        get 'process_preceptor_eval'
        get 'process_formative_feedback'
        get 'process_comp_excel'
+       get 'process_bls_excel'
      end
   end
   namespace :coaching do

@@ -1,10 +1,18 @@
 module SearchesHelper
 
+  def hf_check_aes_key
+    if session[:aes_key].nil?
+      aes_key = AES.key
+      session[:aes_key] = aes_key
+    end
+
+  end
+
   def hf_get_permission_title(permission_group_id)
     if permission_group_id.nil?
       return ""
     else
-      PermissionGroup.find(permission_group_id).title
+      return PermissionGroup.find(permission_group_id).title
     end
   end
 
@@ -104,7 +112,7 @@ module SearchesHelper
 
   def hf_exists_in_FomExam(user_id)
     block_array = []
-    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code, id ASC').uniq
     if blocks.empty?
       blocks = Med22FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
       if blocks.empty?

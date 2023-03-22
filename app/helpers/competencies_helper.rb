@@ -131,8 +131,20 @@ module CompetenciesHelper
 
    }
 
+   BLOCK_COMP_DEF = {
+     "Comp1" => "Weekly/Quizzes",
+     "Comp2" => "Skills Assessments",
+     "Comp3" => "OHSU Final Block Exam",
+     "Comp4" => "NBME Exam",
+     "Comp5" => "Final Skills Exam"
+   }
+
 
   #===================================================================================================================================================================
+  def hf_get_block_comp_def (in_code)
+    return BLOCK_COMP_DEF[in_code]
+  end
+
   def hf_get_comp_def code
     return COMP_DESC[code]
   end

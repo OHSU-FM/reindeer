@@ -1,0 +1,2 @@
+class UmeBlsesController < ApplicationController
+end 
