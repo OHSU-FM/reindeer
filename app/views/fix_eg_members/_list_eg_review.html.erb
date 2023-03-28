@@ -1,0 +1,29 @@
+<% if !@epa_masters.nil? %>
+  <br />
+  <h4 style="color:blue;"> Student: <%= @full_name %></h4>
+  <% epa_review_headers = @epa_masters.first.epa_reviews.first.serializable_hash.keys %>
+    <table class="responsive nowrap table table-hover">
+      <tr>
+      <% epa_review_headers.each do |header| %>
+        <th><%= header %></th>
+      <% end %>
+      </tr>
+      <% @epa_masters.each do |epa_master| %>
+            <% epa_master.epa_reviews.each do |review| %>
+              <tr>
+                <% c = 1 %>
+                <% epa_review_values = review.serializable_hash.values %>
+                <% epa_review_values.each do |value| %>
+                  <% if c==4 or c==10 %>
+                    <td style="color:green;"><b><%= link_to value, fix_eg_members_reviewer_update_path(user_id: @user.id) %></b></td>
+                  <% else %>
+                    <td><%= value %></td>
+                  <% end %>
+                  <% c += 1 %>
+                <% end %>
+              </tr>
+            <% end %>
+
+      <% end %>
+  </table>
+<% end %>

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'fix_eg_members/index'
+  get 'fix_eg_members/reviewer_update'
 
   get 'reports/index'
   resources :fom_remeds

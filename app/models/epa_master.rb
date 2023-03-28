@@ -26,13 +26,36 @@ class EpaMaster < ApplicationRecord
     # ...
   end
 
+  def self.get_all_eg_cohorts(permission_group_id)
+    results = EpaMaster.execute_sql("select user_id, eg_cohorts.permission_group_id, users.full_name,
+        eg_cohorts.email, eg_full_name1, eg_email1, eg_full_name2, eg_email2
+        from eg_cohorts, users
+        where eg_cohorts.email = users.email and
+        eg_cohorts.permission_group_id = ? order by users.full_name", permission_group_id.to_i).to_a
 
-  def self.update_not_yet_and_grounded_epas(cohort_group)  #pemission_group looks like 'Med22'
+    return results
 
-    if cohort_group.nil? or cohort_group.include? 'Case'
+  end
+
+  def self.get_eg_cohort(permission_group_id, current_user_email)
+    results = EpaMaster.execute_sql("select user_id, eg_cohorts.permission_group_id, users.full_name,
+        eg_cohorts.email, eg_full_name1, eg_email1, eg_full_name2, eg_email2
+        from eg_cohorts, users
+        where eg_cohorts.email = users.email and
+        eg_cohorts.permission_group_id = ? and
+        (eg_email1=? or eg_email2=?)",permission_group_id, current_user_email, current_user_email).to_a
+
+    return results
+
+  end
+
+  def self.update_not_yet_and_grounded_epas(permission_group_id)  #pemission_group looks like 'Med22'
+
+    if permission_group_id.nil? or permission_group_id.include? 'Case'
       return
     end
-    permission_group_id = PermissionGroup.where("title like ?", "%#{cohort_group}%").first.id
+    #permission_group_id = PermissionGroup.find(permission_group_id).id
+    permission_group_id = permission_group_id.to_i
 
     result = EpaMaster.execute_sql("update epa_reviews set badge_decision1='Badge'
        from  epa_masters, users
