@@ -48,6 +48,18 @@ class FixEgMembersController < ApplicationController
     end
   end
 
+  def process_eg_file
+
+    if params[:artifact_id].present?
+       @log_file = hf_process_eg_file(params[:artifact_id])
+    end
+
+    respond_to do |format|
+      format.html
+    end
+
+  end
+
   private
 
   def set_resources

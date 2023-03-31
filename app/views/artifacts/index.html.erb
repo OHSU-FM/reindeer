@@ -44,6 +44,11 @@
             <%= link_to 'Process BLS', process_bls_excel_artifact_path(artifact), target: :_blank  %>
           <% end %>
 
+          <% if artifact.content.to_s.include? "EG-Cohorts" and (current_user.coaching_type == 'dean') %>
+            /
+            <%= link_to 'Process EG Cohorts File', fix_eg_members_process_eg_file_path(artifact_id: artifact), target: :_blank  %>
+          <% end %>
+
 
         </td>
         <td>
