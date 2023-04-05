@@ -19,6 +19,25 @@ module FixEgMembersHelper
     return permission_group.first.id
   end
 
+  def fix_eg_reviewers(user_id, in_reviewer1, in_reviewer2)
+    epa_masters = EpaMaster.where(user_id: user_id).order(:id)
+    epa_masters.each do |master|
+      master.epa_reviews.each do |review|
+        review.update(reviewer1: in_reviewer1, reviewer2: in_reviewer2)
+      end
+    end
+  end
+
+  def get_eg_names(row)
+    eg_full_name1 = User.find_by(email: row["eg_email1"]).full_name
+    eg_full_name2 = User.find_by(email: row["eg_email2"]).full_name
+    row["eg_full_name1"] = eg_full_name1
+    row["eg_full_name2"] = eg_full_name2
+    return row
+
+  end
+
+
   def loading_eg_cohort(row, log_file)
     uu = User.find_by(email: row["email"])
     if !uu.nil?
@@ -27,6 +46,7 @@ module FixEgMembersHelper
 
       if row["permission_group_id"] == uu.permission_group_id
         row_hash = {}
+        get_eg_names(row)
         full_name = row["full_name"]
         row_hash = row.to_hash
         row_hash.delete("cohort")

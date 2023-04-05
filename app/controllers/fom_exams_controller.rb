@@ -136,6 +136,7 @@ class FomExamsController < ApplicationController
        @student_email = student.email
        @student_full_name = student.full_name
        @student_perm_group = student.permission_group_id
+       @student_cohort_title = @cohort_titles[permission_group_id]
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
@@ -149,17 +150,6 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-
-
-         if !@shelf_artifacts.empty?
-           if @shelf_artifacts.count == 2 and permission_group_id >= 20
-             @shelf_artifacts = [@shelf_artifacts[1]]
-           else
-             @shelf_artifacts = [@shelf_artifacts[0]]
-           end
-         end
-
-        #@shelf_artifacts = hf_get_nbme_file(@shelf_artifacts, permission_group_id, block_code)
 
          formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").map(&:attributes)
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
@@ -189,7 +179,10 @@ class FomExamsController < ApplicationController
  private
 
  def set_resources
-   @permission_groups = PermissionGroup.last(3) # get last 3 rows
+   #@permission_groups = PermissionGroup.last(3) # get last 3 rows
+   cohorts = PermissionGroup.where("id <> 7 and title like ?", "%Med%").select(:id, :title).order(:id).map(&:attributes)
+   @cohort_titles = hf_reformat_cohort_data(cohorts)
+
    #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
  end
 

@@ -1,0 +1,22 @@
+<br />
+  <div class="card">
+    <div class="card-body">
+      <%= form_tag(mspe_data_reports_path, remote: true, method: "get", id: 'mspe_data_form') do %>
+        <div class="form-group navbar-form navbar-left">
+           <b>Cohort </b> <%= select_tag :cohort, options_from_collection_for_select(@permission_groups, 'id', 'title', selected: params[:cohort]), include_blank: '--',
+              prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+            <br />
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <hr>
+    <div class="card">
+      <div class="card-header">
+        <b>MSPE Data Report</b>
+      </div>
+      <div class="card-body">
+        <div id="mspe_data_report"></div>
+      </div>
+    </div>

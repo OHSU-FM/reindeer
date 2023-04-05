@@ -43,6 +43,9 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to '<i aria-hidden="true"> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i aria-hidden="true"> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %>
+                  <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda'].include? current_user.username %>
+                    <%= link_to '<i aria-hidden="true"> MSPE Data </i>'.html_safe, mspe_data_reports_path, target: '_blank', class: "dropdown-item" %>
+                  <% end %>
                 </div>
               </div>
             <% end %>
@@ -54,7 +57,9 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
+                  <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda'].include? current_user.username %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
+                  <% end %>
                   <%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EPA-Q/A Report', epa_qa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>

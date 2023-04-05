@@ -39,8 +39,6 @@ class ReportsController < ApplicationController
           #class_mean.store("Cohort", cohort_title)
           @comp_class_means[cohort_title] = class_mean
         end
-
-
       end
 
       respond_to do |format|
@@ -48,6 +46,18 @@ class ReportsController < ApplicationController
         format.js { render action: 'competency_data', status: 200 }
       end
     end
+  end
+
+  def mspe_data
+    if params[:cohort].present?
+      @mspe_data = nil  #ZZhf_get_mspe_data(params[:cohort])
+    end
+
+    respond_to do |format|
+      format.html
+
+    end
+    render :mspe_data
   end
 
   def download_file

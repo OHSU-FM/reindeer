@@ -69,6 +69,7 @@ LABELS3 = {
   "q8" => "Attachment File"
 }
 
+
   def encrypt_data (crypt, in_data)
     #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
     encrypted_data = crypt.encrypt_and_sign(in_data)
@@ -78,7 +79,16 @@ LABELS3 = {
     #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
     decrypted_back = crypt.decrypt_and_verify(encrypted_data)
   end
+  def hf_reformat_cohort_data(cohorts)
+    temp_cohort = {}
+    cohorts.each do |cohort|
+      cohort_id = cohort.values.first
+      cohort_title = cohort.values.second.split(' ').last.gsub(/[()]/, '')
+      temp_cohort.store(cohort_id, cohort_title)
+    end
+    return temp_cohort
 
+  end
 
   def hf_get_block_desc(in_code)
     return BLOCKS[in_code]
@@ -137,9 +147,7 @@ LABELS3 = {
         end
       end
     end
-
     return failed_comp
-
   end
 
   def check_pass_fail(data_series)

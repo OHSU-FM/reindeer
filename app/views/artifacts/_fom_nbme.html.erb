@@ -1,7 +1,7 @@
 <% if !@shelf_artifacts.nil? %>
     <% @shelf_artifacts.each do |artifact| %>
       <% artifact.documents.each do |document| %>
-        <% if document.filename.to_s.include? "NBME"  %>
+        <% if document.filename.to_s.include? "NBME_#{@student_cohort_title}"  %>
           <tr>
             <td>
                 <%= link_to document.filename, url_for(document), target: :_blank %>
