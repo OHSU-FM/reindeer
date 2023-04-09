@@ -2,6 +2,15 @@ module ReportsHelper
 
   BLOCKS = ['1-FUND', '2-BLHD', '3-SBM', '4-CPR', '5-HODI', '6-NSF', '7-DEVH']
 
+  WHERE_QUERY =
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? '
+
   def average_summary(summary_data, user)
     student_hash = {}
     student_hash.store('Student', user.full_name)
@@ -44,45 +53,41 @@ module ReportsHelper
     return data_array
   end
 
+  def hf_get_mspe_data_by_email(email, permission_group_id)
+    permission_group_title = PermissionGroup.find(permission_group_id.to_i).title.split(' ').last.gsub(/[()]/, '')
+    mspe_data = []
+    if permission_group_title == "Med23"
+      mspe = Med23Mspe.find_by(email: email).user.competencies.where(WHERE_QUERY, '%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%',
+      '%IMEDMINF 705B%', '%MULT 705A%', '%MULT 705C%', '%MULT 705D%', '%MULT 705TI%', '%709Z%').select(:id, :student_uid, :user_id, :email,
+        :course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, :prof_concerns, :mspe,
+      ).order(:user_id, :start_date)
+      mspe_data.push mspe
+      return mspe_data
+    end
+  end
+
   def hf_get_mspe_data (permission_group_id)
-    permission_group_title = PermissionGroup.find(permission_group_id.to_i).title.split(' ').last.gsub(/[()]/, '').downcase
-
-    # query = 'SELECT student_uid, user_id, users.permission_group_id, users.full_name, competencies.email, ' +
-    #   'course_id, course_name, final_grade, start_date, end_date, submit_date, evaluator, ' +
-    #   'prof_concerns, comm_prof_concerns, overall_summ_comm_perf, add_comm_on_perform, mspe, clinic_exp_comment ' +
-    # 	'FROM public.competencies, #{permssion_group_title}_mspes, users ' +
-    # 	'where ' +
-    # 	'course_name not like '%FoM%' and course_name not like '%JCON%' and ' +
-    # 	'course_name not like '%TRAN%' and course_name not like '%PREC 724%' and ' +
-    # 	'course_name not like '%SCHI%' and course_name not like '%CPX 702%' and ' +
-    # 	'course_name not like '%FAMP 705SD%' and course_name not like '%GMED 705AB%' and ' +
-    # 	'course_name not like '%IMEDMINF 705B%' and course_name not like '%MULT 705A%' and ' +
-    # 	'course_name not like '%MULT 705C%' and course_name not like '%MULT 705D%' and ' +
-    # 	'course_name not like '%MULT 705TI%' and course_name not like '%709Z%' and ' +
-    # 	'users.id = competencies.user_id and ' +
-    # 	'#{permssion_group_title}_mspes.email = users.email ' +
-    # 	'order by users.full_name, competencies.start_date'
-
-    query = 'SELECT student_uid, user_id, users.permission_group_id, users.full_name, competencies.email, ' +
-      'course_id, course_name, final_grade, start_date, end_date, submit_date, evaluator, ' +
-      'prof_concerns, comm_prof_concerns, overall_summ_comm_perf, add_comm_on_perform, mspe, clinic_exp_comment ' +
-    	"FROM public.competencies, users, #{permission_group_title}_mspes " +
-    	'where ' +
-      	# 'competencies.course_name not like ' + "'%FoM%'" + ' and competencies.course_name not like ' + "'JCON%'" + ' and ' +
-      	# 'course_name not like '%TRAN%' and course_name not like '%PREC 724%' and ' +
-      	# 'course_name not like '%SCHI%' and course_name not like '%CPX 702%' and ' +
-      	# 'course_name not like '%FAMP 705SD%' and course_name not like '%GMED 705AB%' and ' +
-      	# 'course_name not like '%IMEDMINF 705B%' and course_name not like '%MULT 705A%' and ' +
-      	# 'course_name not like '%MULT 705C%' and course_name not like '%MULT 705D%' and ' +
-      	# 'course_name not like '%MULT 705TI%' and course_name not like '%709Z%' and ' +
-      'users.id = competencies.user_id and ' +
-      "#{permission_group_title}_mspes.email = users.email " +
-      'order by users.full_name, competencies.start_date'
-
-    mspe_data = Competency.execute_sql(query).to_a
+    permission_group_title = PermissionGroup.find(permission_group_id.to_i).title.split(' ').last.gsub(/[()]/, '')
+      # query_select = ':student_uid, :user_id, :users.permission_group_id, :competencies.email, ' +
+      #   ':course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, ' +
+      #   ':prof_concerns, :comm_prof_concerns, :overall_summ_comm_perf, :add_comm_on_perform, :mspe, :clinic_exp_comment '
 
 
-  return mspe_data
+
+      # query_params = "'%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%', " +
+      #                "'%IMEDMINF 705B%', '%MULT 705A%', '%MULT 705C%', '%MULT 705D%', '%MULT 705TI%', '%709Z%'"
+
+    mspe_data = []
+    if permission_group_title == "Med23"
+      Med23Mspe.all.each do |mspe|
+         mspe = mspe.user.competencies.where(WHERE_QUERY, '%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%',
+         '%IMEDMINF 705B%', '%MULT 705A%', '%MULT 705C%', '%MULT 705D%', '%MULT 705TI%', '%709Z%').select(:id, :student_uid, :user_id, :email,
+           :course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, :prof_concerns, :mspe,
+         ).order(:user_id, :start_date)
+         mspe_data.push mspe
+      end
+    end
+    return mspe_data
 
   end
 

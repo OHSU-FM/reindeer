@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_one :ume_bls
 
   has_one :dashboard, dependent: :destroy
+  has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
 
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
@@ -35,6 +36,7 @@ class User < ActiveRecord::Base
   has_many :med19_competencies, inverse_of: :user, dependent: :destroy
   has_many :med20_competencies, inverse_of: :user, dependent: :destroy
   has_many :med21_competencies, inverse_of: :user, dependent: :destroy
+
 
   has_one  :cpx, dependent: :destroy
   has_many :usmle_exams, dependent: :destroy

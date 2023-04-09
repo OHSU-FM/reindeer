@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     collection do
       get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'
       get 'competency', action: :competency, controller: 'reports'
-      get 'mspe_data', action: :mspe_data, controller: 'reports'
+      get 'mspe', action: :mspe, controller: 'reports'
     end
   end
 

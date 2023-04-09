@@ -35,7 +35,7 @@
             <% if can? :crud, Dashboard %>
               <%= link_to '<i class="fa fa-home" style="color:#0C2D83"></i> Home'.html_safe,  auto_path, class: "btn btn-link"  %>
             <% end %>
-            <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt'].include? current_user.username) %>
+            <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'haedinge', 'shuforda'].include? current_user.username) %>
               <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Report
@@ -44,7 +44,7 @@
                   <%= link_to '<i aria-hidden="true"> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i aria-hidden="true"> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %>
                   <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda'].include? current_user.username %>
-                    <%= link_to '<i aria-hidden="true"> MSPE Data </i>'.html_safe, mspe_data_reports_path, target: '_blank', class: "dropdown-item" %>
+                    <%= link_to '<i aria-hidden="true"> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %>
                   <% end %>
                 </div>
               </div>

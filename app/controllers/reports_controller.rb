@@ -48,16 +48,21 @@ class ReportsController < ApplicationController
     end
   end
 
-  def mspe_data
+  def mspe
+    if params[:cohort].present? and params[:email].present?
+      #@mspe_data = hf_get_mspe_data(params[:cohort])
+      @mspe_data = hf_get_mspe_data_by_email(params[:email], params[:cohort])
+    end
+
     if params[:cohort].present?
-      @mspe_data = nil  #ZZhf_get_mspe_data(params[:cohort])
+      @students = User.where(permission_group_id: params[:cohort]).order(:full_name)
     end
 
     respond_to do |format|
       format.html
-
+      # format.js { render partial: 'mspe_data', status: 200 }
     end
-    render :mspe_data
+
   end
 
   def download_file
