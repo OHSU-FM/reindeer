@@ -40,7 +40,6 @@ class ReportsController < ApplicationController
           @comp_class_means[cohort_title] = class_mean
         end
       end
-
       respond_to do |format|
         format.html
         format.js { render action: 'competency_data', status: 200 }
@@ -49,26 +48,25 @@ class ReportsController < ApplicationController
   end
 
   def mspe
-    if params[:cohort].present? and params[:email].present?
+    @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
+    if params[:cohort].present? and  params[:email].present? and params[:email] != 'All'
       #@mspe_data = hf_get_mspe_data(params[:cohort])
-      @mspe_data = hf_get_mspe_data_by_email(params[:email], params[:cohort])
-    end
+      @student_email = params[:email]
+      @mspe_data, @mspe_filename = hf_get_mspe_data_by_email(params[:email], params[:cohort])
+    elsif params[:cohort].present? and  params[:email].present? and params[:email] == 'All'
+      @mspe_data, @mspe_filename = hf_get_mspe_data(params[:cohort])
 
-    if params[:cohort].present?
-      @students = User.where(permission_group_id: params[:cohort]).order(:full_name)
     end
 
     respond_to do |format|
       format.html
       # format.js { render partial: 'mspe_data', status: 200 }
     end
-
   end
 
   def download_file
       if params[:file_name].present?
         private_download params[:file_name]
-
       end
   end
 

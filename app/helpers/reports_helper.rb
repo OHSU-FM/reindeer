@@ -39,10 +39,10 @@ module ReportsHelper
     data_hash = {}
     users.each do |user|
       if user.username != 'bettybogus'
-        summary_data = FomExam.execute_sql('select id, user_id, course_code, summary_comp1, summary_comp2a, summary_comp2b,
+        summary_data = FomExam.execute_sql("select id, user_id, course_code, summary_comp1, summary_comp2a, summary_comp2b,
                         summary_comp3, summary_comp4, summary_comp5a, summary_comp5b,
                         ROUND((SUMMARY_COMP1+SUMMARY_COMP2A+SUMMARY_COMP2B+SUMMARY_COMP3+SUMMARY_COMP4+SUMMARY_COMP5A+SUMMARY_COMP5B)/7::numeric,2) AS Average
-                        from fom_exams where user_id=#{user.id} order by course_code').to_a
+                        from fom_exams where user_id=#{user.id} order by course_code").to_a
 
           data_hash = average_summary(summary_data, user)
           data_array.push data_hash
@@ -53,17 +53,52 @@ module ReportsHelper
     return data_array
   end
 
+  def model_exists? (model_name)
+    files = Dir[Rails.root + 'app/models/*.rb']
+    models = files.map{ |m| File.basename(m, '.rb').camelize }
+    if models.include? model_name
+      return true
+    else
+      return false
+    end
+  end
+
   def hf_get_mspe_data_by_email(email, permission_group_id)
     permission_group_title = PermissionGroup.find(permission_group_id.to_i).title.split(' ').last.gsub(/[()]/, '')
+    mspeTable = "#{permission_group_title}Mspe"
     mspe_data = []
-    if permission_group_title == "Med23"
-      mspe = Med23Mspe.find_by(email: email).user.competencies.where(WHERE_QUERY, '%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%',
+    if model_exists? (mspeTable)
+      mspe = mspeTable.constantize.find_by(email: email).competencies.where(WHERE_QUERY, '%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%',
       '%IMEDMINF 705B%', '%MULT 705A%', '%MULT 705C%', '%MULT 705D%', '%MULT 705TI%', '%709Z%').select(:id, :student_uid, :user_id, :email,
         :course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, :prof_concerns, :mspe,
       ).order(:user_id, :start_date)
       mspe_data.push mspe
-      return mspe_data
+      file_name = create_tab_delimited_file(permission_group_title, email, mspe_data)
+      return mspe_data, file_name
+    else
+      return mspe_data.push "Table #{mspeTable} is Not Created/Loaded Yet!"
     end
+  end
+
+  def create_tab_delimited_file(permission_group_title, email, mspe_data)
+    full_name = User.find_by(email: email).full_name.gsub(", ", "_") if email != 'All'
+    full_name = 'All' if email == 'All'
+
+    file_name = "#{Rails.root}/tmp/#{permission_group_title}_#{full_name}_mspe_data.txt"
+
+    CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+      csvfile << mspe_data.first.first.attributes.keys.map{|c| c.titleize}
+      mspe_data.each do |data|
+        data.each do |sub_data|
+          final_hash = JSON.parse(sub_data["final_grade"] )
+          sub_data["final_grade"] = final_hash["Grade"]
+          csvfile << sub_data.attributes.values
+
+        end
+      end
+    end
+    return File.basename(file_name)
+
   end
 
   def hf_get_mspe_data (permission_group_id)
@@ -71,8 +106,6 @@ module ReportsHelper
       # query_select = ':student_uid, :user_id, :users.permission_group_id, :competencies.email, ' +
       #   ':course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, ' +
       #   ':prof_concerns, :comm_prof_concerns, :overall_summ_comm_perf, :add_comm_on_perform, :mspe, :clinic_exp_comment '
-
-
 
       # query_params = "'%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%', " +
       #                "'%IMEDMINF 705B%', '%MULT 705A%', '%MULT 705C%', '%MULT 705D%', '%MULT 705TI%', '%709Z%'"
@@ -87,7 +120,11 @@ module ReportsHelper
          mspe_data.push mspe
       end
     end
-    return mspe_data
+    file_name = create_tab_delimited_file(permission_group_title, 'All', mspe_data)
+    total_count = mspe_data.count
+    mspe_data = []
+    mspe_data.push "No of Student Selected: #{total_count.to_s}"
+    return mspe_data, file_name
 
   end
 
@@ -107,8 +144,9 @@ module ReportsHelper
                       }
                 }
       )
+
       comp_class_means.keys.each do |key|
-          f.series(type: 'column', name: key, yAxis: 0, data: comp_class_means['#{key}'].values)
+          f.series(type: 'column', name: key, yAxis: 0, data: comp_class_means["#{key}"].values)
       end
 
       # ['#FA6735', '#3F0E82', '#1DA877', '#EF4E49']

@@ -179,7 +179,7 @@ class FomExamsController < ApplicationController
  private
 
  def set_resources
-   #@permission_groups = PermissionGroup.last(3) # get last 3 rows
+   @permission_groups = PermissionGroup.last(3) # get last 3 rows
    cohorts = PermissionGroup.where("id <> 7 and title like ?", "%Med%").select(:id, :title).order(:id).map(&:attributes)
    @cohort_titles = hf_reformat_cohort_data(cohorts)
 
