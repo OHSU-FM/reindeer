@@ -143,6 +143,7 @@ Rails.application.routes.draw do
   # end
 
   get '/search' => 'searches#search', as: 'search_searches'
+  get '/searches/download_file'
 
   resources :coaching, only: [:index]
   resources :rooms, only: [:show, :index]

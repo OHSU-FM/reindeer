@@ -35,6 +35,15 @@ class SearchesController < ApplicationController
     elsif params[:search] == "Wy'east"  #current_user.spec_program == "Wy'east"
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type='student' and spec_program like 'MD/Wy%'")
+    elsif params[:search].include? "Med"
+      @parameter = "'%" + params[:search] + "%'"
+      joins_query = "inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like #{@parameter} order by users.full_name"
+      @results = User.joins(joins_query).select(:id, :full_name, :username, :email, :sid, :coaching_type,
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date)
+
+      @file_name = hf_create_download_file(@results, params[:search])
+
+
     #     coach_search
     elsif !params[:search].downcase.include? "med18"
 
@@ -72,6 +81,12 @@ class SearchesController < ApplicationController
     # end
   end
 
+  def download_file
+      if params[:file_name].present?
+        private_download params[:file_name]
+      end
+  end
+
   private
 
    def set_resources
@@ -89,6 +104,10 @@ class SearchesController < ApplicationController
        @help = "<h4>Missing Help File!</h4".html_safe
      end
 
+   end
+
+   def private_download in_file
+      send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
    end
 
   def load_all_students cohorts

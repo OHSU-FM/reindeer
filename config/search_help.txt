@@ -26,6 +26,9 @@
     <tr>
     <td>Wy'east</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all Wy'east students</td>
     </tr>
+    <tr>
+    <td>Med26</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all students from the cohort. It is case sensitive. Eg. Med25, Med24, etc. </td>
+    </tr>
     </table>
   </div>
 </div>
