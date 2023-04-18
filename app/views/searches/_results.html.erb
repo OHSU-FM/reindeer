@@ -3,7 +3,7 @@
       <%= @results.html_safe %>
   <% elsif params[:search] == '?' or (params[:search].to_s == 'help' and !params[:search].nil?) %>
     <%= @results %>
-  <% elsif params[:search].include? "Med" %>
+  <% elsif !params[:search].nil? and params[:search].include? "Med" %>
     <%= render partial: 'cohort_listing', locals: {results: @results} %>
   <% else %>
     <% if @results.map{|r| r.full_name}.count > 6 and current_user.username != 'haedinge' %>

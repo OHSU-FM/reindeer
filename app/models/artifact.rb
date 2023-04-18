@@ -87,8 +87,8 @@ class Artifact < ApplicationRecord
   end
 
   def self.update_formative_feedback(row)
-    email = row["q1"].split(" - ").last
-    user = User.find_by(email: email)
+    # email = row["q1"].split(" - ").last
+    user = User.find_by(sid: row["sid"])
     if user.nil?
       return false
     else
@@ -103,6 +103,7 @@ class Artifact < ApplicationRecord
       row_hash = {}
       row_hash = row.to_hash
       row_hash.delete("question_set2")
+      row_hash.delete("sid")
       FormativeFeedback.where(response_id: row["response_id"]).first_or_create.update(row_hash)
 
     end
