@@ -214,12 +214,12 @@ class Artifact < ApplicationRecord
 			row["evaluator"] = evaluator
 			row["student_uid"] = sheet[r].first
 			row["full_name"] = sheet[r].second
-			row["final_grade"] = sheet[r].last
-			if row["final_grade"] == 'P'
-				row["final_grade"] = "{\"Grade\":\"Pass\"}"
-			else
-				row["final_grade"] = "{\"Grade\":\"Fail\"}"
-			end
+			row["final_grade"] = "{\"Grade\":\"Pass\"}"
+			# if row["final_grade"] == 'P'
+			# 	row["final_grade"] = "{\"Grade\":\"Pass\"}"
+			# else
+			# 	row["final_grade"] = "{\"Grade\":\"Fail\"}"
+			# end
 			row["mspe"] = "N/A"
 			row["feedback"] = "N/A"
 			#puts "processing " + row["full_name"]
@@ -242,8 +242,6 @@ class Artifact < ApplicationRecord
 	end
 
 	def self.insert_comp (row)
-		ActiveRecord::Base.logger = nil
-		ActiveRecord::Base.transaction do
 			begin
 				User.table_name = "users"
 				Competency.table_name = "competencies"
@@ -256,9 +254,9 @@ class Artifact < ApplicationRecord
 					row_hash = row.to_hash
           full_name = row_hash["full_name"]
 					row_hash.delete("full_name")
-
-					Competency.where(email: row["email"], course_id: row["course_id"]).first_or_create.update(row_hash)
+					Competency.where(user_id: row["user_id"], email: row["email"], course_id: row["course_id"]).first_or_create.update(row_hash)
           @log_data.push(row["course_name"] + " --> " + full_name.to_s + " is created in Competency table.")
+
           return false
 				 else
 					@log_data.push(" *** full_name: " + row["full_name"].to_s + " is not found in users table.")
@@ -271,7 +269,7 @@ class Artifact < ApplicationRecord
 				@log_data.push( row_hash.keys.inspect)
         return
 			end
-		end
+
 	end
 
   def self.read_competency_excel(artifact)

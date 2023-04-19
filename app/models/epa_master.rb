@@ -43,7 +43,7 @@ class EpaMaster < ApplicationRecord
         from eg_cohorts, users
         where eg_cohorts.email = users.email and
         eg_cohorts.permission_group_id = ? and
-        (eg_email1=? or eg_email2=?)",permission_group_id, current_user_email, current_user_email).to_a
+        (eg_email1=? or eg_email2=?) order by users.full_name",permission_group_id, current_user_email, current_user_email).to_a
 
     return results
 
