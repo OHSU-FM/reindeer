@@ -212,6 +212,23 @@ LABELS3 = {
     class_mean_series = avg_data.first.map{|s| s.second.to_s.to_d.truncate(2).to_f if s.first.include? component}.compact
     class_mean_series = check_pass_fail(class_mean_series)
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
+
+    if component == 'comp2a_hss'
+        count = selected_categories.count
+        for i in 0..count-1
+          if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
+            if student_series[i].instance_of?(Hash)
+              if (class_mean_series[i] != 0.0 or !class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
+               puts "class_mean: " + class_mean_series[i].to_s
+               selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+              end
+            elsif (class_mean_series[i] != 0.0) and (student_series[i] == 0.0)
+               selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            end
+           end
+          end
+    end
+
     height = 400
 
     if component == 'comp1_wk' and permission_group >= 20
@@ -239,8 +256,16 @@ LABELS3 = {
 
       f.yAxis [
          { tickInterval: 20,
-           title: {text: "<b>Score (%)</b>", margin: 20}
+           title: {text: "Score (%)", margin: 20,
+              style:  {
+                       fontWeight: 'bold',
+                       color: '#000000'
+                     }
+           }
+
          }
+
+
       ]
       f.plot_options(
         column: {

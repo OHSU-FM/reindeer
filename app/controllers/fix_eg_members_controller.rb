@@ -1,5 +1,6 @@
 class FixEgMembersController < ApplicationController
   layout 'full_width_csl'
+  protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!
   before_action :load_eg_cohorts, :set_resources
   include FixEgMembersHelper
@@ -29,7 +30,8 @@ class FixEgMembersController < ApplicationController
       @user = User.find_by(id: session[:user_id])
       load_epa_masters
       hf_update_reviewers(@epa_masters, params[:reviewer1], params[:reviewer2])
-      @user = User.find_by(id: session[:user_id])
+      hf_update_eg_cohorts(@user, @uniq_eg_hash, params[:reviewer1], params[:reviewer2])
+
       load_epa_masters
     end
     render :reviewer_update
@@ -49,26 +51,33 @@ class FixEgMembersController < ApplicationController
   end
 
   def process_eg_file
-
     if params[:artifact_id].present?
        @log_file = hf_process_eg_file(params[:artifact_id])
     end
-
     respond_to do |format|
       format.html
     end
+  end
 
+  def eg_assignment
+    if params[:uniq_cohort].present?
+      @eg_cohorts =  EgCohort.get_all_eg_cohorts(params[:uniq_cohort])
+    end
   end
 
   private
 
   def set_resources
-    @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
+    # @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
     @newest_cohort = EgCohort.pluck(:permission_group_id).uniq.max
-    @reviewer1 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name1).uniq.sort
-    @reviewer2 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name2).uniq.sort
-  end
 
+    @eg1 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name1, :eg_email1).uniq.sort.to_h
+    @eg2 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name2, :eg_email2).uniq.sort.to_h
+    @reviewer1 = (@eg1.keys + @eg2.keys).uniq.sort
+    @reviewer2 = (@eg1.keys + @eg2.keys).uniq.sort
+    @uniq_eg_hash = @eg1.merge(@eg2).uniq.to_h
+
+  end
 
   def load_eg_cohorts
     @all_cohorts ||= hf_load_eg_cohorts2

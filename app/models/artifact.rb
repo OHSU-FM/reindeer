@@ -87,8 +87,12 @@ class Artifact < ApplicationRecord
   end
 
   def self.update_formative_feedback(row)
-    # email = row["q1"].split(" - ").last
-    user = User.find_by(sid: row["sid"])
+    if row["sid"].nil?
+      email = row["q1"].split(" - ").last
+      user = User.find_by(email: email)
+    else
+      user = User.find_by(sid: row["sid"])
+    end
     if user.nil?
       return false
     else

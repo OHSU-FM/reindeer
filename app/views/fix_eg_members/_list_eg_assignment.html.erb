@@ -1,0 +1,17 @@
+<% if !@eg_cohorts.nil? %>
+    <table class="responsive nowrap table table-hover">
+
+      <% @eg_cohorts.first.keys.each do |header| %>
+        <th><%= header %></th>
+      <% end %>
+      <% @eg_cohorts.each do |data| %>
+        <tr>
+          <% data.each do |key, val| %>
+            <td> <%= val %> </td>
+          <% end %>
+        </tr>
+      <% end %>
+
+    </table>
+
+<% end %>

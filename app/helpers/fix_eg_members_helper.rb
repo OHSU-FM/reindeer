@@ -1,9 +1,18 @@
 module FixEgMembersHelper
 
+
   def hf_load_eg_cohorts2
     eg_cohorts = User.joins("inner join eg_cohorts on users.email = eg_cohorts.email").
     select(:full_name, :permission_group_id, :email, :eg_full_name1, :eg_email1, :eg_full_name2, :eg_email2, :user_id).map(&:attributes)
     return eg_cohorts
+  end
+
+  def hf_update_eg_cohorts(user, uniq_eg_hash, reviewer1, reviewer2)
+    if !reviewer1.nil? or !reviwer2.nil?
+      eg_email1 = uniq_eg_hash[reviewer1]
+      eg_email2 = uniq_eg_hash[reviewer2]
+      EgCohort.where(email: user.email).update(eg_email1: eg_email1, eg_email2: eg_email2, eg_full_name1: reviewer1, eg_full_name2: reviewer2)
+    end
   end
 
   def hf_update_reviewers(epa_master, reviewer1, reviewer2)

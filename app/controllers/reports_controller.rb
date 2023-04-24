@@ -48,19 +48,21 @@ class ReportsController < ApplicationController
   end
 
   def mspe
-    @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
-    if params[:cohort].present? and  params[:email].present? and params[:email] != 'All'
-      #@mspe_data = hf_get_mspe_data(params[:cohort])
-      @student_email = params[:email]
-      @mspe_data, @mspe_filename = hf_get_mspe_data_by_email(params[:email], params[:cohort])
-    elsif params[:cohort].present? and  params[:email].present? and params[:email] == 'All'
-      @mspe_data, @mspe_filename = hf_get_mspe_data(params[:cohort])
+    if current_user.coaching_type != 'student'
+      @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
+      if params[:cohort].present? and  params[:email].present? and params[:email] != 'All'
+        #@mspe_data = hf_get_mspe_data(params[:cohort])
+        @student_email = params[:email]
+        @mspe_data, @mspe_filename = hf_get_mspe_data_by_email(params[:email], params[:cohort])
+      elsif params[:cohort].present? and  params[:email].present? and params[:email] == 'All'
+        @mspe_data, @mspe_filename = hf_get_mspe_data(params[:cohort])
 
-    end
+      end
 
-    respond_to do |format|
-      format.html
-      # format.js { render partial: 'mspe_data', status: 200 }
+      respond_to do |format|
+        format.html
+        # format.js { render partial: 'mspe_data', status: 200 }
+      end
     end
   end
 
