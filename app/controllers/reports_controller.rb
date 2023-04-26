@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
 
   layout 'full_width_csl'
   protect_from_forgery prepend: true, with: :exception
-  authorize_resource :class => ReportsController
+  authorize_resource class: ReportsController
   before_action :authenticate_user!, :set_resources
   include ReportsHelper
   include CompetenciesHelper

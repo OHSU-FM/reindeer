@@ -91,9 +91,8 @@ class FixEgMembersController < ApplicationController
 
   def load_eg_cohorts
     @all_cohorts ||= hf_load_eg_cohorts2
-
-    @uniq_cohorts = PermissionGroup.where("title like '%Med%' and id >= ?", 13).select(:id, :title).order(:id)
-    # EgCohort.distinct.pluck(:permission_group_id).sort
+    eg_permission_group = EgCohort.distinct.pluck(:permission_group_id).sort
+    @uniq_cohorts = PermissionGroup.where(id: eg_permission_group).select(:id, :title).order(:id)
     #@uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
     @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort
     @uniq_eg_members = ["All"] + @uniq_eg_members
