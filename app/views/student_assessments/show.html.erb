@@ -5,36 +5,31 @@
     <div class="card-body">
       <div class="row" %>
         <% if current_user.dean_or_higher? and current_user.spec_program.to_s == '' %>
-              <span class="float: left" >
-                 <%= form_tag(student_assessments_path, method: "get",  style: "float: left; display: block") do %>
-                    <%= label_tag :Cohort %>
-                    <%= select_tag :id, options_for_select(@cohorts_menu.collect{|s| [s["title"], s["id"]]}, selected: params[:id]),
-                     prompt: "Please Select a Cohort", onchange: "this.form.submit();"  %>
-
-                   <% if !@students.nil? %>
-                     <span class="float: left">
-                          <%= label_tag :Student %>
-                          <%= select_tag :email, options_for_select(@students.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
-                            prompt: "Please Select a student", onchange: "this.form.submit();"   %>
-
-                     </span>
-                   <% end %>
-
+            <span class="float: left" >
+               <%= form_tag(student_assessments_path, method: "get",  style: "float: left; display: block") do %>
+                  <%= label_tag :Cohort %>
+                  <%= select_tag :id, options_for_select(@cohorts_menu.collect{|s| [s["title"], s["id"]]}, selected: params[:id]),
+                   prompt: "Please Select a Cohort", onchange: "this.form.submit();"  %>
+                 <% if !@students.nil? %>
+                   <span class="float: left">
+                        <%= label_tag :Student %>
+                        <%= select_tag :email, options_for_select(@students.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
+                          prompt: "Please Select a student", onchange: "this.form.submit();"   %>
+                   </span>
                  <% end %>
-              </span>
+               <% end %>
+            </span>
           <% elsif current_user.dean_or_higher? and (current_user.spec_program.to_s == 'PhD' or current_user.spec_program.to_s == 'MPH') %>
-                <%= form_tag(student_assessments_path, method: "get",  style: "float: left; display: block") do %>
-                    <% if !@students.nil? %>
-                      <span class="float: left">
-                           <%= label_tag :Student %>
-                           <%= select_tag :email, options_for_select(@students.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
-                             prompt: "Please Select a student", onchange: "this.form.submit();"   %>
-
-                      </span>
-                    <% end %>
-                <% end %>
+            <%= form_tag(student_assessments_path, method: "get",  style: "float: left; display: block") do %>
+              <% if !@students.nil? %>
+                <span class="float: left">
+                   <%= label_tag :Student %>
+                   <%= select_tag :email, options_for_select(@students.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
+                     prompt: "Please Select a student", onchange: "this.form.submit();"   %>
+                </span>
+              <% end %>
+            <% end %>
           <% end %>
-
       </div>
       <br />
       <div class="row">
@@ -42,7 +37,6 @@
           <%= render partial: "searches/results" %>
         <% end %>
       </div>
-
     </div>
   </div>
 </div>

@@ -32,6 +32,7 @@ class Ability
     cannot :alter, LimeGroup
     cannot :alter, LimeQuestion
     cannot :alter, LimeAnswer
+
   end
 
   # Permissions for all users (logged in or not)
@@ -165,6 +166,10 @@ class Ability
     can :modify, Coaching::Meeting do |m|
       m.user == user
     end
+    cannot :read, EpaMaster
+    cannot :read, EgCohort
+    cannot :read, EpaReview
+    cannot [:index, :competency, :mspe, :download_file], ReportsController
   end
 
   def coach_permissions user
@@ -183,5 +188,9 @@ class Ability
     can :read, Student
     can :read, Coaching::Goal
     can :read, Coaching::Meeting
+  end
+
+  def admin_permissions user
+    can :manage, :all
   end
 end

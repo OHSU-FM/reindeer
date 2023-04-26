@@ -1,5 +1,18 @@
 module FixEgMembersHelper
 
+  def hf_write_eg_assignment_data(eg_cohorts, permission_group_id)
+    permission_group_title = PermissionGroup.find(permission_group_id).title.split(" ").last.gsub(/[()]/, "")
+    file_name = "#{Rails.root}/tmp/#{permission_group_title}_eg_assignment.txt"
+
+    CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+      csvfile << eg_cohorts.first.keys
+      eg_cohorts.each do |data|
+        csvfile << data.values
+      end
+    end
+    return File.basename(file_name)
+  end
+
 
   def hf_load_eg_cohorts2
     eg_cohorts = User.joins("inner join eg_cohorts on users.email = eg_cohorts.email").

@@ -1,5 +1,6 @@
 class FixEgMembersController < ApplicationController
   layout 'full_width_csl'
+  authorize_resource class: FixEgMembersController
   protect_from_forgery prepend: true, with: :exception
   before_action :authenticate_user!
   before_action :load_eg_cohorts, :set_resources
@@ -62,7 +63,14 @@ class FixEgMembersController < ApplicationController
   def eg_assignment
     if params[:uniq_cohort].present?
       @eg_cohorts =  EgCohort.get_all_eg_cohorts(params[:uniq_cohort])
+      @eg_assignment_filename = hf_write_eg_assignment_data(@eg_cohorts, params[:uniq_cohort])
     end
+  end
+
+  def download_file
+      if params[:file_name].present?
+        private_download params[:file_name]
+      end
   end
 
   private
@@ -70,13 +78,15 @@ class FixEgMembersController < ApplicationController
   def set_resources
     # @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
     @newest_cohort = EgCohort.pluck(:permission_group_id).uniq.max
-
     @eg1 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name1, :eg_email1).uniq.sort.to_h
     @eg2 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name2, :eg_email2).uniq.sort.to_h
     @reviewer1 = (@eg1.keys + @eg2.keys).uniq.sort
     @reviewer2 = (@eg1.keys + @eg2.keys).uniq.sort
     @uniq_eg_hash = @eg1.merge(@eg2).uniq.to_h
+  end
 
+  def private_download in_file
+     send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
   end
 
   def load_eg_cohorts

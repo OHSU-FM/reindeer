@@ -1,6 +1,8 @@
 <% if !@eg_cohorts.nil? %>
+    <br />
+    <h5>EG Assignment -Click here to Download
+    <%= link_to ('<i class="fa fa-download"></i>').html_safe, fix_eg_members_download_file_path(file_name: @eg_assignment_filename) %></h5>
     <table class="responsive nowrap table table-hover">
-
       <% @eg_cohorts.first.keys.each do |header| %>
         <th><%= header %></th>
       <% end %>
