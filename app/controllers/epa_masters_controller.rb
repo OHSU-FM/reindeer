@@ -1,6 +1,6 @@
 class EpaMastersController < ApplicationController
   layout 'full_width_csl'
-  load_and_authorize_resource    
+  #authorize_resource class: EpaMastersController
   before_action :authenticate_user!
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
   before_action :load_eg_cohorts, :set_resources
