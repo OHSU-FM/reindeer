@@ -32,7 +32,7 @@ class UsersController < ApplicationController
   def save_update_loa
     @user = params[:user]
     if !@user["uuid"].nil?
-      user = User.find_by(uuid: @user["uuid"]).update(full_name: @user["full_name"], spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
+      user = User.find_by(uuid: @user["uuid"]).update(sid: @user["sid"], full_name: @user["full_name"], spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
              prev_permission_group_id: @user["prev_permission_group_id"])
       if user
         redirect_to main_app.dashboards_path, notice: 'Upldated Student LOA Data!'
@@ -47,7 +47,11 @@ class UsersController < ApplicationController
   def update_loa
     # allow user to update password (unless ldap)
     @permission_groups = PermissionGroup.where("title like ? ", '%Student%').sort
-    @user = User.find_by(sid: params[:sid].to_s)
+    if params[:sid].present?
+      @user = User.find_by(sid: params[:sid].to_s)
+    elsif params[:email].present?
+      @user = User.find_by(email: params[:email])
+    end
     render :update_loa
   end
 

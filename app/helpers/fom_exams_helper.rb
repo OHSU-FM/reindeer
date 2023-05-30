@@ -219,7 +219,7 @@ LABELS3 = {
           if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
             if student_series[i].instance_of?(Hash)
               if (class_mean_series[i] != 0.0 or !class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
-               puts "class_mean: " + class_mean_series[i].to_s
+               #puts "class_mean: " + class_mean_series[i].to_s
                selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
               end
             elsif (class_mean_series[i] != 0.0) and (student_series[i] == 0.0)
@@ -227,6 +227,12 @@ LABELS3 = {
             end
            end
           end
+    end
+
+    if component.include? 'summary'
+      if (class_mean_series[1] != 0.0) and (student_series[1] <= 75.0)
+         selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+      end
     end
 
     height = 400
@@ -253,7 +259,6 @@ LABELS3 = {
 
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
       f.colors(["#7EFF5E", "#6E92FF"])
-
       f.yAxis [
          { tickInterval: 20,
            title: {text: "Score (%)", margin: 20,
@@ -262,10 +267,7 @@ LABELS3 = {
                        color: '#000000'
                      }
            }
-
          }
-
-
       ]
       f.plot_options(
         column: {
