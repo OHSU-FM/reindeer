@@ -215,22 +215,23 @@ LABELS3 = {
 
     if component == 'comp2a_hss'
         count = selected_categories.count
+
         for i in 0..count-1
           if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
             if student_series[i].instance_of?(Hash)
-              if (class_mean_series[i] != 0.0 or !class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
-               #puts "class_mean: " + class_mean_series[i].to_s
+              if (categories["course_code"] !='4-CPR' and !class_mean_series[i][:y].nil? and (student_series[i][:y].nil? or student_series[i][:y] == 0))
                selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+             elsif categories["course_code"] =='4-CPR' and (class_mean_series[i] != 0.0) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
+                    selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
               end
-            elsif (class_mean_series[i] != 0.0) and (student_series[i] == 0.0)
-               selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+
             end
            end
           end
     end
 
     if component.include? 'summary'
-      if (class_mean_series[1] != 0.0) and (student_series[1] <= 75.0)
+      if (categories["course_code"] == '4-CPR') and (class_mean_series[1] != 0.0) and (student_series[1] <= 75.0)
          selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
       end
     end
