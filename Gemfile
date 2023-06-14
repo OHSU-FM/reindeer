@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ##############################
 gem "bundler", '~>2.0'
 gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
-gem "rdoc", '~> 5.0', '< 6.4.0'
+gem "rdoc", '~>6.1.2.1' #'~> 5.0', '< 6.4.0'
 gem "psych", '< 4'
 gem 'sprockets', '< 4'
 gem 'bcrypt'
@@ -42,7 +42,7 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-gem 'bootstrap'#, '~> 4.0'
+gem 'bootstrap'#, '~> 4.4.0'
 gem "jbuilder", '~> 2.5'
 gem "popper_js", "~> 1.14.3"
 #gem "bootstrap-sass"   #, '~> 3.4.1'

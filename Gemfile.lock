@@ -348,7 +348,7 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdoc (5.1.0)
+    rdoc (6.1.2.1)
     redcarpet (3.6.0)
     redis (4.1.4)
     regexp_parser (2.8.1)
@@ -507,7 +507,7 @@ DEPENDENCIES
   rails-ujs (~> 0.1.0)
   rails_admin
   rails_layout
-  rdoc (~> 5.0, < 6.4.0)
+  rdoc (~> 6.1.2.1)
   redcarpet
   redis (~> 4.1.0)
   rspec-rails
