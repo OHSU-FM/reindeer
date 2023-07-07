@@ -414,11 +414,11 @@ class User < ActiveRecord::Base
   end
 
   private
-
-  def set_default_values
-    return unless room.nil?
-    if !self.id.nil?
-      Room.create(discussable: self, identifier: "student_room_#{self.id}")
-    end
-  end
+  # commented out on 7/6/2023 as message/room was not used since UME disolved Coaching/Student advising
+  # def set_default_values
+  #   return unless room.nil?
+  #   if !self.id.nil?
+  #     Room.create(discussable: self, identifier: "student_room_#{self.id}")
+  #   end
+  # end
 end
