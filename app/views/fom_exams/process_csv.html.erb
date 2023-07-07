@@ -1,11 +1,11 @@
 
 <br />
+<%= link_to 'Back to Main Page', fom_exams_user_path(uuid: current_user.uuid, action: 'index')%>
 <% if !@log_results.blank? %>
   <h4> Exams are updated! </h4>
   <br />
   <% @log_results.each do |result| %>
-    <%= result %>
-    <hr>
+    <%= result %><br />
   <% end %>
 <% else %>
   <br />

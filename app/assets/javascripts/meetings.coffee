@@ -127,6 +127,7 @@ modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  $('#IndividualAdvisorRpt').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $("#meeting-submit").prop("disabled", true)
 
   $('#EventsTable').hide()
@@ -138,15 +139,6 @@ $(document).ready ->
         row.show()
     return
   #$('#EventsTable').DataTable()
-  $('#newMeetingButton').on 'click', ->
-    existMeetingForm = $("#MeetingForm")[0]
-    if (existMeetingForm != null)
-      $("#MeetingForm")[0].reset();
-      $('#coaching_meeting_advisor_id').val("")
-    modalHtml = $('#newMeetingModal').html()
-    #alert("Inside newMeetingButton!")
-    return
-
   #-- Disabled the code below as it causes subtle errors on 9/9/2022
   # it supposed to prevent duplicate appointment
 
@@ -166,12 +158,6 @@ $(document).ready ->
     #   alert("The Appointment is NOT AVAILABLE, please select another one!")
     #console.log("data-advisor-id: " + dataValue)
     return
-
-    $('#MeetingForm').on 'submit', (e) ->
-      e.preventDefault
-      if e.result == true
-        alert 'This form was submitted!'
-      return
 
     # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
     #     $("#meeting-submit").prop("disabled", true)
@@ -331,12 +317,12 @@ $(document).ready ->
     dataset.each ->
       row = $(this)
       colAdvisor = row.find('td').eq(1).text().split(" - ")
-      console.log("colAdvisor[0]: " + colAdvisor[0] + " colAdvisor[1]: " + colAdvisor[1])
+    #  console.log("colAdvisor[0]: " + colAdvisor[0] + " colAdvisor[1]: " + colAdvisor[1])
       colDate = row.find('td').eq(2).text().split(" - ")
       row.show()
       found_dean = colAdvisor[0].indexOf("Assist Dean")      #colAdvisor[0] may contain 'Assist Dean'
 
-      if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == 'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
+      if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == selectedAdvisorText[0])   #'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
         row.show()
       else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
         # console.log("** colAdvisor[0]: " + colAdvisor[0])

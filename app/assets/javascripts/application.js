@@ -75,4 +75,4 @@
 //= require fullcalendar
 //= require events
 //= require meetings
-//= require reports 
+//= require reports

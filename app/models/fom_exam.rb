@@ -77,15 +77,16 @@ class FomExam < ApplicationRecord
       total_count += 1
       if !row["email"].blank?
         FomExam.update_exam(row, yes_updated)
-        row_to_hash = row.to_hash
+        #row_to_hash = row.to_hash
         if yes_updated
           row_to_hash.store("status", " --> Updated")
           no_updated += 1
+          log_results.push "Created or Updated ==> #{row["full_name"]}"
         else
           row_to_hash.store("status", " --> NOT Updated")
           no_not_updated += 1
+          log_results.push "*** Not Created or Updated ==> #{row["full_name"]}"
         end
-        log_results.push row_to_hash
       end
     end
     attachment = ActiveStorage::Attachment.find(attachment_id)

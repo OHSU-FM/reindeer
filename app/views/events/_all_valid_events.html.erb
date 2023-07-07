@@ -1,15 +1,14 @@
-<p style="color:purple"><b><i>Search the table for Names (lastName, firstName):</b></i></p>
 <!-- <input class="form-control" id="myInput" type="text" placeholder="LastName, FirstName..."> -->
  <input type="hidden" id="searchValue" value='<%= "#{@advisor_name}" %>'>
 
  <% # =will_paginate @events %>
-<table class="responsive nowrap table table-hover" data-toggle="table" id="all_events_table" data-sort="true" data-url="<%= url_for(format: :json) %>">
+<table class="table-responsive nowrap table-sm table-hover" data-toggle="table" id="all_events_table" data-sort="true" data-url="<%= url_for(format: :json) %>">
   <thead class="filters">
       <th data-data="title">Title</th>
       <th data-data="description">Description</th>
       <th data-data="start_date">Start date</th>
       <th data-data="end_date">End date</th>
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+      <th data-data="function">Function</th>
   </thead>
 
   <% @events.each do |event| %>
@@ -21,8 +20,8 @@
         <td><%= link_to(event.title, coaching_student_path(student), target: '_blank') %></td>
       <% end %>
       <td><%= event.description %></td>
-      <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %P - %A") %></td>
-      <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %P - %A")%></td>
+      <td><%= event.start_date.strftime("%m/%d/%Y %H:%M %P - %A") %></td>
+      <td><%= event.end_date.strftime("%m/%d/%Y %H:%M %P - %A")%></td>
       <td><%= link_to 'Show', event %> /
         <%= link_to 'Edit', edit_event_path(event) %> /
         <%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>

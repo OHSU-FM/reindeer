@@ -1,10 +1,45 @@
 module SearchesHelper
 
+  def hf_check_aes_key
+    if session[:aes_key].nil?
+      aes_key = AES.key
+      session[:aes_key] = aes_key
+    end
+
+  end
+
+  def hf_create_download_file(results, permission_group_title)
+    file_name = "#{Rails.root}/tmp/#{permission_group_title}_students.txt"
+    CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+      #csvfile << results[0].attributes.keys
+      csvfile << ["Student", "Student Email", "UID", "Current Cohort", "Previous Cohort", "Program Status", "Matriculated Date"]
+      results.each do |result|
+          # result.permission_group_id = result.permission_group.title.to_s
+          # result.prev_permission_group_id = hf_get_permission_title(result.prev_permission_group_id)
+          values_array = []
+          values_array << result.full_name
+          values_array << result.email
+          values_array << result.sid
+          values_array << result.permission_group.title.to_s
+          values_array << hf_get_permission_title(result.prev_permission_group_id)
+          values_array << result.spec_program
+          if !result.matriculated_date.nil?
+            values_array << result.matriculated_date.strftime("%F")
+          else
+            values_array << result.matriculated_date
+          end
+          csvfile << values_array
+      end
+    end
+
+    return File.basename(file_name)
+  end
+
   def hf_get_permission_title(permission_group_id)
     if permission_group_id.nil?
       return ""
     else
-      PermissionGroup.find(permission_group_id).title
+      return PermissionGroup.find(permission_group_id).title
     end
   end
 
@@ -34,8 +69,10 @@ module SearchesHelper
     data = {}
     students = User.where(permission_group_id: cohort_id)
     students.each do |student|
-      total_count_wbas = User.find_by(sid: student.sid).epas.count
-      data.store(student.full_name, total_count_wbas)
+      if student.sid != 'U00999999'
+        total_count_wbas = User.find_by(sid: student.sid).epas.count
+        data.store(student.full_name, total_count_wbas)
+      end
     end
     return data
   end
@@ -54,7 +91,7 @@ module SearchesHelper
         #arr = result.rows.flatten  # the array is sorted DESC
         #max = arr.first
         #min = arr.last
-        cohort_count = User.where(permission_group_id: permission_group_id).count
+        cohort_count = User.where(permission_group_id: permission_group_id).count #excludes BettyBogus
         ave = wba_count_hash.values.sum.to_f/cohort_count.round(2)
         med = median(wba_count_hash.values).round(2)
         return ave, med, cohort_title
@@ -102,7 +139,7 @@ module SearchesHelper
 
   def hf_exists_in_FomExam(user_id)
     block_array = []
-    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
+    blocks = FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code, id ASC').uniq
     if blocks.empty?
       blocks = Med22FomExam.where(user_id: user_id).select(:course_code, :permission_group_id).order('course_code ASC').uniq
       if blocks.empty?

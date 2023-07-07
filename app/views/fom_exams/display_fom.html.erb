@@ -15,9 +15,12 @@
       <div class="card-body">
         <div class="faq-section">
           <div class="row justify-content-center">
+          <% if @block_desc.include? "Renal" %>
+            <div class="col-lg-12">
+          <% else %>
             <div class="col-md-8">
+          <% end %>
               <div id="accordion">
-
                   <div class="card">
                     <div class="card-header" role="tab" id="HeadingStudentInfo">
                       <h5 class="mb-0" >
@@ -38,6 +41,9 @@
                             </tr>
                             <tr>
                               <td>Student UID</td><th><%= @student_uid %></th>
+                            </tr>
+                            <tr>
+                              <td>Cohort</td><th><%= @student_cohort_title %></th>
                             </tr>
                           </tbody>
                         </table>

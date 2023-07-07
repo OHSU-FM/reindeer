@@ -1,0 +1,32 @@
+<div class="card">
+   <div class="card-body">
+    <table id="IndividualAdvisorRpt" class="table table-striped table-responsive" style="width:100%">
+      <thead>
+        <tr>
+          <th>Created At</th>
+          <th>Student</th>
+          <th scope="col">Primary Reason</th>
+          <th scope="col">Status</th>
+          <th scope="col">Scheduled Apppointment</th>
+          <th score="col">Advisor</th>
+          <th score="col">Advisor Notes</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% meetings.each do |meeting| %>
+          <tr>
+            <td><%= meeting.created_at.strftime("%m/%d/%Y") %></td>
+            <td><%= link_to(meeting.user.full_name + ' - ' + hf_get_cohort(meeting.user), coaching_student_path(meeting.user), target: '_blank') %></td>
+            <td><%= hf_format_subjects(meeting.subject) %></td>
+            <td><%= meeting.m_status %></td>
+            <% schedule_dateTime = hf_get_start_time(meeting.event_id) %>
+            <td><%= schedule_dateTime == "N/A" ? "N/A" : schedule_dateTime.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
+            <td><%= hf_get_advisor(meeting.advisor_id) %> </td>
+            <td><%= meeting.notes %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

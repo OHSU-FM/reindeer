@@ -1,7 +1,7 @@
 <b> Student </b>
 <select id="student-select" onchange="window.location=this.value">
   <% if !@students.nil? %>
-      <% if current_user.coaching_type == 'dean' %>
+      <% if current_user.coaching_type == 'dean' or current_user.coaching_type == 'admin' %>
         <% @students = @students.select{|s| s if !s["full_name"].nil? } %>
         <% @students = @students.sort_by{|s| s["full_name"]} %>
       <% end %>

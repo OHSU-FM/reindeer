@@ -64,4 +64,7 @@ Rails.application.config.assets.precompile += %w( print.css
     advisors.css
     jquery.contextmenu/dist/jquery.contextMenu.css
     jquery.contextmenu/dist/jquery.contextMenu.js
+    bootstrap.min.js
+    popper.js
+    fix_eg_members.css
    )

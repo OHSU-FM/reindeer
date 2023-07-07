@@ -1,6 +1,8 @@
 class ReportsController < ApplicationController
+
   layout 'full_width_csl'
   protect_from_forgery prepend: true, with: :exception
+  #authorize_resource class: ReportsController
   before_action :authenticate_user!, :set_resources
   include ReportsHelper
   include CompetenciesHelper
@@ -24,14 +26,22 @@ class ReportsController < ApplicationController
       @comp_class_means = {}
 
       @non_clinical_course_arry ||= hf_get_non_clinical_courses2
-      @cohortChecked.each do |cohort_id|
-        cohort_title = PermissionGroup.find(cohort_id).title.scan(/\((.*)\)/).first.first
-        comp_unfiltered = Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
-        class_mean = hf_competency_class_mean2(comp_unfiltered)
-        #class_mean.store("Cohort", cohort_title)
-        @comp_class_means[cohort_title] = class_mean
-      end
 
+      @cohortChecked.each do |cohort_id|
+        if cohort_id.to_i >= 16
+          cohort_title = PermissionGroup.find(cohort_id.to_i).title.scan(/\((.*)\)/).first.first
+          comp_unfiltered = Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
+          class_mean = hf_competency_class_mean2(comp_unfiltered)
+          #class_mean.store("Cohort", cohort_title)
+          @comp_class_means[cohort_title] = class_mean
+        else
+          cohort_title = PermissionGroup.find(cohort_id.to_i).title.scan(/\((.*)\)/).first.first
+          comp_unfiltered = get_old_data(cohort_id.to_i)
+          class_mean = hf_competency_class_mean2(comp_unfiltered)
+          #class_mean.store("Cohort", cohort_title)
+          @comp_class_means[cohort_title] = class_mean
+        end
+      end
       respond_to do |format|
         format.html
         format.js { render action: 'competency_data', status: 200 }
@@ -39,17 +49,35 @@ class ReportsController < ApplicationController
     end
   end
 
+  def mspe
+    if current_user.coaching_type != 'student'
+      @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
+      if params[:cohort].present? and  params[:email].present? and params[:email] != 'All'
+        #@mspe_data = hf_get_mspe_data(params[:cohort])
+        @student_email = params[:email]
+        @mspe_data, @mspe_filename = hf_get_mspe_data_by_email(params[:email], params[:cohort])
+      elsif params[:cohort].present? and  params[:email].present? and params[:email] == 'All'
+        @mspe_data, @mspe_filename = hf_get_mspe_data(params[:cohort])
+
+      end
+
+      respond_to do |format|
+        format.html
+        # format.js { render partial: 'mspe_data', status: 200 }
+      end
+    end
+  end
+
   def download_file
       if params[:file_name].present?
         private_download params[:file_name]
-
       end
   end
 
   private
 
   def set_resources
-    @permission_groups = PermissionGroup.last(5) # get last 3 rows
+    @permission_groups ||= PermissionGroup.where("title like ?", "%Student%").order(:id) # get last 3 rows
   end
 
   def private_download in_file
@@ -65,6 +93,20 @@ class ReportsController < ApplicationController
         csvfile << row.values
       end
     end
+  end
+
+  def get_old_data(cohort_id)
+    case cohort_id
+    when 3
+      comp_data = Med18Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
+    when 5
+      comp_data = Med19Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
+    when 6
+      comp_data = Med20Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
+    when 13
+      comp_data = Med21Competency.joins(:user).where(permission_group_id: cohort_id).map(&:attributes)
+    end
+    return comp_data
   end
 
 

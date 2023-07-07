@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get 'fix_eg_members/index'
+  get 'fix_eg_members/reviewer_update'
+  get 'fix_eg_members/process_eg_file'
+  get 'fix_eg_members/eg_assignment'
+  get 'fix_eg_members/download_file'
 
   get 'reports/index'
   resources :fom_remeds
@@ -8,6 +13,7 @@ Rails.application.routes.draw do
     collection do
       get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'
       get 'competency', action: :competency, controller: 'reports'
+      get 'mspe', action: :mspe, controller: 'reports'
     end
   end
 
@@ -18,6 +24,8 @@ Rails.application.routes.draw do
       get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
       get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
+      get 'resend_calendar_invite', action: :resend_calendar_invite, controller: 'events', to: 'events#resend_calendar_invite'
+      get 'resend_invite', action: :resend_invite, controller: 'events', to: 'events#resend_invite'
     end
   end
   #get 'student_assessments/index'
@@ -102,6 +110,8 @@ Rails.application.routes.draw do
        get 'step_2_move_files'
        get 'process_preceptor_eval'
        get 'process_formative_feedback'
+       get 'process_comp_excel'
+       get 'process_bls_excel'
      end
   end
   namespace :coaching do
@@ -135,6 +145,7 @@ Rails.application.routes.draw do
   # end
 
   get '/search' => 'searches#search', as: 'search_searches'
+  get '/searches/download_file'
 
   resources :coaching, only: [:index]
   resources :rooms, only: [:show, :index]

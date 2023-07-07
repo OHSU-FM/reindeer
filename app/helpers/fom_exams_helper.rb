@@ -70,6 +70,25 @@ LABELS3 = {
 }
 
 
+  def encrypt_data (crypt, in_data)
+    #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
+    encrypted_data = crypt.encrypt_and_sign(in_data)
+  end
+
+  def decrypt_data (crypt, encrypted_data)
+    #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
+    decrypted_back = crypt.decrypt_and_verify(encrypted_data)
+  end
+  def hf_reformat_cohort_data(cohorts)
+    temp_cohort = {}
+    cohorts.each do |cohort|
+      cohort_id = cohort.values.first
+      cohort_title = cohort.values.second.split(' ').last.gsub(/[()]/, '')
+      temp_cohort.store(cohort_id, cohort_title)
+    end
+    return temp_cohort
+
+  end
 
   def hf_get_block_desc(in_code)
     return BLOCKS[in_code]
@@ -128,9 +147,7 @@ LABELS3 = {
         end
       end
     end
-
     return failed_comp
-
   end
 
   def check_pass_fail(data_series)
@@ -195,6 +212,30 @@ LABELS3 = {
     class_mean_series = avg_data.first.map{|s| s.second.to_s.to_d.truncate(2).to_f if s.first.include? component}.compact
     class_mean_series = check_pass_fail(class_mean_series)
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
+
+    if component == 'comp2a_hss'
+        count = selected_categories.count
+
+        for i in 0..count-1
+          if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
+            if student_series[i].instance_of?(Hash)
+              if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
+               selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+             elsif categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
+                    selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+              end
+
+            end
+           end
+          end
+    end
+
+    if component.include? 'summary'
+      if (categories["course_code"] == '4-CPR') and (class_mean_series[1] != 0.0) and (student_series[1] <= 75.0)
+         selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+      end
+    end
+
     height = 400
 
     if component == 'comp1_wk' and permission_group >= 20
@@ -219,10 +260,14 @@ LABELS3 = {
 
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
       f.colors(["#7EFF5E", "#6E92FF"])
-
       f.yAxis [
          { tickInterval: 20,
-           title: {text: "<b>Score (%)</b>", margin: 20}
+           title: {text: "Score (%)", margin: 20,
+              style:  {
+                       fontWeight: 'bold',
+                       color: '#000000'
+                     }
+           }
          }
       ]
       f.plot_options(

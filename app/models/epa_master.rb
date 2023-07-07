@@ -1,14 +1,61 @@
 class EpaMaster < ApplicationRecord
-  belongs_to :user, inverse_of: :epa_masters
+  belongs_to :user, foreign_key: :user_id, inverse_of: :epa_masters
   has_many   :epa_reviews, as: :reviewable,  dependent: :destroy
   accepts_nested_attributes_for :epa_reviews
 
-  def self.update_not_yet_and_grounded_epas(cohort_group)  #pemission_group looks like 'Med22'
+  def full_name
+    self.User.find(user_id)
+  end
 
-    if cohort_group.nil? or cohort_group.include? 'Case'
+  rails_admin do
+    list do
+      field :id
+      field :epa do
+        searchable false
+      end
+      field :status do
+        searchable false
+      end
+      field :user do
+        pretty_value do
+          value.full_name
+        end
+        searchable true
+      end
+    end
+    # ...
+  end
+
+  def self.get_all_eg_cohorts(permission_group_id)
+    results = EpaMaster.execute_sql("select user_id, eg_cohorts.permission_group_id, users.full_name,
+        eg_cohorts.email, eg_full_name1, eg_email1, eg_full_name2, eg_email2
+        from eg_cohorts, users
+        where eg_cohorts.email = users.email and
+        eg_cohorts.permission_group_id = ? order by users.full_name", permission_group_id.to_i).to_a
+
+    return results
+
+  end
+
+  def self.get_eg_cohort(permission_group_id, current_user_email)
+    results = EpaMaster.execute_sql("select user_id, eg_cohorts.permission_group_id, users.full_name,
+        eg_cohorts.email, eg_full_name1, eg_email1, eg_full_name2, eg_email2
+        from eg_cohorts, users
+        where eg_cohorts.email = users.email and
+        eg_cohorts.permission_group_id = ? and
+        (eg_email1=? or eg_email2=?) order by users.full_name",permission_group_id, current_user_email, current_user_email).to_a
+
+    return results
+
+  end
+
+  def self.update_not_yet_and_grounded_epas(permission_group_id)  #pemission_group looks like 'Med22'
+
+    if permission_group_id.nil? or permission_group_id.include? 'Case'
       return
     end
-    permission_group_id = PermissionGroup.where("title like ?", "%#{cohort_group}%").first.id
+    #permission_group_id = PermissionGroup.find(permission_group_id).id
+    permission_group_id = permission_group_id.to_i
 
     result = EpaMaster.execute_sql("update epa_reviews set badge_decision1='Badge'
        from  epa_masters, users

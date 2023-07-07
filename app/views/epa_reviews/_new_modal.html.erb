@@ -10,21 +10,23 @@
           </button>
         </div>
           <div class="modal-body">
+
               <!-- Nav tabs -->
-              <ul id="EGReviewTabs" class="nav nav-pills" role="tablist">
-                  <li class="bold-italic nav-item waves-effect waves-light">
-                    <a class="nav-link active" data-toggle="tab" id="EGReview-Tab" href="#EGReviewTab"  role="tab" aria-controls="EGReviewTab" aria-selected="false" ><b>EG Review</b></a>
+              <ul id="EGReviewTabs" class="nav nav-tabs" role="tablist">
+                  <li class="nav-item ">
+                    <a class="nav-link active" data-toggle="tab" href="#EGReviewTab" role="tab" ><b>EG Review</b></a>
                   </li>
-                  <li class="bold-italic nav-item waves-effect waves-light">
-                    <a class="nav-link" data-toggle="tab" id="Evidence-Tab" href="#EvidenceTab" role="tab" aria-controls="EvidenceTab" aria-selected="false"><b>Evidence</b></a>
+                  <li class="nav-item ">
+                    <a class="nav-link" data-toggle="tab" href="#EvidenceTab" role="tab" ><b>Evidence</b></a>
                   </li>
-                  <li class="bold-italic nav-item waves-effect waves-light">
-                    <a class="nav-link" data-toggle="tab" id="Summary-Tab" href="#SummaryTab" role="tab" aria-controls="SummaryTab" aria-selected="false" ><b>Other</b></a>
+                  <li class="nav-item ">
+                    <a class="nav-link" data-toggle="tab" href="#SummaryTab" role="tab" ><b>Other</b></a>
                   </li>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
-                  <div id="EGReviewTab" class="tab-pane fade active show" role="tabpanel" aria-labelledby="EGReview-Tab">
+
+                  <div id="EGReviewTab" class="tab-pane fade active show" role="tabpanel" >
                     <% if !@reviewable.nil? %>
                         <% if @reviewable.epa_reviews.count > 0  %>
                            <%= render partial: "epa_reviews/list_reviewable" %>
@@ -33,8 +35,8 @@
 
                     <%= render partial: "epa_reviews/form" %>
                   </div>
-
-                  <div id="EvidenceTab" class="tab-panel fade" role="tabpanel" aria-labelledby="Evidence-Tab" >
+                  <div id="EvidenceTab" class="tab-pane fade" role="tabpanel" >
+                    <h5> Evidence Body </h5>
                     <% if @percent_complete.keys.first.include? 'epa' %>
                       <% epa_idx = @epa_review_epa.downcase %>
                     <% else %>
@@ -42,7 +44,7 @@
                     <% end %>
 
                     <div class="row">
-                      <div class="col-sm-4">
+                      <div class="col-auto">
                             <div id='WbaInfo'> <%= render partial: "wba_info", locals: {epa: @epa_review_epa, wba: @wba["#{@epa_review_epa}"], qa_percent: @percent_complete[epa_idx]} %></div>
                       </div>
                       <div class="col-sm-4">
@@ -74,22 +76,25 @@
                    </div>
                   </div>
 
-                  <div id="SummaryTab" class="tab-pane fade" role="tabpanel" aria-labelledby="Summary-Tab">
-                    <div class="center-div">
-                      <div class="inner-div">
+
+                  <div id="SummaryTab" class="tab-pane fade" role="tabpanel" >
+
+                    <div clas="card">
+                      <div class="card-body">
+                        <%= render partial: "competencies/collapsible_wba_details" %>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body">
                           <% wba_epa_student = hf_series_data_student("EPA", @user_id, false) %>
                           <% if !wba_epa_student.nil? %>
                              <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
                           <% end %>
+                          <br />
                           <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", @user_id, false) %>
                           <% if !wba_clinical_assessor.nil? %>
                             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
                           <% end %>
-                          <div clas="card">
-                            <div class="card-body">
-                              <%= render partial: "competencies/collapsible_wba_details" %>
-                            </div>
-                          </div>
                       </div>
                     </div>
                   </div>

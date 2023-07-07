@@ -4,12 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Main
 ##############################
 gem "bundler", '~>2.0'
-gem 'rails', '~>6.1.3' #'~> 5.2.2.1'
-gem "rdoc"
-#gem "psych", "=3.3.1"
-gem "psych"
+gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
+gem "rdoc", '~>6.1.2.1' #'~> 5.0', '< 6.4.0'
+gem "psych", '< 4'
 gem 'sprockets', '< 4'
-gem 'bcrypt-ruby'
+gem 'bcrypt'
 # Database
 #gem 'pg', '~> 1.3', '>= 1.3.4'
 gem 'pg'
@@ -43,10 +42,10 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-gem 'bootstrap', '~> 4.0'
+gem 'bootstrap'#, '~> 4.4.0'
 gem "jbuilder", '~> 2.5'
 gem "popper_js", "~> 1.14.3"
-#gem "bootstrap-sass", '~> 3.4.1'
+#gem "bootstrap-sass"   #, '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
@@ -118,9 +117,9 @@ group :test, :development do
   elsif RUBY_VERSION =~ /^3./
     gem "byebug"
     gem "better_errors"
-    gem "stackprof"
-    gem "ruby-prof"
-    gem "pry"
+    # gem "stackprof"
+    # gem "ruby-prof"
+    # gem "pry"
   end
 end
 
@@ -148,7 +147,9 @@ group :development do
 end
 gem 'mini_racer'
 gem 'autoprefixer-rails'
-gem 'rufus-scheduler'
+gem 'rufus-scheduler'    # gem "stackprof"
+    # gem "ruby-prof"
+    # gem "pry"
 gem 'whenever', require: false
 gem 'nested_form_fields'
 #gem 'turbolinks', '~> 5.0', '>= 5.0.1'
@@ -171,3 +172,6 @@ gem 'will_paginate', '~> 3.1'
 gem 'datejs-rails', "~> 2.0.1"
 gem 'icalendar'
 gem 'sassc-rails'
+gem 'xsv'
+gem 'fast_page'
+gem 'aes'

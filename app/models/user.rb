@@ -24,8 +24,10 @@ class User < ActiveRecord::Base
   has_many :messages, dependent: :destroy
   has_one :room, as: :discussable
   has_one :eg_cohort
+  has_one :ume_bls
 
   has_one :dashboard, dependent: :destroy
+  has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
 
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
@@ -35,10 +37,11 @@ class User < ActiveRecord::Base
   has_many :med20_competencies, inverse_of: :user, dependent: :destroy
   has_many :med21_competencies, inverse_of: :user, dependent: :destroy
 
+
   has_one  :cpx, dependent: :destroy
   has_many :usmle_exams, dependent: :destroy
-  has_many :epa_masters, dependent: :destroy
-  has_many :fom_exams, dependent: :destroy
+  has_many :epa_masters, dependent: :destroy, inverse_of: :user
+  has_many :fom_exams, dependent: :destroy, inverse_of: :user
   has_many :med22_fom_exams, dependent: :destroy
   has_many :med21_fom_exams, dependent: :destroy
   has_many :fom_labels
@@ -411,11 +414,11 @@ class User < ActiveRecord::Base
   end
 
   private
-
-  def set_default_values
-    return unless room.nil?
-    if !self.id.nil?
-      Room.create(discussable: self, identifier: "student_room_#{self.id}")
-    end
-  end
+  # commented out on 7/6/2023 as message/room was not used since UME disolved Coaching/Student advising
+  # def set_default_values
+  #   return unless room.nil?
+  #   if !self.id.nil?
+  #     Room.create(discussable: self, identifier: "student_room_#{self.id}")
+  #   end
+  # end
 end

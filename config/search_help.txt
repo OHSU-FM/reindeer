@@ -1,0 +1,34 @@
+<div class="card" >
+  <div class="card-body">
+    <h4>Here are the Possible Search Functions:</h4>
+    <table class="table table-hover  table-striped table-condensed w-50 p-3">
+    <tr>
+    <td>LastName, FirstName</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp eg. Le, -> Find all students with last names, 'Le,'</td>
+    </tr>
+    <tr>
+    <td>LastName, FirstName</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp eg. Lee -> Find all students with last names with prefix 'Lee'</td>
+    </tr>
+    <tr>
+    <td>LastName, FirstName</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp eg. %Smith -> Find all students with first names, Smith</td>
+    </tr>
+    <tr>
+    <td>U0011</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp Find all students with UID prefix, U0011</td>
+    </tr>
+    <tr>
+    <td>PhD</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all PhD students</td>
+    </tr>
+    <tr>
+    <td>MPH</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all MPH students</td>
+    </tr>
+    <tr>
+    <td>MCR</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all MCR students</td>
+    </tr>
+    <tr>
+    <td>Wy'east</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all Wy'east students</td>
+    </tr>
+    <tr>
+    <td>Med26</td><td><i class="fa fa-arrow-right" aria-hidden="true"></i>&nbsp;&nbsp List all students from the cohort. It is case sensitive. Eg. Med25, Med24, etc. </td>
+    </tr>
+    </table>
+  </div>
+</div>

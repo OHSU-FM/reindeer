@@ -17,6 +17,7 @@ class CompetenciesController < ApplicationController
 
     if current_user.coaching_type == "student"
       @selected_user = current_user
+      @spec_program_msg = @selected_user.spec_program 
       full_name = current_user.full_name
       email = current_user.email
       permission_group_id = current_user.permission_group_id
@@ -29,6 +30,8 @@ class CompetenciesController < ApplicationController
     else
       if params[:user_id].present? and  !(@comp = Competency.where(user_id: params[:user_id]).order(start_date: :desc)).empty?
         @selected_user = User.where(id: params[:user_id]).first
+        @spec_program_msg = @selected_user.spec_program  ## contains LOA and Paused badging data
+
         email = @selected_user.email
         # full_name = @selected_user.full_name
         # permission_group_id = @selected_user.permission_group_id
@@ -64,11 +67,11 @@ class CompetenciesController < ApplicationController
      end
 
      @preceptorship_data = hf_get_clinical_dataset(@selected_user, 'Preceptorship')
-     preceptor_assesses = PreceptorAssess.where(user_id: @selected_user).map(&:attributes) ## med23 preceptor evaluations
+     preceptor_assesses = PreceptorAssess.where(user_id: @selected_user).load_async.map(&:attributes)
      @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
      @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
-     @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date)
+     @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
 
      if @selected_user.permission_group_id >= 16
        @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
@@ -89,14 +92,14 @@ class CompetenciesController < ApplicationController
      found_rec = FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id)
 
      if found_rec.nil?
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_date, :no_attempts)
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_date, :no_attempts).load_async
      elsif found_rec.visible == false
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type <> 'HSS' and exam_type not like ?", @selected_user.id, "%Mock%").order(:exam_date, :no_attempts)
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <> 'HSS' and exam_type not like ?", @selected_user.id, "%Mock%").order(:exam_date, :no_attempts).load_async
      else
-       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_date, :no_attempts)
+       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", @selected_user.id).order(:exam_date, :no_attempts).load_async
      end
 
-     @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_date, :no_attempts)
+     @hss_exams   = UsmleExam.where(user_id: @selected_user.id, exam_type: 'HSS').order(:exam_date, :no_attempts).load_async
 
      @student_badge_info = hf_get_badge_info(@selected_user.id)
 
@@ -122,13 +125,13 @@ class CompetenciesController < ApplicationController
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
         #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
-        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
         if @comp_unfiltered.empty?
           # get it from archived tables
           group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
           table_name = "#{group_title}Competency".constantize
           #@comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
-          @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
+          @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
         end
 
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
@@ -138,7 +141,7 @@ class CompetenciesController < ApplicationController
       @comp_class_mean = Competency.load_class_mean(permission_group_id)
       if @comp_class_mean.nil?
         #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
-        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).map(&:attributes)
+        @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
         Competency.create_class_mean(@comp_class_mean, permission_group_id)
       end

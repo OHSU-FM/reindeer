@@ -111,6 +111,22 @@ class ArtifactsController < ApplicationController
     @log_results = Artifact.process_upload_data(@artifact, 'FormativeFeedback')
   end
 
+  def process_comp_excel
+    @artifact = Artifact.find(params[:id])
+    Artifact.read_competency_excel(@artifact)
+    todayDate = Time.now.strftime("%Y_%m_%d")
+    filename = "#{Rails.root}/log/competency_#{todayDate}.log"
+    render file: filename
+  end
+
+  def process_bls_excel
+    @artifact = Artifact.find(params[:id])
+    Artifact.read_bls_excel(@artifact)
+    todayDate = Time.now.strftime("%Y_%m_%d")
+    filename = "#{Rails.root}/log/bls_#{todayDate}.log"
+    render file: filename
+  end
+
   private
 
     def move_file_to_user(artifact)

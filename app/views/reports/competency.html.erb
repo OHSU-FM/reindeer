@@ -1,4 +1,5 @@
-<br />
+<% if current_user.coaching_type != 'student' %>
+  <br />
   <div class="card">
     <div class="card-body">
       <%= form_tag(competency_reports_path, remote: true, method: "get", id: 'competencyForm') do %>
@@ -27,3 +28,7 @@
         <div id="competency_data"></div>
       </div>
     </div>
+<% else %>
+  <br /> <br />
+  <h5> You are NOT authorized to access this page! </h5>
+<% end %>

@@ -9,7 +9,8 @@
                  <%= simple_form_for(epa_masters_path, html: {class: "form-inline"}, method: "get") do %>
                    <div class="form-group col-sx-2">
                      <label for="cohort" class="control-label">Cohort:&nbsp;</label>
-                     <%= select_tag :uniq_cohort, options_for_select(@uniq_cohorts, selected: params[:uniq_cohort]),
+
+                     <%= select_tag :uniq_cohort, options_from_collection_for_select(@uniq_cohorts, "id", "title",  selected: params[:uniq_cohort]),
                          prompt: "Please Select a Cohort", onchange: "this.form.submit(); ", class: 'form-control'  %>
                     </div>
                      <% if !@eg_cohorts.blank? %>
@@ -24,6 +25,7 @@
           </div>
         </div>
     <% end %>
+
     <div id=main2-epa-masters %>
       <%= render partial: 'epa_masters_table' %>
     </div>

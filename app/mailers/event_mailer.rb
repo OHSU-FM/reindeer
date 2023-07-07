@@ -32,9 +32,12 @@ class EventMailer < ApplicationMailer
         @event_mailer.description = @event_mailer.description.gsub(' Advisor', '')
       end
 
-      if method == "Create"
-        subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
-
+      if method == "Create" or method == 'Resend'
+        if method == 'Create'
+          subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
+        else
+          subject_msg = "** Resending New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
+        end
         @cal_body_msg = "The appointment has been created in REDEI.  Please be prepared to meet with " +
                      @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") +  ".\\n\\n" +
                      "Student Name - #{full_name} (#{student_email})\\n" +
@@ -49,7 +52,12 @@ class EventMailer < ApplicationMailer
                     "Here is the advisor personal WebEx link: <br>" +
                     "https://ohsu.webex.com/meet/#{username}<br><br><br>"
 
-        log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
+        if method == 'Create'
+          log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
+        else
+          log_emails(emails, "**Resent New Appointment: ", @event_mailer, subject_msg)          
+        end
+
       elsif method == 'Cancel'
         subject_msg = "Canceled:Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
         @body_msg =  "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.<br><br>" +

@@ -116,8 +116,10 @@ class FomExamsController < ApplicationController
       if params[:uuid] == current_user.uuid or current_user.coaching_type == 'dean' or
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
-       @course_code = params[:course_code]  #session[:course_code]  #params[:course_code]
-       permission_group_id = params[:permission_group_id]  ## from Search function, required for cohort jumpers.
+       aes_key = session[:aes_key]
+       @course_code = AES.decrypt(params[:course_code], aes_key) #session[:course_code]  #params[:course_code]
+       permission_group_id = AES.decrypt(params[:permission_group_id], aes_key).to_i ## from Search function, required for cohort jumpers.
+
 
        student  = User.find_by(uuid: params[:uuid])
        @cohort = PermissionGroup.find(permission_group_id).title.delete('()').split(" ").last.downcase
@@ -134,6 +136,7 @@ class FomExamsController < ApplicationController
        @student_email = student.email
        @student_full_name = student.full_name
        @student_perm_group = student.permission_group_id
+       @student_cohort_title = @cohort_titles[permission_group_id]
        #@coach_info = student.cohort.nil? ? "Not Assigned" : student.cohort.title
        @block_desc = hf_get_block_desc(@course_code)
        @student_uid = student.sid
@@ -147,11 +150,14 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-         formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").map(&:attributes)
+
+         formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").order(:response_id).map(&:attributes)
          @formative_feedbacks = hf_collect_values(formative_feedbacks)
 
          #@informative_feedbacks = FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes)
          @informatics_feedbacks = FormativeFeedback.where("user_id=? and block_code=? and csa_code like ?", student.id, block_code, "%Informatics%").map(&:attributes)
+
+         #@simcap_feedbacks = FormativeFeedback.where("user_id=? and block_code=? and response_id like ?", student.id, block_code, "SimCap%")
          #@informatics_feedbacks = hf_collect_values(informatics_feedbacks)
        else
          @comp_keys =  '*** This Block is being disabled temporary or has not been created just yet!! ***'
@@ -174,6 +180,10 @@ class FomExamsController < ApplicationController
 
  def set_resources
    @permission_groups = PermissionGroup.last(3) # get last 3 rows
+   cohorts = PermissionGroup.where("id <> 7 and title like ?", "%Med%").select(:id, :title).order(:id).map(&:attributes)
+   @cohort_titles = hf_reformat_cohort_data(cohorts)
+
+   #@crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
  end
 
  def private_download in_file

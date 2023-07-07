@@ -1,2 +1,7 @@
 $('#oasis-graphs2').remove();
-$('#advisor-reports').html("<%= j render partial: 'coaching/students/advisor_reports', locals: { meetings: @meetings } %>");
+$('#advisor-reports').html("<%= j render partial: 'coaching/students/advisor_reports', locals: { meetings: @meetings, code: @code } %>");
+$('#IndividualAdvisorRpt').dataTable( {
+    language: {
+        searchPlaceholder: "Student LastName, FirstName"
+    }
+} );

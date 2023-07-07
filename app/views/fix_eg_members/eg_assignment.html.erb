@@ -1,0 +1,26 @@
+<br />
+<h4> List EG Assignment </h4>
+
+<div id="container-fluid">
+    <% if can? :crud, Dashboard %>
+        <div class="card">
+          <div class="card-body card-body-color">
+            <div class="form-row">
+                 <%= simple_form_for(fix_eg_members_eg_assignment_path, html: {class: "form-inline"}, method: "get") do %>
+                   <div class="form-group col-sx-2">
+                     <label for="cohort" class="control-label">Cohort:&nbsp;</label>
+                     <%= select_tag :uniq_cohort, options_from_collection_for_select(@uniq_cohorts, "id", "title",  selected: params[:uniq_cohort]),
+                         prompt: "Please Select a Cohort", onchange: "this.form.submit(); ", class: 'form-control'  %>
+                    </div>
+
+                <% end %>
+
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+
+  <div id=list_eg_assignment %>
+    <%= render partial: 'list_eg_assignment' %>
+  </div>

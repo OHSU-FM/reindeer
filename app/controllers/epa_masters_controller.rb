@@ -1,9 +1,11 @@
 class EpaMastersController < ApplicationController
   layout 'full_width_csl'
+  #authorize_resource class: EpaMastersController
   before_action :authenticate_user!
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
   before_action :load_eg_cohorts, :set_resources
   include EpaMastersHelper
+  include FixEgMembersHelper
   include CompetenciesHelper
 
   # GET /epa_masters
@@ -11,8 +13,9 @@ class EpaMastersController < ApplicationController
 
     if params[:uniq_cohort].present? and (params[:uniq_cohort] == 'CaseStudies' or params[:uniq_cohort] == 'CaseStudies2')
       @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] }
-    elsif
-      @eg_cohorts = @all_cohorts.select{|eg| eg if eg["cohort"] == params[:uniq_cohort] and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
+    elsif params[:uniq_cohort].present?
+      #@eg_cohorts = @all_cohorts.select{|eg| eg if eg["permission_group_id"] == params[:uniq_cohort].to_i and (eg["eg_email1"] == current_user.email or eg["eg_email2"] == current_user.email)}
+      @eg_cohorts = EpaMaster.get_eg_cohort(params[:uniq_cohort], current_user.email)
       EpaMaster.update_not_yet_and_grounded_epas(params[:uniq_cohort])
     end
     if params[:email].present?
@@ -79,19 +82,23 @@ class EpaMastersController < ApplicationController
   end
 
   def epa_qa
-    if params[:cohort].present?
-        @epa_qa_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "EPA")
+    if params[:permission_group_id].present?
+        @cohort_title = @permission_groups.select{|p| p.title if p.id == params[:permission_group_id].to_i}.first.title
+        @epa_qa_data = hf_process_cohort2(params[:permission_group_id], "", "", "EPA")
         create_file @epa_qa_data, "epa_qa.txt"
         respond_to do |format|
           format.html
+          format.js
         end
      end
-     render :epa_qa
+     #render :epa_qa
   end
 
   def average_wba_epa
-    if params[:cohort].present?
-        @cohort = params[:cohort]
+    if params[:permission_group_id].present?
+        @cohort_title = @permission_groups.select{|p| p.title if p.id == params[:permission_group_id].to_i}.first.title
+        @cohort = @cohort_title.scan(/\((.*)\)/).first.first
+
         @start_date = params[:StartDate]
         @end_date = params[:EndDate]
         if @start_date == "" and @end_date == ""
@@ -100,9 +107,8 @@ class EpaMastersController < ApplicationController
         elsif @end_date == ""
           @end_date = "2030-02-18"  #default date
         end
-
-        @level_epa_wbas_count_hash = hf_count_level_wbas(@cohort, @cohort_counts, @start_date, @end_date)
-        @average_level_epa_wbas_hash = hf_average_level_wbas(@cohort, @start_date, @end_date)
+        @level_epa_wbas_count_hash = hf_count_level_wbas(params[:permission_group_id], @cohort, @cohort_counts, @start_date, @end_date)
+        @average_level_epa_wbas_hash = hf_average_level_wbas(params[:permission_group_id], @start_date, @end_date)
 
         create_file2 @average_level_epa_wbas_hash, "#{@cohort}_average_wba_epa.txt"
         respond_to do |format|
@@ -113,8 +119,8 @@ class EpaMastersController < ApplicationController
   end
 
   def wba_epa
-    if params[:cohort].present?
-        @cohort = params[:cohort]
+    if params[:permission_group_id].present?
+        @cohort_title = PermissionGroup.find(params[:permission_group_id]).title
         @start_date = params[:StartDate]
         @end_date = params[:EndDate]
         if @start_date == "" and @end_date == ""
@@ -123,7 +129,7 @@ class EpaMastersController < ApplicationController
         elsif @end_date == ""
           @end_date = "2030-02-18"  #default date
         end
-        @wba_epa_data = hf_process_cohort(params[:cohort], @start_date, @end_date, "WBA")
+        @wba_epa_data = hf_process_cohort2(params[:permission_group_id], @start_date, @end_date, "WBA")
         @wba_epa_data = @wba_epa_data.sort_by{ |wba| wba["TotalCount"] }.reverse
 
         create_file @wba_epa_data, "wba_epa.txt"
@@ -135,8 +141,9 @@ class EpaMastersController < ApplicationController
   end
 
   def wba_clinical  #get clinical assessor data/count
-    if params[:cohort].present?
-        @wba_clinical_data = hf_process_cohort(params[:cohort], "2016-01-01", "2030-12-31", "ClinicalAssessor")
+    if params[:permission_group_id].present?
+        @cohort_title = @permission_groups.select{|p| p.title if p.id == params[:permission_group_id].to_i}.first.title
+        @wba_clinical_data = hf_process_cohort2(params[:permission_group_id], "", "", "ClinicalAssessor")
         create_file @wba_clinical_data, "wba_clinical_assessor.txt"
         respond_to do |format|
           format.html
@@ -144,7 +151,6 @@ class EpaMastersController < ApplicationController
      end
      render :wba_clinical
   end
-
 
   def download_file
       if params[:file_name].present?
@@ -253,7 +259,7 @@ class EpaMastersController < ApplicationController
     end
 
     def set_resources
-      @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15)
+      @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
     end
 
     def set_epa_master
@@ -267,7 +273,7 @@ class EpaMastersController < ApplicationController
     end
 
     def load_eg_cohorts
-      @all_cohorts ||= hf_load_eg_cohorts
+      @all_cohorts ||= hf_load_eg_cohorts2
 
       @cohort_counts = {}
       @all_cohorts.each do |cohort|
@@ -276,14 +282,14 @@ class EpaMastersController < ApplicationController
         else
           @cohort_counts[cohort["cohort"]] = 1
         end
-
       end
 
-      @uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
+      @uniq_cohorts = PermissionGroup.where("title like '%Med%' and id >= ?", 13).select(:id, :title).order(:id)
+      # EgCohort.distinct.pluck(:permission_group_id).sort
+      #@uniq_cohorts ||= @all_cohorts.map{|eg| eg["cohort"]}.uniq
       @uniq_eg_members ||= @all_cohorts.map{|c| [c["eg_full_name1"], c["eg_full_name2"]]}.flatten.uniq.compact.sort
       @uniq_eg_members = ["All"] + @uniq_eg_members
     end
-
 
     def create_file (in_data, in_file)
       file_name = "#{Rails.root}/tmp/#{in_file}"

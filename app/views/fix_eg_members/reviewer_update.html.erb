@@ -1,0 +1,34 @@
+<br />
+<h4>Update EG Member(s) Module</h4>
+
+<div id="container-fluid">
+    <% if can? :crud, Dashboard %>
+        <div class="card">
+          <div class="card-body card-body-color">
+            <div class="form-row">
+                 <%= simple_form_for(fix_eg_members_reviewer_update_path, html: {class: "form-inline"}, method: "get") do %>
+                   <div class="form-group col-sx-2">
+                     <label for="update_eg_member1" class="control-label">&nbsp;&nbsp;Update Reviewer1:&nbsp;</label>
+                     <%= select_tag :reviewer1, options_for_select(@reviewer1,  selected: params[:reviewer1]),
+                         prompt: "Please Select a Reviewer", class: 'form-control'  %>
+                   </div>
+                   <div class="form-group col-sx-10">
+                       <label for="update_eg_member2" class="control-label">&nbsp;&nbsp;Reviewer2:&nbsp;</label>
+                       <%= select_tag :reviewer2, options_for_select(@reviewer2, selected: params[:reviewer2]),
+                           prompt: "Please Select a Reviewer2", class: 'form-control' %>
+                   </div>
+
+                    &nbsp;&nbsp;<input type="submit" value="Submit" />&nbsp;&nbsp;
+                    <%= link_to 'Back to <i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path %>
+
+                <% end %>
+
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+
+  <div id=list_eg_reviewer %>
+    <%= render partial: 'list_eg_review' %>
+  </div>

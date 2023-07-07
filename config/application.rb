@@ -17,7 +17,7 @@ module EdnaConsole
     # http://easyactiverecord.com/blog/2014/08/19/redirecting-to-custom-404-and-500-pages-in-rails/
     #config.action_controller.default_protect_from_forgery = true
     config.exceptions_app = self.routes
-    config.action_mailer.smtp_settings = { enable_starttls_auto: false  }
+    config.action_mailer.smtp_settings = { enable_starttls_auto: true  }
 
     #How to silence "I18n.enforce_available_locales" deprecation warnings
     config.i18n.enforce_available_locales = false
@@ -32,7 +32,7 @@ module EdnaConsole
     # Search the models directory recursively
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/*.rb"]
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/**/*.rb"]
-    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/"]
+    config.autoload_paths += Dir["#{Rails.root.to_s}/lib/**/*.rb"]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -66,7 +66,7 @@ module EdnaConsole
 
     # Enable the asset pipeline
     config.assets.enabled = true
-
+    config.action_controller.perform_caching = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.5'

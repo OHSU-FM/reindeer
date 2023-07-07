@@ -1,7 +1,8 @@
 module ArtifactsHelper
 
   ARTIFACT_CATEGORY = ["FoM", "Clinical", "Exemplary Professionalism", "EPA-Artifacts", "Progress Board", "Grade Dispute",
-    "MSPE", "NBME", "Preceptorship Contract", "Scholarly Project", "TTR", "Preceptor Evals", "Formative Feedback", "FoM Grades", "Other"]
+    "MSPE", "NBME", "Preceptorship Contract", "Scholarly Project", "TTR", "Preceptor Evals", "Formative Feedback", "FoM Grades", "Competency", "BLS",
+    "EG Cohorts", "Other"]
 
   def hf_category
     return ARTIFACT_CATEGORY
@@ -9,6 +10,9 @@ module ArtifactsHelper
 
   def hf_check_nbme_pdf(shelf_artifacts)
     no_of_nbme = 0
+    # if shelf_artifacts.first.nil?
+    #   return 0
+    # end
     shelf_artifacts.each do |artifact|
       artifact.documents.each do |document|
         if document.filename.to_s.include? "NBME"
@@ -22,11 +26,11 @@ module ArtifactsHelper
   def hf_get_fom_artifacts (pk, artifact_title, artifact_content)
     selected_user = User.find_by(email: pk)
     if selected_user.nil?
-      return nil,0
+      return nil,0, []
     else
       no_docs = 0
-      artifacts_student = Artifact.where(user_id: selected_user.id)
-      fom_docs = artifacts_student.select{|a| a.title == artifact_title and a.content == artifact_content}
+      artifacts_student = Artifact.where(user_id: selected_user.id, title: artifact_title).order(:id)
+      fom_docs = artifacts_student.select{|a| a.content == artifact_content}
       fom_docs.each do |doc|
         no_docs = no_docs + doc.documents.count
       end

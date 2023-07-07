@@ -27,7 +27,7 @@
             <%= link_to 'Step 2 Move files', step_2_move_files_artifact_path(artifact)  %>
 
           <% end %>
-          <% if artifact.content.to_s.include? "Preceptor Eval" and current_user.coaching_type == 'dean' %>
+          <% if artifact.content.to_s.include? "Preceptor" and (current_user.coaching_type == 'dean' or current_user.coaching_type == 'admin') %>
             /
             <%= link_to 'Process PreceptorEval', process_preceptor_eval_artifact_path(artifact)  %>
           <% end %>
@@ -35,6 +35,20 @@
             /
             <%= link_to 'Process FormativeFeedback', process_formative_feedback_artifact_path(artifact)  %>
           <% end %>
+          <% if artifact.content.to_s.include? "Competency-Excel" and (current_user.coaching_type == 'admin') %>
+            /
+            <%= link_to 'Process Competency', process_comp_excel_artifact_path(artifact), target: :_blank  %>
+          <% end %>
+          <% if artifact.content.to_s.include? "BLS-Excel" and (current_user.coaching_type == 'admin') %>
+            /
+            <%= link_to 'Process BLS', process_bls_excel_artifact_path(artifact), target: :_blank  %>
+          <% end %>
+
+          <% if artifact.content.to_s.include? "EG-Cohorts" and (current_user.coaching_type == 'dean' or current_user.coaching_type=='admin') %>
+            /
+            <%= link_to 'Process EG Cohorts File', fix_eg_members_process_eg_file_path(artifact_id: artifact), target: :_blank  %>
+          <% end %>
+
 
         </td>
         <td>
