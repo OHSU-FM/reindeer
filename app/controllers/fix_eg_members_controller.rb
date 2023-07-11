@@ -77,7 +77,7 @@ class FixEgMembersController < ApplicationController
 
   def set_resources
     # @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
-    @newest_cohort = EgCohort.pluck(:permission_group_id).uniq.max
+    @newest_cohort = EgCohort.pluck(:permission_group_id).uniq.max-1
     @eg1 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name1, :eg_email1).uniq.sort.to_h
     @eg2 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name2, :eg_email2).uniq.sort.to_h
     @reviewer1 = (@eg1.keys + @eg2.keys).uniq.sort
