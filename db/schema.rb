@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_151915) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_11_152627) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -278,6 +278,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_151915) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_eg_cohorts_on_user_id"
+  end
+
+  create_table "eg_members", force: :cascade do |t|
+    t.string "full_name"
+    t.string "email"
+    t.string "eg_type"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "eg_reasons", force: :cascade do |t|

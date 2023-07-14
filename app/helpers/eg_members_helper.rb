@@ -1,0 +1,2 @@
+module EgMembersHelper
+end

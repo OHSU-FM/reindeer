@@ -1,0 +1,29 @@
+<h1>Eg Members</h1>
+
+<table class="responsive nowrap table table-hover" id="dttb-eg_members" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  <thead>
+    <tr>
+      <th data-data="full_name">Full name</th>
+      <th data-data="email">Email</th>
+      <th data-data="eg_type">Eg type</th>
+      <th data-data="active">Active</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="150px"></th>
+    </tr>
+  </thead>
+  <% @eg_members.each do |eg_member| %>
+    <tr>
+      <td><%= eg_member.full_name %></td>
+      <td><%= eg_member.email %></td>
+      <td><%= eg_member.eg_type %></td>
+      <td><%= eg_member.active %></td>
+      <td>
+        <%= link_to 'Edit', edit_eg_member_path(eg_member) %> /
+        <%= link_to 'Destroy', eg_member, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<%= link_to 'New Eg Member', new_eg_member_path %>

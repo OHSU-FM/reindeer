@@ -58,6 +58,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
                   <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda'].include? current_user.username %>
+                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
+
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
                   <% end %>
