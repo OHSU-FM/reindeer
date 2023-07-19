@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_11_152627) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_140233) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -352,6 +352,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_11_152627) do
     t.string "response_id"
     t.boolean "attending_faculty"
     t.string "other_role"
+    t.string "meta_browser"
+    t.string "meta_os"
+    t.string "meta_device"
+    t.string "meta_screen_size"
     t.index ["response_id"], name: "index_epas_on_response_id"
     t.index ["user_id"], name: "index_epas_on_user_id"
   end
