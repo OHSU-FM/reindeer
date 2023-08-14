@@ -221,8 +221,10 @@ LABELS3 = {
             if student_series[i].instance_of?(Hash)
               if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
                selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-             elsif categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
+              elsif categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
                     selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+              elsif (categories["course_code"] =='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
+                     selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
               end
 
             end

@@ -42,6 +42,8 @@
                 <ul class="nested">
                   <li><%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), target: '_blank')  %> </li>
                   <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color", target: '_blank') %></li>
+                  <li><%= link_to("<b>Overall Progress on Badges/WBAs..</b>".html_safe, user_overall_progresses_path(user_id: result.id), class: "link-to-text-color", target: '_blank') %></li>
+
                     <% fom_block_array = [] %>
                     <%  hf_exists_in_FomExam(result.id).each do |block| %>
                         <% cohort = block["cohort"] %>

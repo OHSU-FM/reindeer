@@ -282,30 +282,30 @@ class User < ActiveRecord::Base
       }
     end
 
-    group :survey_access do
-      active false
-      field :permission_group, :belongs_to_association do
-        inline_edit false
-        inline_add false
-      end
-
-      field :prev_permission_group_id
-
-      field :user_externals, :has_many_association
-      field :explain_survey_access do
-        partial 'users/field_explain_survey_access'
-      end
-      field :ls_list_state, :enum do
-        enum do
-          ["dirty", "clean"]
-        end
-        default_value "dirty"
-      end
-      field :permission_ls_groups do
-        read_only true
-      end
-
-    end
+    # group :survey_access do
+    #   active false
+    #   field :permission_group, :belongs_to_association do
+    #     inline_edit false
+    #     inline_add false
+    #   end
+    #
+    #   field :prev_permission_group_id
+    #
+    #   field :user_externals, :has_many_association
+    #   field :explain_survey_access do
+    #     partial 'users/field_explain_survey_access'
+    #   end
+    #   field :ls_list_state, :enum do
+    #     enum do
+    #       ["dirty", "clean"]
+    #     end
+    #     default_value "dirty"
+    #   end
+    #   field :permission_ls_groups do
+    #     read_only true
+    #   end
+    #
+    # end
 
     edit do
       [

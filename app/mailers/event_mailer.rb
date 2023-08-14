@@ -55,7 +55,7 @@ class EventMailer < ApplicationMailer
         if method == 'Create'
           log_emails(emails, "New Appointment: ", @event_mailer, subject_msg)
         else
-          log_emails(emails, "**Resent New Appointment: ", @event_mailer, subject_msg)          
+          log_emails(emails, "**Resent New Appointment: ", @event_mailer, subject_msg)
         end
 
       elsif method == 'Cancel'
@@ -84,6 +84,9 @@ class EventMailer < ApplicationMailer
        #ical.publish
        ical.to_ical
        attachments['calendar.ics'] = ical.to_ical
+       if cc_email == 'harrisor@ohsu.edu'  and (File.file?(Rails.root + "public/oasis/im_advising_handbook.pdf")) ## only this advisor requires to send the IM advising handbook to students
+         attachments['IM_Advising_Handbook.pdf'] = File.read(Rails.root + "public/oasis/im_advising_handbook.pdf")
+       end
 
        mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
 
