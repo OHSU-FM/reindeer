@@ -214,22 +214,35 @@ LABELS3 = {
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
 
     if component == 'comp2a_hss'
-        count = selected_categories.count
-
-        for i in 0..count-1
-          if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
-            if student_series[i].instance_of?(Hash)
-              if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
-               selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-              elsif categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
-                    selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-              elsif (categories["course_code"] =='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
-                     selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-              end
+      count = selected_categories.count
+      for i in 0..count-1
+        if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
+          if student_series[i].instance_of?(Hash)
+            # if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
+            #  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required1)</span>"
+            if categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
+                  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            elsif (categories["course_code"] =='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
+                   selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
 
             end
-           end
           end
+        end
+      end
+    end
+
+    if permission_group >= 20 and component == 'comp2a_hss'
+      count = selected_categories.count
+      for i in 0..count-1
+        # if today's is > course end date, we need to check the weighted average.
+        #if student_series[i].instance_of?(Hash) and student_series[i][:y].nil? and student_series.last < 100.00
+
+        if !class_data.first["course_end_date"].nil? and (Date.today  > class_data.first["course_end_date"].to_date) and
+          student_series[i].instance_of?(Hash) and !student_series[i][:y].nil? and student_series.last < 100.00
+          selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+        end
+
+      end
     end
 
     if component.include? 'summary'

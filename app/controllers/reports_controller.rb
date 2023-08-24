@@ -50,8 +50,9 @@ class ReportsController < ApplicationController
   end
 
   def mspe
+
     if current_user.coaching_type != 'student'
-      @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
+
       if params[:cohort].present? and  params[:email].present? and params[:email] != 'All'
         #@mspe_data = hf_get_mspe_data(params[:cohort])
         @student_email = params[:email]
@@ -78,6 +79,7 @@ class ReportsController < ApplicationController
 
   def set_resources
     @permission_groups ||= PermissionGroup.where("title like ?", "%Student%").order(:id) # get last 3 rows
+    @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
   end
 
   def private_download in_file
