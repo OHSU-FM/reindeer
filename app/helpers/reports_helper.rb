@@ -13,7 +13,7 @@ module ReportsHelper
   WHERE_QUERY2 =
           'course_name not like ? and course_name not like ? and ' +
           'course_name not like ? and course_name not like ? and ' +
-          'course_name not like ? and course_name not like ? ' 
+          'course_name not like ? and course_name not like ? '
 
 
   def average_summary(summary_data, user)
@@ -71,7 +71,12 @@ module ReportsHelper
   def hf_student_list(permission_group_id)
     permission_group_title = PermissionGroup.find(permission_group_id.to_i).title.split(' ').last.gsub(/[()]/, '')
     mspeTable = "#{permission_group_title}Mspe"
-    student_list = mspeTable.constantize.all.order(:full_name).collect{|s| [s["full_name"], s["email"]]}.unshift(["All", "All"])
+    if model_exists? mspeTable
+      student_list = mspeTable.constantize.all.order(:full_name).collect{|s| [s["full_name"], s["email"]]}.unshift(["All", "All"])
+    else
+      permission_group = PermissionGroup.where("title like ?","%#{permission_group_title}%")
+      student_list = User.where(permission_group_id: permission_group.first.id).order(:full_name).collect{|s| [s["full_name"], s["email"]]}.unshift(["All", "All"])
+    end
   end
 
   def hf_get_mspe_data_by_email(email, permission_group_id)

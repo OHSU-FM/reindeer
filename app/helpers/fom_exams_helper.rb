@@ -238,7 +238,7 @@ LABELS3 = {
         #if student_series[i].instance_of?(Hash) and student_series[i][:y].nil? and student_series.last < 100.00
 
         if !class_data.first["course_end_date"].nil? and (Date.today  > class_data.first["course_end_date"].to_date) and
-          student_series[i].instance_of?(Hash) and !student_series[i][:y].nil? and student_series.last < 100.00
+          student_series[i].instance_of?(Hash) and !student_series[i][:y].nil? and student_series[i][:y] < 100.00
           selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
         end
 
