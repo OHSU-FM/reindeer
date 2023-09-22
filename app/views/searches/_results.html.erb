@@ -104,11 +104,29 @@
               <% end %>
             </td>
           </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                                                         
+            <td>
+            <% if ['chungp','haedinge', 'nmai' ].include? current_user.username %>
+              <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Add USMLE/Step Exams'.html_safe, usmle_exams_path(user_id: result.id, full_name: result.full_name), target: '_blank', class: "btn btn-link" %>
+            <% end %>
+            </td>
+          </tr>
+
         <% end %>
       </table>
-      <% if ['chungp','haedinge', 'nmai' ].include? current_user.username %>
-        <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Add USMLE/Step Exams'.html_safe, usmle_exams_path(user_id: result.id, full_name: result.full_name), target: '_blank', class: "btn btn-link" %>
-      <% end %>
+
+
+
       <% hf_write_hash(@temp_hash) %>
     <% else %>
       <h4  style="color:blue;">Search Result</h4>
