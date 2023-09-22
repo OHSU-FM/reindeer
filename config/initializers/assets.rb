@@ -67,4 +67,5 @@ Rails.application.config.assets.precompile += %w( print.css
     bootstrap.min.js
     popper.js
     fix_eg_members.css
+    usmle_exams.css
    )

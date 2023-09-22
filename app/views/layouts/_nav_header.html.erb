@@ -35,6 +35,11 @@
             <% if can? :crud, Dashboard %>
               <%= link_to '<i class="fa fa-home" style="color:#0C2D83"></i> Home'.html_safe,  auto_path, class: "btn btn-link"  %>
             <% end %>
+
+            <% if ['nmai', 'chungp', 'haedinge'].include? current_user.username  %>
+              <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "btn btn-link" %>
+            <% end %>
+
             <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'haedinge', 'shuforda'].include? current_user.username) %>
               <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -43,7 +48,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to '<i aria-hidden="true"> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i aria-hidden="true"> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda'].include? current_user.username %>
+                  <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda', 'nmai'].include? current_user.username %>
                     <%= link_to '<i aria-hidden="true"> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %>
                   <% end %>
                 </div>
@@ -106,6 +111,8 @@
                 <%= link_to '<i class="fa fa-user-md" style="color:#5BAD5A"></i> Student Assessments'.html_safe, student_assessments_path(user: current_user), class: "btn btn-link" %>
               <% end %>
             <% end %>
+
+
 
             <% if current_user.present? %>
               <div class="btn-group">

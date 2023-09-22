@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User.references:</strong>
-  <%= @usmle_exam.user.references %>
+  <strong>User_:</strong>
+  <%= @usmle_exam.user_id %>
 </p>
 
 <p>
@@ -31,4 +31,4 @@
 </p>
 
 <%= link_to 'Edit', edit_usmle_exam_path(@usmle_exam) %> |
-<%= link_to 'Back', usmle_exams_path %>
+<%= link_to 'Back', 'javascript:history.go(-2);' %>

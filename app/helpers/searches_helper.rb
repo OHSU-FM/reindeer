@@ -297,4 +297,13 @@ module SearchesHelper
     end
   end
 
+  def hf_usmle_exams(user_id)
+    usmle_exams = UsmleExam.where(user_id: user_id)
+    if usmle_exams.nil?
+      return 0
+    else
+      return usmle_exams.count
+    end
+  end
+
 end

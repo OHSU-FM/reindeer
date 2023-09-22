@@ -1,4 +1,5 @@
-<h4>New Usmle Exam for <i><%= params[:full_name] %></i></h4>
+<h4>New Usmle Exam</h4>
 
+<%   @usmle_exam = UsmleExam.new %>
 <%= render 'form', usmle_exam: @usmle_exam %>
 <%= link_to 'Back',  'javascript:history.go(-1);'%>
