@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
+  #get 'overall_progresses/index'
+  resources :eg_members
   get 'fix_eg_members/index'
   get 'fix_eg_members/reviewer_update'
   get 'fix_eg_members/process_eg_file'
   get 'fix_eg_members/eg_assignment'
   get 'fix_eg_members/download_file'
+
 
   get 'reports/index'
   resources :fom_remeds
@@ -80,6 +83,7 @@ Rails.application.routes.draw do
 
   resources :user do
     resources :competencies, param: :user_id, only: [:index]
+    resources :overall_progresses, param: :user_id, only: [:index]
   end
 
   get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'

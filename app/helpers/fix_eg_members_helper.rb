@@ -76,9 +76,9 @@ module FixEgMembersHelper
 
         student = EgCohort.find_by(user_id: uu.id)
         if student
-          if row["eg_full_name1"] != student.eg_full_name1 or row["eg_full_name2"] != student.eg_full_name2
+          # if row["eg_full_name1"] != student.eg_full_name1 or row["eg_full_name2"] != student.eg_full_name2
             fix_eg_reviewers(uu.id, row["eg_full_name1"], row["eg_full_name2"])
-          end
+          # end
           EgCohort.where(user_id: uu.id).first_or_create.update(row_hash)
           log_file << " eg_cohorts: " + full_name + " --> " + row["email"] + " is created in eg_cohorts table."
         else

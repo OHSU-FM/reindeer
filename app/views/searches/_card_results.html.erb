@@ -42,6 +42,8 @@
                 <ul class="nested">
                   <li><%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), target: '_blank')  %> </li>
                   <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color", target: '_blank') %></li>
+                  <li><%= link_to("<b>Overall Progress on Badges/WBAs..</b>".html_safe, user_overall_progresses_path(user_id: result.id), class: "link-to-text-color", target: '_blank') %></li>
+
                     <% fom_block_array = [] %>
                     <%  hf_exists_in_FomExam(result.id).each do |block| %>
                         <% cohort = block["cohort"] %>
@@ -82,6 +84,10 @@
                               class: "modal-click", 'data-target': '#modal-dataset' %> <br>
                           <% end %>
                       <% end %>
+                    <% end %>
+
+                    <% if ['chungp','haedinge', 'nmai' ].include? current_user.username %>
+                      <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Add USMLE/Step Exams'.html_safe, usmle_exams_path(user_id: result.id, full_name: result.full_name), target: '_blank', class: "btn btn-link" %>
                     <% end %>
 
                 </ul>

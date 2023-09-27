@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_11_151915) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -286,6 +286,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_151915) do
     t.index ["user_id"], name: "index_eg_cohorts_on_user_id"
   end
 
+  create_table "eg_members", force: :cascade do |t|
+    t.string "full_name"
+    t.string "email"
+    t.string "eg_type"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "eg_reasons", force: :cascade do |t|
     t.string "reason"
     t.datetime "created_at", precision: nil, null: false
@@ -349,6 +358,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_151915) do
     t.string "response_id"
     t.boolean "attending_faculty"
     t.string "other_role"
+    t.string "meta_browser"
+    t.string "meta_os"
+    t.string "meta_device"
+    t.string "meta_screen_size"
     t.index ["response_id"], name: "index_epas_on_response_id"
     t.index ["user_id"], name: "index_epas_on_user_id"
   end
@@ -438,6 +451,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_11_151915) do
     t.decimal "comp2b_bss10"
     t.decimal "comp2b_bss11"
     t.decimal "comp2b_bss12"
+    t.date "course_end_date"
     t.index ["user_id", "permission_group_id", "course_code"], name: "by_user_permission_group_course_code", unique: true
     t.index ["user_id"], name: "index_fom_exams_on_user_id"
   end

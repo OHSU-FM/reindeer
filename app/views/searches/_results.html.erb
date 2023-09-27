@@ -37,7 +37,7 @@
               <td style="text-align:center"> <%= link_to result.email.to_s, update_loa_users_path(email: result.email), target: :_blank %></td>
               <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
             <% else %>
-              <td style="text-align:center"> <%= result.email %></td>            
+              <td style="text-align:center"> <%= result.email %></td>
               <td style="text-align:center"> <%= result.sid.to_s  %></td>
             <% end %>
 
@@ -104,8 +104,29 @@
               <% end %>
             </td>
           </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>                                                         
+            <td>
+            <% if ['chungp','haedinge', 'nmai' ].include? current_user.username %>
+              <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Add USMLE/Step Exams'.html_safe, usmle_exams_path(user_id: result.id, full_name: result.full_name), target: '_blank', class: "btn btn-link" %>
+            <% end %>
+            </td>
+          </tr>
+
         <% end %>
       </table>
+
+
+
       <% hf_write_hash(@temp_hash) %>
     <% else %>
       <h4  style="color:blue;">Search Result</h4>

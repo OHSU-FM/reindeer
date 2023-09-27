@@ -10,6 +10,11 @@ module ReportsHelper
           'course_name not like ? and course_name not like ? and ' +
           'course_name not like ? and course_name not like ? and ' +
           'course_name not like ? and course_name not like ? '
+  WHERE_QUERY2 =
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? and ' +
+          'course_name not like ? and course_name not like ? '
+
 
   def average_summary(summary_data, user)
     student_hash = {}
@@ -60,6 +65,17 @@ module ReportsHelper
       return true
     else
       return false
+    end
+  end
+
+  def hf_student_list(permission_group_id)
+    permission_group_title = PermissionGroup.find(permission_group_id.to_i).title.split(' ').last.gsub(/[()]/, '')
+    mspeTable = "#{permission_group_title}Mspe"
+    if model_exists? mspeTable
+      student_list = mspeTable.constantize.all.order(:full_name).collect{|s| [s["full_name"], s["email"]]}.unshift(["All", "All"])
+    else
+      permission_group = PermissionGroup.where("title like ?","%#{permission_group_title}%")
+      student_list = User.where(permission_group_id: permission_group.first.id).order(:full_name).collect{|s| [s["full_name"], s["email"]]}.unshift(["All", "All"])
     end
   end
 
@@ -115,6 +131,13 @@ module ReportsHelper
       Med23Mspe.all.each do |mspe|
          mspe = mspe.user.competencies.where(WHERE_QUERY, '%FoM%', '%JCON%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%FAMP 705SD%', '%GMED 705AB%',
          '%IMEDMINF 705B%', '%MULT 705A%', '%MULT 705C%', '%MULT 705D%', '%MULT 705TI%', '%709Z%').select(:id, :student_uid, :user_id, :email,
+           :course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, :prof_concerns, :mspe,
+         ).order(:user_id, :start_date)
+         mspe_data.push mspe
+      end
+    elsif permission_group_title == "Med24"
+      Med24Mspe.all.each do |mspe|
+         mspe = mspe.user.competencies.where(WHERE_QUERY2, '%FoM%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%709Z%').select(:id, :student_uid, :user_id, :email,
            :course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, :prof_concerns, :mspe,
          ).order(:user_id, :start_date)
          mspe_data.push mspe

@@ -1,20 +1,36 @@
 <h1>Usmle Exams</h1>
 
-<table class="responsive nowrap table table-hover" id="dttb-usmle_exams" data-sort="true" data-source="<%= url_for(format: :json)%>">
-  <thead>
-    <tr>
-      <th data-data="user.references">User.references</th>
-      <th data-data="exam_type">Exam type</th>
-      <th data-data="no_attempts">No attempts</th>
-      <th data-data="pass_fail">Pass fail</th>
-      <th data-data="exam_score">Exam score</th>
-      <th data-data="exam_date">Exam date</th>
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
-    </tr>
-  </thead>
-
-</table>
-
-<br>
-
-<%= link_to 'New Usmle Exam', new_usmle_exam_path %>
+  <table class="responsive nowrap table table-hover" id="dttb-usmle_exams" data-sort="true" data-source="<%= url_for(format: :json)%>">
+    <thead>
+      <tr>
+        <th data-data="user.references">User Id</th>
+        <th data-data="user_fullname">Full Name </th>
+        <th data-data="exam_type">Exam type</th>
+        <th data-data="no_attempts" style="text-align:center">No attempts</th>
+        <th data-data="pass_fail" style="text-align:center">Pass/Fail</th>
+        <th data-data="exam_score" style="text-align:center">Exam score</th>
+        <th data-data="exam_date" style="text-align:center">Exam date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <% if params[:notice].present? %>
+      <% @usmle_exams = UsmleExam.where(user_id: session[:user_id]) %>
+    <% end %>
+    <% @usmle_exams.each do |exam| %>
+      <tr>
+        <td><%= exam.user_id %></td>
+        <td><%= exam.user.full_name %></td>
+        <td><%= exam.exam_type %></td>
+        <td style="text-align:center"><%= exam.no_attempts %></td>
+        <td style="text-align:center"><%= exam.pass_fail %></td>
+        <td style="text-align:center"><%= exam.exam_score %></td>
+        <td style="text-align:center"><%= exam.exam_date.strftime("%m/%d/%Y") %></td>
+        <td>
+          <%= link_to 'Edit', edit_usmle_exam_path(exam) %> /
+          <%= link_to 'Destroy', exam, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= link_to 'New USMLE/Steps Exam', new_usmle_exam_path(user_id: @usmle_exams.first.user_id, full_name: @full_name) %> /
+  <%= link_to 'Go Home or Main Page', "/dashboard" %>

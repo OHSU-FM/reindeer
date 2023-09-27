@@ -77,12 +77,19 @@ class FixEgMembersController < ApplicationController
 
   def set_resources
     # @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
-    @newest_cohort = EgCohort.pluck(:permission_group_id).uniq.max
-    @eg1 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name1, :eg_email1).uniq.sort.to_h
-    @eg2 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name2, :eg_email2).uniq.sort.to_h
-    @reviewer1 = (@eg1.keys + @eg2.keys).uniq.sort
-    @reviewer2 = (@eg1.keys + @eg2.keys).uniq.sort
-    @uniq_eg_hash = @eg1.merge(@eg2).uniq.to_h
+    # @newest_cohort = EgCohort.pluck(:permission_group_id).uniq.max-1
+    # @eg1 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name1, :eg_email1).uniq.sort.to_h
+    # @eg2 = EgCohort.where(permission_group_id: @newest_cohort).pluck(:eg_full_name2, :eg_email2).uniq.sort.to_h
+    # @reviewer1 = (@eg1.keys + @eg2.keys).uniq.sort
+    # @reviewer2 = (@eg1.keys + @eg2.keys).uniq.sort
+    # @uniq_eg_hash = @eg1.merge(@eg2).uniq.to_h
+
+    eg_reviewers = EgMember.pluck(:full_name, :email).sort.to_h
+
+    @reviewer1 = eg_reviewers.keys
+    @reviewer2 = @reviewer1
+    @uniq_eg_hash = eg_reviewers
+
   end
 
   def private_download in_file

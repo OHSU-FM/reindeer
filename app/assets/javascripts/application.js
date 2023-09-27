@@ -76,3 +76,4 @@
 //= require events
 //= require meetings
 //= require reports
+//= require overall_progresses.js

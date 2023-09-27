@@ -3,16 +3,32 @@ class UsmleExamsController < ApplicationController
 
   # GET /usmle_exams
   def index
-    @usmle_exams = UsmleExam.all
+    if params[:user_id].present?
+      @usmle_exams = UsmleExam.where(user_id: params[:user_id])
+      @user_id = params[:user_id]
+      @full_name = params[:full_name]
+      session[:user_id] = params[:user_id]
+
+
+      if @usmle_exams.empty?
+        @usmle_exam = UsmleExam.new
+        @usmle_exam.user_id = params[:user_id]
+        render :new
+      end
+    end
   end
 
   # GET /usmle_exams/1
   def show
+    if params[:user_id].present?
+      @usmle_exams = UsmleExam.where(user_id: params[:user_id])
+    end
   end
 
   # GET /usmle_exams/new
   def new
     @usmle_exam = UsmleExam.new
+    @usmle_exam.user_id = params[:user_id]
   end
 
   # GET /usmle_exams/1/edit
@@ -32,7 +48,7 @@ class UsmleExamsController < ApplicationController
 
   # PATCH/PUT /usmle_exams/1
   def update
-    if @usmle_exam.update(usmle_exam_params)
+    if @usmle_exam.update(usmle_exam_params2)
       redirect_to @usmle_exam, notice: 'Usmle exam was successfully updated.'
     else
       render :edit
@@ -42,7 +58,8 @@ class UsmleExamsController < ApplicationController
   # DELETE /usmle_exams/1
   def destroy
     @usmle_exam.destroy
-    redirect_to usmle_exams_url, notice: 'Usmle exam was successfully destroyed.'
+    @usmle_exams = UsmleExam.where(user_id: session[:user_id])
+    redirect_to action: :index, notice: 'Usmle exam was successfully destroyed.'
   end
 
   private
@@ -53,6 +70,10 @@ class UsmleExamsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def usmle_exam_params
-      params.require(:usmle_exam).permit(:user.references, :exam_type, :no_attempts, :pass_fail, :exam_score, :exam_date)
+      params.require(:usmle_exam).permit(:user_id, :exam_type, :no_attempts, :pass_fail, :exam_score, :exam_date)
+    end
+
+    def usmle_exam_params2
+      params.require(:usmle_exam).permit( :exam_type, :no_attempts, :pass_fail, :exam_score, :exam_date)
     end
 end

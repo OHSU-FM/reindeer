@@ -15,7 +15,7 @@
             <% if params[:cohort].present? %>
               <div class="form-group col-sx-10">
                 <label for="student" class="control-label">&nbsp;&nbsp;Student:&nbsp;</label>
-                <%= select_tag :email, options_for_select(Med23Mspe.where(permission_group_id: params[:cohort]).order(:full_name).collect{|s| [s["full_name"], s["email"]]}.unshift(["All", "All"])), selected: params[:email],
+                <%= select_tag :email, options_for_select(hf_student_list(params[:cohort])), selected: params[:email],
                     prompt: "Please Select a Student", onchange: "this.form.submit();" %>
               </div>
             <% end %>

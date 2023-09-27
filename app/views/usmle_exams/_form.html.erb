@@ -1,16 +1,34 @@
-<%= simple_form_for(@usmle_exam) do |f| %>
-  <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :user.references %>
-    <%= f.input :exam_type %>
-    <%= f.input :no_attempts %>
-    <%= f.input :pass_fail %>
-    <%= f.input :exam_score %>
-    <%= f.input :exam_date %>
-  </div>
+<div class="card">
+  <div class="card-body card-body-color">
+    <%= simple_form_for(@usmle_exam) do |f| %>
+      <%= f.error_notification %>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+        <%= f.hidden_field :user_id, value: params[:user_id]%>
+        <div class="form-inputs">
+          <div class="form-group">
+            <%= f.input :exam_type, collection: ["HSS",  "Step 1 Exam",  "Step 1 Mock Exam",  "Step 2 CK",  "Step 2 CS"], input_html: {style: 'width: 200px'} %>
+          </div>
+          <div class="form-group">
+
+            <%= f.input :no_attempts, label: 'No Of Attempts' %>
+          </div>
+          <div class="form-group">
+            <%= f.input :pass_fail, collection: ['P', 'F'], label: 'Pass/Fail' %>
+          </div>
+          <div class="form-group">
+            <%= f.input :exam_score, label: 'Exam Score' %>
+          </div>
+          <div class="form-group">
+
+            <%= f.input :exam_date, as: :date, html5: true, label: 'Exam Date' %>
+          </div>
+        </div>
+      <br>
+
+      <div class="form-actions">
+        <%= f.button :submit , class: 'btn btn-primary' %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

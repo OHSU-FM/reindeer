@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
 
   has_one :dashboard, dependent: :destroy
   has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  has_one :med24_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
 
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
@@ -290,11 +291,10 @@ class User < ActiveRecord::Base
       end
 
       field :prev_permission_group_id
-
       field :user_externals, :has_many_association
-      field :explain_survey_access do
-        partial 'users/field_explain_survey_access'
-      end
+      # field :explain_survey_access do
+      #   partial 'users/field_explain_survey_access'
+      # end
       field :ls_list_state, :enum do
         enum do
           ["dirty", "clean"]
