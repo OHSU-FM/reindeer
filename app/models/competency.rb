@@ -1,6 +1,18 @@
 class Competency < ApplicationRecord
   belongs_to :user
 
+  rails_admin do
+    create do
+      field  :user_id, :enum do
+        enum do
+          User.where("permission_group_id >= ?", 18).order(:full_name).collect{|u| [u.full_name, u.id]}
+        end
+      end
+      include_all_fields # all other default fields will be added after, conveniently
+      exclude_fields :created_at # but you still can remove fields
+    end
+  end
+
   def self.write_hash_to_json_file(hash, filename)
      File.open(filename,"w") do |f|
        f.write(JSON.pretty_generate(hash))

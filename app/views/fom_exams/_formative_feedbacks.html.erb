@@ -1,6 +1,6 @@
 <% if !@formative_feedbacks.blank? %>
     <div class="table-responsive-sm">
-      <table class="table table-striped">
+      <table class="table table-striped" style="width:100%; overflow:auto;display:block">
         <% @formative_feedbacks.drop(3).each do |key, values| %>
           <tr>
               <% values.each do |val| %>

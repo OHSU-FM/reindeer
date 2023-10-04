@@ -23,8 +23,12 @@
                      <input type="date" name="EndDate"
                           value=<%= Date.today.strftime("%Y-%m-%d") %>
                          min="1997-01-01" max="2030-12-31">
-
-
+                     &nbsp; &nbsp;
+                     <input type="checkbox" id="NoShow" name="NoShow" >
+                     <label class="checkbox-inline" for="NoShow">
+                       No Show Report
+                     </label>
+                     &nbsp; &nbsp;
                  <%= button_tag " SUBMIT", class: 'button btn btn-primary', html: {autocomplete: 'off'},
                      'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>
             <% end %>
@@ -46,7 +50,12 @@
                       <input type="date" name="EndDate"
                            value=<%= Date.today.strftime("%Y-%m-%d") %>
                           min="1997-01-01" max="2030-12-31">
-
+                      &nbsp; &nbsp;
+                      <input type="checkbox" id="NoShow" name="NoShow">
+                      <label class="checkbox-inline" for="NoShow">
+                        No Show Report
+                      </label>
+                      &nbsp; &nbsp;
                   <%= submit_tag "Submit", name: 'advisor-reports-btn' %>
              <% end %>
       <% else %>

@@ -126,6 +126,7 @@ Rails.application.routes.draw do
         post 'search_meetings'
         post 'advisor_reports'
         post 'oasis_graphs'
+        get  'file_download'
       end
     end
 

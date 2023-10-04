@@ -8,6 +8,8 @@ module Coaching
 
     helper_method :sort_column, :sort_direction, :oasis_graphs
     helper  :all
+    include StudentsHelper
+    include MeetingsHelper
     # GET /coaching/students/{student_username}
     def show
 
@@ -55,7 +57,7 @@ module Coaching
         else
           @events = Event.where("user_id is not NULL and advisor_id=?", @valid_advisor.id)
         end
-            
+
         weekdays = @events.map{|e| e.start_date.strftime("%A")}.sort
         @weekdays_sorted = weekdays.tally
         hours = @events.map{|e| e.start_date.strftime("%I %p")}.sort
@@ -73,9 +75,19 @@ module Coaching
 
     def advisor_reports
       if params[:advisor_id].present? and params[:advisor_id] != 'All'
-        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
-        @code = "Aggregate"
-      elsif params[:advisor_id].present? and params[:advisor_id] == 'All'
+        if params[:NoShow].present?
+           @code = "Individual"
+           @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", params[:advisor_id], "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        else
+          @code = "Aggregate"
+          @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
+
+        end
+      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and params[:NoShow].present?
+        @code = "Individual"
+        @meetings = Meeting.where("m_status = ? and created_at >= ? and created_at <= ?", "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        hf_create_file(@meetings, "oasis_no_show.csv")
+      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and !params[:NoShow].present?
         @all_advisor_flag = true
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
                         .order(:advisor_id).group(:advisor_id).count
@@ -92,15 +104,31 @@ module Coaching
       elsif !params[:advisor_id].present?
         @code = "Individual"
         @valid_advisor = Advisor.find_by(email: current_user.email)
-        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        if params[:NoShow].present?
+          @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        else
+          @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
         end
+
+      end
 
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
       end
     end
 
+    def file_download
+      if params[:file_name].present?
+        private_download params[:file_name]
+      end
+
+    end
+
     private
+
+    def private_download in_file
+       send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+    end
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
         #@student = User.find_by_username(params[:slug])
@@ -148,7 +176,7 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15).load_async
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 18, 15).load_async
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)

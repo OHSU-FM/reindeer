@@ -301,9 +301,9 @@ class User < ActiveRecord::Base
         end
         default_value "dirty"
       end
-      field :permission_ls_groups do
-        read_only true
-      end
+      # field :permission_ls_groups do
+      #   read_only true
+      # end
 
     end
 
