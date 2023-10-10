@@ -82,11 +82,13 @@ Rails.application.routes.draw do
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
 
   resources :user do
-    resources :competencies, param: :user_id, only: [:index]
+    resources :competencies, param: :user_id, only: [:index, :new]
     resources :overall_progresses, param: :user_id, only: [:index]
   end
 
-  get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+  resources :competencies, only: [:index, :new, :create]
+
+  get 'fom_exams/list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
   get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
   get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
   get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'

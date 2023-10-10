@@ -206,50 +206,70 @@ LABELS3 = {
     student_name = class_data.first["full_name"]  # processing student Alver
     student_series = class_data.first.drop(2)  # removed the first 2 items in array
     student_series = student_series.map{|d| d.second.to_s.to_f if d.first.include? component}.compact
-
-    #student_series = student_series[0..-3].map{|s| s.second.to_f} # removed the last 2 items in array
-    student_series = check_pass_fail(student_series)
     class_mean_series = avg_data.first.map{|s| s.second.to_s.to_d.truncate(2).to_f if s.first.include? component}.compact
-    class_mean_series = check_pass_fail(class_mean_series)
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
 
-    if component == 'comp2a_hss'
+    if permission_group >= 20 and component == 'comp1_wk'
       count = selected_categories.count
       for i in 0..count-1
-        if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
-          if student_series[i].instance_of?(Hash)
-            # if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
-            #  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required1)</span>"
-            if categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
-                  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-            elsif (categories["course_code"] =='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
-                   selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-
-            end
+        #if student_series[i].instance_of?(Hash)
+          if (class_mean_series[i] != 0.0) and (student_series[i] == 0.0)
+            selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            @missing_weekly = true
           end
-        end
+        #end
       end
     end
+
+    # if component == 'comp2a_hss'
+    #   count = selected_categories.count
+    #   for i in 0..count-1
+    #     if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
+    #       if student_series[i].instance_of?(Hash)
+    #         # if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
+    #         #  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required1)</span>"
+    #         if categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
+    #               selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+    #               @missing_pre_lab = true
+    #         elsif (categories["course_code"] =='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
+    #                selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+    #                  @missing_pre_lab = true
+    #         end
+    #       end
+    #     end
+    #   end
+    # end
 
     if permission_group >= 20 and component == 'comp2a_hss'
       count = selected_categories.count
       for i in 0..count-1
-        # if today's is > course end date, we need to check the weighted average.
-        #if student_series[i].instance_of?(Hash) and student_series[i][:y].nil? and student_series.last < 100.00
-
-        if !class_data.first["course_end_date"].nil? and (Date.today  > class_data.first["course_end_date"].to_date) and
-          student_series[i].instance_of?(Hash) and !student_series[i][:y].nil? and student_series[i][:y] < 100.00
-          selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+        if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab" or selected_categories[i].downcase.include? "informatics" or
+          selected_categories[i].downcase.include? "active learning" )
+          if class_mean_series[i] != 0.00  and student_series[i] == 0.0
+            selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            @missing_pre_lab = true
+          elsif (categories["course_code"] == '4-CPR' or categories["course_code"] == '5-HODI') and student_series[i] == 0.0
+            selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            @missing_pre_lab = true
+          end
         end
 
       end
     end
 
-    if component.include? 'summary'
-      if (categories["course_code"] == '4-CPR') and (class_mean_series[1] != 0.0) and (student_series[1] <= 75.0)
-         selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-      end
+    if (component.include? 'summary' and @missing_weekly)
+      selected_categories[0] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
     end
+
+    if (component.include? 'summary' and @missing_pre_lab)
+      # if (categories["course_code"] == '6-NSF') and !student_series[1].is_a?(Float) and (student_series[1][:y] <= 75.0)
+      #     selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+      # end
+      selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+    end
+
+    student_series = check_pass_fail(student_series)
+    class_mean_series = check_pass_fail(class_mean_series)
 
     height = 400
 

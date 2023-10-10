@@ -10,6 +10,37 @@ class CompetenciesController < ApplicationController
   include EpaMastersHelper
   include FomExamsHelper
 
+  def new
+    @competency = Competency.new
+    tempComp = Competency.find(params[:id])
+    @competency.user_id = tempComp.user_id
+    @competency.email = tempComp.email
+    @competency.permission_group_id = tempComp.permission_group_id
+    @competency.student_uid = tempComp.student_uid
+    @competency.medhub_id = tempComp.medhub_id
+    @competency.course_id = tempComp.course_id
+    @competency.course_name = tempComp.course_name
+    @competency.start_date = tempComp.start_date
+    @competency.end_date = tempComp.end_date
+    @competency.submit_date = tempComp.submit_date
+    @competency.evaluator = tempComp.evaluator
+    @competency.final_grade = tempComp.final_grade
+
+    @users = User.where(permission_group_id: tempComp.permission_group_id).select(:id, :full_name).order(:full_name)
+
+
+  end
+
+  def create
+    @competency = Competency.new(competency_params)
+
+    if @competency.save
+      redirect_to '/reports/mspe', notice: 'Competency Record was successfully created.'
+    else
+      render :new
+    end
+  end
+
 
   def index
     Rails.application.config.action_view.image_loading = "lazy"
@@ -17,7 +48,7 @@ class CompetenciesController < ApplicationController
 
     if current_user.coaching_type == "student"
       @selected_user = current_user
-      @spec_program_msg = @selected_user.spec_program 
+      @spec_program_msg = @selected_user.spec_program
       full_name = current_user.full_name
       email = current_user.email
       permission_group_id = current_user.permission_group_id
@@ -156,6 +187,19 @@ class CompetenciesController < ApplicationController
   end
 
   private
+
+  def competency_params
+    params.require(:competency).permit(:id, :user_id, :permission_group_id, :student_uid, :email,
+      :medhub_id, :course_id, :course_name,  :start_date, :end_date, :submit_date, :evaluator, :final_grade,
+      :ics1, :ics2, :ics3, :ics4, :ics5, :ics6, :ics7, :ics8,
+      :mk1, :mk2, :mk3, :mk4, :mk5,
+      :pbli1, :pbli2, :pbli3, :pbli4, :pbli5, :pbli6, :pbli7, :pbli8,
+      :pcp1, :pcp2, :pcp3, :pcp4, :pcp5, :pcp6,
+      :pppd1, :pppd2, :pppd3, :pppd4, :pppd5, :pppd6, :pppd7, :pppd8, :pppd9, :pppd10, :pppd11,
+      :sbpic1, :sbpic2, :sbpic3, :sbpic4, :sbpic5,
+      :prof_concerns,
+      :mspe)
+  end
 
   def load_release_date
     badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
