@@ -14,14 +14,19 @@
 
 <div id="cs-goals-main">
   <br />
+  <h5 class="goals-header" data-coaching-type="<%= current_user.coaching_type %>" >OASIS Documentation System -<span style="font-size:24px;color:purple" ><%= hf_get_label(current_user) %></span></h5>
+
   <% if current_user.coach_or_higher? %>
-      <div id="cs-student-select">
-        <%= render partial: "student_select" %>
+
+      <div class="card" style="height: 5rem;">
+        <div class="card-body">
+          <div id="cs-student-select">
+            <%= render partial: "student_select" %>
+          </div>
+        </div>
       </div>
-    <hr>
   <% end %>
 
-  <h3 class="goals-header" data-coaching-type="<%= current_user.coaching_type %>" >OASIS Documentation System -<span style="font-size:24px;color:purple" ><%= hf_get_label(current_user) %></span></h3>
   <ul class="nav nav-tabs goal-tabs" role="tablist" id="myTab">
     <li class="nav-item active">
       <a class="nav-link" id="appointments-tab" data-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="true"><b>Appointments</b></a>

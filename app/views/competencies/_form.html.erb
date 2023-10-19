@@ -1,4 +1,8 @@
 <br />
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header"><h4>Cloning MSPE Course</h4></div>
+    <div class="card-body">
 
       <%= simple_form_for @competency, action: 'create', method: 'post' do |f| %>
               <%= f.input :user_id, collection: @users %> <br>
@@ -31,3 +35,6 @@
               <%= f.submit :submit, class: "btn btn-primary" %>
 
       <% end %>
+    </div>
+  </div>
+</div>

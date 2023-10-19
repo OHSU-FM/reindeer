@@ -6,3 +6,20 @@ table.center {
   margin-left:auto;
   margin-right:auto;
 }
+
+//use for artifacts upload
+label.asdndzone {
+    box-sizing: border-box;
+    display: block;
+    border: 3px solid #443ece;
+    border-radius: 6px;
+    min-height: 220px;
+    max-width: 400px;
+    width: 100%;
+    padding: 99px 20px 20px;
+    background: #e0dff7;
+    text-align: center;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.6px;
+}
