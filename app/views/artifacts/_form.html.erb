@@ -44,7 +44,7 @@
 
               <div class="form-group">
               <%= f.label "Documents", class: "col-sm-1 control-label" %>
-              <%= f.file_field :documents, multiple: true %>
+              <%= f.drag_and_drop_file_field :documents, 'Drag & Drop documents here!'%>
             </div>
 
               <div class="form-actions">
