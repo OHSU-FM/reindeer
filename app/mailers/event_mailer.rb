@@ -123,7 +123,7 @@ class EventMailer < ApplicationMailer
     File.open(filename,"a") do |f|
       f.write("===========================================================================\n")
       f.write(message + "\n")
-      f.write("Emails sent on " + Time.now.strftime("%d/%m/%Y %H:%M") + "\n")
+      f.write("Emails sent on (mm/dd/yyyy) " + Time.now.strftime("%m/%d/%Y %H:%M") + "\n")
       f.write("Emails: " + to_emails.inspect + "\n")
       f.write("subject: " + subject_msg + "\n")
       f.write("===========================================================================\n")

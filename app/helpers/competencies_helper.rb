@@ -141,6 +141,11 @@ module CompetenciesHelper
 
 
   #===================================================================================================================================================================
+
+  def hf_comp_codes
+    return COMP_CODES
+  end
+  
   def hf_get_block_comp_def (in_code)
     return BLOCK_COMP_DEF[in_code]
   end

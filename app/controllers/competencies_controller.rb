@@ -33,7 +33,11 @@ class CompetenciesController < ApplicationController
 
   def create
     @competency = Competency.new(competency_params)
-
+    if params[:compChecked].present?
+      params[:compChecked].each do |comp|
+        @competency["#{comp}"] = 3  #entrustable 
+      end
+    end
     if @competency.save
       redirect_to '/reports/mspe', notice: 'Competency Record was successfully created.'
     else
@@ -41,6 +45,11 @@ class CompetenciesController < ApplicationController
     end
   end
 
+  def destroy
+    @competency = Competency.find(params[:id])
+    @competency.destroy
+    redirect_to '/reports/mspe', notice: 'Artifact was successfully destroyed.'
+  end
 
   def index
     Rails.application.config.action_view.image_loading = "lazy"

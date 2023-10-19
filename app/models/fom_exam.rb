@@ -6,6 +6,18 @@ class FomExam < ApplicationRecord
 
   PREFIX_KEYS_MED21 = ['comp1_wk', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss','comp5b_bss', 'summary_comp']
 
+
+  rails_admin do
+    list do
+      exclude_fields :created_at
+      field :user do
+        visible visible
+        queryable true
+        searchable [{User => :full_name}]
+      end
+    end
+  end
+
   def self.comp_keys
     return PREFIX_KEYS
   end

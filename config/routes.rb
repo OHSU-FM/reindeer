@@ -86,7 +86,7 @@ Rails.application.routes.draw do
     resources :overall_progresses, param: :user_id, only: [:index]
   end
 
-  resources :competencies, only: [:index, :new, :create]
+  resources :competencies, only: [:index, :new, :create, :destroy]
 
   get 'fom_exams/list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
   get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
