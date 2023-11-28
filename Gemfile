@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ##############################
 gem "bundler", '~>2.0'
 gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
-gem "rdoc", '~>6.1.2.1' #'~> 5.0', '< 6.4.0'
+gem "rdoc", '~>6.3.1'
 gem "psych", '< 4'
 gem 'sprockets', '< 4'
 gem 'bcrypt'
@@ -49,7 +49,7 @@ gem "popper_js", "~> 1.14.3"
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-gem 'jquery-ui-rails', '~> 6.0.1'
+gem 'jquery-ui-rails'
 gem "jquery-rails"
 gem "jquery_context_menu-rails"
 gem "momentjs-rails"
@@ -132,7 +132,7 @@ end
 group :development do
   gem "rack-mini-profiler", require: false
   gem "webrick"
-  gem "puma"
+  gem "puma", "~> 6.3.1"
   gem "rails_layout"
   gem "awesome_print"
 

@@ -1,3 +1,7 @@
 
 <hr>
-<%= render 'form', artifact: @artifact %>
+<% if params[:file_type] == 'Regular' %>
+  <%= render 'form', artifact: @artifact %>
+<% else %>
+  <%= render 'form_fom', artifact: @artifact %>
+<% end %>

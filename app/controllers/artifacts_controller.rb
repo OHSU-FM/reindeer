@@ -4,6 +4,7 @@ class ArtifactsController < ApplicationController
   before_action :set_artifact, only: [:show, :edit, :update, :destroy, :move]
 
   include ArtifactsHelper
+  include FomExamsHelper
 
 
   # GET /artifacts
@@ -23,6 +24,40 @@ class ArtifactsController < ApplicationController
 
   # GET /artifacts/1
   def show
+    if @artifact.title.include? "/" # to check if it is a fom_exams file
+      file_name = ActiveStorage::Attachment.find(@artifact.documents.first.id).blob.filename.to_s
+      file_name = File.basename(file_name, File.extname(file_name)) ## without file extension
+      permission_group_id, course_code, component = @artifact.title.split("/")
+      sub_component = @artifact.content
+      if sub_component == 'labels'
+        cohort_title = PermissionGroup.find(permission_group_id).title.split("(").last.gsub(")", "")
+        file_name = cohort_title + "_" + course_code + "_" + component        
+      else
+        file_name = permission_group_id + "_" + course_code + "_" + sub_component
+      end
+      file_name = "#{Rails.root}/log/fom_exams/#{file_name}.log"
+      @myFile=File.open(file_name,"r")
+    end
+
+  end
+
+  def get_sub_components
+    if params[:permission_group_id].present? and params[:course_code].present?
+      labels = FomLabel.find_by(permission_group_id: params[:permission_group_id], course_code: params[:course_code]).labels
+      labels = JSON.parse(labels)
+      @labels = hf_filter_fom_labels(params[:component], labels)
+    end
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: {sub_components: @labels}
+        }
+      end
+    else
+      respond_to do |format|
+        format.html
+      end
+    end
   end
 
   # GET /artifacts/new
@@ -30,14 +65,32 @@ class ArtifactsController < ApplicationController
     @artifact = Artifact.new
     @student_groups = PermissionGroup.select(:id, :title).where(" id >= ? and id <> ?", 16, 15).order(:title)
     @cohort_students = []
+    @course_codes = []
+    if params[:file_type].present?
+      @file_type = params[:file_type]
+    end
     if params[:permission_group_id].present?
-      @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
+      if @file_type == 'Regular'
+        @cohort_students = User.select(:id, :full_name).where(permission_group_id: params[:permission_group_id]).order(:full_name)
+      elsif @file_type == 'FoM'
+        @course_codes = FomLabel.select(:id, :course_code).where(permission_group_id: params[:permission_group_id]).order(:course_code)
+        @course_codes = @course_codes.collect{|s| [s.course_code]}.push ["New Block"]
+        @course_codes = @course_codes.flatten
+      end
     end
     if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: {cohort_students: @cohort_students}
-        }
+      if @file_type == 'Regular'
+        respond_to do |format|
+          format.json {
+            render json: {cohort_students: @cohort_students}
+          }
+        end
+      elsif @file_type == 'FoM'
+        respond_to do |format|
+          format.json {
+            render json: {course_codes: @course_codes}
+          }
+        end
       end
     else
       respond_to do |format|
@@ -59,8 +112,25 @@ class ArtifactsController < ApplicationController
     else
       @artifact.user_id = current_user.id
     end
+    if params[:course_code].present?
+      if params[:course_code] == 'New Block'
+        @artifact.title = params[:permission_group_id] + "/" + @artifact.title  + "/" + 'labels'
+        @artifact.content = 'labels'
+      else
+        @artifact.title = params[:permission_group_id] + "/" + params[:course_code] + "/" + @artifact.title
+      end
+    end
 
     if @artifact.save
+      if params[:course_code].present? and current_user.coaching_type == 'admin'
+        ## to check whether it is a label file
+        if params[:course_code] == 'New Block'
+          hf_load_label_file(@artifact)
+        else
+          @log_messages = hf_fom_process_file(@artifact)
+        end
+
+      end
       redirect_to @artifact, notice: 'Artifact was successfully created.'
     else
       redirect_to @artifact, notice: 'Error Invalid File Type - only allowed PDF, JPEG, JPG & PNG!'

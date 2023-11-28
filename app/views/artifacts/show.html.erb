@@ -9,6 +9,11 @@
   <strong>Content:</strong>
   <%= @artifact.content %>
 </p>
+<% if @artifact.title.include? "/" %>
+  <% while(line=@myFile.gets) %>
+    <%= line %><br />
+  <% end %>
+<% end %>
 
 <%= link_to 'Edit', edit_artifact_path(@artifact) %> |
 <%= link_to 'Back', artifacts_path %>

@@ -119,6 +119,9 @@ Rails.application.routes.draw do
        get 'process_comp_excel'
        get 'process_bls_excel'
      end
+     collection do
+       get 'get_sub_components'
+     end
   end
   namespace :coaching do
     resources :students, param: :slug, only: [:show] do

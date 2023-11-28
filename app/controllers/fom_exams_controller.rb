@@ -15,16 +15,19 @@ class FomExamsController < ApplicationController
   end
 
   def list_all_blocks
-    @list_all_blocks = FomExam.distinct.pluck(:permission_group_id, :course_code).sort
+    last_permission_group_id = PermissionGroup.last.id
+    @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-1).pluck(:permission_group_id, :course_code).sort
     respond_to do |format|
       format.html
     end
   end
 
   def export_block
-    if params[:permssion_group_id].present? and params[:course_code].present?
-      @export_block = hf_export_fom_block(params[:permssion_group_id], params[:course_code])
+    if params[:permission_group_id].present? and params[:course_code].present?
+      @export_block = hf_export_fom_block(params[:permission_group_id], params[:course_code])
+      @fom_labels = FomLabel.where(permission_group_id: params[:permission_group_id].to_i, course_code: params[:course_code])
       #@export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
+      @fom_headers = JSON.parse(@fom_labels.first.labels)
       @file_name = "fom_exam_#{params[:course_code]}.txt"
       create_file @export_block, @file_name
       #send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'

@@ -1,0 +1,31 @@
+<table id="fomTable_<%=filter_comp%>" class="table table-hover table-striped" data-sort="true" >
+    <% fom_headers = @fom_headers.first.select{|key, val|  val if key.include? filter_comp} %>
+    <thead>
+      <tr>
+        <th>Full Name </th>
+        <th>Course Code </th>
+        <% fom_headers.each do |key, value| %>
+              <th style="text-align:center"><%= key %> <br/><%= value %></th>
+        <% end %>
+      </tr>
+    </thead>
+      <% @export_block.each do |data| %>
+        <tr>
+          <td><%= data["full_name"] %></td>
+          <td><%= data["course_code"] %></td>
+          <% data.each do |key, val| %>
+            <% if key.include? filter_comp  %>
+              <% if val.nil? %>
+                <% val = 0.00 %>
+              <% end %>
+
+              <% if (val < 70.0) %>
+                <td style="text-align:center"><font color="red"> <%= val ? val : 0.0 %></font></td>
+              <% else %>
+                <td style="text-align:center"><font color="black"> <%= val ? val : 0.0 %></font></td>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+</table>

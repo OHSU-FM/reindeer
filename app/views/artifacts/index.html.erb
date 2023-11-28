@@ -1,7 +1,9 @@
 <% if !@artifacts.nil? %>
   <br /> <br/>
-  <h4> All documents <%= link_to 'Upload Documents', new_artifact_path, class: "btn btn-primary" %> </h4>
-
+  <h4> All documents <%= link_to 'Upload Documents', new_artifact_path(file_type: 'Regular'), class: "btn btn-primary" %> </h4>
+  <% if current_user.username == 'chungp'  %>
+    <%= link_to 'Upload FoM File', new_artifact_path(file_type: 'FoM'), class: "btn btn-primary" %>
+  <% end %>
   <table class="responsive nowrap table table-hover" id="artifacts" >
     <thead>
       <tr>
