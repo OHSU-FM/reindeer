@@ -1,6 +1,7 @@
-<h1>Editing Epa</h1>
+<br /> <br />
+<h4>Editing Epa</h4>
 
 <%= render 'form', epa: @epa %>
 
 <%= link_to 'Show', @epa %> |
-<%= link_to 'Back', epas_path %>
+<%= link_to 'Back', epas_path(user_id: @epa.user_id) %>

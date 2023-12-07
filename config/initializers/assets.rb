@@ -68,4 +68,6 @@ Rails.application.config.assets.precompile += %w( print.css
     popper.js
     fix_eg_members.css
     usmle_exams.css
+    epas.css
+    epas.js
    )

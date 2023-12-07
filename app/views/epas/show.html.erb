@@ -1,13 +1,26 @@
+<br > <br >
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Submit date:</strong>
-  <%= @epa.submit_date %>
+  <strong>Response ID:</strong>
+  <%= @epa.response_id %>
 </p>
-
 <p>
   <strong>Student assessed:</strong>
   <%= @epa.student_assessed %>
+</p>
+
+<p>
+  <strong>Assessor Name:</strong>
+  <%= @epa.assessor_name %>
+</p>
+<p>
+  <strong>Assessor Email:</strong>
+  <%= @epa.assessor_email %>
+</p>
+<p>
+  <strong>Submit date:</strong>
+  <%= @epa.submit_date %>
 </p>
 
 <p>
@@ -27,8 +40,8 @@
 
 <p>
   <strong>Clincial assessor:</strong>
-  <%= @epa.clincial_assessor %>
+  <%= @epa.clinical_assessor %>
 </p>
 
 <%= link_to 'Edit', edit_epa_path(@epa) %> |
-<%= link_to 'Back', epas_path %>
+<%= link_to 'Back', epas_path(params[:user_id]) %>

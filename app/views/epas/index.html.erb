@@ -1,20 +1,37 @@
-<h1>Epas</h1>
-
-<table class="responsive nowrap table table-hover" id="dttb-epas" data-sort="true" data-source="<%= url_for(format: :json)%>">
+<br />
+<h4>WBAs</h4>
+<table id='WBATable' class="table responsive nowrap table-stripe table-hover" data-sort="true">
   <thead>
     <tr>
-      <th data-data="submit_date">Submit date</th>
-      <th data-data="student_assessed">Student assessed</th>
-      <th data-data="epa">Epa</th>
-      <th data-data="clinical_discipline">Clinical discipline</th>
-      <th data-data="clinical_setting">Clinical setting</th>
-      <th data-data="clincial_assessor">Clincial assessor</th>
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+      <% @epa_headers.each do |header| %>
+        <% if !header.include? "no_of_times" and !header.include? "meta_" %>
+          <th><%= header %></th>
+        <% end %>
+      <% end %>
     </tr>
   </thead>
+ <tbody>
+  <% @epas.each do |epa| %>
+    <tr>
+      <% epa.each do |key, val| %>
+        <% if !key.include? "no_of_times" and !key.include? "meta_" %>
+          <% if key == 'id' %>
+            <td>
+              <%= link_to ("<i class='fa fa-edit'></i>" + val.to_s).html_safe, edit_epa_path(id: val), target: :_blank %>
+              <% response_id = epa["response_id"] %>
+              <%= link_to ("<i class='fa fa-trash'></i>").html_safe, epa_path(id: val), :method => :delete, data: {:confirm => "Are you sure?" } ,
+                           :title => "Delete #{response_id}" %>
+            </td>
+          <% else %>
+            <td><%= val %></td>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+  </<tbody>
+
+  </tbody>
 
 </table>
-
-<br>
-
-<%= link_to 'New Epa', new_epa_path %>

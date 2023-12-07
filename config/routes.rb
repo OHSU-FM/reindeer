@@ -43,7 +43,8 @@ Rails.application.routes.draw do
   get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
 
 
-  resources :epas
+
+  resources :epas 
 
   resources :epa_reviews do
     collection do

@@ -35,7 +35,7 @@ class CompetenciesController < ApplicationController
     @competency = Competency.new(competency_params)
     if params[:compChecked].present?
       params[:compChecked].each do |comp|
-        @competency["#{comp}"] = 3  #entrustable 
+        @competency["#{comp}"] = 3  #entrustable
       end
     end
     if @competency.save
@@ -124,10 +124,13 @@ class CompetenciesController < ApplicationController
 
      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@pk, "Progress Board")
 
+     if @selected_user.permission_group_id >= 13  # Med21
+        @cpx_artifacts = hf_get_mock(@selected_user.id, "CPX")
+     else
+       @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
+     end
 
-     @cpx_data_new, @not_found_cpx, @cpx_artifacts = hf_get_new_cpx(@pk)
-
-      @mock_artifacts = hf_get_mock(@pk, "Mock Step 1")
+     @mock_artifacts = hf_get_mock(@selected_user.id, "Mock Step 1")
 
      found_rec = FileuploadSetting.find_by(permission_group_id: current_user.permission_group_id)
 

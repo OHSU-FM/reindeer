@@ -25,12 +25,14 @@
                       <tr><th>CourseName</th><td style="color:blue"><%= cd["course_name"] %></td></tr>
                       <tr><th>StartDt</th><td><%= cd["start_date"] %></td></tr>
                       <tr><th>EndDt</th><td><%= cd["end_date"] %></td></tr>
-                      <tr><th>Evaluator</th><td><%= cd["submit_date"] %></td></tr>
+                      <tr><th>Evaluator</th><td><%= cd["evaluator"] %></td></tr>
                       <tr><th>FinalGrade</th><td><%= hf_final_grade2(cd['final_grade']) %></td></tr>
                       <tr><th>MSPE</th><td><%= cd["mspe"] %></td></tr>
                     </table>
-                  </div>
+                    <%= render partial: 'artifacts/cpx_artifacts' %>
+                  </div>            
               </div>
+
             <% end %>
           <% end %>
         <% end %>

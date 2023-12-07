@@ -66,6 +66,7 @@
 //= require wba_graphs
 //= require csl_feedbacks
 //= require fom_exams
+//= require epas
 //= require competencies
 //=  require jquery-contextmenu/dist/jquery.contextMenu.js
 //=  require jquery-contextmenu/dist/jquery.ui.position.js
