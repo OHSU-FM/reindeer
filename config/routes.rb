@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :course_schedules
+  resources :courses
   #get 'overall_progresses/index'
   resources :eg_members
   get 'fix_eg_members/index'
@@ -69,7 +71,6 @@ Rails.application.routes.draw do
 
   end
   #get 'epa_masters/eg_report', controller: "epa_masters", action: :eg_report, to: "epa_masters#eg_report"
-  resources :courses
   resources :usmle_exams
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'

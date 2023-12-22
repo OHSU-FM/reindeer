@@ -46,25 +46,36 @@ module Coaching
       @meeting.uworld_info = uworld_info_json
       @meeting.qbank_info = qbank_info_json
 
-        respond_to do |format|
-            if @meeting.save
-             flash[:alert] = 'Appointment/Meeting saved successfully!'
-              # student is createing a meeting/appointment record
+      # to check event/appt is being TAKEN
+      #if Event.find(@meeting.event_id).user_id.nil?
 
-              Event.find(@meeting.event_id).update(user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
-              if send_email_flag["OASIS"]["send_email"] ==  true
-                event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
+          respond_to do |format|
+              if @meeting.save
+               flash[:alert] = 'Appointment/Meeting saved successfully!'
+                # student is createing a meeting/appointment record
 
-                # send email to student & advisor if advisor_notes is nil otherwise, it is a retro-appointment
-                if (!event.empty? and @meeting.advisor_notes.blank?) or @meeting.advisor_type == 'Assist Dean'
-                  EventMailer.notify_student(@meeting, "Create").deliver_later
+                Event.find(@meeting.event_id).update(user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
+                if send_email_flag["OASIS"]["send_email"] ==  true
+                  event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
+
+                  # send email to student & advisor if advisor_notes is nil otherwise, it is a retro-appointment
+                  if (!event.empty? and @meeting.advisor_notes.blank?) or @meeting.advisor_type == 'Assist Dean'
+                    EventMailer.notify_student(@meeting, "Create").deliver_later
+                  end
                 end
+                format.js { render action: 'show', status: :created }
+              else
+                format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
               end
-              format.js { render action: 'show', status: :created }
-            else
-              format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
-            end
-        end
+          end
+        # else
+        #   byebug
+        #
+        #   respond_to do |format|
+        #        flash[:alert] = 'Appointment is being taken, please select another one!'
+        #        format.js { render action: 'show', status: :created }
+        #   end
+        # end
 
     end
 
@@ -73,7 +84,7 @@ module Coaching
       @meeting = Meeting.find params[:id]
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
-        
+
       end
     end
 

@@ -151,9 +151,9 @@ class Ability
       end
     end
 
-    if user.lime_user
-      can :access, :lime_server
-    end
+    # if user.lime_user
+    #   can :access, :lime_server
+    # end
   end
 
   def student_permissions user

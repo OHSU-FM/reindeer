@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_14_151021) do
+  create_schema "source"
+  create_schema "target"
+  create_schema "transform"
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
@@ -177,15 +181,44 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
     t.boolean "resizeable", default: true
   end
 
+  create_table "course_schedules", force: :cascade do |t|
+    t.bigint "course_id"
+    t.string "course_schedule"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "no_of_seats"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_schedules_on_course_id"
+  end
+
   create_table "courses", force: :cascade do |t|
-    t.string "competency_code"
-    t.string "course_no"
+    t.string "course_number"
     t.string "course_name"
+    t.string "content_type"
+    t.integer "medhub_course_id"
+    t.boolean "rural"
+    t.boolean "continuity"
+    t.boolean "available_through_the_lottery"
     t.string "department"
-    t.text "course_purpose_statement"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["competency_code", "course_no"], name: "index_courses_on_competency_code_and_course_no", unique: true
+    t.string "course_purpose_statement"
+    t.string "special_notes"
+    t.boolean "prerequisites"
+    t.string "required_prerequisites"
+    t.boolean "waive_prereq_requirements"
+    t.string "waive_notes"
+    t.string "duration"
+    t.string "site"
+    t.integer "weekly_workload"
+    t.integer "credits"
+    t.string "course_director"
+    t.string "course_director_email"
+    t.string "course_coordinator"
+    t.string "course_coordinator_email"
+    t.text "competencies", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "cpxes", force: :cascade do |t|
@@ -511,7 +544,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   create_table "ipe_courses", primary_key: "course_id", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "course_code", limit: 20, null: false
     t.string "course_name", limit: 100
-    t.index ["course_code"], name: "ipe_courses_course_code", unique: true
+
+    t.unique_constraint ["course_code"], name: "ipe_courses_course_code"
   end
 
   create_table "med18_competencies", force: :cascade do |t|
@@ -587,7 +621,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   create_table "med18_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med18_mspe_email_key", unique: true
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+
+    t.unique_constraint ["email"], name: "med18_mspe_email_key"
   end
 
   create_table "med19_competencies", force: :cascade do |t|
@@ -663,7 +700,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   create_table "med19_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med19_mspe_email_key", unique: true
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+
+    t.unique_constraint ["email"], name: "med19_mspe_email_key"
   end
 
   create_table "med20_competencies", force: :cascade do |t|
@@ -739,7 +779,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   create_table "med20_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med20_mspe_email_key", unique: true
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+
+    t.unique_constraint ["email"], name: "med20_mspe_email_key"
   end
 
   create_table "med21_competencies", force: :cascade do |t|
@@ -873,7 +916,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   create_table "med21_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med21_mspe_email_key", unique: true
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+
+    t.unique_constraint ["email"], name: "med21_mspe_email_key"
   end
 
   create_table "med22_fom_exams", force: :cascade do |t|
@@ -943,13 +989,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   create_table "med22_mspe_cces", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med22_mspe_cces_email_key", unique: true
+
+    t.unique_constraint ["email"], name: "med22_mspe_cces_email_key"
   end
 
   create_table "med22_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med22_mspe_email_key", unique: true
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+
+    t.unique_constraint ["email"], name: "med22_mspe_email_key"
   end
 
   create_table "med23_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
@@ -957,14 +1007,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
     t.string "full_name", limit: 50
     t.bigint "user_id"
     t.integer "permission_group_id"
-    t.index ["email"], name: "med23_mspe_email_key", unique: true
     t.index ["user_id"], name: "index_med23_mspes_on_user_id"
+    t.unique_constraint ["email"], name: "med23_mspe_email_key"
   end
 
   create_table "med24_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
     t.string "email", limit: 50, null: false
     t.string "full_name", limit: 50
-    t.index ["email"], name: "med24_mspe_email_key", unique: true
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.index ["user_id"], name: "index_med24_mspes_on_user_id"
+    t.unique_constraint ["email"], name: "med24_mspe_email_key"
   end
 
   create_table "medhub_period_ids", id: false, force: :cascade do |t|
@@ -1232,6 +1285,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
     t.string "discussable_type"
   end
 
+  create_table "student_lists", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+    t.string "full_name", limit: 50
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+  end
+
   create_table "ume_blses", force: :cascade do |t|
     t.bigint "user_id"
     t.date "expiration_date"
@@ -1320,6 +1379,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   add_foreign_key "cohorts", "users"
   add_foreign_key "competencies", "permission_groups"
   add_foreign_key "competencies", "users"
+  add_foreign_key "course_schedules", "courses"
   add_foreign_key "csl_evals", "users"
   add_foreign_key "csl_feedbacks", "users"
   add_foreign_key "eg_cohorts", "users"
@@ -1332,7 +1392,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_174902) do
   add_foreign_key "med20_competencies", "permission_groups"
   add_foreign_key "med21_competencies", "permission_groups"
   add_foreign_key "med23_mspes", "users"
+  add_foreign_key "med24_mspes", "users"
   add_foreign_key "preceptor_assesses", "users"
   add_foreign_key "preceptor_evals", "users"
+  add_foreign_key "student_lists", "users"
   add_foreign_key "usmle_exams", "users"
 end

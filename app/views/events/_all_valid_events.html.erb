@@ -16,7 +16,7 @@
       <% if event.user_id.nil? %>
         <td><%= event.title %></td>
       <% else %>
-        <% student = event.user %>
+        <% student = User.find(event.user_id) %>
         <td><%= link_to(event.title, coaching_student_path(student), target: '_blank') %></td>
       <% end %>
       <td><%= event.description %></td>

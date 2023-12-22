@@ -1,9 +1,9 @@
 class Cohort < ActiveRecord::Base
 
-  belongs_to :owner, class_name: "User", foreign_key: :user_id
-  belongs_to :permission_group
-
-  has_many :users
+  # belongs_to :owner, class_name: "User", foreign_key: :user_id
+  # belongs_to :permission_group
+  #
+  # has_many :users
 
   validates_presence_of :permission_group
   validates_presence_of :owner
@@ -28,12 +28,12 @@ class Cohort < ActiveRecord::Base
       field :title
       field :owner
       field :permission_group
-      field :users do
-        associated_collection_scope do
-          cohort = bindings[:object]
-          Proc.new{|scope| scope = scope.where(permission_group_id: cohort.permission_group.id) }
-        end
-      end
+      # field :users do
+      #   associated_collection_scope do
+      #     cohort = bindings[:object]
+      #     Proc.new{|scope| scope = scope.where(permission_group_id: cohort.permission_group.id) }
+      #   end
+      # end
     end
     show do
       field :title

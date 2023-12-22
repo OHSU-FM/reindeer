@@ -16,12 +16,16 @@
       <% epa.each do |key, val| %>
         <% if !key.include? "no_of_times" and !key.include? "meta_" %>
           <% if key == 'id' %>
-            <td>
-              <%= link_to ("<i class='fa fa-edit'></i>" + val.to_s).html_safe, edit_epa_path(id: val), target: :_blank %>
-              <% response_id = epa["response_id"] %>
-              <%= link_to ("<i class='fa fa-trash'></i>").html_safe, epa_path(id: val), :method => :delete, data: {:confirm => "Are you sure?" } ,
-                           :title => "Delete #{response_id}" %>
-            </td>
+              <% if ['chungp', 'budd'].include? current_user.username %>
+                <td>
+                  <%= link_to ("<i class='fa fa-edit'></i>" + val.to_s).html_safe, edit_epa_path(id: val), target: :_blank %>
+                  <% response_id = epa["response_id"] %>
+                  <%= link_to ("<i class='fa fa-trash'></i>").html_safe, epa_path(id: val), :method => :delete, data: {:confirm => "Are you sure?" } ,
+                             :title => "Delete #{response_id}" %>
+                </td>
+              <% else %>
+                <td><%= val %></td>
+              <% end %>
           <% else %>
             <td><%= val %></td>
           <% end %>

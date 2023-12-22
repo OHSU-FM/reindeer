@@ -111,8 +111,6 @@ checkEvent = (event_id) ->
       alert 'Something went WRONG!!'
       return
 
-
-
 $(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject][]']", ->
   if $(this).is(':checked')
     #alert '${this.value} is checked'
@@ -139,25 +137,40 @@ $(document).ready ->
         row.show()
     return
   #$('#EventsTable').DataTable()
-  #-- Disabled the code below as it causes subtle errors on 9/9/2022
+  #-- Disabled the code below as it ciauses subtle errors on 9/9/2022
   # it supposed to prevent duplicate appointment
+
+  $('#meeting-submit').click (event) ->
+    event_id = $('input:radio:checked').val()
+    eventIdGlobal = event_id
+    ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+    if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+      return
+    $('#coaching_meeting_event_id_' + event_id).addClass("disabled-color");
+    $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+    alert("The Appointment is NOT AVAILABLE, please select another one!")
+    event.preventDefault()
+    return
 
   $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
     event_id = $('input:radio:checked').val()
     eventIdGlobal = event_id
-    #ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
-    # console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
-    # if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
-    advisorType = $("#advisor-" + @value).data('advisor-type')
-    console.log("advisorType: " + advisorType)
-    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
-    advisorID = $("#advisor-" + @value).data('advisor-' + @value)
-    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
-    # else
-    #   $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
-    #   alert("The Appointment is NOT AVAILABLE, please select another one!")
-    #console.log("data-advisor-id: " + dataValue)
-    return
+
+    ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+    console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
+    if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+      # the codes below need to be kept..
+      advisorType = $("#advisor-" + @value).data('advisor-type')
+      console.log("advisorType: " + advisorType)
+      $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+      advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+      $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+      return
+    else
+      $('#coaching_meeting_event_id_' + event_id).addClass("disabled-color");
+      $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+      alert("The Appointment is NOT AVAILABLE, please select another one!")
+      return
 
     # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
     #     $("#meeting-submit").prop("disabled", true)

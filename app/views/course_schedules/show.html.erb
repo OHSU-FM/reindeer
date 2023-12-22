@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @course_schedule %>
+
+<div>
+  <%= link_to "Edit this course schedule", edit_course_schedule_path(@course_schedule) %> |
+  <%= link_to "Back to course schedules", course_schedules_path %>
+
+  <%= button_to "Destroy this course schedule", @course_schedule, method: :delete %>
+</div>

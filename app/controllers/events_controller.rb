@@ -24,7 +24,7 @@ class EventsController < ApplicationController
 
     @events.each do |event|
       if !event.user_id.nil?
-        full_name = event.user.full_name  #hf_full_name (event.id)
+        full_name = User.find(event.user_id).full_name  #hf_full_name (event.id)
         event.title = event.title + ' - ' + full_name
       end
 
@@ -171,7 +171,6 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
-
     @appointments.each do |appointment|
       data = appointment.split("|")
       title = data[0].split(" - ").first
@@ -194,8 +193,15 @@ class EventsController < ApplicationController
       if !appt.empty?
           flash.now[:notice] = "Warming! Duplicate Date/Time Encountered! => #{start_date}"
       else
-          Event.create(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
+        Event.transaction do
+          Event.where(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id).first_or_create
+
           notice_msg = 'Apppointments were successfully created!'
+          rescue Exception => e
+          puts 'exception error: ' + e.message
+
+        end
+
       end
 
     end

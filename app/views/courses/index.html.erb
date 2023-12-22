@@ -1,0 +1,50 @@
+
+  <br />
+  <h5>Courses for 2024</h5>
+
+  <table class="responsive nowrap table table-hover" id="dttb-courses" data-sort="true" data-source="<%= url_for(format: :json)%>">
+    <thead>
+      <tr>
+        <% @courses.first.keys.each do |key| %>
+          <th><%= key.titleize %> </th>
+        <% end %>
+      </tr>
+    </thead>
+    <% @courses.first.each_with_index do |(key, val), index| %>
+      <% if key == "course_number" %>
+        <td><a href="#" data-toggle="modal" data-target="#exampleModal" id="aHrefModal"><%= val %></a></td>
+      <% end %>
+      <% if val == false %>
+        <td>No</td>
+      <% elsif val == true %>
+        <td>Yes</td>
+      <% else %>
+        <td><%= val %></td>
+      <% end %>
+    <% end %>
+
+  </table>
+
+  <br>
+
+  <%= link_to 'New Course', new_course_path %>
+
+  <!-- Button trigger modal -->
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          This is a test
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
 
   belongs_to :advisor
-  belongs_to :user, inverse_of: :events
+  #belongs_to :user, inverse_of: :events
 
   #WillPaginate.per_page = 10
   def self.reformat_startDate(startDates, time_slot)
@@ -55,7 +55,7 @@ class Event < ApplicationRecord
       meeting = Coaching::Meeting.find_by(event_id: event.id, user_id: event.user_id)
       if !meeting.nil?
         event.update(advisor_id: meeting.advisor_id)
-      end 
+      end
     end
   end
 end

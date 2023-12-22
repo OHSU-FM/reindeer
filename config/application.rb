@@ -11,6 +11,7 @@ module EdnaConsole
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token
 
+    config.load_defaults 7.0
     config.assets.paths << "#{Rails.root}/app/assets" #Rails.root.join("node_modules")
 
     # Use router as the exception app

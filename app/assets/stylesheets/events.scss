@@ -4,3 +4,7 @@
 form label{
   font-weight: bold;
 }
+
+.disabled[disabled] + label {
+    color: red;
+}

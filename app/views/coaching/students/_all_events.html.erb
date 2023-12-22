@@ -31,7 +31,8 @@
 
           <td id='advisor-<%= "#{event.id}" %>' data-start-date="<%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %> " data-advisor-<%= "#{event.id}" %> = "<%= event.advisor_id %>"
                 data-advisor-type="<%= advisor_type %>">
-            <%= f.label :event_id, "select"  %><%= f.radio_button :event_id, "#{event.id}" %></td>
+            <%= f.label :event_id, "select", style: "color:#338BA8;"  %> &nbsp;
+            <%= f.radio_button :event_id, "#{event.id}" %></td>
         <% end %>
       </tr>
     <% end %>

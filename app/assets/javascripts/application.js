@@ -77,5 +77,6 @@
 //= require events
 //= require meetings
 //= require reports
+//= require courses
 //= require overall_progresses.js
 //= require active_storage_drag_and_drop
