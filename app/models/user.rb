@@ -49,7 +49,9 @@ class User < ActiveRecord::Base
   has_many :preceptor_evals, dependent: :destroy
   has_many :preceptor_assesses, dependent: :destroy
   has_one :advisor, foreign_key: :email, dependent: :destroy
-  #has_many :events, inverse_of: :user, dependent: :destroy
+
+  has_many :events, inverse_of: :user, dependent: :destroy
+  
   has_many :fom_remeds, inverse_of: :user, dependent: :destroy
   has_many :formative_feedbacks, inverse_of: :user, dependent: :destroy
 

@@ -15,7 +15,6 @@ class CoachingController < ApplicationController
         redirect_to coaching_student_path(student)
       end
     elsif current_user.dean? or current_user.admin_or_higher?
-
       if !email.nil?
         selected_student = User.find_by(email: email)
         redirect_to coaching_student_path selected_student
@@ -23,7 +22,6 @@ class CoachingController < ApplicationController
         advisor = Advisor.find_by(email: current_user.email)
         if !advisor.nil?
           @last_student = Event.where('advisor_id = ? and user_id is not NULL', advisor.id).includes(:user).map(&:user).flatten.uniq!
-
           if !@last_student.nil?
             redirect_to coaching_student_path @last_student.last  #Coaching::Meeting.last.user
           else

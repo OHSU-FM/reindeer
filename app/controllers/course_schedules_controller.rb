@@ -3,7 +3,9 @@ class CourseSchedulesController < ApplicationController
 
   # GET /course_schedules or /course_schedules.json
   def index
-    @course_schedules = CourseSchedule.all
+    if params[:course_id].present?
+      @course_schedules = CourseSchedule.where(course_id: params[:course_id])
+    end 
   end
 
   # GET /course_schedules/1 or /course_schedules/1.json

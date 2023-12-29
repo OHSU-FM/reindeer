@@ -17,7 +17,7 @@
               <% user = User.find(event.user_id) %>
               <% if current_user.coaching_type == 'dean' %>
                 <% if !user.nil? %>
-                    <td><%= link_to(event.user.full_name + ' - ' + hf_get_cohort(event.user), coaching_student_path(event.user), target: '_blank') %></td>
+                    <td><%= link_to(user.full_name + ' - ' + hf_get_cohort(user), coaching_student_path(user), target: '_blank') %></td>
                     <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %></td>
                     <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p") %></td>
                 <% end %>
