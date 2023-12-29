@@ -5,8 +5,10 @@ class EpasController < ApplicationController
   def index
     if params[:user_id].present?
       @epas = Epa.where(user_id: params[:user_id].to_i).order(:epa, :submit_date)
-      @epas = @epas.map(&:attributes)
-      @epa_headers = @epas.first.keys
+      if !@epas.empty?
+        @epas = @epas.map(&:attributes)
+        @epa_headers = @epas.first.keys
+      end 
     end
 
 

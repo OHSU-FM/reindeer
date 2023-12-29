@@ -169,8 +169,8 @@ class FomExam < ApplicationRecord
       end
     end
 
-    # sql = sql.delete_suffix(", ")
-    sql += 'course_end_date'  ## This fieldname is NOT in label file.
+  sql = sql.delete_suffix(", ")
+  #  sql += 'course_end_date'  ## This fieldname is NOT in label file.
 
     results = FomExam.execute_sql(sql + " from " + table_name_prefix + "fom_exams, users " +
       "where users.id = " + table_name_prefix + "fom_exams.user_id and " +

@@ -12,7 +12,7 @@
     </thead>
     <% @courses.first.each_with_index do |(key, val), index| %>
       <% if key == "course_number" %>
-        <td><a href="#" data-toggle="modal" data-target="#exampleModal" id="aHrefModal"><%= val %></a></td>
+        <td> <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><%= val %>/Course Schedules</button></td>
       <% end %>
       <% if val == false %>
         <td>No</td>
@@ -31,20 +31,44 @@
 
   <!-- Button trigger modal -->
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+
+      <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5>Course Schedules</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
         </div>
         <div class="modal-body">
-          This is a test
+          <% @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", 1, DateTime.now) %>
+          <% @course_schedules = @course_schedules.map(&:attributes) %>
+
+            <table class="responsive nowrap table table-hover">
+              <thead>
+                <tr>
+                  <% @course_schedules.first.keys.each do |key| %>
+                    <th><%= key.titleize %> </th>
+                  <% end %>
+                </tr>
+              </thead>
+              <% @course_schedules.each do |sched| %>
+                <tr>
+                  <% sched.each do |data| %>
+                    <td><%= data.second %></td>
+                  <% end %>
+                </tr>
+              <% end %>
+
+            </table>
+
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
+
     </div>
   </div>
