@@ -171,6 +171,7 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
+
     @appointments.each do |appointment|
       data = appointment.split("|")
       title = data[0].split(" - ").first
@@ -187,24 +188,11 @@ class EventsController < ApplicationController
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
       #Event.creat  layout 'full_width_csl'e(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
-      appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
-      notice_msg = ''
-
-      if !appt.empty?
-          flash.now[:notice] = "Warming! Duplicate Date/Time Encountered! => #{start_date}"
-      else
-        Event.transaction do
-          Event.where(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id).first_or_create
-
-          notice_msg = 'Apppointments were successfully created!'
-          rescue Exception => e
-          puts 'exception error: ' + e.message
-
-        end
-
-      end
-
+      #appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
+      Event.where(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id).first_or_create
+      notice_msg = 'Apppointments were successfully created!'
     end
+
     respond_to do |format|
       format.html { redirect_to action: "index", notice: notice_msg}
       format.json

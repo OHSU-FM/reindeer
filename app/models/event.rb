@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
 
   belongs_to :advisor
-  belongs_to :user, inverse_of: :events
+  belongs_to :user, inverse_of: :events, optional: true
 
   #WillPaginate.per_page = 10
   def self.reformat_startDate(startDates, time_slot)
