@@ -1,11 +1,18 @@
 class CourseSchedulesController < ApplicationController
+  layout 'full_width_csl'
   before_action :set_course_schedule, only: %i[ show edit update destroy ]
 
   # GET /course_schedules or /course_schedules.json
   def index
+
     if params[:course_id].present?
-      @course_schedules = CourseSchedule.where(course_id: params[:course_id])
-    end 
+      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now)
+      @course_detail = Course.where(id: params[:course_id]).map(&:attributes)
+    end
+    respond_to do |format|
+      format.html
+
+    end
   end
 
   # GET /course_schedules/1 or /course_schedules/1.json

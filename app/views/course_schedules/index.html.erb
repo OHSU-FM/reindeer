@@ -1,19 +1,37 @@
-<h1>Course Schedules</h1>
+<br />
 
-<table class="responsive nowrap table table-hover" id="dttb-course_schedules" data-sort="true" data-source="<%= url_for(format: :json)%>">
-  <thead>
-    <tr>
-      <th data-data="course_schedule">Course schedule</th>
-      <th data-data="start_date">Start date</th>
-      <th data-data="end_date">End date</th>
-      <th data-data="no_of_seats">No of seats</th>
-      <th data-data="comment">Comment</th>
-      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
-    </tr>
-  </thead>
+<div class="row">
+  <div class="table-responsive col-md-6">
+    <table class="responsive nowrap table table-hover table3-striped">
+      <% @course_detail.each do |data| %>
+          <% data.each do |key, val| %>
+            <tr>
+                <td><b><i><%= key.titleize %></i></b></td>
+                <td><%= val %></td>
+            </tr>
+          <% end %>
+      <% end %>
+    </table>
+  </div>
+  <div class="col-md-6">
+    <h5> Course Schedules <%= link_to 'New Course Schedule', new_course_schedule_path %></h5>
+    <% @course_schedules = @course_schedules.map(&:attributes) %>
+    <table class="responsive nowrap table table-hover table2-striped">
+      <thead>
+        <tr>
+          <% @course_schedules.first.keys.each do |key| %>
+            <th><%= key.titleize %> </th>
+          <% end %>
+        </tr>
+      </thead>
+      <% @course_schedules.each do |sched| %>
+        <tr>
+          <% sched.each do |data| %>
+            <td><%= data.second %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
 
-</table>
-
-<br>
-
-<%= link_to 'New Course Schedule', new_course_schedule_path %>
+  </div>
+</div>

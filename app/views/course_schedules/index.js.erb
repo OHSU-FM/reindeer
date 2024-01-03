@@ -1,0 +1,4 @@
+console.log ("inside index.js.erb");
+$("#course-schedules-modal").html("<%= j render 'modal_index', locals: { course_schedules: @course_schedules }%>");
+$("#myModal").modal('show');
+conole.log("after course-schedule-modal!")

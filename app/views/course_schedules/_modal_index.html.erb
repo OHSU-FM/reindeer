@@ -1,0 +1,26 @@
+
+<%= link_to 'New Course Schedule', new_course_schedule_path %>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<!-- Modal -->
+
+        <% #@course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", 1, DateTime.now) %>
+        <% @course_schedules = @course_schedules.map(&:attributes) %>
+
+          <table class="responsive nowrap table table-hover">
+            <thead>
+              <tr>
+                <% @course_schedules.first.keys.each do |key| %>
+                  <th><%= key.titleize %> </th>
+                <% end %>
+              </tr>
+            </thead>
+            <% @course_schedules.each do |sched| %>
+              <tr>
+                <% sched.each do |data| %>
+                  <td><%= data.second %></td>
+                <% end %>
+              </tr>
+            <% end %>
+
+          </table>

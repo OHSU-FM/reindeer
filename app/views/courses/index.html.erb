@@ -10,17 +10,22 @@
         <% end %>
       </tr>
     </thead>
-    <% @courses.first.each_with_index do |(key, val), index| %>
-      <% if key == "course_number" %>
-        <td> <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal"><%= val %>/Course Schedules</button></td>
-      <% end %>
-      <% if val == false %>
-        <td>No</td>
-      <% elsif val == true %>
-        <td>Yes</td>
-      <% else %>
-        <td><%= val %></td>
-      <% end %>
+    <% @courses.each do |course| %>
+      <tr>
+        <% course.each do |key, val| %>
+          <% if key == "course_number" %>
+            <td style="width: 10%"> <%= link_to val.to_s + "/course schedules", course_schedules_path(course_id: course["id"]), target: :_blank %></td>
+          <% elsif key == 'course_name' %>
+             <td style="width: 15%"><%= val %></td>  
+          <% elsif val == false %>
+            <td>No</td>
+          <% elsif val == true %>
+            <td>Yes</td>
+          <% else %>
+            <td><%= val %></td>
+          <% end %>
+        <% end %>
+      </tr>
     <% end %>
 
   </table>
@@ -28,47 +33,3 @@
   <br>
 
   <%= link_to 'New Course', new_course_path %>
-
-  <!-- Button trigger modal -->
-  <!-- Modal -->
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-xl">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5>Course Schedules</h5>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-        </div>
-        <div class="modal-body">
-          <% @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", 1, DateTime.now) %>
-          <% @course_schedules = @course_schedules.map(&:attributes) %>
-
-            <table class="responsive nowrap table table-hover">
-              <thead>
-                <tr>
-                  <% @course_schedules.first.keys.each do |key| %>
-                    <th><%= key.titleize %> </th>
-                  <% end %>
-                </tr>
-              </thead>
-              <% @course_schedules.each do |sched| %>
-                <tr>
-                  <% sched.each do |data| %>
-                    <td><%= data.second %></td>
-                  <% end %>
-                </tr>
-              <% end %>
-
-            </table>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-
-    </div>
-  </div>

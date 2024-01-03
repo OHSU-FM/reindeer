@@ -7,7 +7,7 @@ class CoursesController < ApplicationController
   def index
     @courses = Course.all.select(:id, :course_number, :course_name, :department, :duration, :credits, :course_purpose_statement)
     @courses = @courses.map(&:attributes)
-
+  
   end
 
   # GET /courses/1 or /courses/1.json
