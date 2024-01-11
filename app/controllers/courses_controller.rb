@@ -1,13 +1,25 @@
 class CoursesController < ApplicationController
   layout 'full_width_csl'
-  before_action :set_course, only: %[ show edit update destroy ]
-
+  before_action :authenticate_user!
+  before_action :set_resources
 
   # GET /courses or /courses.json
   def index
-    @courses = Course.all.select(:id, :course_number, :course_name, :department, :duration, :credits, :course_purpose_statement)
-    @courses = @courses.map(&:attributes)
-  
+    if params[:category].present? and params[:duration].present?
+      @courses = Course.where(category: params[:category], duration: params[:duration]).select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+      @courses = @courses.map(&:attributes)
+    elsif params[:course_name].present?
+      if params[:course_name].include? ":"
+        query_string = params[:course_name].split(":")
+        @courses = Course.where("course_number like ? and course_name like ?", "%#{query_string[0]}%", "%#{query_string[1]}%").
+           select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+      else
+        @courses = Course.where("course_name like ?", "%#{params[:course_name]}%").
+           select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+
+      end
+      @courses = @courses.map(&:attributes)
+    end
   end
 
   # GET /courses/1 or /courses/1.json
@@ -73,5 +85,14 @@ class CoursesController < ApplicationController
         :continuity, :available_through_the_lottery, :department, :course_purpose_statement, :special_notes, :prerequisites,
         :required_prerequisites, :waive_prereq_requirements, :waive_notes, :duration, :site, :weekly_workload, :credits,
         :course_director, :course_director_email, :course_coordinator, :course_coordinator_email, :competencies)
+    end
+
+    def set_resources
+      @category = Course.all.pluck(:category).uniq
+      @duration = Course.all.pluck(:duration).uniq
+      @courses = Course.where(category: 'Cores').
+       select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+      @courses = @courses.map(&:attributes)
+
     end
 end

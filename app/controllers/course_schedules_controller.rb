@@ -6,7 +6,8 @@ class CourseSchedulesController < ApplicationController
   def index
 
     if params[:course_id].present?
-      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now)
+      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now).select(:id, :course_id, :course_schedule, :start_date, :end_date,
+                          :no_of_seats, :comment)
       @course_detail = Course.where(id: params[:course_id]).map(&:attributes)
     end
     respond_to do |format|

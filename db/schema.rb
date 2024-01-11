@@ -194,6 +194,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_151021) do
   end
 
   create_table "courses", force: :cascade do |t|
+    t.string "category"
     t.string "course_number"
     t.string "course_name"
     t.string "content_type"
@@ -208,14 +209,17 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_151021) do
     t.string "required_prerequisites"
     t.boolean "waive_prereq_requirements"
     t.string "waive_notes"
+    t.string "grading_method"
     t.string "duration"
     t.string "site"
     t.integer "weekly_workload"
-    t.integer "credits"
+    t.decimal "credits"
     t.string "course_director"
     t.string "course_director_email"
     t.string "course_coordinator"
     t.string "course_coordinator_email"
+    t.string "qualified_assessor"
+    t.string "qualified_assessor_email"
     t.text "competencies", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

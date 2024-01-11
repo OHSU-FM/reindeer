@@ -7,7 +7,15 @@
           <% data.each do |key, val| %>
             <tr>
                 <td><b><i><%= key.titleize %></i></b></td>
-                <td><%= val %></td>
+                <td>
+                  <% if val.to_s == 'false' %>
+                      <b>NO</b>
+                  <% elsif val.to_s == 'true' %>
+                      <b>YES</b>
+                  <% else %>
+                      <%= val %>
+                  <% end %>
+                  </td>
             </tr>
           <% end %>
       <% end %>
@@ -15,23 +23,27 @@
   </div>
   <div class="col-md-6">
     <h5> Course Schedules <%= link_to 'New Course Schedule', new_course_schedule_path %></h5>
-    <% @course_schedules = @course_schedules.map(&:attributes) %>
-    <table class="responsive nowrap table table-hover table2-striped">
-      <thead>
-        <tr>
-          <% @course_schedules.first.keys.each do |key| %>
-            <th><%= key.titleize %> </th>
-          <% end %>
-        </tr>
-      </thead>
-      <% @course_schedules.each do |sched| %>
-        <tr>
-          <% sched.each do |data| %>
-            <td><%= data.second %></td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
+    <% if !@course_schedules.empty? %>
+      <% @course_schedules = @course_schedules.map(&:attributes) %>
+      <table class="responsive nowrap table table-hover table2-striped">
+        <thead>
+          <tr>
+            <% @course_schedules.first.keys.each do |key| %>
+              <th><%= key.titleize %> </th>
+            <% end %>
+          </tr>
+        </thead>
+        <% @course_schedules.each do |sched| %>
+          <tr>
+            <% sched.each do |data| %>
+              <td><%= data.second %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+      <h5> No Course Schedules Being Created! </h5>
+    <% end %>
 
   </div>
 </div>

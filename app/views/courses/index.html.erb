@@ -1,8 +1,29 @@
+<br />
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex">
+      <%= form_with(url: courses_path, method: :get) do |form| %>
+          <%= form.label :category, "Category:", class: "block mb-2" %>&nbsp;
+          <%= form.select_tag :category, options_for_select(@category, selected: params[:category]), include_blank: true %>&nbsp;
+          <%= form.label :duration, "Duration:", class: "block mb-2" %>&nbsp;
+          <%= form.select_tag :duration, options_for_select(@duration, selected: params[:duration]), include_blank: true  %>&nbsp;
+          <%= form.submit 'Submit', class: "btn btn-primary" %>
+      <% end %>
+      &nbsp;
+      &nbsp;
+      <%= form_with(url: courses_path, method: :get) do |form| %>
+          <%= form.label :course_name, "Search by Course Name:", class: "block mb-2" %>&nbsp;
+          <%= form.text_field :course_name %>&nbsp;
+          <%= form.submit 'Search', class: "btn btn-primary" %>
+      <% end %>
+    </div>
 
-  <br />
-  <h5>Courses for 2024</h5>
-
-  <table class="responsive nowrap table table-hover" id="dttb-courses" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  </div>
+</div>
+<br />
+<% if !@courses.empty? %>
+  <div class='d-flex'><h5 style="color: purple">Courses for 2024</h5>&nbsp; &nbsp<%= link_to 'New Course', new_course_path %></div>
+  <table class="table-responsive nowrap table table-hover" id="dttb-courses" data-sort="true" data-source="<%= url_for(format: :json)%>">
     <thead>
       <tr>
         <% @courses.first.keys.each do |key| %>
@@ -14,22 +35,20 @@
       <tr>
         <% course.each do |key, val| %>
           <% if key == "course_number" %>
-            <td style="width: 10%"> <%= link_to val.to_s + "/course schedules", course_schedules_path(course_id: course["id"]), target: :_blank %></td>
+            <td style="width: 5%"> <%= link_to val.to_s, course_schedules_path(course_id: course["id"]), target: :_blank %></td>
           <% elsif key == 'course_name' %>
-             <td style="width: 15%"><%= val %></td>  
-          <% elsif val == false %>
-            <td>No</td>
-          <% elsif val == true %>
-            <td>Yes</td>
+             <td style="width: 15%"><%= val %></td>
+          <% elsif val.to_s == 'false' %>
+            <td><b>No</b></td>
+          <% elsif val.to_s == 'true' %>
+            <td><b>Yes</b></td>
           <% else %>
             <td><%= val %></td>
           <% end %>
         <% end %>
       </tr>
     <% end %>
-
   </table>
-
-  <br>
-
-  <%= link_to 'New Course', new_course_path %>
+<% else %>
+  <h5> No Courses Found! </h5>
+<% end %>
