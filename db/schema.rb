@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_14_151021) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_16_134249) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -483,6 +483,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_14_151021) do
     t.decimal "comp2b_bss11"
     t.decimal "comp2b_bss12"
     t.date "course_end_date"
+    t.decimal "comp2a_hss8"
+    t.decimal "comp2a_hss9"
     t.index ["user_id", "permission_group_id", "course_code"], name: "by_user_permission_group_course_code", unique: true
     t.index ["user_id"], name: "index_fom_exams_on_user_id"
   end

@@ -5,8 +5,20 @@
       <%= form_with(url: courses_path, method: :get) do |form| %>
           <%= form.label :category, "Category:", class: "block mb-2" %>&nbsp;
           <%= form.select_tag :category, options_for_select(@category, selected: params[:category]), include_blank: true %>&nbsp;
-          <%= form.label :duration, "Duration:", class: "block mb-2" %>&nbsp;
-          <%= form.select_tag :duration, options_for_select(@duration, selected: params[:duration]), include_blank: true  %>&nbsp;
+          <%= form.label :department, "Department:", class: "block mb-2" %>&nbsp;
+          <%= form.select_tag :department, options_for_select(@departments, selected: params[:department]), include_blank: true %>&nbsp;
+        &nbsp;
+          <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="check_lottery" value="true">
+              <label class="form-check-label" for="inlineCheckbox_lottery">Lottery</label> &nbsp;
+              <input class="form-check-input" type="checkbox" id="check_rural" value="true">
+              <label class="form-check-label" for="inlineCheckbox_rural">Rural</label> &nbsp;
+              <input class="form-check-input" type="checkbox" id="check_continuity" value="true">
+              <label class="form-check-label" for="inlineCheckbox_rural">Continuity</label> &nbsp;
+              <input class="form-check-input" type="checkbox" id="check_Prerequisite" value="true">
+              <label class="form-check-label" for="inlineCheckbox_rural">prerequisite</label> 
+          </div>
+          &nbsp;
           <%= form.submit 'Submit', class: "btn btn-primary" %>
       <% end %>
       &nbsp;

@@ -89,7 +89,8 @@ class CoursesController < ApplicationController
 
     def set_resources
       @category = Course.all.pluck(:category).uniq
-      @duration = Course.all.pluck(:duration).uniq
+      #@duration = Course.all.pluck(:duration).uniq
+      @departments = Course.all.pluck(:department).uniq.sort
       @courses = Course.where(category: 'Cores').
        select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
       @courses = @courses.map(&:attributes)

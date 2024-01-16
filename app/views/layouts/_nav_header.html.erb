@@ -36,7 +36,7 @@
               <%= link_to '<i class="fa fa-home" style="color:#0C2D83"></i> Home'.html_safe,  auto_path, class: "btn btn-link"  %>
             <% end %>
 
-            <% if ['itot', 'chungp', 'budd'].include? current_user.username  %>
+            <% if ['chungp'].include? current_user.username  %>
               <%= link_to '<i style="color:#31a34f;" class="fa fa-book"></i> Course Catalog'.html_safe, courses_path(uuid: current_user.uuid), target: '_blank', class: "btn btn-link" %>
             <% end %>
 
