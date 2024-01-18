@@ -5,8 +5,11 @@ class CoursesController < ApplicationController
 
   # GET /courses or /courses.json
   def index
-    if params[:category].present? and params[:duration].present?
-      @courses = Course.where(category: params[:category], duration: params[:duration]).select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+    if params[:category].present? and params[:department].present?
+      @courses = Course.where(available_through_the_lottery: get_param("lottery"), rural: get_param("rural"), continuity: get_param("continuity"), prerequisites: get_param("prerequisites"))
+        .where("category like ? and department like ?", get_param("category"), get_param("department"))
+        .select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery,
+         :rural, :continuity, :prerequisites,  :duration, :credits, :course_purpose_statement).order(:course_number)
       @courses = @courses.map(&:attributes)
     elsif params[:course_name].present?
       if params[:course_name].include? ":"
@@ -88,12 +91,23 @@ class CoursesController < ApplicationController
     end
 
     def set_resources
-      @category = Course.all.pluck(:category).uniq
+      @category = ["All"] + Course.all.pluck(:category).uniq
       #@duration = Course.all.pluck(:duration).uniq
-      @departments = Course.all.pluck(:department).uniq.sort
+      @departments = ["All"] + Course.all.pluck(:department).uniq.sort
       @courses = Course.where(category: 'Cores').
-       select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+       select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
       @courses = @courses.map(&:attributes)
+    end
 
+    def get_param(in_param)
+      if params["#{in_param}"].present?
+        if params["#{in_param}"] == "true"
+          return "true"
+        elsif params["#{in_param}"] == "All"
+          return "%"
+        else
+          return params["#{in_param}"]
+        end
+      end
     end
 end
