@@ -5,9 +5,11 @@ class CoursesController < ApplicationController
 
   # GET /courses or /courses.json
   def index
+
     if params[:category].present? and params[:department].present?
-      @courses = Course.where(available_through_the_lottery: get_param("lottery"), rural: get_param("rural"), continuity: get_param("continuity"), prerequisites: get_param("prerequisites"))
-        .where("category like ? and department like ?", get_param("category"), get_param("department"))
+
+      params_filter, params_filter2 = get_params
+      @courses = Course.where("category like ? and department like ?", params_filter2["category"], params_filter2["department"]).where(params_filter)
         .select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery,
          :rural, :continuity, :prerequisites,  :duration, :credits, :course_purpose_statement).order(:course_number)
       @courses = @courses.map(&:attributes)
@@ -94,20 +96,34 @@ class CoursesController < ApplicationController
       @category = ["All"] + Course.all.pluck(:category).uniq
       #@duration = Course.all.pluck(:duration).uniq
       @departments = ["All"] + Course.all.pluck(:department).uniq.sort
-      @courses = Course.where(category: 'Cores').
+      @courses = Course.where(category: 'Core').
        select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
       @courses = @courses.map(&:attributes)
     end
 
-    def get_param(in_param)
-      if params["#{in_param}"].present?
-        if params["#{in_param}"] == "true"
-          return "true"
-        elsif params["#{in_param}"] == "All"
-          return "%"
-        else
-          return params["#{in_param}"]
+    def get_params
+      filters = ["category", "department", "lottery", "rural", "continuity", "prerequisites"]
+      params_filter = {}
+      params_filter2 = {}
+      filters.each do |filter|
+
+        if params["#{filter}"].present?
+          if filter == "lottery"
+            params_filter["available_through_the_lottery"] = params["#{filter}"]
+          else
+            if filter == "category" or filter == "department"
+              if params["#{filter}"] == "All"
+                params_filter2["#{filter}"] = "%"
+              else
+                params_filter2["#{filter}"] =  params["#{filter}"]
+              end
+            else
+              params_filter["#{filter}"] =  params["#{filter}"]
+            end
+          end
         end
       end
+      return params_filter, params_filter2
+
     end
 end

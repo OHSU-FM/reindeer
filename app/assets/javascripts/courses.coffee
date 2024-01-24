@@ -3,9 +3,4 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
-  # modal = new bootstrap.Modal('#exampleModal')
-  # modal.show()
-  # $('#aHrefModal').click ->
-  #   console.log("=== inside course.coffee!")
-  #   $('#exampleModal').modal('show')
-  # return
+  $('#dttb-courses').DataTable 'ordering': true, "pageLength": 20

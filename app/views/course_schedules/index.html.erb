@@ -6,7 +6,7 @@
       <% @course_detail.each do |data| %>
           <% data.each do |key, val| %>
             <tr>
-                <td><b><i><%= key.titleize %></i></b></td>
+                <td style="width: 25%"><b><i><%= key.titleize %></i></b></td>
                 <td>
                   <% if val.to_s == 'false' %>
                       <b>NO</b>
@@ -36,7 +36,15 @@
         <% @course_schedules.each do |sched| %>
           <tr>
             <% sched.each do |data| %>
-              <td><%= data.second %></td>
+              <td>
+                <% if data.second.to_s == '777' %>
+                  >-
+                <% elsif data.second.to_s == '888' or data.second.to_s == '999'%>
+                  **
+                <% else %>
+                  <%= data.second %>
+                <% end %>
+              </td>
             <% end %>
           </tr>
         <% end %>

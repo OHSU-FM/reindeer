@@ -252,10 +252,9 @@ end
           @log_data.push "row #{r.to_s}= " + row[0] + " --> " + row[1].to_s
         end
       end
-
       temp_array = []
       temp_array.push temp_hash
-      json_string = temp_array.to_json ## json string must be in an array
+      json_string = temp_array.to_json ## json string mus t be in an array
       row_hash = {}
       row_hash["permission_group_id"] = permission_group_id
       row_hash["course_code"] = temp_array.first["course_code"]
