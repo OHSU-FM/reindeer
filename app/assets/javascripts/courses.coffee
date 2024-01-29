@@ -3,4 +3,4 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
-  $('#dttb-courses').DataTable 'ordering': true, "pageLength": 20
+  # $('#dttb-courses').DataTable 'ordering': true, 'fixedHeader': true, "pageLength": 10

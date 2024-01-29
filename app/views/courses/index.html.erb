@@ -38,7 +38,7 @@
 <br />
 <% if !@courses.empty? %>
   <div class='d-flex'><h5 style="color: purple">Courses for 2024</h5>&nbsp; &nbsp<%= link_to 'New Course', new_course_path %></div>
-  <table class="table-responsive wrap table table-hover table-striped" id="dttb-courses" >
+  <table class="table-responsive wrap table table-hover table-striped tableFixHead " id="dttb-courses" >
     <thead class="thead-light">
       <tr>
         <% @courses.first.keys.each do |key| %>

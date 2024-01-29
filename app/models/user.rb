@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   #belongs_to :lime_user, foreign_key: :username, primary_key: :users_name
   belongs_to :permission_group, inverse_of: :users
-  #belongs_to :cohort
+  belongs_to :cohort
 
   has_many :charts, inverse_of: :user, dependent: :destroy
   #has_many :dashboard_widgets, through: :dashboard  ## disabled dashboard_widgets
@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   has_one :advisor, foreign_key: :email, dependent: :destroy
 
   has_many :events, inverse_of: :user, dependent: :destroy
-  
+
   has_many :fom_remeds, inverse_of: :user, dependent: :destroy
   has_many :formative_feedbacks, inverse_of: :user, dependent: :destroy
 

@@ -187,10 +187,15 @@ class EventsController < ApplicationController
       end
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
-      #Event.creat  layout 'full_width_csl'e(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id)
       #appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
-      Event.where(title: title, description: description, start_date: start_date, end_date: end_date, advisor_id: advisor_id).first_or_create
-      notice_msg = 'Apppointments were successfully created!'
+      if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
+        notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
+      else
+        Event.where(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id).first_or_create
+        notice_msg = 'Apppointments were successfully created!'
+
+      end
+      flash.alert = notice_msg
     end
 
     respond_to do |format|

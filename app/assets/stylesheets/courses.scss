@@ -1,0 +1,20 @@
+.tableFixHead {
+  overflow-y: auto;
+  height: 1000px;
+}
+
+.tableFixHead table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tableFixHead th,
+.tableFixHead td {
+  padding: 8px 16px;
+}
+
+.tableFixHead th {
+  position: sticky;
+  top: 0;
+  background: #eee;
+}

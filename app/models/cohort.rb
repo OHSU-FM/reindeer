@@ -1,9 +1,9 @@
 class Cohort < ActiveRecord::Base
 
-  # belongs_to :owner, class_name: "User", foreign_key: :user_id
-  # belongs_to :permission_group
-  #
-  # has_many :users
+  belongs_to :owner, class_name: "User", foreign_key: :user_id
+  belongs_to :permission_group
+
+  has_many :users
 
   validates_presence_of :permission_group
   validates_presence_of :owner

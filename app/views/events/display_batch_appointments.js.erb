@@ -16,7 +16,7 @@ $('#SaveAll').click(function () {
    data: {appointments: JSON.stringify(appointments)},
    dataType: 'json',
    success: function(data) {
-     alert('All Appointments were successfully saved!');
+     // alert('All Appointments were successfully saved!');
      window.location = '/events/create_batch_appointments';
    },
    error: function(request,error) {
