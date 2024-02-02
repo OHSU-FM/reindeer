@@ -164,6 +164,11 @@ module Coaching
           @advisor_type = advisor.advisor_type
           @advisor_id = advisor.id
         else
+          @advisor = Advisor.find_by(email: current_user.email)
+          # if !@advisor.nil?
+          #   @advisor_type = @advisor.advisor_type
+          #   @advisor_id = @advisor.id
+          # end
           @advisor_students = []
         end
 

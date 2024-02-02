@@ -6,9 +6,7 @@
   <% elsif !params[:search].nil? and params[:search].include? "Med" %>
     <%= render partial: 'cohort_listing', locals: {results: @results} %>
   <% else %>
-    <% if @results.map{|r| r.full_name}.count > 6 and current_user.username != 'haedinge' %>
-
-    <% elsif current_user.username == 'haedinge' %>
+    <% if @results.map{|r| r.full_name}.count > 6 %>
       <h4  style="color:blue;">Search Result</h4>
       <table class="table table-hover main-table table-light responsive-lg">
         <thead>
@@ -116,7 +114,7 @@
             <td></td>
             <td></td>
             <td>
-            <% if ['chungp','haedinge', 'nmai' ].include? current_user.username %>
+            <% if ['chungp','fruhwrit', 'nmai' ].include? current_user.username %>
               <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Add USMLE/Step Exams'.html_safe, usmle_exams_path(user_id: result.id, full_name: result.full_name), target: '_blank', class: "btn btn-link" %>
             <% end %>
             </td>

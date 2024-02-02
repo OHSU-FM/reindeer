@@ -248,7 +248,10 @@ class User < ActiveRecord::Base
       field :password
       field :password_confirmation
       field :is_ldap
-      #field :cohort
+
+      field :cohort_id do
+        default_value 3032
+      end
       field :spec_program
       field :sid
       field :coaching_type, :enum do

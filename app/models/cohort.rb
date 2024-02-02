@@ -1,6 +1,6 @@
 class Cohort < ActiveRecord::Base
 
-  belongs_to :owner, class_name: "User", foreign_key: :user_id
+  belongs_to :owner, class_name: "User", foreign_key: :user_id, optional: true
   belongs_to :permission_group
 
   has_many :users
@@ -15,18 +15,17 @@ class Cohort < ActiveRecord::Base
     navigation_label 'Permissions'
     weight -5
 
-    list do
-      sort_by :owner
-      field :id do
-        read_only true
-      end
-      field :owner
-      field :users
-      field :permission_group
-    end
+    # list do
+    #   # sort_by :user_id
+    #   #   read_only true
+    #   # end
+    #   # field :user_id
+    #   #field :users
+    #   field :permission_group
+    # end
     edit do
       field :title
-      field :owner
+      field :user_id
       field :permission_group
       # field :users do
       #   associated_collection_scope do
@@ -37,9 +36,9 @@ class Cohort < ActiveRecord::Base
     end
     show do
       field :title
-      field :owner
+      field :user_id
       field :permission_group
-      field :users
+      #field :users
     end
   end
 
