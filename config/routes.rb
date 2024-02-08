@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :badging_dates
   resources :course_schedules
   resources :courses
   #get 'overall_progresses/index'

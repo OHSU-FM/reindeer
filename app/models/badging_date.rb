@@ -1,0 +1,2 @@
+class BadgingDate < ApplicationRecord
+end

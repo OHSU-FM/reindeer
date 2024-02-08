@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_16_134249) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_07_154404) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -65,6 +65,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_16_134249) do
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "user_id"
     t.index ["user_id"], name: "index_artifacts_on_user_id"
+  end
+
+  create_table "badging_dates", force: :cascade do |t|
+    t.integer "permission_group_id"
+    t.date "release_date"
+    t.date "last_review_end_date"
+    t.date "next_review_end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "chart_series", id: :serial, force: :cascade do |t|

@@ -1,0 +1,37 @@
+<h1>Badging Dates</h1>
+
+<table class="responsive nowrap table table-hover" id="dttb-badging_dates" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  <thead>
+    <tr>
+      <th data-data="permission_group_id">Permission Group</th>
+      <th data-data="release_date">Release Date</th>
+      <th data-data="last_review_end_date">Last Review End Date</th>
+      <th data-data="next_review_end_date">Next Review End Date</th>
+      <th data-data="created_at">Created At</th>
+      <th data-data="updated_at">Updated At</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+    </tr>
+  </thead>
+
+  <% @badging_dates.each do |badge| %>
+    <tr>
+      <td><%= badge.permission_group_id.to_s + " - " + PermissionGroup.find(badge.permission_group_id).title %></td>
+      <td><%= badge.release_date %></td>
+      <td><%= badge.last_review_end_date %></td>
+      <td><%= badge.next_review_end_date %></td>
+      <td><%= badge.created_at.strftime("%m/%d/%Y") %></td>
+      <td><%= badge.updated_at.strftime("%m/%d/%Y") %></td>
+
+      <td><%= link_to 'Show', badge %> /
+        <%= link_to 'Edit', edit_badging_date_path(badge) %> /
+        <%= link_to 'Destroy', badge, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+    </tr>
+  <% end %>
+
+
+</table>
+
+<br>
+
+<%= link_to 'New Badging Date', new_badging_date_path %>

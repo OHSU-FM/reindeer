@@ -40,12 +40,12 @@
               <%= link_to '<i style="color:#31a34f;" class="fa fa-book"></i> Course Catalog'.html_safe, courses_path(uuid: current_user.uuid), target: '_blank', class: "btn btn-link" %>
             <% end %>
 
-            <% if ['nmai', 'chungp', 'shuforda', 'fruhwrit'].include? current_user.username  %>
+            <% if ['nmai', 'chungp', 'shuforda', ''].include? current_user.username  %>
               <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "btn btn-link" %>
             <% end %>
 
 
-            <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'haedinge', 'shuforda'].include? current_user.username) %>
+            <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'fruhwirt', 'shuforda'].include? current_user.username) %>
               <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Report
@@ -53,7 +53,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to '<i aria-hidden="true"> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i aria-hidden="true"> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'fruhwrit', 'bumstedt', 'shuforda', 'nmai'].include? current_user.username %>
+                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
                     <%= link_to '<i aria-hidden="true"> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %>
                   <% end %>
                 </div>
@@ -67,11 +67,12 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'fruhwrit', 'bumstedt', 'shuforda'].include? current_user.username %>
+                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
 
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
+                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Badging Dates'.html_safe, badging_dates_path, target: '_blank', class: "dropdown-item"  %>
                   <% end %>
                   <%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
