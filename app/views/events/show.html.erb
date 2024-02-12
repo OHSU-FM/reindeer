@@ -1,3 +1,4 @@
+<br />
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -18,6 +19,11 @@
 <p>
   <strong>End date:</strong>
   <%= @event.end_date %>
+</p>
+
+<p>
+  <strong>AdvisorID:</strong>
+  <%= @event.advisor_id %>
 </p>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |

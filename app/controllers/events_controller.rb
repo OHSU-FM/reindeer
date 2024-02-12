@@ -113,7 +113,7 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
-    @advisors = Advisor.where(status: 'Active').order(:name)
+
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
@@ -187,6 +187,7 @@ class EventsController < ApplicationController
       end
       end_date = hf_format_datetime(data[2].gsub("at ", ""))
       advisor_id = data[3].to_i
+
       #appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
         notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
@@ -238,6 +239,24 @@ class EventsController < ApplicationController
 
     def set_resources
       @advisor_types = Advisor.where(status: 'Active').pluck(:advisor_type).uniq
+
+      # commented out Step1 Advising on 9/14/2023 - requested by Erika and AA
+      # uncommented out Step1 Advising on 12/7/2023 - requested by Erika and AA
+     @advisor_types.push 'Academic: Step 1 Advising'
+     @advisor_types.push 'Academic: Remediation Support'
+     @advisor_types.sort!
+
+      @advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)
+      @advisor_name ||= @advisors.map{|n| n.name if n.email==current_user.email}.compact
+      advisor_type ||= @advisors.map{|n| n.advisor_type if n.email==current_user.email}.compact
+
+      if @advisor_name.empty?
+        @all_advisor_names = @advisors.map{|n| n.name}.compact
+      else
+        @advisor_types = @advisor_types.map{|a| a if a.include? advisor_type.first}.compact
+
+      end
+
     end
 
     # Only allow a list of trusted parameters through.

@@ -7,7 +7,7 @@
         <th data-data="start_date">Start date</th>
         <th data-data="end_date">End date</th>
         <th data-data="check_all">
-          <%= check_box_tag "check_all", "check_all", false %> Check All
+          <%= check_box_tag "check_all", "check_all", true %> Check All
         </th>
         <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
       </tr>
@@ -20,8 +20,14 @@
           <% i = i + 1 %>
           <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
           <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
-          <% advisor_name = @advisors.collect{|a| a.name if a.id.to_s == params[:advisor]}.compact.first %>
-          <% advisor_id = @advisors.collect{|a| a.id if a.id.to_s == params[:advisor]}.compact.first %>
+          <% if !@advisor_name.empty? %>
+            <% advisor_name = @advisors.collect{|a| a.name if a.name == params[:advisor]}.compact.first %>
+            <% advisor_id = @advisors.collect{|a| a.id if a.name == params[:advisor]}.compact.first %>
+          <% else %>
+            <% advisor_name = @advisors.collect{|a| a.name if a.id == params[:advisor].to_i}.compact.first %>
+            <% advisor_id = params[:advisor] %>
+          <% end %>
+
           <td><%= @advisor_type %></td>
           <% if (@time_slot.to_i == 15) and ((advisor_name.include? 'Cantone') or (advisor_name.include? 'Schneider')) %>
             <td><%= "Step Delay Meetings - #{advisor_name}" %></td>
@@ -34,13 +40,13 @@
 
           <% if (@time_slot.to_i == 15) and ((advisor_name.include? 'Cantone') or (advisor_name.include? 'Schneider')) %>
             <td><%= label_tag do %>
-                <%= check_box_tag "checkbox", "Step Delay Meetings - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", false, id: "checkbox#{i}" %>
+                <%= check_box_tag "checkbox", "Step Delay Meetings - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
                 Save
               <% end %>
             </td>
           <% else %>
             <td><%= label_tag do %>
-                <%= check_box_tag "checkbox", "#{@advisor_type} Advisor - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", false, id: "checkbox#{i}" %>
+                <%= check_box_tag "checkbox", "#{@advisor_type} Advisor - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
                 Save
               <% end %>
             </td>
@@ -52,5 +58,5 @@
 
   </table>
 
-  <button id="SaveAll">Save All</button>
+  <button id="SaveAll" class="btn btn-primary">Save All</button>
 <% end %>

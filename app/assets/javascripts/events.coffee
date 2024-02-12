@@ -37,6 +37,11 @@ dateName = (yyyy, mm, dd) ->
 
 $ ->
   $('#advisor_type').change ->
+    tempData = $('#IsAdvisor').data("isadvisor")
+    console.log("IsAdvisor = " + tempData)
+    if tempData == 'Yes'
+      console.log("found IsAdvisor!")
+      return
     advisorType = @value
     #alert advisorType
     $('#advisor').empty()

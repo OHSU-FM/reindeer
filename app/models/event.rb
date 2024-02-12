@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
 
-  belongs_to :advisor
+  belongs_to :advisor, optional: true
   belongs_to :user, inverse_of: :events, optional: true
 
   #WillPaginate.per_page = 10
