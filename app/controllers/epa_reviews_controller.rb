@@ -1,5 +1,5 @@
 class EpaReviewsController < ApplicationController
-  before_action :authenticate_user!, :find_reviewable, :load_reasons, :load_eg_members
+  before_action :authenticate_user!, :find_reviewable, :load_reasons #, :load_eg_members
 
   include CompetenciesHelper
   include ArtifactsHelper
@@ -23,6 +23,7 @@ class EpaReviewsController < ApplicationController
     if params[:epa_json].present?
       email = params[:epa_json]["0"]["email"]
       user = User.find_by(email: email)
+
       load_eg_members(user)
 
       EpaReview.load_epa(params[:epa_json], @eg_full_name1, @eg_full_name2)
@@ -260,9 +261,9 @@ class EpaReviewsController < ApplicationController
 
      end
 
-     def load_eg_members(user)
-       @eg_members, @eg_full_name1, @eg_full_name2 = EpaReview.load_eg_members(user)
-     end
+     # def load_eg_members(user)
+     #   @eg_members, @eg_full_name1, @eg_full_name2 = EpaReview.load_eg_members(user)
+     # end
 
      def load_reasons
        @eg_reasons ||= EgReason.all.select(:reason).to_a.map{|r| r.reason}

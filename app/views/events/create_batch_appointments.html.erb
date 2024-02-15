@@ -8,7 +8,7 @@
 
       <div class="form-group">
           <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2" %>
-          <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types), include_blank: "---",
+          <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types), include_blank: '---',
                required: true  %> <br />
           <div hidden>
             <div class="advisors-details" data-advisors="<%= @advisors.to_json %>"></div>

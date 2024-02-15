@@ -113,7 +113,6 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
-
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
@@ -140,38 +139,61 @@ class EventsController < ApplicationController
       #params[:advisor] = @advisor.id.to_s  # need the advisor id for display_batch_appointments, and th id need to be string
       @advisor_type = @advisor.advisor_type
       # gahter up all the startDates in the params controller
-      startDates = params.as_json.to_hash.map{|key, val| val if key.include? "startDate"}.compact  #
-
-      @appointments = Event.reformat_startDate(startDates, @time_slot)
+      params_hash = params.as_json.to_hash
+      startDates = params_hash.map{|key, val| val if key.include? "startDate"}.compact  #
+      count = params_hash["count"].to_i
+      recur_hash = {}
+      start_date_hash = {}
+      for c in 1..count+1
+        recur_hash["weekly_recurrences#{c}"] = params_hash["weekly_recurrences#{c}"]
+        start_date_hash["startDate#{c}"] = params_hash["startDate#{c}"]
+      end
+      @appointments = Event.reformat_startDate(start_date_hash, recur_hash, @time_slot, count)
       respond_to do |format|
         #format.html
-        format.js { render action: 'display_batch_appointments', status: 200 }
+        format.js { render action: 'display_random_appointments', status: 200 }
       end
     end
   end
 
-  def list_past_valid_appointments
-    if params[:start_date].present? and params[:end_date].present?
-      @advisor = Advisor.find_by(email: current_user.email)
-      start_date = params[:start_date]   #.to_datetime.strftime("%Y/%m/%d")
-      end_date = params[:end_date]
-      if @advisor.nil?
-        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL", start_date, end_date).order(:user_id, :start_date)
+  def save_all_random
+    @appointments = JSON.parse(params[:appointments])
+
+    @appointments.each do |appointment|
+      data = appointment.split("|")
+      title = data[0].split(" - ").first
+      description = data[0]
+      start_date = hf_format_datetime(data[1].gsub("at ", ""))
+      localTime = start_date.to_datetime.localtime
+      if localTime.to_s.include? "-0800"
+        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
+        start_date2 = start_date.to_datetime + 8.hours
       else
-        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL and advisor_id=?", start_date, end_date, @advisor.id).order(:user_id, :start_date)
+        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+        start_date2 = start_date.to_datetime + 7.hours
       end
+      end_date = hf_format_datetime(data[2].gsub("at ", ""))
+      advisor_id = data[3].to_i
 
+      #appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
+      if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
+        notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
+      else
+        Event.where(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id).first_or_create
+        notice_msg = 'Apppointments were successfully created!'
+
+      end
+      flash.alert = notice_msg
     end
+
     respond_to do |format|
-      format.html
-      format.js { render action: 'display_past_valid_appointments', status: 200 }
+      format.html { redirect_to action: "index", notice: notice_msg}
+      format.json
     end
-
   end
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
-
     @appointments.each do |appointment|
       data = appointment.split("|")
       title = data[0].split(" - ").first
@@ -229,6 +251,25 @@ class EventsController < ApplicationController
      respond_to do |format|
        format.html
      end
+  end
+
+  def list_past_valid_appointments
+    if params[:start_date].present? and params[:end_date].present?
+      @advisor = Advisor.find_by(email: current_user.email)
+      start_date = params[:start_date]   #.to_datetime.strftime("%Y/%m/%d")
+      end_date = params[:end_date]
+      if @advisor.nil?
+        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL", start_date, end_date).order(:user_id, :start_date)
+      else
+        @appointments = Event.where("start_date >= ? and end_date <= ? and user_id is not NULL and advisor_id=?", start_date, end_date, @advisor.id).order(:user_id, :start_date)
+      end
+
+    end
+    respond_to do |format|
+      format.html
+      format.js { render action: 'display_past_valid_appointments', status: 200 }
+    end
+
   end
 
   private

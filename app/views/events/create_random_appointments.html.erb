@@ -24,9 +24,14 @@
            <label class="control-label" for="field1">Create Start Dates</label>
            <div class="controls" id="profs">
              <div class="input-append">
-               <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local"/><button id="b1" onClick="addFormField()" class="btn btn-info" type="button">Add Date</button>
+               <%= label_tag "Weekly Recurrences" %>
+               <%= select_tag "weekly_recurrences1", options_for_select([*0..12]) %>
+
+               <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local"/>
+               <button id="b1" onClick="addFormField()" class="btn btn-info btn-sm" type="button">Add Date</button>
+
              </div>
-             <br /><b>Press Add Date button to add another Start Date field :)</b>
+             <br /><b>Please Click on 'Add Date' button to add another date.</b>
            </div>
         </div>
       </div>

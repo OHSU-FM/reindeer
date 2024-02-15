@@ -4,13 +4,20 @@ class Event < ApplicationRecord
   belongs_to :user, inverse_of: :events, optional: true
 
   #WillPaginate.per_page = 10
-  def self.reformat_startDate(startDates, time_slot)
-    i = 1
+  def self.reformat_startDate(start_date_hash, recur_hash, time_slot, count)
     date_hash = {}
-    startDates.each do |startDate|
-      if startDate != ""
-        date_hash.store("Date #{i}", startDate.to_datetime.utc.strftime("%m/%d/%Y %T %p"))
-        i = i + 1
+    i = 1
+    for c in 1..count+1
+      no_of_weeks = recur_hash["weekly_recurrences#{c}"]
+      start_date = start_date_hash["startDate#{c}"]
+
+      if start_date.to_s != "" and no_of_weeks.to_i != 0
+        for w in 0..no_of_weeks.to_i
+           date_hash.store("Date #{i}", (start_date.to_datetime + w.weeks).utc.strftime("%m/%d/%Y %T %p"))
+           i += 1
+        end
+      else
+        date_hash.store("Date #{i}", start_date.to_datetime.utc.strftime("%m/%d/%Y %T %p")) if start_date.to_s != ""
       end
     end
     return date_hash

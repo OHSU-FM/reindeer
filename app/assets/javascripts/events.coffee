@@ -59,15 +59,36 @@ $ ->
       #$(this).text(advisor)
   return
 
+
 appointments = []
 next = 1;
+
 window.addFormField = ->
   addto = "#startDate" + next;
   next = next + 1;
-  newIn = '<br /><input type="datetime-local" autocomplete="off" class="span3" id="startDate' + next + '" name="startDate' + next + '" ><button id="b'+next+'" onClick="$(this).prev().remove();$(this).remove();" class="btn btn-warning" type="button">Remove</button>';
+  newIn = '<br />' +
+  '<label for="Weekly_Recurrences">Weekly recurrences</label>&nbsp;' +
+  '<select name="weekly_recurrences' + next + '" id="weekly_recurrences' + next + '">' +
+  '<option value="0">0</option>' +
+  '<option value="1">1</option>' +
+  '<option value="2">2</option>' +
+  '<option value="3">3</option>' +
+  '<option value="4">4</option>' +
+  '<option value="5">5</option>' +
+  '<option value="6">6</option>' +
+  '<option value="7">7</option>' +
+  '<option value="8">8</option>' +
+  '<option value="9">9</option>' +
+  '<option value="10">10</option>' +
+  '<option value="11">11</option>' +
+  '<option value="12">12</option>' +
+  '</select>&nbsp;' +
+  '<input type="datetime-local" autocomplete="off" class="span3" id="startDate' + next + '" name="startDate' + next +
+  '">' + '<button id="b'+ next + '"onClick="$(this).prev().remove();$(this).prev().remove();$(this).prev().remove();$(this).remove();" class="btn btn-warning btn-sm" type="button">Remove&nbsp;</button>';
   newInput = $(newIn);
-  console.log(addto);
+  #console.log(addto);
   $(addto).after(newInput);
+  $("#startDate" + next).after("&nbsp;") # add extra spacing before Remove button
   if(next>1)
       $("button#b"+next).after(newInput);
   #$("#field" + next).attr('data-source',$(addto).attr('data-source'));
