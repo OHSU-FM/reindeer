@@ -1,10 +1,9 @@
 <br />
   <% if !@comp_keys.nil? and (@comp_keys.include? "disabled" or  @comp_keys.include? "NOT AUTHORIZED") %>
       <br />
-      <div class="alert alert-warning alert-dismissible">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
         <strong>Warning!</strong><h5><%= @comp_keys %></h5>
-      </div>
+
 
   <% else %>
     <!-- Page Header -->
@@ -15,7 +14,7 @@
       <div class="card-body">
         <div class="faq-section">
           <div class="row justify-content-center">
-          <% if @block_desc.include? "Renal" %>
+          <% if @block_desc.to_s.include? "Renal" %>
             <div class="col-lg-12">
           <% else %>
             <div class="col-md-8">
@@ -73,7 +72,7 @@
                    </div>
                   </div>
                   <% @missing_pre_lab = false %>
-                  <% @missing_weekly = false %>                  
+                  <% @missing_weekly = false %>
                   <% @comp_keys.each do |comp| %>
 
                       <div class="card">

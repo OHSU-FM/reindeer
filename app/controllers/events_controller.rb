@@ -117,9 +117,11 @@ class EventsController < ApplicationController
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
       @time_slot = params[:time_slot]
+      @weekly_recurrences = params[:weekly_recurrences]
       session[:advisor_type] = @advisor_type
       session[:advisor] = @advisor
-      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type)
+
+      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type, @weekly_recurrences)
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }
@@ -158,23 +160,14 @@ class EventsController < ApplicationController
 
   def save_all_random
     @appointments = JSON.parse(params[:appointments])
-
     @appointments.each do |appointment|
       data = appointment.split("|")
-      title = data[0].split(" - ").first
-      description = data[0]
-      start_date = hf_format_datetime(data[1].gsub("at ", ""))
-      localTime = start_date.to_datetime.localtime
-      if localTime.to_s.include? "-0800"
-        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
-        start_date2 = start_date.to_datetime + 8.hours
-      else
-        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
-        start_date2 = start_date.to_datetime + 7.hours
-      end
-      end_date = hf_format_datetime(data[2].gsub("at ", ""))
-      advisor_id = data[3].to_i
-
+      start_date = hf_format_datetime(data[0])
+      end_date = hf_format_datetime(data[1])
+      advisor_id = data[2].to_i
+      advisor = Advisor.find(advisor_id)
+      title = advisor.advisor_type + ' Advisor'
+      description = title + " - " + advisor.name
       #appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
         notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
@@ -194,11 +187,10 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
+
     @appointments.each do |appointment|
       data = appointment.split("|")
-      title = data[0].split(" - ").first
-      description = data[0]
-      start_date = hf_format_datetime(data[1].gsub("at ", ""))
+      start_date = hf_format_datetime(data[0])
       localTime = start_date.to_datetime.localtime
       if localTime.to_s.include? "-0800"
         #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
@@ -207,16 +199,17 @@ class EventsController < ApplicationController
         #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
         start_date2 = start_date.to_datetime + 7.hours
       end
-      end_date = hf_format_datetime(data[2].gsub("at ", ""))
-      advisor_id = data[3].to_i
+      end_date = hf_format_datetime(data[1])
+      advisor_id = data[2].to_i
+      advisor = Advisor.find(advisor_id)
+      title = advisor.advisor_type + ' Advisor'
+      description = title + " - " + advisor.name
 
-      #appt = Event.where(advisor_id: advisor_id, title: title, description: description, start_date: start_date2)
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
         notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
       else
         Event.where(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id).first_or_create
         notice_msg = 'Apppointments were successfully created!'
-
       end
       flash.alert = notice_msg
     end

@@ -20,6 +20,8 @@
           <% i = i + 1 %>
           <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
           <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
+          <% temp_start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y %I:%M%p") %>
+          <% temp_end_date   = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y %I:%M%p") %>
           <% if !@advisor_name.empty? %>
             <% advisor_name = @advisors.collect{|a| a.name if a.name == params[:advisor]}.compact.first %>
             <% advisor_id = @advisors.collect{|a| a.id if a.name == params[:advisor]}.compact.first %>
@@ -47,7 +49,7 @@
           <% else %>
 
             <td><%= label_tag do %>
-                <%= check_box_tag "checkbox", "#{@advisor_type} Advisor - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
+                <%= check_box_tag "checkbox", "#{temp_start_date}|#{temp_end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
                 Save
               <% end %>
             </td>

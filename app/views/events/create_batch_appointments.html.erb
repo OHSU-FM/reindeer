@@ -8,8 +8,14 @@
 
       <div class="form-group">
           <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2" %>
-          <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types), include_blank: '---',
-               required: true  %> <br />
+          <% if @advisor_types.count == 1 %>
+            <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types.first), include_blank: '---',
+                 required: true  %> <br />
+          <% else %>
+            <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: params[:advisor_type]), include_blank: '---',
+                 required: true  %> <br />
+          <% end %>
+
           <div hidden>
             <div class="advisors-details" data-advisors="<%= @advisors.to_json %>"></div>
             <% if !@advisor_name.empty? %>
@@ -31,7 +37,10 @@
           <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now, minute_step: 30)%><input type="text" id="start_weekday" name="start_weekday" disabled><br />
           <%= label_tag :EndDate, nil, class: "control-label col-md-2" %>
           <%= datetime_select("end_date", "end_date", ampm: true,  default: 6.hours.from_now, minute_step: 30) %><input type="text" id="end_weekday" name="end_weekday" disabled> <br />
-          <%= submit_tag "Go" %>
+          <%= label_tag :weekly_recurrences, nil, class: "control-label col-md-2" %>
+          <%= select_tag "weekly_recurrences", options_for_select([*0..12]) %><br /><br />
+          <%= label_tag "  ", nil, class: "control-label col-md-2" %>
+          <%= submit_tag "Submit", class: "btn-sm btn-primary"%>
 
       </div>
     <% end %>

@@ -16,7 +16,7 @@ module EventsHelper
     temp_datetime = in_datetime.split(" ")
     formatted_date = format_date_yyyymmdd(temp_datetime[0])
 
-    return formatted_date + " " + temp_datetime[1] + " " + temp_datetime[2]
+    return formatted_date + " " + temp_datetime[1]  # + " " + temp_datetime[2]
 
   end
 

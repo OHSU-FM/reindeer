@@ -23,7 +23,21 @@ class Event < ApplicationRecord
     return date_hash
   end
 
-  def self.enumerate_hours(start_date, end_date, time_slot, advisor_type)
+  def self.process_weekly_recurrences(date_array, weekly_recurrences)
+    date_hash = {}
+    i = 1
+    date_array.values.each do |date|
+      for w in 0..weekly_recurrences.to_i
+        date_hash.store("Date #{i}", (date.to_datetime + w.weeks).utc.strftime("%m/%d/%Y %T %p"))
+        i += 1
+      end
+    end
+
+    return date_hash
+
+  end
+
+  def self.enumerate_hours(start_date, end_date, time_slot, advisor_type, weekly_recurrences)
     if start_date.nil?
       return nil
     end
@@ -47,12 +61,16 @@ class Event < ApplicationRecord
     end
 
     (start_date.to_s.to_datetime.utc.to_i .. end_date.to_s.to_datetime.utc.to_i).step(time_slot*60) do |date|
-       date_array.store("Date #{i}", Time.at(date).utc.strftime("%m/%d/%Y %T %p"))
+       date_array.store("Date #{i}", Time.at(date).utc.strftime("%Y/%m/%d %T %p"))
        #puts "time: "  + Time.at(date).utc.strftime("%m/%d/%Y %T %p")
        i = i + 1
     end
-
-    return date_array
+    if weekly_recurrences.to_i != 0
+      date_array_recurrences = process_weekly_recurrences(date_array, weekly_recurrences)
+      return date_array_recurrences
+    else
+      return date_array
+    end
 
   end
 
