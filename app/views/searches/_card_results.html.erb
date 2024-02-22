@@ -1,5 +1,5 @@
 <ul id="myUL">
-  <div class="card-columns">
+  <div class="card-columns" style="width: 600px">
   <% @temp_hash = {} %>
   <% @results.each do |result| %>
 
@@ -82,7 +82,7 @@
                        <% if !dataset.split("~").last.include? "Core Clinical/Electives" %>
                           <% if !fom_block_array.include? dataset.split(":").last %>
                              <%= link_to dataset.split("~").last, polymorphic_path([hf_graph_type(dataset).to_sym, :ls_report], sid: sid, pk: @pk), target: '_blank',
-                              class: "modal-click", 'data-target': '#modal-dataset' %> <br>
+                              class: "modal-click", 'data-bs-target': '#modal-dataset' %> <br>
                           <% end %>
                       <% end %>
                     <% end %>

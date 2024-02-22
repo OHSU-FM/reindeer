@@ -42,9 +42,9 @@ gem "lograge"
 ##############################
 # JavaScript and CSS
 ##############################
-gem 'bootstrap'#, '~> 4.4.0'
+gem 'bootstrap', '~> 5.3.2' # '~> 4.4.0'
 gem "jbuilder", '~> 2.5'
-gem "popper_js", "~> 1.14.3"
+gem "popper_js", '>=2.11.8', '<3' #"~> 1.14.3"
 #gem "bootstrap-sass"   #, '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"

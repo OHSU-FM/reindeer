@@ -2,7 +2,7 @@
   <ul class="list-group list-group-root">
     <% @coaches.sort_by!{|obj| obj["full_name"]} %>
     <% @coaches.each do |coach| %>
-      <a href="#<%= coach.username %>" class="list-group-item" data-toggle="collapse"><%= coach.full_name %></a>
+      <a href="#<%= coach.username %>" class="list-group-item" data-bs-toggle="collapse"><%= coach.full_name %></a>
 
       <div class="list-group collapse" id="<%= coach.username %>">
         <% coach.cohorts.where(permission_group_id: [13,16,17,18]).order('title DESC').map(&:users).flatten.sort_by{|u| [u.permission_group_id, u.full_name]}.each do |student| %>

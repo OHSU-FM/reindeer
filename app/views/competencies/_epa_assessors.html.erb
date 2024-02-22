@@ -17,18 +17,18 @@
          <% epa.each do |k, v| %>
             <% rem = (v-assessors[k])*(-1) %>
             <tr>
-               <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
+               <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
                <b><%= k.upcase %></b></a></span></td>
 
                 <!-- <td style="text-align:center"><font color="purple"> --> <!--%= epa_level0[k] == 0? "" : epa_level0[k] %></td> -->
                 <td style="text-align:center"><b>
-                  <a href="#" style="color:red" data-html="true" data-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 1) %>"><%= epa_level1[k] == 0? "" : epa_level1[k] %></a></b>
+                  <a href="#" style="color:red" data-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 1) %>"><%= epa_level1[k] == 0? "" : epa_level1[k] %></a></b>
                 </td>
                 <td style="text-align:center"><b>
-                  <a href="#" style="color:tomato" data-html="true" data-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 2) %>"><%= epa_level2[k] == 0? "" : epa_level2[k]%></a></b>
+                  <a href="#" style="color:tomato" data-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 2) %>"><%= epa_level2[k] == 0? "" : epa_level2[k]%></a></b>
                 </td>
                 <td style="text-align:center"><b>
-                  <a href="#" style="color:green" data-html="true" data-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 3) %>"><%= v == 0? "" : v %></a></b>
+                  <a href="#" style="color:green" data-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 3) %>"><%= v == 0? "" : v %></a></b>
                 </td>
                 <td style="text-align:center"><font color="blue"><b><%= assessors[k] %></b></font></td>
 

@@ -24,7 +24,7 @@ class EpaReviewsController < ApplicationController
       email = params[:epa_json]["0"]["email"]
       user = User.find_by(email: email)
 
-      load_eg_members(user)
+      #load_eg_members(user)
 
       EpaReview.load_epa(params[:epa_json], @eg_full_name1, @eg_full_name2)
     end
@@ -204,7 +204,7 @@ class EpaReviewsController < ApplicationController
     end
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
     @today_date = Time.new.strftime("%m/%d/%Y")
-    load_eg_members(@user)
+    #load_eg_members(@user)
     @bls = @user.ume_bls
 
     badgingDates = BadgingDate.find_by(permission_group_id: @user.permission_group_id)

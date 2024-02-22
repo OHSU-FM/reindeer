@@ -1,12 +1,13 @@
-<div id="modal-epa-master" class="modal fade" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modal-epa-master" class="modal fade" tabindex="-1"  aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" style="width:1250px;">
     <!-- Modal content-->
     <div class="modal-content">
 
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
         <!-- <h4 class="modal-title">Modal Header</h4> -->
         <h4 class="modal-title text-center">Badging <%= strip_tags(hf_get_epa_desc(@epa_master.epa)) %> - <%= @full_name %></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body" >
