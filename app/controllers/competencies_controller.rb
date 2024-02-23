@@ -1,6 +1,6 @@
 class CompetenciesController < ApplicationController
   layout 'full_width_csl'
-  before_action :authenticate_user!, :load_release_date
+  before_action :authenticate_user!   #, :load_release_date
   include CompetenciesHelper
   include LsReports::CslevalHelper
   include LsReports::ClinicalphaseHelper
@@ -89,9 +89,8 @@ class CompetenciesController < ApplicationController
     @full_name = @selected_user.full_name
     @pk = email
     @selected_user_year = @selected_user.permission_group.title.split(" ").last.gsub(/[()]/, "")
-
-    @release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
-
+    @release_date = BadgingDate.find_by(permission_group_id: @selected_user.permission_group_id).release_date
+    #@release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
     ## getting WPAs
      @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
 
@@ -213,9 +212,9 @@ class CompetenciesController < ApplicationController
       :mspe)
   end
 
-  def load_release_date
-    badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
-
-  end
+  # def load_release_date
+  #   badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
+  #
+  # end
 
 end
