@@ -25,6 +25,8 @@
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
 //= require jquery.contextMenu.js
+//= require bootstrap
+//= require tooltips
 //= require bootstrap-sprockets
 //= require bootstrap-notify.js
 //= require notify.js

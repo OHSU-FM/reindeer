@@ -15,7 +15,7 @@ $ ->
 $(document).ready ->
   $('#CollapsibleWbaTable').DataTable 'ordering': true
   $('.dataTables_length').addClass 'bs-select'
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-bs-toggle="tooltip"]').tooltip()
 
 
   # $('#CompetencesDetailTable').DataTable 'ordering': true

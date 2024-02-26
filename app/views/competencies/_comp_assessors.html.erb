@@ -18,18 +18,17 @@
            <% if comp_codes.include? k %>
               <% rem = (val-assessors[k])*(-1) %>
               <tr>
-                 <td style="text-align:center"><a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip" title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
-                 <b><%= k.upcase %></b></a></span></td>
-
+                 <td style="text-align:center"><a href="#" data-bs-placement="right" data-bs-toggle="tooltip"  data-bs-title="<%= hf_get_comp_desc2(k.upcase + "-E") %>" >
+                 <b><%= k.upcase %></b></a></td>
                   <!-- <td style="text-align:center"><font color="purple"> --> <!--%= epa_level0[k] == 0? "" : epa_level0[k] %></td> -->
                   <td style="text-align:center"><b>
-                    <a href="#" style="color:red" data-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 1) %>"> <%= @comp_hash1[k] == 0? "" : @comp_hash1[k] %></a></b>
+                    <a href="#" style="color:red" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 1) %>"> <%= @comp_hash1[k] == 0? "" : @comp_hash1[k] %></a></b>
                   </td>
                   <td style="text-align:center"><b>
-                    <a href="#" style="color:tomato" data-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 2) %>"> <%= @comp_hash2[k] == 0? "" : @comp_hash2[k]%></a></b>
+                    <a href="#" style="color:tomato" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 2) %>"> <%= @comp_hash2[k] == 0? "" : @comp_hash2[k]%></a></b>
                   </td>
                   <td style="text-align:center"><b>
-                      <a href="#" style="color:green" data-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 3) %>"><%= val == 0? "" : val %></a></b>
+                      <a href="#" style="color:green" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_get_courses(@comp, k, 3) %>"><%= val == 0? "" : val %></a></b>
                   </td>
                   <td style="text-align:center"><font color="blue"><b><%= assessors[k] %><b></font></td>
 

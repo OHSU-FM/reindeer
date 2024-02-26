@@ -2,7 +2,7 @@
   <div id="accordion" class="accordion" aria-multiselectable="true">
     <div class="card mb-0">
         <h5>
-          <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+          <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseOne">
               <a class="card-title">
           Clinical Experience Phase Course Comments --> Last Review End Date: <i><%= @lastReviewEndDate %></i>  Next Review End Date: <i><%= @nextReviewEndDate %></i>
               </a>
@@ -49,7 +49,7 @@
                             <td><%= cd["course_name"] %></td>
                             <td><%= cd["evaluator"] %></td>
                             <td>
-                              <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+                              <a href="#" data-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
                                   title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a>
 
                             </td>
@@ -71,7 +71,7 @@
 
       <input type='hidden' value='' id='txt_id'>
        <h5>
-          <div class="card-header collapsed" data-toggle="collapse" href="#collapseTwo">
+          <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseTwo">
             <a class="card-title">
             Foundations of Medicine Phase Preceptorship Comments
             </a>
@@ -112,7 +112,7 @@
         </div>
 
         <h5>
-          <div class="card-header collapsed" data-toggle="collapse" href="#collapseThree">
+          <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseThree">
             <a class="card-title">
             Foundations of Medicine Phase CSL Narrative Feedback
             </a>
@@ -146,7 +146,7 @@
 
        </div>
        <h5>
-         <div class="card-header collapsed" data-toggle="collapse" href="#collapseFour">
+         <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseFour">
            <a class="card-title">
                Official Documents <span class="badge badge-warning"><%= @no_official_docs %></span>
            </a>

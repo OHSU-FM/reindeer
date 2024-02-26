@@ -7,7 +7,7 @@
       <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingEPA<%= i %>">
               <h5 class="panel-title">
-                <a class="collapsed" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
+                <a class="collapsed" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
                     <span>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
                       <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
@@ -48,7 +48,7 @@
       <div class="panel panel-default">
           <div class="panel-heading" role="tab" id="headingEPA<%= i %>">
               <h5 class="panel-title">
-                <a class="collapsed" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
+                <a class="collapsed" data-bs-toggle="collapse" data-bs-parent="#accordion" href="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                   <div class="labels">
                     <span><b>EPA<%= i %></b> - <%= hf_get_epa_desc2("EPA#{i}") %>
                       <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
