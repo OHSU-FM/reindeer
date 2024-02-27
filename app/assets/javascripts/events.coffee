@@ -138,3 +138,22 @@ $(document).ready ->
   $('#send_invite_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $('.dataTables_length').addClass 'bs-select'
   #alert('searchValue: ' + $('#searchValue').val())
+
+  events = []
+  $('#DeleteAll').click ->
+    $.each $('input[name=\'checkbox\']:checked'), (K, V) ->
+      events.push V.value
+      return
+    $.ajax
+      url: '/events/delete_all'
+      type: 'get'
+      data: events: JSON.stringify(events)
+      dataType: 'json'
+      success: (data) ->
+        # alert('All Appointments were successfully saved!');
+        window.location = '/events/batch_delete'
+        return
+      error: (request, error) ->
+        alert 'Request Reviews: ' + JSON.stringify(request)
+        return
+    return

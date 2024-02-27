@@ -33,6 +33,8 @@ Rails.application.routes.draw do
       get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
       get 'resend_calendar_invite', action: :resend_calendar_invite, controller: 'events', to: 'events#resend_calendar_invite'
       get 'resend_invite', action: :resend_invite, controller: 'events', to: 'events#resend_invite'
+      get 'batch_delete', action: :batch_delete, controller: 'events', to: 'events#batch_delete'
+      get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
     end
   end
   #get 'student_assessments/index'
