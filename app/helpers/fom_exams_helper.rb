@@ -439,9 +439,9 @@ end
           if class_mean_series[i] != 0.00  and student_series[i] == 0.0
             selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
             @missing_pre_lab = true
-          elsif (categories["course_code"] == '4-CPR' or categories["course_code"] == '5-HODI') and student_series[i] == 0.0
-            selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-            @missing_pre_lab = true
+          # elsif (categories["course_code"] == '4-CPR' or categories["course_code"] == '5-HODI') and student_series[i] == 0.0
+          #   selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+          #   @missing_pre_lab = true
           end
         end
 

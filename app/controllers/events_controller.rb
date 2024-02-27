@@ -265,6 +265,33 @@ class EventsController < ApplicationController
 
   end
 
+  def batch_delete
+    @events = nil
+    if params[:advisor_id].present?
+      if params[:purge].present? and params[:purge] == 'purgeEvent'
+        @events = Event.where("advisor_id = ? and start_date < ? and user_id is null", params[:advisor_id], Date.today.strftime("%Y/%m/%d"))
+      else
+        @events = Event.where(advisor_id: params[:advisor_id], user_id: nil)
+      end
+    end
+    respond_to do |format|
+      format.html
+      #format.js { render action: 'display_batch_delete', locals: { events: @events }, status: 200 }
+    end
+  end
+
+  def delete_all
+    events = JSON.parse(params[:events])
+
+    if !events.empty?
+      events.each do |event_id|
+        Event.find(event_id.to_i).destroy
+      end
+      notice_msg = 'Apppointments were successfully deleted!'
+    end
+    flash.alert = notice_msg
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event

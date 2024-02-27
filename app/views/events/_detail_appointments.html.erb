@@ -1,4 +1,4 @@
-<% if !@appointments.nil? %>
+<% if !appointments.nil? %>
   <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
     <thead>
       <tr>
@@ -15,7 +15,7 @@
     <% i = 0 %>
     <% time_slot = @time_slot.to_i %>
 
-    <% @appointments.each do |appointment| %>
+    <% appointments.each do |appointment| %>
         <tr>
           <% i = i + 1 %>
           <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
