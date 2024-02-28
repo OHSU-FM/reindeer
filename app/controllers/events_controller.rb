@@ -291,7 +291,7 @@ class EventsController < ApplicationController
 
     if !events.empty?
       events.each do |event_id|
-        Event.find(event_id.to_i).destroy
+        Event.destroy(event_id.to_i)
       end
       notice_msg = 'Apppointments were successfully deleted!'
     end
