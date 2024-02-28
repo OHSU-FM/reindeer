@@ -34,7 +34,7 @@
           <% if (@time_slot.to_i == 15) and ((advisor_name.to_s.include? 'Cantone') or (advisor_name.to_s.include? 'Schneider')) %>
             <td><%= "Step Delay Meetings - #{advisor_name}" %></td>
           <% else %>
-            <td><%= "#{@advisor_type} Advisor - #{advisor_name}" %></td>
+            <td><%= "#{@advisor_type} - #{advisor_name}" %></td>
           <% end %>
 
           <td><%= start_date  %></td>
@@ -47,9 +47,16 @@
               <% end %>
             </td>
           <% else %>
+            <% if @advisor_type.include? "Remediation" %>
+                  <% temp_type = 'Remed' %>
+            <% elsif @advisor_type.include? "Step 1" %>
+                  <% temp_type = 'Step1' %>
+            <% else %>
+              <% temp_type = @advisor_type %>
+            <% end %>
 
             <td><%= label_tag do %>
-                <%= check_box_tag "checkbox", "#{temp_start_date}|#{temp_end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
+                <%= check_box_tag "checkbox", "#{temp_start_date}|#{temp_end_date}|#{advisor_id}|#{temp_type}", true, id: "checkbox#{i}" %>
                 Save
               <% end %>
             </td>

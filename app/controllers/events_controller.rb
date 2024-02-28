@@ -203,7 +203,13 @@ class EventsController < ApplicationController
       advisor_id = data[2].to_i
       advisor = Advisor.find(advisor_id)
       title = advisor.advisor_type + ' Advisor'
-      description = title + " - " + advisor.name
+      if data[3] == 'Step1'
+        description = 'Academic: Step 1 Advisring' + " - " + advisor.name
+      elsif data[3] == 'Remed'
+        description = 'Academic: Remediation Support' + " - " + advisor.name
+      else
+        description = data[3] + " - " + advisor.name
+      end
 
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
         notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
@@ -285,7 +291,7 @@ class EventsController < ApplicationController
 
     if !events.empty?
       events.each do |event_id|
-        Event.find(event_id.to_i).destroy
+        Event.destroy(event_id.to_i)
       end
       notice_msg = 'Apppointments were successfully deleted!'
     end
