@@ -45,6 +45,7 @@ gem "lograge"
 gem 'bootstrap', '~> 5.3.2' # '~> 4.4.0'
 gem "jbuilder", '~> 2.5'
 gem "popper_js", '>=2.11.8', '<3' #"~> 1.14.3"
+gem "cssbundling-rails"
 #gem "bootstrap-sass"   #, '~> 3.4.1'
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
@@ -177,3 +178,6 @@ gem 'fast_page'
 gem 'aes'
 gem 'active_storage_drag_and_drop'
 gem 'image_processing'
+gem 'csv'
+
+gem "importmap-rails", "~> 2.0"

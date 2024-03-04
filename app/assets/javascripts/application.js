@@ -25,7 +25,7 @@
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
 //= require jquery.contextMenu.js
-//= require bootstrap
+// require bootstrap  #Commented out on 3/4/2024  using importmap for bootstrap
 //= require tooltips
 //= require bootstrap-sprockets
 //= require bootstrap-notify.js

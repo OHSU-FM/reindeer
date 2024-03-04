@@ -89,7 +89,13 @@ class CompetenciesController < ApplicationController
     @full_name = @selected_user.full_name
     @pk = email
     @selected_user_year = @selected_user.permission_group.title.split(" ").last.gsub(/[()]/, "")
-    @release_date = BadgingDate.find_by(permission_group_id: @selected_user.permission_group_id).release_date
+    badgingDate = BadgingDate.find_by(permission_group_id: @selected_user.permission_group_id)
+    if !badgingDate.nil?
+        @release_date = badgingDate.release_date
+    else
+      @release_date = nil
+    end
+
     #@release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
     ## getting WPAs
      @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)

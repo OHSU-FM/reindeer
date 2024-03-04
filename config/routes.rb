@@ -17,9 +17,9 @@ Rails.application.routes.draw do
 
   resources :reports do
     collection do
-      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'
-      get 'competency', action: :competency, controller: 'reports'
-      get 'mspe', action: :mspe, controller: 'reports'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports', to: "reports#download_file"
+      get 'competency', action: :competency, controller: 'reports', to: 'reports#competency'
+      get 'mspe', action: :mspe, controller: 'reports', to: "reports#mspe"
     end
   end
 
@@ -66,7 +66,7 @@ Rails.application.routes.draw do
       get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
       get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
       get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
-      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters', to: 'epa_masters#download_file'
       get 'badged_graph', action: :badged_graph, controller: 'eg_masters', to: 'epa_masters#badged_graph'
       get 'wba_epa_graph', action: :wba_epa_graph, controller: 'eg_masters', to: 'epa_masters#wba_epa_graph'
       get 'average_wba_epa', action: :average_wba_epa, controller: 'eg_masters', to: 'epa_masters#average_wba_epa'
@@ -98,7 +98,7 @@ Rails.application.routes.draw do
   get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
   get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
   get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
-  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams'
+  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
 
   #resources :user do
   resources :preceptor_evals,  only: [:show], param: :uuid
@@ -182,15 +182,15 @@ Rails.application.routes.draw do
 
   resources :ls_reports, only: [:index, :show], param: :sid do
     member do
-      get "filter(/:pk(/:agg))", action: :show, as: :filter, controller: "ls_reports/filter",
+      get "filter(/:pk(/:agg))", action: :show, as: :filter, controller: "ls_reports/filter", to: "ls_reports/filter#show",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :filter
     end
     member do
-      get "graph(/:pk(/:agg))", action: :show, as: :graph, controller: "ls_reports/graph",
+      get "graph(/:pk(/:agg))", action: :show, as: :graph, controller: "ls_reports/graph", to: "ls_reports/graph#show",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :graph
     end
     member do
-      get "spreadsheet(/:pk(/:agg))", action: :show, as: :spreadsheet, controller: "ls_reports/spreadsheet",
+      get "spreadsheet(/:pk(/:agg))", action: :show, as: :spreadsheet, controller: "ls_reports/spreadsheet", to: "ls_reports/spreadsheet#show",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :spreadsheet
     end
     member do
@@ -203,7 +203,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
         get "update_loa", action: :update_loa, to: "users#update_loa#"
-        get "save_update_loa", action: :save_update_loa
+        get "save_update_loa", action: :save_update_loa, to: "users#save_update_loa"
     end
   end
 

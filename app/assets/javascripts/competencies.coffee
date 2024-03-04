@@ -16,6 +16,12 @@ $(document).ready ->
   $('#CollapsibleWbaTable').DataTable 'ordering': true
   $('.dataTables_length').addClass 'bs-select'
   $('[data-bs-toggle="tooltip"]').tooltip()
+  $('a.collapsed').click ->
+    epaId = $(this).attr('href')
+    console.log ("EPA1 clicked!")
+    $(epaId).toggle()
+    return
+
 
 
   # $('#CompetencesDetailTable').DataTable 'ordering': true
