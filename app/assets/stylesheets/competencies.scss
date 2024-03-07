@@ -60,9 +60,9 @@ input[type=radio] {
 h3 {
   text-align:center;
 }
-h5 {
-  text-align:center;
-}
+// h5 {
+//   text-align:center;
+// }
 input[type="text"]{
 background-color:#caf4dd !important
 }
@@ -75,16 +75,11 @@ background-color:#caf4dd !important
     color: #666;
   }
 }
-// .progress {
-//   height: 20px;
-// }
-// .progress-bar {
-// background: -webkit-linear-gradient(left, #FF1A13 0%, #FF7115 25%, #FFF014 50%, #02E884 100%); /* Chrome10-25,Safari5.1-6 */
-// }
 
-.progress {
+.start-progress {
   position: relative;
   height: 31px;
+  width: 1300px;
   background: rgb(255, 0, 0);
   background: -moz-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
   background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 38, 0, 1)), color-stop(100%, rgba(0, 255, 0, 1)));
@@ -104,7 +99,7 @@ background-color:#caf4dd !important
   background: -o-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
   background: -ms-linear-gradient(left, rgba(255, 38, 0, 1) 0%, rgba(0, 255, 0, 1) 100%);
   background: linear-gradient(to right, rgba(199, 38, 0, 1) 0%, rgba(255, 106, 84, 100), rgba(255, 238, 84, 100), rgba(0, 240, 0, 1) 100%);
-  filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled=false)");
+  //filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled=true)");
 }
 
 .amount {

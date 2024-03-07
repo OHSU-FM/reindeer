@@ -64,10 +64,10 @@ module Coaching
         @hours_sorted = hours.tally
 
       end
-
-      if current_user.coaching_type != 'student'
-        @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
-      end
+      # commented out on 3/7/2024 - not being used!
+      # if current_user.coaching_type != 'student'
+      #   @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+      # end
       respond_to do |format|
         format.js { render action: 'oasis_graphs', status: 200 }
       end
@@ -190,9 +190,10 @@ module Coaching
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id).load_async
              ## aded ib 1/18/2022
-             if current_user.coaching_type != 'student'
-               @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
-             end
+             # commented out on 3/7/2024 not being used
+             # if current_user.coaching_type != 'student'
+             #   @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+             # end
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id).load_async
              @students = @permission_groups.map(&:users).flatten

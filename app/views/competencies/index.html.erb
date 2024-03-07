@@ -1,57 +1,55 @@
-<br />
-<br />
 <div class="container-fluid">
-   <ul id="MainTabs2" class="nav nav-tabs" role="tablist">
+   <ul id="MainTabs2" class="nav nav-tabs justify-content-center" role="tablist">
 
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="fom-tab" data-bs-toggle="tab" href="#fom" style="background-color:#f4cccc" role="tab" aria-controls="fom" aria-selected="false">
            <%= image_tag("fom.png") %>FoM Blocks
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="Preceptorship-tab" data-bs-toggle="tab" href="#Preceptorship" style="background-color:#fce5cd" role="tab" aria-controls="Preceptorship" aria-selected="false">
            <%= image_tag("preceptor.png", size: "24x24") %>Preceptorship
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="scholarly-tab" data-bs-toggle="tab" href="#scholarly" style="background-color:#d9ead3" role="tab" aria-controls="scholarly" aria-selected="false">Scholarly Project
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="transition-tab" data-bs-toggle="tab" href="#transition" style="background-color:#cfe2f3" role="tab" aria-controls="transition" aria-selected="false">Transition Courses
          </a>
        </li>
-       <li class="active bold-italic nav-item waves-effect waves-light">
+       <li class="active bold-italic nav-item">
          <a class="nav-link active" id="core-tab" data-bs-toggle="tab" href="#core" style="background-color:#d9d2e9" role="tab" aria-controls="core" aria-selected="true">Core Experiences <span class="badge badge-secondary"><%= hf_total_count_comp(@comp, ["730", "731"]) %>
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="elective-tab" data-bs-toggle="tab" href="#elective" style="background-color:#DAF7A6" role="tab" aria-controls="elective" aria-selected="false">Electives
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="intersessions-tab" data-bs-toggle="tab" href="#intersessions" style="background-color:#e0b0a6" role="tab" aria-controls="intersessions" aria-selected="false">Intersessions
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="nbme-tab" data-bs-toggle="tab" href="#nbme" style="background-color:#FAF7A6" role="tab" aria-controls="nbme" aria-selected="false">
            <%= image_tag("nbme.png", size: "24x24") %>NBME/CPX
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="all_clinical-tab" data-bs-toggle="tab" href="#all_clinical" style="background-color:#CEC8E9" role="tab" aria-controls="all_clinical" aria-selected="false">
            <%= image_tag("courses.png", size: "24x24") %>All Courses</a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="competency-tab" data-bs-toggle="tab" href="#competency" style="background-color:#E0BBE4" role="tab" aria-controls="competency" aria-selected="false">
            <%= image_tag("competency.png", size: "24x24") %>Competencies
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="epa-tab" data-bs-toggle="tab" href="#epa" style="background-color:#a8e0a6" role="tab" aria-controls="epa" aria-selected="false">EPAs/Badges/WBAs
          </a>
        </li>
-       <li class="bold-italic nav-item waves-effect waves-light">
+       <li class="bold-italic nav-item">
          <a class="nav-link" id="official-tab" data-bs-toggle="tab" href="#official" style="background-color:#BEC8F8" role="tab" aria-controls="official" aria-selected="false">Official Student Letters <span class="badge badge-warning"><%= @no_official_docs %></span>
          </a>
        </li>
@@ -144,28 +142,6 @@
         <div class="inner-div">
           <%= render partial: "collapsible_epas" %>
           <%= render partial: "collapsible_wba_details" %>
-
-            <% if !@epas.blank?  %>
-              <div class="container">
-                <div id="data-visualization-AdHocAllEPAs" ></div>
-                <button id="plain" class="btn btn-primary">Column</button>
-                <button id="inverted" class="btn btn-secondary">Inverted</button>
-                <button id="polar" class="btn btn-success">Polar</button>
-                <button id="spline" class="btn btn-warning">Spline</button>
-              </div>
-              <br>
-            <% end %>
-
-          <% wba_epa_student = hf_series_data_student("EPA", params[:user_id], false) %>
-          <% if !wba_epa_student.nil? %>
-             <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
-          <% end %>
-          <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", params[:user_id], false) %>
-          <% if !wba_clinical_assessor.nil? %>
-            <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
-          <% end %>
-
-
         </div>
       </div>
     </div>

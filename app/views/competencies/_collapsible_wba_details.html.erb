@@ -1,51 +1,77 @@
-
-
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-          <div class="panel panel-default">
-              <div class="panel-heading panel-heading-backgroud-color" style="height: 40px;padding:0" role="tab" id="headingWBA">
-                  <h4 class="panel-title">
-                    <a class="collapsed" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseWBA" aria-expanded="false" aria-controls="collapseWBA">
-                      <i>WBA Details Data [Click Me]<i>
-                    </a>
-                  </h4>
+<div class="accordion" id="accordionWbaParent">
+  <div class="accordion-item">
+    <h2 class="accordion-header bg-info">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWbaData" aria-expanded="true" aria-controls="collapseWbaData">
+          <h5><i class="text-success"><strong>WBA Details Data [Click Me]</strong><i></h5>
+      </button>
+    </h2>
+    <div id="collapseWbaData" class="accordion-collapse collapse" data-bs-parent="#accordionWbaParent">
+      <div class="accordion-body">
+        <table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true" ">
+            <thead>
+              <tr class="filters">
+                <th>EPA</th>
+                <th>SubmitDate</th>
+                <th>ClinicalDiscipline</th>
+                <th>ClinicalSetting</th>
+                <th>ClincialAssessor</th>
+                <th>Other Role</th>
+                <th>AssessorName</th>
+                <th>AttendingFaculty</th>
+                <th>Involvment</th>
+                <th>Feedback</th>
+                <th>EncounterComplex</th>
+              </tr>
+            </thead>
+            <% if !@epas.blank? %>
+              <% @epas.each do |e| %>
+                <tr>
+                    <td><%= e.epa %></td>
+                    <td><%= e.submit_date.strftime("%F") %></td>
+                    <td><%= e.clinical_discipline %></td>
+                    <td><%= e.clinical_setting %></td>
+                    <td><%= e.clinical_assessor %></td>
+                    <td><%= e.other_role %></td>
+                    <td><%= e.assessor_name %></td>
+                    <td style="text-align:center"><%= e.attending_faculty.nil? ? "" : 'Yes' %></td>
+                    <td style="text-align:center"><%= e.involvement %></td>
+                    <td><%= e.more_independent %></td>
+                    <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
+                </tr>
+              <% end %>
+            <% end %>
+        </table>
+        <hr>
+        <div class="card">
+          <div class="card-body">
+            <% if !@epas.blank?  %>
+              <div class="container">
+                <div id="data-visualization-AdHocAllEPAs" ></div>
+                <button id="plain" class="btn btn-primary">Column</button>
+                <button id="inverted" class="btn btn-secondary">Inverted</button>
+                <button id="polar" class="btn btn-success">Polar</button>
+                <button id="spline" class="btn btn-warning">Spline</button>
               </div>
-              <div id="collapseWBA" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingWBA">
-                  <div class="panel-body">
-                    <table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true" ">
-                        <thead>
-                          <tr class="filters">
-                            <th>EPA</th>
-                            <th>SubmitDate</th>
-                            <th>ClinicalDiscipline</th>
-                            <th>ClinicalSetting</th>
-                            <th>ClincialAssessor</th>
-                            <th>Other Role</th>
-                            <th>AssessorName</th>
-                            <th>AttendingFaculty</th>
-                            <th>Involvment</th>
-                            <th>Feedback</th>
-                            <th>EncounterComplex</th>
-                          </tr>
-                        </thead>
-                        <% if !@epas.blank? %>
-                          <% @epas.each do |e| %>
-                            <tr>
-                                <td><%= e.epa %></td>
-                                <td><%= e.submit_date.strftime("%F") %></td>
-                                <td><%= e.clinical_discipline %></td>
-                                <td><%= e.clinical_setting %></td>
-                                <td><%= e.clinical_assessor %></td>
-                                <td><%= e.other_role %></td>
-                                <td><%= e.assessor_name %></td>
-                                <td style="text-align:center"><%= e.attending_faculty.nil? ? "" : 'Yes' %></td>
-                                <td style="text-align:center"><%= e.involvement %></td>
-                                <td><%= e.more_independent %></td>
-                                <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
-                            </tr>
-                          <% end %>
-                        <% end %>
-                    </table>
-                  </div>
-              </div>
+            <% end %>
           </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <% wba_epa_student = hf_series_data_student("EPA", params[:user_id], false) %>
+            <% if !wba_epa_student.nil? %>
+               <%= high_chart("wba_epa_student_graph", wba_epa_student) %>
+            <% end %>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <% wba_clinical_assessor = hf_series_data_student("Clinical Assessor", params[:user_id], false) %>
+            <% if !wba_clinical_assessor.nil? %>
+              <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>

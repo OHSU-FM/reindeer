@@ -28,37 +28,28 @@
   <% end %>
 
   <ul class="nav nav-tabs goal-tabs" role="tablist" id="myTab">
-    <li class="nav-item active">
-      <a class="nav-link" id="appointments-tab" data-bs-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="true"><b>Appointments</b></a>
-    </li>
-
     <% if @advisor_type == "Wellness" %>
-
     <% else %>
-      <li class="nav-item">
-        <a class="nav-link" id="meetings-tab" data-bs-toggle="tab" href="#meetings" role="tab" aria-controls="meetings" aria-selected="false"><b>Meetings</b></a>
+      <li class="nav-item active">
+        <a class="nav-link" id="meetings-tab" data-bs-toggle="tab" href="#meetings"><b>Meetings</b></a>
       </li>
     <% end %>
+    <li class="nav-item">
+      <a class="nav-link" id="appointments-tab" data-bs-toggle="tab" href="#appointments" ><b>Appointments</b></a>
+    </li>
 
     <li class="nav-item">
-      <a class="nav-link" id="artifacts-tab" data-bs-toggle="tab" href="#artifacts" role="tab" aria-controls="artifacts" aria-selected="false"><b>IPAS/IPPS Docs</b></a>
+      <a class="nav-link" id="artifacts-tab" data-bs-toggle="tab" href="#artifacts"><b>IPAS/IPPS Docs</b></a>
     </li>
     <% if current_user.coaching_type != 'student'%>
         <li class="nav-item">
-          <a class="nav-link" id="oasis-tab" data-bs-toggle="tab" href="#oasis" role="tab" aria-controls="oasis" aria-selected="false"><b>OASIS Reports</b></a>
+          <a class="nav-link" id="oasis-tab" data-bs-toggle="tab" href="#oasis"><b>OASIS Reports</b></a>
         </li>
-    <% end %>
-
-    <% if (hf_advisor(current_user) == true) %>
-        <li class="nav-item">
-          <a class="nav-link" id="sensitive-tab" data-bs-toggle="tab" href="#sensitive" role="tab" aria-controls="sensitive" aria-selected="false"><b>Sensitive Data</b></a>
-        </li>
-
     <% end %>
   </ul>
 
   <div class="tab-content" style="height: 50%;">
-    <div class="tab-pane fade in active" id="appointments" role="tabpanel" aria-labelledby="appointments-tab">
+    <div class="tab-pane fade" id="appointments">
 
         <div class="container-fluid">
             <div class="row">
@@ -79,7 +70,7 @@
 
     </div>
 
-    <div class="tab-pane" id="meetings" role="tabpanel" aria-labelledby="meetings-tab">
+    <div class="tab-pane active" id="meetings">
       <div class="table-controls">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMeetingModal" id="newMeetingButton">Create New Appointment</button>
         <%= link_to("<span style='font-size:16px'><i>Clinical Phase Dataset (>= Med20)</i></span>".html_safe,
@@ -93,15 +84,15 @@
       <%= render partial: "meetings_table" %>
     </div>
 
-    <div class="tab-pane fade" id="artifacts" role="tabpanel" aria-labelledby="artifacts-tab">
+    <div class="tab-pane fade" id="artifacts">
         <%= render partial: "detail_artifacts", locals: {artifacts: @artifacts} %>
     </div>
 
-    <div class="tab-pane fade" id="oasis" role="tabpanel" aria-labelledby="oasis-tab">
+    <div class="tab-pane fade" id="oasis">
         <%= render partial: "oasis_reports"  %>
     </div>
 
-    <div class="tab-pane fade" id="sensitive" role="tabpanel" aria-labelledby="sensitive-tab">
+    <div class="tab-pane fade" id="sensitive">
       <div class="row">
         <div class="column">
           <div class="card">
@@ -110,6 +101,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
