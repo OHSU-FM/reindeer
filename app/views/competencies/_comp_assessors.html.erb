@@ -8,6 +8,7 @@
             <th style="text-align:center"># of Entrustables Achieved<br />(Level 3)</th>
             <th style="text-align:center">Goal # of Entrustables<br />by Assessors </th>
             <th style="text-align:center"># of Entrustables Remaining</th>
+            
         </tr>
 
          <!-- % epa_level0 = hf_epa_level(@comp_hash0, i.to_s, "0") %>  -->
@@ -49,7 +50,7 @@
 
                   <td width="30%">
                       <span>
-                        <div id="progress-<%= k %>" class = "comp-progress" comp-data-amount = "<%= comp_ave %>" >
+                        <div id="progress-<%= k %>" class = "start-progess comp-progress" comp-data-amount = "<%= comp_ave %>" >
                               <div id="competency-<%= k %>" class="comp-amount" style="width: <%= 100-comp_ave %>%"> </div>
                         </div>
                       </span>

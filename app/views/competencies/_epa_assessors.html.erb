@@ -37,13 +37,25 @@
                 <% else %>
                     <td style="text-align:center"><font color="Orange"><b><%= rem %></b></font></td>
                 <% end %>
+                <% comp_ave = ((v/assessors[k].to_f)*100).round(0) %>
+                <% comp_ave = comp_ave > 100? 100 : comp_ave %>
+
+                <td width="30%">
+                    <span>
+                      <div id="progress-<%= k %>" class = "start-progess comp-progress" comp-data-amount = "<%= comp_ave %>" >
+                            <div id="competency-<%= k %>" class="comp-amount" style="width: <%= 100-comp_ave %>%"> </div>
+                      </div>
+                    </span>
+                </td>
             </tr>
          <% end %>
 
      </table>
      <% if !@epas.empty? %>
-       <br />
-         <div id="data-visualization-EPA<%= i %>" style="width: 1200px; height: 400px; margin: 0 auto"></div>
-       <br />
+       <div class="card">
+         <div class="card-body">
+             <div id="data-visualization-EPA<%= i %>" style="width: 1200px; height: 400px; margin: 0 auto"></div>
+         </div>
+        </div>
       <%  end %>
 </div>
