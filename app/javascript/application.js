@@ -2,3 +2,4 @@
 // import 'popper'
 // import 'boostrap'
 // import "@fortawesome/fontawesome-free"
+import * as bootstrap from "bootstrap"
