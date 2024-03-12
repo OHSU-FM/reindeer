@@ -1,20 +1,15 @@
 <div class="detail-header">
   <div class="detail-section">
 
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-
-          <div class="panel-heading active" role="tab" id="headingOne">
-            <h4 class="panel-title">
-              <br />
-              <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+    <div class="accordion" id="accordionParent">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                 <h5><font color="#4c0946">Primary Reason for Appointment (check all that apply): </font></h5>
-              </a>
-            </h4>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-              <div>
+              </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+              <div class="accordion-body">
                 <% if meeting.advisor_type.nil?  %>
                       <% meeting.advisor_type = hf_get_advisor_type(meeting.advisor_id) %>
                 <% end %>
@@ -46,124 +41,119 @@
               </div>
             </div>
           </div>
+    </div>
+
+    <% if meeting.advisor_type != 'Diversity Navigator'  %>
+      <div class="accordion" id="accordionParentFour">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+               <h5><font color="#4c0946"><i>Study Resources (check all that apply): </i></font></h5>          </button>
+          </h2>
+          <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionParentFour">
+            <div class="accordion-body">
+              <%= collection_check_boxes(:meeting, :study_resources, hf_academic_study_resources_for_select, :first, :first, checked: meeting.study_resources) do |b| %>
+                <label>
+                  <%= b.check_box(checked: true, class: 'MyCheckBoxStudyResources') %>
+                  <b> <%= b.text %> </b>
+                </label> <br />
+             <% end %>
+            <%= text_field_tag :study_resources_other, meeting.study_resources_other, id: 'study_resources_other' %>
+          </div>
+            </div>
+          </div>
         </div>
+      </div>
+     <% end %>
 
-     <% if meeting.advisor_type != 'Diversity Navigator'  %>
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingFour">
-              <h4 class="panel-title">
-                <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                  <h5><font color="#4c0946"><i>Study Resources (check all that apply): </i></font></h5>
-                </a>
-              </h4>
-            </div>
-            <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
-              <div class="panel-body">
-                  <%= collection_check_boxes(:meeting, :study_resources, hf_academic_study_resources_for_select, :first, :first, checked: meeting.study_resources) do |b| %>
-                    <label>
-                      <%= b.check_box(checked: true, class: 'MyCheckBoxStudyResources') %>
-                      <b> <%= b.text %> </b>
-                    </label> <br />
-                 <% end %>
-                <%= text_field_tag :study_resources_other, meeting.study_resources_other, id: 'study_resources_other' %>
-              </div>
-            </div>
-          </div>
-      <% end %>
+     <div class="accordion" id="accordionParentTwo">
+       <div class="accordion-item">
+         <h2 class="accordion-header">
+           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+             <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Advisor Discussed (check all that apply): </font></h5>
+           </button>
+         </h2>
+         <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionParentTwo">
+           <div class="accordion-body">
+             <% if meeting.advisor_type == 'Career' %>
+               <% advisor_subjects = hf_career_advisor_discussed_for_select %>
+             <% elsif meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support'%>
+               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
+             <% elsif meeting.advisor_type == "Wellness" %>
+                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
+             <% elsif meeting.advisor_type == "Diversity Navigator" %>
+               <% advisor_subjects = hf_diversity_navigator_discussed_for_select %>
+             <% elsif meeting.advisor_type == "Assist Dean" %>
+               <% advisor_subjects = hf_assist_dean_for_select %>
+             <% end %>
 
-        <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="headingTwo">
-            <h4 class="panel-title">
-              <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Advisor Discussed (check all that apply): </font></h5>
-              </a>
-            </h4>
-          </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-            <div class="panel-body">
-              <div>
-                <% if meeting.advisor_type == 'Career' %>
-                  <% advisor_subjects = hf_career_advisor_discussed_for_select %>
-                <% elsif meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support'%>
-                  <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
-                <% elsif meeting.advisor_type == "Wellness" %>
-                    <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
-                <% elsif meeting.advisor_type == "Diversity Navigator" %>
-                  <% advisor_subjects = hf_diversity_navigator_discussed_for_select %>
-                <% elsif meeting.advisor_type == "Assist Dean" %>
-                  <% advisor_subjects = hf_assist_dean_for_select %>
+             <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
+               <label>
+                 <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
+                 <b> <%= b.text %> </b>
+               </label> <br />
+            <% end %>
+            <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support' %>
+               <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
+            <% elsif meeting.advisor_type == "Career" %>
+               <%= text_field_tag :career_discussed_other, meeting.career_discussed_other, id: 'career_discussed_other' %>
+            <% else %>
+               <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
+            <% end %>
+           </div>
+        </div>
+      </div>
+    </div>
+  <% if meeting.advisor_type != 'Diversity Navigator'  %>
+    <div class="accordion" id="accordionParentThree">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category.to_s %></font></h5>
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionParentThree">
+          <div class="accordion-body">
+            <div>
+                <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
+                    <% advisor_outcomes = hf_meeting_ipas_for_select %>
+                <% elsif meeting.advisor_type == 'Career'  %>
+                    <% advisor_outcomes = hf_meeting_ipps_for_select %>
+                <% elsif meeting.advisor_type == 'Wellness'  %>
+                    <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
+                <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                    <% advisor_outcomes = hf_diversity_navigator_for_select%>
+                <% elsif meeting.advisor_type == 'Assist Dean'  %>
+                    <% advisor_outcomes = hf_assist_dean_for_select%>
+                <% else %>
+                    <% advisor_outcomes = hf_meeting_ipas_for_select %>
                 <% end %>
 
-                <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
+                <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
                   <label>
-                    <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
+                    <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
                     <b> <%= b.text %> </b>
-                  </label> <br />
+                  </label><br />
                <% end %>
-               <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support' %>
-                  <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
-               <% elsif meeting.advisor_type == "Career" %>
-                  <%= text_field_tag :career_discussed_other, meeting.career_discussed_other, id: 'career_discussed_other' %>
-               <% else %>
-                  <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
-               <% end %>
-              </div>
             </div>
+             <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
+                <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other' %>
+              <% elsif meeting.advisor_type == "Career" %>
+                  <%= text_field_tag :career_outcomes_other, meeting.career_outcomes_other, id: 'career_outcomes_other' %>
+              <% else %>
+                <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other'  %>
+              <% end %>
           </div>
         </div>
-
-     <% if meeting.advisor_type != 'Diversity Navigator'  %>
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingThree">
-              <h4 class="panel-title">
-                <a class="collapsed" role="button" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    <h5><font color="#4c0946"><%= meeting.advisor_type.to_s %> Outcomes/Recommendation (check all that apply): <%= meeting.advice_category.to_s %></font></h5>
-                </a>
-              </h4>
-            </div>
-            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-              <div class="panel-body">
-                <div>
-                    <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
-                        <% advisor_outcomes = hf_meeting_ipas_for_select %>
-                    <% elsif meeting.advisor_type == 'Career'  %>
-                        <% advisor_outcomes = hf_meeting_ipps_for_select %>
-                    <% elsif meeting.advisor_type == 'Wellness'  %>
-                        <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
-                    <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
-                        <% advisor_outcomes = hf_diversity_navigator_for_select%>
-                    <% elsif meeting.advisor_type == 'Assist Dean'  %>
-                        <% advisor_outcomes = hf_assist_dean_for_select%>
-                    <% else %>
-                        <% advisor_outcomes = hf_meeting_ipas_for_select %>
-                    <% end %>
-
-                    <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
-                      <label>
-                        <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
-                        <b> <%= b.text %> </b>
-                      </label><br />
-                   <% end %>
-                </div>
-                 <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
-                    <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other' %>
-                  <% elsif meeting.advisor_type == "Career" %>
-                      <%= text_field_tag :career_outcomes_other, meeting.career_outcomes_other, id: 'career_outcomes_other' %>
-                  <% else %>
-                    <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other'  %>
-                  <% end %>
-              </div>
-            </div>
-          </div>
-       <% end %>
-
       </div>
+    </div>
+  <% end %>
 
     <button type="button" class="close btn btn-danger" aria-label="Close" id="hide-detail">
       <span aria-hidden="true"><b>Close Form</b></span>
     </button>
   </div>
-</div>
+
 
 <div class="detail-section">
   <h4><font color="#4c0946">Advisor Meeting Documentation</font></h4>

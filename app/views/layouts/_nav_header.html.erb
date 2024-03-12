@@ -129,16 +129,16 @@
             <% end %>
 
             <% if current_user.present? %>
-              <div class="btn-group">
-                <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">
-                  <%= link_to "<small>User: </small>#{current_user.username}".html_safe, current_user %>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= "<small>User: </small>#{current_user.username}".html_safe %>
                 </button>
-                <div class="nav-item dropdown-menu">
+                <ul class="dropdown-menu">
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to '<i class="fa fa-sign-out"></i> Log Out'.html_safe, main_app.destroy_user_session_path, class: "dropdown-item" %>
-                </div>
+                </ul>
               </div>
             <% end %>
           </ul>

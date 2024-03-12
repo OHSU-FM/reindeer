@@ -4,7 +4,13 @@
 
 
 .link-to-text-color {
-  background-color: #dbcfe7;
+  color: purple;
+  background-color: inherit;
+  font-weight: bold;
+}
+
+.blue-text {
+  color: #2222c1;
   font-weight: bold;
 }
 .table1 {
@@ -24,7 +30,7 @@ body {
   background-size: 100% 100%;
   background-image: image-url('blue-and-silver-stethoscope-48603.jpg');
 }
-// 
+//
 // @media (min-width: 576px) {
 //     .card-columns {
 //         column-count: 2;
