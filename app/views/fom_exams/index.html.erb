@@ -1,7 +1,7 @@
 <br />
 <div class="container">
-  <h5> FoM Exams Index </h5>
-  <%= link_to 'Send out Alerts', send_alerts_fom_exams_path(), method: 'post', target: :_blank %>
+  <h5> Update FoM Exam Data File </h5>
+  <%= button_to 'Send out Alerts', send_alerts_fom_exams_path(), method: 'post', class: 'btn btn-primary', target: :_blank %>
 
     <table class="table table-condensed table-hover spreadsheet-body" style="background-color:#FEF9F4;">
       <thead>
@@ -23,8 +23,8 @@
                 <% if artifact.documents.attached? %>
                   <% artifact.documents.each do |document| %>
                     <tr>
-                      <td> <%= document.filename %> </td>
-                      <td>
+                      <td style="width: 60%"> <%= document.filename %> </td>
+                      <td style="width: 40%">
                         <%= link_to 'View', url_for(document), target: :_blank %>
                         /
                         <%= link_to 'Download', rails_blob_path(document, disposition: 'attachment') %>

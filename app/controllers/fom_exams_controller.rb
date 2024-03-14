@@ -78,7 +78,6 @@ class FomExamsController < ApplicationController
             user = User.find(id.to_i)
             hello = "Hello " + user.full_name.split(", ").last + ",<br /><br />"
             @body_message = hello + body_message
-            #@FomExamMailer.notify_student(user_mailer, @email_message).deliver_later
             ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver
           end
         end

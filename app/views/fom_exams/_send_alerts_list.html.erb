@@ -1,82 +1,75 @@
-<div class="container bg-light">
-  <br />
-  <div class="form-group">
-  <%= label_tag :Cohort, "Cohort", class: "control-label col-sm-2"  %>
-  <%= text_field_tag 'uniq_cohort', '', value: params[:uniq_cohort], disabled: true %>
-  </div>
-  <div class="form-group">
-    <%= label_tag :from, 'From', class: "control-label col-sm-2" %>
-    <%= text_field_tag 'from', '', size: 50, value: 'fruhwirt@ohsu.edu' %> <br />
-  </div>
-  <div class="form-group">
-    <%= label_tag :subject, 'Subject', class: "control-label col-sm-2" %>
-    <%= text_field_tag 'subject', nil, size: 75, value: "REDEI Grades" %>
-  </div>
-  <div class="form-group">
-    <%= label_tag :body_message, 'Body Message', class: "control-label col-sm-2" %>
-    <textarea id="body_message" name="body_message" rows="15" cols="100">
 
-      Your Fundamentals (FUND) week 4 scores are viewable on REDEI.  <br /><br />
+      <div class="card"
+        <div class="card-body">
+          <form>
+            <label for="Cohort">Cohort:</label><br>
+            <input type="text" id="uniq_cohort" name="cohort" value= <%= params[:uniq_cohort] %> disabled><br>
+            <label for="from">From:</label><br>
+            <input type="text" id="from" name="from" ,style: 'background-color: #D8A7B1', value="fruhwirt@ohsu.edu"><br>
+            <label for="subject">Subject:</label><br>
+            <input type="text" id="subject" name="subject" value="REDEI Grades"><br>
+            <label for="body_message">Body Message:</label><br>
+            <textarea id="body_message" name="body_message" rows="15" cols="150"><br>
 
-      The Teaching Services Office (TSO) will release the exam in <b>Examsoft</b>  for your reference. To access Examsoft go to https://ei.examsoft.com/GKWeb/login/ohsumed and log in. <br /><br />
+              Your Fundamentals (FUND) week 4 scores are viewable on REDEI.  <br /><br />
 
-      The Anatomy faculty will release the exam in <b>AnatomyHive</b>  for your reference. To access AnatomyHive go to https://app.anatomyhive.com/signin  and log in. <br /><br />
+              The Teaching Services Office (TSO) will release the exam in <b>Examsoft</b>  for your reference. To access Examsoft go to https://ei.examsoft.com/GKWeb/login/ohsumed and log in. <br /><br />
 
-      The Simulation Center will release your video and checklist results in <b>simcapture</b>  for your reference. To access simcapture go to https://ohsu-portland.simcapture.com/ . Log in using your OHSU credentials, go to view results, and click on the CSA/OSCE you wish to view. <br /><br />
+              The Anatomy faculty will release the exam in <b>AnatomyHive</b>  for your reference. To access AnatomyHive go to https://app.anatomyhive.com/signin  and log in. <br /><br />
 
-      If you have any questions, please contact me. <br /><br />
+              The Simulation Center will release your video and checklist results in <b>simcapture</b>  for your reference. To access simcapture go to https://ohsu-portland.simcapture.com/ . Log in using your OHSU credentials, go to view results, and click on the CSA/OSCE you wish to view. <br /><br />
 
-      Thank you,<br /><br />
-      Will Fruhwirth, Manager UME Assessments (fruhwirt@ohsu.edu)<br /><br />
+              If you have any questions, please contact me. <br /><br />
 
-      **If you would like to <b>unsubscribe</b> from this email alert, please email Patrick Chung directly. Thank you.** <br /> <br />
+              Thank you,<br /><br />
+              Will Fruhwirth, Manager UME Assessments (fruhwirt@ohsu.edu)<br /><br />
+
+              **If you would like to <b>unsubscribe</b> from this email alert, please email Patrick Chung directly. Thank you.** <br /> <br />
 
 
 
-    </textarea>
-  </div>
+            </textarea><br />
+            <%= check_box_tag "checkAll", "checkAll", false %> <b>Check All</b><br/>
+            <%= button_tag "Send Alerts", id: "SendAlerts", class: "btn btn-primary" %>
+          </form>
 
-  <% if !user_ids.nil? %>
-        <%= check_box_tag "checkAll", "checkAll", false %> Check All
-        <%= button_tag "Send Alerts", id: "SendAlerts", class: "btn btn-primary" %>
+          <% if !user_ids.nil? %>
+                  <table class="table table-hover table-striped table-info" >
+                    <% user_ids.each do |user_id| %>
+                      <tr>
+                        <% user = User.where(id: user_id).select(:id, :full_name, :email).first %>
+                        <% id = user.id %>
+                        <td><%= user.full_name %> </td>
+                        <td><%= user.email %> </td>
+                        <td><%= label_tag do %>
+                            <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
+                            Send Alert
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
 
-          <table class="table table-hover table-striped table-info" >
-            <% user_ids.each do |user_id| %>
-              <tr>
-                <% user = User.where(id: user_id).select(:id, :full_name, :email).first %>
-                <% id = user.id %>
-                <td><%= user.full_name %> </td>
-                <td><%= user.email %> </td>
-                <td><%= label_tag do %>
-                    <%= check_box_tag "checkbox", "#{user.id}", false, id: "checkbox#{user.id}" %>
-                    Send Alert
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
+                    <tr>
+                      <td><b><%= @tso_emails.first["TSO1"]["name"] %></b></td>
+                      <td><%= @tso_emails.first["TSO1"]["email"] %> </td>
+                      <td></td>
+                    </tr>
 
-            <tr>
-              <td><b><%= @tso_emails.first["TSO1"]["name"] %></b></td>
-              <td><%= @tso_emails.first["TSO1"]["email"] %> </td>
-              <td></td>
-            </tr>
+                    <tr><i>
+                      <td><b><%= @tso_emails.second["TSO2"]["name"] %></b></td>
+                      <td><%= @tso_emails.second["TSO2"]["email"] %> </td>
+                      <td></td>
+                    </tr>
 
-            <tr><i>
-              <td><b><%= @tso_emails.second["TSO2"]["name"] %></b></td>
-              <td><%= @tso_emails.second["TSO2"]["email"] %> </td>
-              <td></td>
-            </tr>
-
-            <% cohort_ids.each do |id| %>
-              <tr>
-                <% user = User.where(id: id).select(:id, :full_name, :email).first %>
-                <td><%= user.full_name %> </td>
-                <td><%= user.email %> </td>
-                <td></td>
-              </tr>
-            <% end %>
-          </table>
-
-
-  <% end %>
-</div>
+                    <% cohort_ids.each do |id| %>
+                      <tr>
+                        <% user = User.where(id: id).select(:id, :full_name, :email).first %>
+                        <td><%= user.full_name %> </td>
+                        <td><%= user.email %> </td>
+                        <td></td>
+                      </tr>
+                    <% end %>
+                  </table>
+          <% end %>
+        </div>
+      </div>
