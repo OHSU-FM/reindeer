@@ -24,13 +24,26 @@
             <td><%= cd["submit_date"] %></td>
             <td><%= cd["evaluator"] %></td>
             <td>
-              <a href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
-                  title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a></span>
+              <% final_grade = hf_final_grade2(cd['final_grade']) %>
+              <% if final_grade == 'Pass' %>
+                <a class="btn btn-info" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
+                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
+              <% elsif final_grade == 'NP' %>
+                <a class="btn btn-danger" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
+                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
+              <% else %>
+                <a class="btn btn-info" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
+                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
+              <% end %>
 
             </td>
             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
             <td><%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ") %></td>
-            <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+            <% if final_grade == 'NP' %>
+               <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+            <% else %>
+               <td><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>            
+            <% end %>
 
           </tr>
       <% end %>
