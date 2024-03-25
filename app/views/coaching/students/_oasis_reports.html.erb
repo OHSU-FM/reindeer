@@ -2,7 +2,7 @@
     <br />
     <div class="form-row">
       <% if current_user.dean_or_higher? and ['chungp', 'bumstedt', 'chomina', 'cantone', 'schneibe'].include? current_user.username %>
-            <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
+            <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true, id: 'advisor_report_form_id') do %>
                 &nbsp; &nbsp; &nbsp; &nbsp;<%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp; | &nbsp;
                 <%= label_tag :Advisor %>
                 <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
@@ -33,7 +33,7 @@
       <% elsif hf_advisor(current_user) == true %>
              <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
                 &nbsp; &nbsp; &nbsp; &nbsp;
-                <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp; | &nbsp; 
+                <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true %> &nbsp; | &nbsp;
                      <label for="start">
                           Meeting Start Date:
                       </label>

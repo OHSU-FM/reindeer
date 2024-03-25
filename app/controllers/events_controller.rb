@@ -191,24 +191,26 @@ class EventsController < ApplicationController
     @appointments.each do |appointment|
       data = appointment.split("|")
       start_date = hf_format_datetime(data[0])
-      localTime = start_date.to_datetime.localtime
-      if localTime.to_s.include? "-0800"
-        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
-        start_date2 = start_date.to_datetime + 8.hours
-      else
-        #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
-        start_date2 = start_date.to_datetime + 7.hours
-      end
+      #localTime = start_date.to_datetime.localtime
+      # if localTime.to_s.include? "-0800"
+      #   #start_date2 = start_date.gsub(" AM", ":00.000000000 -0800").gsub(" PM", ":00.000000000 -0800")
+      #   start_date2 = start_date.to_datetime + 8.hours
+      # else
+      #   #start_date2 = start_date.gsub(" AM", ":00.000000000 -0700").gsub(" PM", ":00.000000000 -0700")
+      #   start_date2 = start_date.to_datetime + 7.hours
+      # end
       end_date = hf_format_datetime(data[1])
       advisor_id = data[2].to_i
       advisor = Advisor.find(advisor_id)
       title = advisor.advisor_type + ' Advisor'
       if data[3] == 'Step1'
-        description = 'Academic: Step 1 Advisring' + " - " + advisor.name
+        description = 'Academic: Step 1 Advising' + " - " + advisor.name
       elsif data[3] == 'Remed'
         description = 'Academic: Remediation Support' + " - " + advisor.name
+      elsif data[4].include? "Step Delay"
+        description = data[4]
       else
-        description = data[3] + " - " + advisor.name
+        description = data[3] + " Advisor - " + advisor.name
       end
 
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
@@ -221,7 +223,7 @@ class EventsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to action: "index", notice: notice_msg}
+      format.html { redirect_to action: "index", notice: notice_msg, status: 200}
       format.json
     end
   end
@@ -296,6 +298,23 @@ class EventsController < ApplicationController
       notice_msg = 'Apppointments were successfully deleted!'
     end
     flash.alert = notice_msg
+  end
+
+  def get_events_by_advisor
+
+    if params[:advisor_type] == 'Assist Dean'
+      @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and (description like 'Assist Dean%' or description like 'Step Delay%')",
+        DateTime.now + 17.hours ).order(:start_date)
+    else
+      @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
+        DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
+    end
+
+    respond_to do |format|
+      format.js { render partial: 'coaching/meetings/get_events', status: 200 }
+      format.html
+    end
+
   end
 
   private

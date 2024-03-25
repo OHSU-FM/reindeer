@@ -16,10 +16,10 @@
           <td> <%= event.id %> </td>
           <td> <%= event.title %>  </td>
           <td> <%= event.description %>  </td>
-          <td> <%= event.start_date.strftime("%m/%d/%Y at %I:%M %p - %A") %>  </td>
-          <td> <%= event.end_date.strftime("%m/%d/%Y at %I:%M %p - %A") %>  </td>
-          <td> <%= event.created_at %>  </td>
-          <td> <%= event.updated_at %>  </td>
+          <td> <%= event.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %>  </td>
+          <td> <%= event.end_date.strftime("%m/%d/%Y %I:%M %p - %A") %>  </td>
+          <td> <%= event.created_at.strftime("%m/%d/%Y %I:%M %p")  %>  </td>
+          <td> <%= event.updated_at.strftime("%m/%d/%Y %I:%M %p") %>  </td>
           <td> <%= event.user_id %>  </td>
           <td> <%= event.advisor_id %>  </td>
           <td><%= label_tag do %>

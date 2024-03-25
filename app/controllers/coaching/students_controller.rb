@@ -145,7 +145,7 @@ module Coaching
         @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name).load_async
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
 
-        @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
+        #@events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
         # @events = Event.where("start_date - INTERVAL '7 hour' > ? and start_date-INTERVAL '7 hour' <= ? and user_id is NULL and advisor_id is NOT NULL",
         #   DateTime.now + 24.hours, DateTime.now + 8.days).order(:start_date)
 

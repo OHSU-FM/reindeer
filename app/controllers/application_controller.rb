@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken do |exception|
     flash[:alert] = "Can't verify CSRF token authenticity"
     respond_to do |format|
-      format.html { render 'errors/internal_server_error - Please try to re-login again!', status: 500 }
+      format.html { render 'errors/internal_server_error_token', status: 500 }
       format.js { render json: { message: 'error/Internal Server Error!' }, status: 500 }
     end
   end

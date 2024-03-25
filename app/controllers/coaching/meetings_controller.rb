@@ -45,6 +45,7 @@ module Coaching
       @meeting.nbme_form  = nbme_form_json
       @meeting.uworld_info = uworld_info_json
       @meeting.qbank_info = qbank_info_json
+      @meeting.event_id = params[:event_id]  #added 3/21/2024 after using Ajax call to display all appointments
 
       # to check event/appt is being TAKEN
       #if Event.find(@meeting.event_id).user_id.nil?

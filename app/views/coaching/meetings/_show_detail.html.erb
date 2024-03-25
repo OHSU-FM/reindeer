@@ -33,7 +33,7 @@
                 <% end %>
 
                   <%= collection_check_boxes(:meeting, :subject, select_options, :first, :first, checked: meeting.subject) do |b| %>
-                    <label>
+                    <label for="MyCheckBox">
                       <%= b.check_box(checked: true, class: 'MyCheckBox') %>
                       <b> <%= b.text %> </b>
                     </label><br />
@@ -53,7 +53,7 @@
           <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionParentFour">
             <div class="accordion-body">
               <%= collection_check_boxes(:meeting, :study_resources, hf_academic_study_resources_for_select, :first, :first, checked: meeting.study_resources) do |b| %>
-                <label>
+                <label for="MyCheckBoxStudyResources">
                   <%= b.check_box(checked: true, class: 'MyCheckBoxStudyResources') %>
                   <b> <%= b.text %> </b>
                 </label> <br />
@@ -88,7 +88,7 @@
              <% end %>
 
              <%= collection_check_boxes(:meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: meeting.advisor_discussed) do |b| %>
-               <label>
+               <label for="MyCheckBoxAdvisorDiscussed">
                  <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorDiscussed') %>
                  <b> <%= b.text %> </b>
                </label> <br />
@@ -130,7 +130,7 @@
                 <% end %>
 
                 <%= collection_check_boxes(:meeting, :advisor_outcomes, advisor_outcomes, :first, :first, checked: meeting.advisor_outcomes) do |b| %>
-                  <label>
+                  <label for="MyCheckBoxAdvisorOutcomes">
                     <%= b.check_box(checked: true, class: 'MyCheckBoxAdvisorOutcomes') %>
                     <b> <%= b.text %> </b>
                   </label><br />

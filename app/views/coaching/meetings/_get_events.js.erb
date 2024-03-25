@@ -1,1 +1,14 @@
+
+$('#All-Events').html("<%= j render partial: 'coaching/students/all_events', locals: { events: @events } %>");
 console.log ("inside get_events!");
+
+var tr_length = $('#EventsTable tbody tr:visible').length;
+console.log("tr_length: " + tr_length);
+if (tr_length == 0) {
+  $("#meeting-submit").prop("disabled", true);
+  alert('Please select another advisor that has appointments!!');
+}
+
+$(document).ajaxComplete(function(){
+  console.log("Inside get_events: AjaxComplete is called!");
+});

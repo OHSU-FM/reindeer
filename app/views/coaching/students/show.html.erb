@@ -43,8 +43,8 @@
             <div class="col-md-8">
                 <% if current_user.dean_or_higher? %>
                   <br />
-                  <%= nav_link_to "Appointments", events_path, target: '_blank' %>
-                  <%= nav_link_to "Advisors", advisors_path, target: '_blank' %>
+                  <%= link_to "Appointments", events_path, class: "button btn btn-info",  target: '_blank' %>
+                  <%= link_to "Advisors", advisors_path, class: "button btn btn-primary", target: '_blank' %>
                   <% if @advisor_type == "Wellness" %>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMeetingModal" id="newMeetingButton">Create Retro-Appointment</button>
                   <% end %>

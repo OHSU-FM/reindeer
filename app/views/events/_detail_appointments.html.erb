@@ -42,7 +42,7 @@
 
           <% if (@time_slot.to_i == 15) and ((advisor_name.include? 'Cantone') or (advisor_name.include? 'Schneider')) %>
             <td><%= label_tag do %>
-                <%= check_box_tag "checkbox", "Step Delay Meetings - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
+                <%= check_box_tag "checkbox", "#{temp_start_date}|#{temp_end_date}|#{advisor_id}|#{@advisor_type}|Step Delay Meetings - #{advisor_name}", true, id: "checkbox#{i}" %>
                 Save
               <% end %>
             </td>

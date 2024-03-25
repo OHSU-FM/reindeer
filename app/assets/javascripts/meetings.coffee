@@ -120,11 +120,45 @@ $(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject]
     # do what you need here
     $("#meeting-submit").prop("disabled", true)
   return
+
+check_events_deans = () ->
+  $('#EventsTable td:nth-child(2)').each ->
+    #console.log ("this: "  + $(this).text())
+    if $(this).text().includes("Cantone")
+      if $(this).text().includes("Step Delay")
+        $(this).parent('tr').css 'background-color', '#E37383'
+      else
+        $(this).parent('tr').css 'background-color', '#90EE90'
+    else if $(this).text().includes("Schneider")
+      if $(this).text().includes("Step Delay")
+        $(this).parent('tr').css 'background-color', '#E0b0FF'
+      else
+        $(this).parent('tr').css 'background-color', '#B7E9F7'
+    return
 #==================================================================================================================
 modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+
+  $('#coaching_meeting_advisor_id').change ->
+    advisorID = this.value
+    advisorType = $('#coaching_meeting_advisor_type').val()
+    console.log ("advisorID: " + advisorID)
+    $.ajax
+      url: '/events/get_events_by_advisor'
+      type: 'get'
+      data: {advisor_id: advisorID, advisor_type: advisorType}
+      dataType: 'script'
+      success: (data) ->
+        # alert 'Ajax called Success!'
+        return
+      error: (request, error) ->
+        alert 'Request: ' + JSON.stringify(request)
+        return
+    return
+
+
   $('#IndividualAdvisorRpt').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $("#meeting-submit").prop("disabled", true)
 
@@ -223,7 +257,7 @@ $(document).ready ->
   nbsp = '&nbsp'
   $('#coaching_meeting_subjects').empty()
   $.each data, (index) ->
-    $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+    $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
     return
   # $('#study_resources').empty()
   # $.each dataResources, (index) ->
@@ -271,7 +305,7 @@ $(document).ready ->
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
-      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+      $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
   #$('#EventsTable').show()  ## change this on 6/27/2022 to test the datea
@@ -300,29 +334,19 @@ $(document).ready ->
     console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
     console.log("selectedAdvisorText: " + selectedAdvisorText[0])
-    $('#EventsTable td:nth-child(2)').each ->
-      #console.log ("this: "  + $(this).text())
-      if $(this).text().includes("Cantone")
-        if $(this).text().includes("Step Delay")
-          $(this).parent('tr').css 'background-color', '#E37383'
-        else
-          $(this).parent('tr').css 'background-color', '#90EE90'
-      else if $(this).text().includes("Schneider")
-        if $(this).text().includes("Step Delay")
-          $(this).parent('tr').css 'background-color', '#E0b0FF'
-        else
-          $(this).parent('tr').css 'background-color', '#B7E9F7'
-      return
+
 
     rowCount = $("#EventsTable tr").not('thead tr').length;
     console.log('rowCount: ' + rowCount)
 
-    if (rowCount == 0)
-      $("#meeting-submit").prop("disabled", true)
-      alert('No Appointment Found! Please select another advisor that has appointments!!')
-      return
-      #dataset.show()
-      # filter the rows that should be hidden
+    # if (rowCount == 0)
+    #   $("#meeting-submit").prop("disabled", true)
+    #   alert('No Appointment Found! Please select another advisor that has appointments!!')
+    #   return
+
+
+    #dataset.show()
+    # filter the rows that should be hidden
     tr_length = 0
     dataset = $('#EventsTable tbody').find('tr')
     modDate = Date.today()
@@ -337,13 +361,13 @@ $(document).ready ->
 
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == selectedAdvisorText[0])   #'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
         row.show()
-      else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic Advisor')) && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
         # console.log("** colAdvisor[0]: " + colAdvisor[0])
         # console.log("** selectedAdvisorType: " + selectedAdvisorType)
         row.show()
-      else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')) && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic: Step 1')) && (selectedAdvisorType.includes('Step 1')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
-      else if ((colAdvisor[0].includes('Remediation')) && (selectedAdvisorType.includes('Remediation')) && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic: Remediation')) && (selectedAdvisorType.includes('Remediation')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
       else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')) && (colAdvisor[1] == selectedAdvisorText[0]) )
         row.show()
@@ -351,16 +375,16 @@ $(document).ready ->
         row.show()
       else if ((colAdvisor[0].includes('Wellness')) && (selectedAdvisorType.includes('Wellness')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
+
       else
         row.hide()
 
     tr_length = $('#EventsTable tbody tr:visible').length
-      #console.log ("tr_length: " + tr_length)
     console.log("tr_length: " + tr_length)
     if (tr_length == 0)
       $("#meeting-submit").prop("disabled", true)
-      alert('Please select another advisor that has appointments!!')
-      #return false
+      # alert('Please select another advisor that has appointments!!')
+
     else
       #$("#meeting-submit").prop("disabled", false)
     return

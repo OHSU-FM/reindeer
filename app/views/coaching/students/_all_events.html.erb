@@ -1,6 +1,5 @@
 
 <table class="responsive nowrap table table-hover" id="EventsTable" data-url="<%= url_for(format: :json) %>">
-
     <thead>
       <tr>
         <th data-data="id">Id</th>
@@ -12,29 +11,37 @@
       </tr>
     </thead>
   <tbody>
+  <% if !@events.nil? %>
     <% @events.each do |event| %>
-      <tr>
-        <% found = [] %>
-        <% found = Coaching::Meeting.where(event_id: event.id) %>
-        <% if found.empty? %>
-          <td><%= event.id %></td>
-          <td><%= event.description %></td>
-          <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
-          <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p - %A")%></td>
+      <% if event.description.to_s != "" %>
+        <tr class="<%= hf_row_background_color (event.description) %>">
+          <% found = [] %>
+          <% found = Coaching::Meeting.where(event_id: event.id) %>
+          <% if found.empty? %>
+            <td><%= event.id %></td>
+            <td><%= event.description %></td>
+            <td><%= event.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></td>
+            <td><%= event.end_date.strftime("%m/%d/%Y %I:%M %p - %A")%></td>
 
-          <% if event.description.include? "Cantone" or event.description.include? "Schneider" %>
-              <% advisor_type = 'Assist Dean' %>
-          <% else %>
-              <% advisor_type = event.description.split(" - ") %>
-              <% advisor_type = advisor_type[0].gsub(" Advisor", "") %>
+            <% if event.description.include? "Cantone" or event.description.include? "Schneider" %>
+                <% advisor_type = 'Assist Dean' %>
+            <% else %>
+                <% advisor_type = event.description.split(" - ") %>
+                <% if advisor_type[0].include? "Advisor" %>
+                  <% advisor_type = advisor_type[0].gsub(" Advisor", "") %>
+                <% else %>
+                  <% advisor_type = advisor_type[0] %>
+                <% end %>
+            <% end %>
+
+            <td id='advisor-<%= "#{event.id}" %>' data-start-date="<%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %> " data-advisor-<%= "#{event.id}" %> = "<%= event.advisor_id %>"
+                  data-advisor-type="<%= advisor_type %>">
+              <%= label_tag :event_id, "select", style: "color:#338BA8;"  %> &nbsp;
+              <%= radio_button_tag :event_id, "#{event.id}" %></td>
           <% end %>
-
-          <td id='advisor-<%= "#{event.id}" %>' data-start-date="<%= event.start_date.strftime("%m/%d/%Y %I:%M %p") %> " data-advisor-<%= "#{event.id}" %> = "<%= event.advisor_id %>"
-                data-advisor-type="<%= advisor_type %>">
-            <%= f.label :event_id, "select", style: "color:#338BA8;"  %> &nbsp;
-            <%= f.radio_button :event_id, "#{event.id}" %></td>
-        <% end %>
-      </tr>
+        </tr>
+      <% end %>
     <% end %>
+  <% end %>
   </tbody>
 </table>
