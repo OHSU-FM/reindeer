@@ -174,7 +174,7 @@
   <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %>
 </div>
 <% if current_user.admin_or_higher? %>
-  <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-default" %></p>
+  <p><%= link_to "Delete", coaching_meeting_path(meeting), method: :delete, remote: true, class: "btn btn-danger" %></p>
 <% end %>
 
 <div class="detail-section">

@@ -1,5 +1,4 @@
 <% if current_user.coaching_type != 'student' %>
-  <br />
     <div class="card">
       <div class="card-body">
         <%= form_tag(reports_index_path, remote: true, method: "get", id: 'report_form') do %>
@@ -12,7 +11,6 @@
       </div>
     </div>
   <% if !@ranking_data.blank? %>
-    <hr>
       <div class="card">
         <div class="card-header">
           <b>Ranking Report for <%="#{@cohort_title} - Summary Data Includes 5 Components [A Tab Delimited File]" %></b>

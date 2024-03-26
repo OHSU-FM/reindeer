@@ -305,6 +305,15 @@ class EventsController < ApplicationController
     if params[:advisor_type] == 'Assist Dean'
       @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and (description like 'Assist Dean%' or description like 'Step Delay%')",
         DateTime.now + 17.hours ).order(:start_date)
+    elsif params[:advisor_type].include? "Academic"
+        if params[:advisor_type].include? "Academic: Step 1" or params[:advisor_type].include? "Academic: Remediation"
+          @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
+            DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
+        else
+          @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
+            DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]} Advisor%" ).order(:start_date)
+        end
+
     else
       @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
         DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)

@@ -141,6 +141,10 @@ modalHtml = "" #this is varibale, in which we will save modal html before open
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
 
+  $('#coaching_meeting_advisor_type').change ->
+    $("#All-Events").empty();
+    return
+
   $('#coaching_meeting_advisor_id').change ->
     advisorID = this.value
     advisorType = $('#coaching_meeting_advisor_type').val()
@@ -171,7 +175,7 @@ $(document).ready ->
         row.show()
     return
   #$('#EventsTable').DataTable()
-  #-- Disabled the code below as it ciauses subtle errors on 9/9/2022
+  #-- Disabled the code below as it causes subtle errors on 9/9/2022
   # it supposed to prevent duplicate appointment
 
   $('#meeting-submit').click (event) ->
