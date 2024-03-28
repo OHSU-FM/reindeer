@@ -6,9 +6,7 @@ module Coaching
     respond_to :html, :json
 
     def create
-
       @meeting = Meeting.create meeting_params
-
       if params[:time_slot].present? and params[:startDate1].present?
         #@meeting.advisor_discussed.delete_if(&:blank?)    # 11/16/2021 - comment these 2 lines f code, hopefully, it will eliminate the error of Meeting serialization
         #@meeting.advisor_outcomes.delete_if(&:blank?)
@@ -20,7 +18,6 @@ module Coaching
         event = Event.create(title: @meeting.advisor_type, description: @meeting.advisor_type + " - " + current_user.full_name,
           start_date: start_date, end_date: end_date, user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
         #@meeting.event_id = event.id
-
       else
 
         if @meeting.advisor_type == 'Assist Dean'
@@ -45,56 +42,37 @@ module Coaching
       @meeting.uworld_info = uworld_info_json
       @meeting.qbank_info = qbank_info_json
 
-      @meeting.event_id = params[:event_id]  #added 3/21/2024 after using Ajax call to display all appointments
-
-      # to check event/appt is being TAKEN
-      #if Event.find(@meeting.event_id).user_id.nil?
+      @meeting.event_id = params[:event_id]
 
       if @meeting.event_id.nil? and !event.nil?
         @meeting.event_id = event.id
-      else
-        @meeting.event_id = params[:event_id]
+      # else
+      #   @meeting.event_id = params[:event_id]
       end
+      respond_to do |format|
+          if @meeting.save
+           flash[:alert] = 'Appointment/Meeting saved successfully!'
+            # student is createing a meeting/appointment record
+            Event.find(@meeting.event_id).update(user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
+            if send_email_flag["OASIS"]["send_email"] ==  true
+              event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
 
-
-          respond_to do |format|
-
-
-              if @meeting.save
-               flash[:alert] = 'Appointment/Meeting saved successfully!'
-                # student is createing a meeting/appointment record
-
-                Event.find(@meeting.event_id).update(user_id: @meeting.user_id, advisor_id: @meeting.advisor_id)
-                if send_email_flag["OASIS"]["send_email"] ==  true
-                  event = Event.where("id = ? and start_date >= ?", @meeting.event_id, Date.today)
-
-                  # send email to student & advisor if advisor_notes is nil otherwise, it is a retro-appointment
-                  if (!event.empty? and @meeting.advisor_notes.blank?) or @meeting.advisor_type == 'Assist Dean'
-                    EventMailer.notify_student(@meeting, "Create").deliver_later
-                  end
-                end
-                format.js { render action: 'show', status: :created }
-              else
-                format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
+              # send email to student & advisor if advisor_notes is nil otherwise, it is a retro-appointment
+              if (!event.empty? and @meeting.advisor_notes.blank?) or @meeting.advisor_type == 'Assist Dean'
+                EventMailer.notify_student(@meeting, "Create").deliver_later
               end
+            end
+            format.js { render action: 'show', status: :created }
+          else
+            format.js { render json: { error: @meeting.errors }, status: :unprocessable_entity }
           end
-        # else
-        #   byebug
-        #
-        #   respond_to do |format|
-        #        flash[:alert] = 'Appointment is being taken, please select another one!'
-        #        format.js { render action: 'show', status: :created }
-        #   end
-        # end
-
+      end
     end
-
 
     def show_detail
       @meeting = Meeting.find params[:id]
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
-
       end
     end
 

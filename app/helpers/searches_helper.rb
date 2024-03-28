@@ -118,23 +118,28 @@ module SearchesHelper
   end
 
   def hf_releaseDate(in_user)
-    @badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
 
-    if in_user.permission_group_id == 13
-      return @badge_release_date["Med21Badge"]["releaseDate"]
-    elsif in_user.permission_group_id == 16
-      return @badge_release_date["Med22Badge"]["releaseDate"]
-    elsif in_user.permission_group_id == 17
-      return @badge_release_date["Med23Badge"]["releaseDate"]
-    elsif in_user.permission_group_id == 18
-      return @badge_release_date["Med24Badge"]["releaseDate"]
-    elsif in_user.permission_group_id == 19
-      return @badge_release_date["Med25Badge"]["releaseDate"]
-    elsif in_user.permission_group_id == 20
-      return @badge_release_date["Med26Badge"]["releaseDate"]
+    badgingDates = BadgingDate.find_by(permission_group_id: in_user.permission_group_id)
+    if !badgingDates.nil?
+      return badgingDates.release_date
     else
-
-   end
+      return nil
+    end
+    #@badge_release_date ||= YAML.load_file("config/badgeReleaseDate.yml")
+    # if in_user.permission_group_id == 13
+    #   return @badge_release_date["Med21Badge"]["releaseDate"]
+    # elsif in_user.permission_group_id == 16
+    #   return @badge_release_date["Med22Badge"]["releaseDate"]
+    # elsif in_user.permission_group_id == 17
+    #   return @badge_release_date["Med23Badge"]["releaseDate"]
+    # elsif in_user.permission_group_id == 18
+    #   return @badge_release_date["Med24Badge"]["releaseDate"]
+    # elsif in_user.permission_group_id == 19
+    #   return @badge_release_date["Med25Badge"]["releaseDate"]
+    # elsif in_user.permission_group_id == 20
+    #   return @badge_release_date["Med26Badge"]["releaseDate"]
+    # else
+    # end
   end
 
   def hf_exists_in_FomExam(user_id)

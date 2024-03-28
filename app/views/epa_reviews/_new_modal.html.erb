@@ -5,8 +5,8 @@
           <h4 class="modal-title ml-auto mr-auto" ><b><%= controller.action_name.capitalize %> Review: </b>
               <%= @epa_review_epa %> - <%= hf_epa_desc_with_color(@epa_review_epa) %>
           </h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+          <button type="button" class="close btn btn-warning" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">Close</span>
           </button>
         </div>
           <div class="modal-body">
@@ -100,7 +100,7 @@
                   </div>
 
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
                   </div>
               </div>
           </div>
