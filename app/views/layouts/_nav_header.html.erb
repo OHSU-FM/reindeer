@@ -111,7 +111,7 @@
                   <% clinical_phase_sid = hf_get_clinical_phase_sid(temp_pk) %>
                   <% if !clinical_phase_sid.nil? %>
                       <%= link_to "Clinical Phase", polymorphic_path(["spreadsheet".to_sym, :ls_report], sid: clinical_phase_sid, pk: temp_pk),
-                         target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
+                         target: "_blank", class: "modal-click link-to-text-color", 'data-bs-target': '#modal-dataset' %>
                   <% end %>
               <% end %>
               <li class="nav-item">
