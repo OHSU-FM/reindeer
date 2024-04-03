@@ -43,7 +43,7 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <% if ['nmai', 'chungp', 'shuforda', ''].include? current_user.username  %>
+              <% if ['nmai', 'chungp', 'shuforda', 'fruhwirt'].include? current_user.username  %>
                 <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
