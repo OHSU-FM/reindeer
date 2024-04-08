@@ -203,14 +203,17 @@ class EventsController < ApplicationController
       advisor_id = data[2].to_i
       advisor = Advisor.find(advisor_id)
       title = advisor.advisor_type + ' Advisor'
+
       if data[3] == 'Step1'
         description = 'Academic: Step 1 Advising' + " - " + advisor.name
       elsif data[3] == 'Remed'
         description = 'Academic: Remediation Support' + " - " + advisor.name
-      elsif data[4].include? "Step Delay"
-        description = data[4]
       else
         description = data[3] + " Advisor - " + advisor.name
+      end
+
+      if !data[4].nil? and data[4].include? "Step Delay"
+        description = data[4]
       end
 
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
