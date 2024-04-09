@@ -16,6 +16,7 @@ class EventMailer < ApplicationMailer
       full_name = meeting.user.full_name
       first_name = full_name.split(", ").last
       advisor = Advisor.find_by(id: meeting.advisor_id) # advisor email
+      advisor_type = advisor.advisor_type
       advisor_name = advisor.name
       cc_email = advisor.email
       username = cc_email.split('@').first
@@ -34,6 +35,8 @@ class EventMailer < ApplicationMailer
 
       if method == "Create" or method == 'Resend'
         if method == 'Create'
+
+          subject_msg_advisor = "New Appt with OASIS #{advisor_type } Advisiong: #{full_name} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
           subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
         else
           subject_msg = "** Resending New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
@@ -87,9 +90,10 @@ class EventMailer < ApplicationMailer
        if cc_email == 'harrisor@ohsu.edu'  and (File.file?(Rails.root + "public/oasis/im_advising_handbook.pdf")) ## only this advisor requires to send the IM advising handbook to students
          attachments['IM_Advising_Handbook.pdf'] = File.read(Rails.root + "public/oasis/im_advising_handbook.pdf")
        end
-
-       mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
-
+       # send email to student
+       mail(to: student_email, from: "chomina@ohsu.edu", subject: subject_msg)
+       # send email to advisor
+       mail(to: advisor_email, from: "chomina@ohsu.edu", subject: subject_msg_advisor)
        # mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg, mime_version: '1.0',
        #   content_type: 'text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT',
        #   body: ical.to_ical + "\nTesting...",
