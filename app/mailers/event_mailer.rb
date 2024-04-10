@@ -36,8 +36,8 @@ class EventMailer < ApplicationMailer
       if method == "Create" or method == 'Resend'
         if method == 'Create'
 
-          subject_msg_advisor = "New Appt with OASIS #{advisor_type } Advisiong: #{full_name} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
-          subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
+          subject_msg = "New Appt: #{advisor_type } Advising for #{full_name} with Dr. #{advisor_name} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
+          #subject_msg = "New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
         else
           subject_msg = "** Resending New Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")}"
         end
@@ -62,7 +62,8 @@ class EventMailer < ApplicationMailer
         end
 
       elsif method == 'Cancel'
-        subject_msg = "Canceled:Your Appointment with #{@event_mailer.description} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
+        subject_msg = "Canceled: #{advisor_type } Advising for #{full_name} with Dr. #{advisor_name}  on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
+        #subject_msg_advisor = "Canceled:Your Appointment with #{full_name} on #{@event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A")} has been canceled."
         @body_msg =  "Your appointment with " + @event_mailer.description + " on " + @event_mailer.start_date.strftime("%m/%d/%Y %I:%M %p - %A") + " has been canceled.<br><br>" +
             "Student Name - #{full_name} (#{student_email})<br>" +
             "#{@event_mailer.description} (#{cc_email})<br><br>"
@@ -80,7 +81,7 @@ class EventMailer < ApplicationMailer
        e.dtend = @event_mailer.end_date #(DateTime.now + 1.day).utc
        #e.end.icalendar_tzid="UTC"
        e.organizer = student_email
-       e.uid = "MeetingReques#{meeting.id}"
+       e.uid = "MeetingRequest#{meeting.id}"
        e.summary = subject_msg
        e.description = "Hello " + first_name + ",\n\n" + @cal_body_msg + SENDER_SIGN #{}"Testing icalendar!"
        ical.add_event(e)
@@ -90,14 +91,9 @@ class EventMailer < ApplicationMailer
        if cc_email == 'harrisor@ohsu.edu'  and (File.file?(Rails.root + "public/oasis/im_advising_handbook.pdf")) ## only this advisor requires to send the IM advising handbook to students
          attachments['IM_Advising_Handbook.pdf'] = File.read(Rails.root + "public/oasis/im_advising_handbook.pdf")
        end
-       # send email to student
-       mail(to: student_email, from: "chomina@ohsu.edu", subject: subject_msg)
-       # send email to advisor
-       mail(to: advisor_email, from: "chomina@ohsu.edu", subject: subject_msg_advisor)
-       # mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg, mime_version: '1.0',
-       #   content_type: 'text/calendar; method=REQUEST; charset=UTF-8; component=VEVENT',
-       #   body: ical.to_ical + "\nTesting...",
-       #   content_disposition: "attachment; filename=calendar.ics")
+       # # send email to student
+       # emails << student_email
+       mail(to: emails, from: "chomina@ohsu.edu", subject: subject_msg)
 
 
   end
