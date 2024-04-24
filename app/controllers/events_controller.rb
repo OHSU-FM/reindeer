@@ -340,7 +340,8 @@ class EventsController < ApplicationController
 
       # commented out Step1 Advising on 9/14/2023 - requested by Erika and AA
       # uncommented out Step1 Advising on 12/7/2023 - requested by Erika and AA
-     @advisor_types.push 'Academic: Step 1 Advising'
+      # commented out step 1 advisiing on 4/23/2023 - requested by Erika and Career Advisor
+     #@advisor_types.push 'Academic: Step 1 Advising'
      @advisor_types.push 'Academic: Remediation Support'
      @advisor_types.sort!
 

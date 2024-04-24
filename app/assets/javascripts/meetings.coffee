@@ -80,6 +80,7 @@ remediationPrimary = [
 ]
 
 careerPrimary = [
+  "WBA Guidance",
   "Goal Setting/Updated IPPS",
   "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?",
   "Electives/Rotation Scheduling Advising",
@@ -92,7 +93,7 @@ careerPrimary = [
   'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")',
   'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency',
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
-  'Scholarship Approval'
+  'Scholarship Approval',
 ]
 window.ajaxStatus = ""  #global var
 window.eventIdGlobal = ""

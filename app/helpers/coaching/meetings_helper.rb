@@ -103,7 +103,7 @@ module Coaching::MeetingsHelper
   end
 
   def hf_career_primary_for_select
-    [
+    [ ["WBA Guidance"],
       ["Goal Setting/Updated IPPS"],
       ["General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?"],
       ["Electives/Rotation Scheduling Advising"],
