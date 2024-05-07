@@ -1,9 +1,8 @@
-<ul id="myUL">
-  <div class="card-columns" style="width: 600px">
+<div class="row row-cols-1 row-cols-md-3 mb-3">
   <% @temp_hash = {} %>
   <% @results.each do |result| %>
-
-    <div class="card" >
+   <div class="col">
+    <div class="card" style="width: 600px">
       <div class="card-body">
           <li><span class="caret"><b><%= result.full_name %></b></span>
             <ul class="nested">
@@ -99,6 +98,6 @@
           </li>
         </div>
       </div>
-    <% end %>
-  </div>
-</ul>
+    </div>
+  <% end %>
+</div>

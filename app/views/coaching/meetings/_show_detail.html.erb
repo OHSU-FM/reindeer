@@ -170,7 +170,7 @@
   <div><i>Advisor Type: <b><%= meeting.advisor_type.to_s %> </b></i></div>
   <div><i>Advisor: <b><%= hf_get_advisor_name(meeting.advisor_id) %> </b></i></div>
   <% start_date = hf_get_start_time(meeting.event_id) %>
-  <div><i>Appt Start Date: <%= start_date %></i></div>
+  <div><i>Appt Start Date: <%= start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></i></div>
   <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %>
 </div>
 <% if current_user.admin_or_higher? %>

@@ -145,9 +145,17 @@ class FomExamsController < ApplicationController
        @student_uid = student.sid
        if ['dean', 'admin'].include? current_user.coaching_type
          block_enabled = true ## always visible
+         @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+       elsif current_user.coaching_type == 'student'
+         block_enabled = FomLabel.find_by(course_code: @course_code, permission_group_id: permission_group_id).block_enabled
+         if block_enabled
+           @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+         else
+           @comp_exams = nil
+         end
        end
        ## added permission_group_id from Search function to take care of cohort jumper
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+
        if @comp_exams != nil
 
          @failed_comps = hf_scan_failed_score(@comp_exams)
