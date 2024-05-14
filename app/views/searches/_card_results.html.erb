@@ -1,10 +1,10 @@
-<div class="row row-cols-1 row-cols-md-3 mb-3">
+<div class="row row-cols-1 row-cols-md-3 g-4">
   <% @temp_hash = {} %>
   <% @results.each do |result| %>
    <div class="col">
     <div class="card" style="width: 600px">
       <div class="card-body">
-          <li><span class="caret"><b><%= result.full_name %></b></span>
+           <span class="caret"><b><%= result.full_name %></b></span>
             <ul class="nested">
               <li>
                 <table class="table table-hover main-table table-light responsive-sm">
@@ -95,7 +95,7 @@
                 </ul>
               </li>
             </ul>
-          </li>
+
         </div>
       </div>
     </div>

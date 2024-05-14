@@ -140,12 +140,135 @@ module CompetenciesHelper
    }
 
 
+
+  #==================================================================================================================================================================
+  # New Competencies Mappings
+  NEW_COMP_MAP ={
+    "ics1" => "ics1",
+    "ics2" => "ics1",
+    "ics3" => "ics1",
+    "ics4" => "ics5",
+    "ics5" => "ics5",
+    "ics6" => "ics3",
+    "ics7" => "ics4",
+    "ics8" => "ics1",
+
+    "mk1" => "mk1",
+    "mk2" => "mk2",
+    "mk3" => "mk3",
+    "mk4" => "mk2",
+    "mk5" => "mk3",
+
+    "pbli1" => "pbli1",
+    "pbli2" => "pbli3",
+    "pbli3" => "pbli2",
+    "pbli4" => "pbli2",
+    "pbli5" => "pbli2",
+    "pbli6" => "pbli2",
+    "pbli7" => "pbli3",
+    "pbli8" => "pbli1",
+
+    "pcp1" => "pcp1",
+    "pcp2" => "pcp2",
+    "pcp3" => "pcp2",
+    "pcp4" => "pcp3",
+    "pcp5" => "pcp3",
+    "pcp6" => "pcp3",
+
+    "pppd1" => "pppd1",
+    "pppd2" => "ics5",
+    "pppd3" => "pppd1",
+    "pppd4" => "pppd1",
+    "pppd5" => "ics5",
+    "pppd6" => "pppd2",
+    "pppd7" => "pbli1",
+    "pppd8" => "pppd2",
+    "pppd9" => "pppd3",
+    "pppd10" => "pppd2",
+    "pppd11" => "pbli1",
+
+    "sbpic1" => "mk3",
+    "sbpic2" => "sbpic1",
+    "sbpic3" => "pppd3",
+    "sbpic4" => "ics3",
+    "sbpic5" => "ics3"
+  }
+
+  NEW_COMP_DEFINITION = {
+    "ics1" => "Not Yet Defined!",
+    "ics2" => "Not Yet Defined!",
+    "ics3" => "Not Yet Defined!",
+    "ics4" => "Not Yet Defined!",
+    "ics5" => "Not Yet Defined!",
+    "mk1" => "Demonstrate foundational knowledge in basic science",
+    "mk2" => "Demonstrate foundational knowledge in clinical science",
+    "mk3" => "Demonstrate foundational knowledge in health systems science ",
+    "pbli1" => "Demonstrate behaviors that support lifelong learning and professional growth such as incorporating self-assessment and feedback",
+    "pbli2" => "Locate, critically appraise, and synthesize new information to support evidence/informed, patient centered clinical decisions",
+    "pbli3" => "Not Yet Defined!",
+    "pcp1" => "Gather information through history and physical on patients",
+    "pcp2" => "Construct prioritized differential diagnosis based on interpretation of available clinical data",
+    "pcp3" => "Develop and implement a personalized management plan for the patient",
+    "pppd1" => "Not Yet Defined!",
+    "pppd2" => "Not Yet Defined!",
+    "pppd3" => "Not Yet Defined!",
+    "sbpic1" => "Not Yet Defined!"
+
+  }
+
+  NEW_COMP_ASSESSORS = {
+    "ics1" => 12,
+    "ics2" => 12,
+    "ics3" => 12,
+    "ics4" => 12,
+    "ics5" => 12,
+    "mk1" => 12,
+    "mk2" => 12,
+    "mk3" => 12,
+    "pbli1" => 12,
+    "pbli2" => 12,
+    "pbli3" => 12,
+    "pcp1" => 12,
+    "pcp2" => 12,
+    "pcp3" => 12,
+    "pppd1" => 12,
+    "pppd2" => 12,
+    "pppd3" => 12,
+    "sbpic1" => 12
+  }
+
+  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2", "pppd3", "sbpic1"]
+
   #===================================================================================================================================================================
+
+  def hf_remap_comp(comp_hash3)
+    new_comp = {}
+    NEW_COMP_CODES.each do |comp|
+      new_comp[comp] = 0
+    end
+
+    comp_hash3.each do |key, value|
+      puts "#{key} --> #{value}"
+    end
+
+    comp_hash3.each do |key, value|
+      new_comp[NEW_COMP_MAP[key]] = new_comp[NEW_COMP_MAP[key]] + value
+
+    end
+
+    new_comp.each do |key, value|
+      puts "new--> #{key} --> #{value}"
+    end
+
+
+
+  end
+
 
   def hf_comp_codes
     return COMP_CODES
   end
-  
+
   def hf_get_block_comp_def (in_code)
     return BLOCK_COMP_DEF[in_code]
   end
@@ -153,6 +276,8 @@ module CompetenciesHelper
   def hf_get_comp_def code
     return COMP_DESC[code]
   end
+
+
 
   def hf_get_archive_competency (user_id, permssion_group_id)
     if Med18Competency.table_exists? and !(comp = Med18Competency.where(user_id: user_id).order(start_date: :desc)).empty?
@@ -303,7 +428,6 @@ module CompetenciesHelper
           end
         end
       end
-      #binding.pry
       return comp_hash
     end
 

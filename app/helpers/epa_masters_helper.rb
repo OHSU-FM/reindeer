@@ -238,15 +238,19 @@ module EpaMastersHelper
   def count_wbas(wbas, sid, full_name)
     epa_hash = {}
     tot_count = 0
+    total_attending = 0
     epa_hash["StudentId"] = sid
     epa_hash["Student Name"] = full_name
+    total_attending = wbas.select{|w| w.clinical_assessor if w.clinical_assessor.include? "Attending"}.compact.count
+
     for i in 1..13
       epa_code = 'EPA' + i.to_s
       epa_count = wbas.collect{|w| w.epa if w.epa == "#{epa_code}"}.compact.count
       tot_count += epa_count
-      epa_hash.store(epa_code, epa_count)
+      epa_hash[epa_code] = epa_count
     end
     epa_hash["TotalCount"] = tot_count
+    epa_hash["Total Attending"] = total_attending
     return epa_hash
 
   end

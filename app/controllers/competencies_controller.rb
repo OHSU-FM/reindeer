@@ -167,6 +167,10 @@ class CompetenciesController < ApplicationController
     @comp_hash1 = hf_load_all_comp2(@comp, 1)
     @comp_hash0 = hf_load_all_comp2(@comp, 0)
 
+    #-----------------------------------------------------
+    #@remap_comp_hash3 = hf_remap_comp(@comp_hash3)
+    #-----------------------------------------------------
+
     @comp_data_clinical = hf_average_comp2 (@comp_hash3)
 
     if [3,5,6,13].include? permission_group_id
