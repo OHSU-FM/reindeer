@@ -9,7 +9,7 @@
             <th>ClincialAssessor</th>
             <th>Other Role</th>
             <th>AssessorName</th>
-            <th>Involvment</th>
+            <th style="text-align: center;">Involvment</th>
             <th>Feedback</th>
             <th>EncounterComplex</th>
           </thead>
@@ -26,7 +26,11 @@
                 <td><%= e.clinical_assessor %></td>
                 <td><%= e.other_role %></td>
                 <td><%= e.assessor_name %></td>
-                <td><%= e.involvement %></td>
+                <% if e.involvement == 4 %>
+                  <td style="text-align: center; color: purple; background-color:#D4F1F4;"><b><%= e.involvement %></b></td>
+                <% else %>
+                  <td style="text-align: center"><%= e.involvement %></td>
+                <% end %>
                 <% i = i + 1 %>
                 <td><span class="context-menu-one" id="<%= e.epa %>" data-course-name="[WBA]" ><%= hf_highlight(e.more_independent, e.epa) %></span></td>
                 <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
