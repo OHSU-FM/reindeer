@@ -235,12 +235,13 @@ module EpaMastersHelper
     return data
   end
 
-  def count_wbas(wbas, sid, full_name)
+  def count_wbas(wbas, sid, full_name, matriculated_date)
     epa_hash = {}
     tot_count = 0
     total_attending = 0
     epa_hash["StudentId"] = sid
     epa_hash["Student Name"] = full_name
+    epa_hash["Matriculated Date"] = matriculated_date
     total_attending = wbas.select{|w| w.clinical_assessor if w.clinical_assessor.include? "Attending"}.compact.count
 
     for i in 1..13
@@ -339,7 +340,7 @@ module EpaMastersHelper
     students.each do |student|
         wbas = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", student.id, start_date, end_date)  # Epa table contains WBAs data
         # ave_level = Epa.where(user_id: user.id).average(:involvement).to_f
-        student_epa = count_wbas(wbas, student.sid, student.full_name)
+        student_epa = count_wbas(wbas, student.sid, student.full_name, student.matriculated_date)
         # student_epa.store("Average", ave_level)
         data.push student_epa
 

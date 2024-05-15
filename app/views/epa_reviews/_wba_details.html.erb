@@ -26,7 +26,7 @@
                 <td><%= e.clinical_assessor %></td>
                 <td><%= e.other_role %></td>
                 <td><%= e.assessor_name %></td>
-                <% if e.involvement == 4 %>
+                <% if e.involvement == 4 and e.clinical_assessor.include? "Attending"%>
                   <td style="text-align: center; color: purple; background-color:#D4F1F4;"><b><%= e.involvement %></b></td>
                 <% else %>
                   <td style="text-align: center"><%= e.involvement %></td>
