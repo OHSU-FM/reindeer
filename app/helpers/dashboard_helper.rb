@@ -268,6 +268,8 @@ module DashboardHelper
     epa_wba_data.first.delete("StudentId")
     epa_wba_data.first.delete("Student Name")
     epa_wba_data.first.delete("TotalCount")
+    epa_wba_data.first.delete("Matriculated Date")
+    epa_wba_data.first.delete("Total Attending")
     epa_wba_data = epa_wba_data.first
     tot_count = epa_wba_data.values.sum
     if tot_count == 0
