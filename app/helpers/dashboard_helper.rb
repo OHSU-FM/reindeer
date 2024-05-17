@@ -265,7 +265,7 @@ module DashboardHelper
 
   def hf_create_epa_wba_graph(epa_wba_data)
     height = 250
-    epa_wba_data.first.delete("StudentId")
+    epa_wba_data.first.delete("StudentId")  ## these fields need to be deleted for the graph as it called count_wbas in epa_masters_helper module.
     epa_wba_data.first.delete("Student Name")
     epa_wba_data.first.delete("TotalCount")
     epa_wba_data.first.delete("Matriculated Date")

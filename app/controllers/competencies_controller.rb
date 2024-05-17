@@ -169,7 +169,7 @@ class CompetenciesController < ApplicationController
 
     #-----------------------------------------------------
     #@remap_comp_hash3 = hf_remap_comp(@comp_hash3)
-    #-----------------------------------------------------
+    #--------------------------------------ta---------------
 
     @comp_data_clinical = hf_average_comp2 (@comp_hash3)
 
