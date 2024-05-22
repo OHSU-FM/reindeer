@@ -1,18 +1,88 @@
-<%= simple_form_for(@epa) do |f| %>
+
+<%= simple_form_for(@epa,  html: {class: 'form-horizontal'}) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :response_id %>
-    <%= f.input :student_assessed %>
-    <%= f.input :assessor_name %>
-    <%= f.input :assessor_email %>
-    <%= f.input :epa %>
-    <%= f.input :clinical_discipline %>
-    <%= f.input :clinical_setting %>
-    <%= f.input :clinical_assessor %>
-  </div>
+  <div class="form-group">
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Response ID</label>
+      <div class="col-sm-8">
+        <%= f.text_field :response_id, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Student Assessed</label>
+      <div class="col-sm-8">
+        <%= f.text_field :student_assessed, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Assessor Name</label>
+      <div class="col-sm-8">
+        <%= f.text_field :assessor_name, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Assessor Email</label>
+      <div class="col-sm-8">
+        <%= f.text_field :assessor_email, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">EPA</label>
+      <div class="col-sm-8">
+        <%= f.text_field :epa, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Involvement</label>
+      <div class="col-sm-8">
+        <%= f.text_field :involvement, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Clinical Discpline</label>
+      <div class="col-sm-8">
+        <%= f.text_field :clinical_discipline, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Clinical Setting</label>
+      <div class="col-sm-8">
+        <%= f.text_field :clinical_setting, class: "form-control" %>
+      </div>
+    </div>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Clinical Assessor</label>
+      <div class="col-sm-8">
+        <%= f.text_field :clinical_assessor, class: "form-control" %>
+      </div>
+    </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Submit Date</label>
+      <div class="col-sm-8">
+        <%= f.text_field :submit_date, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Created At</label>
+      <div class="col-sm-8">
+        <%= f.text_field :created_at, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row mb-1">
+      <label class="col-sm-3 col-form-label right-label">Updated At</label>
+      <div class="col-sm-8">
+        <%= f.text_field :updated_at, class: "form-control" %>
+      </div>
+    </div>
+
   </div>
-<% end %>
+  <div class="row mb-1">
+    <div class="col-sm-3 col-form-label form-actions">
+      <%= f.button :submit, "Update WBA", class: "form-control btn btn-primary" %>
+    </div>
+  </div>
+ <% end %>

@@ -260,10 +260,7 @@ module CompetenciesHelper
       puts "new--> #{key} --> #{value}"
     end
 
-
-
   end
-
 
   def hf_comp_codes
     return COMP_CODES
@@ -276,8 +273,6 @@ module CompetenciesHelper
   def hf_get_comp_def code
     return COMP_DESC[code]
   end
-
-
 
   def hf_get_archive_competency (user_id, permssion_group_id)
     if Med18Competency.table_exists? and !(comp = Med18Competency.where(user_id: user_id).order(start_date: :desc)).empty?
