@@ -94,6 +94,9 @@ window.addFormField = ->
   #$("#field" + next).attr('data-source',$(addto).attr('data-source'));
   $("#count").val(next);
 
+$ ->
+  $('#datepicker').datepicker()
+  return
 
 $(document).ready ->
 

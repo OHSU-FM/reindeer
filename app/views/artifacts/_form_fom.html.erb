@@ -13,7 +13,7 @@
                         <%= f.label :cohort, class: "col-sm-2 control-label"%>
                         <div class="col-sm-4">
                           <%= select_tag :permission_group_id, options_for_select(@student_groups.collect{|s| [s.title, s.id]}, selected: params[:permission_group_id]),
-                              prompt: "Please Select Cohort", class: "form-control" %>
+                              prompt: "Please Select Cohort", class: "form-select" %>
                         </div>
                       </div>
 
@@ -21,7 +21,7 @@
                         <%= f.label :BlockCode, class: "col-sm-2 control-label"%>
                         <div class="col-sm-4">
                           <%= select_tag :course_code, options_for_select(@course_codes, selected: params[:course_code]),
-                            prompt: "Please Select a Course Code", class: "form-control"%>
+                            prompt: "Please Select a Course Code", class: "form-select"%>
                         </div>
                       </div>
 
@@ -31,7 +31,7 @@
                             <%= f.select :title,
                                 options_for_select(['comp1', 'comp2a', 'comp2b', 'comp3', 'comp4', 'comp5a', 'comp5b', 'labels' ]),
                                 { include_blank: "---" }, :id => "component",
-                                required: true, class: "form-control"
+                                required: true, class: "form-select"
                               %>
                           </div>
                       </div>
@@ -40,7 +40,7 @@
                         <div class="col-sm-4">
                           <%= f.select :content, options_for_select([]),
                             { include_blank: "---" },
-                            required: true, class: "form-control" %>
+                            required: true, class: "form-select" %>
                           </div>
                       </div>
                       <div class="row mb-1">

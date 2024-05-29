@@ -2,10 +2,12 @@
     <div class="card">
       <div class="card-body">
         <%= form_tag(reports_index_path, remote: true, method: "get", id: 'report_form') do %>
-          <div class="form-group navbar-form navbar-left">
-             <b>Cohort </b> <%= select_tag :cohort, options_from_collection_for_select(@permission_groups, 'id', 'title', selected: params[:cohort]), include_blank: '--',
-                prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
-              <br />
+          <div class="input-group">
+             <span class="input-group-text"><strong>Cohort</strong></span>
+             <div class="w-auto">
+                <%= select_tag :cohort, options_from_collection_for_select(@permission_groups, 'id', 'title', selected: params[:cohort]), include_blank: '--',
+                prompt: "Please Select a Cohort", class: "form-select", id: "permission_group", onchange: "this.form.submit();" %>
+              </div>
           </div>
         <% end %>
       </div>

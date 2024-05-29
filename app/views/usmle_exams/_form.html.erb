@@ -8,31 +8,31 @@
         <div class="form-group">
           <div class="row mb-1">
             <label class="col-sm-3 col-form-label right-label">Exam Type</label>
-            <div class="col-sm-8">
-              <%= f.input_field :exam_type, collection: ["HSS",  "Step 1 Exam",  "Step 1 Mock Exam",  "Step 2 CK",  "Step 2 CS"], class: "form-control", input_html: {style: 'width: 200px'} %>
+            <div class="col-sm-8 w-50">
+              <%= f.input_field :exam_type, collection: ["HSS",  "Step 1 Exam",  "Step 1 Mock Exam",  "Step 2 CK",  "Step 2 CS"], class: "form-select", input_html: {style: 'width: 200px'} %>
             </div>
           </div>
           <div class="row mb-1">
             <label class="col-sm-3 col-form-label right-label">No of Attempts</label>
-            <div class="col-sm-8">
+            <div class="col-sm-8 w-50">
               <%= f.number_field :no_attempts, class: "form-control" %>
             </div>
           </div>
           <div class="row mb-1">
             <label class="col-sm-3 col-form-label right-label">Pass/Fail</label>
-            <div class="col-sm-8">
-              <%= f.input_field :pass_fail, collection: ['P', 'F'],  class: "form-control" %>
+            <div class="col-sm-8 w-50">
+              <%= f.input_field :pass_fail, collection: ['P', 'F'],  class: "form-select" %>
             </div>
           </div>
           <div class="row mb-1">
             <label class="col-sm-3 col-form-label right-label">Exam Score</label>
-            <div class="col-sm-8">
+            <div class="col-sm-8 w-50">
               <%= f.number_field :exam_score,  class: "form-control" %>
             </div>
           </div>
           <div class="row mb-1">
             <label class="col-sm-3 col-form-label right-label">Exam Date</label>
-            <div class="col-sm-8">
+            <div class="col-sm-8 w-50">
               <%= f.date_field :exam_date, as: :date, html5: true, class: "form-control" %>
             </div>
           </div>
