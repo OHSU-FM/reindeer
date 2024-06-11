@@ -209,14 +209,13 @@
 
     <div class="card" id="AdvisorCard">
       <div class="card-body">
-        <div class="form-group">
-          <%= f.label :advisor_type, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_type, options_for_select(@advisor_types.sort), required: true, prompt: "Please Select an Advisor Type" %>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :advisor, class: "control-label col-sm-4" %>
-          <%= f.select :advisor_id, options_for_select(@advisors.collect{|a| [a.name, a.id]}), required: true, prompt: "Please Select an Advisor"  %> <br />
+        <div class="d-flex">
+          <div class="input-group">
+            <span class="input-group-text"><strong>Advisor Type</strong></span>
+            <%= f.input_field :advisor_type, collection: (@advisor_types.sort), required: true, prompt: "Please Select an Advisor Type", class: "selectAdvisorType form-select" %>
+            <span class="input-group-text"><strong>Advisor</strong></span>
+            <%= f.input_field :advisor_id, collection: (@advisors.collect{|a| [a.name, a.id]}), required: true, prompt: "Please Select an Advisor", class: "form-select"  %> <br />
+          </div>
         </div>
 
         <%= f.hidden_field :user_id, value: student.id %>
@@ -230,13 +229,13 @@
         To set up a meeting to talk with your Student Affairs Dean, please refer to the Bridge Scheduling System: <b>https://bridge.ohsu.edu/edu/sites/ume/SitePages/Home.aspx</b> <br />and click on Scheduling Requests.
       </div>
     </div>
-    <br />
+
 
     <div class="card text-center" id="WellnessAdvisor">
       <div class="card-body card-body-color">
         To meet with Dr. Furnari, please email her directly at <b>furnari@ohsu.edu</b>. Thank you.      </div>
     </div>
-    <br />
+
 
     <div class="card" id="AppointmentCard">
       <div class="card-body">

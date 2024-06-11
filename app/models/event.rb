@@ -37,6 +37,33 @@ class Event < ApplicationRecord
 
   end
 
+  def self.enumerate_hours2(start_date, end_date, time_slot, advisor_type, weekly_recurrences)
+    if start_date.nil?
+      return nil
+    end
+    date_array = {}
+    i = 1
+    if advisor_type == 'Assist Dean'
+      time_slot = time_slot.to_i
+    else
+      time_slot = time_slot.to_i + 15
+    end
+
+    (start_date.to_s.to_datetime.utc.to_i .. end_date.to_s.to_datetime.utc.to_i).step(time_slot*60) do |date|
+       date_array.store("Date #{i}", Time.at(date).utc.strftime("%Y/%m/%d %T %p"))
+       #puts "time: "  + Time.at(date).utc.strftime("%m/%d/%Y %T %p")
+       i = i + 1
+    end
+    if weekly_recurrences.to_i != 0
+      date_array_recurrences = process_weekly_recurrences(date_array, weekly_recurrences)
+      return date_array_recurrences
+    else
+      return date_array
+    end
+
+
+  end
+
   def self.enumerate_hours(start_date, end_date, time_slot, advisor_type, weekly_recurrences)
     if start_date.nil?
       return nil

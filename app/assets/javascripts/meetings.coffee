@@ -1,7 +1,14 @@
 $ ->
   $('#coaching_meeting_advisor_type').change ->
     advisorType = @value
-    #alert advisorType
+    #
+    if (advisorType == '')
+      #alert "-" + advisorType + "-"
+      $('#coaching_meeting_advisor_id').val('');
+      $("#coaching_meeting_advisor_id").prop("disabled", true)
+      $('#coaching_meeting_advisor_id').empty()
+      return
+    # else
     $('#coaching_meeting_advisor_id').empty()
     $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
     $('div[data-advisors]' ).each ->
@@ -141,8 +148,11 @@ modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  #$('select.selectAdvisorType option:first').attr('disabled', true);
+  $("#coaching_meeting_advisor_id").prop("disabled", true)
 
   $('#coaching_meeting_advisor_type').change ->
+    $("#coaching_meeting_advisor_id").prop("disabled", false)
     $("#All-Events").empty();
     return
 

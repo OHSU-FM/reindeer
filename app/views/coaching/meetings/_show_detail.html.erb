@@ -10,9 +10,6 @@
             </h2>
             <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
               <div class="accordion-body">
-                <% if meeting.advisor_type.nil?  %>
-                      <% meeting.advisor_type = hf_get_advisor_type(meeting.advisor_id) %>
-                <% end %>
 
                 <div id="advisor_type" data-advisor_type="<%= meeting.advisor_type %>" </div>
 

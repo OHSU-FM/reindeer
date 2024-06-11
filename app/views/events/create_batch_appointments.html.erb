@@ -7,14 +7,18 @@
     <%= form_tag(create_batch_appointments_events_path, method: 'get', remote: true) do %>
 
       <div class="form-group">
-          <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2" %>
-          <% if @advisor_types.count == 1 %>
-            <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types.first), include_blank: '---',
-                 required: true  %> <br />
-          <% else %>
-            <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: params[:advisor_type]), include_blank: '---',
-                 required: true  %> <br />
-          <% end %>
+        <div class="row mb-0">
+          <%= label_tag :Type_Of_Advisor, nil, class: "control-label col-md-2 right-label" %>
+          <div class="col-sm-6">
+            <% if @advisor_types.count == 1 %>
+              <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor_types.first), include_blank: '---',
+                   required: true, class: "form-select"  %>
+            <% else %>
+              <%= select_tag :advisor_type, options_for_select(@advisor_types, selected: params[:advisor_type]), include_blank: '---',
+                   required: true, class: "form-select"  %>
+            <% end %>
+          </div>
+        </div>
 
           <div hidden>
             <div class="advisors-details" data-advisors="<%= @advisors.to_json %>"></div>
@@ -25,25 +29,56 @@
             <% end %>
           </div>
 
-          <%= label_tag :Advisor, nil, class: "control-label col-md-2" %>
-          <% if !@advisor_name.empty? %>
-            <%= select_tag :advisor, options_for_select(@advisor_name, selected: @advisor_name), include_blank: "---" , required: true  %> <br />
-          <% else %>
-            <%= select_tag :advisor, options_for_select(@all_advisor_names), include_blank: "---" , required: true  %> <br />
-          <% end %>
-          <%= label_tag "Time Slot by Mins", nil, class: "control-label col-md-2" %>
-          <%= select_tag :time_slot, options_for_select(["15", "30", "45", "60"], selected: '45'),  include_blank: "---", required: true %> <br />
-          <%= label_tag :StartDate , nil, class: "control-label col-md-2"%>
-          <%= datetime_select("start_date", "start_date", ampm: true,  default: 1.hour.from_now, minute_step: 30)%><input type="text" id="start_weekday" name="start_weekday" disabled><br />
-          <%= label_tag :EndDate, nil, class: "control-label col-md-2" %>
-          <%= datetime_select("end_date", "end_date", ampm: true,  default: 6.hours.from_now, minute_step: 30) %><input type="text" id="end_weekday" name="end_weekday" disabled> <br />
-          <%= label_tag :weekly_recurrences, nil, class: "control-label col-md-2" %>
-          <%= select_tag "weekly_recurrences", options_for_select([*0..12]) %><br /><br />
-          <%= label_tag "  ", nil, class: "control-label col-md-2" %>
-          <%= submit_tag "Submit", class: "btn-sm btn-primary"%>
+          <div class="row mb-0">
+            <%= label_tag :Advisor, nil, class: "control-label col-md-2 right-label" %>
+            <div class="col-sm-6">
+              <% if !@advisor_name.empty? %>
+                <%= select_tag :advisor, options_for_select(@advisor_name, selected: @advisor_name), include_blank: "---" , required: true, class: "form-select"  %>
+              <% else %>
+                <%= select_tag :advisor, options_for_select(@all_advisor_names), include_blank: "---" , required: true, class: "form-select"  %>
+              <% end %>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <%= label_tag "Time Slot by Mins", nil, class: "control-label col-md-2 right-label" %>
+            <div class="col-sm-6">
+              <%= select_tag :time_slot, options_for_select(["15", "30", "45", "60"], selected: '45'),  include_blank: "---", required: true, class: "form-select" %>
+            </div>
+          </div>
+
+          <div class="row mb-0">
+            <label class="control-label col-md-2 right-label">Start Date <i class="fa fa-calendar"></i> </label>
+            <div class="col-sm-6">
+              <input type="text" class="flatpickr flatpickr-input active form-control" id="startDate1", name="startDate1" placeholder="Select Start Date/Time..">
+            </div>
+          </div>
+
+          <div class="row mb-0">
+            <label class="control-label col-md-2 right-label">End Date <i class="fa fa-calendar"></i> </label>
+            <div class="col-sm-6">
+              <input type="text" class="flatpickr flatpickr-input active form-control" id="endDate1", name="endDate1" placeholder="Select End Date/Time..">
+            </div>
+          </div>
+
+          <div class="row mb-0">
+            <%= label_tag "Weekly Recurrences", nil, class: "control-label col-md-2 right-label" %>
+            <div class="col-sm-6">
+              <%= select_tag "weekly_recurrences", options_for_select([*0..12]), class: "form-select" %>
+            </div>
+          </div>
+
+          <div class="row mb-0">
+            <div class="col-md-2">
+            </div>
+            <div class="col-sm-6">
+              <%= submit_tag "Submit", class: "btn btn-primary"%>
+            </div>
+          </div>
 
       </div>
     <% end %>
   </div>
 </div>
 <div id="appt-table"></div>
+
+<div id="success-flash"></div>

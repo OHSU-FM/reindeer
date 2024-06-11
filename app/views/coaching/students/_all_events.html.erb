@@ -1,17 +1,17 @@
 
-<table class="responsive nowrap table table-hover" id="EventsTable" data-url="<%= url_for(format: :json) %>">
-    <thead>
-      <tr>
-        <th data-data="id">Id</th>
-        <!--th data-data="title">Title</th> -->
-        <th data-data="description">Description</th>
-        <th data-data="start_date">Start date</th>
-        <th data-data="end_date">End date</th>
-        <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
-      </tr>
-    </thead>
-  <tbody>
-  <% if !@events.nil? %>
+<% if !@events.nil? %>
+  <table class="responsive nowrap table table-hover" id="EventsTable">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <!--th data-data="title">Title</th> -->
+          <th>Description</th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th width="100px"></th>
+        </tr>
+      </thead>
+    <tbody>
     <% @events.each do |event| %>
       <% if event.description.to_s != "" %>
         <tr class="<%= hf_row_background_color (event.description) %>">
@@ -43,6 +43,9 @@
         </tr>
       <% end %>
     <% end %>
+      </tbody>
+    </table>
+
   <% end %>
-  </tbody>
-</table>
+
+<div id="calendly-events"></div>

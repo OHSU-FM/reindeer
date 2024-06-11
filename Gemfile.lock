@@ -170,6 +170,7 @@ GEM
       activerecord
       activesupport
     ffi (1.16.3)
+    flatpickr (4.6.13.1)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
     font-awesome-sass (4.4.0)
@@ -518,6 +519,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fast_page
+  flatpickr
   font-awesome-rails
   font-awesome-sass (~> 4.4.0)
   fullcalendar

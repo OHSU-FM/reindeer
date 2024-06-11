@@ -43,6 +43,7 @@ gem "lograge"
 # JavaScript and CSS
 ##############################
 gem 'bootstrap', '~> 5.3.2' # '~> 4.4.0'
+gem 'flatpickr'    # calendar picker
 gem "jbuilder", '~> 2.5'
 gem "popper_js", '>=2.11.8', '<3' #"~> 1.14.3"
 gem "cssbundling-rails"

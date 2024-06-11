@@ -3,6 +3,7 @@ module Coaching
     skip_before_action :verify_authenticity_token
     before_action :set_resources
     helper  :all
+    include MeetingsHelper
     respond_to :html, :json
 
     def create
@@ -71,6 +72,12 @@ module Coaching
 
     def show_detail
       @meeting = Meeting.find params[:id]
+      # added the codes to update the advisor_type. For reasons, it was missing and caused issues.
+      if @meeting.advisor_type.nil?
+            @meeting.advisor_type = hf_get_advisor_type(@meeting.advisor_id)
+            @meeting.update(meeting_update_params)
+      end
+
       respond_to do |format|
         format.js { render action: 'show_detail', status: :ok }
       end

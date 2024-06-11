@@ -44,6 +44,8 @@
 @import 'eg_members.css';
 @import 'overall_progresses.css';
 @import 'badging_dates.css';
+@import 'flatpickr';
+@import 'flatpickr/plugins/confirmDate/confirmDate';
 .alert {
   left: 0;
   margin: auto; // Centers alert component

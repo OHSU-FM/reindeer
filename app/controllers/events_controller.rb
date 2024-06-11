@@ -113,6 +113,7 @@ class EventsController < ApplicationController
   end
 
   def create_batch_appointments
+
     if params[:advisor_type].present?
       @advisor_type = params[:advisor_type]
       @advisor = params[:advisor]
@@ -121,7 +122,9 @@ class EventsController < ApplicationController
       session[:advisor_type] = @advisor_type
       session[:advisor] = @advisor
 
-      @appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type, @weekly_recurrences)
+      #@appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type, @weekly_recurrences)
+      @appointments = Event.enumerate_hours2(params[:startDate1], params[:endDate1], params[:time_slot], @advisor_type, @weekly_recurrences)
+
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }
@@ -217,17 +220,17 @@ class EventsController < ApplicationController
       end
 
       if Event.exists?(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id)
-        notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
+        @notice_msg = "Found Existing Appointment(s), Not All Appointments were Created!"
       else
         Event.where(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id).first_or_create
-        notice_msg = 'Apppointments were successfully created!'
+        @notice_msg = 'Apppointments were successfully created!'
       end
-      flash.alert = notice_msg
+      flash.alert = @notice_msg
     end
 
     respond_to do |format|
-      format.html { redirect_to action: "index", notice: notice_msg, status: 200}
-      format.json
+      format.html {redirect_to action: "index", notice: @notice_msg, status: 200}
+      format.json 
     end
   end
 

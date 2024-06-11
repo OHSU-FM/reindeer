@@ -98,7 +98,81 @@ $ ->
   $('#datepicker').datepicker()
   return
 
+roundMinutes = (date) ->
+  if date.getMinutes() >= 30
+    date.setHours date.getHours() + 1
+  date.setMinutes 0
+  return date
+
+window.addEventListener 'load', ->
+  flatpickr '#startDate1',
+     allowInput: true,
+     enableTime: true,
+     defaultDate: roundMinutes(new Date()),
+     minTime: "07:00",
+     maxTime: "20:00",
+     altInput: true,
+     altFormat: "F j, Y h:i K",
+     dateFormat: "Y-m-d h:i K",
+     minuteIncrement: 30,
+     plugins: [
+       new confirmDatePlugin()
+     ]
+    onChange: (dates, dateStr, instance) ->
+      flatPickerChange dates, dateStr, instance
+      return
+    $('#endDate1').val($('#startDate1').val())
+  return
+
+add5Hours = ->
+  startDate1 = $('#startDate1').val()
+  newDate = new Date(startDate1)
+  newDate.setHours(newDate.getHours() + 5);
+  return newDate
+
+window.addEventListener 'load', ->
+  flatpickr '#endDate1',
+     allowInput: true,
+     enableTime: true,
+     defaultDate: add5Hours(),
+     minTime: "07:00",
+     maxTime: "20:00",
+     altInput: true,
+     altFormat: "F j, Y h:i K",
+     dateFormat: "Y-m-d h:i K",
+     minuteIncrement: 30,
+     plugins: [
+       new confirmDatePlugin()
+     ]
+    onChange: (dates, dateStr, instance) ->
+      flatPickerChange dates, dateStr, instance
+      return
+  return
+
+
 $(document).ready ->
+
+  $('#startDate1').change ->
+    newDate = add5Hours
+    $('#endDate1').val(newDate)
+    flatpickr '#endDate1',
+       allowInput: true,
+       enableTime: true,
+       defaultDate: add5Hours(),
+       minTime: "07:00",
+       maxTime: "20:00",
+       altInput: true,
+       altFormat: "F j, Y h:i K",
+       dateFormat: "Y-m-d h:i K",
+       minuteIncrement: 30,
+       plugins: [
+         new confirmDatePlugin()
+       ]
+      onChange: (dates, dateStr, instance) ->
+        flatPickerChange dates, dateStr, instance
+        return
+    return
+
 
   yyyy = $("#start_date_start_date_1i").val()
   mm = $("#start_date_start_date_2i").val()

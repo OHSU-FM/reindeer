@@ -84,3 +84,19 @@
 //= require overall_progresses.js
 //= require active_storage_drag_and_drop
 //= require badging_dates
+//= require flatpickr
+//= require flatpickr/plugins/confirmDate/confirmDate
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   flatpickr('.flatpickr', {
+//     allowInput: true,
+//     enableTime: true,
+//     minDate: 'today',
+//     minTime: "07:00",
+//     maxTime: "20:00",
+//     dateFormat: "m-d-Y h:i K",
+//     plugins: [
+//       new confirmDatePlugin({})
+//     ]
+//   })
+// })

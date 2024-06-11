@@ -1,14 +1,33 @@
 
 $('#All-Events').html("<%= j render partial: 'coaching/students/all_events', locals: { events: @events } %>");
 console.log ("inside get_events!");
+var now = new Date();
+var month = now.getMonth();
+var month1 = month+1 < 10 ? ("0" + (month+1).toString()) : month;
+var month2 = month+2 < 10 ? ("0" + (month+2).toString()) : month;
+var month3 = month+3 < 10 ? ("0" + (month+3).toString()) : month;
 
+// console.log ("mon=" + month + " mon1=" + month1 + " mon2=" + month2 + " mon3=" + month3)
+var calendlyAppts = '<div id="calendlyAppts" ><br /><br />' +
+   '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month1.toString() + '" target="_blank">Calendly June Appointments</a> <br />' +
+    '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month2.toString() + '" target="_blank">Calendly July Appointments</a> <br />' +
+    '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month3.toString() + '" target="_blank">Calendly August Appointments</a> </div>'
+
+
+var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
-console.log("tr_length: " + tr_length);
-if (tr_length == 0) {
+if (tr_length == 0 && !advisor_name.includes("Bailey")){
   $("#meeting-submit").prop("disabled", true);
   alert('Please select another advisor that has appointments!!');
-}
 
+}
 $(document).ajaxComplete(function(){
   console.log("Inside get_events: AjaxComplete is called!");
+  console.log("tr_length: " + tr_length);
+  var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
+  if (advisor_name.includes("Bailey")) {
+    $('#calendly-events').append(calendlyAppts).htm1();
+    return;
+  }
+
 });
