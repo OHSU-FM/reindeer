@@ -7,6 +7,7 @@ module Coaching
     respond_to :html, :json
 
     def create
+
       @meeting = Meeting.create meeting_params
       if params[:time_slot].present? and params[:startDate1].present?
         #@meeting.advisor_discussed.delete_if(&:blank?)    # 11/16/2021 - comment these 2 lines f code, hopefully, it will eliminate the error of Meeting serialization
@@ -50,6 +51,7 @@ module Coaching
       # else
       #   @meeting.event_id = params[:event_id]
       end
+
       respond_to do |format|
           if @meeting.save
            flash[:alert] = 'Appointment/Meeting saved successfully!'

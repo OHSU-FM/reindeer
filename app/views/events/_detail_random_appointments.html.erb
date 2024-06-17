@@ -23,7 +23,7 @@
           <% temp_end_date   = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y %I:%M%p") %>
           <% if !@advisor_name.empty? %>
             <% advisor_name = @advisors.collect{|a| a.name if a.id == params[:advisor].to_i}.compact.first %>
-            <% advisor_id = @advisors.collect{|a| a.id if a.name == params[:advisor]}.compact.first %>
+            <% advisor_id = params[:advisor]%>
           <% else %>
             <% advisor_name = @advisors.collect{|a| a.name if a.id == params[:advisor].to_i}.compact.first %>
             <% advisor_id = params[:advisor] %>

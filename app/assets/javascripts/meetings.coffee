@@ -114,7 +114,7 @@ checkEvent = (event_id) ->
     success: (response) ->
       console.log 'success response: ' + JSON.stringify(response)
       console.log ("Status : " + response.Status)
-      return response.Status
+      return (response.Status)
     error: (response) ->
       alert 'Something went WRONG!!'
       return
@@ -201,25 +201,36 @@ $(document).ready ->
     event.preventDefault()
     return
 
-  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
-    event_id = $('input:radio:checked').val()
-    eventIdGlobal = event_id
 
-    ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
-    console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
-    if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
-      # the codes below need to be kept..
-      advisorType = $("#advisor-" + @value).data('advisor-type')
-      console.log("advisorType: " + advisorType)
-      $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
-      advisorID = $("#advisor-" + @value).data('advisor-' + @value)
-      $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
-      return
-    else
-      $('#coaching_meeting_event_id_' + event_id).addClass("disabled-color");
-      $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
-      alert("The Appointment is NOT AVAILABLE, please select another one!")
-      return
+  $('input[type=radio][name=event_id]').change ->
+    alert 'Changed: ' + @id
+    #selected radio ID
+    return
+
+
+  #$("input:radio[name='event_id']").change ->
+
+  # This code is not working in here as part of it move to _get_events to refresh the advisor _id in the dropdown.
+  # $('input[type=radio][name=event_id]').change ->
+  #   alert("A radio button is checked! --> value:" + @value)
+  #   event_id = $('input:radio:checked').val()
+  #   eventIdGlobal = event_id
+  #
+  #   ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+  #   console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
+  #   if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+  #     # the codes below need to be kept..
+  #     advisorType = $("#advisor-" + @value).data('advisor-type')
+  #     console.log("advisorType: " + advisorType)
+  #     $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+  #     advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+  #     $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+  #     return
+  #   else
+  #     $('#coaching_meeting_event_id_' + event_id).addClass("disabled-color");
+  #     $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+  #     alert("The Appointment is NOT AVAILABLE, please select another one!")
+  #     return
 
     # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
     #     $("#meeting-submit").prop("disabled", true)
@@ -272,7 +283,7 @@ $(document).ready ->
   nbsp = '&nbsp'
   $('#coaching_meeting_subjects').empty()
   $.each data, (index) ->
-    $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+    $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'form-check-input primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
     return
   # $('#study_resources').empty()
   # $.each dataResources, (index) ->
@@ -320,7 +331,7 @@ $(document).ready ->
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
-      $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+      $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'form-check-input primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
   #$('#EventsTable').show()  ## change this on 6/27/2022 to test the datea

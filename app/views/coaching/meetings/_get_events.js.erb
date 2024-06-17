@@ -30,4 +30,15 @@ $(document).ajaxComplete(function(){
     return;
   }
 
+  $('input[type=radio][name=event_id]').change(function() {
+    var value = $("input[name='event_id']:checked").val();
+    //alert("A radio is clicked in Get_events module! + value: " + value);
+    advisorType = $("#advisor-" + value).data('advisor-type')
+    //console.log("advisorType: " + advisorType)
+    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+    advisorID = $("#advisor-" + value).data('advisor-' + value)
+    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+
+  });
+
 });

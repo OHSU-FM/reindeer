@@ -1,43 +1,56 @@
 <br />
 <h4>Create Random Appointments</h4>
+
 <div class="card">
   <div class="card-body card-body-color2">
     <%= form_tag(create_random_appointments_events_path, method: 'get', remote: true) do %>
-      <%= label_tag :Advisor %>
-      <% if @advisor.nil? %>
-        <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: params[:id]) %><br />
-      <% else %>
-        <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: @advisor.id) %><br />
-      <% end %>
 
-      <%= label_tag "Time Slot by Mins:" %>
-      <select name="time_slot" id="time_slot">
-          <option value="30">30</option>
-          <option value="45" selected>45</option>
-          <option value="60">60</option>
-      </select><br />
-
-      <input type="hidden" name="count" value="1" />
-      <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="control-group" id="fields">
-           <label class="control-label" for="field1">Create Start Dates</label>
-           <div class="controls" id="profs">
-             <div class="input-append">
-               <%= label_tag "Weekly Recurrences" %>
-               <%= select_tag "weekly_recurrences1", options_for_select([*0..12]) %>
-
-               <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local"/>
-               <button id="b1" onClick="addFormField()" class="btn btn-info btn-sm" type="button">Add Date</button>
-
-             </div>
-             <br /><b>Please Click on 'Add Date' button to add another date.</b>
-           </div>
+    <div class="form-group">
+      <div class="row mb-0">
+        <%= label_tag :Advisor, nil, class: "control-label col-md-2 right-label" %>
+        <div class="col-sm-4">
+          <% if @advisor.nil? %>
+            <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: params[:id]), include_blank: "---", required: true, class: "form-select" %>
+          <% else %>
+            <%= select_tag :advisor, options_for_select(@advisors.collect{|s| [s["name"], s["id"]]}, selected: @advisor.id), include_blank: "---", required: true, class: "form-select" %>
+          <% end %>
         </div>
       </div>
+
+      <div class="row mb-0">
+        <%= label_tag "Time Slot by Mins", nil, class: "control-label col-md-2 right-label" %>
+        <div class="col-sm-2">
+          <%= select_tag :time_slot, options_for_select(["15", "30", "45", "60"], selected: '45'),  include_blank: "---", required: true, class: "form-select" %>
+        </div>
       </div>
-      <%= submit_tag "Go" %>
+      <hr>
+      <% for i in 1..3 do %>
+        <div class="row mb-0">
+          <%= label_tag "Weekly Recurrences#{i}", nil, class: "control-label col-md-2 right-label" %>
+          <div class="col-sm-4">
+            <%= select_tag "weekly_recurrences#{i}", options_for_select([*0..12]), class: "form-select" %>
+          </div>
+        </div>
+        <div class="row mb-0">
+          <label class="control-label col-md-2 right-label">Start Date<%= i %> <i class="fa fa-calendar"></i> </label>
+          <div class="col-sm-4">
+            <input type="text" class="flatpickr flatpickr-input active form-control" id="rstartDate<%= i %>", name="rstartDate<%= i %>" placeholder="Select Start Date/Time..">
+          </div>
+        </div>
+        <hr>
+
+      <%  end %>
+      <div class="row mb-0">
+        <div class="col-md-2">
+        </div>
+        <div class="col-sm-6">
+          <%= submit_tag "Submit", class: "btn btn-primary"%>
+        </div>
+      </div>
     <% end %>
+
   </div>
 </div>
 <div id="appt-table"></div>
+
+<div id="success-flash"></div>

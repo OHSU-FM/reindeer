@@ -125,8 +125,10 @@ def process_tab_sheet(permission_group_id, course_code, component, sub_component
   for r in 1..last_row do
     row = Hash[[header, sheet[r]].transpose]
     row_hash = {}
-    if !row["sid"].to_s.include? "U00"
+    if !row["sid"].to_s.include? "U00" and row["sid"].to_s != ""
       formatted_sid = format('U%08d', row["sid"])
+    else
+      return
     end
 
     user = User.find_by(sid: formatted_sid)
@@ -249,7 +251,7 @@ end
           break
         else
           temp_hash[row[0]] = row[1]
-          @log_data.push "row #{r.to_s}= " + row[0] + " --> " + row[1].to_s
+          @log_data.push "row #{r.to_s}= " + row[0].to_s + " --> " + row[1].to_s
         end
       end
       temp_array = []

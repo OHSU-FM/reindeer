@@ -64,11 +64,11 @@ appointments = []
 next = 1;
 
 window.addFormField = ->
-  addto = "#startDate" + next;
+  addto = "#rstartDate" + next;
   next = next + 1;
   newIn = '<br />' +
   '<label for="Weekly_Recurrences">Weekly recurrences</label>&nbsp;' +
-  '<select name="weekly_recurrences' + next + '" id="weekly_recurrences' + next + '">' +
+  '<select name="weekly_recurrences' + next + '" id="weekly_recurrences' + next + '"> class="form-select"' +
   '<option value="0">0</option>' +
   '<option value="1">1</option>' +
   '<option value="2">2</option>' +
@@ -83,7 +83,7 @@ window.addFormField = ->
   '<option value="11">11</option>' +
   '<option value="12">12</option>' +
   '</select>&nbsp;' +
-  '<input type="datetime-local" autocomplete="off" class="span3" id="startDate' + next + '" name="startDate' + next +
+  '<input type="datetime-local" autocomplete="off" class="span3" id="rstartDate' + next + '" name="rstartDate' + next +
   '">' + '<button id="b'+ next + '"onClick="$(this).prev().remove();$(this).prev().remove();$(this).prev().remove();$(this).remove();" class="btn btn-warning btn-sm" type="button">Remove&nbsp;</button>';
   newInput = $(newIn);
   #console.log(addto);
@@ -104,6 +104,65 @@ roundMinutes = (date) ->
   date.setMinutes 0
   return date
 
+window.addEventListener 'load', ->
+  flatpickr '#rstartDate1',
+     allowInput: true,
+     enableTime: true,
+     # defaultDate: roundMinutes(new Date()),
+     minTime: "07:00",
+     maxTime: "20:00",
+     altInput: true,
+     altFormat: "F j, Y h:i K",
+     dateFormat: "Y-m-d h:i K",
+     minuteIncrement: 30,
+     plugins: [
+       new confirmDatePlugin()
+     ]
+    onChange: (dates, dateStr, instance) ->
+      flatPickerChange dates, dateStr, instance
+      return
+    $('#endDate1').val($('#startDate1').val())
+  return
+
+window.addEventListener 'load', ->
+  flatpickr '#rstartDate2',
+     allowInput: true,
+     enableTime: true,
+     # defaultDate: roundMinutes(new Date()),
+     minTime: "07:00",
+     maxTime: "20:00",
+     altInput: true,
+     altFormat: "F j, Y h:i K",
+     dateFormat: "Y-m-d h:i K",
+     minuteIncrement: 30,
+     plugins: [
+       new confirmDatePlugin()
+     ]
+    onChange: (dates, dateStr, instance) ->
+      flatPickerChange dates, dateStr, instance
+      return
+    $('#endDate1').val($('#startDate1').val())
+  return
+
+window.addEventListener 'load', ->
+  flatpickr '#rstartDate3',
+     allowInput: true,
+     enableTime: true,
+     # defaultDate: roundMinutes(new Date()),
+     minTime: "07:00",
+     maxTime: "20:00",
+     altInput: true,
+     altFormat: "F j, Y h:i K",
+     dateFormat: "Y-m-d h:i K",
+     minuteIncrement: 30,
+     plugins: [
+       new confirmDatePlugin()
+     ]
+    onChange: (dates, dateStr, instance) ->
+      flatPickerChange dates, dateStr, instance
+      return
+    $('#endDate1').val($('#startDate1').val())
+  return
 window.addEventListener 'load', ->
   flatpickr '#startDate1',
      allowInput: true,
@@ -172,7 +231,6 @@ $(document).ready ->
         flatPickerChange dates, dateStr, instance
         return
     return
-
 
   yyyy = $("#start_date_start_date_1i").val()
   mm = $("#start_date_start_date_2i").val()

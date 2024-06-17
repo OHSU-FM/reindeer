@@ -20,8 +20,8 @@ $('#SaveAll').click(function () {
      //window.location = '/events/create_batch_appointments';
      $('#appt-table').empty()
      var msgDiv = '<div id="msg-flash" class="success-flash" ><br /><br /><h5>Apppointments were successfully created!</h5></div>';
-     $('#success-flash').append(msgDiv).html();
-     $('#success-flash').delay(4000).fadeOut('slow');
+     $('#success-flash2').append(msgDiv).html();
+     $('#success-flash2').delay(4000).fadeOut('slow');
    },
    error: function(request,error) {
      alert("Request Reviews: "+JSON.stringify(request));

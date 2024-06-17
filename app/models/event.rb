@@ -9,7 +9,7 @@ class Event < ApplicationRecord
     i = 1
     for c in 1..count+1
       no_of_weeks = recur_hash["weekly_recurrences#{c}"]
-      start_date = start_date_hash["startDate#{c}"]
+      start_date = start_date_hash["rstartDate#{c}"]
 
       if start_date.to_s != "" and no_of_weeks.to_i != 0
         for w in 0..no_of_weeks.to_i
