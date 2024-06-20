@@ -1,39 +1,37 @@
 <br />
 <div class="card">
   <div class="card-body">
-    <div class="d-flex">
-      <%= form_with(url: courses_path, method: :get) do |form| %>
-          <%= form.label :category, "Category:", class: "block mb-2" %>&nbsp;
-          <%= form.select :category, options_for_select(@category, selected: params[:category]), include_blank: true %>&nbsp;
-          <%= form.label :department, "Department:", class: "block mb-2" %>&nbsp;
-          <%= form.select :department, options_for_select(@departments, selected: params[:department]), include_blank: true %>&nbsp;
 
-        &nbsp;
-          <div class="form-check form-check-inline">
-              <%= label_tag "Lottery" %>&nbsp;
-              <%= check_box_tag 'lottery', true, params[:lottery]  %> &nbsp;
-              <%= label_tag  "Rural" %>&nbsp;
-              <%= check_box_tag 'rural', true, params[:rural] %> &nbsp;
-              <%= label_tag  "Continuity" %>&nbsp;
-              <%= check_box_tag 'continuity', true, params[:continuity] %> &nbsp;
-              <%= label_tag  "Prerequisites" %>&nbsp;
-              <%= check_box_tag 'prerequisites', true, params[:prerequisites] %> &nbsp;
+        <%= form_with(url: courses_path, method: :get) do |form| %>
+            <div class="input-group">
+               <span class="input-group-text "><b><i>Category</i></b></span>
+                <%= form.select_tag :category, options_for_select(@category, selected: params[:category]), include_blank: true, class: "form-select", prompt: "Please Select a Category" %>&nbsp;
+                <span class="input-group-text"><strong><i>Department</i></strong></span>
+                <%= form.select_tag :department, options_for_select(@departments, selected: params[:department]), include_blank: true, class: "form-select", prompt: "Please Select a Department" %>&nbsp;
+                 <div class="form-check form-check-inline">
+                     <%= label_tag "Lottery" %>&nbsp;
+                     <%= check_box_tag 'lottery', true, params[:lottery]  %> &nbsp;
+                     <%= label_tag  "Rural" %>&nbsp;
+                     <%= check_box_tag 'rural', true, params[:rural] %> &nbsp;
+                     <%= label_tag  "Continuity" %>&nbsp;
+                     <%= check_box_tag 'continuity', true, params[:continuity] %> &nbsp;
+                     <%= label_tag  "Prerequisites" %>&nbsp;
+                     <%= check_box_tag 'prerequisites', true, params[:prerequisites] %> &nbsp;
+                 </div>
+                 &nbsp;
+                 <%= form.submit 'Submit', class: "btn btn-primary" %>
+                 &nbsp;
+                 &nbsp;
+                 <%= form_with(url: courses_path, method: :get) do |form| %>
 
+                      <span class="input-group-text ">Search by Course Name</span>
+                       <%= form.text_field :course_name, class: "form-control" %>&nbsp;
+                       <%= form.submit 'Search', class: "btn btn-primary" %>
 
-          </div>
-          &nbsp;
-          <%= form.submit 'Submit', class: "btn btn-primary" %>
-      <% end %>
-      &nbsp;
-      &nbsp;
-      <%= form_with(url: courses_path, method: :get) do |form| %>
-          <%= form.label :course_name, "Search by Course Name:", class: "block mb-2" %>&nbsp;
-          <%= form.text_field :course_name %>&nbsp;
-          <%= form.submit 'Search', class: "btn btn-primary" %>
-      <% end %>
-    </div>
-
-  </div>
+                 <% end %>
+            </div>
+        <% end %>
+      </div>
 </div>
 <br />
 <% if !@courses.empty? %>

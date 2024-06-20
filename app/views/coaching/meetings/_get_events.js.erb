@@ -13,10 +13,13 @@ var calendlyAppts = '<div id="calendlyAppts" ><br /><br />' +
     '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month2.toString() + '" target="_blank">Calendly July Appointments</a> <br />' +
     '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month3.toString() + '" target="_blank">Calendly August Appointments</a> </div>'
 
+var calendlyApptsLauren = '<div id="calendlyAppts" ><br /><br />' +
+                          '<a href="https://calendly.com/sigman1/oasis-student-meeting"' +
+                          '" target="_blank">Calendly August Appointments</a> </div>';
 
 var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
-if (tr_length == 0 && !advisor_name.includes("Bailey")){
+if (tr_length == 0 && !advisor_name.includes("Bailey") && !advisor_name.includes("Lauren")){
   $("#meeting-submit").prop("disabled", true);
   alert('Please select another advisor that has appointments!!');
 
@@ -26,9 +29,17 @@ $(document).ajaxComplete(function(){
   console.log("tr_length: " + tr_length);
   var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
   if (advisor_name.includes("Bailey")) {
-    $('#calendly-events').append(calendlyAppts).htm1();
+    $('#calendly-events').empty();
+    $('#calendly-events').append(calendlyAppts);
     return;
   }
+  else {
+    if (advisor_name.includes("Lauren")) {
+          $('#calendly-events').empty();
+          $('#calendly-events').append(calendlyApptsLauren);
+          return;
+    }
+}
 
   $('input[type=radio][name=event_id]').change(function() {
     var value = $("input[name='event_id']:checked").val();

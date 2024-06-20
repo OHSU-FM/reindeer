@@ -1,5 +1,5 @@
 class AdvisorsController < ApplicationController
-  before_action :set_advisor, only: [:show, :edit, :update, :destroy]
+  before_action :set_advisor, :set_resources, only: [:show, :edit, :update, :destroy]
   respond_to :html, :json, :js
   # GET /advisors
   # GET /advisors.json
@@ -15,10 +15,12 @@ class AdvisorsController < ApplicationController
   # GET /advisors/new
   def new
     @advisor = Advisor.new
+    @advisor_types = Advisor.all.pluck(:advisor_type).uniq.sort
   end
 
   # GET /advisors/1/edit
   def edit
+        @advisor_types = Advisor.all.pluck(:advisor_type).uniq.sort
   end
 
   # POST /advisors
@@ -71,5 +73,9 @@ class AdvisorsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def advisor_params
       params.require(:advisor).permit(:advisor_type, :name, :email, :status, :title, :specialty)
+    end
+
+    def set_resources
+
     end
 end

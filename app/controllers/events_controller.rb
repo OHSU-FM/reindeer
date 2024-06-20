@@ -165,6 +165,7 @@ class EventsController < ApplicationController
   def save_all_random
 
     @appointments = JSON.parse(params[:appointments])
+
     @appointments.each do |appointment|
       data = appointment.split("|")
       start_date = hf_format_datetime(data[0])
