@@ -1,6 +1,5 @@
 </br>
 <%= simple_form_for(@advisor) do |f| %>
-  <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
   <div class="card mx-auto" style="width: 75%;">
     <div class="card-header"><h5><%= @card_header %></h5></div>
@@ -10,39 +9,38 @@
           <div class="row mb-0">
             <%= f.label :advisor_type, class: "col-sm-2 control-label right-label" %>
             <div class="col-sm-6">
-              <%= f.select_tag :advisor_type, options_for_select(@advisor_types, selected: @advisor.advisor_type), requeired: true,  prompt: "Please Select an Advisor Type",
-                class: "form-select" %>
+               <%= f.input_field :advisor_type, collection: @advisor_types, selected: @advisor.advisor_type, requeired: true,  prompt: "Please Select an Advisor Type",
+                 class: "form-select" %>
             </div>
           </div>
-
           <div class="row mb-0">
             <%= f.label :name, class: "col-sm-2 control-label right-label"%>
             <div class="col-sm-6">
-              <%= f.input_field :name, class: "form-control" %>
+              <%= f.text_field :name, class: "form-control" %>
             </div>
           </div>
           <div class="row mb-0">
             <%= f.label :email, class: "col-sm-2 control-label right-label"%>
             <div class="col-sm-6">
-              <%= f.input_field :email, class: "form-control" %>
+              <%= f.text_field :email, class: "form-control" %>
             </div>
           </div>
           <div class="row mb-0">
             <%= f.label :status, class: "col-sm-2 control-label right-label"%>
             <div class="col-sm-6">
-              <%= f.select_tag :status, options_for_select(["Active", "Inactive"]),  class: "form-select" %>
+              <%= f.input_field :status, collection: ["Active", "Inactive"],  class: "form-select" %>
             </div>
           </div>
           <div class="row mb-0">
             <%= f.label :title, class: "col-sm-2 control-label right-label" %>
             <div class="col-sm-6">
-              <%= f.input_field :title, class: "form-control" %>
+              <%= f.text_field :title, class: "form-control" %>
             </div>
           </div>
           <div class="row mb-0">
             <%= f.label :specialty, class: "col-sm-2 control-label right-label" %>
             <div class="col-sm-6">
-              <%= f.input_field :specialty, class: "form-control" %>
+              <%= f.text_field :specialty, class: "form-control" %>
             </div>
           </div>
 

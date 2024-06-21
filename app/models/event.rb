@@ -7,7 +7,7 @@ class Event < ApplicationRecord
   def self.reformat_startDate(start_date_hash, recur_hash, time_slot, count)
     date_hash = {}
     i = 1
-    for c in 1..count+1
+    for c in 1..count
       no_of_weeks = recur_hash["weekly_recurrences#{c}"]
       start_date = start_date_hash["rstartDate#{c}"]
 
@@ -18,6 +18,7 @@ class Event < ApplicationRecord
         end
       else
         date_hash.store("Date #{i}", start_date.to_datetime.utc.strftime("%m/%d/%Y %T %p")) if start_date.to_s != ""
+        i += 1
       end
     end
     return date_hash

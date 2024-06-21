@@ -99,6 +99,7 @@ class CoursesController < ApplicationController
       @courses = Course.where(category: 'Core').
        select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
       @courses = @courses.map(&:attributes)
+
     end
 
     def get_params

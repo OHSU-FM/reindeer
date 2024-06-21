@@ -2,12 +2,12 @@
 <div class="card">
   <div class="card-body">
 
-        <%= form_with(url: courses_path, method: :get) do |form| %>
+        <%= simple_form_for(courses_path, method: :get) do |form| %>
             <div class="input-group">
                <span class="input-group-text "><b><i>Category</i></b></span>
-                <%= form.select_tag :category, options_for_select(@category, selected: params[:category]), include_blank: true, class: "form-select", prompt: "Please Select a Category" %>&nbsp;
+                <%= select_tag :category,  options_for_select(@category), selected: params[:category], class: "form-select", prompt: "Please Select a Category" %>&nbsp;
                 <span class="input-group-text"><strong><i>Department</i></strong></span>
-                <%= form.select_tag :department, options_for_select(@departments, selected: params[:department]), include_blank: true, class: "form-select", prompt: "Please Select a Department" %>&nbsp;
+                <%= select_tag :department,  options_for_select(@departments), selected: params[:department], class: "form-select", prompt: "Please Select a Department" %>&nbsp;
                  <div class="form-check form-check-inline">
                      <%= label_tag "Lottery" %>&nbsp;
                      <%= check_box_tag 'lottery', true, params[:lottery]  %> &nbsp;
@@ -19,7 +19,7 @@
                      <%= check_box_tag 'prerequisites', true, params[:prerequisites] %> &nbsp;
                  </div>
                  &nbsp;
-                 <%= form.submit 'Submit', class: "btn btn-primary" %>
+                 <%= submit_tag 'Submit', class: "btn btn-primary" %>
                  &nbsp;
                  &nbsp;
                  <%= form_with(url: courses_path, method: :get) do |form| %>

@@ -146,15 +146,16 @@ class EventsController < ApplicationController
       # gahter up all the startDates in the params controller
       params_hash = params.as_json.to_hash
       startDates = params_hash.map{|key, val| val if key.include? "rstartDate"}.compact  #
-      count = params_hash.count
+      count = startDates.compact_blank.count
       recur_hash = {}
       start_date_hash = {}
+
       for c in 1..count
         recur_hash["weekly_recurrences#{c}"] = params_hash["weekly_recurrences#{c}"]
         start_date_hash["rstartDate#{c}"] = params_hash["rstartDate#{c}"]
       end
       @appointments = Event.reformat_startDate(start_date_hash, recur_hash, @time_slot, count)
-
+      
       respond_to do |format|
         #format.html
         format.js { render action: 'display_random_appointments', status: 200 }
