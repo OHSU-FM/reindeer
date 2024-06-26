@@ -2,6 +2,7 @@ class CoursesController < ApplicationController
   layout 'full_width_csl'
   before_action :authenticate_user!
   before_action :set_resources
+  include CompetenciesHelper
 
   # GET /courses or /courses.json
   def index
@@ -12,7 +13,8 @@ class CoursesController < ApplicationController
       @courses = Course.where("category like ? and department like ?", params_filter2["category"], params_filter2["department"]).where(params_filter)
         .select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery,
          :rural, :continuity, :prerequisites,  :duration, :credits, :course_purpose_statement).order(:course_number)
-      @courses = @courses.map(&:attributes)
+      #@courses_hash = @courses.map(&:attributes)
+      #@course_col_names = Course.column_names
     elsif params[:course_name].present?
       if params[:course_name].include? ":"
         query_string = params[:course_name].split(":")
@@ -23,7 +25,8 @@ class CoursesController < ApplicationController
            select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
 
       end
-      @courses = @courses.map(&:attributes)
+     #@courses_hash = @courses.map(&:attributes)
+
     end
   end
 
@@ -38,6 +41,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/1/edit
   def edit
+     @course = Course.find(params[:id])
   end
 
   # POST /courses or /courses.json
@@ -98,7 +102,8 @@ class CoursesController < ApplicationController
       @departments = ["All"] + Course.all.pluck(:department).uniq.sort
       @courses = Course.where(category: 'Core').
        select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
-      @courses = @courses.map(&:attributes)
+      #@courses_hash = @courses.map(&:attributes)
+      #@course_col_names = Course.column_names
 
     end
 

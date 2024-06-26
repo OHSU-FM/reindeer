@@ -2,16 +2,55 @@
 <%= simple_form_for(@course_schedule) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <div class="card mx-auto" style="width: 75%;">
+    <div class="card-header"><h5><%= @course_schedule_header %></h5></div>
+    <div class="card-body">
+      <div class="form-inputs">
 
-  <div class="form-inputs">
-    <%= f.input :course_schedule %>
-    <%= f.input :start_date %>
-    <%= f.input :end_date %>
-    <%= f.input :no_of_seats %>
-    <%= f.input :comment %>
+        <div class="row mb-0">
+          <%= f.label "Course Id", class: "col-sm-2 control-label right-label" %>
+          <div class="col-sm-6">
+             <%= f.input_field :course_id, required: true, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row mb-0">
+          <%= f.label "Course Schedule", class: "col-sm-2 control-label right-label" %>
+          <div class="col-sm-6">
+             <%= f.input_field :course_schedule, required: true, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row mb-0">
+          <label class="control-label col-md-2 right-label">Start Date <i class="fa fa-calendar"></i> </label>
+          <div class="col-sm-6">
+            <%= f.text_field :start_date, required: true, class: "flatpickr flatpickr-input active form-control", required: true, id: "start_date", name: "start_date", placeholder: "Select end Date/Time.."%>
+        </div>
+        </div>
+        <div class="row mb-0">
+          <label class="control-label col-md-2 right-label">End Date <i class="fa fa-calendar"></i> </label>
+          <div class="col-sm-6">
+             <%= f.text_field :end_date, required: true, class: "flatpickr flatpickr-input active form-control", required: true, id: "end_date", name: "end_date", placeholder: "Select end Date/Time.."%>
+          </div>
+        </div>
+        <div class="row mb-0">
+          <%= f.label "No of Seats", class: "col-sm-2 control-label right-label" %>
+          <div class="col-sm-6">
+             <%= f.input_field :no_of_seats, required: true, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row mb-0">
+          <%= f.label "Comment", class: "col-sm-2 control-label right-label" %>
+          <div class="col-sm-8">
+             <%= f.input_field :comment, required: true, class: "form-control" %>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, class: "btn btn-primary" %>
+      </div>
+    </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
 <% end %>

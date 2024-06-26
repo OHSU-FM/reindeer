@@ -1,10 +1,10 @@
-<h1>Editing course schedule</h1>
+<% @course_schedule_header = "Editing Course Schedule" %>
 
 <%= render "form", course_schedule: @course_schedule %>
 
-<br>
-
-<div>
-  <%= link_to "Show this course schedule", @course_schedule %> |
-  <%= link_to "Back to course schedules", course_schedules_path %>
+<div class="card mx-auto" style="width: 75%;">
+  <div class="card-body">
+    <%= link_to "Show this course schedule", @course_schedule %> |
+    <%= link_to "Back to course schedules", course_schedules_path %>
+  </div>
 </div>

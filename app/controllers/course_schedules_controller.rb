@@ -4,11 +4,12 @@ class CourseSchedulesController < ApplicationController
 
   # GET /course_schedules or /course_schedules.json
   def index
-
     if params[:course_id].present?
-      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now).select(:id, :course_id, :course_schedule, :start_date, :end_date,
-                          :no_of_seats, :comment)
+      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now).order(:course_schedule)
       @course_detail = Course.where(id: params[:course_id]).map(&:attributes)
+    elsif session[:course_id].present?
+      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", session[:course_id], DateTime.now).order(:course_schedule)
+      @course_detail = Course.where(id: session[:course_id]).map(&:attributes)
     end
     respond_to do |format|
       format.html
@@ -16,22 +17,29 @@ class CourseSchedulesController < ApplicationController
     end
   end
 
-  # GET /course_schedules/1 or /course_schedules/1.json
+  # GET /course_schedules/1 or /course_scheedu
+  # GET /course_schedules/1.json
   def show
   end
 
   # GET /course_schedules/new
   def new
     @course_schedule = CourseSchedule.new
+    @course_schedule.course_id = params[:course_id]
+
   end
 
   # GET /course_schedules/1/edit
   def edit
+    #@course_schedule = CourseSchedule.find(params[:id])
   end
 
   # POST /course_schedules or /course_schedules.json
   def create
     @course_schedule = CourseSchedule.new(course_schedule_params)
+    @course_schedule.start_date = params[:start_date]
+    @course_schedule.end_date   = params[:end_date]
+    session[:course_id] = @course_schedule.course_id
 
     respond_to do |format|
       if @course_schedule.save
@@ -59,6 +67,7 @@ class CourseSchedulesController < ApplicationController
 
   # DELETE /course_schedules/1 or /course_schedules/1.json
   def destroy
+    session[:course_id] = @course_schedule.course_id
     @course_schedule.destroy!
 
     respond_to do |format|
@@ -75,6 +84,6 @@ class CourseSchedulesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_schedule_params
-      params.require(:course_schedule).permit(:course_schedule, :start_date, :end_date, :no_of_seats, :comment)
+      params.require(:course_schedule).permit(:course_id, :course_schedule, :start_date, :end_date, :no_of_seats, :comment)
     end
 end

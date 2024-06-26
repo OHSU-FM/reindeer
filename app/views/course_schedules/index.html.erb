@@ -22,30 +22,33 @@
     </table>
   </div>
   <div class="col-md-6">
-    <h5> Course Schedules <%= link_to 'New Course Schedule', new_course_schedule_path %></h5>
+    <h5> Course Schedules <%= link_to 'New Course Schedule', new_course_schedule_path(course_id: @course_detail.first["id"]), target: :_blank %></h5>
     <% if !@course_schedules.empty? %>
-      <% @course_schedules = @course_schedules.map(&:attributes) %>
+      <% @temp_schedules = @course_schedules.map(&:attributes) %>
       <table class="responsive nowrap table table-hover table2-striped">
         <thead>
           <tr>
-            <% @course_schedules.first.keys.each do |key| %>
+            <% @temp_schedules.first.keys.each do |key| %>
               <th><%= key.titleize %> </th>
             <% end %>
+            <th>Action<th>
           </tr>
         </thead>
-        <% @course_schedules.each do |sched| %>
+        <% @course_schedules.each do |course_schedule| %>
           <tr>
-            <% sched.each do |data| %>
-              <td>
-                <% if data.second.to_s == '777' %>
-                  >-
-                <% elsif data.second.to_s == '888' or data.second.to_s == '999'%>
-                  **
-                <% else %>
-                  <%= data.second %>
-                <% end %>
-              </td>
-            <% end %>
+            <td style="text-align: center"><%= course_schedule.id %></td>
+            <td style="text-align: center"><%= course_schedule.course_id %></td>
+            <td><%= course_schedule.course_schedule %></td>
+            <td><%= course_schedule.start_date %></td>
+            <td><%= course_schedule.end_date %></td>
+            <td style="text-align: center"><%= course_schedule.no_of_seats %></td>
+            <td><%= course_schedule.comment %></td>
+            <td><%= course_schedule.created_at %></td>
+            <td><%= course_schedule.updated_at %></td>
+            <td>
+                <%= link_to 'Edit', edit_course_schedule_path(course_schedule) %> /
+                <%= link_to 'Destroy', course_schedule, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
           </tr>
         <% end %>
       </table>
