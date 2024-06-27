@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       get 'batch_delete', action: :batch_delete, controller: 'events', to: 'events#batch_delete'
       get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
       get 'get_events_by_advisor', action: :get_events_by_advisor, controller: 'events', to: 'events#get_events_by_advisor'
+      post 'calendly_click', action: :calendly_click, controller: 'events', to: 'events#calendly_click'
     end
   end
   #get 'student_assessments/index'

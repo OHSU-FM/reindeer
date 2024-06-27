@@ -1,25 +1,27 @@
 
-$('#All-Events').html("<%= j render partial: 'coaching/students/all_events', locals: { events: @events } %>");
+$('#All-Events').html("<%= j render partial: 'coaching/students/all_events', locals: { events: @events} %>");
 console.log ("inside get_events!");
 var now = new Date();
 var month = now.getMonth();
 var month1 = month+1 < 10 ? ("0" + (month+1).toString()) : month;
-var month2 = month+2 < 10 ? ("0" + (month+2).toString()) : month;
-var month3 = month+3 < 10 ? ("0" + (month+3).toString()) : month;
+// var month2 = month+2 < 10 ? ("0" + (month+2).toString()) : month;
+// var month3 = month+3 < 10 ? ("0" + (month+3).toString()) : month;
 
 // console.log ("mon=" + month + " mon1=" + month1 + " mon2=" + month2 + " mon3=" + month3)
-var calendlyAppts = '<div id="calendlyAppts" ><br /><br />' +
+var calendlyAppts = '<div id="calendlyAppts" >' +
   '<i><b>This Faculty Advisor uses Calendly for booking appointments. ' +
-  'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' + 
-   '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month1.toString() + '" target="_blank">Calendly June Appointments</a> <br />' +
-    '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month2.toString() + '" target="_blank">Calendly July Appointments</a> <br />' +
-    '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month3.toString() + '" target="_blank">Calendly August Appointments</a> </div>'
+  'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' +
+   '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month1.toString() +
+    '" onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> <br />'
+    // +
+    // '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month2.toString() + '" target="_blank">Calendly July Appointments</a> <br />' +
+    // '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month3.toString() + '" target="_blank">Calendly August Appointments</a> </div>'
 
-var calendlyApptsLauren = '<div id="calendlyAppts" ><br /><br />' +
+var calendlyApptsLauren = '<div id="calendlyAppts" >' +
                           '<i><b>This Faculty Advisor uses Calendly for booking appointments. ' +
                           'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' +
                           '<a href="https://calendly.com/sigman1/oasis-student-meeting"' +
-                          '" target="_blank">Calendly Appointments</a> </div>';
+                          'onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> </div>';
 
 var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
@@ -28,6 +30,37 @@ if (tr_length == 0 && !advisor_name.includes("Bailey") && !advisor_name.includes
   alert('Please select another advisor that has appointments!!');
 
 }
+
+function calendlyClick(e) {
+    console.log('Click Calendly link!')
+    var fullName = document.getElementById('calendly_data').dataset.name//$("#calendly_data").data("studentFullName");
+    var studentEmail = $("#calendly_data").data("email");
+    var advisorName = $('#coaching_meeting_advisor_id :selected').text();
+    console.log("fullName: " + fullName)
+    $('#newMeetingModal').modal('hide');
+    // e.preventDefault();
+    $.ajax({
+       type: 'POST',
+       url: '/events/calendly_click',
+       data: {full_name: fullName, email: studentEmail, advisor_name: advisorName},
+       dataType: 'json',
+       success: function(data) {
+           console.log('get_events: Ajax success! ==> ' + data);
+       },
+       error: function(requrest, error) {
+         console.log('_get_events ajax request error: ' + JSON.stringify(request));
+       }
+     })
+}
+
+// $(document).ready(function() {
+//     $("#calendlyAppts a").click(function(){
+//         alert("Click on Calendly Link!")
+//         });
+//         return false;
+//     });
+// });
+
 $(document).ajaxComplete(function(){
   console.log("Inside get_events: AjaxComplete is called!");
   console.log("tr_length: " + tr_length);
@@ -43,7 +76,7 @@ $(document).ajaxComplete(function(){
           $('#calendly-events').append(calendlyApptsLauren);
           return;
     }
-}
+  }
 
   $('input[type=radio][name=event_id]').change(function() {
     var value = $("input[name='event_id']:checked").val();

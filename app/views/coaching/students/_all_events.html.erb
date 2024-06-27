@@ -1,5 +1,10 @@
+<div id="calendly_data"
+   data-name="<%= current_user.full_name %>"
+   data-email="<%= current_user.email %>">
+</div>
 
-<% if !@events.nil? %>
+
+<% if !events.nil? %>
   <table class="responsive nowrap table table-hover" id="EventsTable">
       <thead>
         <tr>
@@ -12,7 +17,7 @@
         </tr>
       </thead>
     <tbody>
-    <% @events.each do |event| %>
+    <% events.each do |event| %>
       <% if event.description.to_s != "" %>
         <tr class="<%= hf_row_background_color (event.description) %>">
           <% found = [] %>

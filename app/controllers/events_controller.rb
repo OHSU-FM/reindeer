@@ -112,6 +112,16 @@ class EventsController < ApplicationController
     end
   end
 
+  def calendly_click
+    filename = "#{Rails.root}/log/calendly.log"
+    File.open(filename,"a") do |f|
+      f.write("Calendly clicked - #{params[:full_name]} - #{params[:email]} - #{params[:advisor_name]} - created at " + Time.now.strftime("%m/%d/%Y %H:%M") + "\n")
+    end
+    respond_to do |format|
+      format.json { head :no_content, status: 200 }
+    end
+  end
+
   def create_batch_appointments
 
     if params[:advisor_type].present?
@@ -155,7 +165,7 @@ class EventsController < ApplicationController
         start_date_hash["rstartDate#{c}"] = params_hash["rstartDate#{c}"]
       end
       @appointments = Event.reformat_startDate(start_date_hash, recur_hash, @time_slot, count)
-      
+
       respond_to do |format|
         #format.html
         format.js { render action: 'display_random_appointments', status: 200 }
