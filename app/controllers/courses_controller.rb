@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   layout 'full_width_csl'
   before_action :authenticate_user!
-  before_action :set_resources
+  before_action :set_resources, only: %i[ index show edit update destroy ]
   include CompetenciesHelper
 
   # GET /courses or /courses.json
@@ -32,6 +32,7 @@ class CoursesController < ApplicationController
 
   # GET /courses/1 or /courses/1.json
   def show
+      @course = Course.find(params[:id])
   end
 
   # GET /courses/new
@@ -61,8 +62,12 @@ class CoursesController < ApplicationController
 
   # PATCH/PUT /courses/1 or /courses/1.json
   def update
+    @course = Course.find(params[:id])
+    @course.competencies = params[:compChecked]
+
     respond_to do |format|
       if @course.update(course_params)
+        #@course_changes = @course.previous_changes
         format.html { redirect_to course_url(@course), notice: "Course was successfully updated." }
         format.json { render :show, status: :ok, location: @course }
       else
@@ -93,15 +98,17 @@ class CoursesController < ApplicationController
       params.require(:course).permit(:course_number, :course_name, :content_type, :medhub_course_id, :rural,
         :continuity, :available_through_the_lottery, :department, :course_purpose_statement, :special_notes, :prerequisites,
         :required_prerequisites, :waive_prereq_requirements, :waive_notes, :duration, :site, :weekly_workload, :credits,
-        :course_director, :course_director_email, :course_coordinator, :course_coordinator_email, :competencies)
+        :course_director, :course_director_email, :course_coordinator, :course_coordinator_email, :grading_method, :qualified_assessor, :qualified_assessor_email,
+        :competencies)
+
     end
 
     def set_resources
-      @category = ["All"] + Course.all.pluck(:category).uniq
+      @category ||= ["All"] + Course.all.pluck(:category).uniq
       #@duration = Course.all.pluck(:duration).uniq
-      @departments = ["All"] + Course.all.pluck(:department).uniq.sort
-      @courses = Course.where(category: 'Core').
-       select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
+      @departments ||= ["All"] + Course.all.pluck(:department).uniq.sort
+      @courses ||= Course.where(category: 'Core').
+      select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
       #@courses_hash = @courses.map(&:attributes)
       #@course_col_names = Course.column_names
 
