@@ -120,7 +120,19 @@
             <div class="inner-div">
               <% if !@chart.nil? %>
                 <br /> <br />
-                <%= high_chart("comp_graph", @chart) %>
+                <div class="card">
+                  <div class="card-body">
+                    <%= high_chart("comp_graph", @chart) %>
+                  </div>
+                </div>
+                <% if ['chungp'].include? current_user.username %>
+                  <div class="card">
+                    <div class="card-body card-body-color">
+                      <%= high_chart("comp_remap_graph", @chart_comp_remap) %>
+                    </div>
+                  </div>
+                <% end %>
+                <br />
                 <%= render partial: "collapsible_competencies" %>
                 <% else %>
                   <h4> No Competency/EPA data FOUND! </h4>

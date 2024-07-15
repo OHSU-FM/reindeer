@@ -151,7 +151,6 @@ class CompetenciesController < ApplicationController
 
      @student_badge_info = hf_get_badge_info(@selected_user.id)
 
-
      #if @not_found_cpx
       # @cpx_data = hf_get_cpx(@survey)
      #end
@@ -160,6 +159,7 @@ class CompetenciesController < ApplicationController
   end
 
   def load_competencies(permission_group_id, full_name)
+
     @comp = @comp.map(&:attributes)
 
     @comp_hash3 = hf_load_all_comp2(@comp, 3)
@@ -168,14 +168,17 @@ class CompetenciesController < ApplicationController
     @comp_hash0 = hf_load_all_comp2(@comp, 0)
 
     #-----------------------------------------------------
-    @remap_comp_hash3 = hf_remap_comp(@comp_hash3)
-    #--------------------------------------ta---------------
+    #@remap_comp_hash3 = hf_remap_comp(@comp_hash3)
+    #-----------------------------------------------------
 
     @comp_data_clinical = hf_average_comp2 (@comp_hash3)
 
+    @comp_remap_data_clinical = hf_average_comp2_remap (@comp_hash3)
+
     if [3,5,6,13].include? permission_group_id
-      @comp_class_mean = Competency.load_class_mean(permission_group_id)
-      if @comp_class_mean.nil?
+      @comp_class_mean = Competency.load_class_mean(permission_group_id, "OLD")
+      @comp_remap_class_mean = Competency.load_class_mean(permission_group_id, "NEW")
+      if @comp_class_mean.nil? and @comp_remap_class_mean.nil?
         #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
         @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
         if @comp_unfiltered.empty?
@@ -185,21 +188,30 @@ class CompetenciesController < ApplicationController
           #@comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
           @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
         end
-
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
-        Competency.create_class_mean(@comp_class_mean, permission_group_id)
+        @comp_remap_class_mean = hf_competency_class_mean2_remap(@comp_unfiltered)
+        Competency.create_class_mean(@comp_class_mean, permission_group_id, "OLD")
+        Competency.create_class_mean(@comp_remap_class_mean, permission_group_id, "NEW")
       end
     else
-      @comp_class_mean = Competency.load_class_mean(permission_group_id)
-      if @comp_class_mean.nil?
+      @comp_class_mean = Competency.load_class_mean(permission_group_id, "OLD")
+      @comp_remap_class_mean = Competency.load_class_mean(permission_group_id, "NEW")
+      if @comp_class_mean.nil? and @comp_remap_class_mean.nil?
         #@comp_unfiltered = Competency.where(permission_group_id: permission_group_id).map(&:attributes)
         @comp_unfiltered = Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
-        Competency.create_class_mean(@comp_class_mean, permission_group_id)
+        @comp_remap_class_mean = hf_competency_class_mean2_remap(@comp_unfiltered)
+        Competency.create_class_mean(@comp_class_mean, permission_group_id, "OLD")
+        Competency.create_class_mean(@comp_remap_class_mean, permission_group_id, "NEW")
       end
     end
 
+    #@comp_remap_class_mean = hf_remap_comp(@comp_class_mean)
+
+
     @chart ||= hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
+    @chart_comp_remap ||= hf_create_chart('New Competency', @comp_remap_data_clinical, @comp_remap_class_mean, full_name)
+
     @student_epa ||= hf_epa2(@comp_data_clinical)
 
     @epa_class_mean ||= hf_epa2(@comp_class_mean)

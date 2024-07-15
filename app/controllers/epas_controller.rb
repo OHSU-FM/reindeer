@@ -3,12 +3,13 @@ class EpasController < ApplicationController
   layout 'full_width_csl'
   # GET /epas
   def index
-    if params[:user_id].present?
-      @epas = Epa.where(user_id: params[:user_id].to_i).order(:epa, :submit_date)
+    if params[:uuid].present?
+      #@epas = Epa.where(user_id: params[:user_id].to_i).order(:epa, :submit_date)
+      @epas = User.find_by(uuid: params[:uuid]).epas.order(:epa, :submit_date)
       if !@epas.empty?
         @epas = @epas.map(&:attributes)
         @epa_headers = @epas.first.keys
-      end 
+      end
     end
 
 

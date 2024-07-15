@@ -19,17 +19,24 @@
     <div class="card">
       <div class="card-body card-body-color">
 
-        <div class="control-group" id="fields">
-          <label class="control-label col-sm-3" for="TimeSlot"> Time Slot by Mins</label>
-          <select name="time_slot" id="time_slot"  >
-              <option value="30">30</option>
-              <option value="45" selected>45</option>
-              <option value="60">60</option>
-          </select>
-          <br />
-           <label class="control-label col-sm-3" for="field1">Appointment Date</label>
-            <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
+        <div class="row mb-0" id="fields">
+          <label class="control-label col-md-3 right-label" for="TimeSlot"> Time Slot by Mins</label>
+          <div class="col-sm-6">
+            <select name="time_slot" id="time_slot" class="form-select" >
+                <option value="30">30</option>
+                <option value="45" selected>45</option>
+                <option value="60">60</option>
+            </select>
+          </div>
         </div>
+
+        <div class="row mb-0">
+          <label class="control-label col-md-3 right-label">Appointment Date <i class = "fa fa-calendar "></i></label>
+          <div class="col-sm-6">
+            <input type="text" class="flatpickr flatpickr-input active form-control" id="startDate1", name="startDate1" placeholder="Click here to Select Date..">
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -94,7 +101,6 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body">
 
-
           <% if advisor_type == 'Academic' or advisor_type == "Academic: Step 1 Advising" %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
           <% elsif advisor_type == 'Career'  %>
@@ -130,7 +136,7 @@
       <div class="card-body card-body-color">
         <div class="form-group">
           <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
-          <%= f.text_area :notes, class: "col-sm-6" %>
+          <%= f.text_area :notes, class: "col-sm-6 form-control" %>
         </div>
       </div>
     </div>
@@ -140,7 +146,7 @@
         <div class="form-group">
           <b><%= f.label :subject, "Advisor Meeting Documentation:", class: "control-label col-md-6" %></b>
         </div>
-        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%', required: true %>
+        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%', required: true, class: "form-control" %>
       </div>
     </div>
 

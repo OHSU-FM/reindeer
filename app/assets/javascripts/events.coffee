@@ -173,7 +173,7 @@ window.addEventListener 'load', ->
      altInput: true,
      altFormat: "F j, Y h:i K",
      dateFormat: "Y-m-d h:i K",
-     minuteIncrement: 30,
+     minuteIncrement: 15,
      plugins: [
        new confirmDatePlugin()
      ]
@@ -199,7 +199,7 @@ window.addEventListener 'load', ->
      altInput: true,
      altFormat: "F j, Y h:i K",
      dateFormat: "Y-m-d h:i K",
-     minuteIncrement: 30,
+     minuteIncrement: 15,
      plugins: [
        new confirmDatePlugin()
      ]

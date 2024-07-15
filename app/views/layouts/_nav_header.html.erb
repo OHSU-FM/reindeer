@@ -39,7 +39,7 @@
             </li>
             <li class="nav-item">
               <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
-                <%= link_to '<i style="color:#31a34f;" class="fa fa-book"></i> Course Catalog'.html_safe, courses_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
+                <%= link_to '<i style="color:#31a34f;" class="fa fa-book"></i> Course Catalog'.html_safe, courses_path(), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
             <li class="nav-item">

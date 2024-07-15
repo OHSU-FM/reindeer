@@ -19,9 +19,9 @@ class Competency < ApplicationRecord
      end
   end
 
-  def self.load_class_mean(permission_group_id)
+  def self.load_class_mean(permission_group_id, code)
     today_date = Date.today.to_s
-    file_name = "#{Rails.root}/tmp/class_mean_#{permission_group_id}_#{today_date}.json"
+    file_name = "#{Rails.root}/tmp/class_mean_#{code}_#{permission_group_id}_#{today_date}.json"
     if File.file?(file_name)
       file = File.read(file_name)
       return JSON.parse(file)
@@ -31,9 +31,9 @@ class Competency < ApplicationRecord
 
   end
 
-  def self.create_class_mean(class_mean, permission_group_id)
+  def self.create_class_mean(class_mean, permission_group_id, code)
       today_date = Date.today.to_s
-      write_hash_to_json_file(class_mean, "#{Rails.root}/tmp/class_mean_#{permission_group_id}_#{today_date}.json" )
+      write_hash_to_json_file(class_mean, "#{Rails.root}/tmp/class_mean_#{code}_#{permission_group_id}_#{today_date}.json" )
   end
 
   def self.execute_sql(*sql_array)

@@ -1,6 +1,6 @@
 <br />
 <div class="card">
-  <div class="card-body">
+  <div class="card-body card-body-color">
 
         <%= simple_form_for(courses_path, method: :get) do |form| %>
             <div class="input-group">
@@ -35,11 +35,14 @@
 </div>
 <br />
 <% if !@courses.nil? %>
-  <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5>&nbsp; &nbsp<%= link_to 'New Course', new_course_path %></div>
+  <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5>&nbsp; &nbsp<%= button_to 'New Course', new_course_path, class: "btn btn-sm btn-primary" %></div>
   <table class="table-responsive wrap table table-hover table-striped tableFixHead " id="dttb-courses" >
     <thead class="thead-light">
       <tr>
-        <th>Action</th>
+        <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+          <th>Action</th>
+        <% end %>
+
         <th>ID</th>
         <th>Category</th>
         <th>CourseNumber</th>
@@ -56,10 +59,13 @@
     </thead>
     <% @courses.each do |course| %>
       <tr>
-        <td style="width: 6%">
-            <%= link_to 'Edit', edit_course_path(course), target: '_blank' %> /
-            <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
-        </td>
+        <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+          <td style="width: 6%">
+              <%= link_to 'Edit', edit_course_path(course), target: '_blank' %> /
+              <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        <% end %>
+
         <td><%= course.id %></td>
         <td><%= course.category %></td>
         <td style="width: 5%"> <%= link_to "#{course.course_number}", course_schedules_path(course_id: course.id), target: '_blank' %></td>
