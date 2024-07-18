@@ -208,6 +208,22 @@ window.addEventListener 'load', ->
       return
   return
 
+window.addEventListener 'load', ->
+  flatpickr '#startDateRetro',
+     allowInput: true,
+     enableTime: true,
+     minTime: "07:00",
+     maxTime: "20:00",
+     dateFormat: "Y-m-d h:i K",
+     minuteIncrement: 15,
+     plugins: [
+       new confirmDatePlugin()
+     ]
+    onChange: (dates, dateStr, instance) ->
+      flatPickerChange dates, dateStr, instance
+      return
+
+  return
 
 $(document).ready ->
 

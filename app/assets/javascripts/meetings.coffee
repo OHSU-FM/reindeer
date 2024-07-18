@@ -144,16 +144,27 @@ check_events_deans = () ->
         $(this).parent('tr').css 'background-color', '#B7E9F7'
     return
 #==================================================================================================================
+
 modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
   #$('select.selectAdvisorType option:first').attr('disabled', true);
+  $('#startDateRetro').change ->
+    todayDate = new Date()
+    startDate = new Date(Date.parse($("#startDateRetro").val())) #Date.parse($("#startDateRetro").text())
+    if (startDate > todayDate)
+      # $("#email_notification").prop("disabled", false)
+      $("#email_notification").prop("checked", 'true')
+    else
+      $("#email_notification").prop("checked", false)
+    return
+
   $("#coaching_meeting_advisor_id").prop("disabled", true)
 
   $('#coaching_meeting_advisor_type').change ->
     $("#coaching_meeting_advisor_id").prop("disabled", false)
-    $("#All-Events").empty();
+    $("#All-Events").empty()
     return
 
   $('#coaching_meeting_advisor_id').change ->
