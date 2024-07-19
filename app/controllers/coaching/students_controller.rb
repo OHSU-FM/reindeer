@@ -118,6 +118,13 @@ module Coaching
       end
     end
 
+    def contact_form
+      if params[:message].present?
+        ActionMailer::Base.mail(from: params[:from], to: params[:to], subject: params[:subject], body: params[:message].html_safe, content_type: 'text/html').deliver
+        flash[:send_alert] = "Your email was sent!"
+      end
+    end
+
     def file_download
       if params[:file_name].present?
         private_download params[:file_name]

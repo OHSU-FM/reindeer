@@ -50,8 +50,6 @@ Rails.application.routes.draw do
   get 'wba_graphs/index', to: 'wba_graphs#index'
   get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
 
-
-
   resources :epas
 
   resources :epa_reviews do
@@ -139,6 +137,7 @@ Rails.application.routes.draw do
         post 'search_meetings'
         post 'advisor_reports'
         post 'oasis_graphs'
+        get 'contact_form'
         get  'file_download'
       end
     end

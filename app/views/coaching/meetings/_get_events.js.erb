@@ -23,7 +23,9 @@ var calendlyApptsLauren = '<div id="calendlyAppts" >' +
                           '<a href="https://calendly.com/sigman1/oasis-student-meeting"' +
                           'onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> </div>';
 
-var emailErika = 'If you don’t see any availability, please contact ' + '<a href="mailto:chomina@ohsu.edu">Erika Chomina Lenford.</a>'
+var windowLocation = window.location.pathname.split('/');
+var slug = windowLocation.pop();
+var emailErika = 'If you don’t see any availability, please contact ' + '<a href="/coaching/students/' + slug + '/contact_form" target="_blank">Erika Chomina Lenford.</a> ';
 
 var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
