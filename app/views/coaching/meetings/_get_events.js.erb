@@ -13,9 +13,6 @@ var calendlyAppts = '<div id="calendlyAppts" >' +
   'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' +
    '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month1.toString() +
     '" onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> <br />'
-    // +
-    // '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month2.toString() + '" target="_blank">Calendly July Appointments</a> <br />' +
-    // '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month3.toString() + '" target="_blank">Calendly August Appointments</a> </div>'
 
 var calendlyApptsLauren = '<div id="calendlyAppts" >' +
                           '<i><b>This Faculty Advisor uses Calendly for booking appointments. ' +
@@ -57,13 +54,14 @@ function calendlyClick(e) {
      })
 }
 
-// $(document).ready(function() {
-//     $("#calendlyAppts a").click(function(){
-//         alert("Click on Calendly Link!")
-//         });
-//         return false;
-//     });
-// });
+(function() {
+  $('input[name=event_id]:radio').change(function() {
+    //alert("One of the radio is being checked!");
+    $(".select-this-date").prop("checked", false)
+    //$(".select-this-date").prop("disabled", true)
+
+  });
+}).call(this);
 
 $(document).ajaxComplete(function(){
   console.log("Inside get_events: AjaxComplete is called!");

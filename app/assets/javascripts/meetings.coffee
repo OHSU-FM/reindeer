@@ -143,6 +143,21 @@ check_events_deans = () ->
       else
         $(this).parent('tr').css 'background-color', '#B7E9F7'
     return
+
+createCheckBox = (name, label) ->
+  $('#meetingFormCheckThisDate').empty()
+  $('#meetingFormCheckThisDate').append('<div class="row mb-0">' +
+    '<label class="control-label col-md-3 right-label"></label>' +
+    '<div class="col-sm-4">' +
+    '<div class="form-check">' +
+    '<input class="form-check-input" type="checkbox", id="' + name + '", name="' + name + '" >' +
+    '<label class="form-check-label" >' +
+    label +
+    '</label>' +
+    '</div>' +
+    '</div>')
+  #return
+
 #==================================================================================================================
 
 modalHtml = "" #this is varibale, in which we will save modal html before open
@@ -150,14 +165,46 @@ modalHtml = "" #this is varibale, in which we will save modal html before open
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
   #$('select.selectAdvisorType option:first').attr('disabled', true);
+  $('#selelct_this_date').click ->
+    $("input[type=radio][name=event_id]").prop('checked', false)
+    return
+
+  $('input[name=event_id]:radio').change ->
+    alert ("One of the radio is being checked!")
+    $('#selelct_this_date').prop("checked", 'false')
+    return
+
   $('#startDateRetro').change ->
     todayDate = new Date()
     startDate = new Date(Date.parse($("#startDateRetro").val())) #Date.parse($("#startDateRetro").text())
     if (startDate > todayDate)
       # $("#email_notification").prop("disabled", false)
+      #createCheckBox("selelct_this_date", "Select above date")
+      $(".select-this-date").prop("disabled", false)
+      $("#email_notification").prop("disabled", false)
       $("#email_notification").prop("checked", 'true')
+      advisorID = $('#coaching_meeting_advisor_id').val()
+      advisorType = $('#coaching_meeting_advisor_type').val()
+      console.log ("advisorID: " + advisorID)
+      $.ajax
+        url: '/events/get_events_by_advisor'
+        type: 'get'
+        data: {advisor_id: advisorID, advisor_type: advisorType}
+        dataType: 'script'
+        success: (data) ->
+          # alert 'Ajax called Success!'
+          return
+        error: (request, error) ->
+          alert 'Request: ' + JSON.stringify(request)
+          return
+      return
+
     else
+      $(".select-this-date").prop("checked", false)
+      $(".select-this-date").prop("disabled", true)
       $("#email_notification").prop("checked", false)
+      $("#email_notification").attr("disabled", true)
+      $("#All-Events").empty()
     return
 
   $("#coaching_meeting_advisor_id").prop("disabled", true)
@@ -210,12 +257,6 @@ $(document).ready ->
     $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
     alert("The Appointment is NOT AVAILABLE, please select another one!")
     event.preventDefault()
-    return
-
-
-  $('input[type=radio][name=event_id]').change ->
-    alert 'Changed: ' + @id
-    #selected radio ID
     return
 
 
