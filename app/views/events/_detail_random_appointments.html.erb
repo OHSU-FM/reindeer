@@ -1,0 +1,70 @@
+<% if !@appointments.nil? %>
+  <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+    <thead>
+      <tr>
+        <th data-data="title">Title</th>
+        <th data-data="description">Description</th>
+        <th data-data="start_date">Start date</th>
+        <th data-data="end_date">End date</th>
+        <th data-data="check_all">
+          <%= check_box_tag "check_all", "check_all", true %> Check All
+        </th>
+        <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+      </tr>
+    </thead>
+    <% i = 0 %>
+    <% time_slot = @time_slot.to_i %>
+    <% @appointments.each do |appointment| %>
+        <tr>
+          <% i = i + 1 %>
+          <% start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
+          <% end_date = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y at %I:%M %p - %A") %>
+          <% temp_start_date = Time.at(hf_format_datetime(appointment.second).to_datetime).utc.strftime("%m/%d/%Y %I:%M%p") %>
+          <% temp_end_date   = Time.at(hf_format_datetime(appointment.second).to_datetime+time_slot.minutes).utc.strftime("%m/%d/%Y %I:%M%p") %>
+          <% if !@advisor_name.empty? %>
+            <% advisor_name = @advisors.collect{|a| a.name if a.id == params[:advisor].to_i}.compact.first %>
+            <% advisor_id = params[:advisor]%>
+          <% else %>
+            <% advisor_name = @advisors.collect{|a| a.name if a.id == params[:advisor].to_i}.compact.first %>
+            <% advisor_id = params[:advisor] %>
+          <% end %>
+
+          <td><%= @advisor_type %></td>
+          <% if (@time_slot.to_i == 15) and ((advisor_name.to_s.include? 'Cantone') or (advisor_name.to_s.include? 'Schneider')) %>
+            <td><%= "Step Delay Meetings - #{advisor_name}" %></td>
+          <% else %>
+            <td><%= "#{@advisor_type} Advisor - #{advisor_name}" %></td>
+          <% end %>
+
+          <td><%= start_date  %></td>
+          <td><%= end_date %></td>
+
+          <% if (@time_slot.to_i == 15) and ((advisor_name.include? 'Cantone') or (advisor_name.include? 'Schneider')) %>
+            <td><%= label_tag do %>
+                <%= check_box_tag "checkbox", "Step Delay Meetings - #{advisor_name}|#{start_date}|#{end_date}|#{advisor_id}", true, id: "checkbox#{i}" %>
+                Save
+              <% end %>
+            </td>
+          <% else %>
+            <% if @advisor_type.include? "Remediation" %>
+                  <% temp_type = 'Remed' %>
+            <% elsif @advisor_type.include? "Step 1" %>
+                  <% temp_type = 'Step1' %>
+            <% else %>
+              <% temp_type = @advisor_type %>
+            <% end %>
+            <td><%= label_tag do %>
+                <%= check_box_tag "checkbox", "#{temp_start_date}|#{temp_end_date}|#{advisor_id}|#{temp_type}", true, id: "checkbox#{i}" %>
+                Save
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+
+
+    <% end %>
+
+  </table>
+
+  <button id="SaveAllRandom" class="btn btn-primary">Save All Random</button>
+<% end %>

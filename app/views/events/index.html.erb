@@ -1,10 +1,11 @@
 <br /><br />
 <span class="d-flex justify-content-center">
   <%# <%= link_to 'New Appointment', new_event_path %>
-  <%= link_to 'Add Available Appointments', create_batch_appointments_events_path, target: :_blank  %>&nbsp;|&nbsp;
-  <%= link_to 'Add Random Appointments', create_random_appointments_events_path, target: :_blank  %>&nbsp;|&nbsp;
-  <%= link_to 'List Past Valid Appointments', list_past_valid_appointments_events_path, target: :_blank %>&nbsp;|&nbsp;
-  <%= link_to 'Re-send Calendar Invite', resend_calendar_invite_events_path, target: :_blank  %>&nbsp;
+  <%= link_to 'Add Available Appointments', create_batch_appointments_events_path, class: "button btn btn-primary", target: :_blank  %>&nbsp;
+  <%= link_to 'Add Random Appointments', create_random_appointments_events_path, class: "button btn btn-info", target: :_blank  %>&nbsp;
+  <%= link_to 'Batch Delete Appointments', batch_delete_events_path, class: "button btn btn-warning", target: :_blank  %>&nbsp;
+  <%= link_to 'List Past Valid Appointments', list_past_valid_appointments_events_path, class: "button btn btn-info", target: :_blank %>&nbsp;
+  <%= link_to 'Re-send Calendar Invite', resend_calendar_invite_events_path, class: "button btn btn-info", target: :_blank  %>
 </span>
 <br />
 <div class="panel panel-default">

@@ -15,5 +15,7 @@ $(document).ready ->
     if (existMeetingForm != null)
       $("#MeetingForm")[0].reset();
     return
-
+  $('#closeBrowserTab').click ->
+    window.top.close()
+    return
   #$('#calendar').fullCalendar({ });

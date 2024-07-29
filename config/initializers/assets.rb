@@ -1,7 +1,13 @@
 
 #Rails.application.config.assets.paths << Rails.root.join("node_modules")
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap/dist/js")
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap-icons/font")
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap/dist/js")
 #
 # Rails.application.config.assets.paths += [
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap/dist/js")
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap-icons/font")
+Rails.application.config.assets.paths << Rails.root.join("node_modules/bootstrap/dist/js")
 #   Rails.root.join('vendor', 'assets').to_s
 # ]
 #
@@ -12,7 +18,10 @@
 #   Rails.root.join('vendor/assets/stylesheets/*').to_s
 # ]
 
-Rails.application.config.assets.precompile += %w( print.css
+Rails.application.config.assets.precompile += %w(
+    bootstrap.min.js
+    popper.js
+    print.css
     comments.css
     form-utils.js
     sync_triggers.js
@@ -55,6 +64,7 @@ Rails.application.config.assets.precompile += %w( print.css
     csl_feedbacks.css
     competencies.css
     courses.css
+    course_schedules.css
     epa_masters.css
     epa_reviews.css
     fom_exams.css
@@ -64,8 +74,9 @@ Rails.application.config.assets.precompile += %w( print.css
     advisors.css
     jquery.contextmenu/dist/jquery.contextMenu.css
     jquery.contextmenu/dist/jquery.contextMenu.js
-    bootstrap.min.js
-    popper.js
     fix_eg_members.css
     usmle_exams.css
+    epas.css
+    epas.js
    )
+Rails.application.config.assets.precompile << "bootstrap.min.js"

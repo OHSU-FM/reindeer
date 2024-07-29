@@ -1,10 +1,22 @@
 class FomExam < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :user_only_fetch_email, -> {select("users.id, users.email, users.full_name")}, class_name: 'User', foreign_key: 'user_id'
 
   PREFIX_KEYS = ['comp1_wk', 'comp2a_hss', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss', 'comp5b_bss', 'summary_comp']
 
   PREFIX_KEYS_MED21 = ['comp1_wk', 'comp2b_bss', 'comp3_final', 'comp4_nbme', 'comp5a_hss','comp5b_bss', 'summary_comp']
+
+
+  rails_admin do
+    list do
+      exclude_fields :created_at
+      field :user do
+        visible visible
+        queryable true
+        searchable [{User => :full_name}]
+      end
+    end
+  end
 
   def self.comp_keys
     return PREFIX_KEYS
@@ -157,8 +169,8 @@ class FomExam < ApplicationRecord
       end
     end
 
-    # sql = sql.delete_suffix(", ")
-    sql += 'course_end_date'  ## This fieldname is NOT in label file.
+  sql = sql.delete_suffix(", ")
+  #  sql += 'course_end_date'  ## This fieldname is NOT in label file.
 
     results = FomExam.execute_sql(sql + " from " + table_name_prefix + "fom_exams, users " +
       "where users.id = " + table_name_prefix + "fom_exams.user_id and " +

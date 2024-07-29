@@ -3,7 +3,7 @@
 <%= render :partial=>'layouts/head' %>
 <body id="<%= controller_name %>"
       class="layout-full-width"
-      data-spy="scroll" data-target="#scroll-spy-nav">
+      data-spy="scroll" data-bs-target="#scroll-spy-nav">
     <%= render 'layouts/nav_header' %>
     <%= yield :charts_js %> <!-- Rails -->
 
@@ -11,7 +11,7 @@
     <div class="col-lg-12">
       <body id="<%= controller_name %>"
             class="layout-full-width <%= current_user_theme %>"
-            data-spy="scroll" data-target="#scroll-spy-nav">
+            data-spy="scroll" data-bs-target="#scroll-spy-nav">
         <%= render 'shared/messages' %>
         <%= yield %>
       </body>

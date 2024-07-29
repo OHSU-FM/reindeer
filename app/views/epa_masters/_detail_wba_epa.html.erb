@@ -18,7 +18,7 @@
     <% @wba_epa_data.each do |wba| %>
       <tr>
         <% wba.each do |key, val| %>
-          <% if key.include? "EPA" or key.include? "Total" %>
+          <% if key.include? "EPA" or key.include? "Total" or key.include? "Matriculated"%>
             <td style="text-align:center"> <%= val %> </td>
           <% else %>
             <td> <%= val %> </td>

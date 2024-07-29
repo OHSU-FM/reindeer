@@ -94,5 +94,5 @@ class DashboardWidget < ActiveRecord::Base
     widget.destroy if DEPENDENT_DESTROY_TYPES.include? widget_type
   end
 
-  deprecate :content
+  # deprecate :content
 end

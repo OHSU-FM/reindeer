@@ -30,6 +30,7 @@
 @import 'simplemde';
 @import 'rooms';
 @import 'goals';
+@import 'meetings';
 @import 'artifacts';
 @import "datatables";
 @import "font-awesome-sprockets";
@@ -42,6 +43,9 @@
 @import 'fix_eg_members.css';
 @import 'eg_members.css';
 @import 'overall_progresses.css';
+@import 'badging_dates.css';
+@import 'flatpickr';
+@import 'flatpickr/plugins/confirmDate/confirmDate';
 .alert {
   left: 0;
   margin: auto; // Centers alert component
@@ -52,3 +56,5 @@
   width: 40%;
   z-index: 1; // Displays over app and bootstrap Navbar
 }
+@import 'active_storage_drag_and_drop';
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css")

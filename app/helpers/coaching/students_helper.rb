@@ -121,11 +121,33 @@ module Coaching::StudentsHelper
     return new_meetings.sort_by(&:zip)
   end
 
-  def hf_create_appt_graph(data, advisor_type)
-    total_count = data.values.sum
-    selected_categories = data.keys
-    appt_series = data.values
-    title = "#{advisor_type} Advisor" + '<br ><b>' + "(n = #{total_count})" + '</b>'
+  def hf_create_appt_graph(in_data, advisor_type, startDate, endDate)
+    total_count = in_data.values.sum
+    selected_categories = in_data.keys.map{|k| k.first + " - " + k.second}
+
+    #appt_series = data.values
+    new_series = []
+    new_hash = {}
+    in_data.each do |key, val|
+      if key.first.include? "Academic"
+        new_hash = {color: '#4572A7', y: val }
+        new_series.push new_hash
+      elsif key.first.include? "Assist Dean"
+        new_hash = {color: '#AA4643', y: val }
+        new_series.push new_hash
+      elsif key.first.include? "Career"
+        new_hash = {color: '#89A54E', y: val }
+        new_series.push new_hash
+      elsif key.first.include? "Diversity"
+        new_hash = {color: '#3D96AE', y: val }
+        new_series.push new_hash
+      elsif key.first.include? "Wellness"
+        new_hash = {color: '#DB843D', y: val }
+        new_series.push new_hash
+      end
+    end
+    #title = "#{advisor_type} Advisors" + '<br ><b>' + "(n = #{total_count})" + '</b>'
+    title = "# OASIS Individual Adivising Meetings from " + startDate + " to " + endDate + '<br ><b>' + "(n = #{total_count})" + '</b>'
     chart = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: title)
       #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
@@ -137,21 +159,21 @@ module Coaching::StudentsHelper
                       }
                 }
       )
-      f.series(name: "Advisor", yAxis: 0, data: appt_series)
+      f.series(name: "Advisor", yAxis: 0, data: new_series)
       # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-      f.colors(['#4572A7',
-                '#AA4643',
-                '#89A54E',
-                '#80699B',
-                '#3D96AE',
-                '#DB843D',
-                '#92A8CD',
-                '#A47D7C',
-                '#B5CA92'])
+      # f.colors(['#4572A7',
+      #           '#AA4643',
+      #           '#89A54E',
+      #           '#80699B',
+      #           '#3D96AE',
+      #           '#DB843D',
+      #           '#92A8CD',
+      #           '#A47D7C',
+      #           '#B5CA92'])
 
       f.yAxis [
          { tickInterval: 20,
-           title: {text: "<b>No of Appointments</b>", margin: 20}
+           title: {text: "<b>No of Meetings</b>", margin: 20}
          }
       ]
       f.plot_options(
@@ -171,7 +193,7 @@ module Coaching::StudentsHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 500, height: 350,
+                width: 1400, height: 700,
                 plotBorderWidth: 0,
                 borderWidth: 0,
                 plotShadow: false,
@@ -183,7 +205,29 @@ module Coaching::StudentsHelper
     return chart
   end
 
+  def hf_create_file (in_meetings, in_file)
+    file_name = "#{Rails.root}/tmp/#{in_file}"
 
+    header = ["Created At", "Student", "Primary Reason", "Status", "Scheduled Apppointment", "Advisor Notes", "Student Notes"]
+    CSV.open(file_name,'wb') do |csvfile|
+      csvfile << header
+      in_meetings.each do |meeting|
+        #csvfile << row.values
+        meeting_array = []
+        meeting_array.push meeting.created_at.strftime("%m/%d/%Y")
+        meeting_array.push meeting.user.full_name
+        meeting_array.push hf_format_subjects(meeting.subject)
+        meeting_array.push meeting.m_status
+        schedule_dateTime = hf_get_start_time(meeting.event_id)
+        meeting_array.push schedule_dateTime == "N/A" ? "N/A" : schedule_dateTime.strftime("%m/%d/%Y %I:%M %p - %A")
+        meeting_array.push hf_get_advisor(meeting.advisor_id)
+        meeting_array.push meeting.advisor_notes
+        meeting_array.push meeting.notes
+        csvfile << meeting_array
+
+      end
+    end
+  end
 
   def hf_create_oasis_weekdays_graph(weekdays_sorted)
     tot_count = weekdays_sorted.values.sum

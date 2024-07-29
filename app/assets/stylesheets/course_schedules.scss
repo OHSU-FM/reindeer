@@ -1,0 +1,23 @@
+.table2-striped>tbody>tr:nth-child(odd)>td,
+.table2-striped>tbody>tr:nth-child(odd)>th {
+ background-color: #DAC6C6;
+}
+
+.table3-striped>tbody>tr:nth-child(odd)>td,
+.table3-striped>tbody>tr:nth-child(odd)>th {
+ background-color: #B2DBED;
+}
+
+.small-font{
+  font-size: 11pt;
+  font-style: italic;
+}
+
+
+// tbody, thead tr { display: block; }
+
+// tbody {
+//     height: 1000px;
+//     overflow-y: auto;
+//     overflow-x: hidden;
+// }

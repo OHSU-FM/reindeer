@@ -1,0 +1,9 @@
+<% @course_schedule_header = "New Course Schedule" %>
+
+<%= render "form", course_schedule: @course_schedule %>
+
+<div class="card mx-auto" style="width: 75%;">
+  <div class="card-body">
+    <%= link_to "Back to course schedules", course_schedules_path(course_id: params[:course_id]) %>
+  </div>
+</div>

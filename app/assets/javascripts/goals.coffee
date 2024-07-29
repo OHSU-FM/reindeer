@@ -170,13 +170,13 @@ $(document).ready ->
     $("#coaching_goal_target_date").attr('title', 'For IE browser, please use date formate YYYY/MM/DD.')
     $("#coaching_meeting_date").attr('title', 'For IE Browser, pelase use date format YYYY/MM/DD.')
 
-  $('a[data-toggle="tab"]').on 'show.bs.tab', (e) ->
+  $('a[data-bs-toggle="tab"]').on 'show.bs.tab', (e) ->
     localStorage.setItem 'activeTab', $(e.target).attr('href')
     return
   activeTab = localStorage.getItem('activeTab')
   if activeTab
     console.log ("activeTab: " + activeTab)
-    $('#myTab a[href="' + activeTab + '"]').tab 'show'
+    $('#myTab a[href="' + activeTab + '"]').show()
 
   $('.panel-collapse').on 'show.bs.collapse', ->
     $(this).siblings('.panel-heading').addClass 'active'

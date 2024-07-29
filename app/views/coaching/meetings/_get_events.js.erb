@@ -1,1 +1,101 @@
+
+$('#All-Events').html("<%= j render partial: 'coaching/students/all_events', locals: { events: @events} %>");
 console.log ("inside get_events!");
+var now = new Date();
+var month = now.getMonth();
+var month1 = month+1 < 10 ? ("0" + (month+1).toString()) : month;
+// var month2 = month+2 < 10 ? ("0" + (month+2).toString()) : month;
+// var month3 = month+3 < 10 ? ("0" + (month+3).toString()) : month;
+
+// console.log ("mon=" + month + " mon1=" + month1 + " mon2=" + month2 + " mon3=" + month3)
+var calendlyAppts = '<div id="calendlyAppts" >' +
+  '<i><b>This Faculty Advisor uses Calendly for booking appointments. ' +
+  'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' +
+   '<a href="https://calendly.com/baileypope/1-hr-meeting?month=2024-' + month1.toString() +
+    '" onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> <br />'
+
+var calendlyApptsLauren = '<div id="calendlyAppts" >' +
+                          '<i><b>This Faculty Advisor uses Calendly for booking appointments. ' +
+                          'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' +
+                          '<a href="https://calendly.com/sigman1/oasis-student-meeting"' +
+                          'onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> </div>';
+
+var windowLocation = window.location.pathname.split('/');
+var slug = windowLocation.pop();
+var emailErika = 'If you don’t see any availability, please contact ' + '<a href="/coaching/students/' + slug + '/contact_form" target="_blank">Erika Chomina Lenford.</a> ';
+
+var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
+var tr_length = $('#EventsTable tbody tr:visible').length;
+if (tr_length == 0 && !advisor_name.includes("Bailey") && !advisor_name.includes("Lauren")){
+  $("#meeting-submit").prop("disabled", true);
+  alert('Please select another advisor that has appointments!!');
+
+}
+
+function calendlyClick(e) {
+    console.log('Click Calendly link!')
+    var fullName = document.getElementById('calendly_data').dataset.name//$("#calendly_data").data("studentFullName");
+    var studentEmail = $("#calendly_data").data("email");
+    var advisorName = $('#coaching_meeting_advisor_id :selected').text();
+    console.log("fullName: " + fullName)
+    $('#newMeetingModal').modal('hide');
+    // e.preventDefault();
+    $.ajax({
+       type: 'POST',
+       url: '/events/calendly_click',
+       data: {full_name: fullName, email: studentEmail, advisor_name: advisorName},
+       dataType: 'json',
+       success: function(data) {
+           console.log('get_events: Ajax success! ==> ' + data);
+       },
+       error: function(requrest, error) {
+         console.log('_get_events ajax request error: ' + JSON.stringify(request));
+       }
+     })
+}
+
+(function() {
+  $('input[name=event_id]:radio').change(function() {
+    //alert("One of the radio is being checked!");
+    $(".select-this-date").prop("checked", false)
+    //$(".select-this-date").prop("disabled", true)
+
+  });
+}).call(this);
+
+$(document).ajaxComplete(function(){
+  console.log("Inside get_events: AjaxComplete is called!");
+  console.log("tr_length: " + tr_length);
+  var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
+  if (advisor_name.includes("Bailey")) {
+    $('#calendly-events').empty();
+    $('#calendly-events').append(calendlyAppts);
+    return;
+  }
+  else {
+    if (advisor_name.includes("Lauren")) {
+          $('#calendly-events').empty();
+          $('#calendly-events').append(calendlyApptsLauren);
+          return;
+    }
+    else {
+      if (tr_length == 0) {
+        $('#calendly-events').empty();
+        $('#calendly-events').append(emailErika);
+        return;
+      }
+    }
+  }
+
+  $('input[type=radio][name=event_id]').change(function() {
+    var value = $("input[name='event_id']:checked").val();
+    //alert("A radio is clicked in Get_events module! + value: " + value);
+    advisorType = $("#advisor-" + value).data('advisor-type')
+    //console.log("advisorType: " + advisorType)
+    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+    advisorID = $("#advisor-" + value).data('advisor-' + value)
+    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+
+  });
+
+});

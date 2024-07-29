@@ -1,29 +1,53 @@
-
-<%= simple_form_for(@advisor, html: { class: 'form-horizontal' },wrapper: :horizontal_form) do |f| %>
-  <%= f.error_notification %>
+</br>
+<%= simple_form_for(@advisor) do |f| %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <div class="card mx-auto" style="width: 75%;">
+    <div class="card-header"><h5><%= @card_header %></h5></div>
+    <div class="card-body">
+      <div class="form-inputs">
+        <div class="form-group">
+          <div class="row mb-0">
+            <%= f.label :advisor_type, class: "col-sm-2 control-label right-label" %>
+            <div class="col-sm-6">
+               <%= f.input_field :advisor_type, collection: @advisor_types, selected: @advisor.advisor_type, requeired: true,  prompt: "Please Select an Advisor Type",
+                 class: "form-select" %>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <%= f.label :name, class: "col-sm-2 control-label right-label"%>
+            <div class="col-sm-6">
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <%= f.label :email, class: "col-sm-2 control-label right-label"%>
+            <div class="col-sm-6">
+              <%= f.text_field :email, class: "form-control" %>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <%= f.label :status, class: "col-sm-2 control-label right-label"%>
+            <div class="col-sm-6">
+              <%= f.input_field :status, collection: ["Active", "Inactive"],  class: "form-select" %>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <%= f.label :title, class: "col-sm-2 control-label right-label" %>
+            <div class="col-sm-6">
+              <%= f.text_field :title, class: "form-control" %>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <%= f.label :specialty, class: "col-sm-2 control-label right-label" %>
+            <div class="col-sm-6">
+              <%= f.text_field :specialty, class: "form-control" %>
+            </div>
+          </div>
 
-  <div class="form-inputs">
-    <div class="form-group">
-      <%= f.input :advisor_type %>
+        <div class="form-actions">
+          <%= f.button :submit, class: "btn btn-primary"  %>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <%= f.input :name %>
-    </div>
-    <div class="form-group">
-      <%= f.input :email %>
-    </div>
-    <div class="form-group">
-      <%= f.input :status %>
-    </div>
-    <div class="form-group">
-      <%= f.input :title %>
-    </div>
-    <div class="form-group">
-      <%= f.input :specialty %>
-    </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, class: "btn btn-primary"  %>
   </div>
 <% end %>

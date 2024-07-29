@@ -1,150 +1,139 @@
 <br />
   <% if !@comp_keys.nil? and (@comp_keys.include? "disabled" or  @comp_keys.include? "NOT AUTHORIZED") %>
       <br />
-      <div class="alert alert-warning alert-dismissible">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>Warning!</strong><h5><%= @comp_keys %></h5>
-      </div>
-
+      <strong>Warning!</strong><h5><%= @comp_keys %></h5>
   <% else %>
     <!-- Page Header -->
+  <div class="row justify-content-center">
+
+    <% if @block_desc.to_s.include? "Renal" %>
+      <div class="col-lg-12">
+    <% else %>
+      <div class="col-md-8">
+    <% end %>
     <div class="card">
-      <div class="card-header text-center">
-        <span><h4>FoM Assessments - <%= @block_desc %></h4></span>
+      <div class="card-body text-center"  style="background-color: #C8ADE6">
+        <h4>FoM Assessments - <%= @block_desc %></h4>
       </div>
-      <div class="card-body">
-        <div class="faq-section">
-          <div class="row justify-content-center">
-          <% if @block_desc.include? "Renal" %>
-            <div class="col-lg-12">
-          <% else %>
-            <div class="col-md-8">
-          <% end %>
-              <div id="accordion">
-                  <div class="card">
-                    <div class="card-header" role="tab" id="HeadingStudentInfo">
-                      <h5 class="mb-0" >
-                        <a role="button" data-toggle="collapse" href="#StudentInfo" aria-expanded="false" aria-controls="studenInfo">
-                                          Student Information - <b><%= @student_full_name %></b>
-                        </a>
-                      </h5>
-                    </div>
-                    <div id="StudentInfo" class="collapse" data-parent="#accordion" aria-labelledby="HeadingStudentInfo">
-                      <div class="card-body">
-                        <table class="responsive nowrap table table-hover" >
-                          <tbody>
-                            <tr>
-                              <td>Student</td><th><%= @student_full_name %></th>
-                            </tr>
-                            <tr>
-                              <td>Student Email</td><th><%= @student_email %></th>
-                            </tr>
-                            <tr>
-                              <td>Student UID</td><th><%= @student_uid %></th>
-                            </tr>
-                            <tr>
-                              <td>Cohort</td><th><%= @student_cohort_title %></th>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
+    </div>
+    <div class="card-body">
+      <div class="accordion" id="accordionParent">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#studentInfo" aria-expanded="true" aria-controls="studentInfo">
+              <h5>Student Information - <b><%= @student_full_name %></b></h5>
+            </button>
+          </h2>
+          <div id="studentInfo" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+            <div class="accordion-body">
+              <table class="responsive nowrap table table-hover" >
+                <tbody>
+                  <tr>
+                    <td style="width: 200px;">Student</td><th><%= @student_full_name %></th>
+                  </tr>
+                  <tr>
+                    <td>Student Email</td><th><%= @student_email %></th>
+                  </tr>
+                  <tr>
+                    <td>Student UID</td><th><%= @student_uid %></th>
+                  </tr>
+                  <tr>
+                    <td>Cohort</td><th><%= @student_cohort_title %></th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-                  <div class="card">
-                    <div class="card-header" role="tab" id="HeadingFormative">
-                      <div class="card-body">
-                        <h5 class="mb-0">
-                          <a class="collapsed" role="button" data-toggle="collapse" href="#collapse_formative" aria-expanded="false"
-                                 aria-controls="collapse_formative" style="color:Purple;"><i>Formative Feedback (CSA, OSCE & Informatics)</i> &nbsp;
-                                 <% no_of_nbme = hf_check_nbme_pdf(@shelf_artifacts) %>
-                                 <span class="badge badge-danger"><%= (@no_official_docs - no_of_nbme).to_s + " PDFs" %></span>
-                          </a>
-                        </h5>
-                      </div>
-                    </div>
-                    <div id="collapse_formative" class="collapse" data-parent="#accordion" aria-labelledby="HeadingFormative">
-                      <div class="card-body">
-                        <%= render partial: 'artifacts/csa_feedback' %>
-                      </div>
-                      <div class="card-body">
-                        <%= render partial: 'main_formative' %>
-                     </div>
-                   </div>
-                  </div>
-                  <% @comp_keys.each do |comp| %>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formativeFeedback" aria-expanded="false" aria-controls="formativeFeedback" style="color:Purple;">
+               <h5><i>Formative Feedback (CSA, OSCE & Informatics)</i></h5> &nbsp;
+              <% no_of_nbme = hf_check_nbme_pdf(@shelf_artifacts) %>
+              <span class="badge badge-danger"><%= (@no_official_docs - no_of_nbme).to_s + " PDFs" %></span>
+            </button>
+          </h2>
+          <div id="formativeFeedback" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+            <div class="accordion-body">
+              <div class="card-body">
+                <%= render partial: 'artifacts/csa_feedback' %>
+              </div>
+              <div class="card-body">
+                <%= render partial: 'main_formative' %>
+             </div>
+            </div>
+          </div>
+        </div>
 
-                      <div class="card">
-                        <div class="card-header" role="tab" id="Heading<%= comp %>">
-                          <h5 class="mb-0">
-                            <a role="button" data-toggle="collapse" href="#collapse_<%= comp %>"  aria-expanded="false" aria-controls="collapse_<%= comp %>" >
+        <% @missing_pre_lab = false %>
+        <% @missing_weekly = false %>
+        <% @comp_keys.each do |comp| %>
 
-                              <% if ![13,6,5,3].include? @student_perm_group %>
-                                <% if @student_perm_group >= 20 and (comp == 'comp1_wk' or comp == 'comp2a_hss')%>
-                                  <%= hf_component_desc(comp) %> - <span style="color:red">FORMATIVE FEEDBACK &nbsp;</span><%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type).html_safe %>
-                                <% else %>
-                                <%= hf_component_desc(comp) %>&nbsp;<%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type).html_safe %>
-                                <% end %>
-                              <% else %>
-                                  <%= hf_component_desc2(comp) %>&nbsp;<%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type).html_safe %>
-                              <% end %>
-                            </a>
-                          </h5>
-                        </div>
-                        <div id="collapse_<%= comp %>" class="collapse" data-parent="#accordion" aria-labelledby="Heading<%= comp %>">
-                          <div class="card-body">
-
-                            <% if @comp_exams != nil %>
-                              <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers, @student_perm_group)%>
-                              <%= high_chart("#{comp}_graph", comp_graph) %>
-
-                              <% if (@student_perm_group < 20 and comp == 'comp1_wk') %>
-                                <br />
-                                Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
-                                Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
-                              <% end %>
-                             <% end %>
-                            </div>
-                        </div>
-                      </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_<%= comp %>" aria-expanded="false" aria-controls="collapse_<%= comp %>">
+                <h5>
+                  <% if ![13,6,5,3].include? @student_perm_group %>
+                  <% if @student_perm_group >= 20 and (comp == 'comp1_wk' or comp == 'comp2a_hss')%>
+                    <%= hf_component_desc(comp) %> - <span style="color:red">FORMATIVE FEEDBACK &nbsp;</span><%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type).html_safe %>
+                  <% else %>
+                  <%= hf_component_desc(comp) %>&nbsp;<%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type).html_safe %>
                   <% end %>
+                <% else %>
+                    <%= hf_component_desc2(comp) %>&nbsp;<%= hf_check_failed_comp(comp, @failed_comps, current_user.coaching_type).html_safe %>
+                <% end %>
+              </h5>
 
-                  <div class="card">
-                    <div class="card-header" role="tab" id="HeadingAttachment">
-                      <h5 class="mb-0">
-                        <a class="collapsed" role="button" data-toggle="collapse" href="#collapse_attachment" aria-expanded="false" aria-controls="collapse_attachment" style="color:Purple;">
-                           <i>NBME Performance Profile (PDF) </i>
-                        </a>
-                      </h5>
-                    </div>
-                    <div id="collapse_attachment" class="collapse" data-parent="#accordion" aria-labelledby="HeadingAttachment">
-                      <div class="card-body">
-                        <%= render partial: 'artifacts/fom_nbme' %>
-                      </div>
-                    </div>
-                  </div>
+              </button>
+            </h2>
+            <div id="collapse_<%= comp %>" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+              <div class="accordion-body">
+                <% if @comp_exams != nil %>
+                  <% comp_graph ||= hf_create_graph(comp, @comp_exams, @comp_avg_exams, @exam_headers, @student_perm_group)%>
+                  <%= high_chart("#{comp}_graph", comp_graph) %>
 
-
-                  <% if !@remeds.nil? %>
-                    <div class="card">
-                      <div class="card-header" role="tab" id="HeadingRemeds">
-                        <h5 class="mb-0">
-                          <a class="collapsed" role="button" data-toggle="collapse" href="#collapse_remeds" aria-expanded="false" aria-controls="collapse_remeds"> Remediation
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapse_remeds" class="collapse" data-parent="#accordion" aria-labelledby="HeadingRemeds>
-                        <div class="card-body">
-                          <%= render partial: 'fom_remeds/remediation', locals: {remeds: @remeds} %>
-                        </div>
-                    </div>
-
+                  <% if (@student_perm_group < 20 and comp == 'comp1_wk') %>
+                    <br />
+                    Dropped Weekly Quiz: <b><%= @comp_exams.first["comp1_dropped_quiz"] %></b> <br />
+                    Dropped Score: <b><%= @comp_exams.first["comp1_dropped_score"] %></b>
                   <% end %>
+                 <% end %>
               </div>
             </div>
           </div>
-         </div>
+        <% end %>
+
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#NBMEAttach" aria-expanded="false" aria-controls="NBMEAttach" style="color:Purple;">
+               <h5><i>NBME Performance Profile (PDF) </i></h5> &nbsp;
+            </button>
+          </h2>
+          <div id="NBMEAttach" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+            <div class="accordion-body">
+              <%= render partial: 'artifacts/fom_nbme' %>
+            </div>
+          </div>
+        </div>
+        <% if !@remeds.nil? %>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remediation" aria-expanded="false" aria-controls="remediation" style="color:Purple;">
+                 <h5><i>Remediation</i></h5> &nbsp;
+              </button>
+            </h2>
+            <div id="remediation" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+              <div class="accordion-body">
+                <%= render partial: 'fom_remeds/remediation', locals: {remeds: @remeds} %>
+              </div>
+            </div>
+          <% end %>
+
         </div>
       </div>
+    </div>
+   </div>
+  </div>
 
   <% end %>

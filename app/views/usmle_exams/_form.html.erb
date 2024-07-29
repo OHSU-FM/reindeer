@@ -1,30 +1,44 @@
 
-<div class="card">
+<div class="card" style="width: 54rem;">
   <div class="card-body card-body-color">
     <%= simple_form_for(@usmle_exam) do |f| %>
       <%= f.error_notification %>
 
         <%= f.hidden_field :user_id, value: params[:user_id]%>
-        <div class="form-inputs">
-          <div class="form-group">
-            <%= f.input :exam_type, collection: ["HSS",  "Step 1 Exam",  "Step 1 Mock Exam",  "Step 2 CK",  "Step 2 CS"], input_html: {style: 'width: 200px'} %>
+        <div class="form-group">
+          <div class="row mb-1">
+            <label class="col-sm-3 col-form-label right-label">Exam Type</label>
+            <div class="col-sm-8 w-50">
+              <%= f.input_field :exam_type, collection: ["HSS",  "Step 1 Exam",  "Step 1 Mock Exam",  "Step 2 CK",  "Step 2 CS"], class: "form-select", input_html: {style: 'width: 200px'} %>
+            </div>
           </div>
-          <div class="form-group">
+          <div class="row mb-1">
+            <label class="col-sm-3 col-form-label right-label">No of Attempts</label>
+            <div class="col-sm-8 w-50">
+              <%= f.number_field :no_attempts, class: "form-control" %>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <label class="col-sm-3 col-form-label right-label">Pass/Fail</label>
+            <div class="col-sm-8 w-50">
+              <%= f.input_field :pass_fail, collection: ['P', 'F'],  class: "form-select" %>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <label class="col-sm-3 col-form-label right-label">Exam Score</label>
+            <div class="col-sm-8 w-50">
+              <%= f.number_field :exam_score,  class: "form-control" %>
+            </div>
+          </div>
+          <div class="row mb-1">
+            <label class="col-sm-3 col-form-label right-label">Exam Date</label>
+            <div class="col-sm-8 w-50">
+              <%= f.date_field :exam_date, as: :date, html5: true, class: "form-control" %>
+            </div>
+          </div>
 
-            <%= f.input :no_attempts, label: 'No Of Attempts' %>
-          </div>
-          <div class="form-group">
-            <%= f.input :pass_fail, collection: ['P', 'F'], label: 'Pass/Fail' %>
-          </div>
-          <div class="form-group">
-            <%= f.input :exam_score, label: 'Exam Score' %>
-          </div>
-          <div class="form-group">
+      </div>
 
-            <%= f.input :exam_date, as: :date, html5: true, label: 'Exam Date' %>
-          </div>
-        </div>
-      <br>
 
       <div class="form-actions">
         <%= f.button :submit , class: 'btn btn-primary' %>

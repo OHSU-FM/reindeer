@@ -1,5 +1,4 @@
 <% if current_user.coaching_type != 'student' %>
-  <br />
   <div class="card">
     <div class="card-body">
       <%= form_tag(competency_reports_path, remote: true, method: "get", id: 'competencyForm') do %>
@@ -19,7 +18,6 @@
     </div>
   </div>
 
-  <hr>
     <div class="card">
       <div class="card-header">
         <b>Cohorts Competency Comparison Report</b>

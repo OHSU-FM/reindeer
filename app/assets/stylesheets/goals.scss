@@ -1,8 +1,8 @@
 // this is so poorly organized. i am deeply sorry.
 
-$dusty:    #96858F;
+$dusty:    #e0ccd1;
 $lavendar: #6D7993;
-$overcast: #9099A2;
+$overcast: #e1ecf7;
 $paper:    #D5D5D5;
 
 .container-flex, html, body {
@@ -106,9 +106,10 @@ $paper:    #D5D5D5;
   }
 
   #cs-student-select {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
+    // padding-left: 10px;
+    // padding-right: 10px;
+    // padding-top: 10px;
+
 
     > #student-select { width: 25%; }
   }

@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery3
 //= require jquery.min.js
 //= require jquery-ui
@@ -24,6 +25,8 @@
 //= require jquery.mobile.custom.js
 //= require jquery.waypoints.js
 //= require jquery.contextMenu.js
+// require bootstrap  #Commented out on 3/4/2024  using importmap for bootstrap
+//= require tooltips
 //= require bootstrap-sprockets
 //= require bootstrap-notify.js
 //= require notify.js
@@ -66,6 +69,7 @@
 //= require wba_graphs
 //= require csl_feedbacks
 //= require fom_exams
+//= require epas
 //= require competencies
 //=  require jquery-contextmenu/dist/jquery.contextMenu.js
 //=  require jquery-contextmenu/dist/jquery.ui.position.js
@@ -76,4 +80,24 @@
 //= require events
 //= require meetings
 //= require reports
+//= require courses
 //= require overall_progresses.js
+//= require active_storage_drag_and_drop
+//= require badging_dates
+//= require course_schedules
+//= require flatpickr
+//= require flatpickr/plugins/confirmDate/confirmDate
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   flatpickr('.flatpickr', {
+//     allowInput: true,
+//     enableTime: true,
+//     minDate: 'today',
+//     minTime: "07:00",
+//     maxTime: "20:00",
+//     dateFormat: "m-d-Y h:i K",
+//     plugins: [
+//       new confirmDatePlugin({})
+//     ]
+//   })
+// })

@@ -3,7 +3,7 @@
 <%= render :partial=>'layouts/head' %>
 <body id="<%= controller_name %>"
       class="layout-full-width <%= current_user_theme %>"
-      data-spy="scroll" data-target="#scroll-spy-nav">
+      data-spy="scroll" data-bs-target="#scroll-spy-nav">
 
 
     <%= render 'layouts/nav_header' %>
@@ -13,16 +13,14 @@
     <div class="col-lg-12">
       <body id="<%= controller_name %>"
             class="layout-full-width <%= current_user_theme %>"
-            data-spy="scroll" data-target="#scroll-spy-nav">
+            data-spy="scroll" data-bs-target="#scroll-spy-nav">
         <%= render 'shared/messages' %>
         <%= yield %>
       </body>
     </div>
 
     <!-- /.container -->
-    <div class="container">
 
-        <hr>
 
         <footer>
             <div class="row">
@@ -31,7 +29,7 @@
             </div>
         </footer>
 
-    </div>
+
     <!-- /.container -->
 
 

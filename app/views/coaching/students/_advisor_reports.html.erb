@@ -57,17 +57,8 @@
           </div>
       </div>
       <% if @all_advisor_flag %>
-        <% @advisor_types.each do |type| %>
-          <% advisor_data = @appt_counts.map{|k, v| [k.second, v] if k.first==type}.compact.to_h %>
-            <div class="col-auto">
-                <div class="card">
-                   <div class="card-body">
-                      <% type_graph = "#{type.gsub(" ", "")}_graph" %>
-                      <%= high_chart(type_graph, hf_create_appt_graph(advisor_data, type)) %>
-                  </div>
-                </div>
-            </div>
-        <% end %>
+          <% type_graph = "All_Advisors_graph" %>
+          <%= high_chart(type_graph, hf_create_appt_graph(@appt_counts, 'ALL', params[:StartDate], params[:EndDate])) %>
       <% end %>
     </div>
   </div

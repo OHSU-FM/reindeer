@@ -8,6 +8,35 @@ module ArtifactsHelper
     return ARTIFACT_CATEGORY
   end
 
+  def hf_filter_fom_labels(component, labels)
+    case component
+      when 'comp1'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "dropped" and !key.include? "summary"}.compact
+        return temp_labels
+      when 'comp2a'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "avg" and !key.include? "summary"}.compact
+        return temp_labels
+      when 'comp2b'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "avg" and !key.include? "summary"}.compact
+        return temp_labels
+      when 'comp3'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "summary"}.compact
+        return temp_labels
+      when 'comp4'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "summary"}.compact
+        return temp_labels
+      when 'comp5a'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "avg" and !key.include? "summary"}.compact
+        return temp_labels
+      when 'comp5b'
+        temp_labels = labels.first.map{|key, val|  [key, val= key + " = " + val.to_s] if key.include? component and !key.include? "avg" and !key.include? "summary"}.compact
+        return temp_labels
+      else
+        return 'Invalid Component - Please Stop!'
+    end
+
+  end
+
   def hf_check_nbme_pdf(shelf_artifacts)
     no_of_nbme = 0
     # if shelf_artifacts.first.nil?
@@ -62,14 +91,14 @@ module ArtifactsHelper
     end
   end
 
-  def hf_get_mock(pk, artifact_title)
-    selected_user = User.find_by(email: pk)
-    if selected_user.nil?
-      return nil
-    else
-      mock_artifacts = Artifact.where(user_id: selected_user.id, content: artifact_title) #artifacts_student.select{|a| a.content == "Shelf Exams"}
-      return mock_artifacts
-    end
+  def hf_get_mock(user_id, artifact_title)
+    # selected_user = User.find_by(email: pk)
+    # if selected_user.nil?
+    #   return nil
+    # else
+      mock_or_cpx_artifacts = Artifact.where(user_id: user_id, content: artifact_title) #artifacts_student.select{|a| a.content == "Shelf Exams"}
+      return mock_or_cpx_artifacts
+    # end
 
   end
 

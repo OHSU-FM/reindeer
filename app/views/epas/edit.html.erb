@@ -1,6 +1,19 @@
-<h1>Editing Epa</h1>
+<br /> <br />
 
-<%= render 'form', epa: @epa %>
+<div class="container">
+  <div class="card"  style="width: 54rem;">
+  <div class="card-header">
+    <h5>Editing WBA</h5>
+  </div>
+  <div class="card-body" style="background-color: #D6BAF4;">
+    <%= render 'form', epa: @epa %>
+  </div>
+  <div class="card-footer">
+    <span>
+    <%= link_to 'Show', @epa %> |
+    <%= link_to 'Back', epas_path(user_id: @epa.user_id) %>
+    </span>
+  </div>
 
-<%= link_to 'Show', @epa %> |
-<%= link_to 'Back', epas_path %>
+</div>
+</div>

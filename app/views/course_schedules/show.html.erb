@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="card mx-auto" style="width: 75%;">
+  <div class="card-body">
+    <%= render @course_schedule %>
+  </div>
+</div>
+
+<div class="card mx-auto" style="width: 75%;">
+  <div class="card-body">
+    <%= link_to "Edit this course schedule", edit_course_schedule_path(@course_schedule) %> |
+    <%= link_to "Back to course schedules", course_schedules_path(course_id: params[:course_id]) %>
+    <%= button_to "Destroy this course schedule", @course_schedule, method: :delete, class: "btn btn-primary"%>
+  </div>
+</div>

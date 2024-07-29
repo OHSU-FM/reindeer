@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   serialize :roles, Array
 
-  belongs_to :lime_user, foreign_key: :username, primary_key: :users_name
+  #belongs_to :lime_user, foreign_key: :username, primary_key: :users_name
   belongs_to :permission_group, inverse_of: :users
   belongs_to :cohort
 
@@ -49,7 +49,9 @@ class User < ActiveRecord::Base
   has_many :preceptor_evals, dependent: :destroy
   has_many :preceptor_assesses, dependent: :destroy
   has_one :advisor, foreign_key: :email, dependent: :destroy
+
   has_many :events, inverse_of: :user, dependent: :destroy
+
   has_many :fom_remeds, inverse_of: :user, dependent: :destroy
   has_many :formative_feedbacks, inverse_of: :user, dependent: :destroy
 
@@ -237,16 +239,19 @@ class User < ActiveRecord::Base
       field :institution do
         read_only true
       end
-      field :lime_user do
-        read_only true
-      end
+      # field :lime_user do
+      #   read_only true
+      # end
       field :email
       field :username
       field :full_name
       field :password
       field :password_confirmation
       field :is_ldap
-      field :cohort
+
+      field :cohort_id do
+        default_value 3032
+      end
       field :spec_program
       field :sid
       field :coaching_type, :enum do
@@ -301,9 +306,9 @@ class User < ActiveRecord::Base
         end
         default_value "dirty"
       end
-      field :permission_ls_groups do
-        read_only true
-      end
+      # field :permission_ls_groups do
+      #   read_only true
+      # end
 
     end
 
@@ -407,11 +412,11 @@ class User < ActiveRecord::Base
     permission_group.present? ? permission_group.survey_groups : []
   end
 
-  def cohorts
-    return @cohorts if defined? @cohorts
-    @cohorts ||= admin_or_higher? ? Cohort.all : Cohort.where(owner: self)
-    return @cohorts
-  end
+  # def cohorts
+  #   return @cohorts if defined? @cohorts
+  #   @cohorts ||= admin_or_higher? ? Cohort.all : Cohort.where(owner: self)
+  #   return @cohorts
+  # end
 
   private
   # commented out on 7/6/2023 as message/room was not used since UME disolved Coaching/Student advising

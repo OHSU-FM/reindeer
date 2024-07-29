@@ -10,13 +10,13 @@
             <div style="text-align:center">
               <span>
                 <% hf_epa_codes.each do |epa| %>
-                  <a href="#" data-html="true" data-toggle="tooltip" title="<%= hf_epa_comp_codes(epa) %>".html_safe><%= epa %> </a> &nbsp;&nbsp;
+                  <a href="#" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_epa_comp_codes(epa) %>".html_safe><%= epa %> </a> &nbsp;&nbsp;
                 <% end %>
               </span>
               <hr>
               <span>
                 <% hf_all_comp_codes.each do |comp| %>
-                  <a href="#" data-html="true" data-toggle="tooltip" title="<%= hf_get_comp_def(comp) %>".html_safe><%= comp %> </a> &nbsp;
+                  <a href="#" data-bs-html="true" data-bs-toggle="tooltip" title="<%= hf_get_comp_def(comp) %>".html_safe><%= comp %> </a> &nbsp;
                 <% end %>
               </span>
            </div>

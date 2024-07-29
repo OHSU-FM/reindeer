@@ -140,7 +140,133 @@ module CompetenciesHelper
    }
 
 
+
+  #==================================================================================================================================================================
+  # New Competencies Mappings
+  NEW_COMP_MAP ={
+    "ics1" => "ics1", #
+    "ics2" => "ics1", #
+    "ics3" => "ics1", #
+    "ics4" => "ics5", #
+    "ics5" => "ics5", #
+    "ics6" => "ics2", #
+    "ics7" => "ics4", #
+    "ics8" => "ics1", #
+
+    "mk1" => "mk1",  # done with this category
+    "mk2" => "mk2",
+    "mk3" => "mk3",
+    "mk4" => "mk2",
+    "mk5" => "mk3",
+
+    "pbli1" => "pbli1", #
+    "pbli2" => "pbli3", #
+    "pbli3" => "pbli2", #
+    "pbli4" => "pbli2",  #
+    "pbli5" => "pbli2", #
+    "pbli6" => "pbli2", #
+    "pbli7" => "pbli3", #
+    "pbli8" => "pbli1",  #
+
+    "pcp1" => "pcp1",  # done with this category
+    "pcp2" => "pcp2",
+    "pcp3" => "pcp2",
+    "pcp4" => "pcp3",
+    "pcp5" => "pcp3",
+    "pcp6" => "pcp3",
+
+    "pppd1" => "pppd1", #
+    "pppd2" => "ics5",  #
+    "pppd3" => "pppd1", #
+    "pppd4" => "pppd1", #
+    "pppd5" => "ics5",  #
+    "pppd6" => "pppd2", #
+    "pppd7" => "pbli1",  #
+    "pppd8" => "pppd2", #
+    "pppd9" => "pppd2", #
+    "pppd10" => "pppd2", #
+    "pppd11" => "pbli1", #
+
+    "sbpic1" => "sbpic1",  # done with this item
+    "sbpic2" => "sbpic1", # done with this item
+    "sbpic3" => "pppd2", #
+    "sbpic4" => "ics3", #
+    "sbpic5" => "ics3" #
+  }
+
+  NEW_COMP_ASSESSORS = {
+    "ics1" => 15,
+    "ics2" => 3,
+    "ics3" => 9,
+    "ics4" => 3,
+    "ics5" => 13,
+    "mk1" => 4,
+    "mk2" => 9,
+    "mk3" => 6,
+    "pbli1" => 16,
+    "pbli2" => 13,
+    "pbli3" => 7,
+    "pcp1" => 8,
+    "pcp2" => 16,
+    "pcp3" => 9,
+    "pppd1" => 12,
+    "pppd2" => 16,
+    "sbpic1" => 6
+  }
+
+
+  NEW_COMP_DEFINITION = {
+    "ics1" => "Communicate effectively with patients and families.",
+    "ics2" => "Communicate effectively with physicians and physicians in training.",
+    "ics3" => "Collaborate effectively with non-physician health professionals as a part of healthcare team to coordinate patient care.",
+    "ics4" => "Communicate a patient handover to transition responsibility of care.",
+    "ics5" => "Access, review, and contribute to the electronic health record and other technologies.",
+    "mk1" => "Demonstrate foundational knowledge in basic science.",
+    "mk2" => "Demonstrate foundational knowledge in clinical science.",
+    "mk3" => "Demonstrate foundational knowledge in health systems science.",
+    "pbli1" => "Demonstrate behaviors that support lifelong learning and professional growth such as incorporating self-assessment and feedback.",
+    "pbli2" => "Locate, critically appraise, and synthesize new information to support evidence informed and patient centered clinical decisions.",
+    "pbli3" => "Engage in scholarly inquiry and disseminate findings using ethical principles.",
+    "pcp1" => "Gather information through history and physical on patients.",
+    "pcp2" => "Construct prioritized differential diagnosis based on interpretation of available clinical data.",
+    "pcp3" => "Develop and implement a personalized management plan for the patient.",
+    "pppd1" => "Identify and address the negative effects of structural and social determinants of health for patients with diverse needs.",
+    "pppd2" => "Demonstrate behaviors that are reflective of professional values of truthfulness, timeliness, accountability, and follow through.",
+    "sbpic1" => "Engage in the quality improvement process related to patient safety and system issues."
+
+  }
+
+
+  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbpic1"]
+
   #===================================================================================================================================================================
+
+  def hf_remap_comp(comp_hash3)
+    new_comp = {}
+    NEW_COMP_CODES.each do |comp|
+      new_comp[comp] = 0
+    end
+
+    # comp_hash3.each do |key, value|
+    #   puts "#{key} --> #{value}"
+    # end
+    comp_hash3.each do |key, value|
+      new_comp[NEW_COMP_MAP[key]] = new_comp[NEW_COMP_MAP[key]] + value
+
+    end
+
+    # new_comp.each do |key, value|
+    #   puts "new--> #{key} --> #{value}"
+    # end
+
+    return new_comp
+
+  end
+
+  def hf_comp_codes
+    return COMP_CODES
+  end
+
   def hf_get_block_comp_def (in_code)
     return BLOCK_COMP_DEF[in_code]
   end
@@ -298,8 +424,28 @@ module CompetenciesHelper
           end
         end
       end
-      #binding.pry
       return comp_hash
+    end
+    #-----------------------------------------------
+    # New competency code computation
+    #------------------------------------------------
+    def hf_average_comp2_remap (comp_hash3)
+      percent_complete_hash = {}
+      NEW_COMP_CODES.each do |comp|
+        percent_complete_hash[comp] = 0
+      end
+      comp_hash3 = hf_remap_comp(comp_hash3)
+
+      percent_complete = 0.0
+      comp_hash3.each do |index, value|
+        percent_complete = ((value.to_f/NEW_COMP_ASSESSORS[index])*100).round(0)
+        if percent_complete >= 100
+          percent_complete_hash[index] = 100
+        else
+          percent_complete_hash[index] = percent_complete
+        end
+      end
+      return percent_complete_hash
     end
 
     def hf_average_comp2 (comp_hash3)
@@ -360,6 +506,39 @@ module CompetenciesHelper
       return comp_hash
     end
 
+    def hf_competency_class_mean2_remap(rs_data_unfiltered)
+      courses = {}
+      students_comp = {}
+      temp_comp = []
+      uniq_students = get_unique_student_id2(rs_data_unfiltered)
+      uniq_students.each do |k, v|
+        rs_courses = get_courses2(k["student_uid"], rs_data_unfiltered)
+        comp_hash3 = hf_load_all_competencies2(rs_courses, 3)
+        ave_comp_per_student   = hf_average_comp2_remap(comp_hash3)
+        students_comp[k["student_uid"]] = ave_comp_per_student
+      end
+
+      temp_comp_hash = {}
+      NEW_COMP_CODES.each do |comp|
+        temp_comp_hash[comp] = 0.0
+      end
+      students_comp.each do |k,v|
+        v.each do |key, val|
+          temp_comp_hash[key] += val
+        end
+      end
+      class_mean_comp_hash = {}
+      temp_comp_hash.each do |k,v|
+        class_mean = (v/students_comp.count.to_f).round(0)
+        if class_mean > 100
+          class_mean_comp_hash[k] = 100
+        else
+          class_mean_comp_hash[k] = class_mean
+        end
+      end
+      return class_mean_comp_hash
+    end
+
     def hf_competency_class_mean2(rs_data_unfiltered)
       courses = {}
       students_comp = {}
@@ -389,9 +568,7 @@ module CompetenciesHelper
         else
           class_mean_comp_hash[k] = class_mean
         end
-
       end
-
       return class_mean_comp_hash
     end
 
@@ -461,6 +638,35 @@ module CompetenciesHelper
       end
       return color_array
     end
+    def domain_colors2 in_series
+      temp_arry = []
+      temp_data = {}
+      for i in 0..4 do  # ICS
+        temp_data = {y: in_series[i], color: '#BCD640'}
+        temp_arry.push temp_data
+      end
+      for i in 5..7 do  # MK
+        temp_data = {y: in_series[i], color: '#E09E51'}
+        temp_arry.push temp_data
+      end
+      for i in 8..10 do  # PBLI
+        temp_data = {y: in_series[i], color: '#C73293'}
+        temp_arry.push temp_data
+      end
+      for i in 11..13 do  # PCP
+        temp_data = {y: in_series[i], color: '#2C48DE'}
+        temp_arry.push temp_data
+      end
+      for i in 14..15 do  # PPPD
+        temp_data = {y: in_series[i], color: '#42D68D'}
+        temp_arry.push temp_data
+      end
+      for i in 16..16 do  # SBPIC
+        temp_data = {y: in_series[i], color: '#FF408F'}
+        temp_arry.push temp_data
+      end
+      return temp_arry
+    end
 
     def domain_colors in_series
       temp_arry = []
@@ -498,10 +704,14 @@ module CompetenciesHelper
       data_series1 = series1.values
       data_series2 = series2.values
       categories = series2.keys.map{|c| c.upcase}
+
       if type == "EPA"
         title = "EPA"
       elsif type.include? "FoM"
         title = type
+      elsif type.include? "New"
+        data_series1 = domain_colors2(data_series1)
+        title = "<b>New Competency (Working Progress!)</b>"
       else
         data_series1 = domain_colors(data_series1)
         title = "Competency"
@@ -512,11 +722,11 @@ module CompetenciesHelper
             #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
             f.xAxis(categories: categories,
               labels: {
-                        style:  {
-                                    fontWeight: 'bold',
-                                    color: '#000000'
-                                }
-                      }
+                  style:  {
+                              fontWeight: 'bold',
+                              color: '#000000'
+                          }
+                }
             )
             f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
             if type != "EPA"
@@ -561,7 +771,7 @@ module CompetenciesHelper
             f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
             f.chart({
                       defaultSeriesType: "column",
-                      width: 1400, height:600,
+                      width: 1350, height:600,
                       plotBackgroundImage: ''
                     })
           end

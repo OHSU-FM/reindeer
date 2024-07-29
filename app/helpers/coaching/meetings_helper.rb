@@ -1,5 +1,24 @@
 module Coaching::MeetingsHelper
 
+  def hf_row_background_color (description)
+    if description.include? "Cantone"
+      if description.include? "Step Delay"
+        return "Cantone-Step-Delay-Color"
+      else
+        return "Cantone-Color"
+      end
+    elsif description.include? "Schneider"
+            if description.include? "Step Delay"
+              return "Schneider-Step-Delay-Coler"
+            else
+              return "Schneider-Color"
+            end
+     else
+       return ""
+
+    end
+  end
+
   def hf_get_start_time (event_id)
     event = Event.find_by(id: event_id)
     if event.nil?
@@ -84,7 +103,7 @@ module Coaching::MeetingsHelper
   end
 
   def hf_career_primary_for_select
-    [
+    [ ["WBA Guidance"],
       ["Goal Setting/Updated IPPS"],
       ["General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?"],
       ["Electives/Rotation Scheduling Advising"],

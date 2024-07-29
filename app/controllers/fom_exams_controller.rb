@@ -15,16 +15,19 @@ class FomExamsController < ApplicationController
   end
 
   def list_all_blocks
-    @list_all_blocks = FomExam.distinct.pluck(:permission_group_id, :course_code).sort
+    last_permission_group_id = PermissionGroup.last.id
+    @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-1).pluck(:permission_group_id, :course_code).sort
     respond_to do |format|
       format.html
     end
   end
 
   def export_block
-    if params[:permssion_group_id].present? and params[:course_code].present?
-      @export_block = hf_export_fom_block(params[:permssion_group_id], params[:course_code])
+    if params[:permission_group_id].present? and params[:course_code].present?
+      @export_block = hf_export_fom_block(params[:permission_group_id], params[:course_code])
+      @fom_labels = FomLabel.where(permission_group_id: params[:permission_group_id].to_i, course_code: params[:course_code])
       #@export_block = FomExam.includes(:user_only_fetch_email).where(permission_group_id: params[:permssion_group_id], course_code: params[:course_code])
+      @fom_headers = JSON.parse(@fom_labels.first.labels)
       @file_name = "fom_exam_#{params[:course_code]}.txt"
       create_file @export_block, @file_name
       #send_data @export_block.to_csv,  filename: 'export_block.csv', disposition: 'download'
@@ -75,7 +78,6 @@ class FomExamsController < ApplicationController
             user = User.find(id.to_i)
             hello = "Hello " + user.full_name.split(", ").last + ",<br /><br />"
             @body_message = hello + body_message
-            #@FomExamMailer.notify_student(user_mailer, @email_message).deliver_later
             ActionMailer::Base.mail(from: @from, to: user.email, subject: @subject, body: @body_message.html_safe, content_type: 'text/html').deliver
           end
         end
@@ -143,9 +145,17 @@ class FomExamsController < ApplicationController
        @student_uid = student.sid
        if ['dean', 'admin'].include? current_user.coaching_type
          block_enabled = true ## always visible
+         @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+       elsif current_user.coaching_type == 'student'
+         block_enabled = FomLabel.find_by(course_code: @course_code, permission_group_id: permission_group_id).block_enabled
+         if block_enabled
+           @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+         else
+           @comp_exams = nil
+         end
        end
        ## added permission_group_id from Search function to take care of cohort jumper
-       @comp_exams, @comp_avg_exams,  @exam_headers = FomExam.exec_raw_sql(student.id, session[:attach_id], permission_group_id, @course_code, block_enabled, table_name_prefix)
+
        if @comp_exams != nil
 
          @failed_comps = hf_scan_failed_score(@comp_exams)

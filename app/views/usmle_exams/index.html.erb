@@ -13,9 +13,9 @@
         <th></th>
       </tr>
     </thead>
-    <% if params[:notice].present? %>
+
       <% @usmle_exams = UsmleExam.where(user_id: session[:user_id]) %>
-    <% end %>
+
     <% @usmle_exams.each do |exam| %>
       <tr>
         <td><%= exam.user_id %></td>

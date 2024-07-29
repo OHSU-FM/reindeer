@@ -1,14 +1,22 @@
 class EpasController < ApplicationController
   before_action :set_epa, only: [:show, :edit, :update, :destroy]
-
+  layout 'full_width_csl'
   # GET /epas
   def index
-    if !@pk.nil?
-      selected_user = User.where(email: @pk)
-      @epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
-    else
-      @epas = Epa.where(user_id: current_user.id).order(:epa, :submit_date)
+    if params[:uuid].present?
+      #@epas = Epa.where(user_id: params[:user_id].to_i).order(:epa, :submit_date)
+      @epas = User.find_by(uuid: params[:uuid]).epas.order(:epa, :submit_date)
+      if !@epas.empty?
+        @epas = @epas.map(&:attributes)
+        @epa_headers = @epas.first.keys
+      end
     end
+
+
+    respond_to do |format|
+      format.html
+    end
+
   end
 
   # GET /epas/1
@@ -29,7 +37,7 @@ class EpasController < ApplicationController
     @epa = Epa.new(epa_params)
 
     if @epa.save
-      redirect_to @epa, notice: 'Epa was successfully created.'
+      edirect_to @epa, notice: 'Epa was successfully created.'
     else
       render :new
     end
@@ -38,7 +46,11 @@ class EpasController < ApplicationController
   # PATCH/PUT /epas/1
   def update
     if @epa.update(epa_params)
-      redirect_to @epa, notice: 'Epa was successfully updated.'
+      #redirect_to @epa, notice: 'Epa was successfully updated.'
+      load_epas (@epa.user_id)
+      flash.now[:notice] = "WBA was successfully updated!"
+      render :index
+
     else
       render :edit
     end
@@ -47,7 +59,10 @@ class EpasController < ApplicationController
   # DELETE /epas/1
   def destroy
     @epa.destroy
-    redirect_to epas_url, notice: 'Epa was successfully destroyed.'
+    load_epas (@epa.user_id)
+    #redirect_to epas_url, notice: 'Epa was successfully destroyed.'
+    flash.now[:notice] = "WBA was successfully Deleted!"
+    render :index
   end
 
   private
@@ -56,8 +71,15 @@ class EpasController < ApplicationController
       @epa = Epa.find(params[:id])
     end
 
+    def load_epas(user_id)
+      @epas = Epa.where(user_id: user_id).order(:epa, :submit_date)
+      @epas = @epas.map(&:attributes)
+      @epa_headers = @epas.first.keys
+    end
+
     # Only allow a trusted parameter "white list" through.
     def epa_params
-      params.require(:epa).permit(:submit_date, :student_assessed, :epa, :clinical_discipline, :clinical_setting, :clincial_assessor)
+      params.require(:epa).permit(:submit_date, :student_assessed, :epa, :clinical_discipline, :clinical_setting, :clinical_assessor,
+        :assessor_name, :assessor_email)
     end
 end

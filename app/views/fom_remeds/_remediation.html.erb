@@ -1,17 +1,18 @@
-
-<% no_remeds = remeds.count %>
-<table class="table table-striped responsive">
-  <thead>
-    <tr>
-      <% remeds.column_names.each do |col_name| %>
-        <tr>
-          <% if !["id","user_id"].include? col_name %>
-            <th><%= col_name.titleize  %>:</th>
-            <% for i in 0..no_remeds-1 %>
-              <th><%= remeds[i]["#{col_name}"] %> </th>
+<% if !remeds.nil? %>
+  <% no_remeds = remeds.count %>
+  <table class="table table-striped responsive">
+    <thead>
+      <tr>
+        <% remeds.column_names.each do |col_name| %>
+          <tr>
+            <% if !["id","user_id"].include? col_name %>
+              <th><%= col_name.titleize  %>:</th>
+              <% for i in 0..no_remeds-1 %>
+                <th><%= remeds[i]["#{col_name}"] %> </th>
+              <% end %>
             <% end %>
-          <% end %>
-        </tr>
-      <% end %>
-  </thead>
-</table>
+          </tr>
+        <% end %>
+    </thead>
+  </table>
+<% end %>

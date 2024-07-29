@@ -4,13 +4,13 @@
 //= require charts
 //= require gridster/jquery.gridster.css
 $contrast-color: red;
-
-#nav-bar{
-    border-bottom: 0px;
-}
-#nav-links > ul > li.active{
-    border-bottom: 3px solid $contrast-color;
-}
+//commented out 2/20/2024
+// #nav-bar{
+//     border-bottom: 0px;
+// }
+// #nav-links > ul > li.active{
+//     border-bottom: 3px solid $contrast-color;
+// }
 
 body.theme-waterfront-fog{
     #dashboard-controls{background-color: rgba(250, 250, 250, 0.9);}
@@ -181,23 +181,24 @@ body.theme-edonias{
         &:hover{background-color: #dfdfdf;}
     }
 }
-.inner-widget-container .widget-controls{
-    .navbar-collapse.collapse {
-        display: block!important;
-    }
-
-    .navbar-nav>li, .navbar-nav {
-        float: left !important;
-    }
-
-    .navbar-nav.navbar-right:last-child {
-        margin-right: -15px !important;
-    }
-
-    .navbar-right {
-        float: right!important;
-    }
-}
+//commented out 2/20/2024
+// .inner-widget-container .widget-controls{
+//     .navbar-collapse.collapse {
+//         display: block!important;
+//     }
+//
+//     .navbar-nav>li, .navbar-nav {
+//         float: left !important;
+//     }
+//
+//     .navbar-nav.navbar-right:last-child {
+//         margin-right: -15px !important;
+//     }
+//
+//     .navbar-right {
+//         float: right!important;
+//     }
+// }
 
 .widget-resize-hook{
     -ms-transform-origin: 0 0;
@@ -216,10 +217,11 @@ body.theme-edonias{
     cursor: pointer;
     cursor: hand;
 }
-#dashboard-navbar-collapse > ul:nth-child(1) > li{
-    cursor: pointer;
-    cursor: hand;
-}
+//commented out 2/20/2024
+// #dashboard-navbar-collapse > ul:nth-child(1) > li{
+//     cursor: pointer;
+//     cursor: hand;
+// }
 
 div.gridster{
     margin-top:20px;
@@ -317,7 +319,9 @@ body#dashboard{
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  padding: 1px 0 0 0;
 }
+
 
 /* Float four columns side by side */
 .column {
@@ -405,3 +409,6 @@ ul, #myUL {
   min-width: 1rem;
   max-width: 300px;
 }
+
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }

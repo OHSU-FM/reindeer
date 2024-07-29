@@ -1,0 +1,104 @@
+<%= simple_form_for @competency, action: 'create', method: 'post' do |f| %>
+  <div class="card mx-auto" style="width: 75%;">
+    <div class="card-header"><h5>Cloning MSPE Course</h5></div>
+    <div class="card-body">
+        <div class="form-group">
+            <div class="row mb-0">
+              <%= f.label :user_id, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :user_id, collection: @users, class: "form-select", id: "user_id" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :permssion_group_id, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :permission_group_id, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :stuent_uid, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :student_uid, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :email, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :email, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :medhub_id, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :medhub_id, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :course_id, label: "Course ID", class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :course_id, collection: Competency.select(:course_id, :course_name).distinct.order(:course_name),
+                     label_method: :course_name, value_method: :course_id, prompt: true, html5: true, class: "form-control"  %>
+                <%= f.hint " ** If you don't find the course in the dropdown list, please select the Test course for now and contact Patrick! **", class: "form-control" %>
+
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :course_name, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :course_name, input_html: { size: 100, readonly: true }, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :start_date, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :start_date, as: :date, html5: true, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :end_date, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :end_date, as: :date, html5: true, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :submit_date, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :submit_date, as: :date, html5: true, class: "form-control" %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :evaluator, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :evaluator, class: "form-control"  %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :final_grade, class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :final_grade, class: "form-control"  %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :prof_concerns, label: "Professional concerns", class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :prof_concerns, class: "form-control", input_html: { size: 50 }    %>
+              </div>
+            </div>
+            <div class="row mb-0">
+              <%= f.label :mspe, label: "MSPE Comment", class: "col-sm-2 control-label right-label"%>
+              <div class="col-sm-6">
+                <%= f.input_field :mspe, class: "form-control", input_html: { size: 50 }    %>
+              </div>
+            </div>
+            <% hf_comp_codes.each do |code| %>
+              <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" name='compChecked[]' id="check_<%= code %>" value="<%= code %>" >
+                  <label class="form-check-label" for="inlineCheckbox_<%= code %>"><%= code %></label>
+
+              </div>
+            <% end %>
+            <%= f.submit :submit, class: "btn btn-primary" %>
+        </div>
+    </div>
+  </div>
+<% end %>

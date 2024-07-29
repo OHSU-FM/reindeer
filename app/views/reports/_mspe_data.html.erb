@@ -11,6 +11,7 @@
       <table id="mspeTable" class="table table-hover table-striped responsive" data-sort="true" >
         <thead>
           <tr class="filters">
+            <th>Task</th>
             <% mspe_data.first.first.attributes.keys.each do |key| %>
               <th style="text-align:center"><%= key %></th>
             <% end %>
@@ -19,6 +20,10 @@
           <% mspe_data.each do |data| %>
             <% data.each do |sub_data| %>
               <tr>
+                  <td>
+                    <%= link_to "Clone", new_user_competency_path(id: sub_data.id, user_id: sub_data.user_id) %> /
+                    <%= link_to "Destroy", sub_data, method: :delete, data: { confirm: 'Are you sure?' } %>
+                  </td>
                 <% sub_data.attributes.each do |key, val| %>
                     <td style="text-align:center"> <%= val %> </td>
                 <% end %>

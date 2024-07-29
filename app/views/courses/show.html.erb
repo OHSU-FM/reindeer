@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="card mx-auto" style="width: 75%;">
+  <div class="card-body">
+    <%= render @course %>
+  </div>
+</div>
+
+<div class="card mx-auto" style="width: 75%;">
+  <div class="card-body">
+    <%= link_to "Edit this course", edit_course_path(@course) %> |
+    <%= link_to "Back to courses", courses_path %>
+    <%= button_to "Destroy this course", @course, method: :delete, class: "btn btn-primary" %>
+  </div>
+</div>

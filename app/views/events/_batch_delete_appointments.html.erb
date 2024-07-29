@@ -1,0 +1,36 @@
+<% if !@events.nil? %>
+  <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+    <thead>
+      <% event_col_names = Event.column_names %>
+      <tr>
+        <% event_col_names.each do |name| %>
+          <td> <%= name %></td>
+        <% end %>
+      </tr>
+    </thead>
+
+    <% i = 1 %>
+
+    <% @events.each do |event| %>
+        <tr>
+          <td> <%= event.id %> </td>
+          <td> <%= event.title %>  </td>
+          <td> <%= event.description %>  </td>
+          <td> <%= event.start_date.strftime("%m/%d/%Y %I:%M %p - %A") %>  </td>
+          <td> <%= event.end_date.strftime("%m/%d/%Y %I:%M %p - %A") %>  </td>
+          <td> <%= event.created_at.strftime("%m/%d/%Y %I:%M %p")  %>  </td>
+          <td> <%= event.updated_at.strftime("%m/%d/%Y %I:%M %p") %>  </td>
+          <td> <%= event.user_id %>  </td>
+          <td> <%= event.advisor_id %>  </td>
+          <td><%= label_tag do %>
+              <%= check_box_tag "checkbox", "#{event.id}", true, id: "checkbox#{i}" %>
+              Delete
+              <% end %>
+          </td>
+          <% i += 1 %>
+        </tr>
+    <% end %>
+  </table>
+
+  <button id="DeleteAll" class="btn btn-primary">Delete All</button>
+<% end %>

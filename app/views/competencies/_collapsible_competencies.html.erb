@@ -1,33 +1,28 @@
 <H4 style="color:Purple;">Collapsible Competencies Section </h4>
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<div class="accordion accordion-flush" id="accordionParent">
   <% if !@student_epa.nil? %>
     <% comp_domain = hf_comp_domain %>
     <% comp_domain.each do |key, value| %>
-    <% comp_domain_ave = hf_compute_domain_ave(@comp_hash3, value) %>
-
-      <div class="panel panel-default">
-          <div class="panel-heading" role="tab" id="heading<%= key %>">
-              <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= key %>" aria-expanded="false" aria-controls="collapse<%= key %>">
-                  <div class="labels">
-                    <span><b><%= key %></b> - <i><%= hf_comp_domain_desc2(key) %></i>
-
-                          <div id="progress-<%= key %>" class = "comp-progress" comp-data-amount = "<%= comp_domain_ave %>" >
-                                <div id="competency-<%= key %>" class="comp-amount" style="width: <%= 100-comp_domain_ave %>%"> </div>
-                          </div>
-                    </span>
-                  </div>
-
-                </a>
-              </h4>
+      <% comp_domain_ave = hf_compute_domain_ave(@comp_hash3, value) %>
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne<%= key %>" aria-expanded="false" aria-controls="flush-collapseOne<%= key %>">
+              <span><h4><b><%= key %></b> - <i><%= hf_comp_domain_desc2(key) %></i></h4>
+                    <div id="progress-<%= key %>" class = "comp-progress" comp-data-amount = "<%= comp_domain_ave %>" >
+                          <div id="competency-<%= key %>" class="comp-amount" style="width: <%= 100-comp_domain_ave %>%"> </div>
+                    </div>
+              </span>
+          </button>
+        </h2>
+        <div id="flush-collapseOne<%= key %>" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
+          <div class="accordion-body">
+            <%= render partial: "comp_assessors", locals: {:comp_domain => key, :comp_codes => value, :assessors => hf_epa_asessors } %>
           </div>
-          <div id="collapse<%= key %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<%= key %>">
-              <div class="panel-body">
-                  <%= render partial: "comp_assessors", locals: {:comp_domain => key, :comp_codes => value, :assessors => hf_epa_asessors } %>
-              </div>
-          </div>
+        </div>
       </div>
+
     <% end %>
+
   <% else %>
     <h4> No EPA/Competencies Data FOUND! </h4>
   <% end %>

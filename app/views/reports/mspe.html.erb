@@ -3,29 +3,32 @@
   <div id="container-fluid">
     <div class="card">
       <div class="card-body card-body-color">
-        <div class="form-row">
+        <div class="d-flex">
 
           <%= simple_form_for(mspe_reports_path, html: {class: "form-inline"}, method: "get") do %>
-            <div class="form-group col-sx-2">
-              <div class="form-group navbar-form navbar-left">
-                <b>Cohort </b> <%= select_tag :cohort, options_from_collection_for_select(@permission_groups_mspe, 'id', 'title', selected: params[:cohort]), include_blank: '--',
-                   prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+           <div class="input-group">
+             <span class="input-group-text"><strong>Cohort</strong></span>
+             <div class="w-auto">
+                 <%= select_tag :cohort, options_from_collection_for_select(@permission_groups_mspe, 'id', 'title', selected: params[:cohort]), include_blank: '--',
+                   prompt: "Please Select a Cohort", class: "form-select", onchange: "this.form.submit();" %>
               </div>
+              <% if params[:cohort].present? %>
+                &nbsp;&nbsp;
+                <span class="input-group-text"><strong>Student</strong></span>
+                <div class="w-auto">
+                  <%= select_tag :email, options_for_select(hf_student_list(params[:cohort])), selected: params[:email],
+                      prompt: "Please Select a Student", class: "form-select", onchange: "this.form.submit();" %>
+                </div>
+              <% end %>
+
             </div>
-            <% if params[:cohort].present? %>
-              <div class="form-group col-sx-10">
-                <label for="student" class="control-label">&nbsp;&nbsp;Student:&nbsp;</label>
-                <%= select_tag :email, options_for_select(hf_student_list(params[:cohort])), selected: params[:email],
-                    prompt: "Please Select a Student", onchange: "this.form.submit();" %>
-              </div>
-            <% end %>
+
           <% end %>
 
         </div>
       </div>
     </div>
 
-    <hr>
     <div class="card">
       <div class="card-body">
         <div id="mspe_data">

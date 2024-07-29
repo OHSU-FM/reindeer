@@ -9,7 +9,7 @@
         <th scope="col">Evaluator</th>
         <th scope="col">FinalGrade</th>
         <th scope="col">ProfConcern</th>
-        <th scope="col">Feedback</th>        
+        <th scope="col">Feedback</th>
         <th scope="col">MSPE</th>
       </tr>
     </thead>
@@ -25,7 +25,7 @@
             <td><%= cd["submit_date"] %></td>
             <td><%= cd["evaluator"] %></td>
             <td>
-              <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
+              <a href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
                   title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a></span>
 
             </td>

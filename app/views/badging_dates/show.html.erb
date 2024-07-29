@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @badging_date %>
+
+<div>
+  <%= link_to "Edit this badging date", edit_badging_date_path(@badging_date) %> |
+  <%= link_to "Back to badging dates", badging_dates_path %>
+
+  <%= button_to "Destroy this badging date", @badging_date, method: :delete %>
+</div>

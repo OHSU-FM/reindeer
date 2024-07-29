@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :badging_dates
+  resources :course_schedules
+  resources :courses
   #get 'overall_progresses/index'
   resources :eg_members
   get 'fix_eg_members/index'
@@ -14,9 +17,9 @@ Rails.application.routes.draw do
 
   resources :reports do
     collection do
-      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports'
-      get 'competency', action: :competency, controller: 'reports'
-      get 'mspe', action: :mspe, controller: 'reports'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'reports', to: "reports#download_file"
+      get 'competency', action: :competency, controller: 'reports', to: 'reports#competency'
+      get 'mspe', action: :mspe, controller: 'reports', to: "reports#mspe"
     end
   end
 
@@ -26,9 +29,14 @@ Rails.application.routes.draw do
       get 'create_random_appointments', to: 'events#create_random_appointments'
       get 'list_past_valid_appointments', action: :list_past_valid_appointments, controller: 'events', to: 'events#list_past_valid_appointments'
       get 'save_all', param: :appointments,  action: :save_all, controller: 'events', to: 'events#save_all'
+      get 'save_all_random', param: :appointments,  action: :save_all_random, controller: 'events', to: 'events#save_all_random'
       get 'check_events', action: :check_events, controller: 'events', to: 'events#check_events'
       get 'resend_calendar_invite', action: :resend_calendar_invite, controller: 'events', to: 'events#resend_calendar_invite'
       get 'resend_invite', action: :resend_invite, controller: 'events', to: 'events#resend_invite'
+      get 'batch_delete', action: :batch_delete, controller: 'events', to: 'events#batch_delete'
+      get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
+      get 'get_events_by_advisor', action: :get_events_by_advisor, controller: 'events', to: 'events#get_events_by_advisor'
+      post 'calendly_click', action: :calendly_click, controller: 'events', to: 'events#calendly_click'
     end
   end
   #get 'student_assessments/index'
@@ -41,7 +49,6 @@ Rails.application.routes.draw do
   get 'cds_reports', to: 'cds_reports#index'
   get 'wba_graphs/index', to: 'wba_graphs#index'
   get 'wba_graphs/wba_report', to: 'wba_graphs#wba_report'
-
 
   resources :epas
 
@@ -59,7 +66,7 @@ Rails.application.routes.draw do
       get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
       get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
       get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
-      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters', to: 'epa_masters#download_file'
       get 'badged_graph', action: :badged_graph, controller: 'eg_masters', to: 'epa_masters#badged_graph'
       get 'wba_epa_graph', action: :wba_epa_graph, controller: 'eg_masters', to: 'epa_masters#wba_epa_graph'
       get 'average_wba_epa', action: :average_wba_epa, controller: 'eg_masters', to: 'epa_masters#average_wba_epa'
@@ -68,7 +75,6 @@ Rails.application.routes.draw do
 
   end
   #get 'epa_masters/eg_report', controller: "epa_masters", action: :eg_report, to: "epa_masters#eg_report"
-  resources :courses
   resources :usmle_exams
   get '/csl_feedbacks/index'
   get '/csl_feedbacks/get_csl_feedback'
@@ -82,15 +88,17 @@ Rails.application.routes.draw do
   get 'wba_graphs/get_entrustment_data', to: 'wba_graphs#get_entrustment_data'
 
   resources :user do
-    resources :competencies, param: :user_id, only: [:index]
+    resources :competencies, param: :user_id, only: [:index, :new]
     resources :overall_progresses, param: :user_id, only: [:index]
   end
 
-  get 'fom_exams/list_all_blocks', controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+  resources :competencies, only: [:index, :new, :create, :destroy]
+
+  get 'fom_exams/list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
   get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
   get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
   get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
-  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams'
+  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
 
   #resources :user do
   resources :preceptor_evals,  only: [:show], param: :uuid
@@ -117,6 +125,9 @@ Rails.application.routes.draw do
        get 'process_comp_excel'
        get 'process_bls_excel'
      end
+     collection do
+       get 'get_sub_components'
+     end
   end
   namespace :coaching do
     resources :students, param: :slug, only: [:show] do
@@ -126,6 +137,8 @@ Rails.application.routes.draw do
         post 'search_meetings'
         post 'advisor_reports'
         post 'oasis_graphs'
+        get 'contact_form'
+        get  'file_download'
       end
     end
 
@@ -170,15 +183,15 @@ Rails.application.routes.draw do
 
   resources :ls_reports, only: [:index, :show], param: :sid do
     member do
-      get "filter(/:pk(/:agg))", action: :show, as: :filter, controller: "ls_reports/filter",
+      get "filter(/:pk(/:agg))", action: :show, as: :filter, controller: "ls_reports/filter", to: "ls_reports/filter#show",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :filter
     end
     member do
-      get "graph(/:pk(/:agg))", action: :show, as: :graph, controller: "ls_reports/graph",
+      get "graph(/:pk(/:agg))", action: :show, as: :graph, controller: "ls_reports/graph", to: "ls_reports/graph#show",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :graph
     end
     member do
-      get "spreadsheet(/:pk(/:agg))", action: :show, as: :spreadsheet, controller: "ls_reports/spreadsheet",
+      get "spreadsheet(/:pk(/:agg))", action: :show, as: :spreadsheet, controller: "ls_reports/spreadsheet", to: "ls_reports/spreadsheet#show",
         constraints: { pk: /[^\/]+/, agg: /[^\/]+/ }, view_type: :spreadsheet
     end
     member do
@@ -191,7 +204,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
         get "update_loa", action: :update_loa, to: "users#update_loa#"
-        get "save_update_loa", action: :save_update_loa
+        get "save_update_loa", action: :save_update_loa, to: "users#save_update_loa"
     end
   end
 

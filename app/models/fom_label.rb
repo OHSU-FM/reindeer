@@ -1,5 +1,5 @@
 class FomLabel < ApplicationRecord
-    belongs_to :fom_exam
+    belongs_to :fom_exam, optional: true
 end
 
 RailsAdmin.config do |config|

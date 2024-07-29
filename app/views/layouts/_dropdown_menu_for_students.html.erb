@@ -2,7 +2,7 @@
 <% @menu_hash.each do |top_link, first_level| %>
   <li class=<%= nav_link_active?(top_link) ? "active" : "" %>>
     <div class="btn-group btn navbar-btn ">
-      <button class="nav-header-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %><span class="caret"></span></button>
+      <button class="nav-header-btn" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= hf_translate_header top_link %><span class="caret"></span></button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
         <% first_level.each do |first_level_item, second_level| %>
           <% if first_level.keys.count > 1 %>

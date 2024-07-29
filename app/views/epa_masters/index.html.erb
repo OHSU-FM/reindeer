@@ -7,14 +7,14 @@
           <div class="card-body card-body-color">
             <div class="form-row">
                  <%= simple_form_for(epa_masters_path, html: {class: "form-inline"}, method: "get") do %>
-                   <div class="form-group col-sx-2">
+                   <div class="form-group col-sm">
                      <label for="cohort" class="control-label">Cohort:&nbsp;</label>
 
                      <%= select_tag :uniq_cohort, options_from_collection_for_select(@uniq_cohorts, "id", "title",  selected: params[:uniq_cohort]),
                          prompt: "Please Select a Cohort", onchange: "this.form.submit(); ", class: 'form-control'  %>
                     </div>
                      <% if !@eg_cohorts.blank? %>
-                       <div class="form-group col-sx-10">
+                       <div class="form-group col-sm">
                          <label for="student" class="control-label">&nbsp;&nbsp;Student:&nbsp;</label>
                          <%= select_tag :email, options_for_select(@eg_cohorts.collect{|s| [s["full_name"], s["email"]]}, selected: params[:email]),
                              prompt: "Please Select a Student", onchange: "this.form.submit();", class: 'form-control' %>
@@ -32,6 +32,6 @@
 
     <div id="main-epa-masters"> </div>
     <div id="mymodal-epa-review"></div>
-    <div id="mymodal-epa-master"></div>
-    <div id="mymodal-load-qualtrics"></div>
+
+
 </div>

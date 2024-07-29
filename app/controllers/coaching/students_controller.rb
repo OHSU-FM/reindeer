@@ -8,6 +8,8 @@ module Coaching
 
     helper_method :sort_column, :sort_direction, :oasis_graphs
     helper  :all
+    include StudentsHelper
+    include MeetingsHelper
     # GET /coaching/students/{student_username}
     def show
 
@@ -49,23 +51,24 @@ module Coaching
       if params[:id].present? and params[:id] == 'Graphs'
         @oasis_graphs_flag = true
 
-        @valid_advisor = Advisor.find_by(email: current_user.email)
+        @valid_advisor = Advisor.find_by(email: current_user.email, status: 'Active')
         if @valid_advisor.nil?
           @events = Event.where("user_id is not NULL and advisor_id is not null")
         else
           @events = Event.where("user_id is not NULL and advisor_id=?", @valid_advisor.id)
         end
-            
+
         weekdays = @events.map{|e| e.start_date.strftime("%A")}.sort
         @weekdays_sorted = weekdays.tally
+
         hours = @events.map{|e| e.start_date.strftime("%I %p")}.sort
         @hours_sorted = hours.tally
 
       end
-
-      if current_user.coaching_type != 'student'
-        @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
-      end
+      # commented out on 3/7/2024 - not being used!
+      # if current_user.coaching_type != 'student'
+      #   @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+      # end
       respond_to do |format|
         format.js { render action: 'oasis_graphs', status: 200 }
       end
@@ -73,9 +76,19 @@ module Coaching
 
     def advisor_reports
       if params[:advisor_id].present? and params[:advisor_id] != 'All'
-        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
-        @code = "Aggregate"
-      elsif params[:advisor_id].present? and params[:advisor_id] == 'All'
+        if params[:NoShow].present?
+           @code = "Individual"
+           @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", params[:advisor_id], "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        else
+          @code = "Aggregate"
+          @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
+
+        end
+      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and params[:NoShow].present?
+        @code = "Individual"
+        @meetings = Meeting.where("m_status = ? and created_at >= ? and created_at <= ?", "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        hf_create_file(@meetings, "oasis_no_show.csv")
+      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and !params[:NoShow].present?
         @all_advisor_flag = true
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
                         .order(:advisor_id).group(:advisor_id).count
@@ -92,15 +105,38 @@ module Coaching
       elsif !params[:advisor_id].present?
         @code = "Individual"
         @valid_advisor = Advisor.find_by(email: current_user.email)
-        @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        if params[:NoShow].present?
+          @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        else
+          @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
         end
+
+      end
 
       respond_to do |format|
         format.js { render action: 'advisor_reports', status: 200 }
       end
     end
 
+    def contact_form
+      if params[:message].present?
+        ActionMailer::Base.mail(from: params[:from], to: params[:to], subject: params[:subject], body: params[:message].html_safe, content_type: 'text/html').deliver
+        flash[:send_alert] = "Your email was sent!"
+      end
+    end
+
+    def file_download
+      if params[:file_name].present?
+        private_download params[:file_name]
+      end
+
+    end
+
     private
+
+    def private_download in_file
+       send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+    end
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
         #@student = User.find_by_username(params[:slug])
@@ -116,7 +152,7 @@ module Coaching
         @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name).load_async
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
 
-        @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
+        #@events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
         # @events = Event.where("start_date - INTERVAL '7 hour' > ? and start_date-INTERVAL '7 hour' <= ? and user_id is NULL and advisor_id is NOT NULL",
         #   DateTime.now + 24.hours, DateTime.now + 8.days).order(:start_date)
 
@@ -136,6 +172,11 @@ module Coaching
           @advisor_type = advisor.advisor_type
           @advisor_id = advisor.id
         else
+          @advisor = Advisor.find_by(email: current_user.email)
+          # if !@advisor.nil?
+          #   @advisor_type = @advisor.advisor_type
+          #   @advisor_id = @advisor.id
+          # end
           @advisor_students = []
         end
 
@@ -157,9 +198,10 @@ module Coaching
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id).load_async
              ## aded ib 1/18/2022
-             if current_user.coaching_type != 'student'
-               @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
-             end
+             # commented out on 3/7/2024 not being used
+             # if current_user.coaching_type != 'student'
+             #   @students_array, @tot_failed_arry = hf_scan_fom_data(19) # Med25 cohort only
+             # end
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id).load_async
              @students = @permission_groups.map(&:users).flatten

@@ -1,15 +1,27 @@
 class Competency < ApplicationRecord
   belongs_to :user
 
+  rails_admin do
+    create do
+      field  :user_id, :enum do
+        enum do
+          User.where("permission_group_id >= ?", 18).order(:full_name).collect{|u| [u.full_name, u.id]}
+        end
+      end
+      include_all_fields # all other default fields will be added after, conveniently
+      exclude_fields :created_at # but you still can remove fields
+    end
+  end
+
   def self.write_hash_to_json_file(hash, filename)
      File.open(filename,"w") do |f|
        f.write(JSON.pretty_generate(hash))
      end
   end
 
-  def self.load_class_mean(permission_group_id)
+  def self.load_class_mean(permission_group_id, code)
     today_date = Date.today.to_s
-    file_name = "#{Rails.root}/tmp/class_mean_#{permission_group_id}_#{today_date}.json"
+    file_name = "#{Rails.root}/tmp/class_mean_#{code}_#{permission_group_id}_#{today_date}.json"
     if File.file?(file_name)
       file = File.read(file_name)
       return JSON.parse(file)
@@ -19,9 +31,9 @@ class Competency < ApplicationRecord
 
   end
 
-  def self.create_class_mean(class_mean, permission_group_id)
+  def self.create_class_mean(class_mean, permission_group_id, code)
       today_date = Date.today.to_s
-      write_hash_to_json_file(class_mean, "#{Rails.root}/tmp/class_mean_#{permission_group_id}_#{today_date}.json" )
+      write_hash_to_json_file(class_mean, "#{Rails.root}/tmp/class_mean_#{code}_#{permission_group_id}_#{today_date}.json" )
   end
 
   def self.execute_sql(*sql_array)
@@ -45,7 +57,7 @@ class Competency < ApplicationRecord
   end
 
   def self.all_blocks_mean(selected_user)
-    all_blocks_class_mean_sql = 'select course_code,
+    all_blocks_class_mean_sql = 'select fom_exams.course_code,
             trunc(avg(summary_comp1),2) as "ave_summ_comp1",
             trunc(avg(summary_comp2a),2) as "ave_summ_comp2a",
             trunc(avg(summary_comp2b),2) as "ave_summ_comp2b",
@@ -53,11 +65,12 @@ class Competency < ApplicationRecord
             trunc(avg(summary_comp4),2) as "ave_summ_comp4",
             trunc(avg(summary_comp5a),2) as "ave_summ_comp5a",
             trunc(avg(summary_comp5b),2) as "ave_summ_comp5b"
-          FROM fom_exams  where permission_group_id=' + "#{selected_user.permission_group_id}" +
-          'group by course_code
-          order by course_code'
+          FROM fom_exams, fom_labels  where fom_exams.permission_group_id=' + "#{selected_user.permission_group_id} and " +
+          ' fom_labels.course_code = fom_exams.course_code and fom_labels.permission_group_id = fom_exams.permission_group_id and fom_labels.block_enabled=true ' +
+          'group by fom_exams.course_code
+          order by fom_exams.course_code'
 
-      all_blocks_user_sql = 'select course_code,
+      all_blocks_user_sql = 'select fom_exams.course_code,
               trunc(summary_comp1,2) as "summ_comp1",
               trunc(summary_comp2a,2) as "summ_comp2a",
               trunc(summary_comp2b,2) as "summ_comp2b",
@@ -65,9 +78,10 @@ class Competency < ApplicationRecord
               trunc(summary_comp4,2) as "summ_comp4",
               trunc(summary_comp5a,2) as "summ_comp5a",
               trunc(summary_comp5b,2) as "summ_comp5b"
-            FROM fom_exams  where permission_group_id=' + "#{selected_user.permission_group_id}" +
-            ' and user_id=' + "#{selected_user.id}" +
-            'order by course_code'
+            FROM fom_exams, fom_labels where fom_exams.permission_group_id=' + "#{selected_user.permission_group_id} " +
+            ' and user_id=' + "#{selected_user.id} and" +
+            ' fom_labels.course_code = fom_exams.course_code and fom_labels.permission_group_id = fom_exams.permission_group_id and fom_labels.block_enabled=true ' +
+            'order by fom_exams.course_code'
 
       all_blocks_class_mean_results = Competency.execute_sql(all_blocks_class_mean_sql)
       all_blocks_results = Competency.execute_sql(all_blocks_user_sql)

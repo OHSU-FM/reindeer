@@ -2,7 +2,7 @@
   <div id="accordion" class="accordion" aria-multiselectable="true">
     <div class="card mb-0">
         <h5>
-          <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+          <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseOne">
               <a class="card-title">
           Clinical Experience Phase Course Comments --> Last Review End Date: <i><%= @lastReviewEndDate %></i>  Next Review End Date: <i><%= @nextReviewEndDate %></i>
               </a>
@@ -40,7 +40,7 @@
                     <% i = 0 %>
                     <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
-                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate) and (Date.today < @nextReviewEndDate.to_date) %>
+                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate.strftime('%F')) and (Date.today < @nextReviewEndDate.to_date) %>
                             <tr style="background-color:#E0FFFF">
                           <% else %>
                             <tr sytle="background-color:white">
@@ -49,16 +49,32 @@
                             <td><%= cd["course_name"] %></td>
                             <td><%= cd["evaluator"] %></td>
                             <td>
-                              <a href="#" data-html="true" data-placement="right" rel="tooltip" <span style="white-space: normal" data-toggle="tooltip"
-                                  title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= hf_final_grade2(cd['final_grade']) %></a>
+                              <% final_grade = hf_final_grade2(cd['final_grade']) %>
+                              <% if final_grade == 'Pass' %>
+                                <a class="btn btn-info" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
+                                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
+                              <% elsif final_grade == 'NP' %>
+                                <a class="btn btn-danger" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
+                                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
+                              <% else %>
+                                <a class="btn btn-info" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
+                                    title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
+                              <% end %>
 
                             </td>
                             <% i = i + 1 %>
                             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
                             <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
                               <%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ").html_safe %></span></td>
-                            <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
-                              <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
+
+                            <% if final_grade == 'NP' %>
+                               <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+                            <% else %>
+                              <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
+                                <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
+                            <% end %>
+
+
                             <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
 
                           </tr>
@@ -71,7 +87,7 @@
 
       <input type='hidden' value='' id='txt_id'>
        <h5>
-          <div class="card-header collapsed" data-toggle="collapse" href="#collapseTwo">
+          <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseTwo">
             <a class="card-title">
             Foundations of Medicine Phase Preceptorship Comments
             </a>
@@ -112,7 +128,7 @@
         </div>
 
         <h5>
-          <div class="card-header collapsed" data-toggle="collapse" href="#collapseThree">
+          <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseThree">
             <a class="card-title">
             Foundations of Medicine Phase CSL Narrative Feedback
             </a>
@@ -146,7 +162,7 @@
 
        </div>
        <h5>
-         <div class="card-header collapsed" data-toggle="collapse" href="#collapseFour">
+         <div class="card-header collapsed" data-bs-toggle="collapse" href="#collapseFour">
            <a class="card-title">
                Official Documents <span class="badge badge-warning"><%= @no_official_docs %></span>
            </a>

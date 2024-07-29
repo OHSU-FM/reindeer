@@ -331,6 +331,7 @@ class Artifact < ApplicationRecord
     		@log_data.push ("No of rows: " + sheet.count.to_s)
         last_row = sheet.count-1
     		row = {}
+        
     		for r in 1..last_row do
           #puts sheet[r].inspect
     			row["last_name"] = sheet[r][0]

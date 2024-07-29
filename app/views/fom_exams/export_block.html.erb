@@ -1,22 +1,63 @@
+
 <br /><br />
 <span>
   <h4 style="text-align:center"> FoM Block: <%= params[:course_code] %> Report
     <%= link_to ('<i class="fa fa-download"></i>').html_safe, fom_exams_download_file_path(file_name: @file_name) %>
   </h4>
 </span>
-<table id="fomTable" class="table table-hover table-striped table-light responsive" >
-  <body>
-    <tr>
-      <% @export_block.first.keys.each do |key| %>
-        <th style="text-align:center"><%= key.titleize.gsub("Hss", "HSS").gsub("Bss", "BSS").gsub("avg", "Avg") %></th>
-      <% end %>
-    </tr>
-    <% @export_block.each do |data| %>
-      <tr>
-        <% data.values.each do |val| %>
-          <td style="text-align:center"> <%= val %> </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </body>
-</table>
+<div id="fomTabs" class="container-fluid">
+  <ul class="nav nav-tabs mb-3 justify-content-center" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="Comp1-tab" data-bs-toggle="tab" href="#Comp1" role="tab" aria-controls="Comp1" aria-selected="true"  style="background-color:#f57764" >Component 1/Weekly Quizzes</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Comp2a-tab" data-bs-toggle="tab" href="#Comp2a" role="tab" aria-controls="Comp2a" aria-selected="false" style="background-color:#f28b7c">Component 2B/Clincal/HSS/Informatics</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Comp2b-tab" data-bs-toggle="tab" href="#Comp2b" role="tab" aria-controls="Comp2b" aria-selected="false" style="background-color:#f5aa93">Component 2B/Basic Science Skills</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Comp3-tab" data-bs-toggle="tab" href="#Comp3" role="tab" aria-controls="Comp3" aria-selected="false" style="background-color:#f2cfb6">Component 3/OSHU Final</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Comp4-tab" data-bs-toggle="tab" href="#Comp4" role="tab" aria-controls="Comp4" aria-selected="false" style="background-color:#f2ed8f">Component 4/NBME</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Comp5a-tab" data-bs-toggle="tab" href="#Comp5a" role="tab" aria-controls="Comp5a" aria-selected="false" style="background-color:#e0f0c2">Component 5A/HSS</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Comp5b-tab" data-bs-toggle="tab" href="#Comp5b" role="tab" aria-controls="Comp5b" aria-selected="false" style="background-color:#b7f59f">component 5B/BSS</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="Summary-tab" data-bs-toggle="tab" href="#Summary" role="tab" aria-controls="Summary" aria-selected="false" style="background-color:#6af533">Summary</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="Comp1" role="tabpanel" aria-labelledby="Comp1-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp1'} %>
+    </div>
+    <div class="tab-pane fade" id="Comp2a" role="tabpanel" aria-labelledby="Comp2a-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp2a'} %>
+    </div>
+    <div class="tab-pane fade" id="Comp2b" role="tabpanel" aria-labelledby="Comp2b-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp2b'} %>
+    </div>
+    <div class="tab-pane fade" id="Comp3" role="tabpanel" aria-labelledby="Comp3-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp3'} %>
+    </div>
+    <div class="tab-pane fade" id="Comp4" role="tabpanel" aria-labelledby="Comp4-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp4'} %>
+    </div>
+    <div class="tab-pane fade" id="Comp5a" role="tabpanel" aria-labelledby="Comp5a-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp5a'} %>
+    </div>
+    <div class="tab-pane fade" id="Comp5b" role="tabpanel" aria-labelledby="Comp5b-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'comp5b'} %>
+    </div>
+    <div class="tab-pane fade" id="Summary" role="tabpanel" aria-labelledby="Summary-tab">
+      <%= render partial: 'fom_detail', locals: {filter_comp: 'summary'} %>
+    </div>
+  </div>
+
+
+</div>

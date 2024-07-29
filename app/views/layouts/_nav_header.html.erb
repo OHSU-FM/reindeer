@@ -1,5 +1,5 @@
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <div id="nav-bar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
 
         <!-- Brand and toggle get grouped for better mobile display -->
 
@@ -30,43 +30,51 @@
             <% end %>
           </div>
         </div>
-        <div id="nav-links" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav ml-auto">
-            <% if can? :crud, Dashboard %>
-              <%= link_to '<i class="fa fa-home" style="color:#0C2D83"></i> Home'.html_safe,  auto_path, class: "btn btn-link"  %>
-            <% end %>
+        <div id="nav-links" class="collapse navbar-collapse justify-content-end">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <% if can? :crud, Dashboard %>
+                <%= link_to '<i class="fa fa-home" style="color:#0C2D83"></i> Home'.html_safe,  auto_path, class: "nav-link"  %>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
+                <%= link_to '<i style="color:#31a34f;" class="fa fa-book"></i> Course Catalog'.html_safe, courses_path(), target: '_blank', class: "nav-link" %>
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <% if ['nmai', 'chungp', 'shuforda', 'fruhwirt'].include? current_user.username  %>
+                <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
+              <% end %>
+            </li>
 
-            <% if ['nmai', 'chungp', 'haedinge'].include? current_user.username  %>
-              <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "btn btn-link" %>
-            <% end %>
-
-            <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'haedinge', 'shuforda'].include? current_user.username) %>
-              <div class="dropdown">
-                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+              <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'fruhwirt', 'shuforda'].include? current_user.username) %>
+                  <a class="nav-link dropdown-toggle" role="button"  href="#reportMenu" data-bs-toggle="dropdown" aria-expanded="false">
                   Report
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <%= link_to '<i aria-hidden="true"> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to '<i aria-hidden="true"> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda', 'nmai'].include? current_user.username %>
-                    <%= link_to '<i aria-hidden="true"> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-
+                  </a>
+                  <ul class="dropdown-menu" id="reportMenu">
+                    <li><%= link_to '<i> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %></li>
+                    <li><%= link_to '<i> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %></li>
+                    <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
+                      <li><%= link_to '<i> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %></li>
+                    <% end %>
+                  </ul>
+              <% end %>
+            </li>
             <% if ['admin', 'dean'].include? current_user.coaching_type and current_user.spec_program !='Wellness' %>
-              <div class="dropdown">
-                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" href="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa fa-stethoscope" style="color:#E1191C"></i> EG Review
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                </a>
+                <ul class="dropdown-menu" id="dropdownMenuButton">
                   <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'haedinge', 'bumstedt', 'shuforda'].include? current_user.username %>
+                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
 
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
+                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Badging Dates'.html_safe, badging_dates_path, target: '_blank', class: "dropdown-item"  %>
                   <% end %>
                   <%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
@@ -76,61 +84,67 @@
                   <%= link_to 'WBA/Clinical Assessor Report', wba_clinical_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'No of Badges by EPA Graph', badged_graph_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'No of WBAs by EPA Graph', wba_epa_graph_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
-                </div>
-              </div>
+                </ul>
+              </li>
             <% end %>
 
             <% if ['admin', 'dean'].include? current_user.coaching_type and current_user.spec_program !='Wellness'%>
-                <div class="dropdown">
-                  <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" role="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-bar-chart" style="color:#23A9BD"></i> WBA Graph/Report
-                  </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <%= link_to '<i class="fa fa-bar-chart" style="color:#23A9BD"></i> WBA Graphs'.html_safe, wba_graphs_index_path, target: '_blank', class: "dropdown-item" %>
-                    <%= link_to 'WBA Report', wba_graphs_wba_report_path, method: :get, target: '_blank', class: "dropdown-item" %>
-                </div>
+                  </a>
+                  <ul class="dropdown-menu" id="dropdownMenuButton">
+                      <%= link_to '<i class="fa fa-bar-chart" style="color:#23A9BD"></i> WBA Graphs'.html_safe, wba_graphs_index_path, target: '_blank', class: "dropdown-item" %>
+                      <%= link_to 'WBA Report', wba_graphs_wba_report_path, method: :get, target: '_blank', class: "dropdown-item" %>
+                  </ul>
+                </li>
             <% end %>
 
             <% if can? :list, LimeSurvey %>
               <% if ['student', 'admin', 'dean'].include? current_user.coaching_type and current_user.spec_program !='Wellness'%>
-                <%= link_to hf_badge('Upload Documents', @no_of_docs), artifacts_path, target: '_blank', class: "btn btn-link" %>
+                <li class="nav-item">
+                  <%= link_to hf_badge('Upload Documents', @no_of_docs), artifacts_path, target: '_blank', class: "nav-link" %>
+                </li>
               <% end %>
               <% if current_user.coaching_type == "coach" and params[:slug].present? %>
                   <% temp_pk = params[:slug] + "@ohsu.edu" %>
                   <% clinical_phase_sid = hf_get_clinical_phase_sid(temp_pk) %>
                   <% if !clinical_phase_sid.nil? %>
                       <%= link_to "Clinical Phase", polymorphic_path(["spreadsheet".to_sym, :ls_report], sid: clinical_phase_sid, pk: temp_pk),
-                         target: "_blank", class: "modal-click link-to-text-color", 'data-target': '#modal-dataset' %>
+                         target: "_blank", class: "modal-click link-to-text-color", 'data-bs-target': '#modal-dataset' %>
                   <% end %>
               <% end %>
-
-              <%= link_to '<i class="fa fa-calendar" style="color:purple"></i> OASIS System'.html_safe, coaching_index_path(email: @pk), target: '_blank', class: "btn btn-link"  %>
+              <li class="nav-item">
+                <%= link_to '<i class="fa fa-calendar" style="color:purple"></i> OASIS System'.html_safe, coaching_index_path(email: @pk), target: '_blank', class: "nav-link"  %>
+              </li>
               <% if current_user.coaching_type == 'student' %>
-                 <%= link_to '<i class="fa fa-user-md" style="color:#5BAD5A"></i>Your Datasets'.html_safe, search_searches_path(current_user), class: "btn btn-link"  %>
+                <li class="nav-item">
+                  <%= link_to '<i class="fa fa-user-md" style="color:#5BAD5A"></i>Your Datasets'.html_safe, search_searches_path(current_user), class: "nav-link"  %>
+                </li>
               <% elsif current_user.coach_or_higher? and current_user.spec_program !='Wellness' %>
-                <%= link_to '<i class="fa fa-user-md" style="color:#5BAD5A"></i> Student Assessments'.html_safe, student_assessments_path(user: current_user), class: "btn btn-link" %>
+                <li class="nav-item">
+                  <%= link_to '<i class="fa fa-user-md" style="color:#5BAD5A"></i> Student Assessments'.html_safe, student_assessments_path(user: current_user), class: "nav-link" %>
+                </li>
               <% end %>
             <% end %>
 
-
-
             <% if current_user.present? %>
-              <div class="btn-group">
-                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                  <%= link_to "<small>User: </small>#{current_user.username}".html_safe, current_user %>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <%= "<small>User: </small>#{current_user.username}".html_safe %>
                 </button>
-                <div class="dropdown-menu">
+                <ul class="dropdown-menu">
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to '<i class="fa fa-sign-out"></i> Log Out'.html_safe, main_app.destroy_user_session_path, class: "dropdown-item" %>
-                </div>
+                </ul>
               </div>
             <% end %>
           </ul>
         </div>
       </div>
-    </div>
+    </nav>
 
 
     <%= render :partial=>'shared/modal_spinner', :locals=>{:modal_id=>'modal-report', :message=>'Loading Report'}%>

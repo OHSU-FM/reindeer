@@ -1,5 +1,5 @@
 
-  <table id="WbaDetailTable" class="table table-hover table-striped responsive dataTable" >
+  <table id="WbaDetailTable" class="table table-hover responsive dataTable" >
 
           <thead>
             <th>EPA</th>
@@ -9,7 +9,7 @@
             <th>ClincialAssessor</th>
             <th>Other Role</th>
             <th>AssessorName</th>
-            <th>Involvment</th>
+            <th style="text-align: center;">Involvment</th>
             <th>Feedback</th>
             <th>EncounterComplex</th>
           </thead>
@@ -18,19 +18,37 @@
         <% i=0 %>
         <% epas.each do |e| %>
             <% if e.epa == epa_code %>
-              <tr>
-                <td><%= e.epa %></td>
-                <td><%= e.submit_date.strftime("%F") %></td>
-                <td><%= e.clinical_discipline %></td>
-                <td><%= e.clinical_setting %></td>
-                <td><%= e.clinical_assessor %></td>
-                <td><%= e.other_role %></td>
-                <td><%= e.assessor_name %></td>
-                <td><%= e.involvement %></td>
-                <% i = i + 1 %>
-                <td><span class="context-menu-one" id="<%= e.epa %>" data-course-name="[WBA]" ><%= hf_highlight(e.more_independent, e.epa) %></span></td>
-                <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
-              </tr>
+              <% if e.involvement == 4 and e.clinical_assessor.include? "Attending"%>
+                <tr class="shaded">
+                  <td ><b><%= e.epa %></b></td>
+                  <td ><b><%= e.submit_date.strftime("%F") %></b></td>
+                  <td ><b><%= e.clinical_discipline %></b></td>
+                  <td ><b><%= e.clinical_setting %></b></td>
+                  <td ><b><%= e.clinical_assessor %></b></td>
+                  <td ><b><%= e.other_role %></b></td>
+                  <td ><b><%= e.assessor_name %></b></td>
+                  <td style= "text-align: center; color: purple;" ><b><%= e.involvement %></b></td>
+                  <% i = i + 1 %>
+                  <td ><span class="context-menu-one" id="<%= e.epa %>" data-course-name="[WBA]" ><b><%= hf_highlight(e.more_independent, e.epa) %></b></span></td>
+                  <td ><b><%= e.encounter_complex ? 'Yes' : 'No' %></b></td>
+
+                </tr>
+              <% else %>
+                <tr>
+                  <td><%= e.epa %></td>
+                  <td><%= e.submit_date.strftime("%F") %></td>
+                  <td><%= e.clinical_discipline %></td>
+                  <td><%= e.clinical_setting %></td>
+                  <td><%= e.clinical_assessor %></td>
+                  <td><%= e.other_role %></td>
+                  <td><%= e.assessor_name %></td>
+                  <td style= "text-align: center;" ><%= e.involvement %></td>
+                  <% i = i + 1 %>
+                  <td><span class="context-menu-one" id="<%= e.epa %>" data-course-name="[WBA]" ><%= hf_highlight(e.more_independent, e.epa) %></span></td>
+                  <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
+                </tr>
+              <% end %>
+
             <% end %>
         <% end %>
         </tbody>

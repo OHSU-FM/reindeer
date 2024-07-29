@@ -1,0 +1,27 @@
+
+.disabled-color {
+ // this is the one can change the color of a text even if its a placeholder
+ color: red;
+}
+
+.Cantone-Step-Delay-Color{
+  --bs-table-bg: #E37383;
+}
+
+.Cantone-Color{
+  --bs-table-bg: #90EE90;
+}
+
+.Schneider-Step-Delay-Coler{
+  --bs-table-bg: #E0b0FF;
+}
+
+.Schneider-Color{
+  --bs-table-bg: #B7E9F7;
+}
+
+label:hover {
+ background:#eee;
+ cursor:pointer;
+
+}

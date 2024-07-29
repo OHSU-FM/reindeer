@@ -1,15 +1,15 @@
 <br >
 <div class="container">
-  <h5> List All Blocks </h5>
+  <h5> List Current/Active Blocks </h5>
   <table class="table table-condensed table-hover" id="Main table" style="background-color:#BBD9FF;">
     <thead>
       <% @list_all_blocks.each do |block| %>
         <tr>
-          <th><%= block[0] %> - <%= block[1] %></th>
-          <th><%= link_to 'Export Block', fom_exams_export_block_path(permssion_group_id: block[0], course_code: block[1]) %></th>
+          <th width="100px"><%= block[0] %> - <%= block[1] %></th>
+          <th><%= link_to 'Export Block', fom_exams_export_block_path(permission_group_id: block[0], course_code: block[1]) %></th>
         </tr>
       <% end %>
     </thead>
-
   </table>
+
 </div>

@@ -1,0 +1,54 @@
+
+<%= simple_form_for(@course, html: { class: 'form-horizontal' }, wrapper: :horizontal_form) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <div class="card mx-auto" style="width: 75%;">
+    <div class="card-header"><h5><%= @course_header %></h5></div>
+    <div class="card-body" style="background-color: #D6BAF4;">
+      <div class="form-inputs">
+        <%= f.input :course_number, label: "Course Number", required: true %>
+        <%= f.input :course_name, required: true %>
+        <%= f.input :content_type, required: true %>
+        <%= f.input :medhub_course_id %>
+        <%= f.input :rural, wrapper: :horizontal_collection_inline %>
+        <%= f.input :continuity, wrapper: :horizontal_collection_inline %>
+        <%= f.input :available_through_the_lottery, wrapper: :horizontal_collection_inline %>
+        <%= f.input :department %>
+        <%= f.input :course_purpose_statement, :as => :text, :input_html => { 'rows' => 8, 'cols' => 10 } %>
+        <%= f.input :special_notes, :as => :text, :input_html => { 'rows' => 5, 'cols' => 10 }  %>
+        <%= f.input :prerequisites, wrapper: :horizontal_collection_inline  %>
+        <%= f.input :required_prerequisites %>
+        <%= f.input :waive_prereq_requirements, wrapper: :horizontal_collection_inline  %>
+        <%= f.input :waive_notes %>
+        <%= f.input :grading_method %>
+        <%= f.input :duration %>
+        <%= f.input :site %>
+        <%= f.input :weekly_workload %>
+        <%= f.input :credits %>
+        <%= f.input :course_director %>
+        <%= f.input :course_director_email %>
+        <%= f.input :course_coordinator %>
+        <%= f.input :course_coordinator_email %>
+        <%= f.input :qualified_assessor %>
+        <%= f.input :qualified_assessor_email %>
+        <% hf_comp_codes.each do |code| %>
+          <% code = code.upcase %>
+          <div class="form-check form-check-inline">
+          <% if @course.competencies.include? code %>
+            <input class="form-check-input" type="checkbox" name='compChecked[]' id="check_<%= code %>" value="<%= code %>" checked >
+            <label class="form-check-label" for="inlineCheckbox_<%= code %>"><%= code %></label>
+          <% else %>
+              <input class="form-check-input" type="checkbox" name='compChecked[]' id="check_<%= code %>" value="<%= code %>" >
+              <label class="form-check-label" for="inlineCheckbox_<%= code %>"><%= code %></label>
+          <% end %>
+
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>

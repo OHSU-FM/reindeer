@@ -1,8 +1,13 @@
 <% if !@artifacts.nil? %>
   <br /> <br/>
-  <h4> All documents <%= link_to 'Upload Documents', new_artifact_path, class: "btn btn-primary" %> </h4>
+  <div class="btn-group">
+    <h4> All documents </h4> &nbsp;&nbsp; <%= link_to 'Upload Documents', new_artifact_path(file_type: 'Regular'), class: "btn btn-primary" %> &nbsp;
+    <% if current_user.username == 'chungp'  %>
+      <%= link_to 'Upload FoM File', new_artifact_path(file_type: 'FoM'), class: "btn btn-primary" %>
+    <% end %>
+  </div>
 
-  <table class="responsive nowrap table table-hover" id="artifacts" >
+  <table class="responsive nowrap table table-hover table-striped" id="artifacts" >
     <thead>
       <tr>
         <th>Title</th>
@@ -48,8 +53,6 @@
             /
             <%= link_to 'Process EG Cohorts File', fix_eg_members_process_eg_file_path(artifact_id: artifact), target: :_blank  %>
           <% end %>
-
-
         </td>
         <td>
           <table class="responsive nowrap table table-hover" id="artifacts-table2"  >

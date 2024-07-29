@@ -69,6 +69,217 @@ LABELS3 = {
   "q8" => "Attachment File"
 }
 
+def get_label (permission_group_id, course_code, component)
+  label = FomLabel.find_by(permission_group_id: permission_group_id, course_code: course_code).labels
+  label = JSON.parse(label)
+  labels = label.first.select{|key, val| val if key.include? component and !key.include? "avg"}
+  weights = {}
+  labels.each_with_index do |(key, value), index|
+      weights[key]  = value.scan(/\((.*?)\)/).first.first.gsub("%", "").to_f/100.00
+  end
+  return weights
+end
+
+def get_label2(permission_group_id, course_code, component_code)
+  label = FomLabel.find_by(permission_group_id: permission_group_id, course_code: course_code).labels
+  label = JSON.parse(label)
+  labels = label.first.select{|key, val| val if key.include? component_code and !key.include? "dropped" and !key.include? "summary" }
+  return labels.keys
+end
+
+def compute_weighted_avg(fom_exams, filter_key, sub_component, avg_weights, score, user)
+  comp = fom_exams.map(&:attributes).first.select{|key, val| val if key.include? filter_key}
+  weighted_avg = 0.0
+  comp[sub_component] = score
+  avg_weights.each_with_index do |(key, value)|
+      weighted_avg += (comp[key].to_f/100*value)*100
+  end
+  return weighted_avg.truncate(2)
+end
+
+def compute_average (fom_exams, component, comp1_fields, sub_comp_data, user)
+  if fom_exams.empty?
+    comp1_array = FomExam.column_names
+    comp1_array = comp1_array.select{|c| c if c.include? component and !c.include? "summary"}
+    comp1 = {}
+    comp1_array.each do |comp|
+      comp1[comp] = 0.0
+    end
+  else
+    comp1 = fom_exams.map(&:attributes).first.select{|key, val| val if key.include? component and !key.include? "summary"}
+  end
+  average = 0.0, total_score = 0.0
+  comp1_fields.each do |field|
+    total_score += comp1[field].nil? ? 0.0 : comp1[field]
+  end
+  average = (total_score + sub_comp_data)/comp1_fields.count.to_d
+  return average.truncate(2)
+end
+
+def process_tab_sheet(permission_group_id, course_code, component, sub_component, sheet)
+  last_row = sheet.count-1
+  #permission_group_id = 20
+  #course_code = '5-HODI'
+  row = {}
+  header = sheet[0]
+  for r in 1..last_row do
+    row = Hash[[header, sheet[r]].transpose]
+    row_hash = {}
+    if !row["sid"].to_s.include? "U00" and row["sid"].to_s != ""
+      formatted_sid = format('U%08d', row["sid"])
+    else
+      return
+    end
+
+    user = User.find_by(sid: formatted_sid)
+    if !user.nil?
+      row_hash["permission_group_id"] = user.permission_group_id
+      row_hash["course_code"] = course_code
+      row_hash["submit_date"] = Time.now.strftime("%Y/%m/%d") # this need to be changed
+      row_hash["user_id"] = user.id
+
+      ### compute weighted average
+      fom_exams = FomExam.where(user_id: user.id, course_code: row_hash["course_code"], permission_group_id: row_hash["permission_group_id"])
+
+      if !fom_exams.empty?
+        case component
+          when 'comp1'
+            row_hash[sub_component] = row["score"]
+            comp1_fields = get_label2(permission_group_id, course_code, 'comp1')
+            row_hash["summary_comp1"] = compute_average(fom_exams, component, comp1_fields, row_hash[sub_component], user)
+          when 'comp2a'
+            row_hash[sub_component] = row["score"]
+            avg_weights = get_label(permission_group_id, course_code, 'comp2a_hss')
+            row_hash["comp2a_hssavg"] = compute_weighted_avg(fom_exams, 'comp2a_hss', sub_component, avg_weights, row_hash[sub_component], user)
+            row_hash["summary_comp2a"] = row_hash["comp2a_hssavg"]
+          when 'comp2b'
+            row_hash[sub_component] = row["score"]
+            avg_weights = get_label(permission_group_id, course_code, 'comp2b_bss')
+            row_hash["comp2b_bssavg"] = compute_weighted_avg(fom_exams, 'comp2b_bss', sub_component, avg_weights, row_hash[sub_component], user)
+            row_hash["summary_comp2b"] = row_hash["comp2b_bssavg"]
+          when 'comp3'
+            row_hash[sub_component] = row["score"]
+            avg_weights = get_label(permission_group_id, course_code, 'comp3')
+            row_hash["summary_comp3"] = compute_weighted_avg(fom_exams, 'comp3', sub_component, avg_weights, row_hash[sub_component], user)
+
+          when 'comp4'
+            row_hash[sub_component] = row["score"]
+            row_hash["summary_comp4"] = row_hash[sub_component]
+          when 'comp5a'
+            row_hash[sub_component] = row["score"]
+            avg_weights = get_label(permission_group_id, course_code, 'comp5a_hss')
+            row_hash["comp5a_hssavg"] = compute_weighted_avg(fom_exams, 'comp5a_hss', sub_component, avg_weights, row_hash[sub_component], user)
+            row_hash["summary_comp5a"] = row_hash["comp5a_hssavg"]
+          when 'comp5b'
+            row_hash[sub_component] = row["score"]
+            avg_weights = get_label(permission_group_id, course_code, 'comp5b_bss')
+            row_hash["comp5b_bssavg"] = compute_weighted_avg(fom_exams, 'comp5b_bss', sub_component, avg_weights, row_hash[sub_component], user)
+            row_hash["summary_comp5b"] = row_hash["comp5b_bssavg"]
+        else
+          @log_date.push ("*** Invalid Component: " + component)
+        end
+
+        FomExam.where(user_id: user.id, course_code: row_hash["course_code"], permission_group_id: row_hash["permission_group_id"]).first_or_create.update(row_hash)
+        @log_data.push ("Updated student with score -->  " + row["lastname"] + ", " + row["firstname"] + " #{sub_component} = " + row["score"].to_s)
+      else
+        # first time insertion
+        if component == 'comp1'
+          fom_exams = []
+          row_hash[sub_component] = row["score"]
+          comp1_fields = get_label2(permission_group_id, course_code, 'comp1')
+          row_hash["summary_comp1"] = compute_average(fom_exams, component, comp1_fields, row_hash[sub_component], user)
+          FomExam.where(user_id: user.id, course_code: row_hash["course_code"], permission_group_id: row_hash["permission_group_id"]).first_or_create.update(row_hash)
+          @log_data.push ("Updated student with score -->  " + row["lastname"] + ", " + row["firstname"] + " = " + row["score"].to_s )
+          #puts "Updated student with score -->  " + row["lastname"] + ", " + row["firstname"] + " #{sub_component} = " + row["score"].to_s
+        else
+          @log_data.push ("** THIS STUDENT IS NOT UPDATED -->  " + row["lastname"] + ", " + row["firstname"] + " = " + row["score"].to_s ) + "  #{component} --> #{sub_component}"
+        end
+      end
+
+    else
+      @log_data.push ("User NOT found in Users Table -->  " + row["sid"] + " " + row["lastname"] + ", " + row["firstname"])
+    end
+
+  end
+end
+
+  def hf_fom_process_file(artifact)
+    @log_data = []
+    file_name = ActiveStorage::Attachment.find(artifact.documents.first.id).blob.filename.to_s
+    file_name = File.basename(file_name, File.extname(file_name)) ## without file extension
+
+    xlsx = Xsv::Workbook.open(ActiveStorage::Attachment.find(artifact.documents.first.id).blob.download)
+    permission_group_id, course_code, component = artifact.title.split("/")
+    sub_component = artifact.content
+
+    file_name = permission_group_id + "_" + course_code + "_" + sub_component
+
+    xlsx.sheets.each do |sheet|
+    	if sheet.name != 'Upload'
+    		@log_data.push ("Sheet Name: " + sheet.name)
+    		@log_data.push ("No of rows: " + sheet.count.to_s)
+    		process_tab_sheet(permission_group_id, course_code, component, sub_component, sheet)
+    		@log_data.push ("===================================")
+    	end
+    end
+    xlsx.close
+    # todayDate = Time.now.strftime("%Y_%m_%d")
+    directory_name = "#{Rails.root}/log/fom_exams"
+    Dir.mkdir(directory_name) unless File.exist?(directory_name)
+
+    file_name = "#{Rails.root}/log/fom_exams/#{file_name}.log"
+    File.open(file_name, 'w') {
+      |f| @log_data.each { |line| f << "\r\n" + line }
+    }
+    return @log_data
+  end
+
+  def hf_load_label_file(artifact)
+    @log_data = []
+
+    # file_name = ActiveStorage::Attachment.find(artifact.documents.first.id).blob.filename.to_s
+    # file_name = File.basename(file_name, File.extname(file_name)) ## without file extension
+
+    xlsx = Xsv::Workbook.open(ActiveStorage::Attachment.find(artifact.documents.first.id).blob.download)
+    permission_group_id, course_code, component = artifact.title.split("/")
+    xlsx.sheets.each do |sheet|
+      last_row = sheet.count-1
+      temp_hash = {}
+  		for r in 0..last_row do
+        row = sheet[r]
+        if row.compact.empty?  # if array is empty
+          break
+        else
+          temp_hash[row[0]] = row[1]
+          @log_data.push "row #{r.to_s}= " + row[0].to_s + " --> " + row[1].to_s
+        end
+      end
+      temp_array = []
+      temp_array.push temp_hash
+      json_string = temp_array.to_json ## json string mus t be in an array
+      row_hash = {}
+      row_hash["permission_group_id"] = permission_group_id
+      row_hash["course_code"] = temp_array.first["course_code"]
+      row_hash["labels"] = json_string
+
+      FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first_or_create.update(row_hash)
+    	@log_data.push ("===================================")
+
+    end
+    xlsx.close
+
+    directory_name = "#{Rails.root}/log/fom_exams"
+    Dir.mkdir(directory_name) unless File.exist?(directory_name)
+
+    cohort_title = PermissionGroup.find(permission_group_id).title.split("(").last.gsub(")", "")
+    file_name = cohort_title + "_" + course_code + "_" + component
+
+    file_name = "#{Rails.root}/log/fom_exams/#{file_name}.log"
+    File.open(file_name, 'w') {
+      |f| @log_data.each { |line| f << "\r\n" + line }
+    }
+
+  end
 
   def encrypt_data (crypt, in_data)
     #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
@@ -79,6 +290,7 @@ LABELS3 = {
     #crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.secret_key_base[0..31], Rails.application.secrets.secret_key_base)
     decrypted_back = crypt.decrypt_and_verify(encrypted_data)
   end
+
   def hf_reformat_cohort_data(cohorts)
     temp_cohort = {}
     cohorts.each do |cohort|
@@ -206,50 +418,51 @@ LABELS3 = {
     student_name = class_data.first["full_name"]  # processing student Alver
     student_series = class_data.first.drop(2)  # removed the first 2 items in array
     student_series = student_series.map{|d| d.second.to_s.to_f if d.first.include? component}.compact
-
-    #student_series = student_series[0..-3].map{|s| s.second.to_f} # removed the last 2 items in array
-    student_series = check_pass_fail(student_series)
     class_mean_series = avg_data.first.map{|s| s.second.to_s.to_d.truncate(2).to_f if s.first.include? component}.compact
-    class_mean_series = check_pass_fail(class_mean_series)
     selected_categories = categories.map {|key, val| val if key.include? component}.compact
 
-    if component == 'comp2a_hss'
+    if permission_group >= 20 and component == 'comp1_wk'
       count = selected_categories.count
       for i in 0..count-1
-        if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab")
-          if student_series[i].instance_of?(Hash)
-            # if (categories["course_code"] !='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
-            #  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required1)</span>"
-            if categories["course_code"] =='5-HODI' and (!class_mean_series[i][:y].nil?) and (student_series[i][:y].nil? or student_series[i][:y] == 0)
-                  selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-            elsif (categories["course_code"] =='4-CPR' and class_mean_series[i] != 0.00  and (student_series[i][:y].nil? or student_series[i][:y] == 0))
-                   selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-
-            end
+        #if student_series[i].instance_of?(Hash)
+          if (class_mean_series[i] != 0.0) and (student_series[i] == 0.0)
+            selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            @missing_weekly = true
           end
-        end
+        #end
       end
     end
 
     if permission_group >= 20 and component == 'comp2a_hss'
       count = selected_categories.count
       for i in 0..count-1
-        # if today's is > course end date, we need to check the weighted average.
-        #if student_series[i].instance_of?(Hash) and student_series[i][:y].nil? and student_series.last < 100.00
-
-        if !class_data.first["course_end_date"].nil? and (Date.today  > class_data.first["course_end_date"].to_date) and
-          student_series[i].instance_of?(Hash) and !student_series[i][:y].nil? and student_series[i][:y] < 100.00
-          selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+        if (selected_categories[i].include? "EHR" or selected_categories[i].downcase.include? "pre-lab" or selected_categories[i].downcase.include? "informatics" or
+          selected_categories[i].downcase.include? "active learning" )
+          if class_mean_series[i] != 0.00  and student_series[i] == 0.0
+            selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+            @missing_pre_lab = true
+          # elsif (categories["course_code"] == '4-CPR' or categories["course_code"] == '5-HODI') and student_series[i] == 0.0
+          #   selected_categories[i] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+          #   @missing_pre_lab = true
+          end
         end
 
       end
     end
 
-    if component.include? 'summary'
-      if (categories["course_code"] == '4-CPR') and (class_mean_series[1] != 0.0) and (student_series[1] <= 75.0)
-         selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
-      end
+    if (component.include? 'summary' and @missing_weekly)
+      selected_categories[0] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
     end
+
+    if (component.include? 'summary' and @missing_pre_lab)
+      # if (categories["course_code"] == '6-NSF') and !student_series[1].is_a?(Float) and (student_series[1][:y] <= 75.0)
+      #     selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+      # end
+      selected_categories[1] += "<br/><span style='color:red'>Missed Assessment (remediation required)</span>"
+    end
+
+    student_series = check_pass_fail(student_series)
+    class_mean_series = check_pass_fail(class_mean_series)
 
     height = 400
 

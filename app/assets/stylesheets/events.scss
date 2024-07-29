@@ -4,3 +4,28 @@
 form label{
   font-weight: bold;
 }
+
+.disabled[disabled] + label {
+    color: red;
+}
+.input-group-append {
+  cursor: pointer;
+}
+
+.right-label {
+  text-align: right;
+}
+
+.flatpickr-time input {
+  background: lightskyblue;
+  font-size: 15px;
+}
+.flatpickr-time input.flatpickr-hour {
+    font-weight: bold;
+}
+.flatpickr-time input.flatpickr-minute{
+    font-weight: bold;
+}
+.flatpickr-time .flatpickr-am-pm {
+    font-weight: bold;
+}

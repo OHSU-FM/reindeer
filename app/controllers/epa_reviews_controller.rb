@@ -1,5 +1,5 @@
 class EpaReviewsController < ApplicationController
-  before_action :authenticate_user!, :find_reviewable, :load_reasons, :load_review_dates # :load_eg_members
+  before_action :authenticate_user!, :find_reviewable, :load_reasons #, :load_eg_members
 
   include CompetenciesHelper
   include ArtifactsHelper
@@ -23,7 +23,8 @@ class EpaReviewsController < ApplicationController
     if params[:epa_json].present?
       email = params[:epa_json]["0"]["email"]
       user = User.find_by(email: email)
-      load_eg_members(user)
+
+      #load_eg_members(user)
 
       EpaReview.load_epa(params[:epa_json], @eg_full_name1, @eg_full_name2)
     end
@@ -203,26 +204,30 @@ class EpaReviewsController < ApplicationController
     end
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
     @today_date = Time.new.strftime("%m/%d/%Y")
-    load_eg_members(@user)
+    #load_eg_members(@user)
     @bls = @user.ume_bls
 
+    badgingDates = BadgingDate.find_by(permission_group_id: @user.permission_group_id)
+    @lastReviewEndDate = badgingDates.last_review_end_date
+    @nextReviewEndDate = badgingDates.next_review_end_date
+
     #@most_recent_review_date = EpaReview.get_max_date(user_id)
-    if @user.permission_group_id == 16
-      @lastReviewEndDate = @badge_review_dates["Med22Badge"]["lastReviewEndDate"]
-      @nextReviewEndDate = @badge_review_dates["Med22Badge"]["nextReviewEndDate"]
-    elsif @user.permission_group_id == 13
-      @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
-      @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
-    elsif  @user.permission_group_id == 17
-      @lastReviewEndDate = @badge_review_dates["Med23Badge"]["lastReviewEndDate"]
-      @nextReviewEndDate = @badge_review_dates["Med23Badge"]["nextReviewEndDate"]
-    elsif  @user.permission_group_id == 18
-      @lastReviewEndDate = @badge_review_dates["Med24Badge"]["lastReviewEndDate"]
-      @nextReviewEndDate = @badge_review_dates["Med24Badge"]["nextReviewEndDate"]
-    elsif  @user.permission_group_id == 19
-      @lastReviewEndDate = @badge_review_dates["Med25Badge"]["lastReviewEndDate"]
-      @nextReviewEndDate = @badge_review_dates["Med25Badge"]["nextReviewEndDate"]
-    end
+    # if @user.permission_group_id == 16
+    #   @lastReviewEndDate = @badge_review_dates["Med22Badge"]["lastReviewEndDate"]
+    #   @nextReviewEndDate = @badge_review_dates["Med22Badge"]["nextReviewEndDate"]
+    # elsif @user.permission_group_id == 13
+    #   @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
+    #   @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
+    # elsif  @user.permission_group_id == 17
+    #   @lastReviewEndDate = @badge_review_dates["Med23Badge"]["lastReviewEndDate"]
+    #   @nextReviewEndDate = @badge_review_dates["Med23Badge"]["nextReviewEndDate"]
+    # elsif  @user.permission_group_id == 18
+    #   @lastReviewEndDate = @badge_review_dates["Med24Badge"]["lastReviewEndDate"]
+    #   @nextReviewEndDate = @badge_review_dates["Med24Badge"]["nextReviewEndDate"]
+    # elsif  @user.permission_group_id == 19
+    #   @lastReviewEndDate = @badge_review_dates["Med25Badge"]["lastReviewEndDate"]
+    #   @nextReviewEndDate = @badge_review_dates["Med25Badge"]["nextReviewEndDate"]
+    # end
     ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
@@ -256,17 +261,17 @@ class EpaReviewsController < ApplicationController
 
      end
 
-     def load_eg_members(user)
-       @eg_members, @eg_full_name1, @eg_full_name2 = EpaReview.load_eg_members(user)
-     end
+     # def load_eg_members(user)
+     #   @eg_members, @eg_full_name1, @eg_full_name2 = EpaReview.load_eg_members(user)
+     # end
 
      def load_reasons
        @eg_reasons ||= EgReason.all.select(:reason).to_a.map{|r| r.reason}
      end
 
-     def load_review_dates
-           @badge_review_dates ||= YAML.load_file("config/badgeReleaseDate.yml")
-
-     end
+     # def load_review_dates
+     #       @badge_review_dates ||= YAML.load_file("config/badgeReleaseDate.yml")
+     #
+     # end
 
 end

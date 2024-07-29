@@ -1,7 +1,14 @@
 $ ->
   $('#coaching_meeting_advisor_type').change ->
     advisorType = @value
-    #alert advisorType
+    #
+    if (advisorType == '')
+      #alert "-" + advisorType + "-"
+      $('#coaching_meeting_advisor_id').val('');
+      $("#coaching_meeting_advisor_id").prop("disabled", true)
+      $('#coaching_meeting_advisor_id').empty()
+      return
+    # else
     $('#coaching_meeting_advisor_id').empty()
     $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
     $('div[data-advisors]' ).each ->
@@ -80,6 +87,7 @@ remediationPrimary = [
 ]
 
 careerPrimary = [
+  "WBA Guidance",
   "Goal Setting/Updated IPPS",
   "General Career Advising/Specialty Exploration/Which Specialty Is Right for Me?",
   "Electives/Rotation Scheduling Advising",
@@ -92,7 +100,7 @@ careerPrimary = [
   'Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")',
   'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency',
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
-  'Scholarship Approval'
+  'Scholarship Approval',
 ]
 window.ajaxStatus = ""  #global var
 window.eventIdGlobal = ""
@@ -106,12 +114,10 @@ checkEvent = (event_id) ->
     success: (response) ->
       console.log 'success response: ' + JSON.stringify(response)
       console.log ("Status : " + response.Status)
-      return response.Status
+      return (response.Status)
     error: (response) ->
       alert 'Something went WRONG!!'
       return
-
-
 
 $(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject][]']", ->
   if $(this).is(':checked')
@@ -122,11 +128,110 @@ $(document).on 'change', "input[type='checkbox'][name='coaching_meeting[subject]
     # do what you need here
     $("#meeting-submit").prop("disabled", true)
   return
+
+check_events_deans = () ->
+  $('#EventsTable td:nth-child(2)').each ->
+    #console.log ("this: "  + $(this).text())
+    if $(this).text().includes("Cantone")
+      if $(this).text().includes("Step Delay")
+        $(this).parent('tr').css 'background-color', '#E37383'
+      else
+        $(this).parent('tr').css 'background-color', '#90EE90'
+    else if $(this).text().includes("Schneider")
+      if $(this).text().includes("Step Delay")
+        $(this).parent('tr').css 'background-color', '#E0b0FF'
+      else
+        $(this).parent('tr').css 'background-color', '#B7E9F7'
+    return
+
+createCheckBox = (name, label) ->
+  $('#meetingFormCheckThisDate').empty()
+  $('#meetingFormCheckThisDate').append('<div class="row mb-0">' +
+    '<label class="control-label col-md-3 right-label"></label>' +
+    '<div class="col-sm-4">' +
+    '<div class="form-check">' +
+    '<input class="form-check-input" type="checkbox", id="' + name + '", name="' + name + '" >' +
+    '<label class="form-check-label" >' +
+    label +
+    '</label>' +
+    '</div>' +
+    '</div>')
+  #return
+
 #==================================================================================================================
+
 modalHtml = "" #this is varibale, in which we will save modal html before open
 
 $(document).ready ->
   console.log("Inside Meetings Coffee!")
+  #$('select.selectAdvisorType option:first').attr('disabled', true);
+  $('#selelct_this_date').click ->
+    $("input[type=radio][name=event_id]").prop('checked', false)
+    return
+
+  $('input[name=event_id]:radio').change ->
+    alert ("One of the radio is being checked!")
+    $('#selelct_this_date').prop("checked", 'false')
+    return
+
+  $('#startDateRetro').change ->
+    todayDate = new Date()
+    startDate = new Date(Date.parse($("#startDateRetro").val())) #Date.parse($("#startDateRetro").text())
+    if (startDate > todayDate)
+      # $("#email_notification").prop("disabled", false)
+      #createCheckBox("selelct_this_date", "Select above date")
+      $(".select-this-date").prop("disabled", false)
+      $("#email_notification").prop("disabled", false)
+      $("#email_notification").prop("checked", 'true')
+      advisorID = $('#coaching_meeting_advisor_id').val()
+      advisorType = $('#coaching_meeting_advisor_type').val()
+      console.log ("advisorID: " + advisorID)
+      $.ajax
+        url: '/events/get_events_by_advisor'
+        type: 'get'
+        data: {advisor_id: advisorID, advisor_type: advisorType}
+        dataType: 'script'
+        success: (data) ->
+          # alert 'Ajax called Success!'
+          return
+        error: (request, error) ->
+          alert 'Request: ' + JSON.stringify(request)
+          return
+      return
+
+    else
+      $(".select-this-date").prop("checked", false)
+      $(".select-this-date").prop("disabled", true)
+      $("#email_notification").prop("checked", false)
+      $("#email_notification").attr("disabled", true)
+      $("#All-Events").empty()
+    return
+
+  $("#coaching_meeting_advisor_id").prop("disabled", true)
+
+  $('#coaching_meeting_advisor_type').change ->
+    $("#coaching_meeting_advisor_id").prop("disabled", false)
+    $("#All-Events").empty()
+    return
+
+  $('#coaching_meeting_advisor_id').change ->
+    advisorID = this.value
+    advisorType = $('#coaching_meeting_advisor_type').val()
+    console.log ("advisorID: " + advisorID)
+    $.ajax
+      url: '/events/get_events_by_advisor'
+      type: 'get'
+      data: {advisor_id: advisorID, advisor_type: advisorType}
+      dataType: 'script'
+      success: (data) ->
+        # alert 'Ajax called Success!'
+        return
+      error: (request, error) ->
+        alert 'Request: ' + JSON.stringify(request)
+        return
+    return
+
+
   $('#IndividualAdvisorRpt').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $("#meeting-submit").prop("disabled", true)
 
@@ -142,22 +247,42 @@ $(document).ready ->
   #-- Disabled the code below as it causes subtle errors on 9/9/2022
   # it supposed to prevent duplicate appointment
 
-  $("input[type='radio'][name='coaching_meeting[event_id]'").change ->
+  $('#meeting-submit').click (event) ->
     event_id = $('input:radio:checked').val()
     eventIdGlobal = event_id
-    #ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
-    # console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
-    # if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
-    advisorType = $("#advisor-" + @value).data('advisor-type')
-    console.log("advisorType: " + advisorType)
-    $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
-    advisorID = $("#advisor-" + @value).data('advisor-' + @value)
-    $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
-    # else
-    #   $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
-    #   alert("The Appointment is NOT AVAILABLE, please select another one!")
-    #console.log("data-advisor-id: " + dataValue)
+    ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+    if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+      return
+    $('#coaching_meeting_event_id_' + event_id).addClass("disabled-color");
+    $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+    alert("The Appointment is NOT AVAILABLE, please select another one!")
+    event.preventDefault()
     return
+
+
+  #$("input:radio[name='event_id']").change ->
+
+  # This code is not working in here as part of it move to _get_events to refresh the advisor _id in the dropdown.
+  # $('input[type=radio][name=event_id]').change ->
+  #   alert("A radio button is checked! --> value:" + @value)
+  #   event_id = $('input:radio:checked').val()
+  #   eventIdGlobal = event_id
+  #
+  #   ajaxStatus = checkEvent(event_id)  #async: false  #tell the browser to finish the ajax call
+  #   console.log ('First Check when radio is clicked: ' + JSON.stringify(ajaxStatus.responseJSON))
+  #   if ajaxStatus.responseJSON.Status.includes('AVAILABLE')
+  #     # the codes below need to be kept..
+  #     advisorType = $("#advisor-" + @value).data('advisor-type')
+  #     console.log("advisorType: " + advisorType)
+  #     $("#coaching_meeting_advisor_type").val(advisorType).trigger("chosen:updated")
+  #     advisorID = $("#advisor-" + @value).data('advisor-' + @value)
+  #     $("#coaching_meeting_advisor_id").val(advisorID).trigger("chosen:updated")
+  #     return
+  #   else
+  #     $('#coaching_meeting_event_id_' + event_id).addClass("disabled-color");
+  #     $('#coaching_meeting_event_id_' + event_id).prop('checked', false).button("refresh").prop('disabled', true)
+  #     alert("The Appointment is NOT AVAILABLE, please select another one!")
+  #     return
 
     # if ($('input[name^="coaching_meeting[subject][]"]:checked').length == 0)
     #     $("#meeting-submit").prop("disabled", true)
@@ -210,7 +335,7 @@ $(document).ready ->
   nbsp = '&nbsp'
   $('#coaching_meeting_subjects').empty()
   $.each data, (index) ->
-    $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+    $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'form-check-input primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
     return
   # $('#study_resources').empty()
   # $.each dataResources, (index) ->
@@ -258,7 +383,7 @@ $(document).ready ->
     nbsp = '&nbsp'
     $('#coaching_meeting_subjects').empty()
     $.each data, (index) ->
-      $('#coaching_meeting_subjects').append '<label><input type=\'checkbox\' class=\'primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
+      $('#coaching_meeting_subjects').append '<label for="MeetingSubjects"><input type=\'checkbox\' class=\'form-check-input primaryCheckbox\' name=\'coaching_meeting[subject][]\' value=\'' + data[index] + '\' />' + nbsp + data[index] + '</label><br/>'
       return
 
   #$('#EventsTable').show()  ## change this on 6/27/2022 to test the datea
@@ -287,29 +412,19 @@ $(document).ready ->
     console.log("selectedAdvisorType: " + selectedAdvisorType)
     selectedAdvisorText = $("#coaching_meeting_advisor_id option:selected" ).text().split(" - ")
     console.log("selectedAdvisorText: " + selectedAdvisorText[0])
-    $('#EventsTable td:nth-child(2)').each ->
-      #console.log ("this: "  + $(this).text())
-      if $(this).text().includes("Cantone")
-        if $(this).text().includes("Step Delay")
-          $(this).parent('tr').css 'background-color', '#E37383'
-        else
-          $(this).parent('tr').css 'background-color', '#90EE90'
-      else if $(this).text().includes("Schneider")
-        if $(this).text().includes("Step Delay")
-          $(this).parent('tr').css 'background-color', '#E0b0FF'
-        else
-          $(this).parent('tr').css 'background-color', '#B7E9F7'
-      return
+
 
     rowCount = $("#EventsTable tr").not('thead tr').length;
     console.log('rowCount: ' + rowCount)
 
-    if (rowCount == 0)
-      $("#meeting-submit").prop("disabled", true)
-      alert('No Appointment Found! Please select another advisor that has appointments!!')
-      return
-      #dataset.show()
-      # filter the rows that should be hidden
+    # if (rowCount == 0)
+    #   $("#meeting-submit").prop("disabled", true)
+    #   alert('No Appointment Found! Please select another advisor that has appointments!!')
+    #   return
+
+
+    #dataset.show()
+    # filter the rows that should be hidden
     tr_length = 0
     dataset = $('#EventsTable tbody').find('tr')
     modDate = Date.today()
@@ -324,13 +439,13 @@ $(document).ready ->
 
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == selectedAdvisorText[0])   #'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
         row.show()
-      else if ((colAdvisor[0] == 'Academic Advisor') && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic Advisor')) && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
         # console.log("** colAdvisor[0]: " + colAdvisor[0])
         # console.log("** selectedAdvisorType: " + selectedAdvisorType)
         row.show()
-      else if ((colAdvisor[0].includes('Step 1')) && (selectedAdvisorType.includes('Step 1')) && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic: Step 1')) && (selectedAdvisorType.includes('Step 1')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
-      else if ((colAdvisor[0].includes('Remediation')) && (selectedAdvisorType.includes('Remediation')) && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic: Remediation')) && (selectedAdvisorType.includes('Remediation')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
       else if ((colAdvisor[0].includes('Career')) && (selectedAdvisorType.includes('Career')) && (colAdvisor[1] == selectedAdvisorText[0]) )
         row.show()
@@ -338,16 +453,16 @@ $(document).ready ->
         row.show()
       else if ((colAdvisor[0].includes('Wellness')) && (selectedAdvisorType.includes('Wellness')) && (colAdvisor[1] == selectedAdvisorText[0]))
         row.show()
+
       else
         row.hide()
 
     tr_length = $('#EventsTable tbody tr:visible').length
-      #console.log ("tr_length: " + tr_length)
     console.log("tr_length: " + tr_length)
     if (tr_length == 0)
       $("#meeting-submit").prop("disabled", true)
-      alert('Please select another advisor that has appointments!!')
-      #return false
+      # alert('Please select another advisor that has appointments!!')
+
     else
       #$("#meeting-submit").prop("disabled", false)
     return

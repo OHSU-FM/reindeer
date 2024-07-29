@@ -1,11 +1,11 @@
 <br />
-<div class="panel panel-default">
-  <div class="panel-heading d-flex justify-content-center"><h5> Future <i> BOOKED </i>Appointments as of <%= Time.now.strftime("%m/%d/%Y") %> </h5>
+<div class="card">
+  <div class="card-heading"><h5> Future <i> BOOKED </i>Appointments as of <%= Time.now.strftime("%m/%d/%Y") %> </h5>
   </div>
-  <div class="panel-body d-flex justify-content-center">
+  <div class="card-body">
 
     <% if !@appointments.nil? %>
-      <table id="send_invite_table" class="table-responsive nowrap table table-hover " data-toggle="table" data-sort="true" data-url="<%= url_for(format: :json) %>">
+      <table id="send_invite_table" class="table-responsive table table-hover " data-toggle="table" data-sort="true" data-url="<%= url_for(format: :json) %>">
         <thead class="filters">
           <tr>
             <th data-data="appt_id">Appt ID</th>
@@ -36,8 +36,8 @@
     <% end %>
   </div>
 </div>
-<div class="panel panel-default">
-  <div class="panel-body d-flex justify-content-center">
+<div class="card">
+  <div class="card-body d-flex justify-content-center">
     <a href="/events">Back to Previous Page</a>
   </div>
 </div>
