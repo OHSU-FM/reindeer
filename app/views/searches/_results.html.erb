@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <%if !@results.empty? and @results.include? "NOT found"%>
-      <%= @results.html_safe %>
+      <%= @results%>
   <% elsif params[:search] == '?' or (params[:search].to_s == 'help' and !params[:search].nil?) %>
     <%= @results %>
   <% elsif !params[:search].nil? and params[:search].include? "Med" %>

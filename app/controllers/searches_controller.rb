@@ -36,14 +36,17 @@ class SearchesController < ApplicationController
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type='student' and spec_program like 'MD/Wy%'")
     elsif params[:search].include? "Med"
-      @parameter = "'%" + params[:search] + "%'"
-      joins_query = "inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like #{@parameter} order by users.full_name"
-      @results = User.joins(joins_query).select(:id, :full_name, :username, :email, :sid, :coaching_type,
-                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date)
+      @parameter = "%" + params[:search] + "%"
+      permission_group = PermissionGroup.where("title like ?", @parameter)
+      if !permission_group.empty?
+        #joins_query = "inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like " + "#{@parameter}" + " order by users.full_name"
+        @results = User.where(permission_group_id: permission_group.first.id ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
+                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
 
-      @file_name = hf_create_download_file(@results, params[:search])
-
-
+        @file_name = hf_create_download_file(@results, params[:search])
+      else
+        @result = nil
+      end
     #     coach_search
     elsif !params[:search].downcase.include? "med18"
 

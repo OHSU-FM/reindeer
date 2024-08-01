@@ -4,8 +4,8 @@
 Application Path: /home/patrick/source/reindeer
 Rails Version: 7.1.2
 Brakeman Version: 6.1.2
-Scan Date: 2024-07-29 12:51:11 -0700
-Duration: 14.436342874 seconds
+Scan Date: 2024-07-30 13:13:07 -0700
+Duration: 15.430318317 seconds
 Checks Run: BasicAuth, BasicAuthTimingAttack, CSRFTokenForgeryCVE, ContentTag, CookieSerialization, CreateWith, CrossSiteScripting, DefaultRoutes, Deserialize, DetailedExceptions, DigestDoS, DynamicFinders, EOLRails, EOLRuby, EscapeFunction, Evaluation, Execute, FileAccess, FileDisclosure, FilterSkipping, ForgerySetting, HeaderDoS, I18nXSS, JRubyXML, JSONEncoding, JSONEntityEscape, JSONParsing, LinkTo, LinkToHref, MailTo, MassAssignment, MimeTypeDoS, ModelAttrAccessible, ModelAttributes, ModelSerialize, NestedAttributes, NestedAttributesBypass, NumberToCurrency, PageCachingCVE, Pathname, PermitAttributes, QuoteTableName, Ransack, Redirect, RegexDoS, Render, RenderDoS, RenderInline, ResponseSplitting, RouteDoS, SQL, SQLCVEs, SSLVerify, SafeBufferManipulation, SanitizeConfigCve, SanitizeMethods, SelectTag, SelectVulnerability, Send, SendFile, SessionManipulation, SessionSettings, SimpleFormat, SingleQuotes, SkipBeforeFilter, SprocketsPathTraversal, StripTags, SymbolDoSCVE, TemplateInjection, TranslateBug, UnsafeReflection, UnsafeReflectionMethods, ValidationRegex, VerbConfusion, WeakRSAKey, WithoutProtection, XMLDoS, YAMLParsing
 
 == Overview ==
@@ -14,32 +14,14 @@ Controllers: 46
 Models: 71
 Templates: 447
 Errors: 0
-Security Warnings: 8
+Security Warnings: 4
 
 == Warning Types ==
 
-Cross-Site Scripting: 1
 File Access: 2
-Remote Code Execution: 3
-SQL Injection: 2
+Remote Code Execution: 2
 
 == Warnings ==
-
-Confidence: High
-Category: Cross-Site Scripting
-Check: CrossSiteScripting
-Message: Unescaped parameter value
-Code: params[:search]
-File: app/views/searches/_results.html.erb
-Line: 3
-
-Confidence: High
-Category: SQL Injection
-Check: SQL
-Message: Possible SQL injection
-Code: User.joins("inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like #{(("'%" + params[:search]) + "%'")} order by users.full_name")
-File: app/controllers/searches_controller.rb
-Line: 41
 
 Confidence: Medium
 Category: File Access
@@ -59,14 +41,6 @@ Line: 278
 
 Confidence: Medium
 Category: Remote Code Execution
-Check: UnsafeReflection
-Message: Unsafe reflection method `constantize` called on model attribute
-Code: "#{PermissionGroup.find(:BRAKEMAN_SAFE_LITERAL).title.scan(/\((.*)\)/).first.first}Competency".constantize
-File: app/controllers/competencies_controller.rb
-Line: 187
-
-Confidence: Medium
-Category: Remote Code Execution
 Check: Deserialize
 Message: `Marshal.load` called with model attribute
 Code: Marshal.load(Marshal.dump(Rails.cache.fetch("filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(:lime_survey_sid => sid).pluck(:updated_at).first.to_i}", :race_condition_ttl => 10) do  LimeSurvey.includes(:role_aggregate, :lime_groups => ([{ :lime_questions => ([:lime_answers]) }])).where(:sid => sid.to_i).first  end))
@@ -80,12 +54,4 @@ Message: Unsafe reflection method `constantize` called on model attribute
 Code: "#{PermissionGroup.find(permission_group_id.to_i).title.split(" ").last.gsub(/[()]/, "")}Mspe".constantize
 File: app/helpers/reports_helper.rb
 Line: 87
-
-Confidence: Medium
-Category: SQL Injection
-Check: SQL
-Message: Possible SQL injection
-Code: Epa.joins("inner join users on users.id = epas.user_id and users.permission_group_id=#{permission_group_id}")
-File: app/helpers/epa_masters_helper.rb
-Line: 323
 

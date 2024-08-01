@@ -13,6 +13,22 @@ class Competency < ApplicationRecord
     end
   end
 
+  def self.load_competency(group_title, permission_group_id)
+    case group_title
+      when "Med18"
+        comp_unfiltered = Med18Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+      when "Med19"
+        comp_unfiltered = Med19Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+      when "Med20"
+        comp_unfiltered = Med20Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+      when "Med21"
+        comp_unfiltered = Med21Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+    else
+      return "Invalid Competency Table!"
+    end
+
+  end
+
   def self.write_hash_to_json_file(hash, filename)
      File.open(filename,"w") do |f|
        f.write(JSON.pretty_generate(hash))

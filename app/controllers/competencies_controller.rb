@@ -184,9 +184,11 @@ class CompetenciesController < ApplicationController
         if @comp_unfiltered.empty?
           # get it from archived tables
           group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
-          table_name = "#{group_title}Competency".constantize
-          #@comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
-          @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+          # disabled the following to server rails server vulnerable - 7/30/2024 because of constantize
+          # table_name = "#{group_title}Competency".constantize
+          # @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+
+          @comp_unfiltered = Competency.load_competency(group_title, permission_group_id)
         end
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
         @comp_remap_class_mean = hf_competency_class_mean2_remap(@comp_unfiltered)
@@ -207,7 +209,6 @@ class CompetenciesController < ApplicationController
     end
 
     #@comp_remap_class_mean = hf_remap_comp(@comp_class_mean)
-
 
     @chart ||= hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
     @chart_comp_remap ||= hf_create_chart('New Competency', @comp_remap_data_clinical, @comp_remap_class_mean, full_name)
