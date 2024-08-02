@@ -325,7 +325,7 @@ $(document).ready ->
     data = careerPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
-  else if advisorType == 'Diversity Navigator'
+  else if advisorType == 'DEIB'
     data = diversityNavigatorPrimary
   else if advisorType == 'Assist Dean'
     data = assistDeanPrimary
@@ -367,7 +367,7 @@ $(document).ready ->
       data = wellnessPrimary
       $('#study_resources').hide()
       $('#practice_test_scores').hide()
-    else if advisorType == 'Diversity Navigator'
+    else if advisorType == 'DEIB'
       data = diversityNavigatorPrimary
       $('#study_resources').hide()
       $('#practice_test_scores').hide()

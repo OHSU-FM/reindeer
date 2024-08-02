@@ -138,7 +138,7 @@ module Coaching::StudentsHelper
       elsif key.first.include? "Career"
         new_hash = {color: '#89A54E', y: val }
         new_series.push new_hash
-      elsif key.first.include? "Diversity"
+      elsif key.first.include? "DEIB"
         new_hash = {color: '#3D96AE', y: val }
         new_series.push new_hash
       elsif key.first.include? "Wellness"

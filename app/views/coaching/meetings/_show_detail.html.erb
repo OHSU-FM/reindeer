@@ -21,7 +21,7 @@
                     <% select_options = hf_academic_primary_step1_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                   <% select_options = hf_wellness_primary_for_select %>
-                <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                <% elsif meeting.advisor_type == 'DEIB'  %>
                   <% select_options = hf_diversity_navigator_for_select %>
                 <% elsif meeting.advisor_type == 'Assist Dean'  %>
                   <% select_options = hf_assist_dean_for_select %>
@@ -40,7 +40,7 @@
           </div>
     </div>
 
-    <% if meeting.advisor_type != 'Diversity Navigator'  %>
+    <% if meeting.advisor_type != 'DEIB'  %>
       <div class="accordion" id="accordionParentFour">
         <div class="accordion-item">
           <h2 class="accordion-header">
@@ -78,7 +78,7 @@
                <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
              <% elsif meeting.advisor_type == "Wellness" %>
                  <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
-             <% elsif meeting.advisor_type == "Diversity Navigator" %>
+             <% elsif meeting.advisor_type == "DEIB" %>
                <% advisor_subjects = hf_diversity_navigator_discussed_for_select %>
              <% elsif meeting.advisor_type == "Assist Dean" %>
                <% advisor_subjects = hf_assist_dean_for_select %>
@@ -101,7 +101,7 @@
         </div>
       </div>
     </div>
-  <% if meeting.advisor_type != 'Diversity Navigator'  %>
+  <% if meeting.advisor_type != 'DEIB'  %>
     <div class="accordion" id="accordionParentThree">
       <div class="accordion-item">
         <h2 class="accordion-header">
@@ -118,7 +118,7 @@
                     <% advisor_outcomes = hf_meeting_ipps_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                     <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
-                <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                <% elsif meeting.advisor_type == 'DEIB'  %>
                     <% advisor_outcomes = hf_diversity_navigator_for_select%>
                 <% elsif meeting.advisor_type == 'Assist Dean'  %>
                     <% advisor_outcomes = hf_assist_dean_for_select%>

@@ -195,8 +195,6 @@ class EventsController < ApplicationController
       end
       flash.alert = notice_msg
     end
-
-
     respond_to do |format|
       format.html { redirect_to action: "index", notice: notice_msg, status: 200}
       format.json
@@ -245,7 +243,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html {redirect_to action: "index", notice: @notice_msg, status: 200}
-      format.json
+      format.json 
     end
   end
 
