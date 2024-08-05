@@ -119,10 +119,14 @@ class DashboardController < ApplicationController
               no_excluded += 1
             end
         else
-            no_excluded += 1        
+            no_excluded += 1
         end
       end
-      return class_mean_hash.values.sum/(no_of_students-no_excluded), cohort_title
+      if (no_of_students-no_excluded) <= 0
+        return 0, cohort_title
+      else
+        return class_mean_hash.values.sum/(no_of_students-no_excluded), cohort_title
+      end
     end
   end
 
