@@ -205,6 +205,7 @@ $(document).ready ->
       $("#email_notification").prop("checked", false)
       $("#email_notification").attr("disabled", true)
       $("#All-Events").empty()
+      $("#coaching_meeting_advisor_notes").val("Met with student.")
     return
 
   $("#coaching_meeting_advisor_id").prop("disabled", true)
