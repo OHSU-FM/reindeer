@@ -29,15 +29,15 @@
 
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <button class="nav-link active" id="nav-appointments-tab" data-bs-toggle="tab" data-bs-target="#nav-appointments" type="button" role="tab" aria-controls="nav-appointments" aria-selected="true">Appointments</button>
-      <button class="nav-link" id="nav-meetings-tab" data-bs-toggle="tab" data-bs-target="#nav-meetings" type="button" role="tab" aria-controls="nav-meetings" aria-selected="false">Meetings</button>
+      <button class="nav-link active"  id="nav-meetings-tab" data-bs-toggle="tab" data-bs-target="#nav-meetings" type="button" role="tab" aria-controls="nav-meetings" aria-selected="false">Meetings</button>
+      <button class="nav-link " id="nav-appointments-tab" data-bs-toggle="tab" data-bs-target="#nav-appointments" type="button" role="tab" aria-controls="nav-appointments" aria-selected="true">Appointments</button>
       <button class="nav-link" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button" role="tab" aria-controls="nav-documents" aria-selected="false">IPAS/IPPS Docs</button>
       <button class="nav-link" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-reports" type="button" role="tab" aria-controls="nav-reports" aria-selected="false">OASIS Reports</button>
 
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-appointments" role="tabpanel" aria-labelledby="nav-appointments-tab">
+    <div class="tab-pane fade " id="nav-appointments" role="tabpanel" aria-labelledby="nav-appointments-tab">
       <div class="container-fluid">
           <div class="row">
             <div class="col-md-8">
@@ -55,7 +55,7 @@
          </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="nav-meetings" role="tabpanel" aria-labelledby="nav-meetings-tab">
+    <div class="tab-pane fade show active" id="nav-meetings" role="tabpanel" aria-labelledby="nav-meetings-tab">
       <div class="table-controls">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMeetingModal" id="newMeetingButton">Create New Appointment</button>
         <%= link_to("<span style='font-size:16px'><i>Clinical Phase Dataset (>= Med20)</i></span>".html_safe,

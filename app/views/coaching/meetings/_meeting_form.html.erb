@@ -207,16 +207,22 @@
       <div class="card">
         <div class="card-body card-body-color">
 
-          <div class="control-group" id="fields">
-            <label class="control-label col-sm-3" for="TimeSlotByMin"> Time Slot by Mins</label>
-            <select name="time_slot" id="time_slot"  >
-                <option value="30">30</option>
-                <option value="45" selected>45</option>
-                <option value="60">60</option>
-            </select>
-            <br />
-             <label class="control-label col-sm-3" for="field1">Appointment Date</label>
-              <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
+          <div class="row mb-0" id="fields">
+            <label class="control-label col-md-3 right-label" for="TimeSlot"> Time Slot by Mins</label>
+            <div class="col-sm-4">
+              <select name="time_slot" id="time_slot" class="form-select" >
+                  <option value="30">30</option>
+                  <option value="45" selected>45</option>
+                  <option value="60">60</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-0">
+            <label class="control-label col-md-3 right-label">Appointment Date <i class = "fa fa-calendar "></i></label>
+            <div class="col-sm-4">
+              <input type="text" class="flatpickr flatpickr-input active form-control" id="startDateRetro", name="startDateRetro" placeholder="Click here to Select Date..">
+            </div>
           </div>
         </div>
       </div>
@@ -231,11 +237,11 @@
         </div>
     </div>
     <div class="card">
-      <div class="card-body card-body-color">
+      <div class="card-body card-body-color2">
         <div class="form-group">
-          <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
-          <%= f.text_area :notes, class: "col-sm-6" %>
+          <b><%= f.label :subject, "Advisor Meeting Documentation:", class: "control-label col-md-6" %></b>
         </div>
+        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%', class: "form-control", value: "Met with student." %>
       </div>
     </div>
 
