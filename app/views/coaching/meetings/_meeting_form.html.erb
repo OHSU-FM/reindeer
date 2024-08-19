@@ -60,6 +60,19 @@
             </div>
             </div>
           </div>
+          <% if ['Career', 'Assist Dean'].include? advisor_type %>
+            <div class="row mb-0">
+              <label class="control-label col-md-3 right-label"></label>
+              <div class="col-sm-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox", id="graduated_student", name="graduated_student">
+                  <label class="form-check-label" for="defaultCheck1">
+                    Met with Graduated Student?
+                  </label>
+                </div>
+                </div>
+              </div>
+          <% end %>
 
         <div class="card" id="AppointmentCard">
           <div class="card-body">

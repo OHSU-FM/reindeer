@@ -36,6 +36,21 @@ module CompetenciesHelper
            "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
    }
 
+   EPA_NEW = { "epa1" => ["pcp1", "ics1", "ics5", "pppd1", "pppd2" ], #done
+        "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "mk3", "pbli1", "ics2","pbli1", "pppd2"],  # done
+        "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics1", "pppd1", "pbli1", "pppd2", "sbpic1" ], #done
+        "epa4" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli1", "pbli2",  "ics1",  "pbli1", "pppd2", "sbpic1"], #done
+        "epa5" => ["pcp3", "mk3", "ics1", "ics5", "ics2", "pbli1", "pppd2", "sbpic1",  "ics3"], # done
+        "epa6" => ["pcp3", "pbli1", "pbli3", "ics1", "ics2", "ics4", "ics5", "pppd1", "pbli1", "pppd2", "pbli1", "ics3"], #done
+        "epa7" => ["mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pppd2" ], #done
+        "epa8" => ["ics5", "ics2",  "ics1", "pbli1", "pppd2", "ics3"],  #done
+        "epa9" => ["mk3", "ics1", "ics2", "pppd1", "pbli1", "pppd2",  "ics3"], # done
+        "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "ics1", "ics2", "pppd1", "pppd2", "pbli1", "ics3"], #done
+        "epa11" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli1", "pppd2", "sbpic1"], #done
+        "epa12" => ["pcp3", "ics1", "ics5", "pppd1", "pbli1", "pppd2"], #done
+        "epa13" => ["mk3", "pbli2", "pbli3", "pbli1", "ics1", "ics2", "pbli1", "pppd2", "sbpic1", "ics3"]
+}
+
    EPA_DESC={"EPA1" => "Gather a history and perform a physical examination",
              "EPA2" => "Prioritize a differential diagnosis following a clinical encounter",
              "EPA3" => "Recommend and interpret common diagnostic and screening tests",
@@ -139,8 +154,6 @@ module CompetenciesHelper
      "Comp5" => "Final Skills Exam"
    }
 
-
-
   #==================================================================================================================================================================
   # New Competencies Mappings
   NEW_COMP_MAP ={
@@ -204,7 +217,7 @@ module CompetenciesHelper
     "mk2" => 9,
     "mk3" => 6,
     "pbli1" => 16,
-    "pbli2" => 13,
+    "pbli2" => 7,  # original was 13
     "pbli3" => 7,
     "pcp1" => 8,
     "pcp2" => 16,
@@ -213,7 +226,6 @@ module CompetenciesHelper
     "pppd2" => 16,
     "sbpic1" => 6
   }
-
 
   NEW_COMP_DEFINITION = {
     "ics1" => "Communicate effectively with patients and families.",
@@ -235,7 +247,6 @@ module CompetenciesHelper
     "sbpic1" => "Engage in the quality improvement process related to patient safety and system issues."
 
   }
-
 
   NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbpic1"]
 

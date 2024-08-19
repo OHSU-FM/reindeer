@@ -116,7 +116,10 @@ module Coaching::MeetingsHelper
       ['Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'],
       ['Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'],
       ['Alternate Careers Advising – "After graduation, what options besides GME can I explore?"'],
-      ['Scholarship Approval']
+      ['Scholarship Approval'],
+      ['Adjusting Intership/Residency'],
+      ['Planning for ERAS Reapplication'],
+      ['Career Mentoring']   
 
     ]
 

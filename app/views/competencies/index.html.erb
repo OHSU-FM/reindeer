@@ -125,7 +125,7 @@
                     <%= high_chart("comp_graph", @chart) %>
                   </div>
                 </div>
-                <% if ['chungp'].include? current_user.username %>
+                <% if ['chungp', 'itot', 'bumstedt', 'fruhwirt'].include? current_user.username %>
                   <div class="card">
                     <div class="card-body card-body-color">
                       <%= high_chart("comp_remap_graph", @chart_comp_remap) %>

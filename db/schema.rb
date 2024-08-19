@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_15_180301) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -1047,6 +1047,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.unique_constraint ["email"], name: "med24_mspe_email_key"
   end
 
+  create_table "med25_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+    t.string "email", limit: 50, null: false
+    t.string "full_name", limit: 50
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.index ["user_id"], name: "index_med25_mspes_on_user_id"
+    t.unique_constraint ["email"], name: "med25_mspe_email_key"
+  end
+
   create_table "medhub_period_ids", id: false, force: :cascade do |t|
     t.integer "courseID"
     t.integer "periodID"
@@ -1080,6 +1089,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.json "nbme_form"
     t.json "uworld_info"
     t.json "qbank_info"
+    t.boolean "graduated_student"
     t.index ["advisor_id", "id"], name: "index_meetings_on_advisor_id_and_id", unique: true
     t.index ["event_id", "id"], name: "index_meetings_on_event_id_and_id", unique: true
     t.index ["user_id"], name: "index_meetings_on_user_id"
@@ -1420,6 +1430,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
   add_foreign_key "med21_competencies", "permission_groups"
   add_foreign_key "med23_mspes", "users"
   add_foreign_key "med24_mspes", "users"
+  add_foreign_key "med25_mspes", "users"
   add_foreign_key "preceptor_assesses", "users"
   add_foreign_key "preceptor_evals", "users"
   add_foreign_key "student_lists", "users"

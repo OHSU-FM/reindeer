@@ -101,6 +101,9 @@ careerPrimary = [
   'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency',
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
   'Scholarship Approval',
+  'Adjusting Intership/Residency',
+  'Planning for ERAS Reapplication',
+  'Career Mentoring'
 ]
 window.ajaxStatus = ""  #global var
 window.eventIdGlobal = ""
