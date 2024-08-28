@@ -51,7 +51,6 @@ module Coaching::MeetingsHelper
       end
     end
 
-
   end
 
   def hf_format_subjects(subjects)
@@ -119,7 +118,7 @@ module Coaching::MeetingsHelper
       ['Scholarship Approval'],
       ['Adjusting Intership/Residency'],
       ['Planning for ERAS Reapplication'],
-      ['Career Mentoring']   
+      ['Career Mentoring']
 
     ]
 
@@ -182,7 +181,6 @@ module Coaching::MeetingsHelper
       ["General Visit"]
     ]
   end
-
 
   def hf_meeting_ipas_for_select
     [

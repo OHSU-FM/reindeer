@@ -43,22 +43,34 @@ $ ->
       console.log("found IsAdvisor!")
       return
     advisorType = @value
-    #alert advisorType
+    # alert advisorType
     $('#advisor').empty()
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
       for key of advisors
         if advisors.hasOwnProperty(key)
-          #alert advisors[key].name
-          if advisors[key].advisor_type.includes(advisorType)
-            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
-          else if advisorType.includes("Step 1") or advisorType.includes("Remediation")
+          if advisorType.includes("Step 1") or advisorType.includes("Remediation")
             advisorType = "Academic"
             $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+          else if advisorType.includes("ERAS")
+            advisorType = "Career"
+            $('#advisor').empty()
+            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+          else if advisors[key].advisor_type.includes(advisorType)
+            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+
+          # if advisors[key].advisor_type.includes(advisorType)
+          #   $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+          # else if advisorType.includes("Step 1") or advisorType.includes("Remediation")
+          #   advisorType = "Academic"
+          #   $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
+
+
+
+
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
   return
-
 
 appointments = []
 next = 1;

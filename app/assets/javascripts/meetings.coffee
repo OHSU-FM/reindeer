@@ -11,6 +11,12 @@ $ ->
     # else
     $('#coaching_meeting_advisor_id').empty()
     $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
+    advisorType = $('#coaching_meeting_advisor_type').val()
+    if advisorType == 'Career'
+      permissioGroupID = $('#coaching_meeting_permission_group_id').val()
+      if permissioGroupID > 19
+        alert("Career Advisors are prioritizing MS4 ERAS at this time. If you are not a M25 student, please hold on scheduling appointments until after October.")
+        return
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
       for key of advisors
@@ -19,9 +25,14 @@ $ ->
           if advisorType.includes("Step 1") or advisorType.includes("Remediation")
             if advisors[key].advisor_type.includes("Academic")
               $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+            else if advisors[key].advisor_type.includes(advisorType)
+              $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+          else if advisorType.includes("ERAS")
+            advisorType = "Career"
+            $('#coaching_meeting_advisor_id').empty()
+            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
           else if advisors[key].advisor_type.includes(advisorType)
-            $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
-
+            $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
     #$('#coaching_meeting_advisor_id').val('')

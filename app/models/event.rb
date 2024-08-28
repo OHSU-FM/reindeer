@@ -49,6 +49,11 @@ class Event < ApplicationRecord
     else
       time_slot = time_slot.to_i + 15
     end
+    # if time_slot.to_i == 30
+    #   time_slot = time_slot.to_i + 15
+    # end
+
+    # time_slot = time_slot.to_i
 
     (start_date.to_s.to_datetime.utc.to_i .. end_date.to_s.to_datetime.utc.to_i).step(time_slot*60) do |date|
        date_array.store("Date #{i}", Time.at(date).utc.strftime("%Y/%m/%d %T %p"))
@@ -61,8 +66,6 @@ class Event < ApplicationRecord
     else
       return date_array
     end
-
-
   end
 
   def self.enumerate_hours(start_date, end_date, time_slot, advisor_type, weekly_recurrences)

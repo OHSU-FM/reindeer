@@ -268,6 +268,7 @@
     <% # disabled on 4/23/ %>
     <% #@advisor_types.push "Academic: Step 1 Advising" %>
     <% @advisor_types.push "Academic: Remediation Support" %>
+    <% #@advisor_types.push "Career Advising: MS4 ERAS" %>
 
     <div class="card" id="AdvisorCard">
       <div class="card-body">
@@ -283,6 +284,7 @@
         <%= f.hidden_field :user_id, value: student.id %>
         <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
         <%= f.hidden_field :location, value: 'Phone/Webex' %>
+        <%= f.hidden_field :permission_group_id, value: student.permission_group_id %>
       </div>
     </div>
 

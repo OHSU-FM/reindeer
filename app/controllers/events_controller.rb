@@ -243,7 +243,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html {redirect_to action: "index", notice: @notice_msg, status: 200}
-      format.json 
+      format.json
     end
   end
 
@@ -328,6 +328,9 @@ class EventsController < ApplicationController
         if params[:advisor_type].include? "Academic: Step 1" or params[:advisor_type].include? "Academic: Remediation"
           @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
             DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
+        elsif params[:advisor_type].include? "Career" or params[:advisor_type].include? "Career Advising"
+          @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
+            DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
         else
           @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
             DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]} Advisor%" ).order(:start_date)
@@ -359,6 +362,7 @@ class EventsController < ApplicationController
       # commented out step 1 advisiing on 4/23/2023 - requested by Erika and Career Advisor
      #@advisor_types.push 'Academic: Step 1 Advising'
      @advisor_types.push 'Academic: Remediation Support'
+     #@advisor_types.push 'Career Advising: MS4 ERAS'
      @advisor_types.sort!
 
       @advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)
