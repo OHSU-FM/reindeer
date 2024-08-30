@@ -131,9 +131,14 @@ class EventsController < ApplicationController
       @weekly_recurrences = params[:weekly_recurrences]
       session[:advisor_type] = @advisor_type
       session[:advisor] = @advisor
+      if params[:time_interval].present?
+        @time_interval = params[:time_interval]
+      else
+        @time_interval = nil
+      end
 
       #@appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type, @weekly_recurrences)
-      @appointments = Event.enumerate_hours2(params[:startDate1], params[:endDate1], params[:time_slot], @advisor_type, @weekly_recurrences)
+      @appointments = Event.enumerate_hours2(params[:startDate1], params[:endDate1], params[:time_slot], @advisor_type, @weekly_recurrences, @time_interval)
 
       respond_to do |format|
         #format.html

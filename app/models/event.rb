@@ -38,7 +38,7 @@ class Event < ApplicationRecord
 
   end
 
-  def self.enumerate_hours2(start_date, end_date, time_slot, advisor_type, weekly_recurrences)
+  def self.enumerate_hours2(start_date, end_date, time_slot, advisor_type, weekly_recurrences, time_interval)
     if start_date.nil?
       return nil
     end
@@ -46,8 +46,10 @@ class Event < ApplicationRecord
     i = 1
     if advisor_type == 'Assist Dean'
       time_slot = time_slot.to_i
-    else
+    elsif time_interval != nil ## 15m_time_interval is checked.
       time_slot = time_slot.to_i + 15
+    else
+      time_slot = time_slot.to_i
     end
     # if time_slot.to_i == 30
     #   time_slot = time_slot.to_i + 15
