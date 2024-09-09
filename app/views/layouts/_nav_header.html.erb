@@ -43,20 +43,20 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <% if ['nmai', 'chungp', 'shuforda', 'fruhwirt'].include? current_user.username  %>
+              <% if ['nmai', 'chungp', 'meltond', 'fruhwirt'].include? current_user.username  %>
                 <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
 
             <li class="nav-item dropdown">
-              <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'fruhwirt', 'shuforda'].include? current_user.username) %>
+              <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'fruhwirt', 'meltond'].include? current_user.username) %>
                   <a class="nav-link dropdown-toggle" role="button"  href="#reportMenu" data-bs-toggle="dropdown" aria-expanded="false">
                   Report
                   </a>
                   <ul class="dropdown-menu" id="reportMenu">
                     <li><%= link_to '<i> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %></li>
                     <li><%= link_to '<i> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %></li>
-                    <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
+                    <% if ['chungp', 'fruhwirt', 'bumstedt', 'meltond'].include? current_user.username %>
                       <li><%= link_to '<i> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %></li>
                     <% end %>
                   </ul>
@@ -69,7 +69,7 @@
                 </a>
                 <ul class="dropdown-menu" id="dropdownMenuButton">
                   <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
+                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'meltond'].include? current_user.username %>
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
 
                   <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>

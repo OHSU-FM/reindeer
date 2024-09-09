@@ -65,7 +65,11 @@
               <label class="control-label col-md-3 right-label"></label>
               <div class="col-sm-4">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox", id="graduated_student", name="graduated_student">
+                  <% if student.spec_program.include? "Graduated" %>
+                    <input class="form-check-input" type="checkbox", id="graduated_student", name="graduated_student", checked=true >
+                  <% else %>
+                    <input class="form-check-input" type="checkbox", id="graduated_student", name="graduated_student">
+                  <% end %>
                   <label class="form-check-label" for="defaultCheck1">
                     Met with Graduated Student?
                   </label>
@@ -238,6 +242,31 @@
             </div>
           </div>
         </div>
+
+        <div class="row mb-0">
+          <label class="control-label col-md-3 right-label"></label>
+          <div class="col-sm-6">
+            <div class="form-check">
+              <input class="form-check-input select-this-date" type="checkbox", id="selelct_this_date", name="select_this_date" disabled>
+              <label class="form-check-label" >
+                Select the Above Followup Appointment
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-0">
+          <label class="control-label col-md-3 right-label"></label>
+          <div class="col-sm-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox", id="email_notification", name="email_notification">
+              <label class="form-check-label" for="defaultCheck1">
+                Email Notification
+              </label>
+            </div>
+            </div>
+          </div>
+
       </div>
 
       <div class="card" id="OtherCard">

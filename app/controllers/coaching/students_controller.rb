@@ -75,20 +75,22 @@ module Coaching
     end
 
     def advisor_reports
-      if params[:advisor_id].present? and params[:advisor_id] != 'All'
-        if params[:NoShow].present?
+
+      if params[:advisor_id].present? and !params[:advisor_id].include? 'All'
+        if params[:Status].present? and !params[:Status].include? 'All'
            @code = "Individual"
-           @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", params[:advisor_id], "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+           @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:Status], params[:StartDate], params[:EndDate]).order(created_at: :desc)
         else
           @code = "Aggregate"
           @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
 
         end
-      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and params[:NoShow].present?
+      elsif params[:advisor_id].present? and params[:advisor_id].include? 'All' and !params[:Status].include? 'All'
+
         @code = "Individual"
-        @meetings = Meeting.where("m_status = ? and created_at >= ? and created_at <= ?", "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
-        hf_create_file(@meetings, "oasis_no_show.csv")
-      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and !params[:NoShow].present?
+        @meetings = Meeting.where("m_status = ? and created_at >= ? and created_at <= ?", params[:Status], params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        hf_create_file(@meetings, "oasis_status_report.csv")
+      elsif params[:advisor_id].present? and params[:advisor_id].include? 'All' and params[:Status] == 'All'
         @all_advisor_flag = true
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
                         .order(:advisor_id).group(:advisor_id).count
@@ -105,8 +107,8 @@ module Coaching
       elsif !params[:advisor_id].present?
         @code = "Individual"
         @valid_advisor = Advisor.find_by(email: current_user.email)
-        if params[:NoShow].present?
-          @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        if params[:Status].present? and params[:Status] != 'All'
+          @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:Status], params[:StartDate], params[:EndDate]).order(created_at: :desc)
         else
           @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
         end
@@ -189,7 +191,7 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15).load_async
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15).load_async
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)

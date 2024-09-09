@@ -172,10 +172,11 @@
   <% else %>
       <div><i>Appt Start Date: <%= meeting.date.strftime("%m/%d/%Y %I:%M %p - %A") %></i></div>
   <% end %>
+
   <% if meeting.graduated_student %>
     <div><i>Met with Graduated Student? <b>YES </b></i></div>
   <% else %>
-      <div><i>Met with Graduated Student? <b>NO </b></i></div>
+    <div><i>Met with Graduated Student? <b>NO </b></i></div>
   <% end %>
   <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %>
 </div>

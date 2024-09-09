@@ -16,6 +16,7 @@ module Coaching
           @meeting.graduated_student = true
         end
 
+
         end_date = (params[:startDateRetro].to_datetime + params[:time_slot].to_i.minutes).utc.strftime("%Y/%m/%d %I:%M %p - %A")
         start_date = params[:startDateRetro].to_datetime.utc.strftime("%Y/%m/%d %I:%M %p - %A")
 
@@ -52,6 +53,12 @@ module Coaching
         @meeting.event_id = event.id
       # else
       #   @meeting.event_id = params[:event_id]
+      end
+
+      if current_user.coaching_type == 'student'
+        if current_user.spec_program.include? 'Graduated'
+          @meeting.graduated_student = true
+        end 
       end
 
       respond_to do |format|
