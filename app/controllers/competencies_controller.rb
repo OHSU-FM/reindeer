@@ -214,11 +214,15 @@ class CompetenciesController < ApplicationController
     @chart_comp_remap ||= hf_create_chart('New Competency', @comp_remap_data_clinical, @comp_remap_class_mean, full_name)
 
     @student_epa ||= hf_epa2(@comp_data_clinical)
-
     @epa_class_mean ||= hf_epa2(@comp_class_mean)
     @chart_epa ||= hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
 
+    @student_epa_new ||= hf_epa2_new(@comp_remap_data_clinical)
+    @epa_class_mean_new ||= hf_epa2_new(@comp_remap_class_mean)
+    @chart_epa_new ||= hf_create_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
+
   end
+
 
   private
 

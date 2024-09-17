@@ -2,6 +2,10 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <strong>AdvisorID:</strong>
+  <%= @event.advisor_id %>
+</p>
+<p>
   <strong>Title:</strong>
   <%= @event.title %>
 </p>
@@ -13,18 +17,20 @@
 
 <p>
   <strong>Start date:</strong>
-  <%= @event.start_date %>
+  <%= @event.start_date.strftime("%m/%d/%Y %H:%M %P - %A") %>
 </p>
 
 <p>
   <strong>End date:</strong>
-  <%= @event.end_date %>
+  <%= @event.end_date.strftime("%m/%d/%Y %H:%M %P - %A") %>
 </p>
 
 <p>
-  <strong>AdvisorID:</strong>
-  <%= @event.advisor_id %>
+  <strong>Created At:</strong>
+  <%= @event.created_at.strftime("%m/%d/%Y %H:%M %P - %A") %>
 </p>
+
+
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>

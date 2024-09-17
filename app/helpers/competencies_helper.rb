@@ -49,7 +49,7 @@ module CompetenciesHelper
         "epa11" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli1", "pppd2", "sbpic1"], #done
         "epa12" => ["pcp3", "ics1", "ics5", "pppd1", "pbli1", "pppd2"], #done
         "epa13" => ["mk3", "pbli2", "pbli3", "pbli1", "ics1", "ics2", "pbli1", "pppd2", "sbpic1", "ics3"]
-}
+      }
 
    EPA_DESC={"EPA1" => "Gather a history and perform a physical examination",
              "EPA2" => "Prioritize a differential diagnosis following a clinical encounter",
@@ -238,7 +238,7 @@ module CompetenciesHelper
     "mk3" => "Demonstrate foundational knowledge in health systems science.",
     "pbli1" => "Demonstrate behaviors that support lifelong learning and professional growth such as incorporating self-assessment and feedback.",
     "pbli2" => "Locate, critically appraise, and synthesize new information to support evidence informed and patient centered clinical decisions.",
-    "pbli3" => "Engage in scholarly inquiry and disseminate findings using ethical principles.",
+    "pbli3" => "Engage in scholarly inq@comp_data_clinicaluiry and disseminate findings using ethical principles.",
     "pcp1" => "Gather information through history and physical on patients.",
     "pcp2" => "Construct prioritized differential diagnosis based on interpretation of available clinical data.",
     "pcp3" => "Develop and implement a personalized management plan for the patient.",
@@ -642,6 +642,19 @@ module CompetenciesHelper
       return epa
     end
 
+    def hf_epa2_new(comp_data)
+      epa = {}
+      for i in 1..13
+         epa_code = "epa" + i.to_s
+          temp_percent = 0
+          EPA_NEW[epa_code].each do |c|
+            temp_percent = temp_percent + comp_data[c]
+          end
+          epa[epa_code] = (temp_percent/EPA_NEW[epa_code].count.to_f).round(0)
+      end
+      return epa
+    end
+
     def get_4_random_colors
       color_array = []
       for j in 0..12
@@ -718,6 +731,8 @@ module CompetenciesHelper
 
       if type == "EPA"
         title = "EPA"
+      elsif type == "EPA NEW"
+        title = "NEW EPA (Working Progress)"
       elsif type.include? "FoM"
         title = type
       elsif type.include? "New"
@@ -740,15 +755,18 @@ module CompetenciesHelper
                 }
             )
             f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
-            if type != "EPA"
-              f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
-                color: 'black',
-                marker: { symbol: 'diamond' })
+
+            if type == 'EPA NEW'
+                f.series(name: "Class Mean", yAxis: 0, color: 'gray', data: data_series2)
+            elsif type != "EPA"
+                f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
+                  color: 'black',
+                  marker: { symbol: 'diamond' })
             else
-              f.series(name: "Class Mean", yAxis: 0, color: 'gray', data: data_series2)
+              f.series(name: "Class Mean", yAxis: 0, color: 'lime', data: data_series2)
             end
             # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-            f.colors(get_4_random_colors)
+            #f.colors(get_4_random_colors)
 
             f.yAxis [
                { max: 100,

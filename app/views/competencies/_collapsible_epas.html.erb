@@ -1,4 +1,23 @@
-<H4 style="color:purple;">EPAs/Badges Section</h4>
+<p style="color:purple;font-size:22px;"><b>EPAs/Badges Section</b>
+  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEPA_Graph" aria-expanded="false" aria-controls="collapseEPA_Graph">
+    EPA Graph
+  </button>
+  <% if current_user.username.include? 'chungp' %>
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEPA_New_Graph" aria-expanded="false" aria-controls="collapseEPA_New_Graph">
+      EPA New Graph
+    </button>
+  <% end %>
+</p>
+<div class="collapse" id="collapseEPA_Graph">
+  <div class="card card-body">
+    <%= high_chart("epa_graph", @chart_epa) %>  </div>
+</div>
+
+<div class="collapse" id="collapseEPA_New_Graph">
+  <div class="card card-body">
+    <%= high_chart("epa_new_graph", @chart_epa_new) %>  </div>
+</div>
+
   <% if !@student_epa.blank? %>
     <% for i in 1..13 do %>
       <% epa_code = "epa#{i}" %>

@@ -12,11 +12,16 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     # advisor wants to see other advisor's appointment
-    @events = Event.where('start_date > ?', DateTime.now)  #.order(start_date: :desc)
+
     advisor = Advisor.find_by(email: current_user.email)
     if !advisor.nil?
       @advisor_name = advisor.name
+      @events = Event.where('start_date > ? and advisor_id=? and user_id is null', DateTime.now, advisor.id)  #.order(start_date: :desc)
+    else
+      @events = Event.where('start_date > ? and user_id is null', DateTime.now)  #.order(start_date: :desc)
     end
+
+
     #   @events = Event.where('advisor_id=? and start_date > ?', advisor.id, DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
     # else
     #   @events = Event.where('start_date > ?', DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
