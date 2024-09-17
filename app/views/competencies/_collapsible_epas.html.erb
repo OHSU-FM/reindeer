@@ -8,15 +8,17 @@
     </button>
   <% end %>
 </p>
-<div class="collapse" id="collapseEPA_Graph">
-  <div class="card card-body">
-    <%= high_chart("epa_graph", @chart_epa) %>  </div>
-</div>
+<% if !@chart_epa.nil? %>
+  <div class="collapse" id="collapseEPA_Graph">
+    <div class="card card-body">
+      <%= high_chart("epa_graph", @chart_epa) %>  </div>
+  </div>
 
-<div class="collapse" id="collapseEPA_New_Graph">
-  <div class="card card-body">
-    <%= high_chart("epa_new_graph", @chart_epa_new) %>  </div>
-</div>
+  <div class="collapse" id="collapseEPA_New_Graph">
+    <div class="card card-body">
+      <%= high_chart("epa_new_graph", @chart_epa_new) %>  </div>
+  </div>
+<% end %>
 
   <% if !@student_epa.blank? %>
     <% for i in 1..13 do %>
