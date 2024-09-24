@@ -5,7 +5,6 @@
                     <div class="card mx-auto" style="width: 75%;">
                       <div class="card-body">
                          <div class="form-group">
-                             <div style: "display: inline-block">
                                <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true, class: "btn btn-info" %> &nbsp;&nbsp;
                                <%= label_tag :Advisor %>
                                <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
@@ -28,8 +27,7 @@
                                  <%= select_tag "Status", options_for_select(["All", "No Show", "Rescheduled", "Scheduled", "Completed"]), class: "form-select", style: "max-width:200px; display: inline-block" %>
                                  &nbsp; &nbsp;
                                  <%= button_tag " SUBMIT", class: 'button btn btn-primary', html: {autocomplete: 'off'},
-                                     'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>
-                           </div>
+                                     'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>              
                          </div>
                        </div>
                      </div>

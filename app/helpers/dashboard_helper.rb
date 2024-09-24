@@ -29,10 +29,10 @@ module DashboardHelper
       if advisor.nil?
         return []
       end
-      meetings = Coaching::Meeting.where(advisor_id: advisor.id)
+      meetings = Coaching::Meeting.where(advisor_id: advisor.id) 
       events_array = []
       meetings.each do |meeting|
-        events = Event.where("id = ? and start_date > ? and end_date <= ? and user_id is not NULL", meeting.event_id, DateTime.now, 7.days.ago.to_date)
+        events = Event.where("id = ? and start_date > ? and end_date <= ? and user_id is not NULL", meeting.event_id, 2.weeks.ago.to_date, DateTime.now)
         if !events.empty?
           events_array.push events.first
         end

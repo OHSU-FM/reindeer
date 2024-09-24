@@ -300,6 +300,7 @@ $(document).ready ->
 
   $('#pass_events_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
   $('#send_invite_table').dataTable language: searchPlaceholder: 'FirstName or LastName'
+  $('#delete_events_table').dataTable language: searchPlaceholder: 'FirstName or LastName'  
   $('.dataTables_length').addClass 'bs-select'
   #alert('searchValue: ' + $('#searchValue').val())
 

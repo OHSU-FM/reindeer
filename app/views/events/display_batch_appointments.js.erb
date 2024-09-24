@@ -4,6 +4,8 @@ $('#check_all').click(function () {
     $('input:checkbox').prop('checked', this.checked);
 });
 
+$('#delete_events_table').dataTable language: searchPlaceholder: 'FirstName or LastName'  
+
 var appointments = [];
 $('#SaveAll').click(function () {
   $.each($("input[name='checkbox']:checked"), function (K, V) {

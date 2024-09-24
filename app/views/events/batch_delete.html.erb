@@ -4,13 +4,20 @@
 <div class="card">
   <div class="card-body card-body-color">
     <%= form_tag(batch_delete_events_path, method: 'get') do %>
-
       <div class="form-group">
-          <%= label_tag :Advisor, nil, class: "control-label col-sx-2" %>
-          <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name", selected: params[:advisor_id]), include_blank: "---" , required: true  %> &nbsp; &nbsp;
+
+          <%= label_tag :Advisor, nil, class: "control-label" %>
+          <% if !@advisor.empty? %>
+            <%= select_tag :advisor_id, options_from_collection_for_select(@advisor, "id", "name", @advisor.first.id),
+            required: true, class: "form-select", style: "max-width:250px; display: inline-block" %> &nbsp;
+          <% else %>
+            <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name", selected: params[:advisor_id]), include_blank: "---" ,
+            required: true, class: "form-select", style: "max-width:250px; display: inline-block" %> &nbsp;
+          <% end %>
           <%= label_tag "Purge Unused Appointments" %> &nbsp;
-          <%= check_box_tag 'purge', 'purgeEvent', checked: params[:purge] %> &nbsp; &nbsp;
-          <%= submit_tag "Submit", class: "btn-sm btn-primary"%>
+          <%= check_box_tag 'purge', 'purgeEvent', checked: params[:purge] %> &nbsp;
+          <%= button_tag "Submit", class: "btn btn-sm btn-primary", style: "display: inline-block" %>
+
       </div>
     <% end %>
   </div>

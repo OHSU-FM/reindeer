@@ -379,6 +379,10 @@ class EventsController < ApplicationController
       @advisor_name ||= @advisors.map{|n| n.name if n.email==current_user.email}.compact
       advisor_type ||= @advisors.map{|n| n.advisor_type if n.email==current_user.email}.compact
 
+      @advisor = @advisors.map{|a| a if a.email==current_user.email}.compact
+
+
+
       if @advisor_name.empty?
         @all_advisor_names = @advisors.map{|n| n.name}.compact
       else

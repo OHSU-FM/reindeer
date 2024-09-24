@@ -14,7 +14,7 @@ class DashboardController < ApplicationController
     #@surveys = current_user.lime_surveys_by_most_recent(5)
     @dash = Dashboard.where(user_id: current_user.id).first_or_initialize  #includes(:dashboard_widgets)
     if current_user.coaching_type == 'student'
-      @meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
+      #@meetings = Coaching::Meeting.where("user_id=? and event_id is not NULL", current_user.id)
       student = User.where(id: current_user.id)
       @wba_epa_data = hf_process_student(student, 'WBA')
       @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
@@ -116,7 +116,7 @@ class DashboardController < ApplicationController
             if count != 0
               class_mean_hash[user.full_name] = count
             else
-              no_excluded += 1
+              #no_excluded += 1
             end
         else
             no_excluded += 1
