@@ -1,0 +1,57 @@
+
+<% if !@selected_course_schedules.empty? %>
+  <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5>&nbsp; &nbsp<%= button_to 'New Course', new_course_path, class: "btn btn-sm btn-primary" %></div>
+  <table class="table-responsive wrap table table-hover table-striped tableFixHead " id="dttb-courses" >
+    <thead class="thead-light">
+      <tr>
+        <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+          <th>Action</th>
+        <% end %>
+
+        <th>ID</th>
+        <th>Category</th>
+        <th>CourseNumber</th>
+        <th>CourseName</th>
+        <th>Department</th>
+        <th>ContentType</th>
+        <th>Available Thru Lottery</th>
+        <th>Rural</th>
+        <th>Continuity</th>
+        <th>Prerequisites</th>
+        <th>Duration</th>
+        <th>Credits</th>
+        <th>Course Purpose Statement</th>
+      </tr>
+    </thead>
+    <% @selected_course_schedules.each do |course_schedule| %>
+        <% course = course_schedule.course %>
+        <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+          <tr>
+            <td style="width: 6%">
+                <%= link_to 'Edit', edit_course_path(course), target: '_blank' %> /
+                <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+        <% else %>
+          <tr class="custom-clickable-row" data-href="/course_schedules?course_id=<%= course.id %>">
+        <% end %>
+
+        <td><%= course.id %></td>
+        <td><%= course.category %></td>
+        <td style="width: 5%"> <%= link_to "#{course.course_number}", course_schedules_path(course_id: course.id), target: '_blank' %></td>
+
+        <td><%= course.course_name %></td>
+        <td><%= course.department %></td>
+        <td><%= course.content_type %></td>
+        <td><%= course.available_through_the_lottery %></td>
+        <td><%= course.rural %></td>
+        <td><%= course.continuity %></td>
+        <td><%= course.prerequisites %></td>
+        <td><%= course.duration %></td>
+        <td><%= course.credits %></td>
+        <td><%= course.course_purpose_statement %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <h5> No Courses Found! </h5>
+<% end %>

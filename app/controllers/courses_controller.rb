@@ -11,22 +11,22 @@ class CoursesController < ApplicationController
 
       params_filter, params_filter2 = get_params
       @courses = Course.where("category like ? and department like ?", params_filter2["category"], params_filter2["department"]).where(params_filter)
-        .select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery,
+        .select(:id, :category, :course_number, :course_name, :department, :content_type, :available_through_the_lottery,
          :rural, :continuity, :prerequisites,  :duration, :credits, :course_purpose_statement).order(:course_number)
       #@courses_hash = @courses.map(&:attributes)
       #@course_col_names = Course.column_names
-    elsif params[:course_name].present?
-      if params[:course_name].include? ":"
-        query_string = params[:course_name].split(":")
-        @courses = Course.where("course_number like ? and course_name like ?", "%#{query_string[0]}%", "%#{query_string[1]}%").
-           select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
-      else
-        @courses = Course.where("course_name like ?", "%#{params[:course_name]}%").
-           select(:id, :category, :course_number, :course_name, :department, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+    elsif params[:course_schedule].present?
 
-      end
-     #@courses_hash = @courses.map(&:attributes)
-
+      @selected_course_schedules = CourseSchedule.where("course_schedule = ? and no_of_seats is not NULL and no_of_seats > ?", params[:course_schedule], 0)
+      # if params[:course_name].include? ":"
+      #   query_string = params[:course_name].split(":")
+      #   @courses = Course.where("course_number like ? and course_name like ?", "%#{query_string[0]}%", "%#{query_string[1]}%").
+      #      select(:id, :category, :course_number, :course_name, :department, :content_type, :available_through_the_lottery, :rural, :continuity, :duration, :prerequisites, :credits, :course_purpose_statement).order(:course_number)
+      # else
+      #   @courses = Course.where("course_name like ?", "%#{params[:course_name]}%").
+      #      select(:id, :category, :course_number, :course_name, :department, :content_type, :available_through_the_lottery, :rural, :continuity, :duration, :credits, :course_purpose_statement).order(:course_number)
+      #
+      # end
     end
   end
 
@@ -107,15 +107,17 @@ class CoursesController < ApplicationController
       @category ||= ["All"] + Course.all.pluck(:category).uniq
       #@duration = Course.all.pluck(:duration).uniq
       @departments ||= ["All"] + Course.all.pluck(:department).uniq.sort
+      @duration ||= Course.all.pluck(:duration).uniq.sort
+      @course_schedules ||= CourseSchedule.all.pluck(:course_schedule).uniq.sort
       @courses ||= Course.where(category: 'Core').
-      select(:id, :category, :course_number, :course_name, :department, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
+      select(:id, :category, :course_number, :course_name, :department, :content_type, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
       #@courses_hash = @courses.map(&:attributes)
       #@course_col_names = Course.column_names
 
     end
 
     def get_params
-      filters = ["category", "department", "lottery", "rural", "continuity", "prerequisites"]
+      filters = ["category", "department", "lottery", "rural", "continuity", "prerequisites", "duration"]
       params_filter = {}
       params_filter2 = {}
       filters.each do |filter|

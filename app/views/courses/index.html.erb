@@ -1,13 +1,19 @@
 <br />
+
 <div class="card">
   <div class="card-body card-body-color">
-
         <%= simple_form_for(courses_path, method: :get) do |form| %>
             <div class="input-group">
+                <%= form_with(url: courses_path, method: :get) do |form| %>
+                     <span class="input-group-text "><b><i>Course Schedule</i></b> </span>
+                      <%= select_tag :course_schedule,  options_for_select(@course_schedules, selected: params[:course_schedule]), class: "form-select", prompt: "Please Select a Course Schedule"  %>&nbsp;
+                      <%= form.submit 'Search', class: "btn btn-primary" %>
+                <% end %>
+               &nbsp;
                <span class="input-group-text "><b><i>Category</i></b></span>
-                <%= select_tag :category,  options_for_select(@category), selected: params[:category], class: "form-select", prompt: "Please Select a Category" %>&nbsp;
+                <%= select_tag :category,  options_for_select(@category, selected: params[:category]), class: "form-select", prompt: "Please Select a Category" %>&nbsp;
                 <span class="input-group-text"><strong><i>Department</i></strong></span>
-                <%= select_tag :department,  options_for_select(@departments), selected: params[:department], class: "form-select", prompt: "Please Select a Department" %>&nbsp;
+                <%= select_tag :department,  options_for_select(@departments, selected: params[:department]), class: "form-select", prompt: "Please Select a Department" %>&nbsp;
                  <div class="form-check form-check-inline">
                      <%= label_tag "Lottery" %>&nbsp;
                      <%= check_box_tag 'lottery', true, params[:lottery]  %> &nbsp;
@@ -15,26 +21,21 @@
                      <%= check_box_tag 'rural', true, params[:rural] %> &nbsp;
                      <%= label_tag  "Continuity" %>&nbsp;
                      <%= check_box_tag 'continuity', true, params[:continuity] %> &nbsp;
-                     <%= label_tag  "Prerequisites" %>&nbsp;
-                     <%= check_box_tag 'prerequisites', true, params[:prerequisites] %> &nbsp;
+                     <% #= label_tag  "Prerequisites" %>
+                     <% #= check_box_tag 'prerequisites', true, params[:prerequisites] %>
                  </div>
+                <span class="input-group-text"><strong><i>Duration</i></strong></span>
+                <%= select_tag :duration,  options_for_select(@duration), selected: params[:duration], class: "form-select", prompt: "Please Select a Duration" %>&nbsp;
                  &nbsp;
                  <%= submit_tag 'Submit', class: "btn btn-primary" %>
-                 &nbsp;
-                 &nbsp;
-                 <%= form_with(url: courses_path, method: :get) do |form| %>
 
-                      <span class="input-group-text ">Search by Course Name</span>
-                       <%= form.text_field :course_name, class: "form-control" %>&nbsp;
-                       <%= form.submit 'Search', class: "btn btn-primary" %>
-
-                 <% end %>
             </div>
         <% end %>
       </div>
 </div>
 <br />
-<% if !@courses.nil? %>
+
+<% if @selected_course_schedules.nil? and !@courses.empty? %>
   <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5>&nbsp; &nbsp<%= button_to 'New Course', new_course_path, class: "btn btn-sm btn-primary" %></div>
   <table class="table-responsive wrap table table-hover table-striped tableFixHead " id="dttb-courses" >
     <thead class="thead-light">
@@ -48,6 +49,7 @@
         <th>CourseNumber</th>
         <th>CourseName</th>
         <th>Department</th>
+        <th>ContentType</th>
         <th>Available Thru Lottery</th>
         <th>Rural</th>
         <th>Continuity</th>
@@ -58,12 +60,14 @@
       </tr>
     </thead>
     <% @courses.each do |course| %>
-      <tr>
         <% if ['dean', 'admin'].include? current_user.coaching_type  %>
-          <td style="width: 6%">
-              <%= link_to 'Edit', edit_course_path(course), target: '_blank' %> /
-              <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
-          </td>
+          <tr>
+            <td style="width: 6%">
+                <%= link_to 'Edit', edit_course_path(course), target: '_blank' %> /
+                <%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+        <% else %>
+          <tr class="custom-clickable-row" data-href="/course_schedules?course_id=<%= course.id %>">
         <% end %>
 
         <td><%= course.id %></td>
@@ -72,6 +76,7 @@
 
         <td><%= course.course_name %></td>
         <td><%= course.department %></td>
+        <td><%= course.content_type %></td>
         <td><%= course.available_through_the_lottery %></td>
         <td><%= course.rural %></td>
         <td><%= course.continuity %></td>
@@ -83,5 +88,5 @@
     <% end %>
   </table>
 <% else %>
-  <h5> No Courses Found! </h5>
+  <%= render "course_schedule_detail" %>
 <% end %>

@@ -110,14 +110,16 @@ class DashboardController < ApplicationController
 
       users.each do |user|
         count = 0
-        if !user.spec_program.downcase.include? 'withdrew' or !user.spec_program.downcase.include? 'withdrawn' or
-           !user.spec_program.downcase.include? 'dismissed'
-            count = user.epa_masters.where(status: 'Badge').count
-            if count != 0
-              class_mean_hash[user.full_name] = count
-            else
-              #no_excluded += 1
-            end
+        if user.spec_program.nil?
+            no_excluded += 1
+        elsif !user.spec_program.downcase.include? 'withdrew' or !user.spec_program.downcase.include? 'withdrawn' or
+                 !user.spec_program.downcase.include? 'dismissed'
+                  count = user.epa_masters.where(status: 'Badge').count
+                  if count != 0
+                    class_mean_hash[user.full_name] = count
+                  else
+                    #no_excluded += 1
+                  end
         else
             no_excluded += 1
         end
