@@ -14,6 +14,10 @@ class FomExamsController < ApplicationController
 
   end
 
+  def process_fom
+    @artifacts = User.find_by(uuid: params[:uuid]).artifacts
+  end
+
   def list_all_blocks
     last_permission_group_id = PermissionGroup.last.id
     @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-1).pluck(:permission_group_id, :course_code).sort
@@ -111,6 +115,10 @@ class FomExamsController < ApplicationController
       format.html
     end
 
+  end
+
+  def show
+    display_fom
   end
 
   def display_fom

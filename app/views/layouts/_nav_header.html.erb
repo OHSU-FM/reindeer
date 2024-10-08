@@ -44,7 +44,7 @@
             </li>
             <li class="nav-item">
               <% if ['nmai', 'chungp', 'meltond', 'fruhwirt'].include? current_user.username  %>
-                <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
+                <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, process_fom_fom_exams_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
 
@@ -135,8 +135,8 @@
                 </button>
                 <ul class="dropdown-menu">
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
-                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
-                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
+                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, process_fom_fom_exams_path(uuid: current_user.uuid), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
+                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, list_all_blocks_fom_exams_path(), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to '<i class="fa fa-sign-out"></i> Log Out'.html_safe, main_app.destroy_user_session_path, class: "dropdown-item" %>
                 </ul>
               </div>

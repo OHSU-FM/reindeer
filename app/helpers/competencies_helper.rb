@@ -540,11 +540,15 @@ module CompetenciesHelper
       end
       class_mean_comp_hash = {}
       temp_comp_hash.each do |k,v|
-        class_mean = (v/students_comp.count.to_f).round(0)
-        if class_mean > 100
-          class_mean_comp_hash[k] = 100
-        else
-          class_mean_comp_hash[k] = class_mean
+        if students_comp.empty?
+          class_mean_comp_hash[k] = 0
+        elsif
+          class_mean = (v/students_comp.count.to_f).round(0)
+          if class_mean > 100
+            class_mean_comp_hash[k] = 100
+          else
+            class_mean_comp_hash[k] = class_mean
+          end
         end
       end
       return class_mean_comp_hash
@@ -572,12 +576,18 @@ module CompetenciesHelper
         end
       end
       class_mean_comp_hash = {}
+
+
       temp_comp_hash.each do |k,v|
-        class_mean = (v/students_comp.count.to_f).round(0)
-        if class_mean > 100
-          class_mean_comp_hash[k] = 100
-        else
-          class_mean_comp_hash[k] = class_mean
+        if students_comp.empty?
+          class_mean_comp_hash[k] = 0
+        elsif
+            class_mean = (v/students_comp.count.to_f).round(0)
+            if class_mean > 100
+              class_mean_comp_hash[k] = 100
+            else
+              class_mean_comp_hash[k] = class_mean
+            end
         end
       end
       return class_mean_comp_hash

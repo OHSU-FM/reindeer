@@ -1,0 +1,20 @@
+<h1>New Competencies</h1>
+
+<table class="responsive nowrap table table-hover" id="dttb-new_competencies" data-sort="true" data-source="<%= url_for(format: :json)%>">
+  <thead>
+    <tr>
+      <th data-data="user_id">User</th>
+      <th data-data="permission_group_id">Permission group</th>
+      <th data-data="student_uid">Student uid</th>
+      <th data-data="email">Email</th>
+      <th data-data="medhub_id">Medhub</th>
+      <th data-data="course_name">Course name</th>
+      <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+    </tr>
+  </thead>
+
+</table>
+
+<br>
+
+<%= link_to 'New New Competency', new_new_competency_path %>

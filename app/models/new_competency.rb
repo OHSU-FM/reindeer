@@ -1,0 +1,2 @@
+class NewCompetency < ApplicationRecord
+end

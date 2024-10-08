@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :new_competencies
   resources :badging_dates
   resources :course_schedules
   resources :courses
@@ -93,26 +94,31 @@ Rails.application.routes.draw do
   end
 
   resources :competencies, only: [:index, :new, :create, :destroy]
+  resources :fom_exams do
+    collection do
+      get 'list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+      get 'export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+      get 'process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+      get 'process_fom', controller: 'fom_exams', action: :index, to: 'fom_exams#process_fom'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
+      post 'send_alerts', controller: 'fom_exams', action: :send_alerts, to: 'fom_exams#send_alerts'
+      #get 'send_alerts', controller: 'fom_exams', action: :send_alerts, to: 'fom_exams#send_alerts'
+      get 'display_fom', controller: 'fom_exams', action: :display_fom, to: 'fom_exams#display_fom'
+      get 'unsubscribe'
 
-  get 'fom_exams/list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
-  get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
-  get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
-  get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
-  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
+    end
+  end
 
   #resources :user do
   resources :preceptor_evals,  only: [:show], param: :uuid
   #   end
   # end
 
-  resource :fom_exams do
-      collection do
-        post 'send_alerts'
-        get 'send_alerts'
-        get 'display_fom'
-        get 'unsubscribe'
-      end
-  end
+  # resource :fom_exams do
+  #     collection do
+  #
+  #     end
+  # end
 
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

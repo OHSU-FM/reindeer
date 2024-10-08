@@ -1,0 +1,2 @@
+module NewCompetenciesHelper
+end

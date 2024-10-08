@@ -11,12 +11,15 @@ $ ->
     # else
     $('#coaching_meeting_advisor_id').empty()
     $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
-    advisorType = $('#coaching_meeting_advisor_type').val()
-    if advisorType == 'Career'
-      permissioGroupID = $('#coaching_meeting_permission_group_id').val()
-      if permissioGroupID > 19
-        alert("Career Advisors are prioritizing MS4 ERAS and MS3 lottery needs at this time. If you are not a M25 or M26 student, please hold on scheduling appointments until October.")
-        return
+
+    # removed restriction on 10/7/2024
+    # advisorType = $('#coaching_meeting_advisor_type').val()
+    # if advisorType == 'Career'
+    #   permissioGroupID = $('#coaching_meeting_permission_group_id').val()
+    #   if permissioGroupID > 19
+    #     alert("Career Advisors are prioritizing MS4 ERAS and MS3 lottery needs at this time. If you are not a M25 or M26 student, please hold on scheduling appointments until October.")
+    #     return
+
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
       for key of advisors

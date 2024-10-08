@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_15_180301) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_07_203420) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -1202,6 +1202,50 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_15_180301) do
     t.decimal "subset_count"
     t.index ["meta_attribute_statistic_id"], name: "ix_meta_attribute_statistic_id"
     t.index ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true
+  end
+
+  create_table "new_competencies", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "permission_group_id"
+    t.string "student_uid"
+    t.string "email"
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_group_id", "user_id"], name: "index_new_competencies_on_permission_group_id_and_user_id", unique: true
+    t.index ["user_id", "id"], name: "index_new_competencies_on_user_id_and_id", unique: true
   end
 
   create_table "permission_groups", id: :serial, force: :cascade do |t|

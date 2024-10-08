@@ -1,0 +1,12 @@
+<% content_for :title, "Editing new competency" %>
+
+<h1>Editing new competency</h1>
+
+<%= render "form", new_competency: @new_competency %>
+
+<br>
+
+<div>
+  <%= link_to "Show this new competency", @new_competency %> |
+  <%= link_to "Back to new competencies", new_competencies_path %>
+</div>
