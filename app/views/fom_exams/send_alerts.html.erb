@@ -3,7 +3,7 @@
       <div class="card">
         <div class="card-body">
           <h5>FoM - Send Alerts</h5><hr>
-          <%= form_for(send_alerts_fom_exams_path, action: 'send_alerts', remote: true) do %>
+          <%= form_for(send_alerts_fom_exams_path, remote: true) do %>
               <div style: "display: inline-block">
                 <%= label_tag :Cohort, "Cohort", class: "control-label"  %>
                 <%= select_tag :uniq_cohort, options_for_select(@permission_groups.map{|group| [group.title, group.id]}, selected: params[:uniq_cohort]), class: "form-select",

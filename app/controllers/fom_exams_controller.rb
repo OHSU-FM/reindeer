@@ -7,12 +7,12 @@ class FomExamsController < ApplicationController
   include ArtifactsHelper
   include CompetenciesHelper
 
-  def index
-    # user = User.find_by(uuid: params[:uuid])
-    # @artifacts = Artifact.where(user_id: user.id)
-    @artifacts = User.find_by(uuid: params[:uuid]).artifacts
-
-  end
+  # def index
+  #   # user = User.find_by(uuid: params[:uuid])
+  #   # @artifacts = Artifact.where(user_id: user.id)
+  #   @artifacts = User.find_by(uuid: params[:uuid]).artifacts
+  #
+  # end
 
   def process_fom
     @artifacts = User.find_by(uuid: params[:uuid]).artifacts
@@ -20,7 +20,7 @@ class FomExamsController < ApplicationController
 
   def list_all_blocks
     last_permission_group_id = PermissionGroup.last.id
-    @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-1).pluck(:permission_group_id, :course_code).sort
+    @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-2).pluck(:permission_group_id, :course_code).sort
     respond_to do |format|
       format.html
     end
@@ -117,9 +117,9 @@ class FomExamsController < ApplicationController
 
   end
 
-  def show
-    display_fom
-  end
+  # def show
+  #   display_fom
+  # end
 
   def display_fom
 

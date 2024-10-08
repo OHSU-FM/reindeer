@@ -6,7 +6,7 @@
       <% @list_all_blocks.each do |block| %>
         <tr>
           <th width="100px"><%= block[0] %> - <%= block[1] %></th>
-          <th><%= link_to 'Export Block', fom_exams_export_block_path(permission_group_id: block[0], course_code: block[1]) %></th>
+          <th><%= link_to 'Export Block', export_block_fom_exams_path(permission_group_id: block[0], course_code: block[1]) %></th>
         </tr>
       <% end %>
     </thead>
