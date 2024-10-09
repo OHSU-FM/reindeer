@@ -5,10 +5,10 @@ class CourseSchedulesController < ApplicationController
   # GET /course_schedules or /course_schedules.json
   def index
     if params[:course_id].present?
-      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now).order(:course_schedule)
+      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", params[:course_id], DateTime.now).order(:start_date)
       @course_detail = Course.where(id: params[:course_id]).map(&:attributes)
     elsif session[:course_id].present?
-      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", session[:course_id], DateTime.now).order(:course_schedule)
+      @course_schedules = CourseSchedule.where("course_id = ? and start_date > ?", session[:course_id], DateTime.now).order(:start_date)
       @course_detail = Course.where(id: session[:course_id]).map(&:attributes)
     end
     respond_to do |format|

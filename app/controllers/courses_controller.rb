@@ -17,7 +17,7 @@ class CoursesController < ApplicationController
       #@course_col_names = Course.column_names
     elsif params[:course_schedule].present?
 
-      @selected_course_schedules = CourseSchedule.where("course_schedule = ? and no_of_seats is not NULL and no_of_seats > ?", params[:course_schedule], 0)
+      @selected_course_schedules = CourseSchedule.where("course_schedule = ? and no_of_seats is not NULL and no_of_seats > ?", params[:course_schedule], 0).order(:start_date)
       # if params[:course_name].include? ":"
       #   query_string = params[:course_name].split(":")
       #   @courses = Course.where("course_number like ? and course_name like ?", "%#{query_string[0]}%", "%#{query_string[1]}%").

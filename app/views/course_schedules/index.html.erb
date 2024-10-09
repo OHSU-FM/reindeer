@@ -22,7 +22,11 @@
     </table>
   </div>
   <div class="col-md-6">
-    <b>Course Schedules</b><%= link_to 'New Course Schedule', new_course_schedule_path(course_id: @course_detail.first["id"]), class: "btn btn-sm, btn-primary", target: :_blank %></h5>
+    <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
+      <h5><b>Course Schedules</b><%= link_to 'New Course Schedule', new_course_schedule_path(course_id: @course_detail.first["id"]), class: "btn btn-sm, btn-primary", target: :_blank %></h5>
+    <% else %>
+      <h5><b>Course Schedules</b></h5>
+    <% end %>
     <% if !@course_schedules.empty? %>
       <% @temp_schedules = @course_schedules.map(&:attributes) %>
       <table class="responsive nowrap table table-hover table2-striped">
