@@ -15,11 +15,20 @@
         </div>
 
         <div class="row mb-0">
-          <%= f.label "Course Schedule", class: "col-sm-2 control-label right-label" %>
+          <%= f.label "year", class: "col-sm-2 control-label right-label" %>
           <div class="col-sm-6">
-             <%= f.input_field :course_schedule, required: true, class: "form-control" %>
+             <%= f.input_field :year, required: true, class: "form-control" %>
           </div>
         </div>
+
+        <div class="row mb-0">
+          <%= f.label "Block", class: "col-sm-2 control-label right-label" %>
+          <div class="col-sm-6">
+             <%= f.input_field :block, required: true, class: "form-control" %>
+          </div>
+        </div>
+
+
         <div class="row mb-0">
           <label class="control-label col-md-2 right-label">Start Date <i class="fa fa-calendar"></i> </label>
           <div class="col-sm-6">

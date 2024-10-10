@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_07_203420) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_09_202016) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -192,13 +192,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_203420) do
 
   create_table "course_schedules", force: :cascade do |t|
     t.bigint "course_id"
-    t.string "course_schedule"
+    t.integer "year"
+    t.string "block"
     t.date "start_date"
     t.date "end_date"
     t.integer "no_of_seats"
     t.string "comment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["course_id"], name: "index_course_schedules_on_course_id"
   end
 
@@ -1244,7 +1245,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_203420) do
     t.text "feedback"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["permission_group_id", "user_id"], name: "index_new_competencies_on_permission_group_id_and_user_id", unique: true
+    t.index ["permission_group_id", "user_id", "id"], name: "idx_on_permission_group_id_user_id_id_9b61cec064", unique: true
     t.index ["user_id", "id"], name: "index_new_competencies_on_user_id_and_id", unique: true
   end
 

@@ -29,7 +29,7 @@ module DashboardHelper
       if advisor.nil?
         return []
       end
-      meetings = Coaching::Meeting.where(advisor_id: advisor.id) 
+      meetings = Coaching::Meeting.where(advisor_id: advisor.id)
       events_array = []
       meetings.each do |meeting|
         events = Event.where("id = ? and start_date > ? and end_date <= ? and user_id is not NULL", meeting.event_id, 2.weeks.ago.to_date, DateTime.now)
@@ -182,6 +182,11 @@ module DashboardHelper
   end
 
   def hf_create_clinical_assessor_graph (epa_wba_data)
+
+    if epa_wba_data.empty?
+      return nil
+    end 
+
     height = 250
     epa_wba_data.first.delete("StudentId")
     epa_wba_data.first.delete("Student Name")

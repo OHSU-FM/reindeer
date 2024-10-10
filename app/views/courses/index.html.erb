@@ -38,7 +38,7 @@
 <% if @selected_course_schedules.nil? and !@courses.empty? %>
   <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
     <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5>&nbsp; &nbsp
-    <%= button_to 'New Course', new_course_path, class: "btn btn-sm btn-primary" %></div>
+    <%= link_to 'New Course', new_course_path, class: "btn btn-sm btn-primary" %></div>
   <% else %>
     <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5></div>
   <% end %>

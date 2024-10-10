@@ -16,8 +16,8 @@ class CoursesController < ApplicationController
       #@courses_hash = @courses.map(&:attributes)
       #@course_col_names = Course.column_names
     elsif params[:course_schedule].present?
-
-      @selected_course_schedules = CourseSchedule.where("course_schedule = ? and no_of_seats is not NULL and no_of_seats > ?", params[:course_schedule], 0).order(:start_date)
+      year, block = params[:course_schedule].split(" ", 2)
+      @selected_course_schedules = CourseSchedule.where("year = ? and block = ? and no_of_seats is not NULL and no_of_seats > ?", year, block, 0).order(:start_date)
       # if params[:course_name].include? ":"
       #   query_string = params[:course_name].split(":")
       #   @courses = Course.where("course_number like ? and course_name like ?", "%#{query_string[0]}%", "%#{query_string[1]}%").
@@ -108,7 +108,9 @@ class CoursesController < ApplicationController
       #@duration = Course.all.pluck(:duration).uniq
       @departments ||= ["All"] + Course.all.pluck(:department).uniq.sort
       @duration ||= Course.all.pluck(:duration).uniq.sort
-      @course_schedules ||= CourseSchedule.all.pluck(:course_schedule).uniq.sort
+      sc ||= CourseSchedule.select(:year, :block).distinct.where.not(year: nil).order(:year)
+      @course_schedules = sc.map{|s| s.year.to_s + " " + s.block}
+
       @courses ||= Course.where(category: 'Core').
       select(:id, :category, :course_number, :course_name, :department, :content_type, :available_through_the_lottery, :rural, :continuity, :prerequisites, :duration, :credits, :course_purpose_statement).order(:course_number)
       #@courses_hash = @courses.map(&:attributes)

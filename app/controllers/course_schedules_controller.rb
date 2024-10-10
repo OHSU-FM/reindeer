@@ -84,6 +84,6 @@ class CourseSchedulesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def course_schedule_params
-      params.require(:course_schedule).permit(:course_id, :course_schedule, :start_date, :end_date, :no_of_seats, :comment)
+      params.require(:course_schedule).permit(:course_id, :year, :block, :start_date, :end_date, :no_of_seats, :comment)
     end
 end

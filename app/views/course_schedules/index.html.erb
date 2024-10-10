@@ -47,7 +47,8 @@
           <tr>
             <td class="small-font" style="text-align: center; width: 3%;"><%= course_schedule.id %></td>
             <td class="small-font" style="text-align: center; width: 8%;"><%= course_schedule.course_id %></td>
-            <td class="small-font" style="width: 10%"><%= course_schedule.course_schedule %></td>
+            <td class="small-font" style="width: 6%"><%= course_schedule.year %></td>
+            <td class="small-font" style="width: 7%"><%= course_schedule.block %></td>            
             <td class="small-font" style="width: 8%"><%= course_schedule.start_date.strftime("%m-%d-%Y") %></td>
             <td class="small-font" style="width: 8%"><%= course_schedule.end_date.strftime("%m-%d-%Y") %></td>
             <td class="small-font" style="text-align: center; width: 10%"><%= course_schedule.no_of_seats %></td>
