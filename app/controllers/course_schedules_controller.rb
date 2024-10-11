@@ -39,10 +39,11 @@ class CourseSchedulesController < ApplicationController
     @course_schedule = CourseSchedule.new(course_schedule_params)
     @course_schedule.start_date = params[:start_date]
     @course_schedule.end_date   = params[:end_date]
-    session[:course_id] = @course_schedule.course_id
+
 
     respond_to do |format|
       if @course_schedule.save
+        session[:course_id] = @course_schedule.course_id      
         format.html { redirect_to course_schedule_url(@course_schedule), notice: "Course schedule was successfully created." }
         format.json { render :show, status: :created, location: @course_schedule }
       else
@@ -56,6 +57,7 @@ class CourseSchedulesController < ApplicationController
   def update
     respond_to do |format|
       if @course_schedule.update(course_schedule_params)
+        session[:course_id] = @course_schedule.course_id
         format.html { redirect_to course_schedule_url(@course_schedule), notice: "Course schedule was successfully updated." }
         format.json { render :show, status: :ok, location: @course_schedule }
       else
