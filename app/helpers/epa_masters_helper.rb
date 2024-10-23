@@ -320,8 +320,8 @@ module EpaMastersHelper
     #permission_group_id = PermissionGroup.find_by("title like ?", "%#{cohort}%").id
 
     for i in 1..4 do  #Level
-      epas = Epa.joins("inner join users on users.id = epas.user_id and users.permission_group_id = ?")
-      .where("submit_date >= ? and submit_date <= ? and involvement = ?", permission_group_id, start_date, end_date, i)
+      epas = Epa.joins("inner join users on users.id = epas.user_id" )
+      .where("users.permission_group_id = ? and submit_date >= ? and submit_date <= ? and involvement = ?", permission_group_id, start_date, end_date, i)
       .group(:epa).count(:epa)
         #epas = Epa.where("user_id = ? and submit_date >= ? and submit_date <= ? and involvement =? ", student.id, start_date, end_date, i)
         level_epa_wbas_count_hash.store("Level #{i}", reorder_epas(epas))

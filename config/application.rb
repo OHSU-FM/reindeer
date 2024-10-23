@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module REDEIConsole
+module EdnaConsole
   class Application < Rails::Application
     require "#{Rails.root.to_s}/lib/settings"
     config.secret_key_base = Settings.secret_token

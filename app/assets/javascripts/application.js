@@ -71,6 +71,7 @@
 //= require fom_exams
 //= require epas
 //= require competencies
+//= require new_competencies
 //=  require jquery-contextmenu/dist/jquery.contextMenu.js
 //=  require jquery-contextmenu/dist/jquery.ui.position.js
 //=  require jquery-contextmenu/dist/jquery.contextMenu.min.js

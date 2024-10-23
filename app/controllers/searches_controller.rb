@@ -21,17 +21,11 @@ class SearchesController < ApplicationController
     elsif params[:search].include? "@"
       @results = User.where(email: params[:search]).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
                 :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
-    elsif params[:search] == 'PhD' #current_user.spec_program == "PhD"
-      @parameter = params[:search] + "%"
-      @results = User.where("coaching_type ='student' and spec_program like 'MD/PhD%'")
-    elsif params[:search] == 'MPH' #current_user.spec_program == "MPH"
-      #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
-      @parameter = params[:search] + "%"
-      @results = User.where("coaching_type ='student' and spec_program like 'MD/MPH%'")
-    elsif params[:search] == 'MCR' #current_user.spec_program == "MPH"
-      #@results = User.where(coaching_type: 'student', spec_program: 'PhD')
-      @parameter = params[:search] + "%"
-      @results = User.where("coaching_type ='student' and spec_program like '%MCR%'")
+    elsif params[:search] == 'PhD' or params[:search] == 'MPH' or params[:search] == 'MCR' #current_user.spec_program == "PhD"
+      @results = User.where(permission_group_id: 7 ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :uuid).order(:full_name)
+      params[:search] = 'PhD'  ##use this test in index page or file
+      @file_name = hf_create_download_file(@results, params[:search])
     elsif params[:search] == "Wy'east"  #current_user.spec_program == "Wy'east"
       @parameter = params[:search] + "%"
       @results = User.where("coaching_type='student' and spec_program like 'MD/Wy%'")

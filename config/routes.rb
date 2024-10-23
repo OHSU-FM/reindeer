@@ -91,10 +91,11 @@ Rails.application.routes.draw do
   resources :user do
     resources :competencies, param: :user_id, only: [:index, :new]
     resources :overall_progresses, param: :user_id, only: [:index]
+    resources :new_competencies, param: :user_id, only: [:index, :new]    
   end
 
   resources :competencies, only: [:index, :new, :create, :destroy]
-  
+
   resources :fom_exams do
     collection do
       get 'list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'

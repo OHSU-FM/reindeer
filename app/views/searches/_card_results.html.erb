@@ -8,7 +8,7 @@
             <ul class="nested">
               <li>
                 <table class="table table-hover main-table table-light responsive-sm">
-                  <% if ['chungp', 'fruhwirt', 'meltond', 'petesama', 'bumstedt'].include? current_user.username %>
+                  <% if ['chungp', 'fruhwirt', 'meltond', 'petesama', 'bumstedt', 'itot'].include? current_user.username %>
                     <tr><td style="text-align:left">Email</td><td style="color:brown"><%= link_to result.email.to_s, update_loa_users_path(email: result.email), class: "nav-link blue-text" ,target: :_blank %></td></tr>
                     <tr><td style="text-align:left">SID</td><td> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), class: "nav-link blue-text", target: :_blank %></td></tr>
                   <% else %>
@@ -40,7 +40,11 @@
               <li><span class="caret">Datasets</span>
                 <ul class="nested">
                   <li><%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), class: "nav-link blue-text", target: '_blank')  %> </li>
-                  <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>
+                  <% if result.permission_group_id >= 21 %>
+                    <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_new_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>
+                  <% else %>
+                    <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>
+                  <% end %>
                   <li><%= link_to("<b>Overall Progress on Badges/WBAs..</b>".html_safe, user_overall_progresses_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>
                   <li><%= link_to("<b>Detail WBAs Listing</b>".html_safe, epas_path(uuid: result.uuid), class: "nav-link link-to-text-color", target: '_blank') %></li>
 

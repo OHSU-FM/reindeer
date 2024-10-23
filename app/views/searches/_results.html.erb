@@ -3,7 +3,7 @@
       <%= @results%>
   <% elsif params[:search] == '?' or (params[:search].to_s == 'help' and !params[:search].nil?) %>
     <%= @results %>
-  <% elsif !params[:search].nil? and params[:search].include? "Med" %>
+  <% elsif !params[:search].nil? and (params[:search].include? "Med" or params[:search] == 'PhD')%>
     <%= render partial: 'cohort_listing', locals: {results: @results} %>
   <% else %>
     <% if @results.map{|r| r.full_name}.count > 6 %>
@@ -31,7 +31,7 @@
           <tr>
             <td style="text-align:center"> <%= result.full_name %></td>
 
-            <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
+            <% if ['chungp', 'haedinge', 'meltond' 'petesama', 'bumstedt', 'itot'].include? current_user.username %>
               <td style="text-align:center"> <%= link_to result.email.to_s, update_loa_users_path(email: result.email), target: :_blank %></td>
               <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
             <% else %>

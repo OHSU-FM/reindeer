@@ -1,4 +1,10 @@
-<h1>New Competencies</h1>
+<h5>New Competencies 2.0</h5>
+
+<div class="card">
+  <div class="card-body">
+    <%= high_chart("comp_graph_new", @chart_new) %>
+  </div>
+</div>
 
 <table class="responsive nowrap table table-hover" id="dttb-new_competencies" data-sort="true" data-source="<%= url_for(format: :json)%>">
   <thead>
@@ -9,9 +15,55 @@
       <th data-data="email">Email</th>
       <th data-data="medhub_id">Medhub</th>
       <th data-data="course_name">Course name</th>
+      <th>ics1</th>
+      <th>ics2</th>
+      <th>ics3</th>
+      <th>ics4</th>
+      <th>ics5</th>
+      <th>mk1</th>
+      <th>mk2</th>
+      <th>mk3</th>
+      <th>pbli1</th>
+      <th>pbli2 </th>
+      <th>pbli3 </th>
+      <th>pcp1 </th>
+      <th>pcp2 </th>
+      <th>pcp3 </th>
+      <th>pppd1 </th>
+      <th>pppd2 </th>
+      <th>sbpic1 </th>
+
       <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
     </tr>
   </thead>
+  <% @new_competencies.each do |comp| %>
+    <tr>
+      <td><%= comp.user_id %> </td>
+      <td><%= comp.permission_group_id %> </td>
+      <td><%= comp.student_uid %> </td>
+      <td><%= comp.email %> </td>
+      <td><%= comp.medhub_id %> </td>
+      <td><%= comp.course_name %> </td>
+      <td><%= comp.ics1 %> </td>
+      <td><%= comp.ics2 %> </td>
+      <td><%= comp.ics3 %> </td>
+      <td><%= comp.ics4 %> </td>
+      <td><%= comp.ics5 %> </td>
+      <td><%= comp.mk1 %> </td>
+      <td><%= comp.mk2 %> </td>
+      <td><%= comp.mk3 %> </td>
+      <td><%= comp.pbli1%> </td>
+      <td><%= comp.pbli2 %> </td>
+      <td><%= comp.pbli3 %> </td>
+      <td><%= comp.pcp1 %> </td>
+      <td><%= comp.pcp2 %> </td>
+      <td><%= comp.pcp3 %> </td>
+      <td><%= comp.pppd1 %> </td>
+      <td><%= comp.pppd2 %> </td>
+      <td><%= comp.sbpic1 %> </td>
+    </tr>
+
+  <% end %>
 
 </table>
 

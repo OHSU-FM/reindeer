@@ -3,7 +3,7 @@ class BadgingDatesController < ApplicationController
 
   # GET /badging_dates or /badging_dates.json
   def index
-    @badging_dates = BadgingDate.all
+    @badging_dates = BadgingDate.all.order(:permission_group_id)
   end
 
   # GET /badging_dates/1 or /badging_dates/1.json

@@ -33,6 +33,8 @@ class User < ActiveRecord::Base
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
   has_many :competencies, dependent: :destroy, inverse_of: :user
+  has_many :new_competencies, dependent: :destroy, inverse_of: :user
+  
   has_many :med18_competencies, inverse_of: :user, dependent: :destroy
   has_many :med19_competencies, inverse_of: :user, dependent: :destroy
   has_many :med20_competencies, inverse_of: :user, dependent: :destroy

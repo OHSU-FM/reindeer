@@ -1,9 +1,24 @@
 class NewCompetenciesController < ApplicationController
-  before_action :set_new_competency, only: %i[ show edit update destroy ]
+  layout 'full_width_csl'
+  before_action :set_new_competency, :authenticate_user!, only: %i[ show edit update destroy ]
+  include NewCompetenciesHelper
+  include CompetenciesHelper
+
 
   # GET /new_competencies or /new_competencies.json
   def index
-    @new_competencies = NewCompetency.all
+    if params[:user_id].present?
+      @new_competencies = NewCompetency.where(user_id: params[:user_id])
+      @comp_new = @new_competencies.map(&:attributes)
+
+      @comp_new_hash3 = hf_new_comp(@comp_new, 3)
+      @comp_new_data_clinical = hf_average_comp_new (@comp_new_hash3)
+      @comp_new_unfiltered = NewCompetency.joins(:user).where(permission_group_id: 21).load_async.map(&:attributes)
+      @comp_class_mean = hf_competency_new_class_mean(@comp_new_unfiltered)
+      @chart_new ||= hf_create_chart('New Competency', @comp_new_data_clinical, @comp_class_mean, "Peter-Bogus, Student")
+
+    end
+
   end
 
   # GET /new_competencies/1 or /new_competencies/1.json
