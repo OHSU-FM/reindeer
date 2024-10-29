@@ -1,4 +1,28 @@
 <% if !@formative_feedbacks.blank? %>
+  <% if @student_perm_group >= 22 %>
+      <table class="table table-striped" style="width:100%; overflow:auto;display:block">
+        <tr>
+          <th>Block Code</th>
+          <th>CSA Code</th>
+          <th>Response ID</th>
+          <th>Submit Date</th>
+          <th>Student</th>
+          <th>Evaluator</th>
+          <th>SimCap Comment</th>
+        </tr>
+        <% @formative_feedbacks_orig.each do |feedback| %>
+            <tr>
+              <td><%= feedback["block_code"] %></td>
+              <td><%= feedback["csa_code"] %></td>
+              <td><%= feedback["response_id"] %></td>
+              <td><%= feedback["submit_date"] %></td>
+              <td><%= feedback["q1"] %></td>
+              <td><%= feedback["q2"] %></td>
+              <td><%= feedback["q6"] %></td>                                                            
+            </tr>
+        <% end %>
+      </table>
+  <% else %>
     <div class="table-responsive-sm">
       <table class="table table-striped" style="width:100%; overflow:auto;display:block">
         <% @formative_feedbacks.drop(3).each do |key, values| %>
@@ -32,6 +56,7 @@
         <% end %>
       </table>
     </div>
+  <% end %>
 <% else %>
   <br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No formative feedback found!

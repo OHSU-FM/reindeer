@@ -672,7 +672,7 @@ module CompetenciesHelper
       end
       return color_array
     end
-    
+
     def domain_colors2 in_series
       temp_arry = []
       temp_data = {}
@@ -733,6 +733,84 @@ module CompetenciesHelper
       end
 
       return temp_arry
+    end
+
+    def hf_create_spider_chart(type, series1, series2, student_name)
+      data_series1 = series1.values
+      data_series2 = series2.values
+      categories = series2.keys.map{|c| c.upcase}
+
+          title = "NEW EPA (Working Progress)"
+
+          chart = LazyHighCharts::HighChart.new('graph') do |f|
+            f.title(text: "#{title} for " + "<i>#{student_name}" + '</i>'.html_safe, x: -100)
+            #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+            f.pane({
+                size: '100%'
+            })
+
+            f.xAxis(categories: categories,
+              labels: {
+                  style:  {
+                              fontWeight: 'bold',
+                              color: '#000000'
+                          }
+                }
+            )
+            f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
+
+            if type == 'EPA NEW'
+                f.series(name: "Class Mean", yAxis: 0, color: 'lime', data: data_series2)
+            elsif type != "EPA"
+                f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
+                  color: 'black',
+                  marker: { symbol: 'diamond' })
+            else
+              f.series(name: "Class Mean", yAxis: 0, color: 'lime', data: data_series2)
+            end
+            # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+            #f.colors(get_4_random_colors)
+
+            f.yAxis [
+               {
+                 gridLineInterpolation: 'polygon',
+                 lineWidth: 0,
+                 min: 0,
+                 max: 100,
+                 min: 0,
+                 tickInterval: 20
+               }
+            ]
+            f.plot_options(
+
+              column: {
+                  dataLabels: {
+                      enabled: true,
+                      crop: false,
+                      overflow: 'none'
+                  }
+              },
+              scatter: {
+                  dataLabels: {
+                      enabled: true,
+                      crop: false,
+                      overflow: 'none'
+                  }
+              },
+              series: {
+                cursor: 'pointer'
+
+              }
+            )
+
+            f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+            f.chart({
+                      polar: true,
+                      type: 'column'
+                    })
+          end
+
+          return chart
     end
 
     def hf_create_chart (type, series1, series2, student_name)
