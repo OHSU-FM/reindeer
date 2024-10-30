@@ -50,10 +50,10 @@ LABELS = {
 LABELS2 = {
   "q1" => "Student Name",
   "q2" => "Facilitator Name",
-  "q3" => "Regarding the student's history-taking during this patient encounter, please provide positive feedback and constructive suggestions for improvement.",
-  "q4" => "Regarding the student's examination skills  during this patient encounter, please provide positive feedback and constructive suggestions for improvement.",
-  "q5" => "Regarding the student's discussion skills during this patient encounter, please provide positive feedback and constructive suggestions for improvement.",
-  "q6" => "Do you have any other comments or suggestions for this student? (optional)",
+  "q3" => "History Taking Skills - please provide positive feedback and constructive suggestions for improvement.",
+  "q4" => "Examination Skills - please provide positive feedback and constructive suggestions for improvement.",
+  "q5" => "Discussion skills - please provide positive feedback and constructive suggestions for improvement.",
+  "q6" => "Additional comments or suggestions for this student (optional)",
   "q7" => "",
   "q8" => ""
 }
