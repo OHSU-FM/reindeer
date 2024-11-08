@@ -1,20 +1,26 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">CSL Block Title</th>
-      <th scope="col">CSL Instructor</th>
-      <th scope="col">Student</th>
-      <th scope="col">Feedback</th>
-    </tr>
-  </thead>
-  <% @csl_data.each do |csl| %>
-    <% csl.each do |data| %>
-      <tr>
-        <td><%= data["BlockName"] %></td>
-        <td><%= data["CSLInstructor"].split(":").last %></td>
-        <td><%= data["SelectedStudent"] %></td>
-        <td><%= data["Comments"] %></td>
-      </tr>
-    <% end %>
+<% if @selected_user.permission_group_id >= 19 %>
+  <% if !@formative_feedbacks_qualtrics.empty? %>
+      <%= render partial: "competencies/formative_feedback_qualtrics", locals: {formative_feedbacks_qualtrics: @formative_feedbacks_qualtrics} %>
   <% end %>
-</table>
+<% else %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">CSL Block Title</th>
+        <th scope="col">CSL Instructor</th>
+        <th scope="col">Student</th>
+        <th scope="col">Feedback</th>
+      </tr>
+    </thead>
+    <% @csl_data.each do |csl| %>
+      <% csl.each do |data| %>
+        <tr>
+          <td><%= data["BlockName"] %></td>
+          <td><%= data["CSLInstructor"].split(":").last %></td>
+          <td><%= data["SelectedStudent"] %></td>
+          <td><%= data["Comments"] %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+<% end %>

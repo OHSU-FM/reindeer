@@ -137,6 +137,9 @@
         <div id="collapseThree" class="card-body collapse" data-parent="#accordion" >
             <% if csl_data.empty? %>
               <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+              <% if !@formative_feedbacks_qualtrics.empty? %>
+                <%= render partial: "competencies/formative_feedback_qualtrics", locals: {formative_feedbacks_qualtrics: @formative_feedbacks_qualtrics} %>
+              <% end %>
             <% else %>
                 <table class="table table-responsive-sm">
                   <thead>

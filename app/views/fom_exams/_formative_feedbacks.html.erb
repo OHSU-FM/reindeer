@@ -1,5 +1,5 @@
 <% if !@formative_feedbacks.blank? %>
-  <% if @student_perm_group >= 22 %>
+  <% if @student_perm_group >= 21 %>
       <table class="table table-striped" style="width:100%; overflow:auto;display:block">
         <tr>
           <th>Block Code</th>
@@ -28,34 +28,7 @@
       <hr>
 
       <% if !@formative_feedbacks_qualtrics.empty? %>
-        <table class="table table-striped" style="width:100%; overflow:auto;display:block">
-          <tr>
-            <th>Block Code</th>
-            <th>CSA Code</th>
-            <th>Response ID</th>
-            <th>Submit Date</th>
-            <th>Student</th>
-            <th>Facilitator</th>
-            <th>History Taking Skills - please provide positive feedback and constructive suggestions for improvement.</th>
-            <th>Examination Skills - please provide positive feedback and constructive suggestions for improvement.</th>
-            <th>Discussion skills - please provide positive feedback and constructive suggestions for improvement.</th>
-            <th>Additional comments or suggestions for this student (optional)</th>
-          </tr>
-          <% @formative_feedbacks_qualtrics.each do |feedback| %>
-              <tr>
-                <td><%= feedback["block_code"] %></td>
-                <td><%= feedback["csa_code"] %></td>
-                <td><%= feedback["response_id"] %></td>
-                <td><%= feedback["submit_date"] %></td>
-                <td><%= feedback["q1"] %></td>
-                <td><%= feedback["q2"] %></td>
-                <td><%= feedback["q3"] %></td>
-                <td><%= feedback["q4"] %></td>
-                <td><%= feedback["q5"] %></td>
-                <td><%= feedback["q6"] %></td>
-              </tr>
-          <% end %>
-        </table>
+        <%= render partial: "competencies/formative_feedback_qualtrics", locals: {formative_feedbacks_qualtrics: @formative_feedbacks_qualtrics} %>    
       <% end %>
 
   <% else %>

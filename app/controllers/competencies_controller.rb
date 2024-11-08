@@ -115,7 +115,13 @@ class CompetenciesController < ApplicationController
      preceptor_assesses = PreceptorAssess.where(user_id: @selected_user).load_async.map(&:attributes)
      @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
-     @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
+     if @selected_user.permission_group_id >= 19  ## greater than Med25
+       @formative_feedbacks_qualtrics =  FormativeFeedback.where("user_id=? and csa_code not like ? and response_id like 'R_%' ",
+         @selected_user.id, "%Informatics%").order(:submit_date).map(&:attributes)
+     else
+       @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
+     end
+
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
 
      if @selected_user.permission_group_id >= 16

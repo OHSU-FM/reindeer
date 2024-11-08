@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   resources :user do
     resources :competencies, param: :user_id, only: [:index, :new]
     resources :overall_progresses, param: :user_id, only: [:index]
-    resources :new_competencies, param: :user_id, only: [:index, :new]    
+    resources :new_competencies, param: :user_id, only: [:index, :new]
   end
 
   resources :competencies, only: [:index, :new, :create, :destroy]
@@ -137,7 +137,8 @@ Rails.application.routes.draw do
         post 'advisor_reports'
         post 'oasis_graphs'
         get 'contact_form'
-        get  'file_download'
+        get  'file_download', param: :file_name, action: :file_download
+
       end
     end
 

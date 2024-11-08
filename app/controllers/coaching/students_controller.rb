@@ -134,11 +134,14 @@ module Coaching
 
     end
 
+
+
     private
 
-    def private_download in_file
-       send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
-    end
+      def private_download in_file
+         send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+      end
+
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
         #@student = User.find_by_username(params[:slug])

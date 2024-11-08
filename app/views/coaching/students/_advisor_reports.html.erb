@@ -1,4 +1,5 @@
 <% if @code == "Individual" %>
+  <%  hf_create_file(meetings, "oasis_report.csv") %>
   <%= render partial: "coaching/students/individual_advisor_report", locals: { meetings: meetings }  %>
 <% else %>
   <div id="detail-reports">
@@ -66,7 +67,7 @@
             </div>
           </div>
       </div>
-  
+
     </div>
   </div
 <% end %>

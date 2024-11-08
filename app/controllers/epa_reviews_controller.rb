@@ -201,6 +201,9 @@ class EpaReviewsController < ApplicationController
     if @csl_data.empty?
       @csl_feedbacks = CslFeedback.where(user_id: @user.id).order(:submit_date)
       @csl_data = []
+      @formative_feedbacks_qualtrics =  FormativeFeedback.where("user_id=? and csa_code not like ? and response_id like 'R_%' ",
+        @user.id, "%Informatics%").order(:submit_date).map(&:attributes)
+
     end
     @artifacts_student, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
     @today_date = Time.new.strftime("%m/%d/%Y")

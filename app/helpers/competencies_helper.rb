@@ -777,7 +777,6 @@ module CompetenciesHelper
                  lineWidth: 0,
                  min: 0,
                  max: 100,
-                 min: 0,
                  tickInterval: 20
                }
             ]

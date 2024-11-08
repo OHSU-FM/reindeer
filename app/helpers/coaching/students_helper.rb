@@ -110,8 +110,12 @@ module Coaching::StudentsHelper
 
   def hf_get_full_name(user_id)
       user = User.find(user_id)
-      permission_group_title = user.permission_group.title.scan(/\((.*)\)/).first.first
-      return user.full_name, permission_group_title
+      permission_group_title = user.permission_group.title
+      if !permission_group_title.scan(/\((.*)\)/).empty?
+        return user.full_name, permission_group_title.scan(/\((.*)\)/).first.first
+      else
+        return user.full_name, permission_group_title
+      end
   end
 
   def hf_get_advisor_name(meetings)
