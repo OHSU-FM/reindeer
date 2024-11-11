@@ -1,5 +1,4 @@
 <br />
-
 <div class="row">
   <div class="table-responsive col-md-6">
     <table class="responsive nowrap table table-hover table3-striped">
@@ -22,51 +21,10 @@
     </table>
   </div>
   <div class="col-md-6">
-    <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
+    <% if (current_user.coaching_type == 'dean' or current_user.coaching_type == 'admin') and ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
       <h5><b>Course Schedules (Admin View)</b><%= link_to 'New Course Schedule', new_course_schedule_path(course_id: @course_detail.first["id"]), class: "btn btn-sm, btn-primary", target: :_blank %></h5>
-    <% else %>
-      <h5><b>Course Schedules</b></h5>
-    <% end %>
-    <% if !@course_schedules.empty? %>
-      <% @temp_schedules = @course_schedules.map(&:attributes) %>
-      <table class="responsive nowrap table table-hover table2-striped">
-        <thead>
-          <tr>
-            <% @temp_schedules.first.keys.each do |key| %>
-              <% if !key.include? "created_at" %>
-                  <th><%= key.titleize %> </th>
-              <% end %>
-            <% end %>
-            <% if ['dean', 'admin'].include? current_user.coaching_type  %>
-              <th>Action<th>
-            <% end %>
-
-          </tr>
-        </thead>
-        <% @course_schedules.each do |course_schedule| %>
-          <tr>
-            <td class="small-font" style="text-align: center; width: 3%;"><%= course_schedule.id %></td>
-            <td class="small-font" style="text-align: center; width: 8%;"><%= course_schedule.course_id %></td>
-            <td class="small-font" style="width: 6%"><%= course_schedule.year %></td>
-            <td class="small-font" style="width: 7%"><%= course_schedule.block %></td>
-            <td class="small-font" style="width: 8%"><%= course_schedule.start_date.strftime("%m-%d-%Y") %></td>
-            <td class="small-font" style="width: 8%"><%= course_schedule.end_date.strftime("%m-%d-%Y") %></td>
-            <td class="small-font" style="text-align: center; width: 10%"><%= course_schedule.no_of_seats %></td>
-            <td class="small-font"><%= course_schedule.comment %></td>
-            <td class="small-font" style="width: 15%"><%= course_schedule.updated_at.strftime("%m-%d-%Y %H:%M %P") %></td>
-            <% if ['dean', 'admin'].include? current_user.coaching_type  %>
-              <td class="small-font" style="width: 10%">
-                  <%= link_to 'Edit', edit_course_schedule_path(course_schedule) %> /
-                  <%= link_to 'Destroy', course_schedule, method: :delete, data: { confirm: 'Are you sure?' } %>
-              </td>
-            <% end %>
-
-          </tr>
-        <% end %>
-      </table>
-      <% if current_user.coaching_type == 'admin' and !@long_course_schedules.nil?  %>
-        <hr>
-        <h5><i><b>Course Schedules (Student View)</b></i></h5>
+      <% if !@course_schedules.empty? %>
+        <% @temp_schedules = @course_schedules.map(&:attributes) %>
         <table class="responsive nowrap table table-hover table2-striped">
           <thead>
             <tr>
@@ -75,29 +33,41 @@
                     <th><%= key.titleize %> </th>
                 <% end %>
               <% end %>
-
+              <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+                <th>Action<th>
+              <% end %>
 
             </tr>
           </thead>
-          <% @long_course_schedules.each do |course_schedule| %>
+          <% @course_schedules.each do |course_schedule| %>
             <tr>
               <td class="small-font" style="text-align: center; width: 3%;"><%= course_schedule.id %></td>
               <td class="small-font" style="text-align: center; width: 8%;"><%= course_schedule.course_id %></td>
               <td class="small-font" style="width: 6%"><%= course_schedule.year %></td>
-              <td class="small-font" style="width: 15%"><%= course_schedule.block %></td>
+              <td class="small-font" style="width: 7%"><%= course_schedule.block %></td>
               <td class="small-font" style="width: 8%"><%= course_schedule.start_date.strftime("%m-%d-%Y") %></td>
               <td class="small-font" style="width: 8%"><%= course_schedule.end_date.strftime("%m-%d-%Y") %></td>
               <td class="small-font" style="text-align: center; width: 10%"><%= course_schedule.no_of_seats %></td>
               <td class="small-font"><%= course_schedule.comment %></td>
               <td class="small-font" style="width: 15%"><%= course_schedule.updated_at.strftime("%m-%d-%Y %H:%M %P") %></td>
+              <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+                <td class="small-font" style="width: 10%">
+                    <%= link_to 'Edit', edit_course_schedule_path(course_schedule) %> /
+                    <%= link_to 'Destroy', course_schedule, method: :delete, data: { confirm: 'Are you sure?' } %>
+                </td>
+              <% end %>
 
             </tr>
           <% end %>
         </table>
+         <% if !@long_course_schedules.nil?  %>
+            <%= render "student_view_schedules" %>
+         <% end %>
+          
       <% end %>
 
     <% else %>
-      <h5> No Course Schedules Being Created! </h5>
+      <%= render "student_view_schedules" %>
     <% end %>
 
   </div>

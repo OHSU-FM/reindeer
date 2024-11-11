@@ -13,7 +13,7 @@ class CourseSchedulesController < ApplicationController
       @course_schedules = temp_schedules = CourseSchedule.where("course_id = ? and start_date > ? and no_of_seats <> 0 and comment is not null", session[:course_id], DateTime.now - 2.month).order(:start_date)
       @course_detail = Course.where(id: session[:course_id]).map(&:attributes)
     end
-    if current_user.coaching_type == 'admin' and @course_schedules.select{|s| s if s.no_of_seats == 777}.count > 0
+    if  @course_schedules.select{|s| s if s.no_of_seats == 777}.count > 0
       @long_course_schedules = hf_process_4_week_schedule(@course_schedules)
       @course_schedules = CourseSchedule.where("course_id = ? and start_date > ? and no_of_seats <> 0 and comment is not null", params[:course_id], DateTime.now - 2.month).order(:start_date)
     end
