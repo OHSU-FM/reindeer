@@ -60,15 +60,15 @@ module NewCompetenciesHelper
              "EPA1a" => "Obtain a hypothesis-driven history",
              "EPA1b" => "Perform a tailored physical examination",
              "EPA2" => "Generate a prioritized differential diagnosis for a clinical encounter",
-             "EPA3" => "Interpret Diagnostic or Screening Tests",
-             "EPA4" => "Enter orders including prescriptions",
+             "EPA3" => "Interpret Diagnostic or screening tests for a clinical encounter",
+             "EPA4" => "Enter orders including prescriptions for a clinical encounter",
              "EPA5" => "Document a clinical encounter in the patient record",
              "EPA6" => "Provide an oral presentation of a clinical encounter",
              "EPA7" => "Use literature to make a patient care recommendation",
              "EPA8" => "Communicate a patient handover to transition responsibility of care",
              "EPA9" => "Advance patient care through interprofessional collaboration",
              "EPA10" => "Recognize a patient requiring urgent assessment and escalate care",
-             "EPA11" => "Lead Shared Decision Making Discussions For Patient Care "
+             "EPA11" => "Lead shared decision making discussions for patient care "
 
    }
 

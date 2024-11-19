@@ -43,7 +43,7 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <% if ['nmai', 'chungp', 'meltond', 'fruhwirt'].include? current_user.username  %>
+              <% if current_user.can_process_fom? and current_user.coaching_type != 'student'%>
                 <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, process_fom_fom_exams_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
@@ -68,13 +68,13 @@
                   <i class="fa fa-stethoscope" style="color:#E1191C"></i> EG Review
                 </a>
                 <ul class="dropdown-menu" id="dropdownMenuButton">
-                  <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'meltond'].include? current_user.username %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
+                  <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>        
+                  <% if current_user.can_process_eg_assignment? and current_user.coaching_type != 'student' %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
 
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Badging Dates'.html_safe, badging_dates_path, target: '_blank', class: "dropdown-item"  %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Badging Dates'.html_safe, badging_dates_path, target: '_blank', class: "dropdown-item"  %>
                   <% end %>
                   <%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>

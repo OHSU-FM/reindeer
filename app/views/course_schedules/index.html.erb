@@ -21,7 +21,7 @@
     </table>
   </div>
   <div class="col-md-6">
-    <% if (current_user.coaching_type == 'dean' or current_user.coaching_type == 'admin') and ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
+    <% if current_user.can_process_course_catalog? %>
       <h5><b>Course Schedules (Admin View)</b><%= link_to 'New Course Schedule', new_course_schedule_path(course_id: @course_detail.first["id"]), class: "btn btn-sm, btn-primary", target: :_blank %></h5>
       <% if !@course_schedules.empty? %>
         <% @temp_schedules = @course_schedules.map(&:attributes) %>
@@ -63,7 +63,7 @@
          <% if !@long_course_schedules.nil?  %>
             <%= render "student_view_schedules" %>
          <% end %>
-          
+
       <% end %>
 
     <% else %>

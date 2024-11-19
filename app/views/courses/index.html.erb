@@ -36,7 +36,7 @@
 <br />
 
 <% if @selected_course_schedules.nil? and !@courses.empty? %>
-  <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
+  <% if current_user.can_process_course_catalog? and current_user.coaching_type != 'student' %>
     <div class='d-flex'><h5 style="color: purple">Courses for 2024 (Under Construction!)</h5>&nbsp; &nbsp
     <%= link_to 'New Course', new_course_path, class: "btn btn-sm btn-primary" %></div>
   <% else %>
@@ -64,7 +64,7 @@
       </tr>
     </thead>
     <% @courses.each do |course| %>
-        <% if ['dean', 'admin'].include? current_user.coaching_type  %>
+        <% if current_user.can_process_course_catalog? and current_user.coaching_type != 'student' %>
           <tr>
             <td style="width: 6%">
                 <%= link_to 'Edit', edit_course_path(course), target: '_blank' %> /

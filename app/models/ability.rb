@@ -75,13 +75,14 @@ class Ability
     end
 
     # Allow access to Chart functionality
-    if user.can_chart?
-      can :list, Chart
-      can :access, Chart
-      # Can manage their own charts only
-      can :crud, Chart, user_id: user.id
-      can :crud, QuestionWidget, user_id: user.id
-    end
+    #commented these codes out on 11/18/2024
+    # if user.can_chart?
+    #   can :list, Chart
+    #   can :access, Chart
+    #   # Can manage their own charts only
+    #   can :crud, Chart, user_id: user.id
+    #   can :crud, QuestionWidget, user_id: user.id
+    # end
 
     can :read, LimeSurvey do |lime_survey|
       # We check permissions by checking if permission_group says everything is ready
