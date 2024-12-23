@@ -13,7 +13,7 @@ module EpaReviewsHelper
 
 
   EPA_KEYWORDS = {
-            "EPA1" => ["phsyical", "physical exams", "phsical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+            "EPA1" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
             "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
             "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans",
                       "assessment", "plan"],
@@ -24,7 +24,7 @@ module EpaReviewsHelper
             "EPA8" => ["handover", "handoff", "transition of care", "Signout", "hand offs", "sign offs", "sign outs"],  # "Give or receive a patient handover to transition care responsibility",
             "EPA9" => ["interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
             "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
-            "EPA11" => ["consent","informed consent", "shared decision making", "procedures", "shared decision"],  # "Obtain informed consent for tests and/or procedures",
+            "EPA11" => ["consent", "informed consent", "shared decision making", "procedures", "shared decision"],  # "Obtain informed consent for tests and/or procedures",
             "EPA12" => ["procedure", "technical skills","technical", "IV", "venipuncture", "bladder catheterization", "bag-valve mask ventilation", "suture", "laceration repair"],  #"Perform general procedures of a physician ",
             "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety", "project"] # "Identify system failures and contribute to a culture of safety and improvement"
   }

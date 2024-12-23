@@ -172,8 +172,18 @@ module Coaching
         advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name, advisors.advisor_type").first
 
         if !advisor.nil?
-          advisor_events = Event.where(advisor_id: advisor.id)
-          @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
+          # advisor_events = Event.where(advisor_id: advisor.id)
+          # @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
+
+          advisor_students_query = "select users.full_name, users.username, permission_groups.title, count(meetings.user_id) from meetings, users, permission_groups " +
+                                    "where advisor_id=? and " +
+                                    "users.id = meetings.user_id and " +
+                                    "users.permission_group_id >= 19 and " +
+                                    "users.permission_group_id = permission_groups.id " +
+                                    "group by users.full_name, users.username, permission_groups.title, meetings.user_id " +
+                                    "order by permission_groups.title DESC, users.full_name"
+          @advisor_students = Student.execute_sql(advisor_students_query, advisor.id).to_a
+
           @advisor_type = advisor.advisor_type
           @advisor_id = advisor.id
         else
@@ -194,7 +204,7 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 16, 15).load_async
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 19, 15).load_async
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)

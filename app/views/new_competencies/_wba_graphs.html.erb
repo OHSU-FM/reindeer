@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="column w-50 p-0">
+    <div class="card">
+        <div class="card-body">
+              <% wba_epa_graph = hf_wba_graph(@epa_hash, @user) %>
+              <%= high_chart("new_wba_epa_graph", wba_epa_graph) %>
+        </div>
+    </div>
+  </div>
+  <div class="column w-50 p-0">
+    <div class="card">
+        <div class="card-body">
+              <% wba_clinical_by_involve_graph = hf_clinical_assessors_graph(@clinical_hash_by_involve, @user, @total_wba_count) %>
+              <%= high_chart("wba_clinical_by_involve_graph", wba_clinical_by_involve_graph) %>
+        </div>
+    </div>
+  </div>
+</div>
+<table id="CollapsibleWbaTable" class="table borderless table-condensed table-striped" data-sort="true" ">
+    <thead>
+      <tr class="filters">
+        <th>EPA</th>
+        <th>SubmitDate</th>
+        <th>Discipline</th>
+        <th>Setting</th>
+        <th>Assessor</th>
+        <th>Other Role</th>
+        <th>AssessorName</th>
+        <th>AttendingFaculty</th>
+        <th>Involvment</th>
+        <th style="width: 500px" >Feedback</th>
+        <th>EncounterComplex</th>
+      </tr>
+    </thead>
+    <% if !@wbas.blank? %>
+      <% @wbas.each do |e| %>
+        <tr>
+            <td><%= e.epa %></td>
+            <td><%= e.submit_date.strftime("%F") %></td>
+            <td><%= e.clinical_discipline %></td>
+            <td><%= e.clinical_setting %></td>
+            <td><%= e.clinical_assessor %></td>
+            <td><%= e.other_role %></td>
+            <td><%= e.assessor_name %></td>
+            <td style="text-align:center"><%= e.attending_faculty.nil? ? "" : 'Yes' %></td>
+            <td style="text-align:center"><%= e.involvement %></td>
+            <td><%= e.more_independent %></td>
+            <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>
+        </tr>
+      <% end %>
+    <% end %>
+</table>

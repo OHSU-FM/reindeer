@@ -319,9 +319,14 @@ GEM
     paper_trail (15.2.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
+    pdf-core (0.10.0)
     pg (1.5.8)
     php-serialize (1.4.1)
     popper_js (2.11.8)
+    prawn (2.5.0)
+      matrix (~> 0.4)
+      pdf-core (~> 0.10.0)
+      ttfunk (~> 1.8)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -461,6 +466,8 @@ GEM
     thor (1.3.2)
     tilt (2.4.0)
     timeout (0.4.1)
+    ttfunk (1.8.0)
+      bigdecimal (~> 3.1)
     turbo-rails (1.5.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -552,6 +559,7 @@ DEPENDENCIES
   pg
   php-serialize
   popper_js (>= 2.11.8, < 3)
+  prawn
   psych (< 4)
   puma (~> 6.4.2)
   rack-mini-profiler

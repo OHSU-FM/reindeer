@@ -1,0 +1,11 @@
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><u>List of Deleted ICS Files </u></h5>
+    <% if !@deleted_ics_files.nil? %>
+      <% @deleted_ics_files.each do |file| %>
+            <%= File.basename(file) %> - <b><i>Deleted! </i></b><br>
+      <% end %>
+    <% end %>
+  </div>
+</div>

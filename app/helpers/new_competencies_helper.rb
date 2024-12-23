@@ -1,23 +1,23 @@
 module NewCompetenciesHelper
 
   NEW_COMP_ASSESSORS = {
-    "ics1" => 15,
+    "ics1" => 3,
     "ics2" => 3,
-    "ics3" => 9,
-    "ics4" => 3,
-    "ics5" => 13,
-    "mk1" => 4,
-    "mk2" => 9,
-    "mk3" => 6,
-    "pbli1" => 16,
-    "pbli2" => 7,  # original was 13
-    "pbli3" => 7,
-    "pcp1" => 8,
-    "pcp2" => 16,
-    "pcp3" => 9,
-    "pppd1" => 12,
-    "pppd2" => 16,
-    "sbpic1" => 6
+    "ics3" => 3,
+    "ics4" => 3,  # undecided
+    "ics5" => 13, # undecided
+    "mk1" => 3,
+    "mk2" => 3,
+    "mk3" => 3,
+    "pbli1" => 3,
+    "pbli2" => 3,
+    "pbli3" => 7,  # undecided
+    "pcp1" => 3,
+    "pcp2" => 3,
+    "pcp3" => 2,
+    "pppd1" => 12,  #undecided
+    "pppd2" => 3,
+    "sbpic1" => 6 #undecided
   }
 
   NEW_COMP_DEFINITION = {
@@ -186,5 +186,256 @@ module NewCompetenciesHelper
      end
      return class_mean_comp_hash
    end
+
+  def hf_course_type (competencies, course_type)
+    if course_type =='Core'
+      selected_competencies = competencies.select{|c| c if c.course_name.include? "Core"}
+    elsif course_type == 'Intersessions'
+      selected_competencies = competencies.select{|c| c if c.course_name.include? "INTS" and !c.course_name.include? "Testing"}
+    elsif course_type == 'Electives'
+      selected_competencies = competencies.select{|c| c if !c.course_name.include? "730" and !c.course_name.include? "731" and !c.course_name.include? "770" and \
+            !c.course_name.include? "INTS" and !c.course_name.include? "TRAN" and !c.course_name.include? "SCHI" and \
+            !c.course_name.include? "FoM" and !c.course_name.include? "CPX"}
+    elsif course_type == 'Scholarly'
+      selected_competencies = competencies.select{|c| c if c.course_name.include? "SCHI"}
+    elsif course_type == 'Transition'
+      selected_competencies = competencies.select{|c| c if c.course_name.include? "TRAN"}
+    elsif course_type == 'NBME'
+      selected_competencies = competencies.select{|c| c if c.course_name.include? "Testing"}
+    elsif course_type == 'CPX'
+      selected_competencies = competencies.select{|c| c if c.course_name.include? "CPX"}
+    end
+
+    return selected_competencies
+  end
+
+  def total_wba_by_epa(results)
+    epa_hash3 = {}
+    count = 0
+    count = results.select{|r| r if r.epa == "EPA1a"}.count
+    epa_hash3.store("EPA1a", count)
+    count = results.select{|r| r if r.epa == "EPA1b"}.count
+    epa_hash3.store("EPA1b", count)
+    for i in 2..11 do
+        count = 0
+        count = results.select{|r| r if r.epa == "EPA#{i}"}.count
+        if count != 0
+          epa_hash3.store("EPA#{i}", count)
+        end
+    end
+
+    return epa_hash3
+  end
+
+  def total_by_involvement (results, uniq_clinical_assessors)
+    clinical_hash_by_involve = {}
+    uniq_clinical_assessors.each do |ca|
+      temp_hash = []
+      for i in 1..4
+        count = results.select{|r| r if r.clinical_assessor == "#{ca}" and r.involvement == i}.count
+        temp_hash.push count
+      end
+      clinical_hash_by_involve.store(ca, temp_hash)
+    end
+    return clinical_hash_by_involve
+  end
+
+  def total_wba_by_clinical_assessors(results)
+    clinical_hash = {}
+    uniq_clinical_assessors = results.map{|r| r.clinical_assessor}.uniq
+    uniq_clinical_assessors.each do |ca|
+      count = results.select{|r| r if r.clinical_assessor == "#{ca}"}.count
+      if count != 0
+        clinical_hash.store("#{ca}", count)
+      end
+    end
+
+    clinical_hash_by_involve = total_by_involvement(results, uniq_clinical_assessors)
+    return clinical_hash, clinical_hash_by_involve
+  end
+
+  def hf_get_wbas(email)
+    #selected_user = User.find_by(email: email)
+    #epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
+    epas = User.select(:id, :full_name).where(email: email).first.epas.order(:epa, :submit_date)
+
+    if !epas.empty?
+      total_wba_count = epas.count
+      selected_student = epas.first.student_assessed.split("-").first
+      #epa_hash = reformatted_data(epas)
+      epa_hash = total_wba_by_epa(epas)
+      clinical_assessors, clinical_hash_by_involve = total_wba_by_clinical_assessors(epas)
+      # epa_hash_dates = reformatted_data(epas)
+      # epa_evaluators, unique_evaluators, selected_dates = epas_by_evaluators(epas)
+      return epas, epa_hash, clinical_assessors, clinical_hash_by_involve, selected_student, total_wba_count
+    else
+      return [], {}, {}, {}, 0, 0
+    end
+  end
+
+  def hf_clinical_assessors_graph(wba, user, total_wba_count)
+    student_name = user.full_name  # processing student Alver
+    #wba_series = wba.values # removed the first 2 items in array
+    selected_categories = wba.keys
+    tot_attending = wba["Attending Faculty"].sum
+    tot_attending_str = "<br /> Total # of WBAs for Attending Faculty: <b>#{tot_attending.to_s}</b>"
+    title = "Workbased Assessment by Clinical Assessors - #{student_name}"
+    chart = LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(text: title + '<br /><h4>Total # of WBAs: <b>' + "#{total_wba_count}</b>" + tot_attending_str + '</h4>')
+      #f.subtitle(text: '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
+      f.xAxis(categories: selected_categories,
+        labels: {
+              style:  {
+                          fontWeight: 'bold',
+                          color: '#000000',
+                          fontSize: '13px'
+                      }
+                }
+      )
+      names = wba.keys
+      data = wba.values.transpose
+
+      f.series(name: '1 - I did it', yAxis: 0, data: data[0])
+      f.series(name: '2 - I talked them through it', yAxis: 0, data: data[1])
+      f.series(name: '3 - I directed them from time to time', yAxis: 0, data: data[2])
+      f.series(name: '<b>4 - I was available just in case</b>', yAxis: 0, data: data[3])
+      f.yAxis [
+         { tickInterval: 20,
+           title: {text: "No of WBAs", margin: 20,
+              style:  {
+                       fontWeight: 'bold',
+                       color: '#000000',
+                       fontSize: '13px'
+                     }
+           }
+         }
+      ]
+      f.plot_options(
+        column: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        },
+        series: {
+          cursor: 'pointer'
+        }
+      )
+      f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+      #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+      f.chart({
+                defaultSeriesType: "column",
+                #width: 1100, height: height,
+                plotBorderWidth: 0,
+                borderWidth: 0,
+                plotShadow: false,
+                borderColor: '',
+                minPadding: 0,
+                maxPadding: 0,
+                plotBackgroundImage: ''
+              })
+
+
+  end
+  return chart
+end
+
+  def hf_wba_graph(wba, user)
+
+        student_name = user.full_name  # processing student Alver
+        wba_series = wba.values # removed the first 2 items in array
+        selected_categories = wba.keys
+        title = "Workbased Assessment Datapoints - #{student_name}"
+
+        height = 400
+        color_array = ['#7cb5ec',
+            '#f7a35c',
+            '#90ee7e',
+            '#7798BF',
+            '#aaeeee',
+            '#ff0066',
+            '#eeaaee',
+            '#55BF3B',
+            '#DF5353',
+            '#7798BF',
+            '#aaeeee',
+            '#000080']
+        chart = LazyHighCharts::HighChart.new('graph') do |f|
+          f.title(text: title + '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
+          #f.subtitle(text: '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
+          f.xAxis(categories: selected_categories,
+            labels: {
+                  style:  {
+                              fontWeight: 'bold',
+                              color: '#000000',
+                              fontSize: '13px'
+                          }
+                    }
+          )
+
+          f.series(name: "EPA", data: wba_series)
+
+          #f.series(name: "Class Mean", yAxis: 0, data: class_mean_series)
+
+          # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+          #f.colors(["#7EFF5E", "#6E92FF"])
+          f.colors(['#7cb5ec',
+              '#f7a35c',
+              '#90ee7e',
+              '#7798BF',
+              '#aaeeee',
+              '#ff0066',
+              '#eeaaee',
+              '#55BF3B',
+              '#DF5353',
+              '#7798BF',
+              '#aaeeee',
+              '#000080',
+              '#00bfff'])
+          f.yAxis [
+             { tickInterval: 20,
+               title: {text: "No of WBAs", margin: 20,
+                  style:  {
+                           fontWeight: 'bold',
+                           color: '#000000',
+                           fontSize: '13px'
+                         }
+               }
+             }
+          ]
+          f.plot_options(
+            column: {
+                dataLabels: {
+                    enabled: true,
+                    crop: false,
+                    overflow: 'none'
+                }
+            },
+            series: {
+              cursor: 'pointer',
+              colorByPoint: true
+
+            }
+
+          )
+          f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+          #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
+          f.chart({
+                    defaultSeriesType: "column",
+                    #width: 1100, height: height,
+                    plotBorderWidth: 0,
+                    borderWidth: 0,
+                    plotShadow: false,
+                    borderColor: '',
+                    minPadding: 0,
+                    maxPadding: 0,
+                    plotBackgroundImage: ''
+                  })
+
+
+      end
+      return chart
+  end
 
 end

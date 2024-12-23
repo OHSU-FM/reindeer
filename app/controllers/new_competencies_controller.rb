@@ -3,12 +3,16 @@ class NewCompetenciesController < ApplicationController
   before_action :set_new_competency, :authenticate_user!, only: %i[ show edit update destroy ]
   include NewCompetenciesHelper
   include CompetenciesHelper
+  include ArtifactsHelper
+  include EpaMastersHelper
+  include EpasHelper
 
 
   # GET /new_competencies or /new_competencies.json
   def index
     if params[:user_id].present?
-      @new_competencies = NewCompetency.where(user_id: params[:user_id])
+      @user = User.find(params[:user_id])
+      @new_competencies = NewCompetency.where(user_id: params[:user_id]).load_async
       @comp_new = @new_competencies.map(&:attributes)
 
       @comp_new_hash3 = hf_new_comp(@comp_new, 3)
@@ -16,6 +20,17 @@ class NewCompetenciesController < ApplicationController
       @comp_new_unfiltered = NewCompetency.joins(:user).where(permission_group_id: 21).load_async.map(&:attributes)
       @comp_class_mean = hf_competency_new_class_mean(@comp_new_unfiltered)
       @chart_new ||= hf_create_chart('New Competency', @comp_new_data_clinical, @comp_class_mean, "Peter-Bogus, Student")
+
+      @mock_artifacts = hf_get_mock(params[:user_id], "Mock Step 1")
+      @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", params[:user_id]).order(:exam_date, :no_attempts).load_async
+      @hss_exams   = UsmleExam.where(user_id: params[:user_id], exam_type: 'HSS').order(:exam_date, :no_attempts).load_async
+      @student_badge_info = hf_get_badge_info(params[:user_id])
+
+      preceptor_assesses = PreceptorAssess.where(user_id: params[:user_id]).load_async.map(&:attributes)
+      @preceptor_assesses = hf_collect_values(preceptor_assesses)
+
+      @wbas = Epa.where(user_id: params[:user_id])
+      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas(@user.email)
 
     end
 

@@ -2,7 +2,7 @@
 <div id="cs-goals-nav">
   <div class="flex-child">
     <br />
-    <div id="cs-sidebar-toggle"><span class="fa fa-bars" aria-hidden="true"></span></div>
+    <div id="cs-sidebar-toggle"><span class="fa fa-bars" aria-hidden="false"></span></div>
   </div>
 
   <% if current_user.coach? %>
@@ -45,6 +45,7 @@
                   <br />
                   <%= link_to "Appointments", events_path, class: "button btn btn-info",  target: '_blank' %>
                   <%= link_to "Advisors", advisors_path, class: "button btn btn-primary", target: '_blank' %>
+                  <%= link_to "Download ICS Files", get_ics_files_events_path(ics_file: "ics"), class: "button btn btn-primary", target: '_blank' %>
                   <% if @advisor_type == "Wellness" %>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMeetingModal" id="newMeetingButton">Create Retro-Appointment</button>
                   <% end %>

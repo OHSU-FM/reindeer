@@ -99,7 +99,7 @@ class CompetenciesController < ApplicationController
     #@release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
     ## getting WPAs
      @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
-
+byebug
 
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
@@ -123,7 +123,6 @@ class CompetenciesController < ApplicationController
      end
 
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
-
      if @selected_user.permission_group_id >= 16
        @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
        if @all_blocks.first.second.empty?  # to check component 1 is empty

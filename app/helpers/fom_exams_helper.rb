@@ -479,7 +479,8 @@ end
         labels: {
               style:  {
                           fontWeight: 'bold',
-                          color: '#000000'
+                          color: '#000000',
+                          fontSize: '13px'
                       }
                 }
       )
@@ -493,7 +494,8 @@ end
            title: {text: "Score (%)", margin: 20,
               style:  {
                        fontWeight: 'bold',
-                       color: '#000000'
+                       color: '#000000',
+                       fontSize: '13px'
                      }
            }
          }

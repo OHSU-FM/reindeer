@@ -1,0 +1,17 @@
+
+  <div class="card">
+      <div class="card-body">
+        <% selected_competencies = hf_course_type(new_competencies, course_type) %>
+        <h5>CPX</h5> <br />
+        <% selected_competencies.each do |comp| %>
+          <table class="table table-striped">
+            <tr><th>CourseName</th><td style="color:blue"><%= comp.course_name %></td></tr>
+            <tr><th>StartDt</th><td><%= comp.start_date %></td></tr>
+            <tr><th>EndDt</th><td><%= comp.end_date %></td></tr>
+            <tr><th>Evaluator</th><td><%= comp.evaluator %></td></tr>
+            <tr><th>FinalGrade</th><td><%= hf_final_grade2(comp.final_grade) %></td></tr>
+            <tr><th>Comment</th><td><%= comp.mspe %></td></tr>
+          </table>
+        <% end %>
+      </div>
+  </div>

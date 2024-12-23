@@ -57,6 +57,7 @@ gem "jquery_context_menu-rails"
 gem "momentjs-rails"
 gem "fullcalendar-rails"
 gem "fullcalendar"
+gem "prawn"
 #gem 'webpacker', '~> 3.5'
 # CSS / js
 # Random bug:

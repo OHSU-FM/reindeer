@@ -613,7 +613,7 @@ module WbaGraphsHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1400, height: height,
+                width: 1300, height: height,
                 plotBackgroundImage: ''
               })
     end

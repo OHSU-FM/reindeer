@@ -38,6 +38,9 @@ Rails.application.routes.draw do
       get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
       get 'get_events_by_advisor', action: :get_events_by_advisor, controller: 'events', to: 'events#get_events_by_advisor'
       post 'calendly_click', action: :calendly_click, controller: 'events', to: 'events#calendly_click'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'events', to: 'events#download_file'
+      get 'get_ics_files', param: :ics_file, controller: 'events', to: 'events#get_ics_files'
+      get 'purge_ics_files',  param: :ics_file, action: :purge_ics_files, to: 'events#purge_ics_files'
     end
   end
   #get 'student_assessments/index'

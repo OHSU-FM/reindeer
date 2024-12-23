@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-body">
+        <% if !@usmle_exams.empty? %>
+          <h5>USMLE Step Exams</h5> <br />
+          <table style="float:left" class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">ExamType</th>
+                <th scope="col">Attempt</th>
+                <th scope="col">Pass/Fail</th>
+                <th scope="col">Score</th>
+                <th scope="col">Exam Date</th>
+              </tr>
+            </thead>
+              <% @usmle_exams.each do |exam| %>
+                    <tr>
+                      <td><%= exam.exam_type %></td>
+                      <td><%= exam.no_attempts %></td>
+                      <td><%= exam.pass_fail %></td>
+                      <% if !exam.exam_score.nil? and exam.exam_score <= 100 %>
+                          <td><%= exam.exam_score %> (Percent Equated Score)</td>
+                      <% else %>
+                          <td><%= exam.exam_score %></td>
+                      <% end %>
+                      <td><%= exam.exam_date.nil? ? exam.exam_date.to_s : (exam.exam_date.to_datetime + 7.hours).strftime("%m/%d/%Y") %></td>
+                    </tr>
+              <% end %>
+          </table>
+          <%= render partial: 'artifacts/mock_artifacts' %>
+        <% end %>
+    </div>
+</div>

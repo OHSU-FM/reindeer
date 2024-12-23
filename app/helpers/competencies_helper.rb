@@ -208,23 +208,23 @@ module CompetenciesHelper
   }
 
   NEW_COMP_ASSESSORS = {
-    "ics1" => 15,
+    "ics1" => 3,
     "ics2" => 3,
-    "ics3" => 9,
-    "ics4" => 3,
-    "ics5" => 13,
-    "mk1" => 4,
-    "mk2" => 9,
-    "mk3" => 6,
-    "pbli1" => 16,
-    "pbli2" => 7,  # original was 13
-    "pbli3" => 7,
-    "pcp1" => 8,
-    "pcp2" => 16,
-    "pcp3" => 9,
-    "pppd1" => 12,
-    "pppd2" => 16,
-    "sbpic1" => 6
+    "ics3" => 3,
+    "ics4" => 3,  # undecided
+    "ics5" => 13, # undecided
+    "mk1" => 3,
+    "mk2" => 3,
+    "mk3" => 3,
+    "pbli1" => 3,
+    "pbli2" => 3,
+    "pbli3" => 7,  # undecided
+    "pcp1" => 3,
+    "pcp2" => 3,
+    "pcp3" => 2,
+    "pppd1" => 12,  #undecided
+    "pppd2" => 3,
+    "sbpic1" => 6 #undecided
   }
 
   NEW_COMP_DEFINITION = {
@@ -753,10 +753,24 @@ module CompetenciesHelper
               labels: {
                   style:  {
                               fontWeight: 'bold',
-                              color: '#000000'
+                              color: '#000000',
+                              fontSize: '14px'
                           }
                 }
             )
+
+            f.yAxis [
+               { tickInterval: 20,
+                 title: {
+                  style:  {
+                             fontWeight: 'bold',
+                             color: '#000000',
+                             fontSize: '14px'
+                           }
+                 }
+               }
+            ]
+
             f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
 
             if type == 'EPA NEW'
@@ -838,7 +852,8 @@ module CompetenciesHelper
               labels: {
                   style:  {
                               fontWeight: 'bold',
-                              color: '#000000'
+                              color: '#000000',
+                              fontSize: '14px'
                           }
                 }
             )

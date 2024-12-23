@@ -31,7 +31,7 @@ class ArtifactsController < ApplicationController
       sub_component = @artifact.content
       if sub_component == 'labels'
         cohort_title = PermissionGroup.find(permission_group_id).title.split("(").last.gsub(")", "")
-        file_name = cohort_title + "_" + course_code + "_" + component        
+        file_name = cohort_title + "_" + course_code + "_" + component
       else
         file_name = permission_group_id + "_" + course_code + "_" + sub_component
       end

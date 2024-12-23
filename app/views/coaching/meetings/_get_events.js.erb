@@ -30,13 +30,20 @@ var calendlyApptsDomingo = '<div id="calendlyAppts">' +
                           '<a href="https://calendly.com/alex-domingo1"' +
                           'onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> </div>';
 
+var calendlyApptsGause = '<div id="calendlyAppts">' +
+                          '<i><b>This Faculty Advisor uses Calendly for booking appointments. ' +
+                          'Click below to schedule your advising appointment through Calendly, which will redirect you outside the REDEI system. </b></i><br/>' +
+                          '<a href="https://calendly.com/gauses-ohsu/deib-advisor-meeting"' +
+                          'onclick="calendlyClick(event)" target="_blank">Calendly Appointments</a> </div>';
+
+
 var windowLocation = window.location.pathname.split('/');
 var slug = windowLocation.pop();
 var emailErika = 'If you don’t see any availability, please contact ' + '<a href="/coaching/students/' + slug + '/contact_form" target="_blank">Erika Chomina Lenford.</a> ';
 
 var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
-if (tr_length == 0 && !advisor_name.includes("Bailey") && !advisor_name.includes("Lauren") && !advisor_name.includes("Domingo") ){
+if (tr_length == 0 && !advisor_name.includes("Bailey") && !advisor_name.includes("Lauren") && !advisor_name.includes("Domingo") && !advisor_name.includes("Gause")){
   $("#meeting-submit").prop("disabled", true);
   alert('Please select another advisor that has appointments!!');
 
@@ -84,27 +91,33 @@ $(document).ajaxComplete(function(){
     if (tr_length == 0) {
       $('#calendly-events').empty();
       $('#calendly-events').append(emailErika);
-      return;
+      return
     }
-
   }
   else {
     if (advisor_name.includes("Lauren")) {
           $('#calendly-events').empty();
           $('#calendly-events').append(calendlyApptsLauren);
-          return;
+          return
     }
     else {
       if (advisor_name.includes("Domingo")) {
             $('#calendly-events').empty();
             $('#calendly-events').append(calendlyApptsDomingo);
-            return;
+            return
       }
       else {
-        if (tr_length == 0) {
-          $('#calendly-events').empty();
-          $('#calendly-events').append(emailErika);
-          return;
+        if (advisor_name.includes("Gause")) {
+              $('#calendly-events').empty();
+              $('#calendly-events').append(calendlyApptsGause);
+              return
+        }
+        else {
+          if (tr_length == 0) {
+            $('#calendly-events').empty();
+            $('#calendly-events').append(emailErika);
+            return
+          }
         }
       }
     }

@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_resources
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  respond_to :js, :json, :html, :ics
 
   include EventsHelper
   include AdvisorsHelper
@@ -141,10 +142,8 @@ class EventsController < ApplicationController
       else
         @time_interval = nil
       end
-
       #@appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type, @weekly_recurrences)
       @appointments = Event.enumerate_hours2(params[:startDate1], params[:endDate1], params[:time_slot], @advisor_type, @weekly_recurrences, @time_interval)
-
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }
@@ -213,7 +212,10 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
-
+    i = 0
+    cal = Icalendar::Calendar.new
+    today_date = ""
+    advisor_name = ""
     @appointments.each do |appointment|
       data = appointment.split("|")
       start_date = hf_format_datetime(data[0])
@@ -248,11 +250,60 @@ class EventsController < ApplicationController
         Event.where(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id).first_or_create
         @notice_msg = 'Apppointments were successfully created!'
       end
-      flash.alert = @notice_msg
+
+       i += 1
+       event = Icalendar::Event.new
+       event.dtstart = Time.parse(start_date)
+       event.dtend = Time.parse(end_date)
+       event.summary = description
+       event.description = description
+       event.uid = "OASIS Meeting #{i}" # important for updating/canceling an event
+       event.sequence = Time.now.to_i # important for updating/canceling an event
+       cal.add_event(event)
+       cal.publish
+
+       today_date = Time.parse(end_date).strftime("%Y_%m_%d")
+       advisor_name = advisor.name.gsub(", ", "_")
+       flash.alert = @notice_msg
+    end
+    filename  = "#{Rails.root}/public/oasis/ics/#{today_date}-#{advisor_name}_calendar.ics"
+
+    File.open(filename, 'w'){|f| f << cal.to_ical}
+
+    respond_to do |format|
+      format.html {render action: "index", notice: @notice_msg, status: 200}
+      format.json
+    end
+  end
+
+  def get_ics_files
+    if params[:ics_file].present?
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]
+    end
+  end
+
+  def download_file
+    if params[:file_name].present?
+      send_file  params[:file_name], type: 'text/calendar', disposition: 'download'
+    end
+  end
+
+  def purge_ics_files
+    if params[:ics_file].present?
+      @deleted_ics_files = []
+      today_date = Date.today.strftime("%Y_%m_%d")
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]    
+      @ics_files.each do |file|
+        file_date = File.basename(file).split("-").first
+        if file_date < today_date
+          File.delete(file)
+          @deleted_ics_files.push file
+        end
+      end
     end
 
     respond_to do |format|
-      format.html {redirect_to action: "index", notice: @notice_msg, status: 200}
+      format.html
       format.json
     end
   end
