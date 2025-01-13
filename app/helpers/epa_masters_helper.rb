@@ -1,5 +1,8 @@
 module EpaMastersHelper
 
+  EPA_CODES_NEW = ['EPA1A', 'EPA1B', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6',
+               'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11']
+
   EPA_CODES = ['EPA1', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6',
                'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11', 'EPA12', 'EPA13'
               ]
@@ -19,6 +22,21 @@ module EpaMastersHelper
           "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
   }
 
+  NEW_EPA = {
+       "epa1a" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "ics1", "ics5", "pppd1", "pppd2"], #done
+       "epa1b" => ["pcp1", "pcp2", "mk2", "ics1", "ics5", "pppd2"], #done
+       "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "ics5", "pbli1", "pppd1", "pppd2"],  # done
+       "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics2", "ics5", "pppd2"], #done
+       "epa4" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics3", "ics5", "pbli2", "sbp1", "pppd2"], #done
+       "epa5" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli2",  "ics2", "ics3", "ics4", "ics5", "pppd2"], # done
+       "epa6" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics2", "ics3", "pbli1", "pbli2", "pppd1", "pppd2"], #done
+       "epa7" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3",  "pbli1", "pbli2", "ics2", "ics3", "ics5", "pppd1", "pppd2" ], #done
+       "epa8" => ["pcp1", "pcp2", "pcp3", "mk2", "ics2", "ics3",  "ics4"],  #done
+       "epa9" => ["pcp3", "mk2", "mk3", "sbp1", "ics1", "ics3", "ics5", "pppd1", "pppd2"], # done
+       "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "sbpic1", "ics1", "ics2", "ics3", "ics4", "ics5", "pppd2"], #done
+       "epa11" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli2", "pppd1", "pppd2"] #done
+     }
+
   class CohortMspe < ActiveRecord::Base
       table_name = ""
   end
@@ -34,6 +52,38 @@ module EpaMastersHelper
 
   def hf_epa_codes
     return EPA_CODES
+  end
+
+  def hf_epa_codes_new
+    return EPA_CODES_NEW
+  end
+
+  #=== Creates new epa_master and epa_reviews with new EPA
+  def hf_create_new_epas(selected_user_id, email, eg_cohorts)
+    eg_full_name1, eg_full_name2 = hf_get_eg_members(eg_cohorts, email)
+
+    EPA_CODES_NEW.each do |epa_code|
+      epa_master = EpaMaster.where(user_id: selected_user_id, epa: "#{epa_code}").first_or_create do |epa|
+        epa.user_id = selected_user_id
+        epa.status = 'Not Yet'
+        epa.epa = epa_code
+      end
+      epa_master.epa_reviews.where(epa: epa_master.epa).first_or_create do |review|
+        review.epa = epa_master.epa
+        review.review_date1 = DateTime.now
+        review.review_date2 = DateTime.now
+        review.badge_decision1 = "Not Yet"
+        review.badge_decision2 = "Not Yet"
+        review.trust1 = 'No Decision'
+        review.trust2 = 'No Decision'
+        review.reason1 ='Have not met the minimum requirements'
+        review.reason2 ='Have not met the minimum requirements'
+        review.student_comments1 = 'You are making progress towards completing this EPA - continue to look for experiences.'
+        review.student_comments2 = 'You are making progress towards completing this EPA - continue to look for experiences.'
+        review.reviewer1 = eg_full_name1
+        review.reviewer2 = eg_full_name2
+      end
+    end
   end
 
   def hf_ok_to_release_badge (status_date, release_date)
@@ -71,6 +121,57 @@ module EpaMastersHelper
     end
   end
 
+  def hf_get_badge_info_new(user_id)
+    student_badge_hash = {}
+    not_yet_status = {"status" => "Not Yet", "student_comments"=> "None" }
+    student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
+
+    if student_badge_info.empty?
+      EPA_CODES_NEW.each do |epa|
+        student_badge_hash.store("#{epa}", not_yet_status)
+      end
+      return student_badge_hash
+    end
+    student_badge_info = student_badge_info.map(&:attributes)
+    if student_badge_info.count == 12  # new epa codes
+      epa_codes = hf_epa_codes_new
+    else
+      epa_codes = hf_epa_codes 
+    end
+    epa_codes.each do |epa|
+      student_comments = []
+      temp_badge = {}
+      temp_badge = student_badge_info.select{|s| s if s["epa"] == epa}.first
+      if temp_badge["status"].to_s == ""
+         temp_badge["status"] = 'Not Yet'
+      end
+
+      epa_reviews_final = EpaReview.where(reviewable_id: temp_badge["id"], epa: temp_badge["epa"]).last
+      if !epa_reviews_final.blank?
+        if epa_reviews_final["student_comments1"].to_s != ""
+           student_comments << epa_reviews_final["student_comments1"]
+        else
+           student_comments << "None"
+        end
+
+        if !epa_reviews_final["student_comments2"].to_s != ""
+           student_comments << epa_reviews_final["student_comments2"]
+        else
+           student_comments << "None"
+        end
+        student_comments = student_comments.uniq.reject(&:blank?)
+        temp_badge.store("student_comments", student_comments)
+        student_badge_hash.store("#{epa}", temp_badge )
+      else
+        student_comments << "None"
+        temp_badge.store("student_comments", student_comments)
+        student_badge_hash.store("#{epa}", temp_badge )
+      end
+    end
+
+    return student_badge_hash
+  end
+
   def hf_get_badge_info(user_id)
 
      student_badge_hash = {}
@@ -80,13 +181,11 @@ module EpaMastersHelper
      if student_badge_info.empty?
        EPA_CODES.each do |epa|
          student_badge_hash.store("#{epa}", not_yet_status)
-
        end
-
        return student_badge_hash
      end
-     student_badge_info = student_badge_info.map(&:attributes)
 
+     student_badge_info = student_badge_info.map(&:attributes)
      EPA_CODES.each do |epa|
        student_comments = []
        temp_badge = {}

@@ -99,7 +99,6 @@ class CompetenciesController < ApplicationController
     #@release_date = load_release_date["#{@selected_user_year}Badge"].blank? ? nil : load_release_date["#{@selected_user_year}Badge"]["releaseDate"]
     ## getting WPAs
      @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
-byebug
 
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
@@ -224,8 +223,8 @@ byebug
 
     @student_epa_new ||= hf_epa2_new(@comp_remap_data_clinical)
     @epa_class_mean_new ||= hf_epa2_new(@comp_remap_class_mean)
-    #@chart_epa_new ||= hf_create_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
-    @chart_epa_new ||= hf_create_spider_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
+    @chart_epa_new ||= hf_create_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
+    #@chart_epa_new ||= hf_create_spider_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
   end
 
 

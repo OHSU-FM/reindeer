@@ -29,6 +29,22 @@ module EpaReviewsHelper
             "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety", "project"] # "Identify system failures and contribute to a culture of safety and improvement"
   }
 
+  NEW_EPA_KEYWORDS = {
+            "EPA1A" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+            "EPA1B" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+            "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
+            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans",
+                      "assessment", "plan"],
+            "EPA4" => ["orders",  "prescription"],
+            "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
+            "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
+            "EPA7" => ["clinical question", "evidence", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
+            "EPA8" => ["handover", "handoff", "transition of care", "Signout", "hand offs", "sign offs", "sign outs"],  # "Give or receive a patient handover to transition care responsibility",
+            "EPA9" => ["interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
+            "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
+            "EPA11" => ["consent", "informed consent", "shared decision making", "procedures", "shared decision"]  # "Obtain informed consent for tests and/or procedures",
+  }
+
   EPA_COLORS = {
     "EPA1" => "#4AC24E",  #green shade
     "EPA2" => "#282CC2", # blue shade
@@ -46,6 +62,21 @@ module EpaReviewsHelper
 
   }
 
+  NEW_EPA_COLORS = {
+    "EPA1A" => "#4AC24E",  #green shade
+    "EPA1B" => "#2B22AA", # indigo
+    "EPA2" => "#282CC2", # blue shade
+    "EPA3" => "#8A18C2", # purple shade
+    "EPA4" => "#ffc34d", # gold color
+    "EPA5" => "#C21508", # red shade
+    "EPA6" => "#FF00FF", # fushia
+    "EPA7" => "#800000", # Maroon
+    "EPA8" => "#7F00FF", # violet
+    "EPA9" => "#72c2ce", # darker lightblue
+    "EPA10" => "#FF7F50", # coral
+    "EPA11" => "#40E0D0" # Turquoise
+  }
+
   EPA_DESC={"EPA1" => "Gather Hx and Perform PE",
             "EPA2" => "Prioritize DDx Following Clinical Encounter",
             "EPA3" => "Recommend and Interpret Common Dx and Screening Tests",
@@ -61,25 +92,67 @@ module EpaReviewsHelper
             "EPA13" => "Identify System Failures/Contribute to a Cxof Safety/Improvement"
   }
 
+  NEW_EPA_DESC={
+            "EPA1A" => "Obtain a hypothesis-driven history",
+            "EPA1B" => "Perform a tailored physical examination",
+            "EPA2" => "Generate a prioritized differential diagnosis for a clinical encounter",
+            "EPA3" => "Interpret Diagnostic or screening tests for a clinical encounter",
+            "EPA4" => "Enter orders including prescriptions for a clinical encounter",
+            "EPA5" => "Document a clinical encounter in the patient record",
+            "EPA6" => "Provide an oral presentation of a clinical encounter",
+            "EPA7" => "Use literature to make a patient care recommendation",
+            "EPA8" => "Communicate a patient handover to transition responsibility of care",
+            "EPA9" => "Advance patient care through interprofessional collaboration",
+            "EPA10" => "Recognize a patient requiring urgent assessment and escalate care",
+            "EPA11" => "Lead shared decision making discussions for patient care "
+
+  }
+
   HIGHLIGHT_WORDS = ["presentation"]
+
+  def hf_new_epa_desc
+    return NEW_EPA_DESC
+  end
+
+  def hf_epa_desc
+    return EPA_DESC
+  end
 
   def hf_wba_instance_def(code)
     return WBA_DEF2[code]
   end
 
-  def hf_epa_desc_with_color(epa_code)
-    epa_desc = EPA_DESC[epa_code]
-    epa_color = EPA_COLORS[epa_code]
+  def hf_epa_desc_with_color(epa_code, epa_count)
+    if epa_count == 12 # new epas
+      epa_desc = NEW_EPA_DESC[epa_code]
+      epa_color = NEW_EPA_COLORS[epa_code]
+    else
+      epa_desc = EPA_DESC[epa_code]
+      epa_color = EPA_COLORS[epa_code]
+    end
     desc = '<span style="color:' + epa_color + '">' + epa_desc + '</span>'.html_safe
     return desc.html_safe
   end
 
-  def hf_hightlight_all_epas comp
-    comp.each do |cd|
-      EPA_DESC.each do |key, value|
+  def hf_hightlight_all_epas(comp, epa_count)
 
-        keywords = EPA_KEYWORDS[key]
-        epa_color = EPA_COLORS[key]
+    if epa_count == 12 # new epa
+      epa_desc = hf_new_epa_desc
+    else
+      epa_desc = hf_epa_desc
+    end
+
+    comp.each do |cd|
+      epa_desc.each do |key, value|
+
+        if epa_count == 12
+          keywords = NEW_EPA_KEYWORDS[key]
+          epa_color = NEW_EPA_COLORS[key]
+        else
+          keywords = EPA_KEYWORDS[key]
+          epa_color = EPA_COLORS[key]
+        end
+
         epa_code = key
         if cd["mspe"].to_s != ""
           cd["mspe"] = cd["mspe"].gsub(/\b(#{keywords.join("|")})\b/i,
@@ -100,8 +173,14 @@ module EpaReviewsHelper
     elsif text.nil?
       return text.to_s
     end
-    keywords = EPA_KEYWORDS[epa_code]
-    epa_color = EPA_COLORS[epa_code]
+
+    if @epa_count == 12
+      keywords = NEW_EPA_KEYWORDS[epa_code]
+      epa_color = NEW_EPA_COLORS[epa_code]
+    else
+      keywords = EPA_KEYWORDS[epa_code]
+      epa_color = EPA_COLORS[epa_code]      
+    end
     text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
               '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
 

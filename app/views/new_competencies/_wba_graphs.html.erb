@@ -2,7 +2,7 @@
   <div class="column w-50 p-0">
     <div class="card">
         <div class="card-body">
-              <% wba_epa_graph = hf_wba_graph(@epa_hash, @user) %>
+              <% wba_epa_graph = hf_wba_graph(@epa_hash, @user, "WBAs") %>
               <%= high_chart("new_wba_epa_graph", wba_epa_graph) %>
         </div>
     </div>

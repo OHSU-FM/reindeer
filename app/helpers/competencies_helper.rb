@@ -36,20 +36,38 @@ module CompetenciesHelper
            "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
    }
 
-   EPA_NEW = { "epa1" => ["pcp1", "ics1", "ics5", "pppd1", "pppd2" ], #done
-        "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "mk3", "pbli1", "ics2","pbli1", "pppd2"],  # done
-        "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics1", "pppd1", "pbli1", "pppd2", "sbpic1" ], #done
-        "epa4" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli1", "pbli2",  "ics1",  "pbli1", "pppd2", "sbpic1"], #done
-        "epa5" => ["pcp3", "mk3", "ics1", "ics5", "ics2", "pbli1", "pppd2", "sbpic1",  "ics3"], # done
-        "epa6" => ["pcp3", "pbli1", "pbli3", "ics1", "ics2", "ics4", "ics5", "pppd1", "pbli1", "pppd2", "pbli1", "ics3"], #done
-        "epa7" => ["mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pppd2" ], #done
-        "epa8" => ["ics5", "ics2",  "ics1", "pbli1", "pppd2", "ics3"],  #done
-        "epa9" => ["mk3", "ics1", "ics2", "pppd1", "pbli1", "pppd2",  "ics3"], # done
-        "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "ics1", "ics2", "pppd1", "pppd2", "pbli1", "ics3"], #done
-        "epa11" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli1", "pppd2", "sbpic1"], #done
-        "epa12" => ["pcp3", "ics1", "ics5", "pppd1", "pbli1", "pppd2"], #done
-        "epa13" => ["mk3", "pbli2", "pbli3", "pbli1", "ics1", "ics2", "pbli1", "pppd2", "sbpic1", "ics3"]
-      }
+   EPA_NEW =  {
+     "epa1a" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "ics1", "ics5", "pppd1", "pppd2"], #done
+     "epa1b" => ["pcp1", "pcp2", "mk2", "ics1", "ics5", "pppd2"], #done
+     "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "ics5", "pbli1", "pppd1", "pppd2"],  # done
+     "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics2", "ics5", "pppd2"], #done
+     "epa4" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics3", "ics5", "pbli2", "sbp1", "pppd2"], #done
+     "epa5" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli2",  "ics2", "ics3", "ics4", "ics5", "pppd2"], # done
+     "epa6" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics2", "ics3", "pbli1", "pbli2", "pppd1", "pppd2"], #done
+     "epa7" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3",  "pbli1", "pbli2", "ics2", "ics3", "ics5", "pppd1", "pppd2" ], #done
+     "epa8" => ["pcp1", "pcp2", "pcp3", "mk2", "ics2", "ics3",  "ics4"],  #done
+     "epa9" => ["pcp3", "mk2", "mk3", "sbp1", "ics1", "ics3", "ics5", "pppd1", "pppd2"], # done
+     "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "sbp1", "ics1", "ics2", "ics3", "ics4", "ics5", "pppd2"], #done
+     "epa11" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli2", "pppd1", "pppd2"] #done
+   }
+
+NEW_EPA_ARRAY = ["epa1a", "epa1b", "epa2", "epa3", "epa4", "epa5", "epa6", "epa7", "epa8", "epa9", "epa10", "epa11" ]
+
+NEW_EPA_DESC={
+          "EPA1a" => "Obtain a hypothesis-driven history",
+          "EPA1b" => "Perform a tailored physical examination",
+          "EPA2" => "Generate a prioritized differential diagnosis for a clinical encounter",
+          "EPA3" => "Interpret Diagnostic or screening tests for a clinical encounter",
+          "EPA4" => "Enter orders including prescriptions for a clinical encounter",
+          "EPA5" => "Document a clinical encounter in the patient record",
+          "EPA6" => "Provide an oral presentation of a clinical encounter",
+          "EPA7" => "Use literature to make a patient care recommendation",
+          "EPA8" => "Communicate a patient handover to transition responsibility of care",
+          "EPA9" => "Advance patient care through interprofessional collaboration",
+          "EPA10" => "Recognize a patient requiring urgent assessment and escalate care",
+          "EPA11" => "Lead shared decision making discussions for patient care "
+
+}
 
    EPA_DESC={"EPA1" => "Gather a history and perform a physical examination",
              "EPA2" => "Prioritize a differential diagnosis following a clinical encounter",
@@ -200,8 +218,8 @@ module CompetenciesHelper
     "pppd10" => "pppd2", #
     "pppd11" => "pbli1", #
 
-    "sbpic1" => "sbpic1",  # done with this item
-    "sbpic2" => "sbpic1", # done with this item
+    "sbpic1" => "sbp1",  # done with this item
+    "sbpic2" => "sbp1", # done with this item
     "sbpic3" => "pppd2", #
     "sbpic4" => "ics3", #
     "sbpic5" => "ics3" #
@@ -211,20 +229,20 @@ module CompetenciesHelper
     "ics1" => 3,
     "ics2" => 3,
     "ics3" => 3,
-    "ics4" => 3,  # undecided
-    "ics5" => 13, # undecided
+    "ics4" => 1,
+    "ics5" => 2,
     "mk1" => 3,
     "mk2" => 3,
     "mk3" => 3,
     "pbli1" => 3,
     "pbli2" => 3,
-    "pbli3" => 7,  # undecided
+    "pbli3" => 1,
     "pcp1" => 3,
     "pcp2" => 3,
     "pcp3" => 2,
-    "pppd1" => 12,  #undecided
+    "pppd1" => 1,
     "pppd2" => 3,
-    "sbpic1" => 6 #undecided
+    "sbp1" => 1 
   }
 
   NEW_COMP_DEFINITION = {
@@ -244,11 +262,11 @@ module CompetenciesHelper
     "pcp3" => "Develop and implement a personalized management plan for the patient.",
     "pppd1" => "Identify and address the negative effects of structural and social determinants of health for patients with diverse needs.",
     "pppd2" => "Demonstrate behaviors that are reflective of professional values of truthfulness, timeliness, accountability, and follow through.",
-    "sbpic1" => "Engage in the quality improvement process related to patient safety and system issues."
+    "sbp1" => "Engage in the quality improvement process related to patient safety and system issues."
 
   }
 
-  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbpic1"]
+  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbp1"]
 
   #===================================================================================================================================================================
 
@@ -654,8 +672,7 @@ module CompetenciesHelper
 
     def hf_epa2_new(comp_data)
       epa = {}
-      for i in 1..13
-         epa_code = "epa" + i.to_s
+      NEW_EPA_ARRAY.each do |epa_code|
           temp_percent = 0
           EPA_NEW[epa_code].each do |c|
             temp_percent = temp_percent + comp_data[c]

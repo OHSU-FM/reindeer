@@ -9,7 +9,6 @@
                  <%= simple_form_for(epa_masters_path, html: {class: "form-inline"}, method: "get") do %>
                    <div class="form-group col-sm">
                      <label for="cohort" class="control-label">Cohort:&nbsp;</label>
-
                      <%= select_tag :uniq_cohort, options_from_collection_for_select(@uniq_cohorts, "id", "title",  selected: params[:uniq_cohort]),
                          prompt: "Please Select a Cohort", onchange: "this.form.submit(); ", class: 'form-control'  %>
                     </div>

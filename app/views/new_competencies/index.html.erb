@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-auto bg-light sticky-top">
             <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
-
+                <br />
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center justify-content-between w-100 px-3 align-items-center" role="tablist">
                     <li class="nav-item">
                         <a href="#milestone" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Competency Graph">
@@ -11,13 +11,7 @@
                     </li>
                         <li>
                         <a href="#epas" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Dashboard">
-                          <h6><b>EPAs</b></h6>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#badges" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Products">
-                          <h6><b>Badges</b></h6>
+                          <h6><b>EPAs/Badges</b></h6>
                         </a>
                     </li>
                     <li>
@@ -55,6 +49,12 @@
                           <h6><b>NBME/CPX</b></h6>
                         </a>
                     </li>
+                    <li>
+                        <a href="#allCourses" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Orders">
+                          <h6><b>All Courses</b></h6>
+                        </a>
+                    </li>
+
                     <li>
                         <a href="#preceptorship" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Orders">
                           <h6><b>Preceptorship</b></h6>
@@ -99,7 +99,9 @@
                   </div>
                 </div>
               </div>
-
+              <div id="epas" class="tab-pane fade" role="tabpanel"  aria-labelledby="epas-tab">
+                  <%= render partial: "epas" %>
+              </div>
               <div id="coreCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="milestoneTable-tab">
                   <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Core"} %>
               </div>
@@ -114,6 +116,9 @@
               </div>
               <div id="transitionCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="transitionCourses-tab">
                   <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Transition"} %>
+              </div>
+              <div id="allCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="allCourses-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "AllCourses"} %>
               </div>
               <div id="nbmeCpx" class="tab-pane fade" role="tabpanel"  aria-labelledby="nbmeCpx-tab">
                  <div class="container-fluid">

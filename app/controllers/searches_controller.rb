@@ -6,7 +6,7 @@ class SearchesController < ApplicationController
   def search_by_email
     if params[:email].present?
       @results = User.where(email: params[:email]).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date)
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :former_name, :career_interest)
     end
   end
 
@@ -51,7 +51,7 @@ class SearchesController < ApplicationController
       else
           @parameter = params[:search].strip.downcase + "%"
           @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-                    :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+                    :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :former_name, :career_interest).order(:full_name)
                 if @results.blank?
                 @results = "<h5>Record NOT found for #{params[:search]}!!</h5>"
               end

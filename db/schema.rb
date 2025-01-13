@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_09_202016) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_13_145845) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -1235,7 +1235,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_09_202016) do
     t.integer "pcp3", limit: 2
     t.integer "pppd1", limit: 2
     t.integer "pppd2", limit: 2
-    t.integer "sbpic1", limit: 2
+    t.integer "sbp1", limit: 2
     t.text "prof_concerns"
     t.text "comm_prof_concerns"
     t.text "overall_summ_comm_perf"
@@ -1418,6 +1418,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_09_202016) do
     t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
     t.boolean "subscribed", default: false, null: false
     t.date "matriculated_date"
+    t.boolean "new_competency", default: false
+    t.string "former_name"
+    t.string "career_interest", default: [], array: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sid"], name: "index_users_on_sid", unique: true

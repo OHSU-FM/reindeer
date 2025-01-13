@@ -2,6 +2,7 @@ class EpaReviewsController < ApplicationController
   before_action :authenticate_user!, :find_reviewable, :load_reasons #, :load_eg_members
 
   include CompetenciesHelper
+  include NewCompetenciesHelper
   include ArtifactsHelper
   include WbaGraphsHelper
   include EpasHelper
@@ -45,7 +46,10 @@ class EpaReviewsController < ApplicationController
 
     @decision_option = ["Grounded", "Presumptive", "Distrust", "Questioned Trust", "No Decision"]
     @decision_option2 = @decision_option
-    get_evidence @user_id
+
+    @epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
+
+    get_evidence @user_id, @epa_count
 
     if !current_user.admin_or_higher? then
       @eg_members = [current_user.full_name]
@@ -96,11 +100,13 @@ class EpaReviewsController < ApplicationController
     @epa_review_epa = @epa_review.epa
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
+    @epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
 
-    get_evidence @user_id
-    epa_idx = @epa_review_epa.split("EPA").second.to_i
+    get_evidence(@user_id, @epa_count)
+    epa_idx = @epa_review_epa.split("EPA").second
     # str_complete = "QA Completion %: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
     #                "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s + "\r".html_safe
+
    str_complete = "QA Completion: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
             "Total No of WBA: " + @wba["#{@epa_review_epa}"].sum.to_s +  "\r".html_safe
 
@@ -164,10 +170,16 @@ class EpaReviewsController < ApplicationController
     end
   end
 
-  def get_evidence (user_id)
+  def get_evidence (user_id, epa_count)
     @user ||= User.find(user_id)
 
-    if (@comp = Competency.where(user_id: @user.id).order(submit_date: :desc)).empty?
+    if epa_count == 12 # new epas
+      @comp = NewCompetency.where(user_id: @user.id).order(submit_date: :desc)
+    else
+      @comp = Competency.where(user_id: @user.id).order(submit_date: :desc)
+    end
+
+    if @comp.empty?
       @clinical_data ||= hf_get_clinical_dataset(@user, 'Clinical')
       epa_percent_complete ||= hf_epa_class_mean(@clinical_data)
       @percent_complete = {}
@@ -183,19 +195,24 @@ class EpaReviewsController < ApplicationController
       end
     else
       @comp = @comp.map(&:attributes)
-      @comp_hash3 = hf_load_all_comp2(@comp, 3)
-      @comp_hash2 = hf_load_all_comp2(@comp, 2)
-      @comp_hash1 = hf_load_all_comp2(@comp, 1)
-      @comp = hf_hightlight_all_epas(@comp)
-
-      @comp_data_clinical = hf_average_comp2 (@comp_hash3)
-      @percent_complete ||= hf_epa2(@comp_data_clinical)
+      # commented out for new competencies
+      if epa_count == 13
+        @comp_hash3 = hf_load_all_comp2(@comp, 3)
+        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp_data_clinical = hf_average_comp2 (@comp_hash3)
+        @percent_complete ||= hf_epa2(@comp_data_clinical)
+      elsif epa_count == 12  # new epas
+        @comp_hash3 = hf_load_all_new_competencies(@comp, 3)
+        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp_data_clinical = hf_average_comp_new (@comp_hash3)
+        @percent_complete ||= hf_new_epa(@comp_data_clinical)
+      end
     end
 
     #@student_badge_info = hf_get_badge_info(@user.id)
     @preceptorship_data  = hf_get_preceptor_assesses_data(@user)
 
-    @wba ||= hf_get_wbas(@user.id)
+    @wba ||= hf_get_wbas_involvement(@user.id)
 
     @csl_data ||= hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
     if @csl_data.empty?
@@ -214,24 +231,6 @@ class EpaReviewsController < ApplicationController
     @lastReviewEndDate = badgingDates.last_review_end_date
     @nextReviewEndDate = badgingDates.next_review_end_date
 
-    #@most_recent_review_date = EpaReview.get_max_date(user_id)
-    # if @user.permission_group_id == 16
-    #   @lastReviewEndDate = @badge_review_dates["Med22Badge"]["lastReviewEndDate"]
-    #   @nextReviewEndDate = @badge_review_dates["Med22Badge"]["nextReviewEndDate"]
-    # elsif @user.permission_group_id == 13
-    #   @lastReviewEndDate = @badge_review_dates["Med21Badge"]["lastReviewEndDate"]
-    #   @nextReviewEndDate = @badge_review_dates["Med21Badge"]["nextReviewEndDate"]
-    # elsif  @user.permission_group_id == 17
-    #   @lastReviewEndDate = @badge_review_dates["Med23Badge"]["lastReviewEndDate"]
-    #   @nextReviewEndDate = @badge_review_dates["Med23Badge"]["nextReviewEndDate"]
-    # elsif  @user.permission_group_id == 18
-    #   @lastReviewEndDate = @badge_review_dates["Med24Badge"]["lastReviewEndDate"]
-    #   @nextReviewEndDate = @badge_review_dates["Med24Badge"]["nextReviewEndDate"]
-    # elsif  @user.permission_group_id == 19
-    #   @lastReviewEndDate = @badge_review_dates["Med25Badge"]["lastReviewEndDate"]
-    #   @nextReviewEndDate = @badge_review_dates["Med25Badge"]["nextReviewEndDate"]
-    # end
-    ## getting WPAs
      @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc

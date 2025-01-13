@@ -29,7 +29,11 @@ class EpaMastersController < ApplicationController
     @epa_masters = @user.epa_masters.order(:id)
     @full_name = @user.full_name
     if @epa_masters.empty?
-      create_epas @user.id, @user.email
+      if @user.username == 'peterbogus' or Date.today.strftime("%Y/%m/%d") >= "2025/07/01"  ## Med28 student and 
+        hf_create_new_epas(@user.id, @user.email, @eg_cohorts)
+      else
+        create_epas @user.id, @user.email
+      end
       @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
     end
 

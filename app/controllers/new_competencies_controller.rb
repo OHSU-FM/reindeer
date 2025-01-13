@@ -12,7 +12,7 @@ class NewCompetenciesController < ApplicationController
   def index
     if params[:user_id].present?
       @user = User.find(params[:user_id])
-      @new_competencies = NewCompetency.where(user_id: params[:user_id]).load_async
+      @new_competencies = NewCompetency.where(user_id: params[:user_id]).order(submit_date: :desc).load_async
       @comp_new = @new_competencies.map(&:attributes)
 
       @comp_new_hash3 = hf_new_comp(@comp_new, 3)
@@ -24,13 +24,22 @@ class NewCompetenciesController < ApplicationController
       @mock_artifacts = hf_get_mock(params[:user_id], "Mock Step 1")
       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", params[:user_id]).order(:exam_date, :no_attempts).load_async
       @hss_exams   = UsmleExam.where(user_id: params[:user_id], exam_type: 'HSS').order(:exam_date, :no_attempts).load_async
-      @student_badge_info = hf_get_badge_info(params[:user_id])
+      @student_badge_info = hf_get_badge_info_new(params[:user_id])
 
       preceptor_assesses = PreceptorAssess.where(user_id: params[:user_id]).load_async.map(&:attributes)
       @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
       @wbas = Epa.where(user_id: params[:user_id])
-      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas(@user.email)
+      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@user.email)
+
+      @new_epas = hf_new_epa(@comp_new_data_clinical)
+      @student_epa ||= @new_epas
+
+      @comp_hash3 = hf_load_all_new_competencies(@comp_new, 3)
+      @comp_hash2 = hf_load_all_new_competencies(@comp_new, 2)
+      @comp_hash1 = hf_load_all_new_competencies(@comp_new, 1)
+      @comp_hash0 = hf_load_all_new_competencies(@comp_new, 0)
+
 
     end
 

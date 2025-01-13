@@ -6,31 +6,39 @@
   <% else %>
     <% wba_req = 100 %>
   <% end %>
+
+
   <table class="table table-hover" >
     <tr>
-      <td align ="right">Total # of WBAs (all levels) : </td>
+      <td align ="right">Required Total # of WBAs (all levels) : </td>
       <td><b><%= current_user.epas.where.not(involvement: 0).count.to_s %> </b>out of <b><%= wba_req.to_s %></b></td>
     </tr>
     <tr>
       <td align ="right">Total # of Badges Awarded : </td>
       <td><b><%= current_user.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(current_user)).count.to_s %> </b>out of <b>13</b> </td>
     </tr>
-    <tr>
-      <td><h5><font color="black">Class Earnings:</font></h5></td><td></td>
+    </table>
+    <div class="card">
+      <p>** For students who matriculated to medical school prior to <b>2019</b>, please see Medical Student Handbook for your WBA graduation requirements!</p>
+    </div>
+
+    <h5><font color="black">Class Earnings:</font></h5>
+
+    <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
+
+    <table class="table table-hover">
+      <tr>
+          <td align ="right"><%= cohort_title %> WBA Average: </td>
+          <td><b><%= ave.nil? ? 'N/A' : '%.2f' % ave %></b></td>
+      </tr>
+      <tr>
+          <td align ="right"><%= cohort_title %> WBA Median&nbsp;: </td>
+          <td><b><%= med.nil? ? 'N/A' : '%.2f' % med %></b></td>
+     </tr>
+     <tr>
+         <td align ="right"><i><%= @cohort_title %> Badge Average: </i></td>
+         <td><b><%= @class_mean_badge %></b></td>
     </tr>
-        <% ave, med, cohort_title = hf_wba_stats(current_user)  %>
-    <tr>
-        <td align ="right"><%= cohort_title %> WBA Average: </td>
-        <td><b><%= ave.nil? ? 'N/A' : '%.2f' % ave %></b></td>
-    </tr>
-    <tr>
-        <td align ="right"><%= cohort_title %> WBA Median&nbsp;: </td>
-        <td><b><%= med.nil? ? 'N/A' : '%.2f' % med %></b></td>
-   </tr>
-   <tr>
-       <td align ="right"><i><%= @cohort_title %> Badge Average: </i></td>
-       <td><b><%= @class_mean_badge %></b></td>
-  </tr>
   </table>
 
 <% else %>

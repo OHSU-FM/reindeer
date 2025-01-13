@@ -40,7 +40,7 @@
               <li><span class="caret">Datasets</span>
                 <ul class="nested">
                   <li><%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), class: "nav-link blue-text", target: '_blank')  %> </li>
-                  <% if result.permission_group_id >= 21 and result.username == 'peterbogus' %>
+                  <% if result.new_competency? and result.username == 'peterbogus' %>
                     <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_new_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>
                   <% else %>
                     <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>

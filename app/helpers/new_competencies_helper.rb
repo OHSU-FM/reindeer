@@ -4,20 +4,20 @@ module NewCompetenciesHelper
     "ics1" => 3,
     "ics2" => 3,
     "ics3" => 3,
-    "ics4" => 3,  # undecided
-    "ics5" => 13, # undecided
+    "ics4" => 1,
+    "ics5" => 2,
     "mk1" => 3,
     "mk2" => 3,
     "mk3" => 3,
     "pbli1" => 3,
     "pbli2" => 3,
-    "pbli3" => 7,  # undecided
+    "pbli3" => 1,
     "pcp1" => 3,
     "pcp2" => 3,
     "pcp3" => 2,
-    "pppd1" => 12,  #undecided
+    "pppd1" => 1,
     "pppd2" => 3,
-    "sbpic1" => 6 #undecided
+    "sbp1" => 1
   }
 
   NEW_COMP_DEFINITION = {
@@ -37,28 +37,32 @@ module NewCompetenciesHelper
     "pcp3" => "Develop and implement a personalized management plan for the patient.",
     "pppd1" => "Identify and address the negative effects of structural and social determinants of health for patients with diverse needs.",
     "pppd2" => "Demonstrate behaviors that are reflective of professional values of truthfulness, timeliness, accountability, and follow through.",
-    "sbpic1" => "Engage in the quality improvement process related to patient safety and system issues."
+    "sbp1" => "Engage in the quality improvement process related to patient safety and system issues."
 
   }
 
-  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbpic1"]
+  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbp1"]
 
-  NEW_EPA = { "epa1" => ["pcp1", "ics1", "ics5", "pppd1", "pppd2" ], #done
-       "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "mk3", "pbli1", "ics2","pbli1", "pppd2"],  # done
-       "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics1", "pppd1", "pbli1", "pppd2", "sbpic1" ], #done
-       "epa4" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli1", "pbli2",  "ics1",  "pbli1", "pppd2", "sbpic1"], #done
-       "epa5" => ["pcp3", "mk3", "ics1", "ics5", "ics2", "pbli1", "pppd2", "sbpic1",  "ics3"], # done
-       "epa6" => ["pcp3", "pbli1", "pbli3", "ics1", "ics2", "ics4", "ics5", "pppd1", "pbli1", "pppd2", "pbli1", "ics3"], #done
-       "epa7" => ["mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pppd2" ], #done
-       "epa8" => ["ics5", "ics2",  "ics1", "pbli1", "pppd2", "ics3"],  #done
-       "epa9" => ["mk3", "ics1", "ics2", "pppd1", "pbli1", "pppd2",  "ics3"], # done
-       "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "ics1", "ics2", "pppd1", "pppd2", "pbli1", "ics3"], #done
-       "epa11" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli1", "pppd2", "sbpic1"]
+   NEW_EPA = {
+        "epa1a" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "ics1", "ics5", "pppd1", "pppd2"], #done
+        "epa1b" => ["pcp1", "pcp2", "mk2", "ics1", "ics5", "pppd2"], #done
+        "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "ics5", "pbli1", "pppd1", "pppd2"],  # done
+        "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics2", "ics5", "pppd2"], #done
+        "epa4" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics3", "ics5", "pbli2", "sbp1", "pppd2"], #done
+        "epa5" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli2",  "ics2", "ics3", "ics4", "ics5", "pppd2"], # done
+        "epa6" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics2", "ics3", "pbli1", "pbli2", "pppd1", "pppd2"], #done
+        "epa7" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3",  "pbli1", "pbli2", "ics2", "ics3", "ics5", "pppd1", "pppd2" ], #done
+        "epa8" => ["pcp1", "pcp2", "pcp3", "mk2", "ics2", "ics3",  "ics4"],  #done
+        "epa9" => ["pcp3", "mk2", "mk3", "sbp1", "ics1", "ics3", "ics5", "pppd1", "pppd2"], # done
+        "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "sbp1", "ics1", "ics2", "ics3", "ics4", "ics5", "pppd2"], #done
+        "epa11" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli2", "pppd1", "pppd2"] #done
+      }
 
-     }
+   NEW_EPA_ARRAY = ["epa1a", "epa1b", "epa2", "epa3", "epa4", "epa5", "epa6", "epa7", "epa8", "epa9", "epa10", "epa11" ]
+
    NEW_EPA_DESC={
-             "EPA1a" => "Obtain a hypothesis-driven history",
-             "EPA1b" => "Perform a tailored physical examination",
+             "EPA1A" => "Obtain a hypothesis-driven history",
+             "EPA1B" => "Perform a tailored physical examination",
              "EPA2" => "Generate a prioritized differential diagnosis for a clinical encounter",
              "EPA3" => "Interpret Diagnostic or screening tests for a clinical encounter",
              "EPA4" => "Enter orders including prescriptions for a clinical encounter",
@@ -88,6 +92,61 @@ module NewCompetenciesHelper
    # EPA 11:  Lead Shared Decision Making Discussions For Patient Care (Updated language)
    # EPA 12: Perform general procedures of a physician  - REMOVED
    # EPA 13: Identify system failures and contribute to a culture of safety and improvement   REMOVED
+   def hf_GetNewEPA
+     return NEW_EPA_ARRAY
+   end
+
+   def hf_get_new_epa_desc(epa_code)
+     return NEW_EPA_DESC[epa_code]
+   end
+
+   def hf_new_epa_assessors
+     return NEW_COMP_ASSESSORS
+   end
+
+   def hf_new_epa_level(rs_data, epa_code, level)
+     epa = {}
+
+     NEW_EPA[epa_code].each do |c|
+       epa[c] = 0
+     end
+
+     rs_data.each do |key, value|
+       NEW_EPA[epa_code].each do |comp|
+         if !value.nil?
+           if (value == level.to_i) and (key==comp)
+             epa[comp] += 1
+           elsif value.to_i > 3 and (key==comp)
+             temp_val = value.to_f/3.0
+             epa[comp] = epa[comp] + temp_val.round
+           end
+         end
+       end
+     end
+     return epa
+   end
+
+   def hf_new_epa_level3_detail (rs_data, epa_code, level)
+     epa = {}
+
+     NEW_EPA[epa_code].each do |c|
+       epa[c] = 0
+     end
+
+     rs_data.each do |rec|
+       NEW_EPA[epa_code].each do |comp|
+         if !rec[comp].nil?
+           if (rec[comp] == level.to_i)
+             epa[comp] += 1
+           elsif rec[comp].to_i > 3
+             temp_val = rec[comp].to_f/3.0
+             epa[comp] = epa[comp] + temp_val.round
+           end
+         end
+       end
+     end
+     return epa
+   end
 
    def hf_new_comp(rs_data, level)
      comp_hash = {}
@@ -136,7 +195,7 @@ module NewCompetenciesHelper
        NEW_COMP_CODES.each do |comp|
          if rec[comp].to_s != ""
            #temp_level = rec[comp].split("~")
-           if rec[comp] == level and check_clinical_comp2(rec["course_name"], level, comp)
+           if rec[comp] == level #and check_clinical_comp2(rec["course_name"], level, comp)
              comp_hash[comp] += 1
            elsif level == 3 and rec[comp].to_i > 3
              temp_val = rec[comp].to_f/3.0
@@ -204,18 +263,33 @@ module NewCompetenciesHelper
       selected_competencies = competencies.select{|c| c if c.course_name.include? "Testing"}
     elsif course_type == 'CPX'
       selected_competencies = competencies.select{|c| c if c.course_name.include? "CPX"}
+    elsif course_type == 'AllCourses'
+      selected_competencies = competencies
+
     end
 
     return selected_competencies
   end
 
+  def hf_new_epa (comp_data)
+    epa = {}
+    NEW_EPA_ARRAY.each do |epa_code|  #NEW_EPA_ARRAY contains EPA1a, EPA1b, etc..
+        temp_percent = 0
+        NEW_EPA[epa_code].each do |c|
+          temp_percent = temp_percent + comp_data[c]
+        end
+        epa[epa_code] = (temp_percent/NEW_EPA[epa_code].count.to_f).round(0)
+    end
+    return epa
+  end
+
   def total_wba_by_epa(results)
     epa_hash3 = {}
     count = 0
-    count = results.select{|r| r if r.epa == "EPA1a"}.count
-    epa_hash3.store("EPA1a", count)
-    count = results.select{|r| r if r.epa == "EPA1b"}.count
-    epa_hash3.store("EPA1b", count)
+    count = results.select{|r| r if r.epa == "EPA1A"}.count
+    epa_hash3.store("EPA1A", count)
+    count = results.select{|r| r if r.epa == "EPA1B"}.count
+    epa_hash3.store("EPA1B", count)
     for i in 2..11 do
         count = 0
         count = results.select{|r| r if r.epa == "EPA#{i}"}.count
@@ -254,7 +328,21 @@ module NewCompetenciesHelper
     return clinical_hash, clinical_hash_by_involve
   end
 
-  def hf_get_wbas(email)
+  def hf_get_wbas_involvement(user_id)
+    epa = {}
+    NEW_EPA_ARRAY.each do |epa_code|
+        temp_involve = []
+        (1..4).each do |k|
+           temp_data = Epa.where(epa: "#{epa_code.upcase}", involvement: k, user_id: user_id).count
+           temp_involve.push temp_data
+        end
+        epa["#{epa_code.upcase}"] = temp_involve
+    end
+
+    return epa
+  end
+
+  def hf_get_wbas_new(email)
     #selected_user = User.find_by(email: email)
     #epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
     epas = User.select(:id, :full_name).where(email: email).first.epas.order(:epa, :submit_date)
@@ -341,12 +429,22 @@ module NewCompetenciesHelper
   return chart
 end
 
-  def hf_wba_graph(wba, user)
+  def hf_wba_graph(wba, user, graph_code)
 
         student_name = user.full_name  # processing student Alver
         wba_series = wba.values # removed the first 2 items in array
-        selected_categories = wba.keys
-        title = "Workbased Assessment Datapoints - #{student_name}"
+
+        if graph_code == 'NewEPAs'
+          title = "NEW EPA Milestone - #{student_name}"
+          sub_title = ""
+          y_axis_title = "Percentage"
+          selected_categories = wba.keys.map(&:upcase)
+        else
+          title = "Workbased Assessment Datapoints - #{student_name}"
+          sub_title = '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s
+          y_axis_title = "No of WBAs"
+          selected_categories = wba.keys
+        end
 
         height = 400
         color_array = ['#7cb5ec',
@@ -362,7 +460,7 @@ end
             '#aaeeee',
             '#000080']
         chart = LazyHighCharts::HighChart.new('graph') do |f|
-          f.title(text: title + '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
+          f.title(text: title + sub_title + '</h4></b>')
           #f.subtitle(text: '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
           f.xAxis(categories: selected_categories,
             labels: {
@@ -395,7 +493,7 @@ end
               '#00bfff'])
           f.yAxis [
              { tickInterval: 20,
-               title: {text: "No of WBAs", margin: 20,
+               title: {text: y_axis_title, margin: 20,
                   style:  {
                            fontWeight: 'bold',
                            color: '#000000',
@@ -414,7 +512,7 @@ end
             },
             series: {
               cursor: 'pointer',
-              colorByPoint: true
+              colorByPoint: true  # this is a must to have multi-color col graphs
 
             }
 
