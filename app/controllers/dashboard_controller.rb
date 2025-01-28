@@ -2,6 +2,7 @@ class DashboardController < ApplicationController
   include LsReportsHelper
   include DashboardHelper
   include EpaMastersHelper
+  include NewCompetenciesHelper
   layout 'full_width'
 
   def index

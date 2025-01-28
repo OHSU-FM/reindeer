@@ -255,6 +255,7 @@ class User < ActiveRecord::Base
       field :password
       field :password_confirmation
       field :is_ldap
+      field :new_competency
 
       field :cohort_id do
         default_value 3032

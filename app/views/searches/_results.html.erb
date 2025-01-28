@@ -18,6 +18,8 @@
             <th style="text-align:center">Prev Cohort</th>
             <th style="text-align:center">Program Status</th>
             <th style="text-align:center">Matriculated Date</th>
+            <th style="text-align:center">NewComp</th>
+            <th style="text-align:center">Former Name</th>
             <th style="text-align:center">BLS Exp Date</th>
             <th style="text-align:center"># of WBAs<br />(All Levels)</th>
             <th style="text-align:center"># of Badges<br />Awarded</th>
@@ -47,6 +49,8 @@
             <% else %>
               <td></td>
             <% end %>
+            <td style="text-align:center"><%= result.new_competency? ? 'Yes' : 'No' %> </td>
+            <td style="text-align:center"><%= result.former_name %> </td>
             <% bls_record = result.ume_bls %>
             <% if !bls_record.nil? %>
                <% if bls_record.expiration_date.after? (Date.today) %>

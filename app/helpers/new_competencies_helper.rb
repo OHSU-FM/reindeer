@@ -295,6 +295,8 @@ module NewCompetenciesHelper
         count = results.select{|r| r if r.epa == "EPA#{i}"}.count
         if count != 0
           epa_hash3.store("EPA#{i}", count)
+        elsif count == 0
+          epa_hash3.store("EPA#{i}", 0)
         end
     end
 
@@ -306,7 +308,7 @@ module NewCompetenciesHelper
     uniq_clinical_assessors.each do |ca|
       temp_hash = []
       for i in 1..4
-        count = results.select{|r| r if r.clinical_assessor == "#{ca}" and r.involvement == i}.count
+        count = results.select{|r| r if r.clinical_assessor == "#{ca}" and r.involvement == i }.count
         temp_hash.push count
       end
       clinical_hash_by_involve.store(ca, temp_hash)
@@ -318,7 +320,7 @@ module NewCompetenciesHelper
     clinical_hash = {}
     uniq_clinical_assessors = results.map{|r| r.clinical_assessor}.uniq
     uniq_clinical_assessors.each do |ca|
-      count = results.select{|r| r if r.clinical_assessor == "#{ca}"}.count
+      count = results.select{|r| r if r.clinical_assessor == "#{ca}" }.count
       if count != 0
         clinical_hash.store("#{ca}", count)
       end
@@ -342,10 +344,10 @@ module NewCompetenciesHelper
     return epa
   end
 
-  def hf_get_wbas_new(email)
+  def hf_get_wbas_new(epas)
     #selected_user = User.find_by(email: email)
     #epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
-    epas = User.select(:id, :full_name).where(email: email).first.epas.order(:epa, :submit_date)
+    #epas = User.select(:id, :full_name).where(email: email).first.epas.where("epa <> ? and epa <> ?", "EPA12", "EPA13").order(:epa, :submit_date)
 
     if !epas.empty?
       total_wba_count = epas.count

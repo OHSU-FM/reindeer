@@ -119,7 +119,8 @@ build_options = (idx, in_data, render_to_target, graph_title, graph_sub_title, b
           seriesArr = []
           category = []
           i = 1;
-          graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1] + "<br>" + " Total # of WBAs: " + total_wba_count
+          graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1] + "<br>" + " Total # of WBAs: " + total_wba_count + "<br>" +
+                        "Requirement: At Least 2 WBAs for each EPA"
           graph_type = 'spline'
           yAxis_params = yAxis_types
           #console.log("yAxis_params: " + JSON.stringify(yAxis_types))
@@ -211,7 +212,8 @@ build_options2 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
   seriesArr = in_data
   category = []
   i = 1;
-  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count
+  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count + "<br>" +
+                "Requirement: At Least 2 WBAs for each EPA"
   graph_type = graph_type
   height = '60%'
 
@@ -293,7 +295,8 @@ build_options3 = (idx, in_data, render_to_target, graph_title, graph_sub_title, 
   seriesArr = Object.values(in_data)
   category = Object.keys(in_data)
 
-  graph_title = graph_title + "<br>" + "from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count
+  graph_title = graph_title  + " from " + selected_dates[0] + " to " + selected_dates[1]+ "<br>" + "Total # of WBAs: " + tot_wba_count + "<br>" +
+                "<b>Requirement: At Least 2 WBAs for each EPA</b>"
   graph_type = "column"
 
   return {

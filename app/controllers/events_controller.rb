@@ -292,7 +292,7 @@ class EventsController < ApplicationController
     if params[:ics_file].present?
       @deleted_ics_files = []
       today_date = Date.today.strftime("%Y_%m_%d")
-      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]    
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]
       @ics_files.each do |file|
         file_date = File.basename(file).split("-").first
         if file_date < today_date
@@ -420,8 +420,8 @@ class EventsController < ApplicationController
 
       # commented out Step1 Advising on 9/14/2023 - requested by Erika and AA
       # uncommented out Step1 Advising on 12/7/2023 - requested by Erika and AA
-      # commented out step 1 advisiing on 4/23/2023 - requested by Erika and Career Advisor
-     @advisor_types.push 'Academic: Step 1 Advising'
+      # commented out step 1 advisiing on 1/28/2025 - requested by Erika and Career Advisor
+     #@advisor_types.push 'Academic: Step 1 Advising'
      @advisor_types.push 'Academic: Remediation Support'
      #@advisor_types.push 'Career Advising: MS4 ERAS'
      @advisor_types.sort!

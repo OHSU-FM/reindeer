@@ -12,7 +12,7 @@ module SearchesHelper
     file_name = "#{Rails.root}/tmp/#{permission_group_title}_students.txt"
     CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
       #csvfile << results[0].attributes.keys
-      csvfile << ["Student", "Student Email", "UID", "Current Cohort", "Previous Cohort", "Program Status", "Matriculated Date"]
+      csvfile << ["Student", "Student Email", "UID", "Current Cohort", "Previous Cohort", "Program Status", "Matriculated Date", "NewCompetency", "FormerName"]
       results.each do |result|
           # result.permission_group_id = result.permission_group.title.to_s
           # result.prev_permission_group_id = hf_get_permission_title(result.prev_permission_group_id)
@@ -28,6 +28,8 @@ module SearchesHelper
           else
             values_array << result.matriculated_date
           end
+          values_array << result.new_competency
+          values_array << result.former_name
           csvfile << values_array
       end
     end

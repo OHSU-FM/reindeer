@@ -20,10 +20,10 @@ class SearchesController < ApplicationController
       redirect_to(root_path, alert: "Empty field! - Please Enter Something!") and return
     elsif params[:search].include? "@"
       @results = User.where(email: params[:search]).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :former_name).order(:full_name)
     elsif params[:search] == 'PhD' or params[:search] == 'MPH' or params[:search] == 'MCR' #current_user.spec_program == "PhD"
       @results = User.where(permission_group_id: 7 ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
-                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :uuid).order(:full_name)
+                :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :uuid, :new_competency, :former_name).order(:full_name)
       params[:search] = 'PhD'  ##use this test in index page or file
       @file_name = hf_create_download_file(@results, params[:search])
     elsif params[:search] == "Wy'east"  #current_user.spec_program == "Wy'east"
@@ -35,7 +35,7 @@ class SearchesController < ApplicationController
       if !permission_group.empty?
         #joins_query = "inner join permission_groups on users.permission_group_id = permission_groups.id and permission_groups.title like " + "#{@parameter}" + " order by users.full_name"
         @results = User.where(permission_group_id: permission_group.first.id ).select(:id, :full_name, :username, :email, :sid, :coaching_type,
-                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date, :new_competency, :former_name).order(:full_name)
 
         @file_name = hf_create_download_file(@results, params[:search])
       else
@@ -47,7 +47,7 @@ class SearchesController < ApplicationController
       if params[:search].strip.first(2). == 'U0'
         @parameter = params[:search].strip + "%"
         @results = User.where("sid LIKE :search and coaching_type='student' and sid is not null", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,
-                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date).order(:full_name)
+                  :permission_group_id, :prev_permission_group_id, :spec_program, :matriculated_date,:new_competency, :former_name).order(:full_name)
       else
           @parameter = params[:search].strip.downcase + "%"
           @results = User.where("lower(full_name) LIKE :search and coaching_type='student' ", search: @parameter).select(:id, :full_name, :username, :email, :sid, :uuid, :coaching_type,

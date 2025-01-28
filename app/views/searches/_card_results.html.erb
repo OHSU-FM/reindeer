@@ -20,6 +20,8 @@
                   <tr><td style="text-align:left">Previous Cohort</td><td><%= hf_get_permission_title(result.prev_permission_group_id)  %> </td></tr>
                   <tr><td style="text-align:left">Program Status</td><td><%= result.spec_program %> </td></tr>
                   <tr><td style="text-align:left">Matriculated Date</td><td><%= result.matriculated_date.to_s %> </td></tr>
+                  <tr><td style="text-align:left">New Competency</td><td style="color:red"><%= result.new_competency? ? 'Yes' : 'No' %> </td></tr>
+                  <tr><td style="text-align:left">Former Name</td><td><%= result.former_name %> </td></tr>
                   <tr>
                     <% bls_record = result.ume_bls %>
                     <% if !bls_record.nil? %>
@@ -40,7 +42,7 @@
               <li><span class="caret">Datasets</span>
                 <ul class="nested">
                   <li><%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), class: "nav-link blue-text", target: '_blank')  %> </li>
-                  <% if result.new_competency? and result.username == 'peterbogus' %>
+                  <% if result.new_competency? #and result.username == 'peterbogus' %>
                     <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_new_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>
                   <% else %>
                     <li><%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %></li>

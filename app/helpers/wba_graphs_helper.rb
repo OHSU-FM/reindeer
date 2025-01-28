@@ -544,12 +544,14 @@ module WbaGraphsHelper
 
      if in_category == "EPA"
        height = 400
+       req_str = "<b>Requirement: At Least 2 WBAs for each EPA</b>"
      else
        height = 600
+       req_str = "<b>Requirement: At Least 51 Attendings</b>"       
      end
 
     chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+      f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>' + "<br>" + req_str)
       #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
       f.xAxis(categories: categories,
               labels: {

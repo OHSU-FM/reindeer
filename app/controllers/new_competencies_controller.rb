@@ -29,8 +29,9 @@ class NewCompetenciesController < ApplicationController
       preceptor_assesses = PreceptorAssess.where(user_id: params[:user_id]).load_async.map(&:attributes)
       @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
-      @wbas = Epa.where(user_id: params[:user_id])
-      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@user.email)
+      @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", params[:user_id])
+
+      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
 
       @new_epas = hf_new_epa(@comp_new_data_clinical)
       @student_epa ||= @new_epas
@@ -40,6 +41,32 @@ class NewCompetenciesController < ApplicationController
       @comp_hash1 = hf_load_all_new_competencies(@comp_new, 1)
       @comp_hash0 = hf_load_all_new_competencies(@comp_new, 0)
 
+      badgingDate = BadgingDate.find_by(permission_group_id: @user.permission_group_id)
+      if !badgingDate.nil?
+          @release_date = badgingDate.release_date
+      else
+        @release_date = nil
+      end
+     @spec_program_msg = @user.spec_program
+     @selected_user_year = @user.permission_group.title.split(" ").last.gsub(/[()]/, "")
+     @selected_user = @user
+     if @selected_user.permission_group_id >= 19  ## greater than Med25
+       @formative_feedbacks_qualtrics =  FormativeFeedback.where("user_id=? and csa_code not like ? and response_id like 'R_%' ",
+         @selected_user.id, "%Informatics%").order(:submit_date).map(&:attributes)
+     else
+       @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
+     end
+
+     @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
+
+     if @selected_user.permission_group_id >= 16
+       @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
+       # if @all_blocks.first.second.empty?  # to check component 1 is empty
+       #    @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
+       # end
+     else
+       @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
+     end
 
     end
 

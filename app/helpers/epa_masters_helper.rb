@@ -58,6 +58,15 @@ module EpaMastersHelper
     return EPA_CODES_NEW
   end
 
+  def getEpaCodes(new_competency)
+    if new_competency
+      return EPA_CODES_NEW
+    else
+      return EPA_CODES
+    end
+  end
+
+
   #=== Creates new epa_master and epa_reviews with new EPA
   def hf_create_new_epas(selected_user_id, email, eg_cohorts)
     eg_full_name1, eg_full_name2 = hf_get_eg_members(eg_cohorts, email)
@@ -90,7 +99,7 @@ module EpaMastersHelper
 
       if release_date.blank? and status_date.blank?
         return false
-      elsif (!status_date.blank?) and (!release_date.blank?) and (status_date <= release_date)
+      elsif (!status_date.blank?) and (!release_date.blank?) and (status_date.strftime("%Y-%m-%d") <= release_date.strftime("%Y-%m-%d"))
 
         return true
       elsif (status_date.blank?) and (!release_date.blank?)
@@ -136,7 +145,7 @@ module EpaMastersHelper
     if student_badge_info.count == 12  # new epa codes
       epa_codes = hf_epa_codes_new
     else
-      epa_codes = hf_epa_codes 
+      epa_codes = hf_epa_codes
     end
     epa_codes.each do |epa|
       student_comments = []
@@ -284,9 +293,7 @@ module EpaMastersHelper
       end
 
     end
-
     return str_html1, str_html2
-
   end
 
   def hf_load_eg_members
@@ -315,7 +322,6 @@ module EpaMastersHelper
         end
         epa[epa_code] = (temp_percent/EPA[epa_code].count.to_f).round(0)
     end
-
     return epa
   end
 
@@ -334,7 +340,7 @@ module EpaMastersHelper
     return data
   end
 
-  def count_wbas(wbas, sid, full_name, matriculated_date)
+  def count_wbas(wbas, sid, full_name, matriculated_date, new_competency)
     epa_hash = {}
     tot_count = 0
     total_attending = 0
@@ -343,8 +349,9 @@ module EpaMastersHelper
     epa_hash["Matriculated Date"] = matriculated_date
     total_attending = wbas.select{|w| w.clinical_assessor if w.clinical_assessor.include? "Attending"}.compact.count
 
-    for i in 1..13
-      epa_code = 'EPA' + i.to_s
+    #for i in 1..13
+    getEpaCodes(new_competency).each do |epa_code|
+      #epa_code = 'EPA' + i.to_s
       epa_count = wbas.collect{|w| w.epa if w.epa == "#{epa_code}"}.compact.count
       tot_count += epa_count
       epa_hash[epa_code] = epa_count
@@ -352,7 +359,6 @@ module EpaMastersHelper
     epa_hash["TotalCount"] = tot_count
     epa_hash["Total Attending"] = total_attending
     return epa_hash
-
   end
 
   def reorder_epas(epas)
@@ -439,7 +445,7 @@ module EpaMastersHelper
     students.each do |student|
         wbas = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", student.id, start_date, end_date)  # Epa table contains WBAs data
         # ave_level = Epa.where(user_id: user.id).average(:involvement).to_f
-        student_epa = count_wbas(wbas, student.sid, student.full_name, student.matriculated_date)
+        student_epa = count_wbas(wbas, student.sid, student.full_name, student.matriculated_date, student.new_competency)
         # student_epa.store("Average", ave_level)
         data.push student_epa
 
@@ -478,7 +484,7 @@ module EpaMastersHelper
   end
 
   def hf_process_cohort2 (permission_group_id, start_date, end_date, code)
-    students = PermissionGroup.find(permission_group_id).users.select(:id, :sid, :email, :full_name, :matriculated_date).order(:full_name)
+    students = PermissionGroup.find(permission_group_id).users.select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
 
     if code=='EPA'
       epas_data = process_epa(students)

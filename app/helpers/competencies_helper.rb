@@ -242,7 +242,7 @@ NEW_EPA_DESC={
     "pcp3" => 2,
     "pppd1" => 1,
     "pppd2" => 3,
-    "sbp1" => 1 
+    "sbp1" => 1
   }
 
   NEW_COMP_DEFINITION = {
@@ -851,12 +851,12 @@ NEW_EPA_DESC={
       if type == "EPA"
         title = "EPA"
       elsif type == "EPA NEW"
-        title = "NEW EPA (Working Progress)"
+        title = "NEW EPA Milestone"
       elsif type.include? "FoM"
         title = type
       elsif type.include? "New"
         data_series1 = domain_colors2(data_series1)
-        title = "<b>New Competency (Working Progress!)</b>"
+        title = "<b>New Competency Milestone</b>"
       else
         data_series1 = domain_colors(data_series1)
         title = "Competency"
