@@ -26,17 +26,21 @@ class EpaMastersController < ApplicationController
   end
 
   def load_epa_masters
-    @epa_masters = @user.epa_masters.order(:id)
+    @epa_masters = @user.epa_masters.order(:epa, :id)
+    if @epa_masters.first.epa == "EPA10"  ## move EPA10 & EPA11 to end of array
+      @epa_masters = @epa_masters.rotate(2)
+    end
     @full_name = @user.full_name
     if @epa_masters.empty?
-      if @user.username == 'peterbogus' or Date.today.strftime("%Y/%m/%d") >= "2025/07/01"  ## Med28 student and 
+      if (@user.new_competency) or (@user.username == 'peterbogus' or Date.today.strftime("%Y/%m/%d") >= "2025/07/01" ) ## Med28 student and
         hf_create_new_epas(@user.id, @user.email, @eg_cohorts)
       else
         create_epas @user.id, @user.email
       end
       @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
+    elsif @user.new_competency || Date.today.strftime("%Y/%m/%d") >= "2025/07/01"
+      EpaMaster.split_epa1(@user)
     end
-
     respond_to do |format|
       format.html
       format.js { render partial: 'search-results' and return}

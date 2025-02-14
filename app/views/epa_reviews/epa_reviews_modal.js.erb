@@ -332,7 +332,10 @@ $(function() {
 
              console.log ("key clicked: " + m);
              var selectedText = window.getSelection().toString();
-             var parentid = window.getSelection().focusNode.parentElement.id;   //anchorNode.parentElement.id;  focusNode.parentElement.id; ==> works!  
+             var parentid = window.getSelection().anchorNode.parentElement.id;  //focusNode.parentElement.id; ==> works!
+             if (!parentid) {
+               parentid = window.getSelection().focusNode.parentElement.id;
+             }
 
              console.log("course_name with parentid: " + $('#' + parentid).data('course-name'));
 

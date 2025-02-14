@@ -68,7 +68,7 @@
                               <%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ").html_safe %></span></td>
 
                             <% if final_grade == 'NP' %>
-                               <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+                               <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></td>
                             <% else %>
                               <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
                                 <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>

@@ -211,8 +211,11 @@ class EpaReviewsController < ApplicationController
 
     #@student_badge_info = hf_get_badge_info(@user.id)
     @preceptorship_data  = hf_get_preceptor_assesses_data(@user)
-
-    @wba ||= hf_get_wbas_involvement(@user.id)
+    if epa_count == 12 # new epas
+      @wba ||= hf_get_wbas_involvement(@user.id)
+    else
+      @wba ||= hf_get_old_wbas_involvement(@user.id)
+    end
 
     @csl_data ||= hf_get_csl_datasets(@user, 'CSL Narrative Assessment')
     if @csl_data.empty?

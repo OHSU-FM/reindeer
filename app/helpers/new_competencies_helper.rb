@@ -344,6 +344,24 @@ module NewCompetenciesHelper
     return epa
   end
 
+  def hf_get_old_wbas_involvement(user_id)
+    epa = {}
+    (1..13).each do |i|
+        epa_code = "EPA#{i}"
+        temp_involve = []
+        (1..4).each do |k|
+           temp_data = Epa.where(epa: "#{epa_code}", involvement: k, user_id: user_id).count
+           temp_involve.push temp_data
+        end
+        epa["#{epa_code}"] = temp_involve
+    end
+
+    return epa
+  end
+
+
+
+
   def hf_get_wbas_new(epas)
     #selected_user = User.find_by(email: email)
     #epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
@@ -369,9 +387,14 @@ module NewCompetenciesHelper
     selected_categories = wba.keys
     tot_attending = wba["Attending Faculty"].sum
     tot_attending_str = "<br /> Total # of WBAs for Attending Faculty: <b>#{tot_attending.to_s}</b>"
-    title = "Workbased Assessment by Clinical Assessors - #{student_name}"
+    title = "Workbased Assessment by Clinical Assessors - #{student_name}" + '<br /><h4>Total # of WBAs: <b>' + "#{total_wba_count}</b>" + tot_attending_str +
+             '</h4>' + '<br>' + "<b>Requirement: At Least 51 Attendings</b>"
     chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: title + '<br /><h4>Total # of WBAs: <b>' + "#{total_wba_count}</b>" + tot_attending_str + '</h4>')
+      f.title(text: title,
+               style: {
+                 fontSize: '14px'
+                 }
+              )
       #f.subtitle(text: '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
       f.xAxis(categories: selected_categories,
         labels: {
@@ -443,7 +466,7 @@ end
           selected_categories = wba.keys.map(&:upcase)
         else
           title = "Workbased Assessment Datapoints - #{student_name}"
-          sub_title = '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s
+          sub_title = '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '<br>' + "<b>Requirement: At Least 2 WBAs for each EPA</b>"
           y_axis_title = "No of WBAs"
           selected_categories = wba.keys
         end
@@ -462,7 +485,12 @@ end
             '#aaeeee',
             '#000080']
         chart = LazyHighCharts::HighChart.new('graph') do |f|
-          f.title(text: title + sub_title + '</h4></b>')
+          f.title(text: title + sub_title + '</h4></b>',
+            style: {
+              fontSize: '14px'
+              }
+           )
+
           #f.subtitle(text: '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '</h4></b>')
           f.xAxis(categories: selected_categories,
             labels: {

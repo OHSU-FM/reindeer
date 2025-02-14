@@ -28,7 +28,11 @@
 
         <!-- Demo info -->
         <div class="row text-center mt-4">
-          Average of All 43 Competencies
+          <% if @user.new_competency? %>
+            Average of All 17 Competencies  
+          <% else %>
+            Average of All 43 Competencies
+          <% end %>
         </div>
         <!-- END -->
       </div>
@@ -54,7 +58,11 @@
 
         <!-- Demo info-->
         <div class="row text-center mt-4">
+          <% if @user.new_competency? %>
+            Average of All 11 EPAs
+          <% else %>
             Average of All 13 EPAs
+          <% end %>
         </div>
         <!-- END -->
       </div>
@@ -62,7 +70,7 @@
 
     <div class="col-xl-3 col-lg-6 mb-4">
       <div class="bg-white rounded-lg p-5 shadow">
-        <h2 class="h6 font-weight-bold text-center mb-4">WBA</h2>
+        <h2 class="h6 font-weight-bold text-center mb-4">WBA Total</h2>
 
         <!-- Progress bar 3 -->
         <div class="progress mx-auto" data-value="<%= @per_wbas %>">
@@ -81,16 +89,66 @@
         <!-- Demo info -->
         <div class="row text-center mt-4">
           <div class="col-6 border-right">
-            <div class="h4 font-weight-bold mb-0"><%= @no_wbas %></div><span class="small text-gray">No of WBAs</span>
+            <div class="h4 font-weight-bold mb-0"><%= @no_wbas %></div><span>No of WBAs</span>
           </div>
           <div class="col-6">
             <% if @rem_wbas >= 0 %>
-              <div class="h4 font-weight-bold mb-0"><%= @rem_wbas %></div><span class="small text-gray">No of WBAs needed</span>
+              <div class="h4 font-weight-bold mb-0"><%= @rem_wbas %></div><span>No of WBAs needed</span>
             <% else %>
                 <div class="h4 font-weight-bold mb-0">0</div><span class="small text-gray">No of WBAs needed</span>
             <% end %>
           </div>
         </div>
+        <!-- END -->
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4">
+      <div class="bg-white rounded-lg p-5 shadow">
+        <h2 class="h6 font-weight-bold text-center mb-4">At least 51 WBAs from Attendings </h2>
+
+        <!-- Progress bar 3 -->
+        <div class="progress mx-auto" data-value="<%= @wbas_attg_per %>">
+          <span class="progress-left">
+                        <span class="progress-bar border-success"></span>
+          </span>
+          <span class="progress-right">
+                        <span class="progress-bar border-success"></span>
+          </span>
+          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+            <div class="h2 font-weight-bold"><%= @wbas_attg_per %> <sup class="small">%</sup></div>
+          </div>
+        </div>
+        <!-- END -->
+
+        <!-- Demo info -->
+        <div class="row text-center mt-4">
+          <span >No of WBAs Attending: <div class="h4 font-weight-bold mb-0"><%= @wbas_attg %></div></span>
+        </div>
+        <!-- END -->
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 mb-4">
+      <div class="bg-white rounded-lg p-5 shadow">
+        <h2 class="h6 font-weight-bold text-center mb-4">2 WBAs Per EPA</h2>
+
+        <!-- Progress bar 3 -->
+        <div class="progress mx-auto" data-value="<%= @wbas_epas_per %>">
+          <span class="progress-left">
+                        <span class="progress-bar border-success"></span>
+          </span>
+          <span class="progress-right">
+                        <span class="progress-bar border-success"></span>
+          </span>
+          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+            <div class="h2 font-weight-bold"><%= @wbas_epas_per %> <sup class="small">%</sup></div>
+          </div>
+        </div>
+        <!-- END -->
+
+        <!-- Demo info -->
+
         <!-- END -->
       </div>
     </div>
@@ -112,7 +170,6 @@
           </div>
         </div>
         <!-- END -->
-
         <!-- Demo info -->
         <div class="row text-center mt-4">
             <div class="h4 font-weight-bold"></div><span class="small text-green">No of Badges Earned: <%= @no_badges %></span>

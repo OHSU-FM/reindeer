@@ -178,4 +178,63 @@ class EpaMaster < ApplicationRecord
     return wba_epa_cohorts_hash
   end
 
+  def self.split_epa1(user)
+
+    file = File.new("#{Rails.root}/log/eg_migration.log", "a")
+    # Write content to the file
+    if user.epa_masters.find_by(epa: 'EPA1A')
+      file.puts ("student: #{user.full_name} --> found EPA1A --> no conversion!")
+      file.puts ("--------------------------------------------------------------")
+      return
+    end
+
+    file.puts ("conversion starts....student: #{user.full_name} email: #{user.email}-id: #{user.id}")
+    epa_master_epa1b = user.epa_masters.find_by(epa: 'EPA1')
+    epa_review_epa1b = user.epa_masters.find_by(epa: 'EPA1').epa_reviews.where(epa: 'EPA1')
+    epa_master_epa1b.epa = "EPA1B"
+
+    #{}"epa"=>"EPA1B", "status"=>"Not Yet", "status_date"=>nil, "expiration_date"=>nil, "user_id"=>1760,
+    #the code here is working
+    EpaMaster.find_or_create_by(epa: epa_master_epa1b.epa,
+                  status: epa_master_epa1b.status,
+                  status_date: epa_master_epa1b.status_date,
+                  expiration_date: epa_master_epa1b.expiration_date,
+                  user_id: epa_master_epa1b.user_id)
+    file.puts "epa_master for EPA1B is created and saved!"
+
+    epa_master_epa1b = user.epa_masters.find_by(epa: 'EPA1B')
+    reviewable = EpaMaster.find(epa_master_epa1b.id)
+    epa_review = reviewable.epa_reviews.new
+    epa_review.epa = epa_master_epa1b.epa
+    epa_review.review_date1 = epa_review_epa1b.first.review_date1
+    epa_review.review_date2= epa_review_epa1b.first.review_date2
+    epa_review.reviewer1 = epa_review_epa1b.first.reviewer1
+    epa_review.reviewer2 = epa_review_epa1b.first.reviewer2
+    epa_review.reason1 = epa_review_epa1b.first.reason1
+    epa_review.reason2 = epa_review_epa1b.first.reason2
+    epa_review.badge_decision1 = epa_review_epa1b.first.badge_decision1
+    epa_review.trust1 = epa_review_epa1b.first.trust1
+    epa_review.trust2 = epa_review_epa1b.first.trust2
+    epa_review.student_comments1 = epa_review_epa1b.first.student_comments1
+    epa_review.student_comments2 = epa_review_epa1b.first.student_comments2
+    epa_review.evidence1 = epa_review_epa1b.first.evidence1
+    epa_review.evidence2 = epa_review_epa1b.first.evidence2
+    if epa_review.save
+      file.puts "EpaReview for EPA1B is created and saved!"
+    end
+
+    epa_review_epa1a = user.epa_masters.find_by(epa: 'EPA1').epa_reviews.where(epa: 'EPA1').update(epa: 'EPA1A')
+    epa1a = user.epa_masters.find_by(epa: 'EPA1').update(epa: 'EPA1A')
+    file.puts "Renamed EPA1 to EPA1A for epa_master and epa_review"
+
+    epa12 = user.epa_masters.find_by(epa: 'EPA12', status: 'Not Yet').destroy
+    epa13 = user.epa_masters.find_by(epa: 'EPA13', status: 'Not Yet').destroy
+
+    file.puts "Removed EPA12 & EPA12 from epa_masters and epa_reviews!"
+    file.puts "----------------------------------------------------------"
+
+    file.close
+
+  end
+
 end
