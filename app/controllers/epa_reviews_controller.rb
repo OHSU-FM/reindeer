@@ -48,6 +48,7 @@ class EpaReviewsController < ApplicationController
     @decision_option2 = @decision_option
 
     @epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
+    @new_competency = User.find(@user_id).new_competency
 
     get_evidence @user_id, @epa_count
 
@@ -101,7 +102,8 @@ class EpaReviewsController < ApplicationController
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
     @epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
-
+    @new_competency = User.find(@user_id).new_competency
+    
     get_evidence(@user_id, @epa_count)
     epa_idx = @epa_review_epa.split("EPA").second
     # str_complete = "QA Completion %: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +
@@ -173,7 +175,7 @@ class EpaReviewsController < ApplicationController
   def get_evidence (user_id, epa_count)
     @user ||= User.find(user_id)
 
-    if epa_count == 12 # new epas
+    if @user.new_competency #epa_count == 12 # new epas
       @comp = NewCompetency.where(user_id: @user.id).order(submit_date: :desc)
     else
       @comp = Competency.where(user_id: @user.id).order(submit_date: :desc)
@@ -196,22 +198,22 @@ class EpaReviewsController < ApplicationController
     else
       @comp = @comp.map(&:attributes)
       # commented out for new competencies
-      if epa_count == 13
-        @comp_hash3 = hf_load_all_comp2(@comp, 3)
-        @comp = hf_hightlight_all_epas(@comp, epa_count)
-        @comp_data_clinical = hf_average_comp2 (@comp_hash3)
-        @percent_complete ||= hf_epa2(@comp_data_clinical)
-      elsif epa_count == 12  # new epas
+      if @user.new_competency
         @comp_hash3 = hf_load_all_new_competencies(@comp, 3)
         @comp = hf_hightlight_all_epas(@comp, epa_count)
         @comp_data_clinical = hf_average_comp_new (@comp_hash3)
         @percent_complete ||= hf_new_epa(@comp_data_clinical)
+      else
+        @comp_hash3 = hf_load_all_comp2(@comp, 3)
+        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp_data_clinical = hf_average_comp2 (@comp_hash3)
+        @percent_complete ||= hf_epa2(@comp_data_clinical)
       end
     end
 
     #@student_badge_info = hf_get_badge_info(@user.id)
     @preceptorship_data  = hf_get_preceptor_assesses_data(@user)
-    if epa_count == 12 # new epas
+    if @user.new_competency   #epa_count == 12 # new epas
       @wba ||= hf_get_wbas_involvement(@user.id)
     else
       @wba ||= hf_get_old_wbas_involvement(@user.id)

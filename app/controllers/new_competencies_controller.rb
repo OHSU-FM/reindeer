@@ -24,7 +24,7 @@ class NewCompetenciesController < ApplicationController
       @mock_artifacts = hf_get_mock(params[:user_id], "Mock Step 1")
       @usmle_exams = UsmleExam.where("user_id=? and exam_type <>'HSS'", params[:user_id]).order(:exam_date, :no_attempts).load_async
       @hss_exams   = UsmleExam.where(user_id: params[:user_id], exam_type: 'HSS').order(:exam_date, :no_attempts).load_async
-      @student_badge_info = hf_get_badge_info_new(params[:user_id])
+      @student_badge_info = hf_get_badge_info_new(params[:user_id], @user.new_competency)
 
       preceptor_assesses = PreceptorAssess.where(user_id: params[:user_id]).load_async.map(&:attributes)
       @preceptor_assesses = hf_collect_values(preceptor_assesses)

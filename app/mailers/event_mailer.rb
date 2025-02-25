@@ -2,7 +2,7 @@ class EventMailer < ApplicationMailer
 
   SENDER_SIGN = "Thanks!\n" +
                 "OASIS Team\n" +
-                "Erika Chomina Lenford\n" +
+                "Erika Chomina\n" +
                 "OASIS Program Manager\n" +
                 "OHSU School of Medicine|UME\n" +
                 "chomina@ohsu.edu"

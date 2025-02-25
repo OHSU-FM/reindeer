@@ -116,25 +116,53 @@ class EpaMaster < ApplicationRecord
   end
 
   def self.get_epa_badged permission_group_id
-    results ||= EpaMaster.execute_sql("SELECT users.full_name, epa_reviews.epa,
-          review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
-          review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
-          	FROM public.epa_reviews, epa_masters, users
-          	where epa_masters.id = epa_reviews.reviewable_id and
-          	     badge_decision1 = 'Badge' and badge_decision2 = 'Badge' and
-          		  users.id = epa_masters.user_id and
-          		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
+    if permission_group_id.to_i >= 20  # >= Med26
+      results ||= EpaMaster.execute_sql("SELECT users.full_name, epa_reviews.epa,
+            review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
+            review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
+            	FROM public.epa_reviews, epa_masters, users
+            	where epa_masters.id = epa_reviews.reviewable_id and
+            	     badge_decision1 = 'Badge' and badge_decision2 = 'Badge' and
+            		  users.id = epa_masters.user_id and
+                  users.new_competency = true and
+            		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
+    else
+      results ||= EpaMaster.execute_sql("SELECT users.full_name, epa_reviews.epa,
+            review_date1, reviewer1, badge_decision1, trust1, general_comments1, reason1,
+            review_date2, reviewer2, badge_decision2, trust2, general_comments2, reason2
+            	FROM public.epa_reviews, epa_masters, users
+            	where epa_masters.id = epa_reviews.reviewable_id and
+            	     badge_decision1 = 'Badge' and badge_decision2 = 'Badge' and
+            		  users.id = epa_masters.user_id and
+            		  users.permission_group_id = ? order by full_name, epa", permission_group_id).to_a
+
+    end
 
     #results = ActiveRecord::Base.connection.exec_query(sql)
     return results
   end
 
 
-  def self.process_epa_badged in_data
+  def self.process_epa_badged in_data, permission_group_id
     epa_badged_count = {}
-    for i in 1..13
-      count = in_data.collect{|val| val["badge_decision1"] if val["epa"] == "EPA#{i}" and val["badge_decision1"] == 'Badge'}.compact.count
-      epa_badged_count.store("EPA#{i}", count)
+    if permission_group_id.to_i >= 20  # >= Med26
+      #new EPAs
+      count = in_data.collect{|val| val["badge_decision1"] if val["epa"] == "EPA1A" and val["badge_decision1"] == 'Badge'}.compact.count
+      epa_badged_count.store("EPA1A", count)
+
+      count = in_data.collect{|val| val["badge_decision1"] if val["epa"] == "EPA1B" and val["badge_decision1"] == 'Badge'}.compact.count
+      epa_badged_count.store("EPA1B", count)
+
+      for i in 2..11
+        count = in_data.collect{|val| val["badge_decision1"] if val["epa"] == "EPA#{i}" and val["badge_decision1"] == 'Badge'}.compact.count
+        epa_badged_count.store("EPA#{i}", count)
+      end
+    else
+      for i in 1..13
+        count = in_data.collect{|val| val["badge_decision1"] if val["epa"] == "EPA#{i}" and val["badge_decision1"] == 'Badge'}.compact.count
+        epa_badged_count.store("EPA#{i}", count)
+      end
+
     end
 
     students = []
@@ -227,10 +255,21 @@ class EpaMaster < ApplicationRecord
     epa1a = user.epa_masters.find_by(epa: 'EPA1').update(epa: 'EPA1A')
     file.puts "Renamed EPA1 to EPA1A for epa_master and epa_review"
 
-    epa12 = user.epa_masters.find_by(epa: 'EPA12', status: 'Not Yet').destroy
-    epa13 = user.epa_masters.find_by(epa: 'EPA13', status: 'Not Yet').destroy
+    epa12 = user.epa_masters.find_by(epa: 'EPA12', status: [nil,'Not Yet'])
+    if !epa12.nil?
+      epa12.destroy
+     file.puts "Removed EPA12 from epa_masters and epa_reviews!"
+    else
+      file.puts "Found Badged EPA12 --> Not Deleted!!"
+    end
+    epa13 = user.epa_masters.find_by(epa: 'EPA13', status: [nil,'Not Yet'])
+    if !epa13.nil?
+      epa13.destroy
+      file.puts "Removed EPA13 from epa_masters and epa_reviews!"
+    else
+      file.puts "Found Badged EPA13 --> Not Deleted!!"
+    end
 
-    file.puts "Removed EPA12 & EPA12 from epa_masters and epa_reviews!"
     file.puts "----------------------------------------------------------"
 
     file.close

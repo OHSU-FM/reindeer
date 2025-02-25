@@ -189,7 +189,7 @@ class EpaMastersController < ApplicationController
   def eg_badged
     if params[:cohort].present?
       epa_badged = EpaMaster.get_epa_badged params[:cohort]
-      @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged
+      @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged, params[:cohort]
 
     end
     respond_to do |format|

@@ -130,7 +130,7 @@ module EpaMastersHelper
     end
   end
 
-  def hf_get_badge_info_new(user_id)
+  def hf_get_badge_info_new(user_id, new_competency)
     student_badge_hash = {}
     not_yet_status = {"status" => "Not Yet", "student_comments"=> "None" }
     student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
@@ -142,7 +142,7 @@ module EpaMastersHelper
       return student_badge_hash
     end
     student_badge_info = student_badge_info.map(&:attributes)
-    if student_badge_info.count == 12  # new epa codes
+    if new_competency  # new epa codes
       epa_codes = hf_epa_codes_new
     else
       epa_codes = hf_epa_codes

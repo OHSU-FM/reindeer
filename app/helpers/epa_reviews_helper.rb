@@ -122,8 +122,8 @@ module EpaReviewsHelper
     return WBA_DEF2[code]
   end
 
-  def hf_epa_desc_with_color(epa_code, epa_count)
-    if epa_count == 12 # new epas
+  def hf_epa_desc_with_color(epa_code, new_competency)
+    if new_competency # new epas
       epa_desc = NEW_EPA_DESC[epa_code]
       epa_color = NEW_EPA_COLORS[epa_code]
     else
@@ -134,9 +134,9 @@ module EpaReviewsHelper
     return desc.html_safe
   end
 
-  def hf_hightlight_all_epas(comp, epa_count)
+  def hf_hightlight_all_epas(comp, new_competency)
 
-    if epa_count == 12 # new epa
+    if new_competency  # new epa
       epa_desc = hf_new_epa_desc
     else
       epa_desc = hf_epa_desc
@@ -145,7 +145,7 @@ module EpaReviewsHelper
     comp.each do |cd|
       epa_desc.each do |key, value|
 
-        if epa_count == 12
+        if new_competency
           keywords = NEW_EPA_KEYWORDS[key]
           epa_color = NEW_EPA_COLORS[key]
         else
@@ -174,13 +174,14 @@ module EpaReviewsHelper
       return text.to_s
     end
 
-    if @epa_count == 12
+    if @new_competency
       keywords = NEW_EPA_KEYWORDS[epa_code]
       epa_color = NEW_EPA_COLORS[epa_code]
     else
       keywords = EPA_KEYWORDS[epa_code]
-      epa_color = EPA_COLORS[epa_code]      
+      epa_color = EPA_COLORS[epa_code]
     end
+
     text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
               '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
 
