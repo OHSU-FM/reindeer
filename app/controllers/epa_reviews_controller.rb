@@ -47,7 +47,12 @@ class EpaReviewsController < ApplicationController
     @decision_option = ["Grounded", "Presumptive", "Distrust", "Questioned Trust", "No Decision"]
     @decision_option2 = @decision_option
 
-    @epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
+    #@epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
+    if EpaMaster.where(user_id: @user_id, epa: "EPA1A").any?
+      @epa_count = 12 ## new epas
+    else
+      @epa_count = 13  ## old epas
+    end
     @new_competency = User.find(@user_id).new_competency
 
     get_evidence @user_id, @epa_count
@@ -101,9 +106,14 @@ class EpaReviewsController < ApplicationController
     @epa_review_epa = @epa_review.epa
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
-    @epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
+    #@epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
+    if EpaMaster.where(user_id: @user_id, epa: "EPA1A").any?
+      @epa_count = 12 ## new epas
+    else
+      @epa_count = 13  ## old epas
+    end
     @new_competency = User.find(@user_id).new_competency
-    
+
     get_evidence(@user_id, @epa_count)
     epa_idx = @epa_review_epa.split("EPA").second
     # str_complete = "QA Completion %: " +  @percent_complete[@epa_review_epa.downcase].to_s + "\r"  +

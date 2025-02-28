@@ -86,6 +86,10 @@ class Competency < ApplicationRecord
           'group by fom_exams.course_code
           order by fom_exams.course_code'
 
+
+
+### fom_exams.permission_group_id=' + "#{selected_user.permission_group_id} "
+
       all_blocks_user_sql = 'select fom_exams.course_code,
               trunc(summary_comp1,2) as "summ_comp1",
               trunc(summary_comp2a,2) as "summ_comp2a",
@@ -94,8 +98,8 @@ class Competency < ApplicationRecord
               trunc(summary_comp4,2) as "summ_comp4",
               trunc(summary_comp5a,2) as "summ_comp5a",
               trunc(summary_comp5b,2) as "summ_comp5b"
-            FROM fom_exams, fom_labels where fom_exams.permission_group_id=' + "#{selected_user.permission_group_id} " +
-            ' and user_id=' + "#{selected_user.id} and" +
+            FROM fom_exams, fom_labels where ' +
+            ' fom_exams.user_id=' + "#{selected_user.id} and" +
             ' fom_labels.course_code = fom_exams.course_code and fom_labels.permission_group_id = fom_exams.permission_group_id and fom_labels.block_enabled=true ' +
             'order by fom_exams.course_code'
 

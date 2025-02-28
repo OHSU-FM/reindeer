@@ -7,6 +7,7 @@ class EpaMastersController < ApplicationController
   include EpaMastersHelper
   include FixEgMembersHelper
   include CompetenciesHelper
+  include NewCompetenciesHelper
 
   # GET /epa_masters
   def index
@@ -26,7 +27,7 @@ class EpaMastersController < ApplicationController
   end
 
   def load_epa_masters
-    @epa_masters = @user.epa_masters.order(:epa, :id)
+    @epa_masters = EpaMaster.where("epa not in ('EPA12', 'EPA13') and user_id=?", @user.id).order(:epa, :id)
     if @epa_masters.first.epa == "EPA10"  ## move EPA10 & EPA11 to end of array
       @epa_masters = @epa_masters.rotate(2)
     end
@@ -139,6 +140,8 @@ class EpaMastersController < ApplicationController
         end
         @wba_epa_data = hf_process_cohort2(params[:permission_group_id], @start_date, @end_date, "WBA")
         @wba_epa_data = @wba_epa_data.sort_by{ |wba| wba["TotalCount"] }.reverse
+
+
 
         create_file @wba_epa_data, "wba_epa.txt"
         respond_to do |format|

@@ -29,21 +29,47 @@ module EpaReviewsHelper
             "EPA13" => ["QI", "quality", "quality improvement", "safety", "patient safety", "project"] # "Identify system failures and contribute to a culture of safety and improvement"
   }
 
+  # NEW_EPA_KEYWORDS = {
+  #           "EPA1A" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+  #           "EPA1B" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
+  #           "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
+  #           "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans",
+  #                     "assessment", "plan"],
+  #           "EPA4" => ["orders",  "prescription"],
+  #           "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
+  #           "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
+  #           "EPA7" => ["clinical question", "evidence", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
+  #           "EPA8" => ["handover", "handoff", "transition of care", "Signout", "hand offs", "sign offs", "sign outs"],  # "Give or receive a patient handover to transition care responsibility",
+  #           "EPA9" => ["interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
+  #           "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
+  #           "EPA11" => ["consent", "informed consent", "shared decision making", "procedures", "shared decision"]  # "Obtain informed consent for tests and/or procedures",
+  # }
+
+  # updated on 2/27/2025
   NEW_EPA_KEYWORDS = {
-            "EPA1A" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
-            "EPA1B" => ["physical", "physical exams", "physical examinations", 'history', "exam", "physical exam", "examination", "interview", "information gathering", "H and P", "h&p"],
-            "EPA2" => ["differential diagnosis", "differential", "differentials", "ddx"],
-            "EPA3" => ["interpret", "interpreted", "cost-effective", "labs", "test", "screening test", "testing", "diagnostic", "assessment/plans",
-                      "assessment", "plan"],
-            "EPA4" => ["orders",  "prescription"],
-            "EPA5" => ["document", "documentation", "note", "notes","progress note", "written",  "written H&P", "written history and physical", "discharge summary"], # "Document a clinical encounter in the patient record",
-            "EPA6" => ["presentation", "presentations", "oral presentation", "oral case presentation","case presentation" ],   # "Provide an oral presentation of a clinical encounter",
-            "EPA7" => ["clinical question", "evidence", "EBM", "literature"],  # "Form clinical questions and retrieve evidence to advance patient care",
-            "EPA8" => ["handover", "handoff", "transition of care", "Signout", "hand offs", "sign offs", "sign outs"],  # "Give or receive a patient handover to transition care responsibility",
-            "EPA9" => ["interprofessional", "collaborate", "multidisciplinary", "staff", "nurse"], # "Collaborate as a member of an interprofessional team",
-            "EPA10" => ["urgent", "emergent", "CPR", "code", "rapid response"], #"Recognize a patient requiring urgent or emergent care and initiate evaluation and management",
-            "EPA11" => ["consent", "informed consent", "shared decision making", "procedures", "shared decision"]  # "Obtain informed consent for tests and/or procedures",
-  }
+  "EPA1A" => ["hypothesis-driven history", "hypothesis driven history", "targeted history", "focused history", "directed history", "history taking", "medical history", "patient history", "clinical history", "history of present illness", "HPI", "review of systems", "ROS", "past medical history", "PMH", "interview", "information gathering"],
+  "EPA1B" => ["physical exam", "physical examination", "targeted exam", "focused physical", "directed physical", "tailored exam", "tailored physical", "clinical exam", "physical assessment", "body systems", "mental status", "H and P", "H&P"],
+  "EPA2" => ["differential diagnosis", "prioritized differential", "differential", "ddx", "diagnosis", "prioritized list", "diagnostic possibilities", "rule out", "problem list", "clinical impression", "impression", "problem formulation"],
+
+  "EPA3" => ["interpret", "interpretation", "diagnostic testing", "screening test", "laboratory test", "lab test", "labs", "imaging", "test result", "diagnostic study", "radiology", "x-ray", "CT", "ultrasound", "MRI", "EKG", "ECG", "test interpretation", "normal values", "diagnostic assessment"],
+
+  "EPA4" => ["orders", "order entry", "ordering", "prescription", "prescribe", "medication order", "drug order", "lab order", "imaging order", "test order", "consult order", "consultation request", "order set", "dosing", "dose", "frequency", "route", "duration", "refill", "e-prescribe"],
+
+  "EPA5" => ["documentation", "medical record", "EMR", "EHR", "chart note", "note", "progress note", "SOAP note", "H&P", "history and physical", "written documentation", "admission note", "discharge summary", "procedure note", "clinic note", "inpatient note", "outpatient note", "consult note", "consultation note", "patient record"],
+
+  "EPA6" => ["presentation", "oral presentation", "case presentation", "clinical presentation", "patient presentation", "report", "verbal report", "bedside presentation", "presenting patient", "rounds presentation"],
+
+  "EPA7" => ["literature", "evidence", "literature search", "evidence-based medicine", "EBM", "research", "clinical question", "PICO", "clinical evidence", "journal", "publication", "guideline", "clinical guideline", "systematic review", "meta-analysis", "randomized controlled trial", "RCT", "medical literature", "PubMed", "literature review", "clinical application"],
+
+  "EPA8" => ["handover", "handoff", "hand-off", "sign out", "sign-out", "transition of care", "transfer of care", "patient transfer", "I-PASS", "SBAR", "transfer of information", "continuity of care", "care transition", "shift change", "coverage", "cross-coverage", "signout", "hand over", "pass the baton", "transfer of responsibility"],
+
+  "EPA9" => ["interprofessional", "collaboration", "team-based care", "multidisciplinary", "interdisciplinary", "healthcare team", "care team", "team communication", "consultation", "nurse", "pharmacist", "social worker", "case manager", "physical therapist", "occupational therapist", "respiratory therapist", "team approach", "care coordination", "coordinated care", "team member"],
+
+  "EPA10" => ["urgent", "emergent", "emergency", "critical", "rapid response", "code", "code blue", "deterioration", "unstable", "escalation", "escalate care", "decompensation", "triage", "patient safety", "immediate intervention", "life-threatening", "critical situation", "acute change", "resuscitation", "CPR", "ACLS", "BLS"],
+
+  "EPA11" => ["shared decision making", "shared decision-making", "informed consent", "patient preference", "treatment options", "patient values", "risk communication", "benefit-risk", "risks and benefits", "patient autonomy", "patient education", "decision aid", "informed choice", "patient-centered", "patient centered", "preference-sensitive", "decision support", "joint decision"]
+}
+
 
   EPA_COLORS = {
     "EPA1" => "#4AC24E",  #green shade

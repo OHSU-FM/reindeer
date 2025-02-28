@@ -359,9 +359,6 @@ module NewCompetenciesHelper
     return epa
   end
 
-
-
-
   def hf_get_wbas_new(epas)
     #selected_user = User.find_by(email: email)
     #epas = Epa.where(user_id: selected_user.id).order(:epa, :submit_date)
@@ -370,8 +367,9 @@ module NewCompetenciesHelper
     if !epas.empty?
       total_wba_count = epas.count
       selected_student = epas.first.student_assessed.split("-").first
-      #epa_hash = reformatted_data(epas)
-      epa_hash = total_wba_by_epa(epas)
+      #commented it out at the controller
+      # epa_hash = total_wba_by_epa(epas)
+      epa_hash = {}
       clinical_assessors, clinical_hash_by_involve = total_wba_by_clinical_assessors(epas)
       # epa_hash_dates = reformatted_data(epas)
       # epa_evaluators, unique_evaluators, selected_dates = epas_by_evaluators(epas)
@@ -379,6 +377,17 @@ module NewCompetenciesHelper
     else
       return [], {}, {}, {}, 0, 0
     end
+  end
+
+  def epa_hash_merge (epa_hash)
+    # we need to show some epas 0 wba
+    temp_epa_hash = {}
+    NEW_EPA_ARRAY.each do |epa|
+      temp_epa_hash[epa.upcase] = 0
+    end
+    epa_hash = temp_epa_hash.merge!(epa_hash)
+    return epa_hash
+
   end
 
   def hf_clinical_assessors_graph(wba, user, total_wba_count)

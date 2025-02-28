@@ -85,7 +85,7 @@ module EpaMastersHelper
         review.badge_decision2 = "Not Yet"
         review.trust1 = 'No Decision'
         review.trust2 = 'No Decision'
-        review.reason1 ='Have not met the minimum requirements'
+        review.reason1 ='Have not met the min/imum requirements'
         review.reason2 ='Have not met the minimum requirements'
         review.student_comments1 = 'You are making progress towards completing this EPA - continue to look for experiences.'
         review.student_comments2 = 'You are making progress towards completing this EPA - continue to look for experiences.'
@@ -147,10 +147,11 @@ module EpaMastersHelper
     else
       epa_codes = hf_epa_codes
     end
+
     epa_codes.each do |epa|
       student_comments = []
       temp_badge = {}
-      temp_badge = student_badge_info.select{|s| s if s["epa"] == epa}.first
+      temp_badge = student_badge_info.select{|s| s if s["epa"] == epa.upcase}.first
       if temp_badge["status"].to_s == ""
          temp_badge["status"] = 'Not Yet'
       end
@@ -310,18 +311,31 @@ module EpaMastersHelper
     epa_reviews = epa_master.epa_reviews.where("reviewer1 = ? or reviewer2 = ?", selected_reviewer, selected_reviewer)
   end
 
-  def hf_epa_qa(comp_data, sid, full_name)
+  def hf_epa_qa(comp_data, sid, full_name, new_competency)
     epa = {}
     epa["StudentId"] = sid
     epa["Student"] = full_name
-    for i in 1..13
-       epa_code = "epa" + i.to_s
+    if new_competency
+      EPA_CODES_NEW.map!(&:downcase)
+      EPA_CODES_NEW.each do |epa_code|
         temp_percent = 0
-        EPA[epa_code].each do |c|
-          temp_percent = temp_percent + comp_data[c]
+
+        NEW_EPA[epa_code].each do |c|
+          temp_percent = temp_percent + comp_data[c].to_f
         end
-        epa[epa_code] = (temp_percent/EPA[epa_code].count.to_f).round(0)
+        epa[epa_code] = (temp_percent/NEW_EPA[epa_code].count.to_f).round(0)
+      end
+    else
+      for i in 1..13
+         epa_code = "epa" + i.to_s
+          temp_percent = 0
+          EPA[epa_code].each do |c|
+            temp_percent = temp_percent + comp_data[c]
+          end
+          epa[epa_code] = (temp_percent/EPA[epa_code].count.to_f).round(0)
+      end
     end
+
     return epa
   end
 
@@ -329,11 +343,20 @@ module EpaMastersHelper
 
     data = []
     students.each do |student|
-      comp = Competency.where(student_uid: student.sid)
-      comp = comp.map(&:attributes)
-      comp_hash3 = hf_load_all_comp2(comp, 3)
-      comp_data_clinical = hf_average_comp2 (comp_hash3)
-      student_epa = hf_epa_qa(comp_data_clinical, student.sid, student.full_name)
+      if student.new_competency
+        comp = NewCompetency.where(user_id: student.id)
+        comp = comp.map(&:attributes)
+        comp_hash3 = hf_load_all_new_competencies(comp, 3)
+        comp_data_clinical = hf_average_comp_new (comp_hash3)
+        student_epa = hf_epa_qa(comp_data_clinical, student.sid, student.full_name, student.new_competency)
+      else
+        comp = Competency.where(student_uid: student.sid)
+        comp = comp.map(&:attributes)
+        comp_hash3 = hf_load_all_comp2(comp, 3)
+        comp_data_clinical = hf_average_comp2 (comp_hash3)
+        student_epa = hf_epa_qa(comp_data_clinical, student.sid, student.full_name, student.new_competency)
+      end
+
 
       data.push student_epa
     end
@@ -484,7 +507,7 @@ module EpaMastersHelper
   end
 
   def hf_process_cohort2 (permission_group_id, start_date, end_date, code)
-    students = PermissionGroup.find(permission_group_id).users.select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
+    students = PermissionGroup.find(permission_group_id).users.where(new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
 
     if code=='EPA'
       epas_data = process_epa(students)
@@ -507,7 +530,7 @@ module EpaMastersHelper
   #
   #   end
   #   if code=='EPA'
-  #     epas_data = process_epa(students)
+  #     epas_data = hf_load_all_comp2(students)
   #   elsif code == 'ClinicalAssessor'
   #     wpa_clinical = process_wba_clinical(students)
   #   else
