@@ -11,18 +11,14 @@
   <thead>
     <tr class="filters">
       <% @wba_epa_data.first.keys.each do |key| %>
-        <th style="text-align:left"><%= key.upcase %></th>
+        <th style="text-align:center"><%= key %></th>
       <% end %>
     </tr>
   </thead>
     <% @wba_epa_data.each do |wba| %>
       <tr>
         <% wba.each do |key, val| %>
-          <% if key.include? "EPA" or key.include? "Total" or key.include? "Matriculated"%>
-            <td style="text-align:center"> <%= val %> </td>
-          <% else %>
-            <td> <%= val %> </td>
-          <% end %>
+          <td style="text-align:center"> <%= val %> </td>
         <% end %>
       </tr>
     <% end %>

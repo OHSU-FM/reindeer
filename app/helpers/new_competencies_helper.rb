@@ -385,7 +385,7 @@ module NewCompetenciesHelper
     NEW_EPA_ARRAY.each do |epa|
       temp_epa_hash[epa.upcase] = 0
     end
-    epa_hash = temp_epa_hash.merge!(epa_hash)
+    epa_hash = temp_epa_hash.merge(epa_hash)
     return epa_hash
 
   end

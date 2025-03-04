@@ -33,7 +33,7 @@ module EpaMastersHelper
        "epa7" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3",  "pbli1", "pbli2", "ics2", "ics3", "ics5", "pppd1", "pppd2" ], #done
        "epa8" => ["pcp1", "pcp2", "pcp3", "mk2", "ics2", "ics3",  "ics4"],  #done
        "epa9" => ["pcp3", "mk2", "mk3", "sbp1", "ics1", "ics3", "ics5", "pppd1", "pppd2"], # done
-       "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "sbpic1", "ics1", "ics2", "ics3", "ics4", "ics5", "pppd2"], #done
+       "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "sbp1", "ics1", "ics2", "ics3", "ics4", "ics5", "pppd2"], #done
        "epa11" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli2", "pppd1", "pppd2"] #done
      }
 
@@ -147,7 +147,8 @@ module EpaMastersHelper
     else
       epa_codes = hf_epa_codes
     end
-
+    epa_codes.delete("EPA12")
+    epa_codes.delete("EPA13")
     epa_codes.each do |epa|
       student_comments = []
       temp_badge = {}
@@ -171,11 +172,11 @@ module EpaMastersHelper
         end
         student_comments = student_comments.uniq.reject(&:blank?)
         temp_badge.store("student_comments", student_comments)
-        student_badge_hash.store("#{epa}", temp_badge )
+        student_badge_hash.store("#{epa.upcase}", temp_badge )
       else
         student_comments << "None"
         temp_badge.store("student_comments", student_comments)
-        student_badge_hash.store("#{epa}", temp_badge )
+        student_badge_hash.store("#{epa.upcase}", temp_badge )
       end
     end
 
@@ -316,12 +317,13 @@ module EpaMastersHelper
     epa["StudentId"] = sid
     epa["Student"] = full_name
     if new_competency
-      EPA_CODES_NEW.map!(&:downcase)
-      EPA_CODES_NEW.each do |epa_code|
+      lowercase_epa_codes_new = EPA_CODES_NEW.map(&:downcase) # comp_data key is in lowercase
+      lowercase_epa_codes_new.delete("epa12")
+      lowercase_epa_codes_new.delete("epa13")
+      lowercase_epa_codes_new.each do |epa_code|
         temp_percent = 0
-
         NEW_EPA[epa_code].each do |c|
-          temp_percent = temp_percent + comp_data[c].to_f
+          temp_percent = temp_percent + comp_data[c]
         end
         epa[epa_code] = (temp_percent/NEW_EPA[epa_code].count.to_f).round(0)
       end
@@ -344,7 +346,7 @@ module EpaMastersHelper
     data = []
     students.each do |student|
       if student.new_competency
-        comp = NewCompetency.where(user_id: student.id)
+        comp = student.new_competencies   #NewCompetency.where(user_id: student.id)
         comp = comp.map(&:attributes)
         comp_hash3 = hf_load_all_new_competencies(comp, 3)
         comp_data_clinical = hf_average_comp_new (comp_hash3)
@@ -363,7 +365,7 @@ module EpaMastersHelper
     return data
   end
 
-  def count_wbas(wbas, sid, full_name, matriculated_date, new_competency)
+  def count_wbas(epa_codes, wbas, sid, full_name, matriculated_date, new_competency)
     epa_hash = {}
     tot_count = 0
     total_attending = 0
@@ -373,7 +375,7 @@ module EpaMastersHelper
     total_attending = wbas.select{|w| w.clinical_assessor if w.clinical_assessor.include? "Attending"}.compact.count
 
     #for i in 1..13
-    getEpaCodes(new_competency).each do |epa_code|
+    epa_codes.each do |epa_code|
       #epa_code = 'EPA' + i.to_s
       epa_count = wbas.collect{|w| w.epa if w.epa == "#{epa_code}"}.compact.count
       tot_count += epa_count
@@ -463,13 +465,28 @@ module EpaMastersHelper
     return level_epa_wbas_count_hash
   end
 
-  def process_wba(students, start_date, end_date)
+  def process_wba(epa_codes, students, start_date, end_date)
     data = []
     students.each do |student|
         wbas = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", student.id, start_date, end_date)  # Epa table contains WBAs data
-        # ave_level = Epa.where(user_id: user.id).average(:involvement).to_f
-        student_epa = count_wbas(wbas, student.sid, student.full_name, student.matriculated_date, student.new_competency)
-        # student_epa.store("Average", ave_level)
+        student_epa = count_wbas(epa_codes, wbas, student.sid, student.full_name, student.matriculated_date, student.new_competency)
+
+        # temp_hash = {}
+        #
+        # epa_hash = Epa.where("user_id=? and submit_date >= ? and submit_date <= ?", student.id, start_date, end_date).group(:epa).order(:epa).count
+        # temp_hash["StudentId"] = student.sid
+        # temp_hash["Student Name"] = student.full_name
+        # temp_hash["Matriculated Date"] = student.matriculated_date
+        # #re-arranging the EPAs on the graph by using Slice.
+        # epa_hash = epa_hash.slice("EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13")
+        # # merge with a epa hash with zero count so that we can show it on graph.
+        # epa_hash = epa_hash_merge(epa_hash)
+        # epa_hash["TotalCount"] = epa_hash.values.sum
+        #
+        # temp_hash = temp_hash.merge(epa_hash)
+        #
+        # data.push temp_hash   #student_epa
+
         data.push student_epa
 
     end
@@ -507,14 +524,27 @@ module EpaMastersHelper
   end
 
   def hf_process_cohort2 (permission_group_id, start_date, end_date, code)
-    students = PermissionGroup.find(permission_group_id).users.where(new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
+    if permission_group_id.to_s >= "20" && permission_group_id.to_s <= "22" #Med26
+      students = User.where(permission_group_id: permission_group_id, new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
+      epa_codes = getEpaCodes(new_competency = true)
+      epa_codes.push "EPA12"
+      epa_codes.push "EPA13"
+    elsif permission_group_id.to_s >= "23"
+      students = User.where(permission_group_id: permission_group_id, new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
+      epa_codes = getEpaCodes(new_competency = true)
+
+    else
+      students = User.where(permission_group_id: permission_group_id, new_competency: false).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
+      epa_codes = getEpaCodes(new_competency = false)
+
+    end
 
     if code=='EPA'
       epas_data = process_epa(students)
     elsif code == 'ClinicalAssessor'
       wpa_clinical = process_wba_clinical(students)
     else
-      wpa_data = process_wba(students, start_date, end_date)
+      wpa_data = process_wba(epa_codes, students, start_date, end_date)
     end
   end
 
