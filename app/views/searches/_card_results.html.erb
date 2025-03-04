@@ -35,7 +35,12 @@
                     <% end %>
                   </tr>
                   <tr><td style="text-align:left"># of WBAs (All levels)</td><td style="color:purple"><b><%= result.epas.where.not(involvement: 0).count.to_s %></b></td></tr>
-                  <tr><td style="text-align:left"># of Badges Awarded</td><td style="color:purple"><b><%= result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td></tr>
+                  <% if result.new_competency? %>
+                    <% no_of_badges = result.epa_masters.where("epa not in ('EPA12', 'EPA13') and status = ? and status_date < ?",'Badge', hf_releaseDate(result)).count.to_s  %>
+                  <% else %>
+                    <% no_of_badges = result.epa_masters.where("status = ? and status_date < ?",'Badge', hf_releaseDate(result)).count.to_s  %>
+                  <% end %>
+                  <tr><td style="text-align:left"># of Badges Awarded</td><td style="color:purple"><b><%= no_of_badges %></b></td></tr>
                 </table>
               </li>
 

@@ -25,11 +25,13 @@ include NewCompetenciesHelper
       @wbas_epas =  Epa.where("user_id = ? and epa <> 'EPA12' and epa <> 'EPA13'",  user_id).group(:epa).count
       @wbas_epas_per = hf_compute_wba_epa(@wbas_epas, @user.new_competency)
       @wbas_attg = Epa.where("user_id = ? and clinical_assessor = ? and epa <> 'EPA12' and epa <> 'EPA13'",  user_id, 'Attending Faculty').count
+      @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').where.not(epa: ["EPA12", "EPA13"]).count
     else
       @no_wbas = Epa.where(user_id: user_id).count
       @wbas_epas =  Epa.where(user_id: user_id).group(:epa).count
       @wbas_epas_per = hf_compute_wba_epa(@wbas_epas, @user.new_competency)
       @wbas_attg = Epa.where(user_id: user_id, clinical_assessor: 'Attending Faculty').count
+      @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').count        
     end
     @wbas_attg_per = (@wbas_attg/51.0)
     if @wbas_attg_per > 1
@@ -38,7 +40,7 @@ include NewCompetenciesHelper
       @wbas_attg_per =(@wbas_attg_per*100).round
     end
 
-    @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').count
+
     #result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s
 
     cohort_title = @user.permission_group.title.split(" ").last.gsub(/[()]/, "")
