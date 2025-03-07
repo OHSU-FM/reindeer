@@ -1,3 +1,5 @@
+<% return unless !current_user.nil? %>
+
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
 
@@ -17,7 +19,7 @@
 
         <div id="SearchPlaceHolder">
           <div id="SearchInputForm">
-            <% if current_user.coaching_type != 'student' and current_user.spec_program !='Wellness' %>
+            <% if !current_user.nil? && current_user.coaching_type != 'student' && current_user.spec_program !='Wellness' %>
               <%= form_tag(search_searches_path, method: "get",  class: 'navbar-form navbar-left', id: 'SearchForm') do %>
                 <span>
                   <div class="input-group">
@@ -68,7 +70,7 @@
                   <i class="fa fa-stethoscope" style="color:#E1191C"></i> EG Review
                 </a>
                 <ul class="dropdown-menu" id="dropdownMenuButton">
-                  <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>        
+                  <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
                   <% if current_user.can_process_eg_assignment? and current_user.coaching_type != 'student' %>
                     <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
 

@@ -59,6 +59,7 @@ module NewCompetenciesHelper
       }
 
    NEW_EPA_ARRAY = ["epa1a", "epa1b", "epa2", "epa3", "epa4", "epa5", "epa6", "epa7", "epa8", "epa9", "epa10", "epa11" ]
+   NEW_EPA_ARRAY_EXTRA = ["epa1a&1b", "epa1a", "epa1b", "epa2", "epa3", "epa4", "epa5", "epa6", "epa7", "epa8", "epa9", "epa10", "epa11" ]
 
    NEW_EPA_DESC={
              "EPA1A" => "Obtain a hypothesis-driven history",
@@ -379,13 +380,24 @@ module NewCompetenciesHelper
     end
   end
 
-  def epa_hash_merge (epa_hash)
+  def epa_hash_merge (epa_hash, permission_group_id)
     # we need to show some epas 0 wba
     temp_epa_hash = {}
-    NEW_EPA_ARRAY.each do |epa|
-      temp_epa_hash[epa.upcase] = 0
+
+    if permission_group_id >= 20 && permission_group_id <= 22
+      NEW_EPA_ARRAY_EXTRA.each do |epa|
+        temp_epa_hash[epa.upcase] = 0
+      end
+      epa_hash = temp_epa_hash.merge(epa_hash)
+
+    elsif permission_group_id >= 23
+      NEW_EPA_ARRAY.each do |epa|
+        temp_epa_hash[epa.upcase] = 0
+      end
+      epa_hash = temp_epa_hash.merge(epa_hash)
     end
-    epa_hash = temp_epa_hash.merge(epa_hash)
+
+
     return epa_hash
 
   end
@@ -512,6 +524,15 @@ end
           )
 
           f.series(name: "EPA", data: wba_series)
+          f.caption(
+            text: '<b>Due to the EPAs changes, prior to 7/1/2025 EPA1A & 1B are counted as 1. Starting 7/1/2025, EPA1A & EPA1B will be counted as individually.</b>',
+            style:  {
+                     fontWeight: 'bold',
+                     color: 'blue',
+                     fontSize: '13px'
+                   }
+
+          )
 
           #f.series(name: "Class Mean", yAxis: 0, data: class_mean_series)
 

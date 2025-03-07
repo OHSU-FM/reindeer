@@ -2,6 +2,12 @@
 //   background-color: #FADCD9;
 // }
 
+body {
+  background-size: 100% 100%;
+  background-image: image-url('AdobeStock_219914874_Preview_Medical_Pic.jpeg');
+}
+
+
 figure {
   display: inline-block;
   text-align: center;

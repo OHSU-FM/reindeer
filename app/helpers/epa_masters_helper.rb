@@ -1,5 +1,8 @@
 module EpaMastersHelper
 
+  EPA_CODES_NEW_EXTRA = ['EPA1A&1B', 'EPA1A', 'EPA1B', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6',
+               'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11']
+
   EPA_CODES_NEW = ['EPA1A', 'EPA1B', 'EPA2', 'EPA3', 'EPA4', 'EPA5', 'EPA6',
                'EPA7', 'EPA8', 'EPA9', 'EPA10', 'EPA11']
 
@@ -58,8 +61,10 @@ module EpaMastersHelper
     return EPA_CODES_NEW
   end
 
-  def getEpaCodes(new_competency)
-    if new_competency
+  def getEpaCodes(permission_group_id, new_competency)
+    if permission_group_id >= "20" && permission_group_id <= "22" && new_competency
+      return EPA_CODES_NEW_EXTRA
+    elsif  permission_group_id >= "23" && new_competency
       return EPA_CODES_NEW
     else
       return EPA_CODES
@@ -526,16 +531,16 @@ module EpaMastersHelper
   def hf_process_cohort2 (permission_group_id, start_date, end_date, code)
     if permission_group_id.to_s >= "20" && permission_group_id.to_s <= "22" #Med26
       students = User.where(permission_group_id: permission_group_id, new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
-      epa_codes = getEpaCodes(new_competency = true)
+      epa_codes = getEpaCodes(permission_group_id, new_competency = true)
       epa_codes.push "EPA12"
       epa_codes.push "EPA13"
     elsif permission_group_id.to_s >= "23"
       students = User.where(permission_group_id: permission_group_id, new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
-      epa_codes = getEpaCodes(new_competency = true)
+      epa_codes = getEpaCodes(permission_group_id, new_competency = true)
 
     else
       students = User.where(permission_group_id: permission_group_id, new_competency: false).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
-      epa_codes = getEpaCodes(new_competency = false)
+      epa_codes = getEpaCodes(permission_group_id, new_competency = false)
 
     end
 
@@ -571,7 +576,8 @@ module EpaMastersHelper
   def hf_process_student(student, code)
     if code == 'WBA'
       # process all students - for dashboard - using default dates
-      return process_wba(student, "2016-01-01", "2030-12-31")
+
+      return process_wba(hf_epa_codes, student, "2016-01-01", "2030-12-31")
     elsif code == 'ClinicalAssessor'
       wba_clinical_assessor = process_wba_clinical(student)
       return wba_clinical_assessor

@@ -1,6 +1,6 @@
 class NewCompetenciesController < ApplicationController
+  before_action :authenticate_user!, :set_new_competency,  only: %i[ show edit update destroy ]
   layout 'full_width_csl'
-  before_action :set_new_competency, :authenticate_user!, only: %i[ show edit update destroy ]
   include NewCompetenciesHelper
   include CompetenciesHelper
   include ArtifactsHelper
@@ -39,9 +39,9 @@ class NewCompetenciesController < ApplicationController
       if ["20", "21", "22"].include? @user.permission_group_id.to_s  # only Med26, Med27, Med28
         @epa_hash = Epa.where(user_id: params[:user_id]).group(:epa).order(:epa).count
         #re-arranging the EPAs on the graph by using Slice.
-        @epa_hash = @epa_hash.slice("EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13")
+        @epa_hash = @epa_hash.slice("EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13")
         # merge with a epa hash with zero count so that we can show it on graph.
-        @epa_hash = epa_hash_merge(@epa_hash)
+        @epa_hash = epa_hash_merge(@epa_hash, @user.permission_group_id)
       else
         # for Med29, etc..
         @epa_hash = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", params[:user_id]).group(:epa).order(:epa).count

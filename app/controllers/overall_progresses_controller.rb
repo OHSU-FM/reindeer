@@ -31,7 +31,11 @@ include NewCompetenciesHelper
       @wbas_epas =  Epa.where(user_id: user_id).group(:epa).count
       @wbas_epas_per = hf_compute_wba_epa(@wbas_epas, @user.new_competency)
       @wbas_attg = Epa.where(user_id: user_id, clinical_assessor: 'Attending Faculty').count
-      @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').count        
+      if @user.spec_program.include? "Paused badging"
+        @no_badges = 0  # no badges shown on main page or overall progress  
+      else
+        @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').count
+      end
     end
     @wbas_attg_per = (@wbas_attg/51.0)
     if @wbas_attg_per > 1
