@@ -1,0 +1,24 @@
+<span>
+  <h4 style="text-align:center"> Detail Competency (%) Report
+    <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_new_competencies_path(file_name: "#{@cohort_title}_Detail_Competency.txt") %>
+  </h4>
+  <h5 style="text-align:center">Cohort: <%= @cohort_title %></h5>
+</span>
+
+<table id="DetailComp" class="table table-hover table-striped responsive" data-sort="true" >
+  <thead>
+    <tr class="filters">
+      <% @cohort_competency.first.keys.each do |key| %>
+        <th style="text-align:left"><%= key.upcase %></th>
+      <% end %>
+    </tr>
+  </thead>
+    <% @cohort_competency.each do |comp| %>
+      <tr>
+        <% comp.each do |key, val| %>
+          <td> <%= val %> </td>
+        <% end %>
+      </tr>
+    <% end %>
+
+</table>

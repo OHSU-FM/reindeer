@@ -209,6 +209,30 @@ module NewCompetenciesHelper
      return comp_hash
    end
 
+    def hf_new_comp_by_cohort(permission_group_id)
+      cohort_competency = []
+      # This will grab all competencies based on the criteria
+      # competencies = User.where("users.permission_group_id=20 and users.new_competency=true").
+      #                 select(:id, :full_name, :sid, :email).
+      #                 joins(:new_competencies).select("new_competencies.*")
+      users = User.where(permission_group_id: permission_group_id, new_competency: true).select(:id, :full_name, :email, :sid).order(:full_name)
+
+      users.each do |user|
+        comp = user.new_competencies
+        comp = comp.map(&:attributes)
+        comp_new_hash3 = hf_new_comp(comp, 3)
+        comp_new_data_clinical = hf_average_comp_new (comp_new_hash3)
+        temp_comp = {}
+        temp_comp["StudentName"] = user.full_name
+        temp_comp["sid"] = user.sid
+        temp_comp["email"] = user.email
+        temp_comp = temp_comp.merge(comp_new_data_clinical)
+        cohort_competency.push temp_comp
+      end
+      return cohort_competency
+
+    end
+
    def hf_competency_new_class_mean(rs_data_unfiltered)
      courses = {}
      students_comp = {}
@@ -485,10 +509,12 @@ end
           sub_title = ""
           y_axis_title = "Percentage"
           selected_categories = wba.keys.map(&:upcase)
+          caption = ""
         else
           title = "Workbased Assessment Datapoints - #{student_name}"
           sub_title = '<br /><h4>Total # of WBAs: <b>' + wba_series.sum.to_s + '<br>' + "<b>Requirement: At Least 2 WBAs for each EPA</b>"
           y_axis_title = "No of WBAs"
+          caption = '<b>Due to the EPAs changes, prior to 7/1/2025 EPA1A & 1B are counted as 1. Starting 7/1/2025, EPA1A & EPA1B will be counted as separately.</b>'
           selected_categories = wba.keys
         end
 
@@ -525,7 +551,7 @@ end
 
           f.series(name: "EPA", data: wba_series)
           f.caption(
-            text: '<b>Due to the EPAs changes, prior to 7/1/2025 EPA1A & 1B are counted as 1. Starting 7/1/2025, EPA1A & EPA1B will be counted as individually.</b>',
+            text: caption,
             style:  {
                      fontWeight: 'bold',
                      color: 'blue',

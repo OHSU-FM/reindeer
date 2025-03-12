@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :new_competencies
+  resources :new_competencies do
+    collection  do
+      get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'new_competencies', to: 'new_competencies#download_file'
+    end
+  end
   resources :badging_dates
   resources :course_schedules
   resources :courses
