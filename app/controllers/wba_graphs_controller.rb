@@ -4,6 +4,7 @@ class WbaGraphsController < ApplicationController
   before_action :set_resources
   include WbaGraphsHelper
   include EpasHelper
+  include EpaMastersHelper
   include EpaReviewsHelper
 
   def index
@@ -58,7 +59,9 @@ class WbaGraphsController < ApplicationController
   end
 
   def set_resources
-        @permission_groups = PermissionGroup.where('id >= ?', 16)  #greater than med22 for preceptorship WBA
+        # @permission_groups = PermissionGroup.where('id >= ? and id <= ?', 16, 20)  #greater than med22 for preceptorship WBA and <= Med26 cohort
+        @permission_groups = PermissionGroup.where('id >= ? ',16)  #greater than med22 for preceptorship WBA and <= Med26 cohort
+
   end
 
   def create_file (in_data, in_file)

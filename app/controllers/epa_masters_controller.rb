@@ -27,7 +27,9 @@ class EpaMastersController < ApplicationController
   end
 
   def load_epa_masters
-    @epa_masters = EpaMaster.where("epa not in ('EPA12', 'EPA13') and user_id=?", @user.id).order(:epa, :id)
+    #@epa_masters = EpaMaster.where("epa not in ('EPA12', 'EPA13') and user_id=?", @user.id).order(:epa, :id)
+    @epa_masters = @user.epa_masters.order(:id)
+
     if @epa_masters.first.epa == "EPA10"  ## move EPA10 & EPA11 to end of array
       @epa_masters = @epa_masters.rotate(2)
     end

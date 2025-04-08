@@ -178,7 +178,6 @@ module EpaReviewsHelper
           keywords = EPA_KEYWORDS[key]
           epa_color = EPA_COLORS[key]
         end
-
         epa_code = key
         if cd["mspe"].to_s != ""
           cd["mspe"] = cd["mspe"].gsub(/\b(#{keywords.join("|")})\b/i,
@@ -210,6 +209,8 @@ module EpaReviewsHelper
 
     text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
               '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
+
+
 
     return text_marked.html_safe
   end

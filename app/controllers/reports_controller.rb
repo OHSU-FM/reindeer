@@ -80,7 +80,7 @@ class ReportsController < ApplicationController
   def set_resources
     # group 7 is phd/mph/mcr students
     # group 11 is dismissed or discharged students
-    @permission_groups ||= PermissionGroup.where("id not in (7,11) and title like ?", "%Student%").order(:id) # get last 3 rows
+    @permission_groups ||= PermissionGroup.where("id < 20 and id not in (7,11) and title like ?", "%Student%").order(:id) # get last 3 rows
     @permission_groups_mspe ||= PermissionGroup.where("id >= ? and title like ?", 17, "%Student%").order(:id) # get last 3 rows
   end
 

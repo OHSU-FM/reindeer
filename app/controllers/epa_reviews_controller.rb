@@ -106,6 +106,7 @@ class EpaReviewsController < ApplicationController
     @epa_review_epa = @epa_review.epa
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
+
     #@epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
     if EpaMaster.where(user_id: @user_id, epa: "EPA1A").any?
       @epa_count = 12 ## new epas
@@ -210,12 +211,12 @@ class EpaReviewsController < ApplicationController
       # commented out for new competencies
       if @user.new_competency
         @comp_hash3 = hf_load_all_new_competencies(@comp, 3)
-        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp = hf_hightlight_all_epas(@comp, @user.new_competency)
         @comp_data_clinical = hf_average_comp_new (@comp_hash3)
         @percent_complete ||= hf_new_epa(@comp_data_clinical)
       else
         @comp_hash3 = hf_load_all_comp2(@comp, 3)
-        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp = hf_hightlight_all_epas(@comp, @user.new_competency)
         @comp_data_clinical = hf_average_comp2 (@comp_hash3)
         @percent_complete ||= hf_epa2(@comp_data_clinical)
       end
