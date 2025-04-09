@@ -331,6 +331,11 @@ module WbaGraphsHelper
         epa_codes = get_extra_epas
     elsif user.permission_group_id >= 23 && user.new_competency  # >= Med29
         epa_codes = hf_epa_codes_new
+    else
+      epa_codes = []
+      (1..13).each do |j|
+        epa_codes.push "EPA#{j}"
+      end    
     end
     epa_student = Epa.where(user_id: user_id).group(:epa, :involvement).order(:epa).count
     if epa_student.empty? or epa_student.nil?

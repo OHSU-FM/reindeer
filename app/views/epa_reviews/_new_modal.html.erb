@@ -23,6 +23,11 @@
                   <li class="nav-item ">
                     <a class="nav-link" data-bs-toggle="tab" href="#SummaryTab" role="tab" ><b>Other</b></a>
                   </li>
+                  <% if current_user.spec_program == 'AccessAI'  %>
+                    <li class="nav-item ">
+                      <a class="nav-link" data-bs-toggle="tab" href="#AiTab" role="tab" ><b>AI Eval Experimental</b></a>
+                    </li>
+                  <% end %>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
@@ -79,7 +84,6 @@
 
 
                   <div id="SummaryTab" class="tab-pane fade" role="tabpanel" >
-
                     <div clas="card">
                       <div class="card-body">
                         <%= render partial: "competencies/collapsible_wba_details" %>
@@ -96,6 +100,14 @@
                           <% if !wba_clinical_assessor.nil? %>
                             <%= high_chart("wba_clinical_assessor_graph", wba_clinical_assessor) %>
                           <% end %>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="AiTab" class="tab-pane fade" role="tabpanel" >
+                    <div class="card">
+                      <div class="card-body">
+                        <%= @eval_ai_content.html_safe %>
                       </div>
                     </div>
                   </div>

@@ -247,7 +247,13 @@ class EpaReviewsController < ApplicationController
     @lastReviewEndDate = badgingDates.last_review_end_date
     @nextReviewEndDate = badgingDates.next_review_end_date
 
-     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
+    @eval_ai_content = File.read("#{Rails.root}/public/epa_reviews/ai_data/#{@user.full_name}_ai.txt")
+    # File.open("#{Rails.root}/public/epa_reviews/ai_data/#{@user.full_name}_ai.txt") do |file|
+    #   @eval_ai_content = file.readlines
+    # end
+    @eval_ai_content = @eval_ai_content.gsub("\n", "<br />")
+
+    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
        gon.epa_evaluators = @epa_evaluators
