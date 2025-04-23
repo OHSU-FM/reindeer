@@ -1,0 +1,16 @@
+
+<div class="form-row">
+     <%= simple_form_for(epa_reviews_path, method: "get") do %>
+       <div class="mb-3">
+         <label for="AiQuestion" class="form-label">AI Question</label>
+         <input type="text" class="form-control" id="ai_question" >
+       </div>
+       <div class="mb-3">
+         <label for="Content" class="form-label">Content</label>
+         <textarea name="content" class="form-control" id="ai_content" rows="15" cols="100"></textarea>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+
+      <% end %>
+</div>

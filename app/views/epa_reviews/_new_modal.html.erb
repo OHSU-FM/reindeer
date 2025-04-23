@@ -13,24 +13,35 @@
           <div class="modal-body">
 
               <!-- Nav tabs -->
-              <ul id="EGReviewTabs" class="nav nav-tabs" role="tablist">
+              <ul id="EGReviewTabs" class="nav nav-pills">
                   <li class="nav-item ">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#EGReviewTab" role="tab" ><b>EG Review</b></a>
+                    <a class="nav-link active" data-bs-toggle="tab" href="#EGReviewTab" ><b>EG Review</b></a>
                   </li>
                   <li class="nav-item ">
-                    <a class="nav-link" data-bs-toggle="tab" href="#EvidenceTab" role="tab" ><b>Evidence</b></a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#EvidenceTab" ><b>Evidence</b></a>
                   </li>
                   <li class="nav-item ">
-                    <a class="nav-link" data-bs-toggle="tab" href="#SummaryTab" role="tab" ><b>Other</b></a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#SummaryTab" ><b>Other</b></a>
                   </li>
                   <% if current_user.spec_program == 'AccessAI'  %>
                     <li class="nav-item ">
-                      <a class="nav-link" data-bs-toggle="tab" href="#AiTab" role="tab" ><b>AI Eval Experimental</b></a>
+                      <a class="nav-link" data-bs-toggle="tab" href="#ChatTab" id="ChatTabLink"><b>AI Eval Experimental</b></a>
+                    </li>
+                    <li class="nav-item ">
+                      <a class="nav-link" data-bs-toggle="tab" href="#QueryAiTab" id="QueryAiTabLink"><b>Query AI</b></a>
                     </li>
                   <% end %>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
+                <div id="ChatTab" class="tab-pane fade"  >
+                  <%= @eval_ai_content2.to_s.html_safe %>
+                  <hr>
+                  <h5 style='color:blue;'> Google AI Experimental Responses </h5>
+                  <hr>
+                  <%= @eval_ai_content.to_s.html_safe %>
+                </div>
+
 
                   <div id="EGReviewTab" class="tab-pane fade active show" role="tabpanel" >
                     <% if !@reviewable.nil? %>
@@ -82,7 +93,6 @@
                    </div>
                   </div>
 
-
                   <div id="SummaryTab" class="tab-pane fade" role="tabpanel" >
                     <div clas="card">
                       <div class="card-body">
@@ -104,13 +114,15 @@
                     </div>
                   </div>
 
-                  <div id="AiTab" class="tab-pane fade" role="tabpanel" >
+                  <div id="QueryAiTab" class="tab-pane fade" >
                     <div class="card">
                       <div class="card-body">
-                        <%= @eval_ai_content.html_safe %>
+                          <%= render partial: 'query_ai_form' %>
                       </div>
                     </div>
                   </div>
+
+
 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
