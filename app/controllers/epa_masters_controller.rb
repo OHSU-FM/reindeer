@@ -5,6 +5,7 @@ class EpaMastersController < ApplicationController
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
   before_action :load_eg_cohorts, :set_resources
   include EpaMastersHelper
+  include EpaReviewsHelper
   include FixEgMembersHelper
   include CompetenciesHelper
   include NewCompetenciesHelper
@@ -83,6 +84,57 @@ class EpaMastersController < ApplicationController
       index
     else
       render :edit
+    end
+  end
+
+  def query_ai
+    @responses = nil
+    if params[:full_name].present?
+      file_name = "#{Rails.root}/public/epa_reviews/chatgpt_ai_data/#{params[:full_name]}_ai.txt"
+      if File.exist?(file_name) && current_user.spec_program == 'AccessAI'
+        @eval_ai_content2 = File.read(file_name)
+        @eval_ai_content2 = @eval_ai_content2.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
+        @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
+        @new_content, @question = hf_parse_ai_content(@eval_ai_content2)
+        file_output = "#{Rails.root}/tmp/epa_reviews/ai_data/#{params[:full_name]}_ai.txt"
+        File.open(file_output, 'w') { |file| file.write(@new_content) }
+        @full_name = params[:full_name]
+      else
+            @eval_ai_content2 = 'No AI Eval Found!'
+      end
+    end
+    if  params[:aiOption].present?
+      file_output = "#{Rails.root}/tmp/epa_reviews/ai_data/#{params[:full_name]}_ai.txt"
+      File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
+      # exec python script here
+      # python script will read the file from tmp/epa_reviews/ai_data/ folder
+      #   1) Call AI either Google or Open AI
+      #   2) the script will output the response to the same file
+      # The controller here will parse out the response from the output file & display it on the screen
+      # @response will contain the ultimate response from AI
+      data_path = "#{Rails.root}/tmp/epa_reviews/ai_data/"
+      prog_path = "#{Rails.root}/config"
+      python_path = "/usr/bin"
+
+      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output}")
+      if python_script_output
+        # Python script executed successfully
+        Rails.logger.info("Python script executed successfully")
+      else
+        # Python script encountered an error
+        Rails.logger.error("Python script encountered an error")
+      end
+      @responses = (params[:ai_question] + "<br>" )
+      file_name = "#{Rails.root}/public/epa_reviews/#{ params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
+      @new_responses = File.read(file_name)
+
+      @ai_responses = hf_parse_new_ai_content(@new_responses, params[:aiOption].first)
+      @ai_responses = @ai_responses.gsub("\n", "<br />")
+      @responses = (@responses + @ai_responses)
+    end
+    respond_to do |format|
+      format.html
+      format.js {render template: 'epa_masters/query_ai'}
     end
   end
 

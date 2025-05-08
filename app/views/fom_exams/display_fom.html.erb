@@ -50,8 +50,8 @@
           <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formativeFeedback" aria-expanded="false" aria-controls="formativeFeedback" style="color:Purple;">
                <h5><i>Formative Feedback (CSA, OSCE & Informatics)</i></h5> &nbsp;
-              <% no_of_nbme = hf_check_nbme_pdf(@shelf_artifacts) %>
-              <span class="badge badge-danger"><%= (@no_official_docs - no_of_nbme).to_s + " PDFs" %></span>
+              <% @no_of_nbme = hf_check_nbme_pdf(@shelf_artifacts) %>
+              <span class="badge badge-danger"><%= (@no_official_docs - @no_of_nbme).to_s + " PDFs" %></span>
             </button>
           </h2>
           <div id="formativeFeedback" class="accordion-collapse collapse" data-bs-parent="#accordionParent">
@@ -107,7 +107,7 @@
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#NBMEAttach" aria-expanded="false" aria-controls="NBMEAttach" style="color:Purple;">
-               <h5><i>NBME Performance Profile (PDF) </i></h5> &nbsp;
+               <h5><i>NBME Performance Profile (PDF) </i>&nbsp;<span class="badge text-bg-info"><%= @no_of_nbme %></h5>
             </button>
           </h2>
           <div id="NBMEAttach" class="accordion-collapse collapse" data-bs-parent="#accordionParent">

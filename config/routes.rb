@@ -70,16 +70,16 @@ Rails.application.routes.draw do
   resources :epa_masters do
     collection  do
       get 'search_student'
-      get 'eg_mismatch', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_mismatch'
-      get 'eg_badged', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_badged'
-      get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
-      get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
-      get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
+      get 'eg_mismatch', action: :eg_report, controller: 'epa_masters', to: 'epa_masters#eg_mismatch'
+      get 'eg_badged', action: :eg_report, controller: 'epa_masters', to: 'epa_masters#eg_badged'
+      get 'epa_qa', controller: 'epa_masters', to: 'epa_masters#epa_qa'
+      get 'wba_epa', action: :wba_epa, controller: 'epa_masters', to: 'epa_masters#wba_epa'
+      get 'wba_clinical', action: :wba_clinical, controller: 'epa_masters', to: 'epa_masters#wba_clinical'
       get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters', to: 'epa_masters#download_file'
-      get 'badged_graph', action: :badged_graph, controller: 'eg_masters', to: 'epa_masters#badged_graph'
-      get 'wba_epa_graph', action: :wba_epa_graph, controller: 'eg_masters', to: 'epa_masters#wba_epa_graph'
-      get 'average_wba_epa', action: :average_wba_epa, controller: 'eg_masters', to: 'epa_masters#average_wba_epa'
-
+      get 'badged_graph', action: :badged_graph, controller: 'epa_masters', to: 'epa_masters#badged_graph'
+      get 'wba_epa_graph', action: :wba_epa_graph, controller: 'epa_masters', to: 'epa_masters#wba_epa_graph'
+      get 'average_wba_epa', action: :average_wba_epa, controller: 'epa_masters', to: 'epa_masters#average_wba_epa'
+      get 'query_ai', action: :query_ai, controller: 'epa_masters', to: 'epa_masters#query_ai'
     end
 
   end

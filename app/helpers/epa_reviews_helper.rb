@@ -206,12 +206,8 @@ module EpaReviewsHelper
       keywords = EPA_KEYWORDS[epa_code]
       epa_color = EPA_COLORS[epa_code]
     end
-
     text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
               '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
-
-
-
     return text_marked.html_safe
   end
 
@@ -236,6 +232,41 @@ module EpaReviewsHelper
       end
     end
     return precept_data
+  end
+
+  def hf_parse_ai_content(content)
+    return "" if content.to_s == ""
+    pos_index = content.index('Question-"')
+    new_content = content[0..pos_index-1]
+    question = content[pos_index..content.length]
+    pos_index2 = question.index('<br />---')
+    question = question[0..pos_index2-1]
+    question = question.gsub('"', "").gsub("<br />", "")
+
+    return new_content, question
+  end
+
+  def hf_parse_new_ai_content(content, ai_option)
+    return "NO AI Data!" if content.to_s == ""
+
+    if ai_option == 'google'
+      pos_index = content.index('Google')
+      #new_content = content[0..pos_index-1]
+      if pos_index.nil?
+        return "NO AI Data found!"
+      else
+        new_content = content[pos_index..content.length]
+      end
+    elsif ai_option == 'chatgpt'
+      pos_index = content.index('ChatGPT')
+      #new_content = content[0..pos_index-1]
+      new_content = content[pos_index..content.length]
+      #pos_index2 = question.index('<br />---')
+      #question = question[0..pos_index2-1]
+      #question = question.gsub('"', "").gsub("<br />", "")
+    end
+
+    return new_content
   end
 
   # def hf_highlight(text, epa_code)

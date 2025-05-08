@@ -155,8 +155,8 @@ gem 'rufus-scheduler'    # gem "stackprof"
     # gem "pry"
 gem 'whenever', require: false
 gem 'nested_form_fields'
-#gem 'turbolinks', '~> 5.0', '>= 5.0.1'
-gem 'rails-ujs', '~> 0.1.0'
+gem 'turbolinks'  #, '~> 5.0', '>= 5.0.1'
+#gem 'rails-ujs', '~> 0.1.0'
 # highchart
 gem "highcharts-rails"
 gem "lazy_high_charts"
