@@ -182,3 +182,4 @@ gem 'active_storage_drag_and_drop'
 gem 'image_processing'
 gem 'csv'
 gem "importmap-rails", "~> 2.0"
+gem "subprocess"

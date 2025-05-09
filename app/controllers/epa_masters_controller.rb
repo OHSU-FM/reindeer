@@ -96,7 +96,8 @@ class EpaMastersController < ApplicationController
         @eval_ai_content2 = @eval_ai_content2.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
         @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
         @new_content, @question = hf_parse_ai_content(@eval_ai_content2)
-        file_output = "#{Rails.root}/tmp/epa_reviews/ai_data/#{params[:full_name]}_ai.txt"
+        #have to load the initial input data from google_ai_data folder
+        file_output = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{params[:full_name]}_ai.txt"
         File.open(file_output, 'w') { |file| file.write(@new_content) }
         @full_name = params[:full_name]
       else
@@ -104,7 +105,7 @@ class EpaMastersController < ApplicationController
       end
     end
     if  params[:aiOption].present?
-      file_output = "#{Rails.root}/tmp/epa_reviews/ai_data/#{params[:full_name]}_ai.txt"
+      file_output = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
       File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
       # exec python script here
       # python script will read the file from tmp/epa_reviews/ai_data/ folder
@@ -112,20 +113,20 @@ class EpaMastersController < ApplicationController
       #   2) the script will output the response to the same file
       # The controller here will parse out the response from the output file & display it on the screen
       # @response will contain the ultimate response from AI
-      data_path = "#{Rails.root}/tmp/epa_reviews/ai_data/"
+      data_path = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/"
       prog_path = "#{Rails.root}/config"
       python_path = "/usr/bin"
-
-      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output}")
-      if python_script_output
-        # Python script executed successfully
-        Rails.logger.info("Python script executed successfully")
-      else
-        # Python script encountered an error
-        Rails.logger.error("Python script encountered an error")
+      logger = Rails.logger
+      #python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output}")
+      begin
+        Subprocess.check_call(["#{python_path}/python3", "#{prog_path}/#{params[:aiOption].first}_ai_eg_review.py", "#{file_output}"])
+      rescue Subprocess::NonZeroExit => e
+        logger.info "***** Python called failed --> Error Message: " + e.message
       end
+      logger.info '***** Python called was successfull! ***** '
+
       @responses = (params[:ai_question] + "<br>" )
-      file_name = "#{Rails.root}/public/epa_reviews/#{ params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
+      file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
       @new_responses = File.read(file_name)
 
       @ai_responses = hf_parse_new_ai_content(@new_responses, params[:aiOption].first)
