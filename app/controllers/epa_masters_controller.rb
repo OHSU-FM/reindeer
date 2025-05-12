@@ -97,7 +97,8 @@ class EpaMastersController < ApplicationController
         @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
         @new_content, @question = hf_parse_ai_content(@eval_ai_content2)
         #have to load the initial input data from google_ai_data folder
-        file_output = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{params[:full_name]}_ai.txt"
+        full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+        file_output = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{full_name}_ai.txt"
         File.open(file_output, 'w') { |file| file.write(@new_content) }
         @full_name = params[:full_name]
       else
@@ -105,11 +106,8 @@ class EpaMastersController < ApplicationController
       end
     end
     if  params[:aiOption].present?
-      #full_name = params[:full_name].gsub(",", "\,").gsub(" ", "\ ")
-      file_output = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/'#{params[:full_name]}_ai.txt'"
-
-      byebug
-
+      full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+      file_output = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/#{full_name}_ai.txt"
       File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
       # exec python script here
       # python script will read the file from tmp/epa_reviews/ai_data/ folder
