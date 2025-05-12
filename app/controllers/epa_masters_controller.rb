@@ -105,7 +105,11 @@ class EpaMastersController < ApplicationController
       end
     end
     if  params[:aiOption].present?
-      file_output = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
+      #full_name = params[:full_name].gsub(",", "\,").gsub(" ", "\ ")
+      file_output = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/'#{params[:full_name]}_ai.txt'"
+
+      byebug
+
       File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
       # exec python script here
       # python script will read the file from tmp/epa_reviews/ai_data/ folder
@@ -117,13 +121,17 @@ class EpaMastersController < ApplicationController
       prog_path = "#{Rails.root}/config"
       python_path = "/usr/bin"
       logger = Rails.logger
-      #python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output}")
-      begin
-        Subprocess.check_call(["#{python_path}/python3", "#{prog_path}/#{params[:aiOption].first}_ai_eg_review.py", "#{file_output}"])
-      rescue Subprocess::NonZeroExit => e
-        logger.info "***** Python called failed --> Error Message: " + e.message
-      end
-      logger.info '***** Python called was successfull! ***** '
+      full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+      log_path = "#{Rails.root}/log/#{full_name}_ai.log"
+
+      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} > #{log_path}")
+
+      # begin
+      #   Subprocess.check_call(["#{python_path}/python3", "#{prog_path}/#{params[:aiOption].first}_ai_eg_review.py", "#{file_output}"])
+      # rescue Subprocess::NonZeroExit => e
+      #   logger.info "***** Python called failed --> Error Message: " + e.message
+      # end
+      # logger.info '***** Python called was successfull! ***** '
 
       @responses = (params[:ai_question] + "<br>" )
       file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
