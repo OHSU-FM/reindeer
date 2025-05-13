@@ -132,7 +132,7 @@ class EpaMastersController < ApplicationController
       # logger.info '***** Python called was successfull! ***** '
 
       @responses = (params[:ai_question] + "<br>" )
-      file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{params[:full_name]}_ai.txt"
+      file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{full_name}_ai.txt"
       @new_responses = File.read(file_name)
 
       @ai_responses = hf_parse_new_ai_content(@new_responses, params[:aiOption].first)
