@@ -84,6 +84,67 @@ class EpaMastersController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
+=======
+  def query_ai
+    @responses = nil
+    if params[:full_name].present?
+      file_name = "#{Rails.root}/public/epa_reviews/chatgpt_ai_data/#{params[:full_name]}_ai.txt"
+      if File.exist?(file_name) && current_user.spec_program == 'AccessAI'
+        @eval_ai_content2 = File.read(file_name)
+        @eval_ai_content2 = @eval_ai_content2.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
+        @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
+        @new_content, @question = hf_parse_ai_content(@eval_ai_content2)
+        #have to load the initial input data from google_ai_data folder
+        full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+        file_output = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{full_name}_ai.txt"
+        File.open(file_output, 'w') { |file| file.write(@new_content) }
+        @full_name = params[:full_name]
+      else
+            @eval_ai_content2 = 'No AI Eval Found!'
+      end
+    end
+    if  params[:aiOption].present?
+      full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+      file_output = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/#{full_name}_ai.txt"
+      File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
+      # exec python script here
+      # python script will read the file from tmp/epa_reviews/ai_data/ folder
+      #   1) Call AI either Google or Open AI
+      #   2) the script will output the response to the same file
+      # The controller here will parse out the response from the output file & display it on the screen
+      # @response will contain the ultimate response from AI
+      data_path = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/"
+      prog_path = "#{Rails.root}/config"
+      python_path = "/usr/bin"
+      logger = Rails.logger
+      full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+      log_path = "#{Rails.root}/log/#{full_name}_ai.log"
+
+      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} > #{log_path} 2>&1")
+
+      # begin
+      #   Subprocess.check_call(["#{python_path}/python3", "#{prog_path}/#{params[:aiOption].first}_ai_eg_review.py", "#{file_output}"])
+      # rescue Subprocess::NonZeroExit => e
+      #   logger.info "***** Python called failed --> Error Message: " + e.message
+      # end
+      # logger.info '***** Python called was successfull! ***** '
+
+      @responses = (params[:ai_question] + "<br>" )
+      file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{full_name}_ai.txt"
+      @new_responses = File.read(file_name)
+
+      @ai_responses = hf_parse_new_ai_content(@new_responses, params[:aiOption].first)
+      @ai_responses = @ai_responses.gsub("\n", "<br />")
+      @responses = (@responses + @ai_responses)
+    end
+    respond_to do |format|
+      format.html
+      format.js {render template: 'epa_masters/query_ai'}
+    end
+  end
+
+>>>>>>> 69b5d15 (EpaMaster: Fixed the retreival API key issues.  Added to chatgpt python scripts to the mix.)
   # DELETE /epa_masters/1
   def destroy
     @epa_master.destroy
