@@ -5,6 +5,7 @@ class EpaMastersController < ApplicationController
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
   before_action :load_eg_cohorts, :set_resources
   include EpaMastersHelper
+  include EpaReviewsHelper
   include FixEgMembersHelper
   include CompetenciesHelper
   include NewCompetenciesHelper
@@ -27,7 +28,9 @@ class EpaMastersController < ApplicationController
   end
 
   def load_epa_masters
-    @epa_masters = EpaMaster.where("epa not in ('EPA12', 'EPA13') and user_id=?", @user.id).order(:epa, :id)
+    #@epa_masters = EpaMaster.where("epa not in ('EPA12', 'EPA13') and user_id=?", @user.id).order(:epa, :id)
+    @epa_masters = @user.epa_masters.order(:id)
+
     if @epa_masters.first.epa == "EPA10"  ## move EPA10 & EPA11 to end of array
       @epa_masters = @epa_masters.rotate(2)
     end
@@ -85,7 +88,10 @@ class EpaMastersController < ApplicationController
   end
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
   def query_ai
     @responses = nil
     if params[:full_name].present?
@@ -121,7 +127,11 @@ class EpaMastersController < ApplicationController
       full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
       log_path = "#{Rails.root}/log/#{full_name}_ai.log"
 
+<<<<<<< HEAD
       python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} > #{log_path} 2>&1")
+=======
+      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} > #{log_path}")
+>>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
 
       # begin
       #   Subprocess.check_call(["#{python_path}/python3", "#{prog_path}/#{params[:aiOption].first}_ai_eg_review.py", "#{file_output}"])
@@ -144,7 +154,10 @@ class EpaMastersController < ApplicationController
     end
   end
 
+<<<<<<< HEAD
 >>>>>>> 69b5d15 (EpaMaster: Fixed the retreival API key issues.  Added to chatgpt python scripts to the mix.)
+=======
+>>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
   # DELETE /epa_masters/1
   def destroy
     @epa_master.destroy

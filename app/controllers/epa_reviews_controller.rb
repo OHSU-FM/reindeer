@@ -106,6 +106,7 @@ class EpaReviewsController < ApplicationController
     @epa_review_epa = @epa_review.epa
 
     @user_id = EpaMaster.find(@epa_review.reviewable_id).user_id
+
     #@epa_count = EpaMaster.where(user_id: @user_id).count  # if the count is 12 -> new epas, count=13 -> old epas
     if EpaMaster.where(user_id: @user_id, epa: "EPA1A").any?
       @epa_count = 12 ## new epas
@@ -210,12 +211,12 @@ class EpaReviewsController < ApplicationController
       # commented out for new competencies
       if @user.new_competency
         @comp_hash3 = hf_load_all_new_competencies(@comp, 3)
-        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp = hf_hightlight_all_epas(@comp, @user.new_competency)
         @comp_data_clinical = hf_average_comp_new (@comp_hash3)
         @percent_complete ||= hf_new_epa(@comp_data_clinical)
       else
         @comp_hash3 = hf_load_all_comp2(@comp, 3)
-        @comp = hf_hightlight_all_epas(@comp, epa_count)
+        @comp = hf_hightlight_all_epas(@comp, @user.new_competency)
         @comp_data_clinical = hf_average_comp2 (@comp_hash3)
         @percent_complete ||= hf_epa2(@comp_data_clinical)
       end
@@ -246,7 +247,13 @@ class EpaReviewsController < ApplicationController
     @lastReviewEndDate = badgingDates.last_review_end_date
     @nextReviewEndDate = badgingDates.next_review_end_date
 
-     @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
+    if current_user.spec_program == 'AccessAI'
+      get_ai_data
+    end
+
+    #@eval_ai_content2 = @eval_ai_content2.gsub("|", "\t")
+
+    @epas, @epa_hash, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(@user.email)
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
        gon.epa_evaluators = @epa_evaluators
@@ -290,5 +297,28 @@ class EpaReviewsController < ApplicationController
      #       @badge_review_dates ||= YAML.load_file("config/badgeReleaseDate.yml")
      #
      # end
+
+     def get_ai_data
+       file_name = "#{Rails.root}/public/epa_reviews/google_ai_data/#{@user.full_name}_ai.txt"
+       if File.exist?(file_name) && current_user.spec_program == 'AccessAI'
+         @eval_ai_content = File.read(file_name)
+         @eval_ai_content = @eval_ai_content.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
+         @eval_ai_content = @eval_ai_content.gsub("FileName", "<h5 style='color:blue;'>FileName").gsub("AI Responses:", "AI Responses: </h5><p style='font-family:Courier'")
+         @eval_ai_content += '</p>'
+       else
+         @eval_ai_content = 'No AI Eval Found!'
+       end
+
+
+       file_name = "#{Rails.root}/public/epa_reviews/chatgpt_ai_data/#{@user.full_name}_ai.txt"
+       if File.exist?(file_name) && current_user.spec_program == 'AccessAI'
+         @eval_ai_content2 = File.read(file_name)
+         @eval_ai_content2 = @eval_ai_content2.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
+         @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
+
+       else
+         @eval_ai_content2 = 'No AI Eval Found!'
+       end
+     end
 
 end

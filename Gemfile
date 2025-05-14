@@ -155,7 +155,7 @@ gem 'rufus-scheduler'    # gem "stackprof"
     # gem "pry"
 gem 'whenever', require: false
 gem 'nested_form_fields'
-#gem 'turbolinks', '~> 5.0', '>= 5.0.1'
+#gem 'turbolinks'  #, '~> 5.0', '>= 5.0.1'
 gem 'rails-ujs', '~> 0.1.0'
 # highchart
 gem "highcharts-rails"
@@ -182,3 +182,4 @@ gem 'active_storage_drag_and_drop'
 gem 'image_processing'
 gem 'csv'
 gem "importmap-rails", "~> 2.0"
+gem "subprocess"

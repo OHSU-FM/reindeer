@@ -40,8 +40,8 @@
                     <% i = 0 %>
                     <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
-                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate.strftime('%F')) and (Date.today < @nextReviewEndDate.to_date) %>
-                            <tr style="background-color:#E0FFFF">
+                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate.strftime('%F'))  %>
+                            <tr class="table-success">
                           <% else %>
                             <tr sytle="background-color:white">
                           <% end %>
@@ -60,7 +60,6 @@
                                 <a class="btn btn-info" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
                                     title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
                               <% end %>
-
                             </td>
                             <% i = i + 1 %>
                             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
@@ -73,8 +72,6 @@
                               <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
                                 <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
                             <% end %>
-
-
                             <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
 
                           </tr>

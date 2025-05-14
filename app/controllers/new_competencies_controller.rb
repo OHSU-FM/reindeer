@@ -1,5 +1,6 @@
 class NewCompetenciesController < ApplicationController
   before_action :authenticate_user!, :set_new_competency,  only: %i[ show edit update destroy ]
+  before_action :set_resources
   layout 'full_width_csl'
   include NewCompetenciesHelper
   include CompetenciesHelper
@@ -138,14 +139,54 @@ class NewCompetenciesController < ApplicationController
     end
   end
 
+  def competency_rpt
+    if params[:permission_group_id].present?
+        @cohort_title = PermissionGroup.find(params[:permission_group_id]).title.split(" ").last.gsub(/[()]/, "")
+        @cohort_competency = hf_new_comp_by_cohort(params[:permission_group_id],)
+        create_file @cohort_competency, "#{@cohort_title}_Detail_Competency.txt"
+        respond_to do |format|
+          format.html
+        end
+     end
+     render :competency_rpt
+  end
+
+  def download_file
+      if params[:file_name].present?
+        private_download params[:file_name]
+        # generic_file_name = params[:file_name]
+        # send_file  "#{Rails.root}/tmp/#{generic_file_name}", type: 'text', disposition: 'download'
+      end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_new_competency
       @new_competency = NewCompetency.find(params[:id])
     end
 
+    def set_resources
+        @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 20, 15).order(:id)
+    end
+
+    def private_download in_file
+      send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+    end  
+
     # Only allow a list of trusted parameters through.
     def new_competency_params
       params.require(:new_competency).permit(:user_id, :permission_group_id, :student_uid, :email, :medhub_id, :course_name)
     end
+
+    def create_file (in_data, in_file)
+      file_name = "#{Rails.root}/tmp/#{in_file}"
+
+      CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
+        csvfile << in_data.first.keys.map{|c| c.titleize}
+        in_data.each do |row|
+          csvfile << row.values
+        end
+      end
+    end
+
 end
