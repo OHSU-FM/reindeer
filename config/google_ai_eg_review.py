@@ -7,41 +7,23 @@ import google.generativeai as genai
 # Configure the API key (using environment variable)
 #api_key = os.environ["GEMINI_API_KEY"]
 #print("api_key: " + api_key)
-
-<<<<<<< HEAD
 #genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-genai.configure(api_key='AIzaSyD4_5IEnp9j_ZL08D-45eBF92SrJiLR5-g')
-=======
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
-
 #model='gemini-2.0-flash-lite'  --> works!
 
 def get_ai(content):
     model = genai.GenerativeModel('gemini-2.5-flash-preview-04-17')
     response = model.generate_content(content)
-<<<<<<< HEAD
     return response.text
 
 data_path = sys.argv[1]
-print ()"Google AI Model: " + gemini-2.5-flash-preview-04-17')
-=======
-    
-    # Print the response
-    #print(response.text)`
-    return response.text
+google_api_key = sys.argv[2]
+genai.configure(api_key=google_api_key)
 
-
-data_path = sys.argv[1] 
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
-print ("DataPath: " + data_path)
+print ("Google AI Model: " + "gemini-2.5-flash-preview-04-17")
+print ("data_path: " + data_path)
 
 #if data_path == "":
 #  exit()
-<<<<<<< HEAD
-=======
-
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
 current_path = os.getcwd()
 print ("current_path: " + current_path)
 
@@ -59,10 +41,3 @@ for file in glob.glob(data_path):
           #response = get_ai(content)
           file.write(response)
           file.close()
-<<<<<<< HEAD
-          time.sleep(3)
-=======
-          #time.sleep(2)
-
-
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27

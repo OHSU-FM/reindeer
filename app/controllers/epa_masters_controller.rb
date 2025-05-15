@@ -87,11 +87,6 @@ class EpaMastersController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
   def query_ai
     @responses = nil
     if params[:full_name].present?
@@ -123,22 +118,12 @@ class EpaMastersController < ApplicationController
       data_path = "#{Rails.root}/tmp/epa_reviews/#{params[:aiOption].first}_ai_data/"
       prog_path = "#{Rails.root}/config"
       python_path = "/usr/bin"
-      logger = Rails.logger
+
       full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
       log_path = "#{Rails.root}/log/#{full_name}_ai.log"
 
-<<<<<<< HEAD
-      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} > #{log_path} 2>&1")
-=======
-      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} > #{log_path}")
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
-
-      # begin
-      #   Subprocess.check_call(["#{python_path}/python3", "#{prog_path}/#{params[:aiOption].first}_ai_eg_review.py", "#{file_output}"])
-      # rescue Subprocess::NonZeroExit => e
-      #   logger.info "***** Python called failed --> Error Message: " + e.message
-      # end
-      # logger.info '***** Python called was successfull! ***** '
+      api_key = @api_keys["#{params[:aiOption]}_api_key"]
+      python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} #{api_key} > #{log_path} 2>&1")
 
       @responses = (params[:ai_question] + "<br>" )
       file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{full_name}_ai.txt"
@@ -154,10 +139,6 @@ class EpaMastersController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
->>>>>>> 69b5d15 (EpaMaster: Fixed the retreival API key issues.  Added to chatgpt python scripts to the mix.)
-=======
->>>>>>> 73a2ace184af16c2e6eb6ac48a8672c1691c3a27
   # DELETE /epa_masters/1
   def destroy
     @epa_master.destroy
@@ -343,6 +324,7 @@ class EpaMastersController < ApplicationController
 
     def set_resources
       @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
+      @api_keys ||= YAML.load_file("config/ai_api_keys.yml")
     end
 
     def set_epa_master

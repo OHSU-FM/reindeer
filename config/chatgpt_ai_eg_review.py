@@ -32,8 +32,8 @@ for file in glob.glob(data_path):
         file.write("ChatGPT Model: " + model + "\n")
         file.write
         file.write("AI Responses: \n")
-        #response = "ChatGPT is NOT activated!"
-        response = get_completion(openai, model, prompt)
+        response = "ChatGPT is NOT activated!"
+        #response = get_completion(openai, model, prompt)
         file.write(response)
         file.close()
         #time.sleep(1)
