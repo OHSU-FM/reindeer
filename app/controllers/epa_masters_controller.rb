@@ -100,6 +100,8 @@ class EpaMastersController < ApplicationController
         full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
         file_output = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{full_name}_ai.txt"
         File.open(file_output, 'w') { |file| file.write(@new_content) }
+        file_output = "#{Rails.root}/tmp/epa_reviews/chatgpt_ai_data/#{full_name}_ai.txt"
+        File.open(file_output, 'w') { |file| file.write(@new_content) }
         @full_name = params[:full_name]
       else
             @eval_ai_content2 = 'No AI Eval Found!'
@@ -122,7 +124,7 @@ class EpaMastersController < ApplicationController
       full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
       log_path = "#{Rails.root}/log/#{full_name}_ai.log"
 
-      api_key = @api_keys["#{params[:aiOption]}_api_key"]
+      api_key = @api_keys["#{params[:aiOption].first}_api_key"]
       python_script_output = system("#{python_path}/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{file_output} #{api_key} > #{log_path} 2>&1")
 
       @responses = (params[:ai_question] + "<br>" )
