@@ -128,6 +128,11 @@ class EpaMastersController < ApplicationController
 
     end
     if  params[:aiOption].present?
+
+byebug
+
+
+      @full_name = params[:mod_full_name]
       file_output = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
       File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
 

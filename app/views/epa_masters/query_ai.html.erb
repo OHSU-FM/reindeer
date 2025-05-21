@@ -32,6 +32,7 @@
 <div class="card">
   <div class="card-body">
       <%= simple_form_for(query_ai_epa_masters_path, method: 'get', remote: true) do %>
+        <input type="hidden" id="user_id" name="mod_full_name" value="<%= @full_name %>">      
         <input type="hidden" id="user_id" name="user_id" value="<%= @user_id %>">
         <div class="mb-3">
           <label for="AiQuestion" class="form-label">AI Question</label>** Please Select an AI Option:
