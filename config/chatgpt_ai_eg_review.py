@@ -47,8 +47,8 @@ for file in glob.glob(input_path):
         file.write("ChatGPT Model: " + model + "\n")
         file.write
         file.write("AI Responses: \n")
-        response = "ChatGPT is NOT activated!"
-        #response = get_completion(model, prompt)
+        #response = "ChatGPT is NOT activated!"
+        response = get_completion(model, prompt)
         file.write(response)
         file.close()
         #time.sleep(1)

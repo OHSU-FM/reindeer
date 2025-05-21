@@ -50,7 +50,7 @@ for file in glob.glob(input_path):
           file.write("Google Model: Gemini-2.5-flash\n")
           file.write
           file.write("AI Responses: \n")
-          response = "Calling AI has not been activated!!"
-          #response = get_ai(content)
+          #response = "Calling AI has not been activated!!"
+          response = get_ai(content)
           file.write(response)
           file.close()
