@@ -114,7 +114,12 @@ class EpaMastersController < ApplicationController
         #@full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
         @user_id = params[:user_id]
         epa_masters = EpaMaster.where(user_id: @user_id, status: nil).order(:epa)
+
         @content = get_mspe_feedback(epa_masters)
+        last_name, first_name = params[:full_name].split(", ")
+        mod_name = first_name + " " + last_name
+        @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
+
         file_output = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
         File.open(file_output, 'w') { |file| file.write(@content) }
 
@@ -128,11 +133,7 @@ class EpaMastersController < ApplicationController
 
     end
     if  params[:aiOption].present?
-
-byebug
-
-
-      @full_name = params[:mod_full_name]
+      @full_name = params[:mod_full_name]  ## this one is hidder in the form
       file_output = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
       File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
 
