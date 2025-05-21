@@ -136,6 +136,10 @@ module EpaReviewsHelper
 
   HIGHLIGHT_WORDS = ["presentation"]
 
+  def hf_new_epa_keywords
+    return NEW_EPA_KEYWORDS
+  end 
+
   def hf_new_epa_desc
     return NEW_EPA_DESC
   end

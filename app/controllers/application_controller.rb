@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :set_cache_buster
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :exception, prepend: true
 
  helper :all
 

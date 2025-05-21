@@ -71,6 +71,30 @@ module EpaMastersHelper
     end
   end
 
+  def get_mspe_feedback(epa_masters)
+    newEpaKeywords = hf_new_epa_keywords
+    newEpaDesc = hf_new_epa_desc
+
+    content=""
+    epa_masters.each do |master|
+       data = master.epa + " = " + '"' + newEpaDesc[master.epa] + '"'
+       content += data + "\n"
+    end
+    epa_masters.each do |master|
+      data = "#{master.epa}_KEYWORDS = #{newEpaKeywords[master.epa]}"
+      content += data + "\n"
+    end
+
+    competencies = epa_masters.first.user.new_competencies.where("course_name not like '%GMED%' and course_name not like '%INTS%' and  mspe is not null")
+    competencies.each do |comp|
+      course_name = "Course Name = " + '"' + comp.course_name + '"'
+      content += course_name + "\n"
+      course_mspe = "MSPE Comments = " + '"' + comp.mspe.gsub("\n", "").gsub("\r", "").to_s + '"'
+      content += course_mspe + "\n"
+    end
+    return content
+  end
+
 
   #=== Creates new epa_master and epa_reviews with new EPA
   def hf_create_new_epas(selected_user_id, email, eg_cohorts)

@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       get 'wba_epa_graph', action: :wba_epa_graph, controller: 'epa_masters', to: 'epa_masters#wba_epa_graph'
       get 'average_wba_epa', action: :average_wba_epa, controller: 'epa_masters', to: 'epa_masters#average_wba_epa'
       get 'query_ai', action: :query_ai, controller: 'epa_masters', to: 'epa_masters#query_ai'
+
     end
 
   end

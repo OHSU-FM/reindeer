@@ -1,15 +1,3 @@
 $('#query_ai_responses').html("<%= j render partial: 'ai_responses', locals: { ai_responses: @responses} %>");
 
 console.log("Inside Query Ai js.erb!!!");
-//$("#query_ai_responses").html("<%= @responses %>");
-// $.ajax({
-//   url: '/query_ai',
-//   type: 'GET',
-//   dataType: 'json', // Or 'script' for JavaScript
-//   success: function(data) {
-//     console.log("data: " + data)
-//   },
-//   error: function(xhr, status, error) {
-//     // Handle errors
-//   }
-// });
