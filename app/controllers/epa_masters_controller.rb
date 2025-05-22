@@ -94,8 +94,7 @@ class EpaMastersController < ApplicationController
       @full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
 
       file_name = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
-      @question = 'Question="Use the EPA and EPA_KEYWORDS above and evaluate all the MSPE comments to see whether the student can perform the EPAs.  List the evidences by course name. \
-                 Use Student A instead of the person\'s name."'
+      @question = 'Question="Use the EPA and EPA_KEYWORDS above and evaluate all the MSPE comments to see whether the student A can perform the EPAs.  List the evidences by course name. "'
 
       if File.exist?(file_name) && File.mtime(file_name) >=  2.days.ago   #&& current_user.spec_program == 'AccessAI'
          @content = File.read(file_name)
@@ -169,12 +168,17 @@ class EpaMastersController < ApplicationController
       file_name = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{full_name}_ai.txt"
       if File.exist?(file_name)
         @responses = File.read(file_name)
+        @responses = @responses.gsub("\n", "<br />")
+        @responses = @responses.gsub("Google", "<h5 style='color:purple;'>Google").gsub("AI Responses:", "AI Responses: </h5>")
       else
         @responses = "No Previous Google AI Responses Found! <br>"
       end
+      @responses += "<br>" + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" + "<br><br>"
       file_name = "#{Rails.root}/tmp/epa_reviews/chatgpt_ai_data/#{full_name}_ai.txt"
       if File.exist?(file_name)
         @responses += File.read(file_name)
+        @responses = @responses.gsub("\n", "<br />")
+        @responses = @responses.gsub("ChatGPT", "<h5 style='color:blue;'>ChatGPT").gsub("AI Responses:", "AI Responses: </h5>")
       else
         @responses += "No Previous ChatGPT AI Responses Found! <br>"
       end
