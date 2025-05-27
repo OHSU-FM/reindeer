@@ -234,8 +234,8 @@ class EventsController < ApplicationController
 
       if data[3] == 'Step1'
         description = 'Academic: Step 1 Advising' + " - " + advisor.name
-      elsif data[3] == 'Remed'
-        description = 'Academic: Remediation Support' + " - " + advisor.name
+      # elsif data[3] == 'Remed' commented out on 5/23/2025
+      #   description = 'Academic: Remediation Support' + " - " + advisor.name
       else
         description = data[3] + " Advisor - " + advisor.name
       end
@@ -386,7 +386,7 @@ class EventsController < ApplicationController
       @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and (description like 'Assist Dean%' or description like 'Step Delay%')",
         DateTime.now + 17.hours ).order(:start_date)
     elsif params[:advisor_type].include? "Academic"
-        if params[:advisor_type].include? "Academic: Step 1" or params[:advisor_type].include? "Academic: Remediation"
+        if params[:advisor_type].include? "Academic: Step 1" #or params[:advisor_type].include? "Academic: Remediation" commented out on 5/23/2025
           @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
             DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
         elsif params[:advisor_type].include? "Career" or params[:advisor_type].include? "Career Advising"
@@ -422,7 +422,7 @@ class EventsController < ApplicationController
       # uncommented out Step1 Advising on 12/7/2023 - requested by Erika and AA
       # commented out step 1 advisiing on 1/28/2025 - requested by Erika and Career Advisor
      #@advisor_types.push 'Academic: Step 1 Advising'
-     @advisor_types.push 'Academic: Remediation Support'
+    #@advisor_types.push 'Academic: Remediation Support' commented out on 5/23/2025
      #@advisor_types.push 'Career Advising: MS4 ERAS'
      @advisor_types.sort!
 

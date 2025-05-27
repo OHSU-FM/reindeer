@@ -43,7 +43,9 @@ var emailErika = 'If you don’t see any availability, please contact ' + '<a hr
 
 var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
-if (tr_length == 0 && !advisor_name.includes("Bailey") && !advisor_name.includes("Lauren") && !advisor_name.includes("Domingo") && !advisor_name.includes("Gause")){
+// removed the logic below for Pope Bailey
+//  && !advisor_name.includes("Bailey")
+if (tr_length == 0 && !advisor_name.includes("Lauren") && !advisor_name.includes("Domingo") && !advisor_name.includes("Gause")){
   $("#meeting-submit").prop("disabled", true);
   alert('Please select another advisor that has appointments!!');
 
@@ -85,9 +87,9 @@ $(document).ajaxComplete(function(){
   console.log("tr_length: " + tr_length);
   var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
   if (advisor_name.includes("Bailey")) {
-    $('#calendly-events').empty();
-    $('#calendly-events').append(calendlyAppts);
-    return;
+    // $('#calendly-events').empty();
+    // $('#calendly-events').append(calendlyAppts);
+    //return;
     if (tr_length == 0) {
       $('#calendly-events').empty();
       $('#calendly-events').append(emailErika);
