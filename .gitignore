@@ -24,7 +24,10 @@ config/secrets.yml
 /config/*.yml
 /config/*.py
 /config/.env
+<<<<<<< HEAD
 
+=======
+>>>>>>> redei-portal_v6
 # vim swap files
 *.swp
 *.swo

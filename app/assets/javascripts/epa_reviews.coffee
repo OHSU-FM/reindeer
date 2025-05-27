@@ -2,9 +2,10 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-
 $(document).ready ->
   console.log('Inside epa_reviews!!')
+
+
   # tab1 = $('#QueryAiTabLink')
   # tab2 = $('#ChatTab')
   # console.log ('tab1: ' + tab1)
