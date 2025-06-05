@@ -209,6 +209,8 @@ module Coaching
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
            @students = @permission_groups.map(&:users).flatten
+           @students.push User.find_by(username: 'harrimak')  #added Harriman, Kelvin, an OHSU graduate student in OASIS
+
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id).load_async
@@ -219,7 +221,8 @@ module Coaching
              # end
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id).load_async
-             @students = @permission_groups.map(&:users).flatten
+             #@students = @permission_groups.map(&:users).flatten
+          
            end
         end
       end

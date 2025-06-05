@@ -1,23 +1,19 @@
-pdf_file	email	full_name
-Al_Ajamhanaafmf_FUND_NBME.PDF	alajam@ohsu.edu	"Al-Ajam, Hanaa"
-Ben_Avi_Lily_FUND_NBME.PDF	benavi@ohsu.edu	"Ben Avi, Lily"
-Burns_Katie_FUND_NBME.PDF	burnska@ohsu.edu	"Burns, Kathryn"
-Chang_Nai_Yuan_Nicholas_FUND_NBME.PDF	changni@ohsu.edu	"Chang, Nai-Yuan Nicholas"
-Chavez_Avalos_Hernan_FUND_NBME.PDF	chavezav@ohsu.edu	"Chavez Avalos, Hernan"
-Gagliuso_Lia_FUND_NBME.PDF	gagliuso@ohsu.edu	"Gagliuso, Amelia"
-Gottfried_Lee_Hannah_FUND_NBME.PDF	gottfrie@ohsu.edu	"Gottfried-Lee, Hannah"
-Hays_Wehle_Henry_Morrison_FUND_NBME.PDF	hayswehl@ohsu.edu	"Hays-Wehle, Henry"
-Hernandez_Duran_Gabriela_FUND_NBME.PDF	hernanga@ohsu.edu	"Hernandez Duran, Gabriela"
-Jimenez_Magaamireya_FUND_NBME.PDF	jimenemi@ohsu.edu	"Jimenez-Magana, Mireya"
-Luh_Becky_FUND_NBME.PDF	luhb@ohsu.edu	"Luh, Rebecca"
-Mccarthy_Sydney_Lynne_FUND_NBME.PDF	mccartsy@ohsu.edu	"McCarthy, Sydney"
-Mcgee_David_Jordan_FUND_NBME.PDF	mcgeedav@ohsu.edu	"McGee, David"
-Mcneely_Madison_FUND_NBME.PDF	millermc@ohsu.edu	"McNeely, Madison"
-Murar_Chris_FUND_NBME.PDF	murarc@ohsu.edu	"Murar, Christopher"
-O_Brien_Powerserinmae_FUND_NBME.PDF	obrienpo@ohsu.edu	"O'Brien Powers, Erin"
-Roland_Mcgowanjaclynnakkita_FUND_NBME.PDF	rolandmc@ohsu.edu	"Roland-McGowan, Jaclyn"
-Saephanh_Nai_FUND_NBME.PDF	saephnai@ohsu.edu	"Saephanh, Naiian"
-Singh_Sharkey_Maya_Ranjit_FUND_NBME.PDF	singhsha@ohsu.edu	"Singh Sharkey, Maya"
-Valdivia_Camacho_Oliver_Daniel_FUND_NBME.PDF	valdivio@ohsu.edu	"Valdivia Camacho, Oliver"
-Van_Mols_Kari_Elizabeth_FUND_NBME.PDF	vanmols@ohsu.edu	"Van Mols, Kari"
-Vanderhoek_Eden_Norma_Jean_FUND_NBME.PDF	vandered@ohsu.edu	"VanderHoek, Eden"
+pdf_file	email
+Smith_Kathryn_Elizabeth_SBM_NBME_Med28.pdf	smitkay@ohsu.edu
+Pe_Asophiamarie_SBM_NBME_Med28.pdf	penaso@ohsu.edu
+Parker_Halsteadlillianvictoria_SBM_NBME_Med28.pdf	parkerhl@ohsu.edu
+Ortiz_Contreras_Jasmin_Mariela_SBM_NBME_Med28.pdf	ortizcon@ohsu.edu
+Nguyen_An_SBM_NBME_Med28.pdf	nguyan@ohsu.edu
+Nava_Valencia_Jesus_Alejandro_SBM_NBME_Med28.pdf	navavale@ohsu.edu
+Mcquet_Mason_Darwin_SBM_NBME_Med28.pdf	mcquet@ohsu.edu
+Mcnee_Caroline_Gail_SBM_NBME_Med28.pdf	mcnee@ohsu.edu
+Hopfer_Mckenzie_Alexa_SBM_NBME_Med28.pdf	hopfer@ohsu.edu
+Hoang_Dangbianca_SBM_NBME_Med28.pdf	hoangdang@ohsu.edu
+Hirschfelder_Markus_Raphael_SBM_NBME_Med28.pdf	hirschfm@ohsu.edu
+Hieber_Lynette_SBM_NBME_Med28.pdf	hieber@ohsu.edu
+Hernandez_Diaz_Michelle_Alejandra_SBM_NBME_Med28.pdf	hernamic@ohsu.edu
+Gutierrez_Vargas_Edwin_SBM_NBME_Med28.pdf	gutiered@ohsu.edu
+Carver_Bondurant_Ruth_Lillian_SBM_NBME_Med28.pdf	carverbo@ohsu.edu
+Boe_Madeline_Sara_SBM_NBME_Med28.pdf	boe@ohsu.edu
+Arzayus_Dominguez_Sebastian_SBM_NBME_Med28.pdf	arzayusd@ohsu.edu
+Aguirre_Burk_Allan_Michael_SBM_NBME_Med28.pdf	aguirreb@ohsu.edu
