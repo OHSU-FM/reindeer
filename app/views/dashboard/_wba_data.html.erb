@@ -16,9 +16,9 @@
     <tr>
       <td align ="right">Total # of Badges Awarded : </td>
       <% if current_user.spec_program.include? "Paused badging" %>
-         <td><b>0</b> out of <b>13</b> </td>      
+         <td><b>0</b> out of <b>13</b> </td>
       <% else %>
-         <td><b><%= current_user.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(current_user)).count.to_s %> </b>out of <b>13</b> </td>
+         <td><b><%= @student_badge_info.values.select{|b| b["status"] if b["status"]=="Badge"}.count.to_s %> </b>out of <b><%= @student_badge_info.count %> </b> </td>
       <% end %>
     </tr>
     </table>

@@ -19,6 +19,37 @@ class DashboardController < ApplicationController
       student = User.where(id: current_user.id)
       @wba_epa_data = hf_process_student(student, 'WBA')
       @wba_clinical_assessor_data = hf_process_student(student, 'ClinicalAssessor')
+      @student_badge_info = hf_get_badge_info_new(current_user.id, current_user.new_competency)
+
+      badgingDate = BadgingDate.find_by(permission_group_id: current_user.permission_group_id)
+      if !badgingDate.nil?
+          @release_date = badgingDate.release_date
+      else
+        @release_date = nil
+      end
+      @spec_program_msg = current_user.spec_program
+      @selection_student = student.first
+      @user = student.first
+
+      if ["20", "21", "22"].include? @user.permission_group_id.to_s   # only Med26, Med27, Med28
+        @wbas = Epa.where(user_id: current_user.id)
+      else
+        @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", params[:user_id])
+      end
+      @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
+
+      if ["20", "21", "22"].include? @user.permission_group_id.to_s  # only Med26, Med27, Med28
+        @epa_hash = Epa.where(user_id: current_user.id).group(:epa).order(:epa).count
+        #re-arranging the EPAs on the graph by using Slice.
+        @epa_hash = @epa_hash.slice("EPA1A&1B", "EPA1A", "EPA1B", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13")
+        # merge with a epa hash with zero count so that we can show it on graph.
+        @epa_hash = epa_hash_merge(@epa_hash, @user.permission_group_id)
+      else
+        # for Med29, etc..
+        @epa_hash = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", current_user.id).group(:epa).order(:epa).count
+      end
+
+
     else
       if Advisor.exists?(email: current_user.email)
         @yes_advisor = true

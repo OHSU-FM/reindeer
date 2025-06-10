@@ -1,0 +1,31 @@
+<div class="card">
+  <h5> EPA Badges </h5><hr>
+  <div class="wrapper">
+    <% hf_GetNewEPA.map(&:upcase).each do |epa_code| %>
+
+      <% if !@student_badge_info["#{epa_code}"]["status_date"].nil? and hf_ok_to_release_badge(@student_badge_info["#{epa_code}"]["status_date"], @release_date) %>
+        <% if @student_badge_info["#{epa_code}"]["status"] == 'Badge' and !@spec_program_msg.include? "Paused badging" %>
+              <figure>
+                <%= image_tag ("epa/#{epa_code}"), size: "175x175", style: "display: block;" %>
+                <figcaption  style="color:purple;">
+                  Status: <b><%= @student_badge_info["#{epa_code}"]["status"] %></b><br />
+                  Award Date: <b><%= hf_format_date(@student_badge_info["#{epa_code}"]["status_date"]) %></b><br />
+                  Expiration date: <b><%= hf_format_date(@student_badge_info["#{epa_code}"]["expiration_date"]) %></b><br />
+
+                </figcaption>
+              </figure>
+        <% else %>
+              <figure>
+                <%= image_tag ("epa/#{epa_code}"), size: "175x175", class: "opaque-image", style: "display: block;" %>
+                <figcaption style="color:blue;"><%= @student_badge_info["#{epa_code}"]["status"] %></figcaption>
+              </figure>
+        <% end %>
+      <% else %>
+            <figure>
+              <%= image_tag ("epa/#{epa_code}"), size: "175x175", class: "opaque-image", style: "display: block;" %>
+              <figcaption>Badge status: Not Yet</figcaption>
+            </figure>
+      <% end %>
+    <% end %>
+  </div>
+</div>

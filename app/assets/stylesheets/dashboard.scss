@@ -299,6 +299,25 @@ body#dashboard{
     width:80%;
 }
 
+.opaque-image {
+  opacity: 0.25;
+}
+.wrapper {
+  display: flex;
+  grid-gap:10px;
+  flex-wrap: wrap;
+
+  }
+  .column {
+   float: left;
+   width: 50%;
+ }
+ .column-fom {
+  float: left;
+  width: 33.33%;
+ }
+
+
 
 #modal_blank{
     .widget-title-container {

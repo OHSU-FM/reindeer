@@ -4,7 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Main
 ##############################
 gem "bundler", '~>2.0'
-gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
+#gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
+gem 'rails', '~> 8.0', '>= 8.0.2'
 gem "rdoc" # '~>6.3.1'
 gem "psych", '< 4'
 gem 'sprockets', '< 4'
@@ -25,7 +26,8 @@ gem "php-serialize"
 ##############################
 # Admin/Config/Security
 ##############################
-gem "rails_admin",  "~> 3.1.3"
+#gem "rails_admin",  "~> 3.1.3"
+gem 'rails_admin', '~> 3.3'
 
 # Config file loader
 # see ./lib/settings.rb and ./config/settings.yml for details
@@ -183,3 +185,4 @@ gem 'image_processing'
 gem 'csv'
 gem "importmap-rails", "~> 2.0"
 gem "subprocess"
+gem "nokogiri"
