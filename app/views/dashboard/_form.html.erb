@@ -75,7 +75,7 @@
           </div>
         </div>
 
-        <% if @student_badge_info.values.select{|b| b["status"] if b["status"]=="Badge"}.count > 0 %>
+        <% if current_user.new_competency && @student_badge_info.values.select{|b| b["status"] if b["status"]=="Badge"}.count > 0 %>
           <%= render partial: "new_competencies/epa_badges" %>
         <% end %>
 
