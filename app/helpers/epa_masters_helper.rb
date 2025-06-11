@@ -161,7 +161,7 @@ module EpaMastersHelper
 
   def hf_get_badge_info_new(user_id, new_competency)
     student_badge_hash = {}
-    not_yet_status = {"status" => "Not Yet", "student_comments"=> "None" }
+    not_yet_status = {"status" => "Not Yet", "student_comments"=> "None", "status_date"=>nil }
     student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
 
     if student_badge_info.empty?
@@ -215,7 +215,7 @@ module EpaMastersHelper
   def hf_get_badge_info(user_id)
 
      student_badge_hash = {}
-     not_yet_status = {"status" => "Not Yet", "student_comments"=> "None" }
+     not_yet_status = {"status" => "Not Yet", "student_comments"=> "None", "status_date"=> nil }
      student_badge_info = EpaMaster.where(user_id: user_id).select(:id, :user_id, :epa, :status, :status_date, :expiration_date).order(:epa)
 
      if student_badge_info.empty?

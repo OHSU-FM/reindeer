@@ -30,7 +30,7 @@
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEPA<%= i %>" aria-expanded="false" aria-controls="collapseEPA<%= i %>">
                 <div class="labels">
                   <span><h5>EPA<%= i %> - <%= hf_get_epa_desc2("EPA#{i}") %>
-                    <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
+                    <% if !@student_badge_info.empty? && hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date) #current_user.coaching_type != "student" %>
                       [Badge Status:
                       <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' and !@spec_program_msg.include? "Paused badging" %>
                             <span style="color:purple;"><%=  @student_badge_info["EPA#{i}"]["status"] %></span>]
