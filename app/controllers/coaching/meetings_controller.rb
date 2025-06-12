@@ -58,7 +58,7 @@ module Coaching
       if current_user.coaching_type == 'student'
         if current_user.spec_program.include? 'Graduated'
           @meeting.graduated_student = true
-        end 
+        end
       end
 
       respond_to do |format|
