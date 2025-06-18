@@ -331,7 +331,7 @@ $(document).ready ->
 
   advisorType = $(".advisors-type").data("advisor_type")
   console.log("advisor_type: " + advisorType)
-  if advisorType == 'Academic'
+  if advisorType == 'Academic' || advisorType == 'Academic/Student Affairs'
     data = academicPrimary
     dataResources = studyResources
   else if advisorType == 'Academic: Step 1 Advising'
@@ -339,7 +339,7 @@ $(document).ready ->
     dataResources = step1Resources
   else if advisorType == 'Academic: Remediation Support'
     data = remediationPrimary
-  else if advisorType == 'Career'
+  else if advisorType == 'Career' || advisorType == 'Career/Student Affairs'
     data = careerPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
@@ -369,7 +369,7 @@ $(document).ready ->
   $('#coaching_meeting_advisor_type').change ->
     advisorType = $('#coaching_meeting_advisor_type').val()
     #alert("advisor_type: " + advisorType)
-    if advisorType == 'Academic'
+    if advisorType == 'Academic' || advisorType == 'Academic/Student Affairs'
       data = academicPrimary
       $('#study_resources').show()
       $('#practice_test_scores').hide()
@@ -457,7 +457,7 @@ $(document).ready ->
 
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == selectedAdvisorText[0])   #'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
         row.show()
-      else if ((colAdvisor[0].includes('Academic Advisor')) && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic Advisor')) && (selectedAdvisorType == 'Academic') && (selectedAdvisorType == 'Academic/Student Affairs')  && (colAdvisor[1] == selectedAdvisorText[0]))
         # console.log("** colAdvisor[0]: " + colAdvisor[0])
         # console.log("** selectedAdvisorType: " + selectedAdvisorType)
         row.show()

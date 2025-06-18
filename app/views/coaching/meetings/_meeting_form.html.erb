@@ -1,5 +1,5 @@
 <%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
-  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic'  or advisor_type == "Academic: Step 1 Advising" or advisor_type == 'DEIB' or advisor_type == 'Assist Dean' ) %>
+  <% if (!advisor_type.nil?) and (advisor_type.include? 'Career' or advisor_type.include? 'Academic'  or advisor_type == "Academic: Step 1 Advising" or advisor_type == 'DEIB' or advisor_type == 'Assist Dean' ) %>
     <div hidden>
       <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
       </div>
@@ -60,7 +60,7 @@
             </div>
             </div>
           </div>
-          <% if ['Career', 'Assist Dean'].include? advisor_type %>
+          <% if ['Career', 'Career/Student Affairs' 'Assist Dean'].include? advisor_type %>
             <div class="row mb-0">
               <label class="control-label col-md-3 right-label"></label>
               <div class="col-sm-4">
@@ -107,9 +107,9 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body card-body-color"">
           <div class="form-group">
-            <% if advisor_type == 'Career' %>
+            <% if advisor_type.include? 'Career' %>
               <% advisor_subjects = hf_career_advisor_discussed_for_select %>
-            <% elsif advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising"  %>
+            <% elsif advisor_type == "Academic" or advisor_type =='Academic/Student Affairs' or advisor_type == "Academic: Step 1 Advising"  %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
               <% advisor_study_resources = hf_academic_study_resources_for_select %>
             <% elsif advisor_type == "Wellness" %>
@@ -132,7 +132,7 @@
             <% end %>
 
 
-           <% if advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising" %>
+           <% if advisor_type == "Academic" or advisor_type =='Academic/Student Affairs' or advisor_type == "Academic: Step 1 Advising" %>
               <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
               <hr>
 
@@ -155,9 +155,9 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body">
 
-          <% if advisor_type == 'Academic' or advisor_type == "Academic: Step 1 Advising" %>
+          <% if advisor_type == 'Academic' or advisor_type =='Academic/Student Affairs' or advisor_type == "Academic: Step 1 Advising" %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
-          <% elsif advisor_type == 'Career'  %>
+          <% elsif advisor_type.include? 'Career'  %>
               <% advisor_outcomes = hf_meeting_ipps_for_select %>
           <% elsif advisor_type == 'Wellness'  %>
               <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
@@ -180,7 +180,7 @@
          <% end %>
          <% if advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising" %>
             <%= f.text_field :academic_outcomes_other,  id: 'academic_outcomes_other' %>
-          <% elsif advisor_type == "Career" %>
+          <% elsif advisor_type.include? "Career" %>
               <%= f.text_field :career_outcomes_other, id: 'career_outcomes_other' %>
           <% end %>
       </div>
