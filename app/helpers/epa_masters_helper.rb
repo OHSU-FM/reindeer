@@ -62,7 +62,9 @@ module EpaMastersHelper
   end
 
   def getEpaCodes(permission_group_id, new_competency)
-    if permission_group_id >= "20" && permission_group_id <= "22" && new_competency
+    if Date.current.strftime("%Y/%m/%d") < '2025/07/01'
+      return EPA_CODES
+    elsif permission_group_id >= "20" && permission_group_id <= "22" && new_competency
       return EPA_CODES_NEW_EXTRA
     elsif  permission_group_id >= "23" && new_competency
       return EPA_CODES_NEW
@@ -553,7 +555,12 @@ module EpaMastersHelper
   end
 
   def hf_process_cohort2 (permission_group_id, start_date, end_date, code)
-    if permission_group_id.to_s >= "20" && permission_group_id.to_s <= "22" #Med26
+
+    if Date.current.strftime("%Y/%m/%d") < '2025/07/01'
+      students = User.where(permission_group_id: permission_group_id, new_competency: false).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
+      epa_codes = getEpaCodes(permission_group_id, new_competency = false)
+
+    elsif permission_group_id.to_s >= "20" && permission_group_id.to_s <= "22" #Med26
       students = User.where(permission_group_id: permission_group_id, new_competency: true).select(:id, :sid, :email, :full_name, :matriculated_date, :new_competency).order(:full_name)
       epa_codes = getEpaCodes(permission_group_id, new_competency = true)
       epa_codes.push "EPA12"
