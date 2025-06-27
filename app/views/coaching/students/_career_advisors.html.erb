@@ -1,0 +1,29 @@
+<div class="card">
+   <div class="card-body">
+      <table class="responsive table table-hover"  >
+        <% @advisors.each do |advisor| %>
+          <% if advisor.advisor_type.include? "Career" %>
+            <tr>
+                <% if advisor.name.include? "Lara" %>
+                  <td>
+                    <figure>
+                      <%= image_tag "oasis/#{advisor.name}.png" %>
+                      <figcaption style="color:blue;"><%= advisor.formal_name %></figcaption>
+                    </figure>
+                  </td>
+                <% else %>
+                    <td>
+                      <figure>
+                        <%= image_tag "oasis/#{advisor.name}.jpg" %>
+                        <figcaption style="color:blue;"><%= advisor.formal_name %></figcaption>
+                      </figure>
+                    </td>
+                <% end %>
+                <% brief_cv = "<b>" + advisor.brief_cv %>
+                <td><%= brief_cv.gsub("\n\r", "<br><br></b>").html_safe %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+</div>

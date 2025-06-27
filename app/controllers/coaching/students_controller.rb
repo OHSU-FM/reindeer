@@ -154,7 +154,7 @@ module Coaching
         #@messages = @student.room.messages.order(:created_at)
         #@room_id = @student.room.id
 
-        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name).load_async
+        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty, :formal_name, :brief_cv).order(:name).load_async
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
 
         #@events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
@@ -222,7 +222,7 @@ module Coaching
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id).load_async
              #@students = @permission_groups.map(&:users).flatten
-          
+
            end
         end
       end

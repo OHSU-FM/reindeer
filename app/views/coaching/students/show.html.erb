@@ -35,7 +35,7 @@
       <button class="nav-link " id="nav-appointments-tab" data-bs-toggle="tab" data-bs-target="#nav-appointments" type="button" role="tab" aria-controls="nav-appointments" aria-selected="true">Appointments</button>
       <button class="nav-link" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button" role="tab" aria-controls="nav-documents" aria-selected="false">IPAS/IPPS Docs</button>
       <button class="nav-link" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-reports" type="button" role="tab" aria-controls="nav-reports" aria-selected="false">OASIS Reports</button>
-
+      <button class="nav-link text-danger" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-career" type="button" role="tab" aria-controls="nav-reports" style='font-weight: bold;'aria-selected="false">Career Advisors</button>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
@@ -83,6 +83,10 @@
     <div class="tab-pane fade" id="nav-reports" role="tabpanel" aria-labelledby="nav-reports-tab">
         <%= render partial: "oasis_reports"  %>
     </div>
+    <div class="tab-pane fade" id="nav-career" role="tabpanel" aria-labelledby="nav-reports-tab">
+        <%= render partial: "career_advisors"  %>
+    </div>
+
     <div class="tab-pane fade" id="nav-sensitive" role="tabpanel" aria-labelledby="nav-sensitive-tab">
       <div class="row">
         <div class="column">

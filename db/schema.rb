@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_15_145536) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_20_134943) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "uuid-ossp"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -56,6 +56,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_15_145536) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "title"
     t.string "specialty"
+    t.string "formal_name"
+    t.text "brief_cv"
   end
 
   create_table "artifacts", force: :cascade do |t|
