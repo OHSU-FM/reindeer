@@ -121,14 +121,18 @@ class EpaMastersController < ApplicationController
 
         file_output = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
         File.open(file_output, 'w') { |file| file.write(@content) }
-
+        @content = @content.gsub("\n", "<br>")
+        last_name, first_name = params[:full_name].split(", ")
+        mod_name = first_name + " " + last_name
+        @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
+        @responses = load_ai_data(@full_name)
       end
 
-      @content = @content.gsub("\n", "<br>")
-      last_name, first_name = params[:full_name].split(", ")
-      mod_name = first_name + " " + last_name
-      @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
-      @responses = load_ai_data(@full_name)
+      # @content = @content.gsub("\n", "<br>")
+      # last_name, first_name = params[:full_name].split(", ")
+      # mod_name = first_name + " " + last_name
+      # @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
+      # @responses = load_ai_data(@full_name)
 
     end
     if  params[:aiOption].present?
