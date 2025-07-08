@@ -16,7 +16,14 @@
 
         <tbody>
         <% i=0 %>
+
         <% epas.each do |e| %>
+            <% if epa_code == 'EPA1A' &&  e.epa == "EPA1A&1B" %>
+              <% e.epa = 'EPA1A' %>
+            <% elsif epa_code == 'EPA1B' &&  e.epa == "EPA1A&1B" %>
+              <% e.epa = 'EPA1B' %>
+            <% end %>
+
             <% if e.epa == epa_code %>
               <% if e.involvement == 4 and e.clinical_assessor.include? "Attending"%>
                 <tr class="shaded">

@@ -360,8 +360,13 @@ module NewCompetenciesHelper
     NEW_EPA_ARRAY.each do |epa_code|
         temp_involve = []
         (1..4).each do |k|
+          if epa_code == 'epa1a' || epa_code == 'epa1b'
+            temp_data = Epa.where(epa: "EPA1A&1B", involvement: k, user_id: user_id).count
+            temp_involve.push temp_data
+          else
            temp_data = Epa.where(epa: "#{epa_code.upcase}", involvement: k, user_id: user_id).count
            temp_involve.push temp_data
+         end
         end
         epa["#{epa_code.upcase}"] = temp_involve
     end
