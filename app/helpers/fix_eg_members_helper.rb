@@ -79,10 +79,10 @@ module FixEgMembersHelper
           # if row["eg_full_name1"] != student.eg_full_name1 or row["eg_full_name2"] != student.eg_full_name2
             fix_eg_reviewers(uu.id, row["eg_full_name1"], row["eg_full_name2"])
           # end
-          EgCohort.where(user_id: uu.id).first_or_create.update(row_hash)
+          EgCohort.where(user_id: uu.id).first_or_create.update(row_hash.compact)
           log_file << " eg_cohorts: " + full_name + " --> " + row["email"] + " is created in eg_cohorts table."
         else
-          EgCohort.where(email: row["email"]).first_or_create.update(row_hash)
+          EgCohort.where(email: row["email"]).first_or_create.update(row_hash.compact)
           log_file << " eg_cohorts: " + full_name.to_s + " --> " + row["email"].to_s + " is created in eg_cohorts table."
         end
       else

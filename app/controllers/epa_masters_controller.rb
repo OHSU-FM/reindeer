@@ -97,9 +97,8 @@ class EpaMastersController < ApplicationController
       file_name = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
       @question = 'Question="Use the EPA and EPA_KEYWORDS above and evaluate all the MSPE comments to see whether the student A can perform the EPAs.  List the evidences by course name. "'
 
-      if File.exist?(file_name) && File.mtime(file_name) >=  2.days.ago   #&& current_user.spec_program == 'AccessAI'
+      # if File.exist?(file_name) && File.mtime(file_name) >=  2.days.ago   #&& current_user.spec_program == 'AccessAI'
          @content = File.read(file_name)
-
         # @eval_ai_content2 = @eval_ai_content2.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
         # @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
         # @new_content, @question = hf_parse_ai_content(@eval_ai_content2)
@@ -110,7 +109,7 @@ class EpaMastersController < ApplicationController
         # file_output = "#{Rails.root}/tmp/epa_reviews/chatgpt_ai_data/#{full_name}_ai.txt"
         # File.open(file_output, 'w') { |file| file.write(@new_content) }
 
-      elsif current_user.spec_program == 'AccessAI'
+      # elsif current_user.spec_program == 'AccessAI'
         #@full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
         @user_id = params[:user_id]
         epa_masters = EpaMaster.where(user_id: @user_id, status: nil).order(:epa)
@@ -127,7 +126,7 @@ class EpaMastersController < ApplicationController
         mod_name = first_name + " " + last_name
         @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
         @responses = load_ai_data(@full_name)
-      end
+      # end
 
       # @content = @content.gsub("\n", "<br>")
       # last_name, first_name = params[:full_name].split(", ")
