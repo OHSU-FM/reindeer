@@ -107,6 +107,17 @@
                       target: '_blank', class: "nav-link blue-text" %>
                     <% end %>
 
+                    <% if ['chungp','rempes' ].include? current_user.username %>
+                      <% precep_count = User.find(result.id).precep_meetings.count %>
+                      <% if precep_count == 0 %>
+                      <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Preceptorship Meetings'.html_safe,
+                          precep_meetings_path(user_id: result.id), target: '_blank', class: "nav-link blue-text" %>
+                      <% else %>
+                        <% html_str = "<i class='fa fa-cog' style='color:#23A9BD'></i> Preceptorship Meetings <span class='badge bg-danger'>" + precep_count.to_s + "</span>" %>
+                        <%= link_to html_str.html_safe, precep_meetings_path(user_id: result.id), target: '_blank', class: "nav-link blue-text" %>
+                      <% end %>
+                    <% end %>
+
                 </ul>
               </li>
             </ul>

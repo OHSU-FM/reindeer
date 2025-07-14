@@ -87,7 +87,9 @@
 //= require badging_dates
 //= require course_schedules
 //= require flatpickr
+//= require precep_meetings
 //= require flatpickr/plugins/confirmDate/confirmDate
+
 
 // document.addEventListener('DOMContentLoaded', function() {
 //   flatpickr('.flatpickr', {

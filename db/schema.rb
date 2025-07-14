@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_20_134943) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_151739) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
@@ -1280,6 +1280,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_20_134943) do
     t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true
   end
 
+  create_table "precep_meetings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "student_sid"
+    t.string "student_name"
+    t.datetime "meeting_date"
+    t.string "meeting_notes"
+    t.string "meeting_with"
+    t.string "other_present"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_precep_meetings_on_user_id"
+  end
+
   create_table "preceptor_assesses", force: :cascade do |t|
     t.bigint "user_id"
     t.string "response_id"
@@ -1550,6 +1563,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_20_134943) do
   add_foreign_key "med23_mspes", "users"
   add_foreign_key "med24_mspes", "users"
   add_foreign_key "med25_mspes", "users"
+  add_foreign_key "precep_meetings", "users"
   add_foreign_key "preceptor_assesses", "users"
   add_foreign_key "preceptor_evals", "users"
   add_foreign_key "student_lists", "users"

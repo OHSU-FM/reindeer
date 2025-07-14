@@ -36,6 +36,7 @@ class NewCompetenciesController < ApplicationController
         @wbas = Epa.where("epa <> ? and epa <> ? and user_id = ?", "EPA12", "EPA13", params[:user_id])
       end
       @epas, @epa_hash, @clinical_assessors, @clinical_hash_by_involve, @selected_student, @total_wba_count = hf_get_wbas_new(@wbas)
+      @official_docs, @no_official_docs, @shelf_artifacts = hf_get_artifacts(@user.email, "Progress Board")
 
       if ["20", "21", "22"].include? @user.permission_group_id.to_s  # only Med26, Med27, Med28
         @epa_hash = Epa.where(user_id: params[:user_id]).group(:epa).order(:epa).count
@@ -171,7 +172,7 @@ class NewCompetenciesController < ApplicationController
 
     def private_download in_file
       send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
-    end  
+    end
 
     # Only allow a list of trusted parameters through.
     def new_competency_params

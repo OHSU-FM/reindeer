@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  * @import "jquery.contextMenu";
  */
+
 @import 'fullcalendar';
 @import 'jquery-ui';
 @import 'bootstrap';
@@ -46,6 +47,7 @@
 @import 'badging_dates.css';
 @import 'flatpickr';
 @import 'flatpickr/plugins/confirmDate/confirmDate';
+
 .alert {
   left: 0;
   margin: auto; // Centers alert component

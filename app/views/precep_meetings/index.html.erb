@@ -1,0 +1,51 @@
+<br>
+<h4>Preceptorship Meetings</h4>
+<div class="card">
+  <div class="card-body">
+    <% if !@precep_meetings.empty? %>
+
+      <table class="responsive nowrap table table-hover" id="dttb-precep_meetings" data-sort="true" data-source="<%= url_for(format: :json)%>">
+        <thead>
+          <tr>
+            <th data-data="student_sid">Student Sid</th>
+            <th data-data="student_name">Student Name</th>
+            <th data-data="meeting_date">Meeting Date</th>
+            <th data-data="meeting_notes.text">Meeting Notes</th>
+            <th data-data="meeting_with">Meeting With</th>
+            <th data-data="other_present">Other Present</th>
+            <th data-data="created_at">Created At</th>
+            <th data-data="updated_at">Updated At</th>
+            <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+          </tr>
+        </thead>
+        <% @precep_meetings.each do |meeting| %>
+          <tr>
+            <td><%= meeting.student_sid %></td>
+            <td><%= meeting.student_name %></td>
+            <% if !meeting.meeting_date.nil? %>
+              <td><%= meeting.meeting_date.strftime("%Y-%m-%d %H:%M %p") %></td>
+            <% else %>
+              <td></td>
+            <% end %>
+            <td><%= meeting.meeting_notes %></td>
+            <td><%= meeting.meeting_with %></td>
+            <td><%= meeting.other_present %></td>
+            <td><%= meeting.created_at.strftime("%Y-%m-%d %H:%M %p")  %></td>
+            <td><%= meeting.updated_at.strftime("%Y-%m-%d %H:%M %p")  %></td>
+            <td>
+              <%= link_to 'Edit', edit_precep_meeting_path(meeting, user_id: meeting.user_id ) %> /
+              <%= link_to 'Destroy', meeting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% else %>
+        <h5> No Preceptorship Meetings Found! </h5>
+    <% end %>
+  </div>
+</div>
+
+
+
+<br>
+
+<%= link_to 'New Preceptorship Meeting', new_precep_meeting_path(user_id: params[:user_id]) %>

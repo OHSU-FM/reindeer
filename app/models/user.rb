@@ -56,6 +56,7 @@ class User < ActiveRecord::Base
 
   has_many :fom_remeds, inverse_of: :user, dependent: :destroy
   has_many :formative_feedbacks, inverse_of: :user, dependent: :destroy
+  has_many :precep_meetings, inverse_of: :user, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 

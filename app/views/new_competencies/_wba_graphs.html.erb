@@ -26,7 +26,6 @@
         <th>Assessor</th>
         <th>Other Role</th>
         <th>AssessorName</th>
-        <th>AttendingFaculty</th>
         <th>Involvment</th>
         <th style="width: 500px" >Feedback</th>
         <th>EncounterComplex</th>
@@ -42,7 +41,6 @@
             <td><%= e.clinical_assessor %></td>
             <td><%= e.other_role %></td>
             <td><%= e.assessor_name %></td>
-            <td style="text-align:center"><%= e.attending_faculty.nil? ? "" : 'Yes' %></td>
             <td style="text-align:center"><%= e.involvement %></td>
             <td><%= e.more_independent %></td>
             <td><%= e.encounter_complex ? 'Yes' : 'No' %></td>

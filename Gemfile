@@ -85,7 +85,6 @@ gem "gon"
 # Dynamic Forms
 gem "cocoon"
 gem "simple_form"
-
 ##############################
 # UI: Misc
 ##############################

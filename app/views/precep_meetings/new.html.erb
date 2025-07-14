@@ -1,0 +1,12 @@
+<% content_for :title, "New Preceptorship Meeting" %>
+
+<br>
+<h4>New Preceptorship Meeting</h4>
+
+<%= render "form", precep_meeting: @precep_meeting %>
+
+<br>
+
+<div>
+  <%= link_to "Back to Preceptorship Meetings", precep_meetings_path(user_id: params[:user_id]) %>
+</div>

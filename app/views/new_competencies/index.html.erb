@@ -11,7 +11,7 @@
                     </li>
                     <li>
                         <a href="#epas" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="EPAS">
-                          <h6><b>EPAs/Badges</b></h6>
+                          <h6><b>Badges</b></h6>
                         </a>
                     </li>
                     <li>
@@ -67,7 +67,7 @@
                     </li>
                     <li>
                       <a href="#artifacts" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Artifacts">
-                        <h6><b>Artifact(s)</b></h6>
+                        <h6><b>Letter(s)</b></h6>
                       </a>
                     </li>
                     <li class="active">
@@ -104,7 +104,7 @@
                 </div>
               </div>
               <div id="epas" class="tab-pane fade" role="tabpanel"  aria-labelledby="epas-tab">
-                  <%= render partial: "epas" %>
+                  <%= render partial: "epa_badges" %>
               </div>
               <div id="coreCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="milestoneTable-tab">
                   <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Core"} %>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :precep_meetings
   resources :new_competencies do
     collection  do
       get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'
