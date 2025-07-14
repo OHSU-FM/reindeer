@@ -107,7 +107,7 @@
                       target: '_blank', class: "nav-link blue-text" %>
                     <% end %>
 
-                    <% if ['chungp','rempes' ].include? current_user.username %>
+                    <% if ['dean', 'admin'].include? current_user.coaching_type  %>
                       <% precep_count = User.find(result.id).precep_meetings.count %>
                       <% if precep_count == 0 %>
                       <%= link_to '<i class="fa fa-cog" style="color:#23A9BD"></i> Preceptorship Meetings'.html_safe,

@@ -19,8 +19,8 @@ class PrecepMeetingsController < ApplicationController
     @precep_meeting.user_id = @user.id
     @precep_meeting.student_sid = @user.sid
     @precep_meeting.student_name = @user.full_name
-    @precep_meeting.meeting_with = current_user.full_name
-    @precep_meeting.other_present = 'None'
+    @precep_meeting.meeting_with = "Kinzie, Mark"
+    @precep_meeting.other_present = "Rempes, Mattthew"
 
   end
 

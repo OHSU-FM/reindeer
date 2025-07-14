@@ -7,6 +7,5 @@
 
 <br>
 <div>
-  <%= link_to "Show this Preceptorship Meeting", @precep_meeting %> |
-  <%= link_to "Back to Preceptorship Meetings", precep_meetings_path %>
+  <%= link_to "Back to Preceptorship Meetings", precep_meetings_path(user_id: @precep_meeting.user_id)  %>
 </div>

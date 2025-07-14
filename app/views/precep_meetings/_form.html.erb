@@ -12,7 +12,7 @@
         <%= f.input :meeting_date, as: :string, placeholder: "Click here to enter a date.. ",
           input_html: { class: "flatpickr flatpickr-input active form-control", style: 'width: 400px; background-color: lightblue;'} %>
 
-        <%= f.input :meeting_notes, as: :text, input_html: {style: 'width: 600px; background-color: lightblue;'} %>
+        <%= f.input :meeting_notes, as: :text, input_html: {rows: 5, style: 'width: 800px; background-color: lightblue;'} %>
         <%= f.input :meeting_with, input_html: {style: 'width: 400px'} %>
         <%= f.input :other_present, input_html: {style: 'width: 400px'} %>
       </div>
