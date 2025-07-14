@@ -15,6 +15,7 @@
             <th data-data="other_present">Other Present</th>
             <th data-data="created_at">Created At</th>
             <th data-data="updated_at">Updated At</th>
+            <th data-data="updated_at">Edit / Del</th>
             <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
           </tr>
         </thead>
@@ -23,7 +24,7 @@
             <td><%= meeting.student_sid %></td>
             <td><%= meeting.student_name %></td>
             <% if !meeting.meeting_date.nil? %>
-              <td><%= meeting.meeting_date.strftime("%Y-%m-%d %H:%M %p") %></td>
+              <td><%= meeting.meeting_date.strftime("%Y-%m-%d") %></td>
             <% else %>
               <td></td>
             <% end %>
@@ -33,8 +34,8 @@
             <td><%= meeting.created_at.strftime("%Y-%m-%d %H:%M %p")  %></td>
             <td><%= meeting.updated_at.strftime("%Y-%m-%d %H:%M %p")  %></td>
             <td>
-              <%= link_to 'Edit', edit_precep_meeting_path(meeting, user_id: meeting.user_id ) %> /
-              <%= link_to 'Destroy', meeting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_precep_meeting_path(meeting, user_id: meeting.user_id ) %> /
+              <%= link_to '<i class="fa fa-trash"></i>'.html_safe, meeting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </table>
