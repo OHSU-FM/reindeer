@@ -11,7 +11,11 @@
     <div class="card">
         <div class="card-body">
               <% wba_clinical_by_involve_graph = hf_clinical_assessors_graph(@clinical_hash_by_involve, @user, @total_wba_count) %>
-              <%= high_chart("wba_clinical_by_involve_graph", wba_clinical_by_involve_graph) %>
+              <% if wba_clinical_by_involve_graph.nil? %>
+                No WBA found!
+              <% else %>
+                <%= high_chart("wba_clinical_by_involve_graph", wba_clinical_by_involve_graph) %>
+              <% end %>
         </div>
     </div>
   </div>
