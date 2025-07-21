@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   has_one :dashboard, dependent: :destroy
   has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
   has_one :med24_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  has_one :med26_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
 
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
