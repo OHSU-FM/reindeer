@@ -23,8 +23,10 @@ include NewCompetenciesHelper
     if @user.new_competency?
       @no_wbas = Epa.where("user_id = ? and (epa <> 'EPA12' or epa <> 'EPA13')",  user_id).count
       @wbas_epas =  Epa.where("user_id = ? and epa <> 'EPA12' and epa <> 'EPA13'",  user_id).group(:epa).count
-      @wbas_epas_per = hf_compute_wba_epa(@wbas_epas, @user.new_competency)
-      @wbas_attg = Epa.where("user_id = ? and clinical_assessor = ? and epa <> 'EPA12' and epa <> 'EPA13'",  user_id, 'Attending Faculty').count
+      # disabled on 7/22/2025 due to complex EPA1A&1B, etc
+      # @wbas_epas_per = hf_compute_wba_epa(@wbas_epas, @user.new_competency)
+
+      @wbas_attg = Epa.where("user_id = ? and clinical_assessor = ?",  user_id, 'Attending Faculty').count
       @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').where.not(epa: ["EPA12", "EPA13"]).count
     else
       @no_wbas = Epa.where(user_id: user_id).count
@@ -32,7 +34,7 @@ include NewCompetenciesHelper
       @wbas_epas_per = hf_compute_wba_epa(@wbas_epas, @user.new_competency)
       @wbas_attg = Epa.where(user_id: user_id, clinical_assessor: 'Attending Faculty').count
       if @user.spec_program.include? "Paused badging"
-        @no_badges = 0  # no badges shown on main page or overall progress  
+        @no_badges = 0  # no badges shown on main page or overall progress
       else
         @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').count
       end
