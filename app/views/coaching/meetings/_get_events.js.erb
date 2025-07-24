@@ -57,7 +57,7 @@ var advisor_name = $('#coaching_meeting_advisor_id option:selected').text();
 var tr_length = $('#EventsTable tbody tr:visible').length;
 // removed the logic below for Pope Bailey
 //  && !advisor_name.includes("Bailey")
-if (tr_length == 0 && !advisor_name.includes("Lauren") && !advisor_name.includes("Domingo") && !advisor_name.includes("Gause")){
+if (tr_length == 0 && !advisor_name.includes("Shafir") && !advisor_name.includes("Lauren") && !advisor_name.includes("Domingo") && !advisor_name.includes("Gause")){
   $("#meeting-submit").prop("disabled", true);
   alert('Please select another advisor that has appointments!!');
 
