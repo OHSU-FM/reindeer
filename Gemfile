@@ -51,7 +51,7 @@ gem "cssbundling-rails"
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', ">= 8.0.0"
 gem "jquery-rails"
 gem "jquery_context_menu-rails"
 gem "momentjs-rails"
@@ -133,7 +133,8 @@ end
 # To use debugger
 group :development do
   gem "rack-mini-profiler", require: false
-  gem "webrick"
+  gem "rack", ">= 2.2.14"
+  gem "webrick", ">= 1.8.2"
   gem "puma", "~> 6.3.1"
   gem "rails_layout"
   gem "awesome_print"
