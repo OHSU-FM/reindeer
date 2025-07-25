@@ -603,6 +603,7 @@ DEPENDENCIES
   mini_racer
   momentjs-rails
   nested_form_fields
+  net-imap (>= 0.4.20)
   nokogiri
   paper_trail
   pg
@@ -611,9 +612,11 @@ DEPENDENCIES
   prawn
   psych (< 4)
   puma (~> 6.4.2)
+  rack (>= 2.2.12)
   rack-mini-profiler
   rails (~> 8.0, >= 8.0.2)
   rails-controller-testing
+  rails-html-sanitizer (>= 1.6.1)
   rails-perftest
   rails-ujs (~> 0.1.0)
   rails_admin (~> 3.3)
@@ -634,7 +637,7 @@ DEPENDENCIES
   subprocess
   twitter-bootstrap-rails
   uglifier
-  webrick
+  webrick (>= 1.8.1)
   whenever
   will_paginate (~> 3.1)
   xsv

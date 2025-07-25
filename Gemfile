@@ -135,7 +135,8 @@ end
 # To use debugger
 group :development do
   gem "rack-mini-profiler", require: false
-  gem "webrick"
+  gem "rack", ">= 2.2.12"
+  gem "webrick", ">= 1.8.1"
   gem "puma", "~> 6.4.2"
   gem "rails_layout"
   gem "awesome_print"
@@ -185,3 +186,5 @@ gem 'csv'
 gem "importmap-rails", "~> 2.0"
 gem "subprocess"
 gem "nokogiri"
+gem "net-imap", ">= 0.4.20"
+gem "rails-html-sanitizer", ">= 1.6.1"
