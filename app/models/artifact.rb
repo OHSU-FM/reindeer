@@ -4,6 +4,7 @@ class Artifact < ApplicationRecord
   # Note that implicit association has a plural form in this case
   scope :with_eager_loaded_images, -> { eager_load(images_attachments: :blob) }
 
+  #validates :documents, presence: true
   validates :documents, presence: true, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf', 'application/csv', 'application/x-csv',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     'text/plain', 'text/csv'], size_range: 1..10.megabytes }
@@ -331,7 +332,7 @@ class Artifact < ApplicationRecord
     		@log_data.push ("No of rows: " + sheet.count.to_s)
         last_row = sheet.count-1
     		row = {}
-        
+
     		for r in 1..last_row do
           #puts sheet[r].inspect
     			row["last_name"] = sheet[r][0]

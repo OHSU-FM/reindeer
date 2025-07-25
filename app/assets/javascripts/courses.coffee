@@ -2,5 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).ready ->
-  # $('#dttb-courses').DataTable 'ordering': true, 'fixedHeader': true, "pageLength": 10
+$(document).on 'click', '.custom-clickable-row', (e) ->
+  url = $(this).data('href')
+  window.open(url, '_blank')
+  return

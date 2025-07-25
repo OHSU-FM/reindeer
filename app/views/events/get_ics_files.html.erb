@@ -1,0 +1,17 @@
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><u>List of ICS Calendar Files for Download </u></h5>
+    <% today_date = Date.today.strftime("%Y_%m_%d") %>
+    <% @ics_files.each do |file| %>
+      <% file_date = File.basename(file).split("-").first %>
+      <% if file_date > today_date %>
+        <%= File.basename(file) %> <%= link_to ('<i class="fa fa-download"></i>').html_safe, download_file_events_path(file_name:  file) %> <br>
+      <% else %>
+          <%= File.basename(file) %> - <b><i>Expired! </i></b><br>
+      <% end %>
+    <% end %>
+    <br />
+    <%= link_to 'Purge Expired File(s)', purge_ics_files_events_path(ics_file: "ics"), class: "button btn btn-info", target: :_blank  %>
+  </div>
+</div>

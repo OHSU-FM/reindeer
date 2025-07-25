@@ -1,0 +1,172 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-auto bg-light sticky-top">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                <br />
+                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center justify-content-between w-100 px-3 align-items-center" role="tablist">
+                    <li class="nav-item">
+                        <a href="#milestone" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Competency Graph">
+                          <h6><b>Competency Milestone</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#epas" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="EPAS">
+                          <h6><b>Badges</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#wbaGraphs" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="WBAGraphs">
+                          <h6><b>WBAs/Graphs</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#coreCourses" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="CoreCourses">
+                          <h6><b>Core Courses</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#intersessions" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Intersessions">
+                          <h6><b>Intersessions</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#electives" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Electives">
+                          <h6><b>Electives</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#scholarlyProject" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="ScholarlyProject">
+                          <h6><b>Scholarly Project</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#transitionCourses" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="TransitionCourses">
+                          <h6><b>Transition Courses</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#nbmeCpx" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="NBMECpx">
+                          <h6><b>NBME/CPX</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#allCourses" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="AllCourse">
+                          <h6><b>All Courses</b></h6>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#preceptorship" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Preceptorship">
+                          <h6><b>Preceptorship</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#fom" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="FoM">
+                          <h6><b>FoM</b></h6>
+                        </a>
+                    </li>
+                    <li>
+                      <a href="#artifacts" class="nav-link py-1 px-1" title="" data-bs-toggle="tab" data-bs-placement="right" data-bs-original-title="Artifacts">
+                        <h6><b>Letter(s)</b></h6>
+                      </a>
+                    </li>
+                    <li class="active">
+                      <a href="#profile" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none nav-link active" data-bs-toggle="tab" data-bs-placement="right">
+                          <i class="bi-person-circle h2" style="color:purple;"></i>
+                      </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm p-3 min-vh-100">
+          <h5>&nbsp;&nbsp;Student: <b style="color:purple;"><%= @user.full_name %></b>
+              &nbsp;&nbsp;Email: <b style="color:purple;"><%= @user.email %></b>
+              &nbsp;&nbsp;Cohort: <b style="color:purple;"><%= @user.permission_group.title %></b>
+              &nbsp;&nbsp;Status: <b style="color:purple;"><%= @user.spec_program %></b></h5>
+          <div class="tab-content">
+            <div id="profile" class="tab-pane fade active show" role="tabpanel"  aria-labelledby="profile-tab">
+              <div class="card" style="width: 800px;">
+                <div class="card-body">
+                  <%= render partial: "profile", locals: {result: @user} %>
+                </div>
+              </div>
+            </div>
+
+            <div id="wbaGraphs" class="tab-pane fade" role="tabpanel"  aria-labelledby="milestoneTable-tab">
+                <%= render partial: "wba_graphs" %>
+            </div>
+              <div id="milestone" class="tab-pane fade" role="tabpanel"  aria-labelledby="milestone-tab">
+
+                <div class="card">
+                  <div class="card-body">
+                    <%= high_chart("comp_graph_new", @chart_new) %>
+                  </div>
+                </div>
+              </div>
+              <div id="epas" class="tab-pane fade" role="tabpanel"  aria-labelledby="epas-tab">
+                  <%= render partial: "epa_badges" %>
+              </div>
+              <div id="coreCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="milestoneTable-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Core"} %>
+              </div>
+              <div id="intersessions" class="tab-pane fade" role="tabpanel"  aria-labelledby="intersessions-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Intersessions"} %>
+              </div>
+              <div id="electives" class="tab-pane fade" role="tabpanel"  aria-labelledby="electives-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Electives"} %>
+              </div>
+              <div id="scholarlyProject" class="tab-pane fade" role="tabpanel"  aria-labelledby="scholarlyProject-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Scholarly"} %>
+              </div>
+              <div id="transitionCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="transitionCourses-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "Transition"} %>
+              </div>
+              <div id="allCourses" class="tab-pane fade" role="tabpanel"  aria-labelledby="allCourses-tab">
+                  <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "AllCourses"} %>
+              </div>
+              <div id="nbmeCpx" class="tab-pane fade" role="tabpanel"  aria-labelledby="nbmeCpx-tab">
+                 <div class="container-fluid">
+                    <div class="row">
+                      <div class="column">
+                        <%= render partial: "usmle_exams" %>
+                      </div>
+                      <div class="column">
+                        <%= render partial: "cpx", locals: {new_competencies: @new_competencies, course_type: "CPX"} %>
+                      </div>
+                    </div>
+                    <br />
+                    <%= render partial: "milestone_table", locals: {new_competencies: @new_competencies, course_type: "NBME"} %>
+                  </div>
+              </div>
+              <div id="preceptorship" class="tab-pane fade" role="tabpanel"  aria-labelledby="preceptorship-tab">
+                <%= render partial: 'preceptor_assesses' %>
+              </div>
+              <div id="fom" class="tab-pane fade" role="tabpanel"  aria-labelledby="fom-tab">
+                  <div class="card">
+                    <% if !@all_blocks.first.second.empty?  %>
+                      <%= render partial: "competencies/fom_blocks" %>
+                    <% else %>
+                      <h5> No FoM Data Found! </h5>
+                    <% end %>
+                  </div>
+                <hr>
+                <h4>CSL Formative Feedback</h4>
+                 <div class="table-responsive-sm">
+                    <%= render partial: "competencies/csl_evals" %>
+                    <% if !@csl_feedbacks.blank? %>
+                      <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+                    <% end %>
+                </div>
+              </div>
+
+              <div id="artifacts" class="tab-pane fade" role="tabpanel"  aria-labelledby="artifacts-tab">
+                <%= render partial: 'artifacts/detail_artifacts', locals: {idx_epa: "Official Student Letters"} %>
+              </div>
+
+        </div>
+    </div>
+</div>
+
+<br>
+
+<% #= link_to 'New Competency', new_new_competency_path %>

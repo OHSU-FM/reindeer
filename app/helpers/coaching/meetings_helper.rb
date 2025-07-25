@@ -51,7 +51,6 @@ module Coaching::MeetingsHelper
       end
     end
 
-
   end
 
   def hf_format_subjects(subjects)
@@ -116,7 +115,10 @@ module Coaching::MeetingsHelper
       ['Residency Application – SOAP Advice ("I’m worried I won’t Match" or "I didn’t initially Match")'],
       ['Transition to Residency – "Now that I’ve matched, advice for next steps before Residency'],
       ['Alternate Careers Advising – "After graduation, what options besides GME can I explore?"'],
-      ['Scholarship Approval']
+      ['Scholarship Approval'],
+      ['Adjusting Intership/Residency'],
+      ['Planning for ERAS Reapplication'],
+      ['Career Mentoring']
 
     ]
 
@@ -179,7 +181,6 @@ module Coaching::MeetingsHelper
       ["General Visit"]
     ]
   end
-
 
   def hf_meeting_ipas_for_select
     [

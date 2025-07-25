@@ -4,8 +4,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Main
 ##############################
 gem "bundler", '~>2.0'
-gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
-gem "rdoc", '~>6.3.1'
+#gem 'rails'  #, '~>6.1.3' #'~> 5.2.2.1'
+gem 'rails', '~> 8.0', '>= 8.0.2'
+gem "rdoc" # '~>6.3.1'
 gem "psych", '< 4'
 gem 'sprockets', '< 4'
 gem 'bcrypt'
@@ -25,7 +26,8 @@ gem "php-serialize"
 ##############################
 # Admin/Config/Security
 ##############################
-gem "rails_admin"
+#gem "rails_admin",  "~> 3.1.3"
+gem 'rails_admin', '~> 3.3'
 
 # Config file loader
 # see ./lib/settings.rb and ./config/settings.yml for details
@@ -51,12 +53,13 @@ gem "cssbundling-rails"
 gem "sass-rails", '>= 3.2'
 gem "coffee-rails"
 gem "uglifier"
-gem 'jquery-ui-rails', ">= 8.0.0"
+gem 'jquery-ui-rails', '~>7.0.0'
 gem "jquery-rails"
 gem "jquery_context_menu-rails"
 gem "momentjs-rails"
 gem "fullcalendar-rails"
 gem "fullcalendar"
+gem "prawn"
 #gem 'webpacker', '~> 3.5'
 # CSS / js
 # Random bug:
@@ -82,7 +85,6 @@ gem "gon"
 # Dynamic Forms
 gem "cocoon"
 gem "simple_form"
-
 ##############################
 # UI: Misc
 ##############################
@@ -133,9 +135,9 @@ end
 # To use debugger
 group :development do
   gem "rack-mini-profiler", require: false
-  gem "rack", ">= 2.2.14"
+  gem "rack", ">= 2.2.12"
   gem "webrick", ">= 1.8.2"
-  gem "puma", "~> 6.3.1"
+  gem "puma", "~> 6.4.2"
   gem "rails_layout"
   gem "awesome_print"
 
@@ -155,7 +157,7 @@ gem 'rufus-scheduler'    # gem "stackprof"
     # gem "pry"
 gem 'whenever', require: false
 gem 'nested_form_fields'
-#gem 'turbolinks', '~> 5.0', '>= 5.0.1'
+#gem 'turbolinks'  #, '~> 5.0', '>= 5.0.1'
 gem 'rails-ujs', '~> 0.1.0'
 # highchart
 gem "highcharts-rails"
@@ -182,3 +184,7 @@ gem 'active_storage_drag_and_drop'
 gem 'image_processing'
 gem 'csv'
 gem "importmap-rails", "~> 2.0"
+gem "subprocess"
+gem "nokogiri"
+gem "net-imap", ">= 0.4.20"
+gem "rails-html-sanitizer", ">= 1.6.1"

@@ -1,0 +1,61 @@
+
+<div class="card">
+  <div class="card-body">
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <h5>Data Content for AI [click here]</h5>
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">
+            <h5 style='color:blue;'>Data Content for AI </h5>
+           <%= @content.to_s.html_safe %>
+          </div>
+        </div>
+        <h2 class="accordion-header" id="flush-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            <h5>Previous AI Responses [click here]</h5>
+          </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">
+           <%= @responses.to_s.html_safe %>
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+      <%= simple_form_for(query_ai_epa_masters_path, method: 'get', remote: true) do %>
+        <input type="hidden" id="user_id" name="mod_full_name" value="<%= @full_name %>">      
+        <input type="hidden" id="user_id" name="user_id" value="<%= @user_id %>">
+        <div class="mb-3">
+          <label for="AiQuestion" class="form-label">AI Question</label>** Please Select an AI Option:
+          <label class="radio-inline">
+            <input id="aiOption" type="radio" name="aiOption[]" value="google" >Gemini2.5-flash-preview-04-17
+          </label>
+          <label class="radio-inline">
+            <input id="aiOption" type="radio" name="aiOption[]" value="chatgpt" >ChatGPT-gpt-4.1-mini-2025-04-14
+          </label>
+
+          <input type="text" class="form-control" name="ai_question" value= "<%= @question %>">
+        </div>
+        <%= button_tag "AI-Submit", class: 'button btn btn-info', style: 'font-size:15px', id: 'queryAiButton', html: {autocomplete: 'off'},
+            'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Accessing to AI...".html_safe %>
+
+       <% end %>
+ </div>
+</div>
+
+  <div class="card">
+    <div class="card-body" style="background-color:#BBD9FF;">
+    <div class="card-body">
+      <div id="query_ai_responses">
+      </div>
+    </div>
+  </div>

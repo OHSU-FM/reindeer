@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <%if !@results.empty? and @results.include? "NOT found"%>
-      <%= @results.html_safe %>
+      <%= @results%>
   <% elsif params[:search] == '?' or (params[:search].to_s == 'help' and !params[:search].nil?) %>
     <%= @results %>
-  <% elsif !params[:search].nil? and params[:search].include? "Med" %>
+  <% elsif !params[:search].nil? and (params[:search].include? "Med" or params[:search] == 'PhD')%>
     <%= render partial: 'cohort_listing', locals: {results: @results} %>
   <% else %>
     <% if @results.map{|r| r.full_name}.count > 6 %>
@@ -18,6 +18,8 @@
             <th style="text-align:center">Prev Cohort</th>
             <th style="text-align:center">Program Status</th>
             <th style="text-align:center">Matriculated Date</th>
+            <th style="text-align:center">NewComp</th>
+            <th style="text-align:center">Former Name</th>
             <th style="text-align:center">BLS Exp Date</th>
             <th style="text-align:center"># of WBAs<br />(All Levels)</th>
             <th style="text-align:center"># of Badges<br />Awarded</th>
@@ -31,7 +33,7 @@
           <tr>
             <td style="text-align:center"> <%= result.full_name %></td>
 
-            <% if ['chungp', 'haedinge', 'petesama', 'bumstedt'].include? current_user.username %>
+            <% if ['chungp',  'petesama', 'fruhwirt', 'schneibe', 'itot'].include? current_user.username %>
               <td style="text-align:center"> <%= link_to result.email.to_s, update_loa_users_path(email: result.email), target: :_blank %></td>
               <td style="text-align:center"> <%= link_to result.sid.to_s, update_loa_users_path(sid: result.sid), target: :_blank %></td>
             <% else %>
@@ -47,6 +49,8 @@
             <% else %>
               <td></td>
             <% end %>
+            <td style="text-align:center"><%= result.new_competency? ? 'Yes' : 'No' %> </td>
+            <td style="text-align:center"><%= result.former_name %> </td>
             <% bls_record = result.ume_bls %>
             <% if !bls_record.nil? %>
                <% if bls_record.expiration_date.after? (Date.today) %>
@@ -62,7 +66,11 @@
             <td style="text-align:center;color:purple"><b><%= result.epa_masters.where('status = ? and status_date < ?','Badge', hf_releaseDate(result)).count.to_s %></b></td>
             <td>
               <%= link_to("<b>View Artifacts</b>".html_safe, artifacts_path(uuid: result.uuid), target: '_blank')  %> <br />
-              <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "link-to-text-color") %><br>
+              <% if result.new_competency? #and result.username == 'peterbogus' %>
+                <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_new_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %>
+              <% else %>
+                <%= link_to("<b>Clinical Phase Dataset</b>".html_safe, user_competencies_path(user_id: result.id), class: "nav-link link-to-text-color", target: '_blank') %>
+              <% end %>
                 <% fom_block_array = [] %>
                 <%  hf_exists_in_FomExam(result.id).each do |block| %>
                     <% cohort = block["cohort"] %>

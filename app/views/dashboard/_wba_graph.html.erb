@@ -1,7 +1,18 @@
-<% dashboard_epa_wba_graph ||= hf_create_epa_wba_graph(@wba_epa_data)  %>
-<% if !dashboard_epa_wba_graph.nil? %>
-  <%= high_chart("dashboard_epa_wba_graph", dashboard_epa_wba_graph) %>
+<% if current_user.new_competency %>
+  <% wba_epa_graph = hf_wba_graph(@epa_hash, @user, "WBAs") %>
+  <% if !wba_epa_graph.nil? %>
+    <%= high_chart("new_wba_epa_graph", wba_epa_graph) %>
+  <% else %>
+    <h5> # of WBAs by EPA Graph </h5>
+    <h5> No WBAs Found! </h5>
+  <% end %>
 <% else %>
-  <h5> # of WBAs by EPA Graph </h5>
-  <h5> No WBAs Found! </h5>
+  <% dashboard_epa_wba_graph ||= hf_create_epa_wba_graph(@wba_epa_data)  %>
+  <% if !dashboard_epa_wba_graph.nil? %>
+    <%= high_chart("dashboard_epa_wba_graph", dashboard_epa_wba_graph) %>
+  <% else %>
+    <h5> # of WBAs by EPA Graph </h5>
+    <h5> No WBAs Found! </h5> -->
+  <% end %>
+
 <% end %>

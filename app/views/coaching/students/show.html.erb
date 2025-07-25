@@ -1,16 +1,18 @@
 
-<div id="cs-goals-nav">
-  <div class="flex-child">
-    <br />
-    <div id="cs-sidebar-toggle"><span class="fa fa-bars" aria-hidden="true"></span></div>
-  </div>
+<% if current_user.coaching_type != 'student' %>
+  <div id="cs-goals-nav">
+    <div class="flex-child">
+      <br />
+      <div id="cs-sidebar-toggle"><span class="fa fa-bars" aria-hidden="false"></span></div>
+    </div>
 
-  <% if current_user.coach? %>
-    <%= render partial: "cohorts_select" %>
-  <% elsif current_user.dean_or_higher? %>
-    <%= render partial: "permission_groups_select" %>
-  <% end %>
-</div>
+    <% if current_user.coach? %>
+      <%= render partial: "cohorts_select" %>
+    <% elsif current_user.dean_or_higher? %>
+      <%= render partial: "permission_groups_select" %>
+    <% end %>
+  </div>
+<% end %>
 
 <div id="cs-goals-main">
   <br />
@@ -29,15 +31,15 @@
 
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <button class="nav-link active" id="nav-appointments-tab" data-bs-toggle="tab" data-bs-target="#nav-appointments" type="button" role="tab" aria-controls="nav-appointments" aria-selected="true">Appointments</button>
-      <button class="nav-link" id="nav-meetings-tab" data-bs-toggle="tab" data-bs-target="#nav-meetings" type="button" role="tab" aria-controls="nav-meetings" aria-selected="false">Meetings</button>
+      <button class="nav-link active"  id="nav-meetings-tab" data-bs-toggle="tab" data-bs-target="#nav-meetings" type="button" role="tab" aria-controls="nav-meetings" aria-selected="false">Meetings</button>
+      <button class="nav-link " id="nav-appointments-tab" data-bs-toggle="tab" data-bs-target="#nav-appointments" type="button" role="tab" aria-controls="nav-appointments" aria-selected="true">Appointments</button>
       <button class="nav-link" id="nav-documents-tab" data-bs-toggle="tab" data-bs-target="#nav-documents" type="button" role="tab" aria-controls="nav-documents" aria-selected="false">IPAS/IPPS Docs</button>
       <button class="nav-link" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-reports" type="button" role="tab" aria-controls="nav-reports" aria-selected="false">OASIS Reports</button>
-
+      <button class="nav-link text-danger" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-career" type="button" role="tab" aria-controls="nav-reports" style='font-weight: bold;'aria-selected="false">Career Advisors</button>
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-appointments" role="tabpanel" aria-labelledby="nav-appointments-tab">
+    <div class="tab-pane fade " id="nav-appointments" role="tabpanel" aria-labelledby="nav-appointments-tab">
       <div class="container-fluid">
           <div class="row">
             <div class="col-md-8">
@@ -45,6 +47,7 @@
                   <br />
                   <%= link_to "Appointments", events_path, class: "button btn btn-info",  target: '_blank' %>
                   <%= link_to "Advisors", advisors_path, class: "button btn btn-primary", target: '_blank' %>
+                  <%= link_to "Download ICS Files", get_ics_files_events_path(ics_file: "ics"), class: "button btn btn-primary", target: '_blank' %>
                   <% if @advisor_type == "Wellness" %>
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMeetingModal" id="newMeetingButton">Create Retro-Appointment</button>
                   <% end %>
@@ -55,12 +58,17 @@
          </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="nav-meetings" role="tabpanel" aria-labelledby="nav-meetings-tab">
+    <div class="tab-pane fade show active" id="nav-meetings" role="tabpanel" aria-labelledby="nav-meetings-tab">
       <div class="table-controls">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMeetingModal" id="newMeetingButton">Create New Appointment</button>
-        <%= link_to("<span style='font-size:16px'><i>Clinical Phase Dataset (>= Med20)</i></span>".html_safe,
-            user_competencies_path(user_id: @student.id), class: "link-to-text-color", target: '_blank') %>
+        <% if @student.new_competency %>
+         <%= link_to("<span style='font-size:16px'><i>Clinical Phase Dataset (>= Med20)</i></span>".html_safe,
+            user_new_competencies_path(user_id: @student.id), class: "link-to-text-color", target: '_blank') %>
+        <% else %>
+          <%= link_to("<span style='font-size:16px'><i>Clinical Phase Dataset (>= Med20)</i></span>".html_safe,
+              user_competencies_path(user_id: @student.id), class: "link-to-text-color", target: '_blank') %>
 
+        <% end %>
         <%= form_tag search_meetings_coaching_student_path(@student), method: :post, remote: true, class: "search-bar" do %>
           <%= text_field_tag :meeting_search, params[:meeting_search], placeholder: "Search" %>
           <%= submit_tag "Search", name: 'meeting-search-btn' %>
@@ -75,6 +83,10 @@
     <div class="tab-pane fade" id="nav-reports" role="tabpanel" aria-labelledby="nav-reports-tab">
         <%= render partial: "oasis_reports"  %>
     </div>
+    <div class="tab-pane fade" id="nav-career" role="tabpanel" aria-labelledby="nav-reports-tab">
+        <%= render partial: "career_advisors"  %>
+    </div>
+
     <div class="tab-pane fade" id="nav-sensitive" role="tabpanel" aria-labelledby="nav-sensitive-tab">
       <div class="row">
         <div class="column">

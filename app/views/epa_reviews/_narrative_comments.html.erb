@@ -16,7 +16,6 @@
                       <th scope="col">Evaluator</th>
                       <th scope="col">FinalGrade</th>
                       <th scope="col">ProfConcern</th>
-                      <th scope="col">Feedback</th>
                       <th scope="col">MSPE Comment</th>
                       <th scope="col" style="width: 6%">Created Date</th>
                     </tr>
@@ -29,7 +28,6 @@
                             <td><%= cd["Eval"] %></td>
                             <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
                             <td><%= cd["ProfConcerns"] %></td>
-                            <td><%= hf_highlight(cd["feedback"], epa_code) %></td>
                             <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
                             <td><%= hf_highlight(cd["created_at"], epa_code) %></td>
                           </tr>
@@ -40,8 +38,8 @@
                     <% i = 0 %>
                     <% comp.each do |cd| %>
                       <% if !cd["course_name"].include? "770"  %>
-                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate.strftime('%F')) and (Date.today < @nextReviewEndDate.to_date) %>
-                            <tr style="background-color:#E0FFFF">
+                          <% if (cd["created_at"].strftime('%F') > @lastReviewEndDate.strftime('%F'))  %>
+                            <tr class="table-success">
                           <% else %>
                             <tr sytle="background-color:white">
                           <% end %>
@@ -60,21 +58,16 @@
                                 <a class="btn btn-info" href="#" data-bs-html="true" data-bs-placement="right" rel="tooltip" <span style="white-space: normal" data-bs-toggle="tooltip"
                                     title="<%= hf_format_final_grade(cd['final_grade']) %>" ><%= final_grade %></span></a>
                               <% end %>
-
                             </td>
                             <% i = i + 1 %>
                             <td><%= cd["prof_concerns"].to_s.gsub("{cr}{newline}", "") %></td>
-                            <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
-                              <%= cd["feedback"].to_s.gsub("{cr}{newline}", "").gsub("{tab}", " ").html_safe %></span></td>
 
                             <% if final_grade == 'NP' %>
-                               <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "") %></td>
+                               <td style="color: #a85261"><%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></td>
                             <% else %>
                               <td><span class="context-menu-one"  id="course_name<%= i %>" data-course-name="<%= cd["course_name"] %>">
                                 <%= cd["mspe"].to_s.gsub("{cr}{newline}", "").html_safe %></span></td>
                             <% end %>
-
-
                             <td style="width:100px"><%= cd["created_at"].strftime('%F') %></td>
 
                           </tr>
@@ -137,6 +130,9 @@
         <div id="collapseThree" class="card-body collapse" data-parent="#accordion" >
             <% if csl_data.empty? %>
               <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+              <% if !@formative_feedbacks_qualtrics.empty? %>
+                <%= render partial: "competencies/formative_feedback_qualtrics", locals: {formative_feedbacks_qualtrics: @formative_feedbacks_qualtrics} %>
+              <% end %>
             <% else %>
                 <table class="table table-responsive-sm">
                   <thead>

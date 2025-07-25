@@ -1,0 +1,8 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @precep_meeting %>
+
+<div>
+  <%= link_to "Back to Preceptorship Meetings", precep_meetings_path(user_id: @precep_meeting.user_id) %>
+
+</div>

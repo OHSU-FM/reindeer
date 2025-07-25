@@ -13,6 +13,22 @@ class Competency < ApplicationRecord
     end
   end
 
+  def self.load_competency(group_title, permission_group_id)
+    case group_title
+      when "Med18"
+        comp_unfiltered = Med18Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+      when "Med19"
+        comp_unfiltered = Med19Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+      when "Med20"
+        comp_unfiltered = Med20Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+      when "Med21"
+        comp_unfiltered = Med21Competency.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+    else
+      return "Invalid Competency Table!"
+    end
+
+  end
+
   def self.write_hash_to_json_file(hash, filename)
      File.open(filename,"w") do |f|
        f.write(JSON.pretty_generate(hash))
@@ -70,6 +86,10 @@ class Competency < ApplicationRecord
           'group by fom_exams.course_code
           order by fom_exams.course_code'
 
+
+
+### fom_exams.permission_group_id=' + "#{selected_user.permission_group_id} "
+
       all_blocks_user_sql = 'select fom_exams.course_code,
               trunc(summary_comp1,2) as "summ_comp1",
               trunc(summary_comp2a,2) as "summ_comp2a",
@@ -78,8 +98,8 @@ class Competency < ApplicationRecord
               trunc(summary_comp4,2) as "summ_comp4",
               trunc(summary_comp5a,2) as "summ_comp5a",
               trunc(summary_comp5b,2) as "summ_comp5b"
-            FROM fom_exams, fom_labels where fom_exams.permission_group_id=' + "#{selected_user.permission_group_id} " +
-            ' and user_id=' + "#{selected_user.id} and" +
+            FROM fom_exams, fom_labels where ' +
+            ' fom_exams.user_id=' + "#{selected_user.id} and" +
             ' fom_labels.course_code = fom_exams.course_code and fom_labels.permission_group_id = fom_exams.permission_group_id and fom_labels.block_enabled=true ' +
             'order by fom_exams.course_code'
 

@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :precep_meetings
+  resources :new_competencies do
+    collection  do
+      get 'competency_rpt', action: :competency_rpt, controller: 'new_competencies', to: 'new_competencies#competency_rpt'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'new_competencies', to: 'new_competencies#download_file'
+    end
+  end
   resources :badging_dates
   resources :course_schedules
   resources :courses
@@ -37,6 +44,9 @@ Rails.application.routes.draw do
       get 'delete_all', action: :delete_all, controller: 'events', to: 'events#delete_all'
       get 'get_events_by_advisor', action: :get_events_by_advisor, controller: 'events', to: 'events#get_events_by_advisor'
       post 'calendly_click', action: :calendly_click, controller: 'events', to: 'events#calendly_click'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'events', to: 'events#download_file'
+      get 'get_ics_files', param: :ics_file, controller: 'events', to: 'events#get_ics_files'
+      get 'purge_ics_files',  param: :ics_file, action: :purge_ics_files, to: 'events#purge_ics_files'
     end
   end
   #get 'student_assessments/index'
@@ -61,15 +71,16 @@ Rails.application.routes.draw do
   resources :epa_masters do
     collection  do
       get 'search_student'
-      get 'eg_mismatch', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_mismatch'
-      get 'eg_badged', action: :eg_report, controller: 'eg_masters', to: 'epa_masters#eg_badged'
-      get 'epa_qa', controller: 'eg_masters', to: 'epa_masters#epa_qa'
-      get 'wba_epa', action: :wba_epa, controller: 'eg_masters', to: 'epa_masters#wba_epa'
-      get 'wba_clinical', action: :wba_clinical, controller: 'eg_masters', to: 'epa_masters#wba_clinical'
+      get 'eg_mismatch', action: :eg_report, controller: 'epa_masters', to: 'epa_masters#eg_mismatch'
+      get 'eg_badged', action: :eg_report, controller: 'epa_masters', to: 'epa_masters#eg_badged'
+      get 'epa_qa', controller: 'epa_masters', to: 'epa_masters#epa_qa'
+      get 'wba_epa', action: :wba_epa, controller: 'epa_masters', to: 'epa_masters#wba_epa'
+      get 'wba_clinical', action: :wba_clinical, controller: 'epa_masters', to: 'epa_masters#wba_clinical'
       get 'download_file', param: :file_name, action: :download_file,  controller: 'epa_masters', to: 'epa_masters#download_file'
-      get 'badged_graph', action: :badged_graph, controller: 'eg_masters', to: 'epa_masters#badged_graph'
-      get 'wba_epa_graph', action: :wba_epa_graph, controller: 'eg_masters', to: 'epa_masters#wba_epa_graph'
-      get 'average_wba_epa', action: :average_wba_epa, controller: 'eg_masters', to: 'epa_masters#average_wba_epa'
+      get 'badged_graph', action: :badged_graph, controller: 'epa_masters', to: 'epa_masters#badged_graph'
+      get 'wba_epa_graph', action: :wba_epa_graph, controller: 'epa_masters', to: 'epa_masters#wba_epa_graph'
+      get 'average_wba_epa', action: :average_wba_epa, controller: 'epa_masters', to: 'epa_masters#average_wba_epa'
+      get 'query_ai', action: :query_ai, controller: 'epa_masters', to: 'epa_masters#query_ai'
 
     end
 
@@ -90,29 +101,27 @@ Rails.application.routes.draw do
   resources :user do
     resources :competencies, param: :user_id, only: [:index, :new]
     resources :overall_progresses, param: :user_id, only: [:index]
+    resources :new_competencies, param: :user_id, only: [:index, :new]
   end
 
   resources :competencies, only: [:index, :new, :create, :destroy]
 
-  get 'fom_exams/list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
-  get '/fom_exams/export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
-  get '/fom_exams/process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
-  get '/fom_exams/user', controller: 'fom_exams', action: 'index', to: 'fom_exams/user'
-  get '/fom_exams/download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
+  resources :fom_exams do
+    collection do
+      get 'list_all_blocks', param: :id,  controller: 'fom_exams', to: 'fom_exams#list_all_blocks'
+      get 'export_block', controller: 'fom_exams', to: 'fom_exams#export_block'
+      get 'process_csv', param: :file_name, controller: 'fom_exams', to: 'fom_exams#process_csv'
+      get 'process_fom', controller: 'fom_exams', action: :index, to: 'fom_exams#process_fom'
+      get 'download_file', param: :file_name, action: :download_file,  controller: 'fom_exams', to: 'fom_exams#download_file'
+      post 'send_alerts', controller: 'fom_exams', action: :send_alerts, to: 'fom_exams#send_alerts'
+      get 'send_alerts', controller: 'fom_exams', action: :send_alerts, to: 'fom_exams#send_alerts'
+      get 'display_fom', controller: 'fom_exams', action: :display_fom, to: 'fom_exams#display_fom'
+      get 'unsubscribe'
 
-  #resources :user do
-  resources :preceptor_evals,  only: [:show], param: :uuid
-  #   end
-  # end
-
-  resource :fom_exams do
-      collection do
-        post 'send_alerts'
-        get 'send_alerts'
-        get 'display_fom'
-        get 'unsubscribe'
-      end
+    end
   end
+
+  resources :preceptor_evals,  only: [:show], param: :uuid
 
   resources :artifacts do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -138,7 +147,8 @@ Rails.application.routes.draw do
         post 'advisor_reports'
         post 'oasis_graphs'
         get 'contact_form'
-        get  'file_download'
+        get  'file_download', param: :file_name, action: :file_download
+
       end
     end
 

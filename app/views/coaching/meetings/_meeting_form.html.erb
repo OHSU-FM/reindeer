@@ -1,5 +1,5 @@
 <%= simple_form_for Coaching::Meeting.new, html: {class: "inline block", id: "MeetingForm"}, remote: true do |f| %>
-  <% if (!advisor_type.nil?) and (advisor_type  == 'Career' or advisor_type == 'Academic'  or advisor_type == "Academic: Step 1 Advising" or advisor_type == 'Diversity Navigator' or advisor_type == 'Assist Dean' ) %>
+  <% if (!advisor_type.nil?) and (advisor_type.include? 'Career' or advisor_type.include? 'Academic'  or advisor_type == "Academic: Step 1 Advising" or advisor_type == 'DEIB' or advisor_type == 'Assist Dean' ) %>
     <div hidden>
       <div class="advisors-type" data-advisor_type="<%= advisor_type %>">
       </div>
@@ -60,6 +60,23 @@
             </div>
             </div>
           </div>
+          <% if ['Career', 'Career/Student Affairs' 'Assist Dean'].include? advisor_type %>
+            <div class="row mb-0">
+              <label class="control-label col-md-3 right-label"></label>
+              <div class="col-sm-4">
+                <div class="form-check">
+                  <% if current_user.username != 'mansoord' and student.spec_program.include? "Graduated" %>
+                    <input class="form-check-input" type="checkbox", id="graduated_student", name="graduated_student", checked=true >
+                  <% else %>
+                    <input class="form-check-input" type="checkbox", id="graduated_student", name="graduated_student">
+                  <% end %>
+                  <label class="form-check-label" for="defaultCheck1">
+                    Met with Graduated Student?
+                  </label>
+                </div>
+                </div>
+              </div>
+          <% end %>
 
         <div class="card" id="AppointmentCard">
           <div class="card-body">
@@ -90,21 +107,21 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body card-body-color"">
           <div class="form-group">
-            <% if advisor_type == 'Career' %>
+            <% if advisor_type.include? 'Career' %>
               <% advisor_subjects = hf_career_advisor_discussed_for_select %>
-            <% elsif advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising"  %>
+            <% elsif advisor_type == "Academic" or advisor_type =='Academic/Student Affairs' or advisor_type == "Academic: Step 1 Advising"  %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
               <% advisor_study_resources = hf_academic_study_resources_for_select %>
             <% elsif advisor_type == "Wellness" %>
                 <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
-            <% elsif advisor_type == 'Diversity Navigator' %>
+            <% elsif advisor_type == 'DEIB' %>
                 <% advisor_subjects = hf_diversity_navigator_for_select %>
             <% elsif advisor_type == 'Assist Dean' %>
                 <% advisor_subjects = hf_assist_dean_for_select%>
             <% else %>
               <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
             <% end %>
-            <% if advisor_type != 'Diversity Navigator' %>
+            <% if advisor_type != 'DEIB' %>
               <b><%= f.label :subject, "Advisor Discussed (Check all that apply):", class: "control-label col-md-6" %></b><br />
               <%= collection_check_boxes(:coaching_meeting, :advisor_discussed, advisor_subjects, :first, :first, checked: nil) do |b| %>
                 <label for="MeetingFormAdvisorDiscussed">
@@ -115,7 +132,7 @@
             <% end %>
 
 
-           <% if advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising" %>
+           <% if advisor_type == "Academic" or advisor_type =='Academic/Student Affairs' or advisor_type == "Academic: Step 1 Advising" %>
               <%= f.text_field :academic_discussed_other, id: 'academic_discussed_other' %>
               <hr>
 
@@ -138,18 +155,18 @@
     <div class="card" id="DiscussedCard">
       <div class="card-body">
 
-          <% if advisor_type == 'Academic' or advisor_type == "Academic: Step 1 Advising" %>
+          <% if advisor_type == 'Academic' or advisor_type =='Academic/Student Affairs' or advisor_type == "Academic: Step 1 Advising" %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
-          <% elsif advisor_type == 'Career'  %>
+          <% elsif advisor_type.include? 'Career'  %>
               <% advisor_outcomes = hf_meeting_ipps_for_select %>
           <% elsif advisor_type == 'Wellness'  %>
               <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
-          <% elsif advisor_type ==  'Diversity Navigator' %>
+          <% elsif advisor_type ==  'DEIB' %>
               <% advisor_outcomes = '' %>
           <% else %>
               <% advisor_outcomes = hf_meeting_ipas_for_select %>
           <% end %>
-          <% if advisor_type != 'Diversity Navigator' %>
+          <% if advisor_type != 'DEIB' %>
 
             <div class="form-group">
               <b><%= f.label :subject, "Outcomes/Recommendation (Check all the apply):", class: "control-label col-md-8" %></b>
@@ -163,7 +180,7 @@
          <% end %>
          <% if advisor_type == "Academic" or advisor_type == "Academic: Step 1 Advising" %>
             <%= f.text_field :academic_outcomes_other,  id: 'academic_outcomes_other' %>
-          <% elsif advisor_type == "Career" %>
+          <% elsif advisor_type.include? "Career" %>
               <%= f.text_field :career_outcomes_other, id: 'career_outcomes_other' %>
           <% end %>
       </div>
@@ -207,18 +224,49 @@
       <div class="card">
         <div class="card-body card-body-color">
 
-          <div class="control-group" id="fields">
-            <label class="control-label col-sm-3" for="TimeSlotByMin"> Time Slot by Mins</label>
-            <select name="time_slot" id="time_slot"  >
-                <option value="30">30</option>
-                <option value="45" selected>45</option>
-                <option value="60">60</option>
-            </select>
-            <br />
-             <label class="control-label col-sm-3" for="field1">Appointment Date</label>
-              <input autocomplete="off" class="span3" id="startDate1" name="startDate1" type="datetime-local" required>
+          <div class="row mb-0" id="fields">
+            <label class="control-label col-md-3 right-label" for="TimeSlot"> Time Slot by Mins</label>
+            <div class="col-sm-4">
+              <select name="time_slot" id="time_slot" class="form-select" >
+                  <option value="30">30</option>
+                  <option value="45" selected>45</option>
+                  <option value="60">60</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-0">
+            <label class="control-label col-md-3 right-label">Appointment Date <i class = "fa fa-calendar "></i></label>
+            <div class="col-sm-4">
+              <input type="text" class="flatpickr flatpickr-input active form-control" id="startDateRetro", name="startDateRetro" placeholder="Click here to Select Date..">
+            </div>
           </div>
         </div>
+
+        <div class="row mb-0">
+          <label class="control-label col-md-3 right-label"></label>
+          <div class="col-sm-6">
+            <div class="form-check">
+              <input class="form-check-input select-this-date" type="checkbox", id="selelct_this_date", name="select_this_date" disabled>
+              <label class="form-check-label" >
+                Select the Above Followup Appointment
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-0">
+          <label class="control-label col-md-3 right-label"></label>
+          <div class="col-sm-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox", id="email_notification", name="email_notification">
+              <label class="form-check-label" for="defaultCheck1">
+                Email Notification
+              </label>
+            </div>
+            </div>
+          </div>
+
       </div>
 
       <div class="card" id="OtherCard">
@@ -231,11 +279,11 @@
         </div>
     </div>
     <div class="card">
-      <div class="card-body card-body-color">
+      <div class="card-body card-body-color2">
         <div class="form-group">
-          <%= f.label :notes, 'Student Notes (optional)', class: "control-label col-sm-4" %>
-          <%= f.text_area :notes, class: "col-sm-6" %>
+          <b><%= f.label :subject, "Advisor Meeting Documentation:", class: "control-label col-md-6" %></b>
         </div>
+        <%= f.text_area :advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%', class: "form-control", value: "Met with student." %>
       </div>
     </div>
 
@@ -246,14 +294,16 @@
       </div>
     </div>
     <% # commented out Step1 Advising on 9/14/2023 - requested by Erika and AA %>
-    <% # disabled on 4/23/ %>
+    <% # disabled on 1/28/2028  %>
     <% #@advisor_types.push "Academic: Step 1 Advising" %>
-    <% @advisor_types.push "Academic: Remediation Support" %>
+    <% # @advisor_types.push "Academic: Remediation Support" %>
+    <% #@advisor_types.push "Career Advising: MS4 ERAS" %>
 
     <div class="card" id="AdvisorCard">
       <div class="card-body">
         <div class="d-flex">
           <div class="input-group">
+            <p style="color:purple;"><b>** If you are not sure of your specialty career direction, please know you can meet with any of the career advisors. They are all able to advise undifferentiated students and welcome these conversations!</b></p>
             <span class="input-group-text"><strong>Advisor Type</strong></span>
             <%= f.input_field :advisor_type, collection: (@advisor_types.sort), required: true, prompt: "Please Select an Advisor Type", class: "selectAdvisorType form-select" %>
             <span class="input-group-text"><strong>Advisor</strong></span>
@@ -264,6 +314,7 @@
         <%= f.hidden_field :user_id, value: student.id %>
         <%= f.hidden_field :date, value: Time.now.strftime('%Y-%m-%d') %>
         <%= f.hidden_field :location, value: 'Phone/Webex' %>
+        <%= f.hidden_field :permission_group_id, value: student.permission_group_id %>
       </div>
     </div>
 

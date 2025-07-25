@@ -42,5 +42,4 @@ module EventsHelper
 
   end
 
-
 end

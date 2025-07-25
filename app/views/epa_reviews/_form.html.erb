@@ -6,6 +6,8 @@
       <%= f.hidden_field :reviewable_id, id: "reviewable_id" %>
       <%= f.hidden_field :reviewable_type, id: "reviewable_type"%>
       <%= f.hidden_field :epa, id: "epa" %>
+      <input type="hidden" id="epaCount" name="epaCount" value="<%= @epa_count %>">
+
     <div class="row">
      <div class="col-sm-6" id="col-reviewer1">
         <div class="form-group">

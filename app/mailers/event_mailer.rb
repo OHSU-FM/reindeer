@@ -2,7 +2,7 @@ class EventMailer < ApplicationMailer
 
   SENDER_SIGN = "Thanks!\n" +
                 "OASIS Team\n" +
-                "Erika Chomina Lenford\n" +
+                "Erika Chomina\n" +
                 "OASIS Program Manager\n" +
                 "OHSU School of Medicine|UME\n" +
                 "chomina@ohsu.edu"
@@ -29,7 +29,7 @@ class EventMailer < ApplicationMailer
       @event_mailer.description = @event_mailer.description.split(" - ").first + " - " + "Dr. " + advisor.name
 
       if advisor.advisor_type == 'Assist Dean'
-        emails << "bazhaw@ohsu.edu"   ## assist dean assistance
+        #emails << "bazhaw@ohsu.edu"   ## assist dean assistance
         @event_mailer.description = @event_mailer.description.gsub(' Advisor', '')
       end
 

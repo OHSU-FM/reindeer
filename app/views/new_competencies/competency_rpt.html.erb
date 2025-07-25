@@ -1,0 +1,23 @@
+<h5> Competency Report for cohort</h5>
+<div class="container" >
+ <br /><br />
+    <div class="card">
+      <div class="card-body">
+        <%= form_tag(competency_rpt_new_competencies_path, method: "get", id: 'competency_rpt_form') do %>
+          <div class="form-group navbar-form navbar-left">
+            <b>Cohort </b> <%= select_tag :permission_group_id, options_from_collection_for_select(@permission_groups, "id", "title", selected: params[:permission_group_id]), include_blank: '--',
+               prompt: "Please Select a Cohort", onchange: "this.form.submit();" %>
+          </div>
+      </div>
+
+    </div>
+
+
+  <br />
+  <% if !@cohort_competency.blank? %>
+      <%= render partial: 'detail_competency_rpt' %>
+    <% end %>
+  <% end %>
+
+
+</div>

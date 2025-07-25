@@ -1,3 +1,5 @@
+<% return unless !current_user.nil? %>
+
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
 
@@ -17,7 +19,7 @@
 
         <div id="SearchPlaceHolder">
           <div id="SearchInputForm">
-            <% if current_user.coaching_type != 'student' and current_user.spec_program !='Wellness' %>
+            <% if !current_user.nil? && current_user.coaching_type != 'student' && current_user.spec_program !='Wellness' %>
               <%= form_tag(search_searches_path, method: "get",  class: 'navbar-form navbar-left', id: 'SearchForm') do %>
                 <span>
                   <div class="input-group">
@@ -38,25 +40,25 @@
               <% end %>
             </li>
             <li class="nav-item">
-              <% if ['chungp','itot', 'budd', 'bumstedt'].include? current_user.username  %>
+              <% if ['chungp','itot', 'budd', 'bumstedt', 'bettybogus'].include? current_user.username  %>
                 <%= link_to '<i style="color:#31a34f;" class="fa fa-book"></i> Course Catalog'.html_safe, courses_path(), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
             <li class="nav-item">
-              <% if ['nmai', 'chungp', 'shuforda', 'fruhwirt'].include? current_user.username  %>
-                <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
+              <% if current_user.can_process_fom? and current_user.coaching_type != 'student'%>
+                <%= link_to '<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, process_fom_fom_exams_path(uuid: current_user.uuid), target: '_blank', class: "nav-link" %>
               <% end %>
             </li>
 
             <li class="nav-item dropdown">
-              <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'bumstedt', 'fruhwirt', 'shuforda'].include? current_user.username) %>
+              <% if (['admin'].include? current_user.coaching_type and current_user.spec_program !='Wellness') or (['itot', 'schneibe', 'fruhwirt', 'petesama'].include? current_user.username) %>
                   <a class="nav-link dropdown-toggle" role="button"  href="#reportMenu" data-bs-toggle="dropdown" aria-expanded="false">
                   Report
                   </a>
                   <ul class="dropdown-menu" id="reportMenu">
                     <li><%= link_to '<i> Ranking Report </i>'.html_safe, reports_index_path, target: '_blank', class: "dropdown-item" %></li>
                     <li><%= link_to '<i> Competency Report </i>'.html_safe, competency_reports_path, target: '_blank', class: "dropdown-item" %></li>
-                    <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
+                    <% if ['chungp', 'fruhwirt', 'schneibe'].include? current_user.username %>
                       <li><%= link_to '<i> MSPE Data </i>'.html_safe, mspe_reports_path, target: '_blank', class: "dropdown-item" %></li>
                     <% end %>
                   </ul>
@@ -69,17 +71,18 @@
                 </a>
                 <ul class="dropdown-menu" id="dropdownMenuButton">
                   <%= link_to '<i class="fa fa-stethoscope" style="color:#E1191C" aria-hidden="true"></i> EG-Review'.html_safe, epa_masters_path, target: '_blank', class: "dropdown-item" %>
-                  <% if ['chungp', 'fruhwirt', 'bumstedt', 'shuforda'].include? current_user.username %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
+                  <% if current_user.can_process_eg_assignment? and current_user.coaching_type != 'student' %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> EG Members'.html_safe, eg_members_path, target: '_blank', class: "dropdown-item" %>
 
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
-                  <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Badging Dates'.html_safe, badging_dates_path, target: '_blank', class: "dropdown-item"  %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Fix EG Members'.html_safe, fix_eg_members_index_path, target: '_blank', class: "dropdown-item" %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> List EG Assignment'.html_safe, fix_eg_members_eg_assignment_path, target: '_blank', class: "dropdown-item" %>
+                    <%= link_to '<i class="fa fa-wrench" style="color:#E1191C" aria-hidden="true"></i> Badging Dates'.html_safe, badging_dates_path, target: '_blank', class: "dropdown-item"  %>
                   <% end %>
                   <%= link_to 'EG-Mismatch Report', eg_mismatch_epa_masters_path(file_name: 'eg_mismatch.txt'), method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EG-Badged Report', eg_badged_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'EPA-Q/A Report', epa_qa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'WBA/EPA Report', wba_epa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
+                  <%= link_to 'Competency Report', competency_rpt_new_competencies_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'Average WBA/EPA By Dates Report', average_wba_epa_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'WBA/Clinical Assessor Report', wba_clinical_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
                   <%= link_to 'No of Badges by EPA Graph', badged_graph_epa_masters_path, method: :get, target: '_blank', class: "dropdown-item" %>
@@ -135,8 +138,8 @@
                 </button>
                 <ul class="dropdown-menu">
                     <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Admin'.html_safe, rails_admin_path, target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
-                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, fom_exams_user_path(uuid: current_user.uuid), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
-                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, fom_exams_list_all_blocks_path(), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
+                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Process FoM'.html_safe, process_fom_fom_exams_path(uuid: current_user.uuid), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
+                    <%= link_to('<i style="color:#A00000;" class="fa fa-bomb"></i> Export FoM'.html_safe, list_all_blocks_fom_exams_path(), target: '_blank', class: "dropdown-item" ) if can? :access, :rails_admin %>
                     <%= link_to '<i class="fa fa-sign-out"></i> Log Out'.html_safe, main_app.destroy_user_session_path, class: "dropdown-item" %>
                 </ul>
               </div>

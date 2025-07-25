@@ -5,8 +5,10 @@ class EpaMastersController < ApplicationController
   before_action :set_epa_master, only: [:show, :edit, :update, :destroy]
   before_action :load_eg_cohorts, :set_resources
   include EpaMastersHelper
+  include EpaReviewsHelper
   include FixEgMembersHelper
   include CompetenciesHelper
+  include NewCompetenciesHelper
 
   # GET /epa_masters
   def index
@@ -26,13 +28,25 @@ class EpaMastersController < ApplicationController
   end
 
   def load_epa_masters
-    @epa_masters = @user.epa_masters.order(:id)
-    @full_name = @user.full_name
-    if @epa_masters.empty?
-      create_epas @user.id, @user.email
-      @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
+    #@epa_masters = EpaMaster.where("epa not in ('EPA12', 'EPA13') and user_id=?", @user.id).order(:epa, :id)
+    @epa_masters = @user.epa_masters.order(:epa)
+    if @epa_masters.first.epa == "EPA10" && @epa_masters.second.epa == "EPA11" && @epa_masters.third.epa == "EPA12"
+      @epa_masters = @epa_masters.rotate(3)
+    elsif @epa_masters.first.epa == "EPA10" && @epa_masters.second.epa == "EPA11" ## move EPA10 & EPA11 & EPA12 to end of array
+      @epa_masters = @epa_masters.rotate(2)
     end
-
+    @full_name = @user.full_name
+    @user_id = @user.id
+    if @epa_masters.empty?
+      if (@user.new_competency) or (@user.username == 'peterbogus' or Date.today.strftime("%Y/%m/%d") >= "2025/07/01" ) ## Med28 student and
+        hf_create_new_epas(@user.id, @user.email, @eg_cohorts)
+      else
+        create_epas @user.id, @user.email
+      end
+      @epa_masters = EpaMaster.where(user_id: @user.id).order(:id)
+    elsif @user.new_competency || Date.today.strftime("%Y/%m/%d") >= "2025/07/01"
+      EpaMaster.split_epa1(@user)
+    end
     respond_to do |format|
       format.html
       format.js { render partial: 'search-results' and return}
@@ -73,6 +87,106 @@ class EpaMastersController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def query_ai
+    @responses = nil
+    if params[:full_name].present?
+      @full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+
+      file_name = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
+      @question = 'Question="Use the EPA and EPA_KEYWORDS above and evaluate all the MSPE comments to see whether the student A can perform the EPAs.  List the evidences by course name. "'
+
+      # if File.exist?(file_name) && File.mtime(file_name) >=  2.days.ago   #&& current_user.spec_program == 'AccessAI'
+         @content = File.read(file_name)
+        # @eval_ai_content2 = @eval_ai_content2.gsub("\n", "<br />").gsub("**Disclaimer:**", "<b>**Disclaimer:**</b>").gsub("Evidence:", "<b>Evidence: </b>")
+        # @eval_ai_content2 = @eval_ai_content2.gsub("FileName", "<h5 style='color:purple;'>FileName").gsub("AI Responses:", "AI Responses: </h5>")
+        # @new_content, @question = hf_parse_ai_content(@eval_ai_content2)
+        # #have to load the initial input data from google_ai_data folder
+        # full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+        # file_output = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{full_name}_ai.txt"
+        # File.open(file_output, 'w') { |file| file.write(@new_content) }
+        # file_output = "#{Rails.root}/tmp/epa_reviews/chatgpt_ai_data/#{full_name}_ai.txt"
+        # File.open(file_output, 'w') { |file| file.write(@new_content) }
+
+      # elsif current_user.spec_program == 'AccessAI'
+        #@full_name = params[:full_name].gsub(", ", "_").gsub(" ", "_")
+        @user_id = params[:user_id]
+        epa_masters = EpaMaster.where(user_id: @user_id, status: nil).order(:epa)
+
+        @content = get_mspe_feedback(epa_masters)
+        last_name, first_name = params[:full_name].split(", ")
+        mod_name = first_name + " " + last_name
+        @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
+
+        file_output = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
+        File.open(file_output, 'w') { |file| file.write(@content) }
+        @content = @content.gsub("\n", "<br>")
+        last_name, first_name = params[:full_name].split(", ")
+        mod_name = first_name + " " + last_name
+        @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
+        @responses = load_ai_data(@full_name)
+      # end
+
+      # @content = @content.gsub("\n", "<br>")
+      # last_name, first_name = params[:full_name].split(", ")
+      # mod_name = first_name + " " + last_name
+      # @content = @content.gsub(first_name, "Student A").gsub(last_name, "Student A").gsub(mod_name, "Student A").gsub("Student A Student A", "Student A")
+      # @responses = load_ai_data(@full_name)
+
+    end
+    if  params[:aiOption].present?
+      @full_name = params[:mod_full_name]  ## this one is hidder in the form
+      file_output = "#{Rails.root}/tmp/epa_reviews/ai_data_input/#{@full_name}_ai.txt"
+      File.open(file_output, 'a') { |file| file.write(params[:ai_question]) }
+
+      # exec python script here
+      # python script will read the file from tmp/epa_reviews/ai_data/ folder
+      #   1) Call AI either Google or Open AI
+      #   2) the script will output the response to the same file
+      # The controller here will parse out the response from the output file & display it on the screen
+      # @response will contain the ultimate response from AI
+
+      prog_path = "#{Rails.root}/config"
+      log_path = "#{Rails.root}/log/#{@full_name}_ai.log"
+      data_path = "#{Rails.root}/tmp/epa_reviews"
+
+      python_script_output = system("/usr/bin/python3 #{prog_path}/#{params[:aiOption].first}_ai_eg_review.py #{data_path} #{@full_name} #{params[:aiOption].first} > #{log_path} 2>&1")
+
+      @responses = (params[:ai_question].to_s + "<br>" )
+      file_name = "#{Rails.root}/tmp/epa_reviews/#{ params[:aiOption].first}_ai_data/#{@full_name}_ai.txt"
+      @new_responses = File.read(file_name)
+
+      @ai_responses = hf_parse_new_ai_content(@new_responses, params[:aiOption].first)
+      @ai_responses = @ai_responses.gsub("\n", "<br />")
+      @responses = (@responses + @ai_responses)
+    end
+    respond_to do |format|
+      format.html
+      format.js {render template: 'epa_masters/query_ai'}
+    end
+  end
+
+  def load_ai_data full_name
+
+      file_name = "#{Rails.root}/tmp/epa_reviews/google_ai_data/#{full_name}_ai.txt"
+      if File.exist?(file_name)
+        @responses = File.read(file_name)
+        @responses = @responses.gsub("\n", "<br />")
+        @responses = @responses.gsub("Google", "<h5 style='color:purple;'>Google").gsub("AI Responses:", "AI Responses: </h5>")
+      else
+        @responses = "No Previous Google AI Responses Found! <br>"
+      end
+      @responses += "<br>" + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" + "<br><br>"
+      file_name = "#{Rails.root}/tmp/epa_reviews/chatgpt_ai_data/#{full_name}_ai.txt"
+      if File.exist?(file_name)
+        @responses += File.read(file_name)
+        @responses = @responses.gsub("\n", "<br />")
+        @responses = @responses.gsub("ChatGPT", "<h5 style='color:blue;'>ChatGPT").gsub("AI Responses:", "AI Responses: </h5>")
+      else
+        @responses += "No Previous ChatGPT AI Responses Found! <br>"
+      end
+
   end
 
   # DELETE /epa_masters/1
@@ -181,7 +295,7 @@ class EpaMastersController < ApplicationController
   def eg_badged
     if params[:cohort].present?
       epa_badged = EpaMaster.get_epa_badged params[:cohort]
-      @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged
+      @epa_badged_count, @student_epa_count = EpaMaster.process_epa_badged epa_badged, params[:cohort]
 
     end
     respond_to do |format|
@@ -260,6 +374,7 @@ class EpaMastersController < ApplicationController
 
     def set_resources
       @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 13, 15).order(:id)
+      #@api_keys ||= YAML.load_file("config/ai_api_keys.yml")
     end
 
     def set_epa_master

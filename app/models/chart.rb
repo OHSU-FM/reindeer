@@ -12,9 +12,9 @@ class Chart < ActiveRecord::Base
   validate :validate_max_number_of_groups
   validate :validate_max_number_of_series
 
-  serialize :cols, Array
-  serialize :rows, Array
-  serialize :years_filter, Array
+  serialize :cols, type: Array
+  serialize :rows, type: Array
+  serialize :years_filter, type: Array
 
   # Strip leading and trailing whitespace from title during save
   before_save {|chart|

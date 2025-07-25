@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :timeoutable
 
   # Setup accessible (or protected) attributes for your model
-  serialize :roles, Array
+  serialize :roles, type: Array
 
   #belongs_to :lime_user, foreign_key: :username, primary_key: :users_name
   belongs_to :permission_group, inverse_of: :users
@@ -29,10 +29,13 @@ class User < ActiveRecord::Base
   has_one :dashboard, dependent: :destroy
   has_one :med23_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
   has_one :med24_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
+  has_one :med26_mspe, inverse_of: :user, foreign_key: :email, dependent: :destroy
 
   has_many :artifacts, dependent: :destroy
   has_many :epas, dependent: :destroy
   has_many :competencies, dependent: :destroy, inverse_of: :user
+  has_many :new_competencies, dependent: :destroy, inverse_of: :user
+
   has_many :med18_competencies, inverse_of: :user, dependent: :destroy
   has_many :med19_competencies, inverse_of: :user, dependent: :destroy
   has_many :med20_competencies, inverse_of: :user, dependent: :destroy
@@ -54,6 +57,7 @@ class User < ActiveRecord::Base
 
   has_many :fom_remeds, inverse_of: :user, dependent: :destroy
   has_many :formative_feedbacks, inverse_of: :user, dependent: :destroy
+  has_many :precep_meetings, inverse_of: :user, dependent: :destroy
 
   accepts_nested_attributes_for :user_externals, allow_destroy: true
 
@@ -86,14 +90,19 @@ class User < ActiveRecord::Base
     participant: 0,
 
     # Piecemeal permissions
+    # Commented these roles out on 11/18/2024
     can_dashboard: 1,
-    can_stats: 1,
-    can_reports: 1,
-    can_chart: 1,
+    # can_stats: 1,
+    # can_reports: 1,
+    # can_chart: 1,
     can_lime: 1,
     can_lime_all: 1,
     can_view_spreadsheet: 1,
-    can_create_assignment_group: 1,
+    # Commented these roles out on 11/18/2024
+    #can_create_assignment_group: 1,
+    can_process_course_catalog: 1,
+    can_process_fom: 1,
+    can_process_eg_assignment: 1,
 
     # Role permissions
     admin: 25,
@@ -248,6 +257,7 @@ class User < ActiveRecord::Base
       field :password
       field :password_confirmation
       field :is_ldap
+      field :new_competency
 
       field :cohort_id do
         default_value 3032
@@ -325,7 +335,7 @@ class User < ActiveRecord::Base
     end
 
     list do
-      include_fields :id, :username, :email, :permission_group, :is_ldap, :can_dashboard, :can_chart,
+      include_fields :id, :username, :email, :permission_group, :is_ldap, :can_dashboard,
         :admin, :superadmin
       exclude_fields :lime_user, :password, :password_confirmation, :explain_survey_access,
         :user_externals, :current_sign_in_at, :sign_in_count, :permission_ls_groups,

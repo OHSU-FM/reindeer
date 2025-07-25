@@ -1,8 +1,19 @@
 <div id="<%= dom_id course_schedule %>">
+
   <p>
-    <strong>Course schedule:</strong>
-    <%= course_schedule.course_schedule %>
+    <strong>Course Name:</strong>
+    <%= course_schedule.course.course_name %>
   </p>
+  <p>
+    <strong>Course Year:</strong>
+    <%= course_schedule.year %>
+  </p>
+
+  <p>
+    <strong>Course Block:</strong>
+    <%= course_schedule.block %>
+  </p>
+
 
   <p>
     <strong>Start date:</strong>

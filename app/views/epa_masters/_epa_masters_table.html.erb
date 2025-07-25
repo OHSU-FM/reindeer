@@ -6,9 +6,10 @@
             <% if !@epa_masters.nil? %>
               <div id="epa-masters-table">
                 <% if @user.spec_program.include? "Paused badging" %>
-                  <h3 style="display: inline-block">Badging EPAs - <%= @full_name %> </h3><h5 style="display: inline-block;color:#FC6C85">&nbsp;&nbsp;[Student Status: <%= @user.spec_program %>]</h5>                
+                  <h3 style="display: inline-block">Badging EPAs - <%= @full_name %> </h3><h5 style="display: inline-block;color:#FC6C85">&nbsp;&nbsp;[Student Status: <%= @user.spec_program %>]</h5>
                 <% else %>
-                  <h3 style="display: inline-block">Badging EPAs - <%= @full_name %> </h3><h5 style="display: inline-block">&nbsp;&nbsp;[Student Status: <%= @user.spec_program %>]</h5>
+                  <h3 style="display: inline-block">Badging EPAs - <%= @full_name %> </h3><h5 style="display: inline-block">&nbsp;&nbsp;[Student Status: <%= @user.spec_program %>]
+                  &nbsp;&nbsp; <%= link_to 'Query AI', query_ai_epa_masters_path(full_name: @full_name, user_id: @user.id), class: "btn btn-primary", target: :_blank %></h5>
                 <% end %>
                 <table class="responsive nowrap table table-hover" >
                   <thead>

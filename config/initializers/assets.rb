@@ -63,6 +63,7 @@ Rails.application.config.assets.precompile += %w(
     wba_graphs.css
     csl_feedbacks.css
     competencies.css
+    new_competencies.css
     courses.css
     course_schedules.css
     epa_masters.css
@@ -78,5 +79,6 @@ Rails.application.config.assets.precompile += %w(
     usmle_exams.css
     epas.css
     epas.js
+    precep_meetings.css
    )
 Rails.application.config.assets.precompile << "bootstrap.min.js"

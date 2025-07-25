@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     @user = params[:user]
     if !@user["uuid"].nil?
       user = User.find_by(uuid: @user["uuid"]).update(sid: @user["sid"], full_name: @user["full_name"], spec_program: @user["spec_program"], permission_group_id: @user["permission_group_id"],
-             prev_permission_group_id: @user["prev_permission_group_id"])
+             prev_permission_group_id: @user["prev_permission_group_id"], new_competency: @user["new_competency"], former_name: @user["former_name"])
       if user
         redirect_to main_app.dashboards_path, notice: 'Upldated Student LOA Data!'
       else
@@ -59,6 +59,6 @@ class UsersController < ApplicationController
   private
 
   def user_update_params
-    params.require(:user).permit(:sid, :subscribed, :permission_group_id, :prev_permission_group_id, :spec_program, :full_name, :username, :email, :coaching_type)
+    params.require(:user).permit(:sid, :subscribed, :permission_group_id, :prev_permission_group_id, :spec_program, :full_name, :username, :email, :coaching_type, :new_competency, :former_name)
   end
 end

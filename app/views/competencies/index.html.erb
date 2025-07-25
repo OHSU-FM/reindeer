@@ -1,5 +1,5 @@
 <div class="container-fluid">
-   <ul id="MainTabs2" class="nav nav-tabs justify-content-center" role="tablist">
+   <ul id="MainTabs2" class="nav nav-pills justify-content-center" role="tablist">
 
        <li class="bold-italic nav-item">
          <a class="nav-link" id="fom-tab" data-bs-toggle="tab" href="#fom" style="background-color:#f4cccc" role="tab" aria-controls="fom" aria-selected="false">
@@ -63,12 +63,10 @@
             <div class="panel-body"><h4>CSL Formative Feedback</h4></div>
         </div>
          <div class="table-responsive-sm">
-          <% if !@csl_data.blank? %>
-                <%= render partial: "csl_evals" %>
-          <% end %>
-          <% if !@csl_feedbacks.blank? %>
-            <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
-          <% end %>
+            <%= render partial: "csl_evals" %>
+            <% if !@csl_feedbacks.blank? %>
+              <%= render partial: "csl_feedbacks/csl_feedbacks", locals: {csl_feedbacks: @csl_feedbacks} %>
+            <% end %>
         </div>
 
     </div>
@@ -125,7 +123,7 @@
                     <%= high_chart("comp_graph", @chart) %>
                   </div>
                 </div>
-                <% if ['chungp'].include? current_user.username %>
+                <% if ['chungp', 'itot', 'bumstedt', 'fruhwirt'].include? current_user.username %>
                   <div class="card">
                     <div class="card-body card-body-color">
                       <%= high_chart("comp_remap_graph", @chart_comp_remap) %>

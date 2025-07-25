@@ -11,6 +11,9 @@
       <th style="text-align:center">Previous Cohort</th>
       <th style="text-align:center">Program Status</th>
       <th style="text-align:center">Matriculated Date</th>
+      <th style="text-align:center">New Comp</th>
+      <th style="text-align:center">NetAccess</th>
+      <th style="text-align:center">Former Name</th>
     </tr>
   </thead>
 <% results.each do |result| %>
@@ -30,6 +33,9 @@
     <% else %>
       <td></td>
     <% end %>
+    <td style="text-align:center"> <%= result.new_competency? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
+    <td style="text-align:center"> <%= result.is_ldap? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
+    <td style="text-align:center"> <%= result.former_name %></td>
   </tr>
 <% end %>
 </table>

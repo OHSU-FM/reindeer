@@ -32,7 +32,7 @@ module DashboardHelper
       meetings = Coaching::Meeting.where(advisor_id: advisor.id)
       events_array = []
       meetings.each do |meeting|
-        events = Event.where("id = ? and start_date > ? and end_date <= ? and user_id is not NULL", meeting.event_id, DateTime.now, 7.days.ago.to_date)
+        events = Event.where("id = ? and start_date > ? and end_date <= ? and user_id is not NULL", meeting.event_id, 2.weeks.ago.to_date, DateTime.now)
         if !events.empty?
           events_array.push events.first
         end
@@ -182,6 +182,11 @@ module DashboardHelper
   end
 
   def hf_create_clinical_assessor_graph (epa_wba_data)
+
+    if epa_wba_data.empty?
+      return nil
+    end
+
     height = 250
     epa_wba_data.first.delete("StudentId")
     epa_wba_data.first.delete("Student Name")
@@ -203,10 +208,15 @@ module DashboardHelper
     # selected_categories.pop  #remove the last item, 12pm  as it is redundant
     # hours_series.pop         #remove the last item value (12pm) as it is redundant
 
-    title =  "No. of WBAs by Clinical Assessor" + '<br ><b>' + "(n = #{tot_count})" + '</b>'
+    title =  "No. of WBAs by Clinical Assessor " + '<b>' + "(n = #{tot_count})" + '</b>' + '<br >' +
+             'Requirement: At Least ' + '<b>' + '51' + '</b>' + ' Attendings'
     chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: title)
-      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.title(text: title,
+               style: {
+                 fontSize: '14px'
+                 }
+              )
+      #f.subtitle(text: subTitle)
       f.xAxis(categories: selected_categories,
         labels: {
               style:  {
@@ -286,10 +296,14 @@ module DashboardHelper
     # selected_categories.pop  #remove the last item, 12pm  as it is redundant
     # hours_series.pop         #remove the last item value (12pm) as it is redundant
 
-    title =  "No. of WBAs by EPA" + '<br ><b>' + "(n = #{tot_count})" + '</b>'
+    title =  "No. of WBAs by EPA " + '<b>' + "(n = #{tot_count})" + '</b>' + '<br >' +
+     'Requirement: At Least ' + '<b>' + '2 WBAs' + '</b>'  + ' for each EPA'
     chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: title)
-      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
+      f.title(text: title,
+                     style: {
+                       fontSize: '14px'
+                       }
+                    )      #f.subtitle(text: '<br /><h4>Student: <b>' + student_name + '</h4></b>')
       f.xAxis(categories: selected_categories,
         labels: {
               style:  {

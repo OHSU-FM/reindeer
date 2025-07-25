@@ -75,20 +75,22 @@ module Coaching
     end
 
     def advisor_reports
-      if params[:advisor_id].present? and params[:advisor_id] != 'All'
-        if params[:NoShow].present?
+
+      if params[:advisor_id].present? and !params[:advisor_id].include? 'All'
+        if params[:Status].present? and !params[:Status].include? 'All'
            @code = "Individual"
-           @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", params[:advisor_id], "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+           @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:Status], params[:StartDate], params[:EndDate]).order(created_at: :desc)
         else
           @code = "Aggregate"
           @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", params[:advisor_id], params[:StartDate], params[:EndDate]).group(:user_id).count
 
         end
-      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and params[:NoShow].present?
+      elsif params[:advisor_id].present? and params[:advisor_id].include? 'All' and !params[:Status].include? 'All'
+
         @code = "Individual"
-        @meetings = Meeting.where("m_status = ? and created_at >= ? and created_at <= ?", "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
-        hf_create_file(@meetings, "oasis_no_show.csv")
-      elsif params[:advisor_id].present? and params[:advisor_id] == 'All' and !params[:NoShow].present?
+        @meetings = Meeting.where("m_status = ? and created_at >= ? and created_at <= ?", params[:Status], params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        hf_create_file(@meetings, "oasis_status_report.csv")
+      elsif params[:advisor_id].present? and params[:advisor_id].include? 'All' and params[:Status] == 'All'
         @all_advisor_flag = true
         @meetings = Meeting.where("advisor_id is not NULL and event_id is not NULL and user_id is not NULL and created_at >= ? and created_at <= ?", params[:StartDate], params[:EndDate])
                         .order(:advisor_id).group(:advisor_id).count
@@ -105,8 +107,8 @@ module Coaching
       elsif !params[:advisor_id].present?
         @code = "Individual"
         @valid_advisor = Advisor.find_by(email: current_user.email)
-        if params[:NoShow].present?
-          @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, "No Show", params[:StartDate], params[:EndDate]).order(created_at: :desc)
+        if params[:Status].present? and params[:Status] != 'All'
+          @meetings = Meeting.where("advisor_id = ? and m_status = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:Status], params[:StartDate], params[:EndDate]).order(created_at: :desc)
         else
           @meetings = Meeting.where("advisor_id = ? and created_at >= ? and created_at <= ?", @valid_advisor.id, params[:StartDate], params[:EndDate]).order(created_at: :desc)
         end
@@ -132,11 +134,14 @@ module Coaching
 
     end
 
+
+
     private
 
-    def private_download in_file
-       send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
-    end
+      def private_download in_file
+         send_file  "#{Rails.root}/tmp/#{in_file}", type: 'text', disposition: 'download'
+      end
+
       # Use callbacks to share common setup or constraints between actions.
       def set_resources
         #@student = User.find_by_username(params[:slug])
@@ -149,7 +154,7 @@ module Coaching
         #@messages = @student.room.messages.order(:created_at)
         #@room_id = @student.room.id
 
-        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty).order(:name).load_async
+        @advisors = Advisor.where(status: 'Active').select(:id, :name, :advisor_type, :specialty, :formal_name, :brief_cv).order(:name).load_async
         @advisor_types = @advisors.map{|a| a.advisor_type}.uniq
 
         #@events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL", DateTime.now + 17.hours).order(:start_date).load_async
@@ -167,8 +172,18 @@ module Coaching
         advisor = User.where(id: current_user.id).joins("INNER JOIN advisors on users.email = advisors.email").select("advisors.id, advisors.name, advisors.advisor_type").first
 
         if !advisor.nil?
-          advisor_events = Event.where(advisor_id: advisor.id)
-          @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
+          # advisor_events = Event.where(advisor_id: advisor.id)
+          # @advisor_students = advisor_events.map{|a| a.user_id}.uniq.compact
+
+          advisor_students_query = "select users.full_name, users.username, permission_groups.title, count(meetings.user_id) from meetings, users, permission_groups " +
+                                    "where advisor_id=? and " +
+                                    "users.id = meetings.user_id and " +
+                                    "users.permission_group_id >= 19 and " +
+                                    "users.permission_group_id = permission_groups.id " +
+                                    "group by users.full_name, users.username, permission_groups.title, meetings.user_id " +
+                                    "order by permission_groups.title DESC, users.full_name"
+          @advisor_students = Student.execute_sql(advisor_students_query, advisor.id).to_a
+
           @advisor_type = advisor.advisor_type
           @advisor_id = advisor.id
         else
@@ -189,11 +204,13 @@ module Coaching
         elsif current_user.dean_or_higher?
           # exclude Med18, Med19 & Med20
           #@cohorts = Cohort.includes(:users).where("permission_group_id > ?", 6).includes(:owner).all
-          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 17, 15).load_async
+          @permission_groups = PermissionGroup.where(" id >= ? and id <> ?", 19, 15).load_async
            #@coaches = @cohorts.map(&:owner).uniq!
            #@students = @cohorts.map(&:users).flatten
            advisor = Advisor.find_by(email: current_user.email)
            @students = @permission_groups.map(&:users).flatten
+           @students.push User.find_by(username: 'harrimak')  #added Harriman, Kelvin, an OHSU graduate student in OASIS
+
            if !advisor.nil?
              #@students = Event.where('advisor_id = ?', advisor.id).where.not(user_id: [nil, ""]).includes(:user).map(&:user).flatten.uniq!
              @event_students = Event.where('start_date > ? and advisor_id = ? and user_id is not NULL', DateTime.now, advisor.id).order(:id).load_async
@@ -204,7 +221,8 @@ module Coaching
              # end
            else
              @event_students = Event.where('start_date > ? and user_id is not NULL', DateTime.now).order(:id).load_async
-             @students = @permission_groups.map(&:users).flatten
+             #@students = @permission_groups.map(&:users).flatten
+
            end
         end
       end

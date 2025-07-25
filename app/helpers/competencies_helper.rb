@@ -36,6 +36,39 @@ module CompetenciesHelper
            "epa13" => ["mk5", "pbli2", "pbli5", "pbli6", "pbli8", "ics1", "ics6", "pppd7", "pppd10", "sbpic1", "sbpic3", "sbpic5"]
    }
 
+   EPA_NEW =  {
+     "epa1a" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "ics1", "ics5", "pppd1", "pppd2"], #done
+     "epa1b" => ["pcp1", "pcp2", "mk2", "ics1", "ics5", "pppd2"], #done
+     "epa2" => ["pcp1", "pcp2",  "mk1", "mk2", "ics5", "pbli1", "pppd1", "pppd2"],  # done
+     "epa3" => ["pcp2",  "mk1", "mk2", "mk3",  "pbli2", "ics2", "ics5", "pppd2"], #done
+     "epa4" => ["pcp3", "mk1", "mk2", "mk3", "ics1", "ics3", "ics5", "pbli2", "sbp1", "pppd2"], #done
+     "epa5" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "pbli2",  "ics2", "ics3", "ics4", "ics5", "pppd2"], # done
+     "epa6" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics2", "ics3", "pbli1", "pbli2", "pppd1", "pppd2"], #done
+     "epa7" => ["pcp1", "pcp2", "pcp3", "mk1", "mk2", "mk3",  "pbli1", "pbli2", "ics2", "ics3", "ics5", "pppd1", "pppd2" ], #done
+     "epa8" => ["pcp1", "pcp2", "pcp3", "mk2", "ics2", "ics3",  "ics4"],  #done
+     "epa9" => ["pcp3", "mk2", "mk3", "sbp1", "ics1", "ics3", "ics5", "pppd1", "pppd2"], # done
+     "epa10" => ["pcp1", "pcp2", "pcp3",  "mk2", "sbp1", "ics1", "ics2", "ics3", "ics4", "ics5", "pppd2"], #done
+     "epa11" => ["pcp2", "pcp3", "mk1", "mk2", "mk3", "ics1", "ics5", "pbli2", "pppd1", "pppd2"] #done
+   }
+
+NEW_EPA_ARRAY = ["epa1a", "epa1b", "epa2", "epa3", "epa4", "epa5", "epa6", "epa7", "epa8", "epa9", "epa10", "epa11" ]
+
+NEW_EPA_DESC={
+          "EPA1a" => "Obtain a hypothesis-driven history",
+          "EPA1b" => "Perform a tailored physical examination",
+          "EPA2" => "Generate a prioritized differential diagnosis for a clinical encounter",
+          "EPA3" => "Interpret Diagnostic or screening tests for a clinical encounter",
+          "EPA4" => "Enter orders including prescriptions for a clinical encounter",
+          "EPA5" => "Document a clinical encounter in the patient record",
+          "EPA6" => "Provide an oral presentation of a clinical encounter",
+          "EPA7" => "Use literature to make a patient care recommendation",
+          "EPA8" => "Communicate a patient handover to transition responsibility of care",
+          "EPA9" => "Advance patient care through interprofessional collaboration",
+          "EPA10" => "Recognize a patient requiring urgent assessment and escalate care",
+          "EPA11" => "Lead shared decision making discussions for patient care "
+
+}
+
    EPA_DESC={"EPA1" => "Gather a history and perform a physical examination",
              "EPA2" => "Prioritize a differential diagnosis following a clinical encounter",
              "EPA3" => "Recommend and interpret common diagnostic and screening tests",
@@ -139,8 +172,6 @@ module CompetenciesHelper
      "Comp5" => "Final Skills Exam"
    }
 
-
-
   #==================================================================================================================================================================
   # New Competencies Mappings
   NEW_COMP_MAP ={
@@ -187,33 +218,32 @@ module CompetenciesHelper
     "pppd10" => "pppd2", #
     "pppd11" => "pbli1", #
 
-    "sbpic1" => "sbpic1",  # done with this item
-    "sbpic2" => "sbpic1", # done with this item
+    "sbpic1" => "sbp1",  # done with this item
+    "sbpic2" => "sbp1", # done with this item
     "sbpic3" => "pppd2", #
     "sbpic4" => "ics3", #
     "sbpic5" => "ics3" #
   }
 
   NEW_COMP_ASSESSORS = {
-    "ics1" => 15,
+    "ics1" => 3,
     "ics2" => 3,
-    "ics3" => 9,
-    "ics4" => 3,
-    "ics5" => 13,
-    "mk1" => 4,
-    "mk2" => 9,
-    "mk3" => 6,
-    "pbli1" => 16,
-    "pbli2" => 13,
-    "pbli3" => 7,
-    "pcp1" => 8,
-    "pcp2" => 16,
-    "pcp3" => 9,
-    "pppd1" => 12,
-    "pppd2" => 16,
-    "sbpic1" => 6
+    "ics3" => 3,
+    "ics4" => 1,
+    "ics5" => 2,
+    "mk1" => 3,
+    "mk2" => 3,
+    "mk3" => 3,
+    "pbli1" => 3,
+    "pbli2" => 3,
+    "pbli3" => 1,
+    "pcp1" => 3,
+    "pcp2" => 3,
+    "pcp3" => 2,
+    "pppd1" => 1,
+    "pppd2" => 3,
+    "sbp1" => 1
   }
-
 
   NEW_COMP_DEFINITION = {
     "ics1" => "Communicate effectively with patients and families.",
@@ -226,18 +256,17 @@ module CompetenciesHelper
     "mk3" => "Demonstrate foundational knowledge in health systems science.",
     "pbli1" => "Demonstrate behaviors that support lifelong learning and professional growth such as incorporating self-assessment and feedback.",
     "pbli2" => "Locate, critically appraise, and synthesize new information to support evidence informed and patient centered clinical decisions.",
-    "pbli3" => "Engage in scholarly inquiry and disseminate findings using ethical principles.",
+    "pbli3" => "Engage in scholarly inq@comp_data_clinicaluiry and disseminate findings using ethical principles.",
     "pcp1" => "Gather information through history and physical on patients.",
     "pcp2" => "Construct prioritized differential diagnosis based on interpretation of available clinical data.",
     "pcp3" => "Develop and implement a personalized management plan for the patient.",
     "pppd1" => "Identify and address the negative effects of structural and social determinants of health for patients with diverse needs.",
     "pppd2" => "Demonstrate behaviors that are reflective of professional values of truthfulness, timeliness, accountability, and follow through.",
-    "sbpic1" => "Engage in the quality improvement process related to patient safety and system issues."
+    "sbp1" => "Engage in the quality improvement process related to patient safety and system issues."
 
   }
 
-
-  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbpic1"]
+  NEW_COMP_CODES = ["ics1", "ics2", "ics3", "ics4", "ics5", "mk1", "mk2", "mk3", "pbli1", "pbli2", "pbli3", "pcp1", "pcp2", "pcp3", "pppd1", "pppd2",  "sbp1"]
 
   #===================================================================================================================================================================
 
@@ -529,11 +558,15 @@ module CompetenciesHelper
       end
       class_mean_comp_hash = {}
       temp_comp_hash.each do |k,v|
-        class_mean = (v/students_comp.count.to_f).round(0)
-        if class_mean > 100
-          class_mean_comp_hash[k] = 100
-        else
-          class_mean_comp_hash[k] = class_mean
+        if students_comp.empty?
+          class_mean_comp_hash[k] = 0
+        elsif
+          class_mean = (v/students_comp.count.to_f).round(0)
+          if class_mean > 100
+            class_mean_comp_hash[k] = 100
+          else
+            class_mean_comp_hash[k] = class_mean
+          end
         end
       end
       return class_mean_comp_hash
@@ -561,12 +594,18 @@ module CompetenciesHelper
         end
       end
       class_mean_comp_hash = {}
+
+
       temp_comp_hash.each do |k,v|
-        class_mean = (v/students_comp.count.to_f).round(0)
-        if class_mean > 100
-          class_mean_comp_hash[k] = 100
-        else
-          class_mean_comp_hash[k] = class_mean
+        if students_comp.empty?
+          class_mean_comp_hash[k] = 0
+        elsif
+            class_mean = (v/students_comp.count.to_f).round(0)
+            if class_mean > 100
+              class_mean_comp_hash[k] = 100
+            else
+              class_mean_comp_hash[k] = class_mean
+            end
         end
       end
       return class_mean_comp_hash
@@ -631,6 +670,18 @@ module CompetenciesHelper
       return epa
     end
 
+    def hf_epa2_new(comp_data)
+      epa = {}
+      NEW_EPA_ARRAY.each do |epa_code|
+          temp_percent = 0
+          EPA_NEW[epa_code].each do |c|
+            temp_percent = temp_percent + comp_data[c]
+          end
+          epa[epa_code] = (temp_percent/EPA_NEW[epa_code].count.to_f).round(0)
+      end
+      return epa
+    end
+
     def get_4_random_colors
       color_array = []
       for j in 0..12
@@ -638,6 +689,7 @@ module CompetenciesHelper
       end
       return color_array
     end
+
     def domain_colors2 in_series
       temp_arry = []
       temp_data = {}
@@ -700,6 +752,97 @@ module CompetenciesHelper
       return temp_arry
     end
 
+    def hf_create_spider_chart(type, series1, series2, student_name)
+      data_series1 = series1.values
+      data_series2 = series2.values
+      categories = series2.keys.map{|c| c.upcase}
+
+          title = "NEW EPA (Working Progress)"
+
+          chart = LazyHighCharts::HighChart.new('graph') do |f|
+            f.title(text: "#{title} for " + "<i>#{student_name}" + '</i>'.html_safe, x: -100)
+            #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+            f.pane({
+                size: '100%'
+            })
+
+            f.xAxis(categories: categories,
+              labels: {
+                  style:  {
+                              fontWeight: 'bold',
+                              color: '#000000',
+                              fontSize: '14px'
+                          }
+                }
+            )
+
+            f.yAxis [
+               { tickInterval: 20,
+                 title: {
+                  style:  {
+                             fontWeight: 'bold',
+                             color: '#000000',
+                             fontSize: '14px'
+                           }
+                 }
+               }
+            ]
+
+            f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
+
+            if type == 'EPA NEW'
+                f.series(name: "Class Mean", yAxis: 0, color: 'lime', data: data_series2)
+            elsif type != "EPA"
+                f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
+                  color: 'black',
+                  marker: { symbol: 'diamond' })
+            else
+              f.series(name: "Class Mean", yAxis: 0, color: 'lime', data: data_series2)
+            end
+            # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
+            #f.colors(get_4_random_colors)
+
+            f.yAxis [
+               {
+                 gridLineInterpolation: 'polygon',
+                 lineWidth: 0,
+                 min: 0,
+                 max: 100,
+                 tickInterval: 20
+               }
+            ]
+            f.plot_options(
+
+              column: {
+                  dataLabels: {
+                      enabled: true,
+                      crop: false,
+                      overflow: 'none'
+                  }
+              },
+              scatter: {
+                  dataLabels: {
+                      enabled: true,
+                      crop: false,
+                      overflow: 'none'
+                  }
+              },
+              series: {
+                cursor: 'pointer'
+
+              }
+            )
+
+            f.legend(align: 'center', verticalAlign: 'bottom', y: 0, x: 0)
+            f.chart({
+                      polar: true,
+                      type: 'column'
+                    })
+          end
+
+          return chart
+    end
+
     def hf_create_chart (type, series1, series2, student_name)
       data_series1 = series1.values
       data_series2 = series2.values
@@ -707,11 +850,13 @@ module CompetenciesHelper
 
       if type == "EPA"
         title = "EPA"
+      elsif type == "EPA NEW"
+        title = "NEW EPA Milestone"
       elsif type.include? "FoM"
         title = type
       elsif type.include? "New"
         data_series1 = domain_colors2(data_series1)
-        title = "<b>New Competency (Working Progress!)</b>"
+        title = "<b>New Competency Milestone</b>"
       else
         data_series1 = domain_colors(data_series1)
         title = "Competency"
@@ -724,20 +869,24 @@ module CompetenciesHelper
               labels: {
                   style:  {
                               fontWeight: 'bold',
-                              color: '#000000'
+                              color: '#000000',
+                              fontSize: '14px'
                           }
                 }
             )
             f.series(name: "#{student_name}", yAxis: 0, data: data_series1)
-            if type != "EPA"
-              f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
-                color: 'black',
-                marker: { symbol: 'diamond' })
+
+            if type == 'EPA NEW'
+                f.series(name: "Class Mean", yAxis: 0, color: 'gray', data: data_series2)
+            elsif type != "EPA"
+                f.series(name: "Class Mean", yAxis: 0, data: data_series2, type: 'scatter',
+                  color: 'black',
+                  marker: { symbol: 'diamond' })
             else
-              f.series(name: "Class Mean", yAxis: 0, color: 'gray', data: data_series2)
+              f.series(name: "Class Mean", yAxis: 0, color: 'lime', data: data_series2)
             end
             # ["#FA6735", "#3F0E82", "#1DA877", "#EF4E49"]
-            f.colors(get_4_random_colors)
+            #f.colors(get_4_random_colors)
 
             f.yAxis [
                { max: 100,

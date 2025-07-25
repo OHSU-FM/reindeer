@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_resources
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  respond_to :js, :json, :html, :ics
 
   include EventsHelper
   include AdvisorsHelper
@@ -12,11 +13,16 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     # advisor wants to see other advisor's appointment
-    @events = Event.where('start_date > ?', DateTime.now)  #.order(start_date: :desc)
+
     advisor = Advisor.find_by(email: current_user.email)
     if !advisor.nil?
       @advisor_name = advisor.name
+      @events = Event.where('start_date > ? and advisor_id=? and user_id is null', DateTime.now, advisor.id)  #.order(start_date: :desc)
+    else
+      @events = Event.where('start_date > ? and user_id is null', DateTime.now)  #.order(start_date: :desc)
     end
+
+
     #   @events = Event.where('advisor_id=? and start_date > ?', advisor.id, DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
     # else
     #   @events = Event.where('start_date > ?', DateTime.now).order(start_date: :desc) #.paginate(:page => params[:page], :per_page => 10)
@@ -131,10 +137,13 @@ class EventsController < ApplicationController
       @weekly_recurrences = params[:weekly_recurrences]
       session[:advisor_type] = @advisor_type
       session[:advisor] = @advisor
-
+      if params[:time_interval].present?
+        @time_interval = params[:time_interval]
+      else
+        @time_interval = nil
+      end
       #@appointments = Event.enumerate_hours(params[:start_date], params[:end_date], params[:time_slot], @advisor_type, @weekly_recurrences)
-      @appointments = Event.enumerate_hours2(params[:startDate1], params[:endDate1], params[:time_slot], @advisor_type, @weekly_recurrences)
-
+      @appointments = Event.enumerate_hours2(params[:startDate1], params[:endDate1], params[:time_slot], @advisor_type, @weekly_recurrences, @time_interval)
       respond_to do |format|
         #format.html
         format.js { render action: 'display_batch_appointments', status: 200 }
@@ -195,8 +204,6 @@ class EventsController < ApplicationController
       end
       flash.alert = notice_msg
     end
-
-
     respond_to do |format|
       format.html { redirect_to action: "index", notice: notice_msg, status: 200}
       format.json
@@ -205,7 +212,10 @@ class EventsController < ApplicationController
 
   def save_all
     @appointments = JSON.parse(params[:appointments])
-
+    i = 0
+    cal = Icalendar::Calendar.new
+    today_date = ""
+    advisor_name = ""
     @appointments.each do |appointment|
       data = appointment.split("|")
       start_date = hf_format_datetime(data[0])
@@ -224,8 +234,8 @@ class EventsController < ApplicationController
 
       if data[3] == 'Step1'
         description = 'Academic: Step 1 Advising' + " - " + advisor.name
-      elsif data[3] == 'Remed'
-        description = 'Academic: Remediation Support' + " - " + advisor.name
+      # elsif data[3] == 'Remed' commented out on 5/23/2025
+      #   description = 'Academic: Remediation Support' + " - " + advisor.name
       else
         description = data[3] + " Advisor - " + advisor.name
       end
@@ -240,11 +250,60 @@ class EventsController < ApplicationController
         Event.where(title: title, description: description, start_date: Time.parse(start_date), end_date: Time.parse(end_date), advisor_id: advisor_id).first_or_create
         @notice_msg = 'Apppointments were successfully created!'
       end
-      flash.alert = @notice_msg
+
+       i += 1
+       event = Icalendar::Event.new
+       event.dtstart = Time.parse(start_date)
+       event.dtend = Time.parse(end_date)
+       event.summary = description
+       event.description = description
+       event.uid = "OASIS Meeting #{i}" # important for updating/canceling an event
+       event.sequence = Time.now.to_i # important for updating/canceling an event
+       cal.add_event(event)
+       cal.publish
+
+       today_date = Time.parse(end_date).strftime("%Y_%m_%d")
+       advisor_name = advisor.name.gsub(", ", "_")
+       flash.alert = @notice_msg
+    end
+    filename  = "#{Rails.root}/public/oasis/ics/#{today_date}-#{advisor_name}_calendar.ics"
+
+    File.open(filename, 'w'){|f| f << cal.to_ical}
+
+    respond_to do |format|
+      format.html {render action: "index", notice: @notice_msg, status: 200}
+      format.json
+    end
+  end
+
+  def get_ics_files
+    if params[:ics_file].present?
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]
+    end
+  end
+
+  def download_file
+    if params[:file_name].present?
+      send_file  params[:file_name], type: 'text/calendar', disposition: 'download'
+    end
+  end
+
+  def purge_ics_files
+    if params[:ics_file].present?
+      @deleted_ics_files = []
+      today_date = Date.today.strftime("%Y_%m_%d")
+      @ics_files = Dir["#{Rails.root}/public/oasis/ics/*.#{params[:ics_file]}" ]
+      @ics_files.each do |file|
+        file_date = File.basename(file).split("-").first
+        if file_date < today_date
+          File.delete(file)
+          @deleted_ics_files.push file
+        end
+      end
     end
 
     respond_to do |format|
-      format.html {redirect_to action: "index", notice: @notice_msg, status: 200}
+      format.html
       format.json
     end
   end
@@ -327,7 +386,10 @@ class EventsController < ApplicationController
       @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and (description like 'Assist Dean%' or description like 'Step Delay%')",
         DateTime.now + 17.hours ).order(:start_date)
     elsif params[:advisor_type].include? "Academic"
-        if params[:advisor_type].include? "Academic: Step 1" or params[:advisor_type].include? "Academic: Remediation"
+        if params[:advisor_type].include? "Academic: Step 1" #or params[:advisor_type].include? "Academic: Remediation" commented out on 5/23/2025
+          @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
+            DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
+        elsif params[:advisor_type].include? "Career" or params[:advisor_type].include? "Career Advising"
           @events = Event.where("start_date - INTERVAL '7 hour' > ? and user_id is NULL and advisor_id is NOT NULL and advisor_id=? and description like ?",
             DateTime.now + 17.hours, params[:advisor_id].to_i,"#{params[:advisor_type]}%" ).order(:start_date)
         else
@@ -358,14 +420,19 @@ class EventsController < ApplicationController
 
       # commented out Step1 Advising on 9/14/2023 - requested by Erika and AA
       # uncommented out Step1 Advising on 12/7/2023 - requested by Erika and AA
-      # commented out step 1 advisiing on 4/23/2023 - requested by Erika and Career Advisor
+      # commented out step 1 advisiing on 1/28/2025 - requested by Erika and Career Advisor
      #@advisor_types.push 'Academic: Step 1 Advising'
-     @advisor_types.push 'Academic: Remediation Support'
+    #@advisor_types.push 'Academic: Remediation Support' commented out on 5/23/2025
+     #@advisor_types.push 'Career Advising: MS4 ERAS'
      @advisor_types.sort!
 
       @advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)
       @advisor_name ||= @advisors.map{|n| n.name if n.email==current_user.email}.compact
       advisor_type ||= @advisors.map{|n| n.advisor_type if n.email==current_user.email}.compact
+
+      @advisor = @advisors.map{|a| a if a.email==current_user.email}.compact
+
+
 
       if @advisor_name.empty?
         @all_advisor_names = @advisors.map{|n| n.name}.compact

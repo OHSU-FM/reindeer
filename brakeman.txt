@@ -1,0 +1,57 @@
+
+== Brakeman Report ==
+
+Application Path: /home/patrick/source/reindeer
+Rails Version: 7.1.2
+Brakeman Version: 6.1.2
+Scan Date: 2024-07-30 13:13:07 -0700
+Duration: 15.430318317 seconds
+Checks Run: BasicAuth, BasicAuthTimingAttack, CSRFTokenForgeryCVE, ContentTag, CookieSerialization, CreateWith, CrossSiteScripting, DefaultRoutes, Deserialize, DetailedExceptions, DigestDoS, DynamicFinders, EOLRails, EOLRuby, EscapeFunction, Evaluation, Execute, FileAccess, FileDisclosure, FilterSkipping, ForgerySetting, HeaderDoS, I18nXSS, JRubyXML, JSONEncoding, JSONEntityEscape, JSONParsing, LinkTo, LinkToHref, MailTo, MassAssignment, MimeTypeDoS, ModelAttrAccessible, ModelAttributes, ModelSerialize, NestedAttributes, NestedAttributesBypass, NumberToCurrency, PageCachingCVE, Pathname, PermitAttributes, QuoteTableName, Ransack, Redirect, RegexDoS, Render, RenderDoS, RenderInline, ResponseSplitting, RouteDoS, SQL, SQLCVEs, SSLVerify, SafeBufferManipulation, SanitizeConfigCve, SanitizeMethods, SelectTag, SelectVulnerability, Send, SendFile, SessionManipulation, SessionSettings, SimpleFormat, SingleQuotes, SkipBeforeFilter, SprocketsPathTraversal, StripTags, SymbolDoSCVE, TemplateInjection, TranslateBug, UnsafeReflection, UnsafeReflectionMethods, ValidationRegex, VerbConfusion, WeakRSAKey, WithoutProtection, XMLDoS, YAMLParsing
+
+== Overview ==
+
+Controllers: 46
+Models: 71
+Templates: 447
+Errors: 0
+Security Warnings: 4
+
+== Warning Types ==
+
+File Access: 2
+Remote Code Execution: 2
+
+== Warnings ==
+
+Confidence: Medium
+Category: File Access
+Check: FileAccess
+Message: Model attribute used in file name
+Code: File.open("#{Rails.root}/log/fom_exams/#{((File.basename(ActiveStorage::Attachment.find(Artifact.find(params[:id]).documents.first.id).blob.filename.to_s, File.extname(ActiveStorage::Attachment.find(Artifact.find(params[:id]).documents.first.id).blob.filename.to_s)) or ((((PermissionGroup.find(permission_group_id).title.split("(").last.gsub(")", "") + "_") + course_code) + "_") + component)) or ((((permission_group_id + "_") + course_code) + "_") + Artifact.find(params[:id]).content))}.log", "r")
+File: app/controllers/artifacts_controller.rb
+Line: 39
+
+Confidence: Medium
+Category: File Access
+Check: FileAccess
+Message: Model attribute used in file name
+Code: File.open("#{Rails.root}/log/fom_exams/#{((((PermissionGroup.find(permission_group_id).title.split("(").last.gsub(")", "") + "_") + course_code) + "_") + component)}.log", "w")
+File: app/helpers/fom_exams_helper.rb
+Line: 278
+
+Confidence: Medium
+Category: Remote Code Execution
+Check: Deserialize
+Message: `Marshal.load` called with model attribute
+Code: Marshal.load(Marshal.dump(Rails.cache.fetch("filter_manager/survey/sid=#{sid}/updated_at=#{RoleAggregate.where(:lime_survey_sid => sid).pluck(:updated_at).first.to_i}", :race_condition_ttl => 10) do  LimeSurvey.includes(:role_aggregate, :lime_groups => ([{ :lime_questions => ([:lime_answers]) }])).where(:sid => sid.to_i).first  end))
+File: app/helpers/ls_reports_helper.rb
+Line: 283
+
+Confidence: Medium
+Category: Remote Code Execution
+Check: UnsafeReflection
+Message: Unsafe reflection method `constantize` called on model attribute
+Code: "#{PermissionGroup.find(permission_group_id.to_i).title.split(" ").last.gsub(/[()]/, "")}Mspe".constantize
+File: app/helpers/reports_helper.rb
+Line: 87
+

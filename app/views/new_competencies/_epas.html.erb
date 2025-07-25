@@ -1,0 +1,51 @@
+<div class="row">
+
+  <div class="column w-50 p-0">
+    <div class="card">
+        <div class="card-body">
+          <% if !@student_epa.blank? %>
+            <% hf_GetNewEPA.each do |epa_code| %>
+              <% epa = hf_new_epa_level3_detail(@comp_new, epa_code, "3") %>
+                <div class="accordion" id="accordionEpaParent">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= epa_code %>" aria-expanded="false" aria-controls="collapse<%= epa_code %>">
+                        <div class="labels">
+                          <span><h5><%= epa_code.upcase %> - <%= hf_get_new_epa_desc(epa_code.upcase) %>
+                            <div id="EPA-Progress-<%= epa_code %>" class="start-progress comp-progress" comp-data-amount = "<%= @student_epa[epa_code] %>" >
+                                  <div id="EPA-<%= epa_code %>" class="comp-amount" style="width: <%= 100-@student_epa[epa_code] %>%"> </div>
+                            </div>
+                          </span>
+                        </div>
+                      </button>
+                    </h2>
+                    <div id="collapse<%= epa_code %>" class="accordion-collapse collapse" data-bs-parent="#accordionEpaParent">
+                      <div class="accordion-body">
+                        <%= render partial: "new_competencies/new_epa_assessors", locals: {:epa_code => epa_code, :epa => epa, :assessors => hf_new_epa_assessors} %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <br />
+              <h5 style="color:orange;"> No EPA/Competencies Data FOUND! </h5>
+              <hr>
+            <% end %>
+        </div>
+    </div>
+  </div>
+
+  <div class="column w-50 p-0">
+    <div class="card">
+        <div class="card-body">
+              <% new_epas_graph = hf_wba_graph(@new_epas, @user, "NewEPAs") %>
+              <%= high_chart("new_epas_graph", new_epas_graph) %>
+        </div>
+    </div>
+
+    <%= render partial: "epa_badges" %>
+        
+  </div>
+
+</div>

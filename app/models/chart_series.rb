@@ -1,6 +1,6 @@
 class ChartSeries < ActiveRecord::Base
 
-  serialize :question_options_filter, Array
+  serialize :question_options_filter, type: Array
 
   belongs_to :chart, :inverse_of=>:chart_series
 

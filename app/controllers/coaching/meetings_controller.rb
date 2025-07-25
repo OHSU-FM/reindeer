@@ -12,6 +12,10 @@ module Coaching
       if params[:time_slot].present? and params[:startDateRetro].present? # params[:startDate1].present?
         #@meeting.advisor_discussed.delete_if(&:blank?)    # 11/16/2021 - comment these 2 lines f code, hopefully, it will eliminate the error of Meeting serialization
         #@meeting.advisor_outcomes.delete_if(&:blank?)
+        if params[:graduated_student].present?
+          @meeting.graduated_student = true
+        end
+
 
         end_date = (params[:startDateRetro].to_datetime + params[:time_slot].to_i.minutes).utc.strftime("%Y/%m/%d %I:%M %p - %A")
         start_date = params[:startDateRetro].to_datetime.utc.strftime("%Y/%m/%d %I:%M %p - %A")
@@ -49,6 +53,12 @@ module Coaching
         @meeting.event_id = event.id
       # else
       #   @meeting.event_id = params[:event_id]
+      end
+
+      if current_user.coaching_type == 'student'
+        if current_user.spec_program.include? 'Graduated'
+          @meeting.graduated_student = true
+        end
       end
 
       respond_to do |format|
@@ -133,17 +143,17 @@ module Coaching
     def meeting_params
       params.require(:coaching_meeting)
       .permit(:advice_category, :notes, :location, :date, :m_status, :user_id, :advisor_type, :advisor_id, :event_id,  :academic_discussed_other, :academic_outcomes_other,
-        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes, :uworld_info,
+        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes, :uworld_info, :graduated_student,
         subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [],
         nbme_form: [:nbme_form_1, :nbme_score_1, :nbme_date_completed_1, :nbme_form_2, :nbme_score_2, :nbme_date_completed_3, :nbme_form_3, :nbme_score_3, :nbme_date_completed_3],
-        qbank_info: [] )
+        qbank_info: [])
       # .permit( :notes,  :date, :m_status, :user_id, :advisor_type,
       #   :advisor_id, :event_id)
     end
 
     def meeting_update_params
       params.permit(:id, :advice_category, :m_status, :notes, :advisor_type, :advisor_id, :event_id, :academic_discussed_other, :academic_outcomes_other,
-        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes,
+        :career_discussed_other, :career_outcomes_other, :study_resources_other, :advisor_notes, :graduated_student,
         subject: [], advisor_outcomes: [], advisor_discussed: [], study_resources: [])
     end
 

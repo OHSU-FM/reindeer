@@ -166,24 +166,27 @@ module WbaGraphsHelper
   end
 
   def cohort_title(permission_group_id)
-    case permission_group_id
-      when 6
-        return 'Med20'
-      when 13
-        return 'Med21'
-      when 16
-        return 'Med22'
-      when 17
-        return 'Med23'
-      when 18
-        return 'Med24'
-      when 19
-        return 'Med25'
-      when 20
-        return 'Med26'
-      else
-        return nil
-    end
+
+    cohort_title = PermissionGroup.find(permission_group_id).title.split(" ").last.gsub(/[()]/, "")
+    return cohort_title
+    # case permission_group_id
+    #   when 6
+    #     return 'Med20'
+    #   when 13
+    #     return 'Med21'
+    #   when 16
+    #     return 'Med22'
+    #   when 17
+    #     return 'Med23'
+    #   when 18
+    #     return 'Med24'
+    #   when 19
+    #     return 'Med25'
+    #   when 20
+    #     return 'Med26'
+    #   else
+    #     return nil
+    # end
 
   end
 
@@ -246,7 +249,8 @@ module WbaGraphsHelper
 
   def hf_get_categories
     [
-      ["EPA"],
+      ["EPA <= Med25"],
+      ["EPA >= Med26"],
       ["Clinical Discipline"],
       ["Clinical Setting"],
       ["Clinical Assessor"],
@@ -303,13 +307,43 @@ module WbaGraphsHelper
     return temp_hash
   end
 
+  def get_extra_epas
+    epa_codes_new_extra = []
+    epa_codes_new_extra.push "EPA1A&1B"
+    temp_epa_codes_new = hf_epa_codes_new
+    epa_codes_new_extra = epa_codes_new_extra + temp_epa_codes_new
+    epa_codes_new_extra.push "EPA12"
+    epa_codes_new_extra.push "EPA13"
+    return epa_codes_new_extra
+  end
+
   def get_epa_involvement_by_student_assessed(user_id)
+    #epa_student = Epa.where(user_id: user_id).group(:epa, :involvement).order(:epa).count
+    return nil if user_id.nil?
+
+    user = User.find(user_id)
+    if user.permission_group_id <= 19  # <= Med25
+      epa_codes = []
+      (1..13).each do |j|
+        epa_codes.push "EPA#{j}"
+      end
+    elsif user.permission_group_id >= 20 && user.permission_group_id <= 22 && user.new_competency  # Med26, Med27 & Med28
+        epa_codes = get_extra_epas
+    elsif user.permission_group_id >= 23 && user.new_competency  # >= Med29
+        epa_codes = hf_epa_codes_new
+    else
+      epa_codes = []
+      (1..13).each do |j|
+        epa_codes.push "EPA#{j}"
+      end    
+    end
     epa_student = Epa.where(user_id: user_id).group(:epa, :involvement).order(:epa).count
-    if epa_student.empty?
+    if epa_student.empty? or epa_student.nil?
        return nil
     end
+
     epa = {}
-    (1..13).each do |j|
+    epa_codes.each do |j|
         temp_involve = []
         (1..4).each do |k|
            temp_epa = "EPA" + j.to_s
@@ -326,13 +360,37 @@ module WbaGraphsHelper
     (1..13).each do |j|
         temp_involve = []
         (1..4).each do |k|
-           temp_data = Epa.where(epa: "EPA#{j}", involvement: k).count
-           temp_involve.push temp_data
+           #count_involve = Epa.where(epa: "EPA#{j}", involvement: k).count
+           count_involve = User.where("permission_group_id >= 16 and permission_group_id < 20").joins(:epas).where("epa=? and involvement=?", "EPA#{j}", k).count
+           temp_involve.push count_involve
         end
         epa["EPA#{j}"] = temp_involve
     end
     return epa
   end
+
+  def get_epa_involvement_new
+    epa_hash = {}
+    epa_codes_new_extra = []
+    epa_codes_new_extra.push "EPA1A&1B"
+    temp_epa_codes_new = hf_epa_codes_new
+    epa_codes_new_extra = epa_codes_new_extra + temp_epa_codes_new
+    epa_codes_new_extra.push "EPA12"
+    epa_codes_new_extra.push "EPA13"
+
+    epa_codes_new_extra.each do |epa|
+        temp_involve = []
+        (1..4).each do |k|
+           #count_involve = Epa.where(epa: "EPA#{j}", involvement: k).count
+           count_involve = User.where("permission_group_id >= 20 and permission_group_id <= 22").joins(:epas).where("epa=? and involvement=?", "#{epa}", k).count
+           temp_involve.push count_involve
+        end
+        epa_hash[epa] = temp_involve
+    end
+    return epa_hash
+  end
+
+
     #
     # [
     #     {name: categories[0], y: 486, color: '#63BBFF'},
@@ -375,17 +433,19 @@ module WbaGraphsHelper
 
   end
 
-  def hf_series_data_student(in_category, params_id, pie_graph)  #params_id = could be email or user_id
+  def hf_series_data_student(in_category, user_id, pie_graph)  #params_id = could be email or user_id
     if in_category == "EPA"
-      epas_hash = get_epa_involvement_by_student_assessed(params_id)
+      epas_hash = get_epa_involvement_by_student_assessed(user_id)
       if !epas_hash.nil?
         categories = epas_hash.keys
         data_series = epas_hash.values.transpose
         create_chart(data_series, in_category, categories)
       end
+  #  elsif in_category == 'EPA >= Med26'
+
     elsif in_category == "Clinical Assessor"
       clinical_assessor = Epa.distinct.pluck(:clinical_assessor).sort
-      clinical_assessor_hash = get_involvement_student(clinical_assessor, 'clinical_assessor', params_id)
+      clinical_assessor_hash = get_involvement_student(clinical_assessor, 'clinical_assessor', user_id)
 
       if clinical_assessor_hash.values.flatten.sum != 0
         categories = clinical_assessor_hash.keys
@@ -404,10 +464,15 @@ module WbaGraphsHelper
     categories = []
     data_series = []
 
-    if in_category =="EPA"
+    if in_category =="EPA <= Med25"
       epa = get_epa_involvement
       categories = epa.keys
       data_series = epa.values.transpose
+    elsif in_category == 'EPA >= Med26'
+      epa = get_epa_involvement_new
+      categories = epa.keys
+      data_series = epa.values.transpose
+
     elsif in_category == "Clinical Discipline"
           clinical_discipline = Epa.distinct.pluck(:clinical_discipline).sort
           clinical_discipline_hash = get_involvement(clinical_discipline, 'clinical_discipline')
@@ -544,12 +609,20 @@ module WbaGraphsHelper
 
      if in_category == "EPA"
        height = 400
+       req_str = "<b>Requirement: At Least 2 WBAs for each EPA</b>"
+     elsif in_category == "EPA <= Med25"
+       height = 400
+       req_str = "Note: WBAs for Med22 to Med25 only."
+     elsif in_category == "EPA >= Med26"
+       height = 400
+       req_str = "Note: WBAs for Med26, Med27 & Med28 only"
      else
        height = 600
+       req_str = "<b>Requirement: At Least 51 Attendings</b>"
      end
 
     chart = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
+      f.title(text: "<b>Work Based Assessment Datapoints - #{in_category}</b>" + '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>' + "<br>" + req_str)
       #f.subtitle(text: '<br />Total # of WBAs: <b>' + total_wba_count.to_s + '</b>')
       f.xAxis(categories: categories,
               labels: {
@@ -613,7 +686,7 @@ module WbaGraphsHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1400, height: height,
+                width: 1300, height: height,
                 plotBackgroundImage: ''
               })
     end

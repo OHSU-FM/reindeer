@@ -13,15 +13,15 @@
 
                 <div id="advisor_type" data-advisor_type="<%= meeting.advisor_type %>" </div>
 
-                <% if meeting.advisor_type == 'Career' %>
+                <% if meeting.advisor_type.include? 'Career' or meeting.advisor_type.include? "ERAS" %>
                   <% select_options = hf_career_primary_for_select%>
-                <% elsif meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Remediation Support' %>
+                <% elsif meeting.advisor_type.include? 'Academic' or meeting.advisor_type == 'Academic: Remediation Support' %>
                   <% select_options = hf_academic_primary_for_select %>
                 <% elsif meeting.advisor_type == 'Academic: Step 1 Advising' %>
                     <% select_options = hf_academic_primary_step1_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                   <% select_options = hf_wellness_primary_for_select %>
-                <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                <% elsif meeting.advisor_type == 'DEIB'  %>
                   <% select_options = hf_diversity_navigator_for_select %>
                 <% elsif meeting.advisor_type == 'Assist Dean'  %>
                   <% select_options = hf_assist_dean_for_select %>
@@ -40,7 +40,7 @@
           </div>
     </div>
 
-    <% if meeting.advisor_type != 'Diversity Navigator'  %>
+    <% if meeting.advisor_type != 'DEIB'  %>
       <div class="accordion" id="accordionParentFour">
         <div class="accordion-item">
           <h2 class="accordion-header">
@@ -72,13 +72,13 @@
          </h2>
          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionParentTwo">
            <div class="accordion-body">
-             <% if meeting.advisor_type == 'Career' %>
+             <% if meeting.advisor_type.include? 'Career' or meeting.advisor_type.include? "ERAS" %>
                <% advisor_subjects = hf_career_advisor_discussed_for_select %>
-             <% elsif meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support'%>
+             <% elsif meeting.advisor_type.include? 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support'%>
                <% advisor_subjects = hf_academic_advisor_discussed_for_select %>
              <% elsif meeting.advisor_type == "Wellness" %>
                  <% advisor_subjects = hf_wellness_advisor_discussed_for_select %>
-             <% elsif meeting.advisor_type == "Diversity Navigator" %>
+             <% elsif meeting.advisor_type == "DEIB" %>
                <% advisor_subjects = hf_diversity_navigator_discussed_for_select %>
              <% elsif meeting.advisor_type == "Assist Dean" %>
                <% advisor_subjects = hf_assist_dean_for_select %>
@@ -90,9 +90,9 @@
                  <b> <%= b.text %> </b>
                </label> <br />
             <% end %>
-            <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support' %>
+            <% if meeting.advisor_type.include? 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising' or meeting.advisor_type == 'Academic: Remediation Support' %>
                <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
-            <% elsif meeting.advisor_type == "Career" %>
+            <% elsif meeting.advisor_type.include? "Career" %>
                <%= text_field_tag :career_discussed_other, meeting.career_discussed_other, id: 'career_discussed_other' %>
             <% else %>
                <%= text_field_tag :academic_discussed_other, meeting.academic_discussed_other, id: 'academic_discussed_other' %>
@@ -101,7 +101,7 @@
         </div>
       </div>
     </div>
-  <% if meeting.advisor_type != 'Diversity Navigator'  %>
+  <% if meeting.advisor_type != 'DEIB'  %>
     <div class="accordion" id="accordionParentThree">
       <div class="accordion-item">
         <h2 class="accordion-header">
@@ -112,13 +112,13 @@
         <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionParentThree">
           <div class="accordion-body">
             <div>
-                <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
+                <% if meeting.advisor_type.include? 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
                     <% advisor_outcomes = hf_meeting_ipas_for_select %>
-                <% elsif meeting.advisor_type == 'Career'  %>
+                <% elsif meeting.advisor_type.include? 'Career'  %>
                     <% advisor_outcomes = hf_meeting_ipps_for_select %>
                 <% elsif meeting.advisor_type == 'Wellness'  %>
                     <% advisor_outcomes = hf_wellness_advisor_discussed_for_select %>
-                <% elsif meeting.advisor_type == 'Diversity Navigator'  %>
+                <% elsif meeting.advisor_type == 'DEIB'  %>
                     <% advisor_outcomes = hf_diversity_navigator_for_select%>
                 <% elsif meeting.advisor_type == 'Assist Dean'  %>
                     <% advisor_outcomes = hf_assist_dean_for_select%>
@@ -133,9 +133,9 @@
                   </label><br />
                <% end %>
             </div>
-             <% if meeting.advisor_type == 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
+             <% if meeting.advisor_type.include? 'Academic' or meeting.advisor_type == 'Academic: Step 1 Advising'  or meeting.advisor_type == 'Academic: Remediation Support' %>
                 <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other' %>
-              <% elsif meeting.advisor_type == "Career" %>
+              <% elsif meeting.advisor_type.include? "Career" %>
                   <%= text_field_tag :career_outcomes_other, meeting.career_outcomes_other, id: 'career_outcomes_other' %>
               <% else %>
                 <%= text_field_tag :academic_outcomes_other, meeting.academic_outcomes_other, id: 'academic_outcomes_other'  %>
@@ -166,8 +166,18 @@
   </div>
   <div><i>Advisor Type: <b><%= meeting.advisor_type.to_s %> </b></i></div>
   <div><i>Advisor: <b><%= hf_get_advisor_name(meeting.advisor_id) %> </b></i></div>
-  <% start_date = hf_get_start_time(meeting.event_id) %>
-  <div><i>Appt Start Date: <%= start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></i></div>
+  <% if meeting.advisor_id != 14 ## old coach has no events %>
+    <% start_date = hf_get_start_time(meeting.event_id) %>
+    <div><i>Appt Start Date: <%= start_date.strftime("%m/%d/%Y %I:%M %p - %A") %></i></div>
+  <% else %>
+      <div><i>Appt Start Date: <%= meeting.date.strftime("%m/%d/%Y %I:%M %p - %A") %></i></div>
+  <% end %>
+
+  <% if meeting.graduated_student %>
+    <div><i>Met with Graduated Student? <b>YES </b></i></div>
+  <% else %>
+    <div><i>Met with Graduated Student? <b>NO </b></i></div>
+  <% end %>
   <%= button_tag "Save/Complete Advisor Documentation", class: "btn btn-primary", id: "SaveMeeting", remote: true,  data: { meetingId: meeting.id } %>
 </div>
 <% if current_user.admin_or_higher? %>

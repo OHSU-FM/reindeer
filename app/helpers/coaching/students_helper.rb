@@ -90,7 +90,12 @@ module Coaching::StudentsHelper
       if student.coaching_type == 'student'
         no_of_wbas = student.epas.where.not(involvement: 0).count.to_s
         no_of_badges = student.epa_masters.where('status = ? and updated_at < ?','Badge', hf_releaseDate(student)).count.to_s
-        return ("Student: #{@student.full_name} - #{hf_get_cohort(@student)} " +
+        if student.spec_program.include? "Graduated"
+          grad_text = "[Graduated]"
+        else
+          grad_text = ""
+        end
+        return ("Student: #{@student.full_name} - #{hf_get_cohort(@student)} #{grad_text}" +
                "<span style='font-size:20px;color:black'> (Total # of WBAs: <b>#{no_of_wbas}</b> " +
                "out of 100 & Total # of Badges Awarded: <b>#{no_of_badges}</b> out of 13)</span>").html_safe
       else
@@ -105,8 +110,12 @@ module Coaching::StudentsHelper
 
   def hf_get_full_name(user_id)
       user = User.find(user_id)
-      permission_group_title = user.permission_group.title.scan(/\((.*)\)/).first.first
-      return user.full_name, permission_group_title
+      permission_group_title = user.permission_group.title
+      if !permission_group_title.scan(/\((.*)\)/).empty?
+        return user.full_name, permission_group_title.scan(/\((.*)\)/).first.first
+      else
+        return user.full_name, permission_group_title
+      end
   end
 
   def hf_get_advisor_name(meetings)
@@ -115,7 +124,10 @@ module Coaching::StudentsHelper
     end
     new_meetings = {}
     meetings.each do |key, value|
-      new_meetings.store("#{Advisor.find(key).name}", value)
+      advisor = Advisor.find_by(id: key, status: 'Active')
+      if !advisor.nil?
+        new_meetings.store(advisor.name, value)
+      end
     end
     new_meetings.delete("Coach")
     return new_meetings.sort_by(&:zip)
@@ -138,7 +150,7 @@ module Coaching::StudentsHelper
       elsif key.first.include? "Career"
         new_hash = {color: '#89A54E', y: val }
         new_series.push new_hash
-      elsif key.first.include? "Diversity"
+      elsif key.first.include? "DEIB"
         new_hash = {color: '#3D96AE', y: val }
         new_series.push new_hash
       elsif key.first.include? "Wellness"
@@ -193,7 +205,7 @@ module Coaching::StudentsHelper
       #f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
       f.chart({
                 defaultSeriesType: "column",
-                width: 1400, height: 700,
+                width: 1300, height: 650,
                 plotBorderWidth: 0,
                 borderWidth: 0,
                 plotShadow: false,

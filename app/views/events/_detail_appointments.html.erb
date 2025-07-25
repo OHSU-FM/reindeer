@@ -1,5 +1,5 @@
 <% if !appointments.nil? %>
-  <table class="responsive nowrap table table-hover" data-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
+  <table class="responsive nowrap table table-hover" data-bs-toggle="table" id="dttb-events" data-sort="true" data-url="<%= url_for(format: :json) %>">
     <thead>
       <tr>
         <th data-data="title">Title</th>
@@ -9,7 +9,7 @@
         <th data-data="check_all">
           <%= check_box_tag "check_all", "check_all", true %> Check All
         </th>
-        <th data-data="url" data-orderable="false" data-class-name="all" data-searchable="false" class="skip-export" width="100px"></th>
+        <th data-data="url" data-orderable="true" data-class-name="all" data-searchable="true" class="skip-export" width="100px"></th>
       </tr>
     </thead>
     <% i = 0 %>
@@ -62,11 +62,7 @@
             </td>
           <% end %>
         </tr>
-
-
     <% end %>
-
   </table>
-
   <button id="SaveAll" class="btn btn-primary">Save All</button>
 <% end %>

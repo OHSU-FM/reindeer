@@ -12,7 +12,7 @@ class PermissionGroup < ActiveRecord::Base
   validates_associated :permission_ls_groups
   validates :title, presence: true, uniqueness: true
 
-  serialize :pinned_survey_group_titles, Array
+  serialize :pinned_survey_group_titles, type: Array
 
   rails_admin do
     navigation_label 'Permissions'

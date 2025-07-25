@@ -258,13 +258,25 @@ if (badge_decision1 === "Badge" && badge_decision2 === "Badge") {
 // 									$('#col-reviewer1').addClass("visible");
 }
 
-
-
 var epa_json = []
 var EpaArray = ["EPA1", "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11", "EPA12", "EPA13"]
+var EpaNewArray = ["EPA1A", "EPA1B",  "EPA2", "EPA3", "EPA4", "EPA5", "EPA6", "EPA7", "EPA8", "EPA9", "EPA10", "EPA11"]
+
+// var EpaNewArray = ["EPA1A-History", "EPA1B-Physical Exam", "EPA2-differential", "EPA3-Interpret", "EPA4-Orders",
+//                   "EPA5-documentation", "EPA6-Presentation", "EPA7-Evidence", "EPA8-Handover", "EPA9-Interprofessional",
+//                   "EPA10-Urgent", "EPA11-Shared Decision Making"]
+
 var contextMenuItems = {};
-for (var i = 0, l = EpaArray.length; i < l; i++) {
-    contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "fa-copy" };
+var epa = $("#epaCount").val();
+if (epa == 12) {
+  for (var i = 0, l = EpaNewArray.length; i < l; i++) {
+      contextMenuItems[EpaNewArray[i]] = {name: EpaNewArray[i], icon: "fa-copy" };
+  }
+}
+else {
+  for (var i = 0, l = EpaArray.length; i < l; i++) {
+      contextMenuItems[EpaArray[i]] = {name: EpaArray[i], icon: "fa-copy" };
+  }
 }
 ///contextMenuItems["sep1"] = "---------";
 //contextMenuItems["save"] = {name: "Save", icon: "fa-save"};
@@ -324,7 +336,10 @@ $(function() {
 
              console.log ("key clicked: " + m);
              var selectedText = window.getSelection().toString();
-             var parentid = window.getSelection().anchorNode.parentElement.id;   //anchorNode.parentElement.id;  focusNode.parentElement.id;
+             var parentid = window.getSelection().anchorNode.parentElement.id;  //focusNode.parentElement.id; ==> works!
+             if (!parentid) {
+               parentid = window.getSelection().focusNode.parentElement.id;
+             }
 
              console.log("course_name with parentid: " + $('#' + parentid).data('course-name'));
 

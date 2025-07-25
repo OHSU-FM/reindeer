@@ -100,7 +100,6 @@ class CompetenciesController < ApplicationController
     ## getting WPAs
      @epas, @epa_hash, @epa_hash_dates, @epa_evaluators, @unique_evaluators, @selected_dates, @selected_student, @total_wba_count = hf_get_epas(email)
 
-
      if !@epas.blank?
        gon.epa_adhoc = @epa_hash #@epa_adhoc
        gon.epa_adhoc_dates = @epa_hash_dates
@@ -115,9 +114,14 @@ class CompetenciesController < ApplicationController
      preceptor_assesses = PreceptorAssess.where(user_id: @selected_user).load_async.map(&:attributes)
      @preceptor_assesses = hf_collect_values(preceptor_assesses)
 
-     @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
-     @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
+     if @selected_user.permission_group_id >= 19  ## greater than Med25
+       @formative_feedbacks_qualtrics =  FormativeFeedback.where("user_id=? and csa_code not like ? and response_id like 'R_%' ",
+         @selected_user.id, "%Informatics%").order(:submit_date).map(&:attributes)
+     else
+       @csl_data = hf_get_csl_datasets(@selected_user, 'CSL Narrative Assessment')
+     end
 
+     @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
      if @selected_user.permission_group_id >= 16
        @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
        if @all_blocks.first.second.empty?  # to check component 1 is empty
@@ -184,9 +188,11 @@ class CompetenciesController < ApplicationController
         if @comp_unfiltered.empty?
           # get it from archived tables
           group_title = PermissionGroup.find(permission_group_id).title.scan(/\((.*)\)/).first.first
-          table_name = "#{group_title}Competency".constantize
-          #@comp_unfiltered = table_name.where(permission_group_id: permission_group_id).map(&:attributes)
-          @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+          # disabled the following to server rails server vulnerable - 7/30/2024 because of constantize
+          # table_name = "#{group_title}Competency".constantize
+          # @comp_unfiltered = table_name.joins(:user).where(permission_group_id: permission_group_id).load_async.map(&:attributes)
+
+          @comp_unfiltered = Competency.load_competency(group_title, permission_group_id)
         end
         @comp_class_mean = hf_competency_class_mean2(@comp_unfiltered)
         @comp_remap_class_mean = hf_competency_class_mean2_remap(@comp_unfiltered)
@@ -208,16 +214,19 @@ class CompetenciesController < ApplicationController
 
     #@comp_remap_class_mean = hf_remap_comp(@comp_class_mean)
 
-
     @chart ||= hf_create_chart('Competency', @comp_data_clinical, @comp_class_mean, full_name)
     @chart_comp_remap ||= hf_create_chart('New Competency', @comp_remap_data_clinical, @comp_remap_class_mean, full_name)
 
     @student_epa ||= hf_epa2(@comp_data_clinical)
-
     @epa_class_mean ||= hf_epa2(@comp_class_mean)
     @chart_epa ||= hf_create_chart('EPA', @student_epa, @epa_class_mean, full_name)
 
+    @student_epa_new ||= hf_epa2_new(@comp_remap_data_clinical)
+    @epa_class_mean_new ||= hf_epa2_new(@comp_remap_class_mean)
+    @chart_epa_new ||= hf_create_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
+    #@chart_epa_new ||= hf_create_spider_chart('EPA NEW', @student_epa_new, @epa_class_mean_new, full_name)
   end
+
 
   private
 

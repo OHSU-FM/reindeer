@@ -1,7 +1,7 @@
 
   <table>
     <tr>
-      <% if hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date)  #current_user.coaching_type != "student" %>
+      <% if !@student_badge_info["EPA#{i}"].nil? && hf_ok_to_release_badge(@student_badge_info["EPA#{i}"]["status_date"], @release_date)  #current_user.coaching_type != "student" %>
           <% if @student_badge_info["EPA#{i}"]["status"] == 'Badge' %>
                 <td><%= image_tag ("epa/EPA#{i}"), size: "100x80",  class: "img-responsive" , data: {imagezoom: "true" }%></td>
                 <td>&nbsp;&nbsp;</td>

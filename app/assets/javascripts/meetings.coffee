@@ -11,6 +11,15 @@ $ ->
     # else
     $('#coaching_meeting_advisor_id').empty()
     $('#coaching_meeting_advisor_id').append $('<option></option').attr('value', '').text('Please Choose Your Option')
+
+    # removed restriction on 10/7/2024
+    # advisorType = $('#coaching_meeting_advisor_type').val()
+    # if advisorType == 'Career'
+    #   permissioGroupID = $('#coaching_meeting_permission_group_id').val()
+    #   if permissioGroupID > 19
+    #     alert("Career Advisors are prioritizing MS4 ERAS and MS3 lottery needs at this time. If you are not a M25 or M26 student, please hold on scheduling appointments until October.")
+    #     return
+
     $('div[data-advisors]' ).each ->
       advisors = $(this).data('advisors')
       for key of advisors
@@ -19,9 +28,14 @@ $ ->
           if advisorType.includes("Step 1") or advisorType.includes("Remediation")
             if advisors[key].advisor_type.includes("Academic")
               $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+            else if advisors[key].advisor_type.includes(advisorType)
+              $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
+          else if advisorType.includes("ERAS")
+            advisorType = "Career"
+            $('#coaching_meeting_advisor_id').empty()
+            $('#advisor').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
           else if advisors[key].advisor_type.includes(advisorType)
-            $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name + ' - ' + advisors[key].specialty)
-
+            $('#coaching_meeting_advisor_id').append $('<option></option>').attr('value', advisors[key].id).text(advisors[key].name)
       #alert JSON.stringify(advisor)
       #$(this).text(advisor)
     #$('#coaching_meeting_advisor_id').val('')
@@ -101,6 +115,9 @@ careerPrimary = [
   'Transition to Residency – "Now that I’ve matched, advice for next steps before Residency',
   'Alternate Careers Advising – "After graduation, what options besides GME can I explore?"',
   'Scholarship Approval',
+  'Adjusting Intership/Residency',
+  'Planning for ERAS Reapplication',
+  'Career Mentoring'
 ]
 window.ajaxStatus = ""  #global var
 window.eventIdGlobal = ""
@@ -205,6 +222,7 @@ $(document).ready ->
       $("#email_notification").prop("checked", false)
       $("#email_notification").attr("disabled", true)
       $("#All-Events").empty()
+      $("#coaching_meeting_advisor_notes").val("Met with student.")
     return
 
   $("#coaching_meeting_advisor_id").prop("disabled", true)
@@ -313,7 +331,7 @@ $(document).ready ->
 
   advisorType = $(".advisors-type").data("advisor_type")
   console.log("advisor_type: " + advisorType)
-  if advisorType == 'Academic'
+  if advisorType == 'Academic' || advisorType == 'Academic/Student Affairs'
     data = academicPrimary
     dataResources = studyResources
   else if advisorType == 'Academic: Step 1 Advising'
@@ -321,11 +339,11 @@ $(document).ready ->
     dataResources = step1Resources
   else if advisorType == 'Academic: Remediation Support'
     data = remediationPrimary
-  else if advisorType == 'Career'
+  else if advisorType == 'Career' || advisorType == 'Career/Student Affairs'
     data = careerPrimary
   else if advisorType == 'Wellness'
     data = wellnessPrimary
-  else if advisorType == 'Diversity Navigator'
+  else if advisorType == 'DEIB'
     data = diversityNavigatorPrimary
   else if advisorType == 'Assist Dean'
     data = assistDeanPrimary
@@ -351,7 +369,7 @@ $(document).ready ->
   $('#coaching_meeting_advisor_type').change ->
     advisorType = $('#coaching_meeting_advisor_type').val()
     #alert("advisor_type: " + advisorType)
-    if advisorType == 'Academic'
+    if advisorType == 'Academic' || advisorType == 'Academic/Student Affairs'
       data = academicPrimary
       $('#study_resources').show()
       $('#practice_test_scores').hide()
@@ -367,7 +385,7 @@ $(document).ready ->
       data = wellnessPrimary
       $('#study_resources').hide()
       $('#practice_test_scores').hide()
-    else if advisorType == 'Diversity Navigator'
+    else if advisorType == 'DEIB'
       data = diversityNavigatorPrimary
       $('#study_resources').hide()
       $('#practice_test_scores').hide()
@@ -439,7 +457,7 @@ $(document).ready ->
 
       if (selectedAdvisorType == "Assist Dean") && (colAdvisor[1] == selectedAdvisorText[0])   #'Cantone, Rebecca' || colAdvisor[1] == 'Schneider, Benjamin')
         row.show()
-      else if ((colAdvisor[0].includes('Academic Advisor')) && (selectedAdvisorType == 'Academic') && (colAdvisor[1] == selectedAdvisorText[0]))
+      else if ((colAdvisor[0].includes('Academic Advisor')) && (selectedAdvisorType == 'Academic') && (selectedAdvisorType == 'Academic/Student Affairs')  && (colAdvisor[1] == selectedAdvisorText[0]))
         # console.log("** colAdvisor[0]: " + colAdvisor[0])
         # console.log("** selectedAdvisorType: " + selectedAdvisorType)
         row.show()

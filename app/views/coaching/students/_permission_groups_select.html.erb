@@ -1,4 +1,24 @@
 <div class="flex-child">
+
+  <div class="card">
+    <div class="card-header" id="YourStudents">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapseYourstudents" aria-expanded="true" aria-controls="collapseYourstudents">
+          <h4><i>Your Students</i><h4>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseYourstudents" class="collapse show" aria-labelledby="#YourStudents" data-parent="#accordion">
+      <div class="card-body">
+        <% @advisor_students.each do |student| %>
+          <%= link_to "#{student["title"].split(" ").last.gsub(/[()]/, "")}-#{student["full_name"]}:
+                #{pluralize(student["count"], 'meeting')}",
+                coaching_student_path(student["username"]) %> <br />
+        <% end %>
+      </div>
+    </div>
+  </div>
+
   <div id="accordion">
     <% @permission_groups.sort.each do |group| %>
       <div class="card">
@@ -24,24 +44,7 @@
       </div>
     <% end %>
 
-    <div class="card">
-      <div class="card-header" id="YourStudents">
-        <h5 class="mb-0">
-          <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#collapseYourstudents" aria-expanded="true" aria-controls="collapseYourstudents">
-            <h4><i>Your Students</i><h4>
-          </button>
-        </h5>
-      </div>
-      <div id="collapseYourstudents" class="collapse show" aria-labelledby="#YourStudents" data-parent="#accordion">
-        <div class="card-body">
-          <% @advisor_students.each do |student_id| %>
-            <% student = User.find(student_id) %>
-            <%= link_to "#{student.full_name}:
-                  #{pluralize(student.meetings.count, 'meeting')} - #{hf_get_cohort(student)}",
-                  coaching_student_path(student) %> <br />
-          <% end %>
-        </div>
-      </div>
-    </div>
+
+
   </div>
 </div>

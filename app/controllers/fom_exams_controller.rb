@@ -7,16 +7,20 @@ class FomExamsController < ApplicationController
   include ArtifactsHelper
   include CompetenciesHelper
 
-  def index
-    # user = User.find_by(uuid: params[:uuid])
-    # @artifacts = Artifact.where(user_id: user.id)
-    @artifacts = User.find_by(uuid: params[:uuid]).artifacts
+  # def index
+  #   # user = User.find_by(uuid: params[:uuid])
+  #   # @artifacts = Artifact.where(user_id: user.id)
+  #   @artifacts = User.find_by(uuid: params[:uuid]).artifacts
+  #
+  # end
 
+  def process_fom
+    @artifacts = User.find_by(uuid: params[:uuid]).artifacts
   end
 
   def list_all_blocks
     last_permission_group_id = PermissionGroup.last.id
-    @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-1).pluck(:permission_group_id, :course_code).sort
+    @list_all_blocks = FomLabel.where("permission_group_id >= ?", last_permission_group_id-2).pluck(:permission_group_id, :course_code).sort
     respond_to do |format|
       format.html
     end
@@ -113,6 +117,10 @@ class FomExamsController < ApplicationController
 
   end
 
+  # def show
+  #   display_fom
+  # end
+
   def display_fom
 
     if params[:uuid].present?  #current_user.admin_or_higher?
@@ -161,9 +169,10 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-
-         formative_feedbacks= FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ?", student.id, block_code, "%Informatics%").order(:response_id).map(&:attributes)
-         @formative_feedbacks = hf_collect_values(formative_feedbacks)
+         
+         @formative_feedbacks_orig = FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ? ", student.id, block_code, "%Informatics%").order(:submit_date).map(&:attributes)
+         @formative_feedbacks_qualtrics = @formative_feedbacks_orig.select{|feed| feed if feed["response_id"].start_with? 'R_'}.compact
+         @formative_feedbacks = hf_collect_values(@formative_feedbacks_orig)
 
          #@informative_feedbacks = FormativeFeedback.where(user_id: student.id, block_code: block_code).map(&:attributes)
          @informatics_feedbacks = FormativeFeedback.where("user_id=? and block_code=? and csa_code like ?", student.id, block_code, "%Informatics%").map(&:attributes)

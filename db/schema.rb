@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_10_151739) do
   create_schema "source"
   create_schema "target"
   create_schema "transform"
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "uuid-ossp"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -39,8 +39,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-<<<<<<< HEAD
-=======
   end
 
   create_table "active_storage_variant_records", force: :cascade do |t|
@@ -58,7 +56,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "title"
     t.string "specialty"
->>>>>>> dev/redei-portal_v5
+    t.string "formal_name"
+    t.text "brief_cv"
+
   end
 
   create_table "artifacts", force: :cascade do |t|
@@ -193,23 +193,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.boolean "resizeable", default: true
   end
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-  create_table "course_schedules", force: :cascade do |t|
-    t.bigint "course_id"
-    t.string "course_schedule"
-    t.date "start_date"
-    t.date "end_date"
-    t.integer "no_of_seats"
-    t.string "comment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["course_id"], name: "index_course_schedules_on_course_id"
-  end
-
->>>>>>> dev/redei-portal_v5
   create_table "courses", force: :cascade do |t|
     t.string "category"
     t.string "course_number"
@@ -251,7 +234,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.index ["user_id"], name: "index_cpxes_on_user_id"
   end
 
->>>>>>> dev/redei-portal_v5
+
   create_table "critical_values", primary_key: ["alpha", "df"], force: :cascade do |t|
     t.integer "df", null: false
     t.decimal "t", null: false
@@ -1056,6 +1039,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.unique_constraint ["email"], name: "med24_mspe_email_key"
   end
 
+  create_table "med25_mspes", primary_key: "sid", id: { type: :string, limit: 10 }, force: :cascade do |t|
+    t.string "email", limit: 50, null: false
+    t.string "full_name", limit: 50
+    t.bigint "user_id"
+    t.integer "permission_group_id"
+    t.index ["user_id"], name: "index_med25_mspes_on_user_id"
+    t.unique_constraint ["email"], name: "med25_mspe_email_key"
+  end
+
   create_table "medhub_period_ids", id: false, force: :cascade do |t|
     t.integer "courseID"
     t.integer "periodID"
@@ -1089,6 +1081,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.json "nbme_form"
     t.json "uworld_info"
     t.json "qbank_info"
+    t.boolean "graduated_student"
     t.index ["advisor_id", "id"], name: "index_meetings_on_advisor_id_and_id", unique: true
     t.index ["event_id", "id"], name: "index_meetings_on_event_id_and_id", unique: true
     t.index ["user_id"], name: "index_meetings_on_user_id"
@@ -1203,6 +1196,50 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.index ["subset_id", "entity_schema", "entity_name", "attribute_name", "value"], name: "ix_meta_attribute_values", unique: true
   end
 
+  create_table "new_competencies", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "permission_group_id"
+    t.string "student_uid"
+    t.string "email"
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "sbp1", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_group_id", "user_id", "id"], name: "idx_on_permission_group_id_user_id_id_9b61cec064", unique: true
+    t.index ["user_id", "id"], name: "index_new_competencies_on_user_id_and_id", unique: true
+  end
+
   create_table "permission_groups", id: :serial, force: :cascade do |t|
     t.text "title", null: false
     t.datetime "created_at", precision: nil
@@ -1230,6 +1267,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.index ["lime_survey_sid", "permission_group_id"], name: "uniq_sid_by_group", unique: true
+  end
+
+  create_table "precep_meetings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "student_sid"
+    t.string "student_name"
+    t.datetime "meeting_date"
+    t.string "meeting_notes"
+    t.string "meeting_with"
+    t.string "other_present"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_precep_meetings_on_user_id"
   end
 
   create_table "preceptor_assesses", force: :cascade do |t|
@@ -1327,6 +1377,75 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.integer "permission_group_id"
   end
 
+  create_table "temp_competencies", id: false, force: :cascade do |t|
+    t.bigint "id"
+    t.bigint "user_id"
+    t.bigint "permission_group_id"
+    t.string "student_uid"
+    t.string "email"
+    t.string "medhub_id"
+    t.string "course_name"
+    t.string "course_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.date "submit_date"
+    t.string "evaluator"
+    t.string "final_grade"
+    t.string "environment"
+    t.integer "ics1", limit: 2
+    t.integer "ics2", limit: 2
+    t.integer "ics3", limit: 2
+    t.integer "ics4", limit: 2
+    t.integer "ics5", limit: 2
+    t.integer "ics6", limit: 2
+    t.integer "ics7", limit: 2
+    t.integer "ics8", limit: 2
+    t.integer "mk1", limit: 2
+    t.integer "mk2", limit: 2
+    t.integer "mk3", limit: 2
+    t.integer "mk4", limit: 2
+    t.integer "mk5", limit: 2
+    t.integer "pbli1", limit: 2
+    t.integer "pbli2", limit: 2
+    t.integer "pbli3", limit: 2
+    t.integer "pbli4", limit: 2
+    t.integer "pbli5", limit: 2
+    t.integer "pbli6", limit: 2
+    t.integer "pbli7", limit: 2
+    t.integer "pbli8", limit: 2
+    t.integer "pcp1", limit: 2
+    t.integer "pcp2", limit: 2
+    t.integer "pcp3", limit: 2
+    t.integer "pcp4", limit: 2
+    t.integer "pcp5", limit: 2
+    t.integer "pcp6", limit: 2
+    t.integer "pppd1", limit: 2
+    t.integer "pppd2", limit: 2
+    t.integer "pppd3", limit: 2
+    t.integer "pppd4", limit: 2
+    t.integer "pppd5", limit: 2
+    t.integer "pppd6", limit: 2
+    t.integer "pppd7", limit: 2
+    t.integer "pppd8", limit: 2
+    t.integer "pppd9", limit: 2
+    t.integer "pppd10", limit: 2
+    t.integer "pppd11", limit: 2
+    t.integer "sbpic1", limit: 2
+    t.integer "sbpic2", limit: 2
+    t.integer "sbpic3", limit: 2
+    t.integer "sbpic4", limit: 2
+    t.integer "sbpic5", limit: 2
+    t.text "prof_concerns"
+    t.text "comm_prof_concerns"
+    t.text "overall_summ_comm_perf"
+    t.text "add_comm_on_perform"
+    t.text "mspe"
+    t.text "clinic_exp_comment"
+    t.text "feedback"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+  end
+
   create_table "ume_blses", force: :cascade do |t|
     t.bigint "user_id"
     t.date "expiration_date"
@@ -1372,6 +1491,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
     t.uuid "uuid", default: -> { "uuid_generate_v4()" }, null: false
     t.boolean "subscribed", default: false, null: false
     t.date "matriculated_date"
+    t.boolean "new_competency", default: false
+    t.string "former_name"
+    t.string "career_interest", default: [], array: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sid"], name: "index_users_on_sid", unique: true
@@ -1429,6 +1551,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_22_145634) do
   add_foreign_key "med21_competencies", "permission_groups"
   add_foreign_key "med23_mspes", "users"
   add_foreign_key "med24_mspes", "users"
+  add_foreign_key "med25_mspes", "users"
+  add_foreign_key "precep_meetings", "users"
   add_foreign_key "preceptor_assesses", "users"
   add_foreign_key "preceptor_evals", "users"
   add_foreign_key "student_lists", "users"

@@ -55,6 +55,7 @@
             <%= render partial: 'dashboard/wba_data' %>
         </div>
       </div>
+
       <% if current_user.coaching_type != 'student' %>
         <!-- <div class="column">
           <div class="card scroll">
@@ -68,15 +69,20 @@
               <%= render partial: 'dashboard/wba_graph' %>
           </div>
         </div>
-      <% end %>
-      <% if current_user.coaching_type == 'student' %>
         <div class="column">
           <div class="card">
               <%= render partial: 'dashboard/clinical_assessor_graph' %>
           </div>
         </div>
+
+        <% if current_user.new_competency && @student_badge_info.values.select{|b| b["status"] if b["status"]=="Badge"}.count > 0 %>
+          <%= render partial: "new_competencies/epa_badges" %>
+        <% end %>
+
       <% end %>
+
     </div>
+
   </div>
 <% end %>
 <%= render :partial=>"shared/modal_blank" %>

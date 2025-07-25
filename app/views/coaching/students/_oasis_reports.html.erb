@@ -1,67 +1,75 @@
 <div id="container">
-    <br />
     <div class="form-row">
       <% if current_user.dean_or_higher? and ['chungp', 'bumstedt', 'chomina', 'cantone', 'schneibe'].include? current_user.username %>
             <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true, id: 'advisor_report_form_id') do %>
-                &nbsp; &nbsp; &nbsp; &nbsp;
-                <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true, class: "btn btn-info "%> &nbsp;&nbsp;
-                <%= label_tag :Advisor %>
-                <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
-                    prompt: "Please Select an Advisor" %>
+                    <div class="card mx-auto" style="width: 75%;">
+                      <div class="card-body">
+                         <div class="form-group">
+                               <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true, class: "btn btn-info" %> &nbsp;&nbsp;
+                               <%= label_tag :Advisor %>
+                               <%= select_tag :advisor_id, options_from_collection_for_select(@advisors, "id", "name"), selected: params[:id], include_blank: "...",
+                                   prompt: "Please Select an Advisor", class: "form-select", style: "max-width:250px; display: inline-block"  %>
+                                <label for="start" class="control-label">
+                                     Meeting Start Date:
+                                 </label>
+                                 <input type="date" name="StartDate"
+                                     value="2022-01-01"
+                                     min="1997-01-01" max="2030-12-31" class="form-select" style="max-width:200px; display: inline-block">
 
-                    <label for="start">
-                         Start Date:
-                     </label>
-                     <input type="date" name="StartDate"
-                         value="2022-01-01"
-                         min="1997-01-01" max="2030-12-31">
+                                 <label for="End">
+                                       End Date:
+                                 </label>
+                                 <input type="date" name="EndDate"
+                                      value=<%= Date.today.strftime("%Y-%m-%d") %>
+                                     min="1997-01-01" max="2030-12-31" class="form-select" style="max-width:200px; display: inline-block">
+                                 &nbsp;
+                                 <label>Status: </label>
+                                 <%= select_tag "Status", options_for_select(["All", "No Show", "Rescheduled", "Scheduled", "Completed"]), class: "form-select", style: "max-width:200px; display: inline-block" %>
+                                 &nbsp; &nbsp;
+                                 <%= button_tag " SUBMIT", class: 'button btn btn-primary', html: {autocomplete: 'off'},
+                                     'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>              
+                         </div>
+                       </div>
+                     </div>
 
-                     <label for="End">
-                           End Date:
-                     </label>
-                     <input type="date" name="EndDate"
-                          value=<%= Date.today.strftime("%Y-%m-%d") %>
-                         min="1997-01-01" max="2030-12-31">
-                     &nbsp; &nbsp;
-                     <input type="checkbox" id="NoShow" name="NoShow" >
-                     <label class="checkbox-inline" for="NoShow">
-                       No Show Report
-                     </label>
-                     &nbsp; &nbsp;
-                 <%= button_tag " SUBMIT", class: 'button btn btn-primary', html: {autocomplete: 'off'},
-                     'data-disable-with' => "<i class='fa fa-spinner fa-spin'></i> Processing...".html_safe %>
             <% end %>
       <% elsif hf_advisor(current_user) == true %>
-             <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
-                &nbsp; &nbsp; &nbsp; &nbsp;
-                <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true, class: "btn btn-info " %> &nbsp;&nbsp;
-                     <label for="start">
-                          Meeting Start Date:
-                      </label>
-                      <input type="date" name="StartDate"
-                          value="2022-01-01"
-                          min="1997-01-01" max="2030-12-31">
+               <%= form_tag(advisor_reports_coaching_student_path, method: :post, remote: true) do %>
+               <div class="card mx-auto" style="width: 75%;">
+                 <div class="card-body">
+                    <div class="form-group">
+                        <div style: "display: inline-block">
+                          <%= link_to "OASIS Graphs", oasis_graphs_coaching_student_path(id: "Graphs"), method: :post, remote: true, class: "btn btn-info " %> &nbsp;&nbsp;
+                               <label for="start" class="control-label">
+                                    Meeting Start Date:
+                                </label>
+                                <input type="date" name="StartDate"
+                                    value="2022-01-01"
+                                    min="1997-01-01" max="2030-12-31" class="form-select" style="max-width:200px; display: inline-block">
 
-                      <label for="End">
-                            End Date:
-                      </label>
-                      <input type="date" name="EndDate"
-                           value=<%= Date.today.strftime("%Y-%m-%d") %>
-                          min="1997-01-01" max="2030-12-31">
-                      &nbsp; &nbsp;
-                      <input type="checkbox" id="NoShow" name="NoShow">
-                      <label class="checkbox-inline" for="NoShow">
-                        No Show Report
-                      </label>
-                      &nbsp; &nbsp;
-                  <%= submit_tag "Submit", name: 'advisor-reports-btn' %>
-             <% end %>
+                                <label for="End">
+                                      End Date:
+                                </label>
+                                <input type="date" name="EndDate"
+                                     value=<%= Date.today.strftime("%Y-%m-%d") %>
+                                    min="1997-01-01" max="2030-12-31" class="form-select" style="max-width:200px; display: inline-block">
+                                &nbsp; &nbsp;
+
+                                <label>Status: </label>
+                                <%= select_tag "Status", options_for_select(["All", "No Show", "Rescheduled", "Scheduled", "Completed"]), class: "form-select", style: "max-width:200px; display: inline-block" %>
+                                &nbsp; &nbsp;
+                            <%= submit_tag "Submit", name: 'advisor-reports-btn', class: "btn btn-sm btn-primary" %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+               <% end %>
       <% else %>
         &nbsp; &nbsp; &nbsp; &nbsp; <h5> You are not authorized to access to this section!" </h5>
       <% end %>
-
     </div>
-  <br /> <br />
+
   <div id="advisor-reports">
     <% if !@advisor.nil? %>
       <%= render partial: "advisor_reports", locals: {advisor: @advisor} %>
