@@ -103,7 +103,9 @@ module ArtifactsHelper
   end
 
   def hf_file_visible(code)
-    if ["dean", "admin"].include?  current_user.coaching_type
+    if current_user.nil?
+      return false
+    elsif ["dean", "admin"].include?  current_user.coaching_type
       return true
     end
 

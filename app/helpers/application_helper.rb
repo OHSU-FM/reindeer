@@ -71,7 +71,11 @@ module ApplicationHelper
   end
 
   def current_user_theme
-    dash = current_user.dashboard || Dashboard.new
-    dash.theme
+    if current_user.nil?
+      return ""
+    else
+      dash = current_user.dashboard || Dashboard.new
+      dash.theme
+    end
   end
 end
