@@ -138,7 +138,7 @@ module EpaReviewsHelper
 
   def hf_new_epa_keywords
     return NEW_EPA_KEYWORDS
-  end 
+  end
 
   def hf_new_epa_desc
     return NEW_EPA_DESC
@@ -204,15 +204,20 @@ module EpaReviewsHelper
     end
 
     if @new_competency
+      if epa_code == 'EPA1'  ## coming from csl_feedbacks table
+        epa_code = 'EPA1A'
+      end
       keywords = NEW_EPA_KEYWORDS[epa_code]
       epa_color = NEW_EPA_COLORS[epa_code]
     else
       keywords = EPA_KEYWORDS[epa_code]
       epa_color = EPA_COLORS[epa_code]
     end
-    text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
-              '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
-    return text_marked.html_safe
+
+      text_marked = text.gsub(/\b(#{keywords.join("|")})\b/i,
+                '<span style="color:' + "#{epa_color}" + '">' + "#{epa_code}: " + '<b>\1' +  '</span></b>').html_safe
+      return text_marked.html_safe
+    
   end
 
   def hf_wba_str(wba)

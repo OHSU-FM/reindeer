@@ -436,11 +436,15 @@ module NewCompetenciesHelper
     if wba.empty?
       return nil
     end
-    
+
     student_name = user.full_name  # processing student Alver
     #wba_series = wba.values # removed the first 2 items in array
     selected_categories = wba.keys
-    tot_attending = wba["Attending Faculty"].sum
+    if wba["Attending Faculty"].nil?
+      tot_attending = 0
+    else
+      tot_attending = wba["Attending Faculty"].sum
+    end
     tot_attending_str = "<br /> Total # of WBAs for Attending Faculty: <b>#{tot_attending.to_s}</b>"
     title = "Workbased Assessment by Clinical Assessors - #{student_name}" + '<br /><h4>Total # of WBAs: <b>' + "#{total_wba_count}</b>" + tot_attending_str +
              '</h4>' + '<br>' + "<b>Requirement: At Least 51 Attendings</b>"

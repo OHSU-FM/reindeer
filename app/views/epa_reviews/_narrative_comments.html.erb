@@ -29,7 +29,7 @@
                             <td><%= hf_final_grade(cd["FinalGrade"]).to_s.html_safe %></td>
                             <td><%= cd["ProfConcerns"] %></td>
                             <td><%= hf_highlight(cd["MSPE"], epa_code) %></td>
-                            <td><%= hf_highlight(cd["created_at"], epa_code) %></td>
+                            <td><%= cd["created_at"] %></td>
                           </tr>
                       <% end %>
                     <% end %>

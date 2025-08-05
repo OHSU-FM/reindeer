@@ -123,7 +123,7 @@ class FomExamsController < ApplicationController
 
   def display_fom
 
-    if params[:uuid].present?  #current_user.admin_or_higher?
+    if params[:uuid].present?  and params[:course_code].present? #current_user.admin_or_higher?
       if params[:uuid] == current_user.uuid or current_user.coaching_type == 'dean' or
         current_user.coaching_type == 'coach' or current_user.coaching_type == 'admin'
        #permission_group_id  = 17 # cohort Med23
@@ -169,7 +169,7 @@ class FomExamsController < ApplicationController
          @failed_comps = hf_scan_failed_score(@comp_exams)
          block_code = @course_code.split("-").second  #course_code format '1-FUND', '2-BLHD', etc
          @artifacts_student_fom, @no_official_docs, @shelf_artifacts = hf_get_fom_artifacts(@student_email, "FoM", block_code)
-         
+
          @formative_feedbacks_orig = FormativeFeedback.where("user_id=? and block_code=? and csa_code not like ? ", student.id, block_code, "%Informatics%").order(:submit_date).map(&:attributes)
          @formative_feedbacks_qualtrics = @formative_feedbacks_orig.select{|feed| feed if feed["response_id"].start_with? 'R_'}.compact
          @formative_feedbacks = hf_collect_values(@formative_feedbacks_orig)
