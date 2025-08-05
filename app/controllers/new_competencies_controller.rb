@@ -7,6 +7,7 @@ class NewCompetenciesController < ApplicationController
   include ArtifactsHelper
   include EpaMastersHelper
   include EpasHelper
+  include WbaGraphsHelper
 
 
   # GET /new_competencies or /new_competencies.json
@@ -75,7 +76,7 @@ class NewCompetenciesController < ApplicationController
 
      @csl_feedbacks = CslFeedback.where(user_id: @selected_user.id).order(:submit_date).load_async
 
-     if @selected_user.permission_group_id >= 16
+     if @selected_user.permission_group_id >= 16 or @selected_user.permission_group_id == 11
        @all_blocks, @all_blocks_class_mean, @category_labels = Competency.all_blocks_mean(@selected_user)
        # if @all_blocks.first.second.empty?  # to check component 1 is empty
        #    @all_blocks, @all_blocks_class_mean, @category_labels =  hf_get_clinical_dataset(@selected_user, 'All Blocks')
