@@ -215,6 +215,8 @@ Rails.application.routes.draw do
     collection do
         get "update_loa", action: :update_loa, to: "users#update_loa#"
         get "save_update_loa", action: :save_update_loa, to: "users#save_update_loa"
+        get "update_career_interests", action: :update_career_interests, to: "users#update_career_interests"
+        get "save_career_interests", action: :save_career_interests, to: "users#save_career_interests"
     end
   end
 

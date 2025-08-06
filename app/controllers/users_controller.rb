@@ -1,3 +1,17 @@
+class ArrayInput < SimpleForm::Inputs::StringInput
+  def input(wrapper_options)
+    input_html_options[:type] ||= input_type
+
+    Array(object.public_send(attribute_name)).map do |array_el|
+      @builder.text_field(nil, input_html_options.merge(value: array_el, name: "#{object_name}[#{attribute_name}][]"))
+    end.join.html_safe
+  end
+
+  def input_type
+    :text
+  end
+end
+
 class UsersController < ApplicationController
   layout 'full_width_margins'
 
@@ -55,10 +69,37 @@ class UsersController < ApplicationController
     render :update_loa
   end
 
+  def save_career_interests
+
+    @user = params[:user]
+    if !@user["uuid"].nil?
+      user = User.find_by(uuid: @user["uuid"]).update(career_interest: @user["career_interest"])
+      if user
+        redirect_to main_app.dashboards_path, notice: 'Upldated Student Career Interest!'
+      else
+        redirect_to main_app.dashboards_path, alert: 'Student Career Interest is NOT updated!!'
+      end
+    else
+      redirect_to main_app.dashboards_path, alert: 'Student Career Interest is NOT updated!!'
+    end
+  end
+
+  def update_career_interests
+    # allow user to update password (unless ldap)
+
+    if params[:sid].present?
+      @user = User.find_by(sid: params[:sid].to_s)
+    elsif params[:email].present?
+      @user = User.find_by(email: params[:email])
+    end
+    render :update_career_interests
+  end
+
 
   private
 
   def user_update_params
-    params.require(:user).permit(:sid, :subscribed, :permission_group_id, :prev_permission_group_id, :spec_program, :full_name, :username, :email, :coaching_type, :new_competency, :former_name)
+    params.require(:user).permit(:sid, :subscribed, :permission_group_id, :prev_permission_group_id, :spec_program, :full_name, :username, :email, :coaching_type,
+       :new_competency, :former_name, :career_interest)
   end
 end

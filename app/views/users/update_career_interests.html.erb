@@ -1,6 +1,6 @@
 <br><br>
 <div class="card" >
-  <%= simple_form_for(@user, url: save_update_loa_users_path(@user), method: :get, local: true, html: { class: 'form-horizontal' }, wrapper: :horizontal_form) do |f| %>
+  <%= simple_form_for(@user, url: save_career_interests_users_path(@user), method: :get, local: true, html: { class: 'form-horizontal' }, wrapper: :horizontal_form) do |f| %>
     <%= f.error_notification %>
     <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
     <%= f.hidden_field :sid, value: @user.sid %>
@@ -20,24 +20,9 @@
       <div class="form-group">
         <%= f.input :full_name, input_html: {style: 'width: 600px; background-color: #B4F8C8'} %>
       </div>
+      <br>
       <div class="form-group">
-        <%= f.input :spec_program, input_html: {style: 'width: 600px; background-color: #B4F8C8'} %>
-      </div>
-      <div class="form-group">
-        <%= f.input :former_name, input_html: {style: 'width: 600px; background-color: #B4F8C8'} %>
-      </div>
-
-      <div class="form-group">
-        <%= f.input :permission_group_id, collection: @permission_groups , label_method: :title, value_method: :id, label: "Current Cohort",
-            input_html: {style: 'width: 600px; background-color: #B4F8C8'}, include_blank: true, wrapper: :horizontal_form %>
-      </div>
-      <div class="form-group">
-        <%= f.input :prev_permission_group_id, collection: @permission_groups , label_method: :title, value_method: :id, label: "Previous Cohort",
-            input_html: {style: 'width: 600px; background-color: #B4F8C8'}, include_blank: true, wrapper: :horizontal_form  %>
-      </div>
-      <div class="form-group">
-        <%= f.input :new_competency %>
-      </div>
+        <%= f.input :career_interest, as: :array, input_html: {style: 'width: 600px; background-color: #B4F8C8'}, wrapper: :horizontal_form  %>
     </div>
 
     <div class="form-actions">

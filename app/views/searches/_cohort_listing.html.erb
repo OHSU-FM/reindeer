@@ -14,6 +14,7 @@
       <th style="text-align:center">New Comp</th>
       <th style="text-align:center">NetAccess</th>
       <th style="text-align:center">Former Name</th>
+      <th style="text-align:center">Specialty Interests</th>
     </tr>
   </thead>
 <% results.each do |result| %>
@@ -36,6 +37,7 @@
     <td style="text-align:center"> <%= result.new_competency? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
     <td style="text-align:center"> <%= result.is_ldap? ? 'Yes' : '<b style="color:red">No</b>'.html_safe %></td>
     <td style="text-align:center"> <%= result.former_name %></td>
+    <td style="text-align:center"> <%= result.career_interest.join(", ") %></td>    
   </tr>
 <% end %>
 </table>

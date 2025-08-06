@@ -22,7 +22,8 @@
                   <tr><td style="text-align:left">Matriculated Date</td><td><%= result.matriculated_date.to_s %> </td></tr>
                   <tr><td style="text-align:left">New Competency</td><td style="color:red"><%= result.new_competency? ? 'Yes' : 'No' %> </td></tr>
                   <tr><td style="text-align:left">Former Name</td><td><%= result.former_name %> </td></tr>
-                  <tr><td style="text-align:left">Specialty Interests</td><td style="color:blue"><%= raw(result.career_interest.each_with_index.map{ |item, index| "#{index + 1}. #{item}" }.join("<br>")) %></td></tr>
+                  <tr><td style="text-align:left"><%= link_to "Specialty Interests", update_career_interests_users_path(sid: result.sid),  target: :_blank %> </td>
+                    <td style="color:blue"><%= raw(result.career_interest.each_with_index.map{ |item, index| "#{index + 1}. #{item}" }.join("<br>")) %></td></tr>
                   <tr>
                     <% bls_record = result.ume_bls %>
                     <% if !bls_record.nil? %>
