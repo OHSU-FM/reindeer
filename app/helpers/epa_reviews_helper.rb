@@ -55,7 +55,7 @@ module EpaReviewsHelper
 
   "EPA4" => ["orders", "order entry", "ordering", "prescription", "prescribe", "medication order", "drug order", "lab order", "imaging order", "test order", "consult order", "consultation request", "order set", "dosing", "dose", "frequency", "route", "duration", "refill", "e-prescribe"],
 
-  "EPA5" => ["documentation", "medical record", "EMR", "EHR", "chart note", "note", "notes" "progress note", "SOAP note", "H&P", "history and physical", "written documentation", "admission note", "discharge summary", "procedure note", "clinic note", "inpatient note", "outpatient note", "consult note", "consultation note", "patient record"],
+  "EPA5" => ["documentation", "medical record", "EMR", "EHR", "chart note", "written notes", "note", "notes" "progress note", "SOAP note", "H&P", "history and physical", "written documentation", "admission note", "discharge summary", "procedure note", "clinic note", "inpatient note", "outpatient note", "consult note", "consultation note", "patient record"],
 
   "EPA6" => ["presentation", "presentations", "oral presentation", "case presentation", "clinical presentation", "patient presentation", "report", "verbal report", "bedside presentation", "presenting patient", "rounds presentation"],
 

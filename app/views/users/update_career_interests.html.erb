@@ -22,11 +22,19 @@
       </div>
       <br>
       <div class="form-group">
-        <%= f.input :career_interest, as: :array, input_html: {style: 'width: 600px; background-color: #B4F8C8'}, wrapper: :horizontal_form  %>
-    </div>
+        <% if @user.career_interest.present? %>
+          <%= f.input :career_interest, as: :array, input_html: {style: 'width: 600px; background-color: #B4F8C8; border-radius: 5px;'}, wrapper: :horizontal_form  %>
+        <% else %>
+          <%= f.input :career_interest, as: :string, input_html: { name: 'user[career_interest][]' }, placeholder: '1st Choice' %>
+          <%= f.input :career_interest, as: :string, input_html: { name: 'user[career_interest][]' }, placeholder: '2nd Choice' %>
+          <%= f.input :career_interest, as: :string, input_html: { name: 'user[career_interest][]' }, placeholder: '3rd Choice' %>
+        <% end %>
 
+      </div>
+    </div>
+    <br>
     <div class="form-actions">
-      <%= f.button :submit, class: 'btn btn-success' %>
+      <%= f.button :submit, "Save Career Interests", class: 'btn btn-success' %>
       <%= link_to "Cancel", :back, class: 'btn btn-warning' %>
     </div>
   <% end %>

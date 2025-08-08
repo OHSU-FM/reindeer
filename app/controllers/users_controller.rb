@@ -87,8 +87,8 @@ class UsersController < ApplicationController
   def update_career_interests
     # allow user to update password (unless ldap)
 
-    if params[:sid].present?
-      @user = User.find_by(sid: params[:sid].to_s)
+    if params[:uuid].present?
+      @user = User.find_by(uuid: params[:uuid].to_s)
     elsif params[:email].present?
       @user = User.find_by(email: params[:email])
     end
