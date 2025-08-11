@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   resources :epa_reviews do
     collection do
       post 'local_storage'
+      get 'unbadged', action: :unbadged
     end
   end
 

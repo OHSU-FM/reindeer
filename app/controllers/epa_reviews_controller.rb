@@ -183,6 +183,26 @@ class EpaReviewsController < ApplicationController
     end
   end
 
+  def unbadged
+        epa_review = EpaReview.find(params[:id]).update(badge_decision1: 'Not Yet', badge_decision2: 'Not Yet',
+                                            trust1: 'No Decision', trust2: 'No Decision',
+                                            reason1: 'Met minimum requirements', reason2: 'Met minimum requirements',
+                                            student_comments1: 'You are making progress towards completing this EPA - continue to look for experiences.',
+                                            student_comments2: 'You are making progress towards completing this EPA - continue to look for experiences.')
+        @epa_review = EpaReview.find(params[:id])
+        user_id = EpaReview.update_epa_master(@epa_review.reviewable_id, @epa_review.epa, @epa_review.badge_decision1, @epa_review.badge_decision2)
+        @eg_cohort = EgCohort.find_by(user_id: user_id)
+
+        respond_to do |format|
+          if epa_review
+            format.html { redirect_to epa_masters_path(uniq_cohort: @eg_cohort.permission_group_id, email: @eg_cohort.email), notice: 'This EPA was successfully unbadged!' }
+          else
+            format.html { render :edit }
+            format.json { render json: @epa_review.errors, status: :unprocessable_entity }
+          end
+        end
+  end
+
   def get_evidence (user_id, epa_count)
     @user ||= User.find(user_id)
 
