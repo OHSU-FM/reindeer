@@ -134,7 +134,7 @@
         <h2 class="h6 font-weight-bold text-center mb-4">Badge</h2>
 
         <!-- Progress bar 4 -->
-        <div class="progress mx-auto" data-value="<%= (@no_badges/13.0*100).round %>">
+        <div class="progress mx-auto" data-value="<%= @no_badges_per %>">
           <span class="progress-left">
                         <span class="progress-bar border-warning"></span>
           </span>
@@ -142,9 +142,11 @@
                         <span class="progress-bar border-warning"></span>
           </span>
           <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-            <div class="h2 font-weight-bold"><%= (@no_badges/13.0*100).round %><sup class="small">%</sup></div>
+            <div class="h2 font-weight-bold"><%= @no_badges_per %><sup class="small">%</sup></div>
           </div>
         </div>
+
+
         <!-- END -->
         <!-- Demo info -->
         <div class="row text-center mt-4">

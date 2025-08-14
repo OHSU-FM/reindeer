@@ -28,6 +28,8 @@ include NewCompetenciesHelper
 
       @wbas_attg = Epa.where("user_id = ? and clinical_assessor = ?",  user_id, 'Attending Faculty').count
       @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').where.not(epa: ["EPA12", "EPA13"]).count
+      @no_badges_per = (@no_badges/12.0*100).round
+
     else
       @no_wbas = Epa.where(user_id: user_id).count
       @wbas_epas =  Epa.where(user_id: user_id).group(:epa).count
@@ -37,6 +39,7 @@ include NewCompetenciesHelper
         @no_badges = 0  # no badges shown on main page or overall progress
       else
         @no_badges = EpaMaster.where(user_id: user_id, status: 'Badge').count
+        @no_badges_per = (@no_badges/13.0*100).round
       end
     end
     @wbas_attg_per = (@wbas_attg/51.0)
