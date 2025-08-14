@@ -50,6 +50,12 @@ RailsAdmin.config do |config|
     end
   end
 
+  config.model Med26Mspe do
+    list do
+      sort_by "full_name" # Sorts by category_id then by name
+    end
+  end
+
   # Temporary workaround for bug in rails_admin, forms won't submit
   #https://github.com/sferik/rails_admin/issues/2443
   config.browser_validations = false

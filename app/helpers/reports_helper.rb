@@ -142,6 +142,14 @@ module ReportsHelper
          ).order(:user_id, :start_date)
          mspe_data.push mspe
       end
+    elsif permission_group_title >= "Med26"
+      mspe_yr = permission_group_title.from(3)
+      Med26Mspe.all.each do |mspe|
+         mspe = mspe.user.new_competencies.where(WHERE_QUERY2, '%FoM%', '%TRAN%', '%PREC 724%', '%SCHI%', '%CPX 702%', '%709Z%').select(:id, :student_uid, :user_id, :email,
+           :course_id, :course_name, :final_grade, :start_date, :end_date, :submit_date, :evaluator, :prof_concerns, :mspe,
+         ).order(:user_id, :start_date)
+         mspe_data.push mspe
+      end
     end
     file_name = create_tab_delimited_file(permission_group_title, 'All', mspe_data)
     total_count = mspe_data.count

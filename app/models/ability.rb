@@ -58,6 +58,8 @@ class Ability
       can :debug, :dashboard
       can :manage, :all
       can :read, :lime_survey_website
+      cannot :import, :all
+      can :import, [Med26Mspe]
     end
   end
 

@@ -52,13 +52,13 @@ class ReportsController < ApplicationController
   def mspe
 
     if current_user.coaching_type != 'student'
-
       if params[:cohort].present? and  params[:email].present? and params[:email] != 'All'
         #@mspe_data = hf_get_mspe_data(params[:cohort])
         @student_email = params[:email]
         @mspe_data, @mspe_filename = hf_get_mspe_data_by_email(params[:email], params[:cohort])
       elsif params[:cohort].present? and  params[:email].present? and params[:email] == 'All'
         @mspe_data, @mspe_filename = hf_get_mspe_data(params[:cohort])
+byebug
 
       end
 
