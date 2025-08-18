@@ -103,13 +103,18 @@ module ReportsHelper
     file_name = "#{Rails.root}/tmp/#{permission_group_title}_#{full_name}_mspe_data.txt"
 
     CSV.open(file_name,'wb', col_sep: "\t") do |csvfile|
-      csvfile << mspe_data.first.first.attributes.keys.map{|c| c.titleize}
+
+      header =  mspe_data.first.first.attributes.keys  ##map{|c| c.titleize}
+      header.unshift("Full Name")  ## insert in the beginning of array
+      csvfile << header
       mspe_data.each do |data|
         data.each do |sub_data|
           final_hash = JSON.parse(sub_data["final_grade"] )
           sub_data["final_grade"] = final_hash["Grade"]
-          csvfile << sub_data.attributes.values
-
+          full_name = User.find(sub_data.user_id).full_name
+          print_data = sub_data.attributes.values
+          print_data.unshift(full_name)
+          csvfile << print_data
         end
       end
     end
