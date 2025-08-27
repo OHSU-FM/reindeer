@@ -423,7 +423,7 @@ class EventsController < ApplicationController
       # commented out step 1 advisiing on 1/28/2025 - requested by Erika and Career Advisor
      #@advisor_types.push 'Academic: Step 1 Advising'
     #@advisor_types.push 'Academic: Remediation Support' commented out on 5/23/2025
-     #@advisor_types.push 'Career Advising: MS4 ERAS'
+     @advisor_types.push 'Career Advising: MS4 ERAS'
      @advisor_types.sort!
 
       @advisors ||= Advisor.where(status: 'Active').select(:id, :name, :email, :advisor_type).order(:name)

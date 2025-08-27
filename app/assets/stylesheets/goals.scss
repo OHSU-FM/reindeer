@@ -188,6 +188,7 @@ $paper:    #D5D5D5;
   &.show-detail {
     // commnted flex properties on 1/28/2022
     //flex: 1 6 auto;
+
     order: 3;
     width: 1200px;
     transition: width 0.3s ease-in;
@@ -216,12 +217,25 @@ $paper:    #D5D5D5;
       padding-top: 10px;
       padding-bottom: 10px;
     }
+    // COMMENTED THIS OUT ON 8/22/2025
+    // div {
+    //   font-size: 14px;
+    //   padding-left: 0px;  // control the panel title block
+    //   padding-right: 0px;
+    // }
 
-    div {
-      font-size: 14px;
-      padding-left: 0px;  // control the panel title block
-      padding-right: 0px;
-    }
+    // .MyCheckBoxAdvisorOutcomes {
+    //   font-size: 14px;
+    //   padding-left: 20px;  // control the panel title block
+    //   padding-right: 0px;
+    // }
+
+    // .specialty {
+    //   font-size: 14px;
+    //   padding-left: 40px;  // control the panel title block
+    //   padding-right: 0px;
+    // }
+
   }
 }
 

@@ -387,6 +387,9 @@ end
       label_hash = JSON.parse(json_string)
       permission_group_id = label_hash.first["permission_group_id"]
       course_code = label_hash.first["course_code"]
+      if course_code == '6-NFS'
+        course_code = '6-NSF'
+      end
       if !course_code.blank?
         FomLabel.where(permission_group_id: permission_group_id, course_code: course_code).first_or_create.update(labels: json_string)
         return true

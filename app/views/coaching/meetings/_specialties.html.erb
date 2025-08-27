@@ -1,0 +1,29 @@
+<div class="accordion" id="accordionParentFour">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+        <h5><font color="blue">Specialties Interest (check all that apply): <%= meeting.advice_category.to_s %></font></h5>
+      </button>
+    </h2>
+    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionParentFour">
+      <div class="accordion-body">
+        <div class="card" style="width: 600px">
+          <div class="card-body">
+            <div class="form-check">
+               <% i = 0 %>
+               <% Student.specialties.each do |specialty| %>
+                 <% i += 1 %>
+                 <div class="form-check MyCheckBoxSpecialties">
+                   <input class="form-check-input" type="checkbox" id="checkboxId_<%= i %>" value="<%= specialty %>" name="specialties[]" >
+                   <label class="form-check-label" for="checkboxId_<%= i %>">
+                     <%= specialty %>
+                   </label>
+                 </div>
+                <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

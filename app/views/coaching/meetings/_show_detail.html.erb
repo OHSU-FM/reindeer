@@ -151,12 +151,16 @@
     </button>
   </div>
 
-
 <div class="detail-section">
   <h4><font color="#4c0946">Advisor Meeting Documentation</font></h4>
   <div>
     <%= text_area_tag :notes, meeting.advisor_notes, class: "updateAdvisorNotes", rows: 5, style: 'width:100%' %>
   </div>
+</div>
+
+<div class="detail-section">
+  <h4><font color="#4c0946">Specialties Interest (check all that apply) ** Coming Soon! </font></h4>
+  <% #= render  partial: "specialties", locals: {meeting: meeting} %>
 </div>
 
 <div class="detail-section">

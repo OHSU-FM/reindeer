@@ -169,7 +169,6 @@ module SearchesHelper
       block_array.push block_hash
     end
 
-
     return block_array
   end
 
